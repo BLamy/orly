@@ -75,7 +75,7 @@ const ACTIVE_VALUES = ROWS.map((_, row) =>
 );
 
 const GATE = { x: 1035, y: 334, r: 72 };
-const PROOF = { x: 785, y: 205 };
+const PROOF = { x: 800, y: 205 };
 
 const CAM_TICKET: CameraState = { x: 500, y: 330, k: 1.18 };
 const CAM_EXPLORE: CameraState = { x: 530, y: 330, k: 1.08 };
@@ -85,17 +85,36 @@ const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.0 };
 
 // A single path wraps the persistent catalog. It is deliberately not a
 // network edge: this is exploration widening the known surface before its
-// discoveries settle into journey versions.
-const EXPLORATION_SPIRAL = [
-  'M 286 560',
-  'C 190 470 214 170 450 86',
-  'C 716 -8 870 146 802 366',
-  'C 744 554 486 604 312 476',
-  'C 188 384 250 190 438 148',
-  'C 620 108 742 224 690 378',
-  'C 652 490 490 506 388 420',
-].join(' ');
-const SPIRAL_LENGTH = 1940;
+// discoveries settle into journey versions. It is a squircle that spirals
+// inward: the outer turn clears the row labels on the left and the evidence
+// rail on the right, and the inner turn stays inside the matrix.
+const LOOP = { cx: 485, cy: 315, rx: 285, ry: 250 };
+const LOOP_TURNS = 1.85;
+const LOOP_INNER = 0.5;
+const signedCubeRoot = (v: number) => Math.sign(v) * Math.pow(Math.abs(v), 1 / 3);
+
+function spiralPoints(steps: number): Array<[number, number]> {
+  const pts: Array<[number, number]> = [];
+  for (let i = 0; i <= steps; i++) {
+    const u = i / steps;
+    const theta = (3 * Math.PI) / 4 + 2 * Math.PI * LOOP_TURNS * u;
+    const s = 1 - (1 - LOOP_INNER) * u;
+    pts.push([
+      LOOP.cx + LOOP.rx * s * signedCubeRoot(Math.cos(theta)),
+      LOOP.cy + LOOP.ry * s * signedCubeRoot(Math.sin(theta)),
+    ]);
+  }
+  return pts;
+}
+
+const SPIRAL_POINTS = spiralPoints(360);
+const EXPLORATION_SPIRAL = SPIRAL_POINTS.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+const SPIRAL_LENGTH = Math.ceil(
+  SPIRAL_POINTS.reduce(
+    (sum, [x, y], i) => (i === 0 ? 0 : sum + Math.hypot(x - SPIRAL_POINTS[i - 1][0], y - SPIRAL_POINTS[i - 1][1])),
+    0,
+  ),
+);
 
 /* -------------------------------------------------------------- timeline */
 export interface Scene {
@@ -206,7 +225,7 @@ export function buildScene(): Scene {
     dur: 7.5,
     text: 'So the epic driver is explicit: list every standing journey, retrigger every one, pin them to the epic head, and wait. A future suite endpoint could make that one operation.',
   });
-  tl.tween(limitationU, 0.18, { at: 47.8, dur: 0.9, ease: ease.move });
+  tl.tween(limitationU, 0.5, { at: 47.8, dur: 0.9, ease: ease.move });
   tl.tween(enumerateU, 1, { at: 48.4, dur: 1.2, ease: ease.draw });
   tl.tween(headU, 1, { at: 49.2, dur: 0.7, ease: ease.pop });
   tl.tween(fanoutU, 1, { at: 50.0, dur: 4.2, ease: ease.linear });
@@ -325,10 +344,10 @@ function EvidenceRequirement({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <text x={PROOF.x + 18} y={y - 2} fill={colors.TEXT} fontSize={13} fontWeight={700}>
+      <text x={PROOF.x + 18} y={y - 2} fill={colors.TEXT} fontSize={14} fontWeight={700}>
         {label}
       </text>
-      <text x={PROOF.x + 18} y={y + 15} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+      <text x={PROOF.x + 18} y={y + 16} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         {detail}
       </text>
     </g>
@@ -387,10 +406,32 @@ export function Render({ s }: { s: SceneState }) {
           <g
             transform={`translate(${matrixCenterX} ${matrixCenterY}) scale(${matrixScale}) translate(${-matrixCenterX} ${-matrixCenterY})`}
           >
-            <text x={MATRIX.x - 168} y={88} fill={colors.TEXT} fontSize={22} fontWeight={750} opacity={matrixU}>
+            <text
+              x={MATRIX.x - 120}
+              y={60}
+              fill={colors.TEXT}
+              fontSize={22}
+              fontWeight={750}
+              opacity={matrixU}
+              stroke={colors.BG}
+              strokeWidth={5}
+              strokeLinejoin="round"
+              paintOrder="stroke"
+            >
               regression catalog
             </text>
-            <text x={MATRIX.x - 168} y={108} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO} opacity={matrixU}>
+            <text
+              x={MATRIX.x - 120}
+              y={80}
+              fill={colors.MUTED}
+              fontSize={12.5}
+              fontFamily={MONO}
+              opacity={matrixU}
+              stroke={colors.BG}
+              strokeWidth={5}
+              strokeLinejoin="round"
+              paintOrder="stroke"
+            >
               named journey × exact code head
             </text>
 
@@ -400,9 +441,8 @@ export function Render({ s }: { s: SceneState }) {
               values={EMPTY_VALUES}
               cell={MATRIX.cell}
               gap={MATRIX.gap}
-              rowLabels={[...ROWS]}
-              colLabels={[...COLS]}
-              labelSize={11.5}
+              colLabels={COLS.slice(0, 4)}
+              labelSize={14}
               cellU={scaffoldU}
               fill={() => '#151c2d'}
               opacity={0.85}
@@ -428,8 +468,8 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g opacity={narrowU}>
                   <circle cx={p.x} cy={p.y} r={30 + 5 * narrowU} fill="none" stroke={colors.WARM} strokeWidth={2.5} />
-                  <path d={`M ${p.x + 28} ${p.y - 18} Q ${p.x + 78} ${p.y - 62} ${p.x + 128} ${p.y - 46}`} fill="none" stroke={colors.WARM} strokeWidth={1.7} />
-                  <text x={p.x + 134} y={p.y - 49} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+                  <path d={`M ${p.x - 22} ${p.y - 22} L ${p.x - 32} ${p.y - 30}`} fill="none" stroke={colors.WARM} strokeWidth={1.7} />
+                  <text x={p.x - 36} y={p.y - 30} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     ticket claim
                   </text>
                 </g>
@@ -448,11 +488,63 @@ export function Render({ s }: { s: SceneState }) {
                   strokeDasharray={SPIRAL_LENGTH}
                   strokeDashoffset={SPIRAL_LENGTH * (1 - explorationU)}
                 />
-                <text x={232} y={578} fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>
+                {/* The label sits in the band between the matrix and the loop's bottom, clear of both strokes. */}
+                <text x={485} y={552} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
                   fresh exploration · same epic head
                 </text>
               </g>
             )}
+
+            {/* Row and column labels sit above the spiral, with a halo so its path passes behind the text. */}
+            {ROWS.map((label, row) => {
+              const u = scaffoldU(row, 0);
+              if (u <= 0) return null;
+              return (
+                <text
+                  key={`row-${row}`}
+                  x={MATRIX.x - 12}
+                  y={MATRIX.y + row * PITCH + MATRIX.cell / 2 + 13 / 3}
+                  textAnchor="end"
+                  fill={colors.MUTED}
+                  fontSize={14}
+                  opacity={u}
+                  stroke={colors.BG}
+                  strokeWidth={5}
+                  strokeLinejoin="round"
+                  paintOrder="stroke"
+                >
+                  {label}
+                </text>
+              );
+            })}
+            {[4, 5].map((col) => {
+              const u = scaffoldU(0, col);
+              if (u <= 0) return null;
+              const cx = MATRIX.x + col * PITCH + MATRIX.cell / 2;
+              const lines = col === 5 ? ['EPIC', 'HEAD'] : ['EXPLORE'];
+              const color = col === 5 && headU > 0 ? colors.WARM : colors.MUTED;
+              return (
+                <g key={`col-${col}`} opacity={u}>
+                  {lines.map((line, i) => (
+                    <text
+                      key={line}
+                      x={cx}
+                      y={MATRIX.y - 12 - (lines.length - 1 - i) * 14}
+                      textAnchor="middle"
+                      fill={color}
+                      fontSize={14}
+                      fontWeight={col === 5 ? 700 : 400}
+                      stroke={colors.BG}
+                      strokeWidth={5}
+                      strokeLinejoin="round"
+                      paintOrder="stroke"
+                    >
+                      {line}
+                    </text>
+                  ))}
+                </g>
+              );
+            })}
 
             {/* Version chips show that exploration updates definitions, not just executions. */}
             {EXPLORE_CELLS.map(([row, col], index) => {
@@ -461,9 +553,9 @@ export function Render({ s }: { s: SceneState }) {
               if (u <= 0) return null;
               const version = row < 6 ? 'v2' : 'v1';
               return (
-                <g key={`version-${row}`} opacity={u} transform={`translate(${p.x + 15} ${p.y - 17}) scale(${0.75 + 0.25 * u})`}>
-                  <circle r={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
-                  <text y={3.3} textAnchor="middle" fill={colors.SECONDARY} fontSize={8.5} fontWeight={750} fontFamily={MONO}>
+                <g key={`version-${row}`} opacity={u} transform={`translate(${p.x + 17} ${p.y - 17}) scale(${0.75 + 0.25 * u})`}>
+                  <circle r={12} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
+                  <text y={4.3} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontWeight={750} fontFamily={MONO}>
                     {version}
                   </text>
                 </g>
@@ -505,36 +597,23 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
 
-            {headU > 0 && (
-              <g opacity={headU}>
-                <path
-                  d={`M ${cellCenter(0, 5).x - 26} 91 h 52`}
-                  stroke={colors.WARM}
-                  strokeWidth={3}
-                  strokeLinecap="round"
-                />
-                <text x={cellCenter(0, 5).x} y={72} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
-                  exact epic head
-                </text>
-              </g>
-            )}
           </g>
 
           {/* The missing shortcut stays beside the catalog, never over it. */}
           {limitationU > 0 && (
             <g opacity={limitationU} transform={`translate(${(1 - limitationU) * 18} 0)`}>
               <path d="M 752 112 h 438" stroke={colors.NEGATIVE} strokeWidth={1.3} opacity={0.45} />
-              <text x={770} y={141} fill={colors.NEGATIVE} fontSize={12} fontWeight={750}>
+              <text x={770} y={141} fill={colors.NEGATIVE} fontSize={14} fontWeight={750}>
                 no public MCP run-all today
               </text>
-              <text x={770} y={164} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={770} y={164} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 full-qa → eligible work, not forced reruns
               </text>
-              <text x={770} y={184} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={770} y={184} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 queue → never-run · repaired · infra-failed
               </text>
               {enumerateU > 0 && (
-                <text x={770} y={211} fill={colors.WARM} fontSize={10.5} fontWeight={700} fontFamily={MONO} opacity={enumerateU}>
+                <text x={770} y={211} fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={MONO} opacity={enumerateU}>
                   list → retrigger each → await terminal
                 </text>
               )}
@@ -564,10 +643,11 @@ export function Render({ s }: { s: SceneState }) {
                 stroke={colors.TEXT}
                 strokeWidth={2}
               />
-              <text x={GATE.x} y={GATE.y + 47} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={750}>
+              <text x={GATE.x} y={GATE.y + 44} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={750}>
                 critic gate
               </text>
-              <text x={GATE.x} y={GATE.y + 65} textAnchor="middle" fill={gateOpenU > 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>
+              {/* Status sits under the ring so it never spills past the circle's edge. */}
+              <text x={GATE.x} y={GATE.y + GATE.r + 22} textAnchor="middle" fill={gateOpenU > 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                 {gateOpenU > 0.5 ? 'verified · catalog promoted' : 'attacking composed epic'}
               </text>
               {gateOpenU > 0 && (
@@ -582,10 +662,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* The payoff names the compounding memory without replacing the matrix. */}
           {growU > 0 && (
             <g opacity={growU}>
-              <text x={640} y={598} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={750}>
+              <text x={640} y={596} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={750}>
                 six inherited journeys → eight standing journeys · refreshed versions · one verified epic head
               </text>
-              <text x={640} y={619} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={640} y={614} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 the next loop begins with more memory than this one inherited
               </text>
             </g>
@@ -595,8 +675,8 @@ export function Render({ s }: { s: SceneState }) {
         {/* Clean ending: prior content is dimmed behind an opaque recap panel. */}
         {endU > 0 && (
           <g opacity={endU}>
-            <rect x={205} y={235} width={870} height={210} rx={24} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
-            <text x={640} y={294} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <rect x={165} y={235} width={950} height={210} rx={24} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
+            <text x={640} y={294} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               EVERY EPIC WIDENS THE NET
             </text>
             <text x={640} y={342} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={780}>

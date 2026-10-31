@@ -112,8 +112,10 @@ export const GRID_Y = 80;
 export const cellCX = (c: number): number => GRID_X + c * CELL + CELL / 2;
 export const cellCY = (r: number): number => GRID_Y + r * CELL + CELL / 2;
 
-export const CAM_GRID: CameraState = { x: 590, y: 320, k: 1.15 };
-export const CAM_VASE: CameraState = { x: cellCX(VASE.c), y: cellCY(VASE.r), k: 1.7 };
+// The whole 7×5 grid fits between the top band (where the formula sits) and
+// the caption pill; the vase close-up keeps every row in frame.
+export const CAM_GRID: CameraState = { x: 590, y: 340, k: 1 };
+export const CAM_VASE: CameraState = { x: cellCX(VASE.c), y: cellCY(VASE.r) + 15, k: 1.1 };
 
 export interface Scene {
   tl: Timeline;

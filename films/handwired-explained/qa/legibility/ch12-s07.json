@@ -1,0 +1,68 @@
+{
+ "shot": "ch12-s07",
+ "at": "2026-10-28T16:37:25.871Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 11,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "As of 27 October 2026,",
+   "capWhileSubject": 43.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "main is still at",
+   "capWhileSubject": 43.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "257856e",
+   "capWhileSubject": 41.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Written & coded by",
+   "capWhileSubject": 39.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Claude Opus 5.5",
+   "capWhileSubject": 39.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Voice:",
+   "capWhileSubject": 32.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ElevenLabs",
+   "capWhileSubject": 32.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Music:",
+   "capWhileSubject": 32.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Strudel",
+   "capWhileSubject": 32.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "SOURCES",
+   "capWhileSubject": 37.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "orly.brett-lamy.workers.dev/generated/handwired-explained/sources",
+   "capWhileSubject": 27.2,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

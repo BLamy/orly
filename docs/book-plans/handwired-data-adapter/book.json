@@ -1,0 +1,66 @@
+{
+  "slug": "handwired-data-adapter",
+  "title": "Data Adapter",
+  "subtitle": "Eight rectangle lookups recovered by searching 868 tiny programs",
+  "animal": "beaver",
+  "accent": "#b5653a",
+  "chapters": [
+    {
+      "title": "The Lookup Circuit",
+      "blurb": "Twelve slots, a relu tent per slot, and an active bit turn \"find this identifier\" into arithmetic.",
+      "captions": [
+        "Programs look things up constantly: given a list of rectangles, find the one with this identifier. This lab asks whether a small search can discover that lookup as a circuit of weighted sums and relu.",
+        "Nothing here is trained. No weights are learned. The search just tries small programs and keeps the ones whose answers match.",
+        "The circuit has twelve storage slots. Each slot holds an active bit, an identifier, and four numbers: left, top, width, and height.",
+        "Three rows are active, with identifiers ten, twenty, and thirty. Other inputs say which identifier we want, where the origin sits, and the scale. The rows may sit in any slots.",
+        "Each slot needs a bit saying this is the row. First, measure how far its identifier is from the wanted one, using two relu ramps, one for each sign of the difference.",
+        "Then relu of one minus that distance makes a tent: one when the distance is zero, and zero at every other whole number. For whole-number identifiers, that is exact.",
+        "Ask for twenty. The slot holding twenty gets a one. The slots holding ten and thirty are ten away, so their tents are zero.",
+        "Now a trap: an inactive row can repeat the wanted identifier and carry misleading geometry. So each bit is multiplied by the slot's active bit, and the inactive row goes silent.",
+        "Add the bits to get a count, here one. Then found is the count minus relu of the count minus one, which caps it at one.",
+        "To read a field, multiply every slot's value by its bit and add them up. Only the selected row survives, so the left edge comes out as forty.",
+        "Ask for ninety-nine instead. Every bit is zero, found is zero, and the value is forced to zero, even though the origin is not zero.",
+        "Two active rows may never share an identifier. The input check rejects duplicates, and that promise lets the bits be declared one-hot, with all zeros allowed.",
+        "That is the machinery every candidate is built from: choose some row tests, then read a field. The search decides which tests, which field, and what arithmetic follows."
+      ]
+    },
+    {
+      "title": "868 Programs, Twelve Scenes",
+      "blurb": "Exhaustive search over a small vocabulary leaves exactly one program per task after twelve training scenes.",
+      "captions": [
+        "Given example scenes and their right answers, the search must choose three things: which rows to select, which field to read, and which arithmetic steps to apply.",
+        "Row tests come from three: active, same identifier, and first storage slot. Using none, one, or two, combined by and, gives seven choices.",
+        "The field read is one of four: left, top, width, or height.",
+        "Then zero, one, or two steps from five: add width, add height, subtract origin x, subtract origin y, or multiply by scale. That is one plus five plus twenty-five, thirty-one sequences.",
+        "Seven times four times thirty-one is eight hundred sixty-eight programs. Each one is built as a real circuit and run, not scored by a heuristic.",
+        "Eight goals: left, top, right, bottom, local left, local top, scaled right, and scaled bottom. Their answers come from a plain find and separate float arithmetic, never from the circuits.",
+        "Training is twelve scenes: one to three active rows, identifiers both present and absent, whole-number geometry.",
+        "After the first scene, thirty-four programs still match at least one task. Right still has eight candidates, left has two.",
+        "After the second scene, six tasks are down to a single candidate. Top has two left, and right has three.",
+        "By the seventh scene exactly eight programs remain, one per task. Scenes eight through twelve eliminate nothing more.",
+        "Candidates are dropped once no task still matches them, so the search needs nine hundred ninety-seven circuit runs, not ten thousand four hundred sixteen. About sixty milliseconds on the author's machine.",
+        "Every survivor starts with the same selector, active and same identifier. Right reads left, then adds width. Local left reads left, subtracts origin x, then multiplies by scale.",
+        "Controls: drop the active test and zero programs fit. Drop the same-identifier test and zero fit. Within this vocabulary and these eight authored targets, both tests are needed."
+      ]
+    },
+    {
+      "title": "What the Check Shows",
+      "blurb": "Held-out scenes, float rounding, a reuse claim that was retracted, and the lab's honest status.",
+      "captions": [
+        "A recovered program only counts if it works on scenes it never saw.",
+        "The held-out set has two hundred sixteen generated scenes: new identifiers, counts of zero, four, six, nine, and twelve, fractional geometry, and fractional scales, positive or negative.",
+        "Each scene is also run with its storage reversed, adding two hundred sixteen more. Six hand-picked boundary cases bring the total to four hundred thirty-eight checks.",
+        "All eight programs match the plain lookup on every one. Found bit and value are compared in both literal and compiled execution: fourteen thousand and sixteen comparisons.",
+        "Those are comparisons, not independent samples. Only the two hundred sixteen generated scenes are fresh draws, checked many different ways.",
+        "Numbers are thirty-two-bit floats, rounded after every add, subtract, and multiply. That rounding is part of the specification.",
+        "Add about one part in sixteen million to one, and the float rounds back to one. Times three gives exactly three. Skip that rounding step and you get three plus a speck.",
+        "So the circuit keeps its rounding steps in the order written, and later graph building cannot simplify them away.",
+        "Reuse: all eight programs share one selector, computed once, with four field reads feeding eight outputs.",
+        "But naming that function saves nothing. The core already merges identical expressions, so both joint circuits have two hundred operations. The eleven hundred eighteen for separate circuits is not a saving.",
+        "The limits are plain. Nothing is learned and there is no neural guide. The graph holds twelve slots, with no strings or joins, and three-step formulas fall outside the vocabulary.",
+        "Status: it holds within its scope. Eight tests pass, and every check matches the plain lookup. But it is a search result, not a learning result, and the lookup tests and extraction rule are authored.",
+        "Still open: retrieving by identifier with soft attention, then argmax, compared against this exact baseline. That experiment is proposed, and has not been run."
+      ]
+    }
+  ]
+}

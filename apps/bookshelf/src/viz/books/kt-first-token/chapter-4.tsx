@@ -30,7 +30,11 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // ---------------------------------------------------------------------------
 
 const SRV = { x: 950, y: 300 } as const;
-const DOOR = { x: 830, y: 300 } as const;
+// The door sits just left of the server zone (which starts at x = 820), so the
+// two boxes never touch.
+const DOOR = { x: 740, y: 300 } as const;
+const DOOR_W = 136;
+const CLIENT_HALF = 80;
 const CLIENTS = [
   { x: 190, y: 170, label: 'curl', sub: 'chat/completions' },
   { x: 190, y: 300, label: 'Python client', sub: 'openai.OpenAI' },
@@ -42,7 +46,8 @@ const CHUNKS = ['Hello', '!', ' What', ' can', ' I', ' help', ' with', '?'];
 const STREAM = { x: 420, y: 522, w: 440 } as const;
 
 const CAM_SRV: CameraState = { x: 880, y: 300, k: 1.4 };
-const CAM_CLI: CameraState = { x: 330, y: 300, k: 1.3 };
+// Wide enough that the clients, the door and the server all stay on stage.
+const CAM_CLI: CameraState = { x: 610, y: 300, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -175,7 +180,8 @@ export function Render({ s }: { s: SceneState }) {
   const swapU = s.get(scene.swapU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  // Fade the whole server scene out under the recap panel so no faded edge peeks past it.
+  const dimAll = 1 - closeU;
   const nChunks = Math.floor(streamU * CHUNKS.length + 1e-6);
 
   return (
@@ -185,33 +191,34 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* ---- the server ---- */}
           <Zone x={SRV.x - 130} y={SRV.y - 140} w={300} h={280} label="SGLang-KT · :30000" kind="group" u={srvU} color={colors.ACCENT} />
-          <g opacity={srvU}>
+          {/* the card and the RAM sit lower in their zone so the zone is not half empty */}
+          <g opacity={srvU} transform="translate(0, 28)">
             <rect x={SRV.x - 100} y={SRV.y - 92} width={110} height={70} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-            <text x={SRV.x - 45} y={SRV.y - 62} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5}>
+            <text x={SRV.x - 45} y={SRV.y - 62} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
               GPU
             </text>
-            <text x={SRV.x - 45} y={SRV.y - 44} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+            <text x={SRV.x - 45} y={SRV.y - 44} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               attention · hot
             </text>
             <rect x={SRV.x + 30} y={SRV.y - 92} width={110} height={70} rx={9} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={SRV.x + 85} y={SRV.y - 62} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5}>
+            <text x={SRV.x + 85} y={SRV.y - 62} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
               CPU
             </text>
-            <text x={SRV.x + 85} y={SRV.y - 44} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+            <text x={SRV.x + 85} y={SRV.y - 44} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               cold experts
             </text>
             <line x1={SRV.x - 45} y1={SRV.y - 22} x2={SRV.x + 85} y2={SRV.y - 22} stroke={colors.GRID} strokeWidth={2} opacity={0.7} />
-            <text x={SRV.x + 20} y={SRV.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <text x={SRV.x + 20} y={SRV.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               the circuit from chapter three
             </text>
           </g>
           {/* the /v1 door */}
           <g opacity={doorU}>
-            <rect x={DOOR.x - 34} y={DOOR.y + 30} width={78} height={64} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
-            <text x={DOOR.x + 5} y={DOOR.y + 58} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
+            <rect x={DOOR.x - DOOR_W / 2} y={DOOR.y + 30} width={DOOR_W} height={64} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
+            <text x={DOOR.x} y={DOOR.y + 58} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
               /v1
             </text>
-            <text x={DOOR.x + 5} y={DOOR.y + 78} textAnchor="middle" fill={colors.MUTED} fontSize={8.5}>
+            <text x={DOOR.x} y={DOOR.y + 80} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
               chat/completions
             </text>
           </g>
@@ -219,11 +226,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the clients ---- */}
           {CLIENTS.map((c, i) => (
             <g key={c.label} opacity={clamp01(cliU * 3 - i * 0.6)}>
-              <ServiceNode x={c.x} y={c.y} kind={i === 2 ? 'client' : i === 1 ? 'fn' : 'external'} label={c.label} sublabel={c.sub} w={150} u={1} glow={req[i] > 0 && req[i] < 1 ? 0.5 : 0} />
+              <ServiceNode x={c.x} y={c.y} kind={i === 2 ? 'client' : i === 1 ? 'fn' : 'external'} label={c.label} sublabel={c.sub} w={CLIENT_HALF * 2} labelSize={16} u={1} glow={req[i] > 0 && req[i] < 1 ? 0.5 : 0} />
               <Connection
-                from={{ x: c.x + 75, y: c.y }}
-                to={{ x: DOOR.x - 34, y: DOOR.y + 62 }}
-                via={[{ x: 560, y: c.y }, { x: 700, y: DOOR.y + 62 }]}
+                from={{ x: c.x + CLIENT_HALF, y: c.y }}
+                to={{ x: DOOR.x - DOOR_W / 2, y: DOOR.y + 62 }}
+                via={[{ x: 560, y: c.y }, { x: 650, y: DOOR.y + 62 }]}
                 u={clamp01(cliU * 3 - i * 0.6)}
                 color={colors.GRID}
                 width={1.1}
@@ -232,10 +239,10 @@ export function Render({ s }: { s: SceneState }) {
               {req[i] > 0 && req[i] < 1 && (
                 <RequestFlow
                   path={[
-                    { x: c.x + 75, y: c.y },
+                    { x: c.x + CLIENT_HALF, y: c.y },
                     { x: 560, y: c.y },
-                    { x: 700, y: DOOR.y + 62 },
-                    { x: DOOR.x - 34, y: DOOR.y + 62 },
+                    { x: 650, y: DOOR.y + 62 },
+                    { x: DOOR.x - DOOR_W / 2, y: DOOR.y + 62 },
                   ]}
                   u={req[i]}
                   roundTrip
@@ -248,7 +255,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           ))}
           <g opacity={sameU}>
-            <text x={640} y={120} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+            <text x={640} y={130} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               three clients · one door
             </text>
           </g>
@@ -256,20 +263,24 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the stream readout ---- */}
           <g opacity={streamU > 0 ? 1 : 0}>
             <rect x={STREAM.x - 16} y={STREAM.y - 26} width={STREAM.w} height={44} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.1} opacity={Math.min(1, streamU * 4)} />
-            <text x={STREAM.x} y={STREAM.y} fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
+            <text x={STREAM.x} y={STREAM.y} fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
               {CHUNKS.slice(0, nChunks).join('')}
               {streamU > 0 && streamU < 1 ? '▌' : ''}
             </text>
-            <text x={STREAM.x + STREAM.w - 30} y={STREAM.y} textAnchor="end" fill={colors.MUTED} fontSize={9.5} opacity={Math.min(1, streamU * 4)}>
+            <text x={STREAM.x + STREAM.w - 30} y={STREAM.y} textAnchor="end" fill={colors.MUTED} fontSize={13} opacity={Math.min(1, streamU * 4)}>
               {nChunks} chunks
             </text>
           </g>
 
           {/* ---- the swap chip ---- */}
           <g opacity={swapU}>
-            <rect x={330} y={64} width={620} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.2} />
-            <text x={640} y={84} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <rect x={300} y={56} width={680} height={56} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.2} />
+            <text x={640} y={80} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="ui-monospace, monospace">
               OpenAI(base_url="http://localhost:30000/v1", api_key="none")
+            </text>
+            {/* what actually changes in the client: the base URL and the model name */}
+            <text x={640} y={100} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              what changes: the base_url and the model name
             </text>
           </g>
         </g>
@@ -280,6 +291,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={242} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             first token, start to finish
           </text>
+          {/* four equal cards, 20px margins inside the panel, centred on x = 640 */}
           {[
             ['split', 'hot path on the card,\ncold experts in RAM', colors.ACCENT],
             ['boot', 'kt run resolves, tunes,\nand launches', colors.SECONDARY],
@@ -287,18 +299,18 @@ export function Render({ s }: { s: SceneState }) {
             ['serve', 'one boring door\nevery client knows', colors.WARM],
           ].map(([head, sub, c], i) => (
             <g key={head}>
-              <rect x={314 + i * 168} y={272} width={152} height={104} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
-              <text x={390 + i * 168} y={304} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
+              <rect x={300 + i * 172} y={272} width={164} height={104} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
+              <text x={382 + i * 172} y={304} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 {head}
               </text>
               {String(sub).split('\n').map((line, k) => (
-                <text key={k} x={390 + i * 168} y={328 + k * 15} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+                <text key={k} x={382 + i * 172} y={328 + k * 17} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   {line}
                 </text>
               ))}
             </g>
           ))}
-          <text x={640} y={430} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={430} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             next: The Expert Shuffle · The AMX Path · Tuning at Home
           </text>
         </g>

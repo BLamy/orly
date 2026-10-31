@@ -1,0 +1,136 @@
+{
+  "id": "logical-neuron-and-cybernetics",
+  "checked": 44,
+  "confirmed": 29,
+  "corrected": 7,
+  "unverifiable": 5,
+  "corrections": [
+    {
+      "original": "Every loop-free McCulloch-Pitts net corresponds to a logical expression and vice versa.",
+      "verdict": "corrected",
+      "fix": "Converse holds only for logical expressions 'satisfying certain conditions' (abstract); for any such expression a net can be found.",
+      "sources": [
+        "https://home.csulb.edu/~cwallis/382/readings/482/mccolloch.logical.calculus.ideas.1943.pdf"
+      ]
+    },
+    {
+      "original": "1943 paper byline: University of Illinois College of Medicine, Illinois Neuropsychiatric Institute (only).",
+      "verdict": "corrected",
+      "fix": "Byline also names 'The University of Chicago'.",
+      "sources": [
+        "https://home.csulb.edu/~cwallis/382/readings/482/mccolloch.logical.calculus.ideas.1943.pdf"
+      ]
+    },
+    {
+      "original": "Cybernetics sold over 22,000 copies by end of 1949 [cited to historyofinformation.com and Wikipedia].",
+      "verdict": "corrected",
+      "fix": "Figure confirmed but those sources do not contain it; it comes from Kline, The Cybernetics Moment (2015), via IEEE T&S review. Source replaced.",
+      "sources": [
+        "https://technologyandsociety.org/the-cybernetics-movement/"
+      ]
+    },
+    {
+      "original": "Turing proposed educating a child machine with rewards and punishments.",
+      "verdict": "corrected",
+      "fix": "Add Turing's caveat: rewards and punishments 'can at best be a part of the teaching process'.",
+      "sources": [
+        "https://redirect.cs.umbc.edu/courses/471/papers/turing.pdf"
+      ]
+    },
+    {
+      "original": "The chess prediction came true only in 1997, 39 years late.",
+      "verdict": "corrected",
+      "fix": "1997 is 39 years after the 1958 prediction but 29 years after its 1968 ten-year deadline.",
+      "sources": [
+        "https://quoteinvestigator.com/2024/04/18/ai-prediction/"
+      ]
+    },
+    {
+      "original": "UNVERIFIED: Simon, 1965: 'machines will be capable, within twenty years, of doing any work a man can do.'",
+      "verdict": "corrected",
+      "fix": "Verified from scans: Simon, The New Science of Management Decision (1960), p. 38: '. . . machines will be capable, within twenty years, of doing any work that a man can do.' Date is 1960 (reprinted 1965). Promoted to verified quotes.",
+      "sources": [
+        "https://quoteinvestigator.com/2021/03/04/ai-solved/"
+      ]
+    },
+    {
+      "original": "Whether Logic Theorist was running on a computer during Dartmouth is contested (Cordeschi Aug 1956 vs 1957 runs).",
+      "verdict": "corrected",
+      "fix": "Accounts are compatible: first JOHNNIAC proof August 1956; 38/52 results from late-1956/1957 runs. Newell and Simon were scheduled only for the first two weeks, so it was not running during their visit. The 'arrived with a working program' line is the error.",
+      "sources": [
+        "https://arxiv.org/html/2603.13514v1",
+        "https://github.com/dmoews/logic-theorist",
+        "https://www.tandfonline.com/doi/full/10.1080/08839510701252304",
+        "https://raysolomonoff.com/dartmouth/dartray.pdf"
+      ]
+    },
+    {
+      "original": "Pitts, a self-taught runaway who never earned a degree.",
+      "verdict": "contested",
+      "fix": "Smalheiser (2000) says he never held degrees of any kind; Wikipedia (citing Godel Collected Works) says Chicago awarded him an Associate of Arts. Film-safe: 'never finished a doctorate'.",
+      "sources": [
+        "https://www.researchgate.net/publication/12512396_Walter_Pitts",
+        "https://en.wikipedia.org/wiki/Walter_Pitts",
+        "https://nautil.us/the-man-who-tried-to-redeem-the-world-with-logic-235253/"
+      ]
+    },
+    {
+      "original": "The workshop ran about eight weeks, roughly 18 June to 17 August 1956.",
+      "verdict": "contested",
+      "fix": "Eight weeks per Solomonoff/More notes; six weeks traditional (Nilsson); the Rockefeller Foundation calls it 'five-week'. Film-safe: 'one summer, about two months'.",
+      "sources": [
+        "https://raysolomonoff.com/dartmouth/dartray.pdf",
+        "https://www.rockefellerfoundation.org/perspective/seventy-years-after-the-birth-of-ai-the-work-begins/"
+      ]
+    },
+    {
+      "original": "SNARC had about 300 vacuum tubes (Minsky) vs 3,000 (AIMA).",
+      "verdict": "contested",
+      "fix": "Kept as contested; Minsky's own 1981 words ('three hundred tubes', 'nearly three hundred tubes', six per neuron x 40) support ~300.",
+      "sources": [
+        "https://cyberneticzoo.com/mazesolvers/1951-maze-solver-minsky-edmonds-american/",
+        "https://en.wikipedia.org/wiki/Stochastic_Neural_Analog_Reinforcement_Calculator"
+      ]
+    },
+    {
+      "original": "Von Neumann on Minsky's thesis: 'If it isn't now, it will be someday.'",
+      "verdict": "unverifiable",
+      "fix": "No primary source; not in the Bernstein excerpt checked. Keep as UNVERIFIED — do not use as a quote.",
+      "sources": [
+        "https://cyberneticzoo.com/mazesolvers/1951-maze-solver-minsky-edmonds-american/"
+      ]
+    },
+    {
+      "original": "Minsky 1982: 'The AI problem is one of the hardest science has ever undertaken.'",
+      "verdict": "unverifiable",
+      "fix": "Only second-hand via Ellen Ullman (2005) per Quote Investigator; original 1982 source unidentified. Keep UNVERIFIED.",
+      "sources": [
+        "https://quoteinvestigator.com/2021/03/04/ai-solved/"
+      ]
+    },
+    {
+      "original": "Wiener on Pitts: 'without question the strongest young scientist whom I have ever met.'",
+      "verdict": "unverifiable",
+      "fix": "Reported by Gefter without the primary letter. Use only as reported speech.",
+      "sources": [
+        "https://nautil.us/the-man-who-tried-to-redeem-the-world-with-logic-235253/"
+      ]
+    },
+    {
+      "original": "Pitts wrote to Russell about errors in Principia and Russell invited him to Cambridge.",
+      "verdict": "unverifiable",
+      "fix": "Biographical tradition (Gefter after Conway & Siegelman); no surviving letter cited. Present as 'the story goes'.",
+      "sources": [
+        "https://nautil.us/the-man-who-tried-to-redeem-the-world-with-logic-235253/"
+      ]
+    },
+    {
+      "original": "In 1974 McCarthy told McCorduck: 'I won't swear that I hadn't seen it before' [cited to a Substack summary].",
+      "verdict": "unverifiable",
+      "fix": "Full wording: 'I won't swear that I hadn't seen it before - a vague memory that someone else had used the word' (1974 recorded interview for Machines Who Think). The audio is in McCorduck's CMU papers with restricted access, so it is second-hand. Use only as reported speech, not as a voiced quote.",
+      "sources": [
+        "https://seanmanion.substack.com/p/artificial-imitation-did-john-mccarthy"
+      ]
+    }
+  ]
+}

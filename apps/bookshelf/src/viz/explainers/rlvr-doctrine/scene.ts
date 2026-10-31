@@ -83,13 +83,13 @@ export const chY = (v: number): number => CH_Y0 - v * CH_H;
 
 export const LAD_X = 790;
 export const LAD_Y0 = 130;
-export const LAD_DY = 78;
+export const LAD_DY = 70;
 export const LADDER = [
   { label: 'preference model', note: 'flattery works', bad: true },
   { label: 'a few public tests', note: 'memorize the outputs', bad: true },
   { label: 'hidden held-out tests', note: 'must generalize', bad: false },
   { label: 'property + fuzz tests', note: 'must be right in general', bad: false },
-  { label: 'proof checker / typechecker', note: 'must be right, period', bad: false },
+  { label: 'proof checker', note: 'right for what it proves', bad: false },
 ];
 
 export const CAM_CHART: CameraState = { x: 400, y: 330, k: 1.2 };

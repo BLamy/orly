@@ -1,0 +1,145 @@
+{
+  "reviewer": "art",
+  "round": 1,
+  "film": "handwired-explained",
+  "lens": "VISUALS & MOTION: silhouette craft against the reference frame, composition, light, depth, consistency across shots, legibility, motion pacing and beats landing on words; placeholder cards, broken frames, clutter",
+  "ledger": "film.json has no stages.fixes key and qa/reviews/ holds only this round's sibling scorecards, so there were no earlier fixes to check. This is the first gate review.",
+  "evidence": [
+    "I read all 103 contact sheets (qa/sheets/*.png with their .json beat lists) and the reference frame. I pulled extra stills from render/film.mp4 to confirm details: 1156.8 s and 1164.3 s (ch09-s05 tape), 1216.5 s (ch09-s08 cards), 1239.0 s (ch10-s01 blank card).",
+    "qa/reports/latest.json: sheets.ghostText FAIL on ch06-s02 (toggle label x 'toggle · track 52 x 32 px' 6.88-24.05 s; rail-0 x 'write inputs' 9.97-24.05 s), ch06-s03 ('distance from home' 7.47-9.72 s; '400 px' x loupe 9.55-13.88 s) and the ch04-s14 to ch04-s08 crossfade. sheets.cards WARN marks 10 shots as suspect unprobed paper.",
+    "qa/depth/summary.json: every moving shot has at least 3 planes. Eight shots are locked-off: ch04-s01, ch04-s16, ch05-s07, ch06-s05, ch07-s12, ch08-s04, ch11-s03, ch12-s07. qa/legibility: no offenders against the 22 px subject-cap rule.",
+    "Reference frame: a backlit Gothic hall, full-figure cut-out silhouettes with lace edges, ornate chairs and a mirror, one candle as a warm key, and a checker floor for depth. The film matches the backlit-window register and the warm and cool lamp moods well. Its puppetry is mostly bare arms reaching in from the bottom right (about 20 shots), with plain tube sleeves and cuffs and little edge detail, and full figures appear only in ch07-s07 (the clerk) and ch09-s06 (the booth)."
+  ],
+  "scores": {
+    "accuracy": 8,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8,
+    "visual": 7.5,
+    "sync": 8,
+    "sound": 7.5,
+    "curiosity": 8
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch09-s05",
+      "severity": "major",
+      "problem": "On pass 2 ('from the start', +8.3 s to the end, 19:20.4-19:25.1), the character tape draws every glyph mirrored left to right. The letters come out as reversed r, e and s, and the byte codes read '411', '511', '43' for 114, 115 and 34. That includes the orange 'error' payoff run at +11.96 s. Pass 1 at +4.6 s reads correctly ('peer, duration'), so the flip is a transform bug and not intended. The film's one view of a longest match being found ends on unreadable type.",
+      "fix": "Do not draw the strip with a scale(-1,1) or negative-width transform. Draw the cells in reverse order with upright glyphs, or move the read-head instead of the tape. Re-sheet and check the 19:24.1 frame shows the word 'error' and the codes 101 114 114 111 114 the right way round."
+    },
+    {
+      "owner": "shot",
+      "id": "ch10-s01",
+      "severity": "major",
+      "problem": "Placeholder card: at the 'docs' beat (+15.91, L1002 'The docs side with the first: no tool converts your code'), a white card hangs top left with no text in it. It stays blank to the end of the shot (20:36.7-20:42.4) and carries into ch10-s02 and ch10-s03. The README tag that is meant to carry the line is a thin tag with roughly 8 px italic type.",
+      "fix": "Give the docs card its text, for example '“No tool converts existing JavaScript” — the docs', set in the type kit's card role at 22 px cap or more. Ink it on at 'docs' (15.91), and push in or raise the card so it reads while L1002 is spoken."
+    },
+    {
+      "owner": "shot",
+      "id": "ch06-s03",
+      "severity": "major",
+      "problem": "The automated ghost-text check fails here ('distance from home' at 7.47-9.72 s; '400 px' over the loupe at 9.55-13.88 s). This is also the most crowded frame in the film. From +16 s one flat parchment carries a code card, the press, nine M-tiles plus M300, a float64 card, a counter, a step dial, a ladder, a gear and a strip of cells, all in small type and with no depth or silhouette. The '14 operations · 3 layers' payoff sits at the same weight as everything else.",
+      "fix": "Swap the overlapping labels out with textSwapOut. Retire the spring row, loupe and stamp once the press arrives at 'fold' (14.53). Keep only the press, the doubling tiles and the 14-counter on stage. Light the counter as the single subject at 'counter' (21.70), and set the float64 card back on a deeper plane."
+    },
+    {
+      "owner": "shot",
+      "id": "ch06-s02",
+      "severity": "major",
+      "problem": "Ghost text fails for most of the shot. The toggle sprite's label sits under 'toggle · track 52 x 32 px' from 6.88 s to 24.05 s, and rail-0 sits under 'write inputs' from 9.97 s to 24.05 s. On the sheet the rail labels read doubled and soft through all four host-loop steps, which are the content of L0605.",
+      "fix": "Keep one text layer per label. Fade the old label out with textSwapOut before the new one comes in. Light each rail word in turn on its beat (inputs 9.84, loom 12.01, copied 15.07, page 16.97) and leave the others at 40%."
+    },
+    {
+      "owner": "shot",
+      "id": "ch09-s08",
+      "severity": "major",
+      "problem": "Both cards narration quotes are greeked: the commit card ('Do it quick plz, then publish', from +3.2 s) and the launch post ('My dear friends, I'd like to show you my latest toy project', from +8.96 s). They show grey dash lines (confirmed at 1216.5 s). They sit small at the bottom right, under 15% of the frame, in an otherwise static 14 s laptop shot.",
+      "fix": "Set the quoted words on the cards, typewriter for the commit and serif for the post, at a legible size, and push in toward the cards on 'commitCard' (3.20) and 'post' (8.96). Keep the greeked dashes only for text the narration does not read."
+    },
+    {
+      "owner": "shot",
+      "id": "ch06-s05",
+      "severity": "major",
+      "problem": "A 24 s locked-off two-desk comparison. The film's claim, a drift of up to 359 px between frame rates, is carried only by a tiny dial readout ('359 px') between two near-identical monitors, plus a faint orange offset window. At sheet scale the drift can't be seen. The replay beats (rehearsal 13.43, thrown 16.91) change only a small dark card.",
+      "fix": "Draw the drift as a thick red bracket between the two windows' left edges, labelled at 22 px cap or more, and grow it to 359 px at 'ghost' (3.58). Push in slowly over L0613. At 'lock' (18.71), snap both windows home with a visible clack and collapse the bracket to 0."
+    },
+    {
+      "owner": "shot",
+      "id": "ch12-s04",
+      "severity": "major",
+      "problem": "The finale loom names three beliefs still argued over: 'Learn the weights', 'Fully differentiable' and the README's claim. But the tags are around 30 px wide in a wide shot, and nothing singles the three out at 'half' (2.28), 'tagline' (8.69) or 'rivet' (10.26). The frames from 23:20 to 23:28 hardly change. Only the 'why?' tag and the README quote card read.",
+      "fix": "Light each named tag in turn on its word, with a warm rim and a 1.15x scale-up, and dim the settled tags to about 50%. Or rack in to each one. Hold the three lit together before 'why' (12.79)."
+    },
+    {
+      "owner": "global",
+      "severity": "major",
+      "problem": "Silhouette craft falls short of the reference. The reference uses full-figure cut-outs with lace and filigree edges and ornate furniture against backlit windows. Here the puppetry is mostly a bare arm with a plain tube sleeve entering from the bottom right to tie, flip or strike a tag. That repeats in ch01-s05, ch02-s05, ch04-s02, ch04-s09, ch05-s03, ch07-s01, ch07-s05, ch08-s02, ch08-s03, ch08-s08, ch09-s07, ch10-s01..s03, ch11-s02, ch11-s04 and ch12-s02. Sleeves have no cuff lace or buttons, and the hands are mitten-like at sheet scale. The mid-film runs as flat cream plates (ch06-s03, ch07-s02, ch07-s03, ch08-s04, ch08-s05, ch08-s06, ch11-s03, ch11-s04), with no cut-out edge or foreground frame.",
+      "fix": "In cast.ts, give the arm puppet a detailed cuff (lace edge, two buttons, a sleeve fold) and finger joints. Vary the entry side and add a shoulder or profile silhouette at frame edge in at least a third of the tag shots. For the plate shots, add a dark foreground proscenium or desk-edge silhouette and a backlit window behind the plate, as ch08-s04 already does, so they keep the multiplane look."
+    },
+    {
+      "owner": "shot",
+      "id": "ch04-s08",
+      "severity": "minor",
+      "problem": "Crossfade ghost: in the incoming crossfade from ch04-s14 (-0.13..0.21 s cut-relative), the outgoing 'float64 everywhere: 18,820 of 20,000 percent labels wrong' sits on top of the incoming '10'.",
+      "fix": "Fade ch04-s14's caption out at least 0.3 s before its out-point, or start ch04-s08's '10' after the crossfade."
+    },
+    {
+      "owner": "shot",
+      "id": "ch05-s03",
+      "severity": "minor",
+      "problem": "Broken prop. At the 'strike' beat (+6.4 s, 9:05.08) a second large red pencil lies diagonally across the lower right with no hand holding it, while the arm also holds a pencil.",
+      "fix": "Bind the pencil to the hand's grip transform for the whole stroke, or hide the free prop."
+    },
+    {
+      "owner": "shot",
+      "id": "ch04-s09",
+      "severity": "minor",
+      "problem": "Clutter. From 'quote' (11.69), the 'promises from the caller, not proofs' card covers the 'grid 1' tag and the ops counter. At 'caller' and 'flipTag' (17.54-18.77) the arm covers the tag it flips, so the flipped side is not readable before the line ends.",
+      "fix": "Move the quote card to the upper right, clear of the tag. Have the arm withdraw at 19.3 so the flipped tag holds unobstructed for the last 4 s."
+    },
+    {
+      "owner": "shot",
+      "id": "ch09-s07",
+      "severity": "minor",
+      "problem": "On the 'hours' pull-back (13.86-16.1 s) the frame passes through an awkward middle composition: tags cut off at the top edge, and the 'RegExp in 8 workers...' overlay still floating over a shot that has become the timeline.",
+      "fix": "Fade the benchmark overlay out before 'hours'. Ease the pull-back so the tag line never crosses the top safe area."
+    },
+    {
+      "owner": "shot",
+      "id": "ch10-s02",
+      "severity": "minor",
+      "problem": "During the push-in (+6.8 to +12.6 s) the 'a Hacker News commenter 23 Oct 2026' card is cropped by the top edge of the frame. The flipped tag's hidden-comment text (x = 4.5 gives 11 ...) is only about 12 px.",
+      "fix": "Frame the push so the attribution card stays inside the title-safe area. Enlarge the hidden-comment text on the flipped tag to 22 px cap or more while it is the subject."
+    },
+    {
+      "owner": "shot",
+      "id": "ch03-s02",
+      "severity": "minor",
+      "problem": "A flat parchment diagram. The op nodes ('sum', 'ReGLU', 'boolean') are small chips. The builder-code card that 'appends to a Circuit' (+8.7 s) is greeked, so 'builder code' shows no code at all.",
+      "fix": "Put two or three real builder lines on the card (for example circuit.reglu(...), circuit.sum(...)) and draw each new node from the line that emits it on 'append' (8.69) and 'dup' (11.40)."
+    },
+    {
+      "owner": "shot",
+      "id": "ch07-s03",
+      "severity": "minor",
+      "problem": "The dark-slope payoff (the 0 slopes at +8.3 s) is set in small cream-on-cream monospace. The orange values from ch07-s02 (0.45, 1.5) turn into small grey zeros that barely contrast with the plate.",
+      "fix": "When the slopes go to 0, dim the whole valve to about 40% and draw the zeros at a larger size in a dark ink, so 'goes dark' is a lighting change and not just a small text change."
+    },
+    {
+      "owner": "shot",
+      "id": "ch11-s01",
+      "severity": "minor",
+      "problem": "The key number '≈ 240 of ≈ 1,560 entries read by valid JSON' is tiny type in the top-right corner. The 'stall' marker is a few-pixel glyph on a board seen from a steep angle.",
+      "fix": "Light the read cells and dim the unread ones at 'counts' (8.91), and set the fraction as a card label at 22 px cap or more near the board."
+    }
+  ],
+  "best_moments": [
+    "ch08-s01 (16:23-16:31): the commit building at night. July's six lit windows, August's dark façade, snow beginning on 'snow' and the crescent moon. The film's best use of silhouette and light to carry a fact.",
+    "ch07-s04 (14:31-14:40): the backward pass as a beam of light running back through the loom, with the 'sums / valves / rounding' card typing on beat by beat.",
+    "ch08-s04 (17:03-17:21): the loss-scale dial turning past x1,000,000 while a 4x5 grid of lamps goes from 0/20 to 20/20, and the epsilon balance tips in at 'cause'. Exact, legible and timed to the words.",
+    "ch04-s02 (4:52-5:09): two silhouette hands bend the hinge into a ramp, and the a / relu ledger fills 0, 0, 1, 2, 96 as the narrator counts.",
+    "ch06-s12 (12:47-13:07): Kleene's finite machine. A crank wheel drives the loom from outside, and 'an echo, not a citation' is placed with care.",
+    "ch12-s06 (23:43-23:53): one silhouette hand passes the blank tag to an open palm and holds it. A quiet, earned ending.",
+    "ch09-s01 (18:14-18:25): the commit months as buildings that grow into four October towers at dusk."
+  ]
+}

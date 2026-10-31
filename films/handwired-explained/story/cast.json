@@ -1,0 +1,402 @@
+[
+  {
+    "id": "narrator-hands",
+    "name": "The tag-keeper's hands (narrator rig)",
+    "role": "the unseen narrator's two steady hands, a mid-life teacher's (forties or fifties, never an old man's); the only part of him ever shown. They tie Promise Tags onto the copper line, flip them, re-tie tag 6 onto the wire of a as 'grid 1', place the marble, re-hang the line by dependency depth in the finale, and bend the last copper hinge into the viewer's hand",
+    "firstAppearance": "ch01-s05",
+    "height": 300,
+    "build": "average",
+    "era": "2020s",
+    "wardrobe": "rolledSleeves",
+    "hair": "bald",
+    "facialHair": "none",
+    "glasses": "none",
+    "hat": "none",
+    "prop": "cards",
+    "details": [
+      "rolledCuff",
+      "shirtCuff",
+      "knuckle"
+    ],
+    "signature": {
+      "rim": {
+        "x": 0.6,
+        "y": -0.8,
+        "px": 1.5,
+        "alpha": 0.6,
+        "warm": 0.5
+      }
+    },
+    "rig": {
+      "kind": "narratorHands",
+      "layer": "L5",
+      "entry": "a fixed entry at the frame's lower left edge (the opposite side from the red-pencil hand, so the two never read as one person); forearms slide in on twos along a shallow arc and withdraw the same way",
+      "parts": [
+        "right forearm + rolled linen sleeve + shirt cuff",
+        "left forearm + rolled linen sleeve",
+        "handArt sprite per action (swapped, not morphed)"
+      ],
+      "rimLight": "the backlight's warm rim on the upper edge of each cuff and knuckle; everything else ink",
+      "actions": {
+        "tie": "loop a tag's string over the copper line and pull a knot (lands on the detent's tie stroke)",
+        "flip": "turn a tag over with two fingers to show its back (lands on the flip stroke)",
+        "place": "set a marble, card or tag at a point (the marble at 4.5; the blank tag in the viewer's hand)",
+        "lift": "lift a tag off the line and re-hang it elsewhere (re-tying tag 6 on the wire of a; the finale's re-hang)",
+        "bend": "bend a short length of copper wire into a hinge, flat then up (ch04-s02, ch12-s06)",
+        "holdUp": "hold an object up into the backlight for the camera, then lower it"
+      },
+      "rules": "the narrator's hands never strike or write dissent: only the red-pencil hand does. No pointing at the audience, no tapping, no other gestures; anything else is staged as a variant of place, lift or holdUp with the same sprites"
+    },
+    "notes": "Not a real person and never a likeness. No wedding band or jewellery, no age marks, no liver spots, no tremor; linen sleeve rolled once, distinct from the tweed cuffs used in another film. Puppet height is nominal: only forearms and hands are drawn.",
+    "signatureLock": {
+      "entry": "lower LEFT only, every shot",
+      "does": [
+        "tie",
+        "flip",
+        "rivet",
+        "lift (re-hang)",
+        "place",
+        "bend",
+        "holdUp"
+      ],
+      "never": [
+        "write",
+        "strike",
+        "point",
+        "appear from the right"
+      ],
+      "module": "reuse apps/bookshelf/src/viz/films/neural-net-history/sets/narratorHands.ts (copy it into this film's sets/ as narratorHands.ts): mirror HANDS_ENTRY to the lower left, swap the tweed sleeve and signet ring for a once-rolled linen sleeve and a bare hand; map tie and flip onto its pin/holdUp sprites, rivet onto stamp, lift onto unpinDrop, keep holdUp; add only bend and place as new actions"
+    }
+  },
+  {
+    "id": "red-pencil-hand",
+    "name": "The red pencil (dissent)",
+    "role": "a single anonymous paper hand holding a red pencil: the film's sign for doubt. It writes the dissenter's name and one word or number on a tag's back, strikes a broken belief through once, or rests beside a contested one. It stands for whoever the bible names as the dissenter; the name is always written as text, never given a body",
+    "firstAppearance": "ch01-s07",
+    "height": 300,
+    "build": "slight",
+    "era": "2020s",
+    "wardrobe": "shortSleeve",
+    "hair": "bald",
+    "facialHair": "none",
+    "glasses": "none",
+    "hat": "none",
+    "prop": "pen",
+    "details": [
+      "shirtCuff",
+      "pencilRed"
+    ],
+    "signature": {
+      "rim": {
+        "x": -0.6,
+        "y": -0.8,
+        "px": 1.5,
+        "alpha": 0.55,
+        "warm": 0.2
+      }
+    },
+    "rig": {
+      "kind": "propHand",
+      "layer": "L5",
+      "entry": "always from frame right, a plain cuff, the pencil held in a pinch",
+      "actions": {
+        "hover": "approach a tag and stop at its edge without writing (ch01-s07)",
+        "write": "write a short name, word or number on a tag's back",
+        "strike": "one firm stroke through a tag's front (a dry scratch on the soundtrack)",
+        "rest": "lay the pencil on the line's post beside a contested tag and withdraw"
+      },
+      "rules": "the pencil is the only red in the film's frame (low chroma, emberRed rim); never held by the narrator's hands; never attached to a drawn face or body"
+    },
+    "notes": "Generic and unnamed. Covers reviewers and readers too (the tutorial's test readers, the same-day review). Hacker News commenters get text cards only; this hand may carry their pencil mark onto a tag, but no figure is ever drawn for them.",
+    "signatureLock": {
+      "entry": "frame RIGHT only",
+      "does": [
+        "write",
+        "strike",
+        "rest (on the L6 post or the chapter's own post)"
+      ],
+      "never": [
+        "flip",
+        "tie",
+        "rivet",
+        "hold anything but the red pencil"
+      ],
+      "module": "a propHand rig on the narratorHands sprites (one hand, plain cuff, pinch shape, pencil held); strikes may be shot as tight inserts"
+    }
+  },
+  {
+    "id": "author-hands",
+    "name": "Cheng Lou (hands only)",
+    "role": "Handwired's author and sole commit author; seen only as a pair of hands at a laptop beside a lamp, inside a lit pane of the Window Calendar or on a plain desk; asks the lab's questions and decides the runtime options",
+    "firstAppearance": "ch03-s01",
+    "height": 316,
+    "build": "average",
+    "era": "2020s",
+    "wardrobe": "tshirt",
+    "hair": "bald",
+    "facialHair": "none",
+    "glasses": "none",
+    "hat": "none",
+    "prop": "laptop",
+    "details": [
+      "sleeveHem",
+      "knuckle"
+    ],
+    "signature": {
+      "rim": {
+        "x": 0.5,
+        "y": -0.85,
+        "px": 1.5,
+        "alpha": 0.5,
+        "warm": 0.6
+      }
+    },
+    "rig": {
+      "kind": "deskHands",
+      "layer": "L4",
+      "entry": "two hands resting on or typing at a logo-less laptop, framed at the wrists; a desk lamp's pool of light",
+      "actions": {
+        "type": "the two-frame typing loop",
+        "rest": "hands at rest beside the keyboard",
+        "pause": "one hand lifts from the keys and rests (no other gesture)"
+      }
+    },
+    "notes": "No likeness of a living person (bible §3): no face, no hair, no glasses or build from photographs, never captioned as a portrait. Words appear only as verbatim lamplit cards of Q099–Q106 and the launch post Q104. No invented motives, moods or interior life.",
+    "signatureLock": {
+      "entry": "only at the laptop or desk under a lamp, framed at the wrists",
+      "does": [
+        "type",
+        "rest",
+        "pause (one hand lifts and rests)",
+        "lay cards"
+      ],
+      "never": [
+        "touch the copper line or a tag",
+        "appear outside a desk shot"
+      ],
+      "module": "deskHands rig (two hands on a logo-less laptop)"
+    }
+  },
+  {
+    "id": "agent-hand",
+    "name": "The second hand at the keyboard (the coding agent)",
+    "role": "a second paper hand beside the author's at the same keyboard: the AI coding agents credited on 756 of 825 commits; glimpsed and unexplained in ch03, named once and neutrally in ch08",
+    "firstAppearance": "ch03-s01",
+    "height": 316,
+    "build": "slight",
+    "era": "2020s",
+    "wardrobe": "tshirt",
+    "hair": "bald",
+    "facialHair": "none",
+    "glasses": "none",
+    "hat": "none",
+    "prop": "none",
+    "details": [],
+    "signature": {
+      "rim": {
+        "x": -0.5,
+        "y": -0.85,
+        "px": 1.2,
+        "alpha": 0.35,
+        "warm": 0.0
+      }
+    },
+    "rig": {
+      "kind": "deskHands",
+      "layer": "L4",
+      "entry": "a single hand only, cut slightly paler than the author's (a paper sheet a step lighter on the value ladder), no cuff detail",
+      "actions": {
+        "type": "the typing loop, half a beat behind the author's",
+        "rest": "at rest beside the keyboard"
+      }
+    },
+    "notes": "A tool, not a person: no face, no words of its own on screen, no model or version named (the repo names none). Never praised or blamed; in ch08 the mistakes and the reviews that caught them are shown as one process under the author's direction.",
+    "signatureLock": {
+      "entry": "beside the author's hands at the same keyboard",
+      "does": [
+        "type, half a beat behind",
+        "rest"
+      ],
+      "never": [
+        "act first",
+        "appear without the author's hands",
+        "touch the line, a tag or a plate"
+      ],
+      "tone": "one paper sheet paler than the author's on the value ladder; no cuff detail",
+      "module": "deskHands rig, single hand"
+    }
+  },
+  {
+    "id": "mcculloch",
+    "name": "Warren McCulloch",
+    "role": "neurophysiologist and psychiatrist, Illinois Neuropsychiatric Institute; co-author of the 1943 logical calculus; ties on tag 1 (framing only)",
+    "firstAppearance": "ch02-s01",
+    "height": 330,
+    "build": "average",
+    "era": "1940s",
+    "wardrobe": "threePiece",
+    "hair": "messy",
+    "facialHair": "fullBeard",
+    "glasses": "none",
+    "hat": "none",
+    "profile": {
+      "nose": 0.55,
+      "brow": 0.6,
+      "chin": 0.5,
+      "jaw": 0.55
+    },
+    "prop": "pen",
+    "details": [
+      "waistcoat",
+      "lapel",
+      "tie"
+    ],
+    "signature": {
+      "hairScale": 1.15,
+      "chinUp": 2,
+      "idle": "think",
+      "rim": true
+    },
+    "notes": "Appearance from the bible's secondary note (Gefter): full 'wild' beard, thin face, 1940s suit and tie, a cigarette. There is no cigarette prop in the kit: omit it rather than substitute a pipe. Confirm against licensed photographs before final art. Respectful profile; never caricature. Appears only in ch02."
+  },
+  {
+    "id": "pitts",
+    "name": "Walter Pitts",
+    "role": "self-taught logician in the University of Chicago circle; co-author of the 1943 paper (about twenty); ties on tag 1 beside McCulloch (framing only)",
+    "firstAppearance": "ch02-s01",
+    "height": 294,
+    "build": "slight",
+    "era": "1940s",
+    "wardrobe": "suit",
+    "hair": "sidePart",
+    "facialHair": "none",
+    "glasses": "round",
+    "hat": "none",
+    "profile": {
+      "nose": 0.45,
+      "brow": 0.62,
+      "chin": 0.42,
+      "jaw": 0.4
+    },
+    "prop": "papers",
+    "details": [
+      "lapel",
+      "shirtCuff"
+    ],
+    "signature": {
+      "stoop": 4,
+      "headScale": {
+        "x": 1.0,
+        "y": 1.05
+      },
+      "idle": "clasp",
+      "rim": true
+    },
+    "notes": "Appearance from the bible's secondary note (Gefter): small, shy, bespectacled, long forehead (brow raised slightly, headScale y), the youngest in the room, a suit a touch too big. Confirm against licensed photographs before final art. Never caricature. Appears only in ch02."
+  },
+  {
+    "id": "kleene",
+    "name": "Stephen C. Kleene (generic period figure)",
+    "role": "logician at RAND, December 1951; finds part of the 1943 paper 'obscure', keeps the model, and recasts nerve nets as finite automata and regular events (framing only)",
+    "firstAppearance": "ch02-s03",
+    "height": 322,
+    "build": "average",
+    "era": "1950s",
+    "wardrobe": "suit",
+    "hair": "receding",
+    "facialHair": "none",
+    "glasses": "none",
+    "hat": "none",
+    "profile": {
+      "nose": 0.5,
+      "brow": 0.5,
+      "chin": 0.5,
+      "jaw": 0.5
+    },
+    "prop": "papers",
+    "details": [
+      "lapel",
+      "tie"
+    ],
+    "signature": {
+      "stoop": 6,
+      "idle": "rest",
+      "rim": true
+    },
+    "notes": "Appearance not verified (bible §3): a deliberately generic 1950s academic in suit and tie, seen mostly from behind at a typewriter with the 98-page memo stacking beside him; never captioned as a portrait. His name appears as text on the red-pencil note and his knot card."
+  },
+  {
+    "id": "seating-clerk",
+    "name": "The clerk with a seating chart",
+    "role": "a small paper-cut clerk, a teaching figure and not a person: in ch07 he assigns photos to rectangles before each training step (the learned gallery's min-cost assignment in plain JavaScript; the network learns where, JavaScript decides who); in ch09 two of him walk each 512-character JSON strip, backward then forward",
+    "firstAppearance": "ch07-s07",
+    "height": 230,
+    "build": "slight",
+    "era": "1950s",
+    "wardrobe": "sweaterVest",
+    "hair": "sidePart",
+    "facialHair": "none",
+    "glasses": "round",
+    "hat": "none",
+    "profile": {
+      "nose": 0.5,
+      "brow": 0.48,
+      "chin": 0.5,
+      "jaw": 0.46
+    },
+    "prop": "clipboard",
+    "details": [
+      "sleeveGarter",
+      "shirtCuff"
+    ],
+    "signature": {
+      "stoop": 3,
+      "idle": "shift"
+    },
+    "notes": "Generic and era-neutral in the paper-cut register (a clerk's sleeve garters, a clipboard as the seating chart). Drawn smaller than the human figures so he reads as part of the machine, not a historical person."
+  },
+  {
+    "id": "viewer-hand",
+    "name": "The viewer's open hand",
+    "role": "an open, generic hand rising into the lower third in the last scene; the narrator's hands place the blank tag, tied to a copper hinge, into it: 'It's waiting for the next pair of hands.'",
+    "firstAppearance": "ch12-s06",
+    "height": 300,
+    "build": "average",
+    "era": "2020s",
+    "wardrobe": "tshirt",
+    "hair": "bald",
+    "facialHair": "none",
+    "glasses": "none",
+    "hat": "none",
+    "prop": "none",
+    "details": [],
+    "signature": {
+      "rim": {
+        "x": 0,
+        "y": -1,
+        "px": 1.5,
+        "alpha": 0.6,
+        "warm": 0.7
+      }
+    },
+    "rig": {
+      "kind": "propHand",
+      "layer": "L6",
+      "entry": "rises from the bottom edge, palm up (HandShape open), uncuffed: anyone's hand",
+      "actions": {
+        "receive": "the hand opens fully as the hinge and tag are placed, then holds still"
+      }
+    },
+    "notes": "No sleeve, no ring, no age or gender signal: the audience's hand. Appears once.",
+    "signatureLock": {
+      "entry": "from BELOW frame, palm up, once (ch12-s06)",
+      "does": [
+        "receive"
+      ],
+      "never": [
+        "sleeve, ring, cuff or any age or gender signal"
+      ],
+      "module": "propHand open shape on the narratorHands sprites, uncuffed"
+    }
+  }
+]

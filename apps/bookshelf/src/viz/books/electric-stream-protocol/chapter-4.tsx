@@ -23,6 +23,7 @@ import {
 const PAPER = '#f7f7f3';
 const INK = '#2b2c2a';
 const MUTED = '#858780';
+const LABEL = '#5f625b';
 const BLUE = '#5b86e5';
 const GREEN = '#45a56f';
 const CORAL = '#ef775d';
@@ -33,9 +34,9 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const MAIN = { x: 185, y: 215 } as const;
 const FEATURE = { x: 185, y: 380 } as const;
 const UNKNOWN = { x: 185, y: 545 } as const;
-const ROOT = { x: 500, y: 300 } as const;
-const TREE = { x: 665, y: 300 } as const;
-const GRID = { x: 810, y: 190 } as const;
+const ROOT = { x: 470, y: 300 } as const;
+const TREE = { x: 690, y: 300 } as const;
+const GRID = { x: 870, y: 190 } as const;
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 export function buildScene() {
@@ -64,7 +65,7 @@ export function buildScene() {
     dur: 6.2,
     text: 'A stream can project the same history as a commit graph, a working tree, or a key-value object store. These are views over events, not three independent truths.',
   });
-  tl.tween(cam, { x: 560, y: 310, k: 1.12 }, { at: 7.6, dur: 1.2, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 7.6, dur: 1.2, ease: ease.move });
   tl.tween(treeU, 1, { at: 8.5, dur: 1.4, ease: ease.enter });
   tl.tween(objectsU, 1, { at: 9.5, dur: 1.5, ease: ease.linear });
 
@@ -91,7 +92,7 @@ export function buildScene() {
     text: 'If main changes the same object, the system does not silently choose a winner. It marks the conflicting event and keeps both inputs available for review.',
   });
   tl.tween(conflictU, 1, { at: 30.0, dur: 1.0, ease: ease.pop });
-  tl.tween(cam, { x: 900, y: 370, k: 1.24 }, { at: 30.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 30.2, dur: 1.2, ease: ease.move });
 
   tl.caption({
     at: 36.2,
@@ -164,23 +165,27 @@ export function Render({ s }: { s: SceneState }) {
           x={58}
           y={44}
           w={1164}
-          h={632}
+          h={580}
           label="commit dag / tree / object network"
           rightLabel="objects 14/54 · round-trips 8"
           footer="shared prefix · explicit suffix · conflict is state"
           u={frameU}
         >
-          <circle cx={1172} cy={78} r={4} fill={BLUE} opacity={0.28 + protocolPulse * 0.62} />
-          <text x={120} y={114} fill={MUTED} fontSize={11} fontFamily={MONO}>COMMIT DAG</text>
-          <text x={450} y={114} fill={MUTED} fontSize={11} fontFamily={MONO}>TREE /</text>
-          <text x={790} y={114} fill={MUTED} fontSize={11} fontFamily={MONO}>NETWORK</text>
-          <text x={960} y={114} fill={MUTED} fontSize={11} fontFamily={MONO}>KEY / VALUE STORE</text>
+          <circle cx={1206} cy={112} r={4} fill={BLUE} opacity={0.28 + protocolPulse * 0.62} />
+          <text x={120} y={114} fill={LABEL} fontSize={13} fontFamily={MONO}>COMMIT DAG</text>
+          <text x={382} y={114} fill={LABEL} fontSize={13} fontFamily={MONO}>WORKING TREE</text>
+          <text x={GRID.x} y={114} fill={LABEL} fontSize={13} fontFamily={MONO}>KEY / VALUE OBJECT STORE</text>
+
+          <g opacity={historyU * (1 - treeU)}>
+            <rect x={330} y={196} width={400} height={40} rx={10} fill={PAPER} stroke={MUTED} strokeWidth={1.2} />
+            <text x={530} y={222} textAnchor="middle" fill={INK} fontSize={14} fontWeight={700}>a branch is a name for a place in the graph</text>
+          </g>
 
           <ArchitectureEdge from={{ x: MAIN.x, y: MAIN.y + 38 }} to={{ x: FEATURE.x, y: FEATURE.y - 38 }} tone="green" label="fork" flow={forkU} u={historyU} />
-          <ArchitectureEdge from={{ x: FEATURE.x + 90, y: FEATURE.y }} to={{ x: ROOT.x - 90, y: ROOT.y }} via={[{ x: 320, y: FEATURE.y }, { x: 390, y: ROOT.y }]} tone="coral" label="checkout" flow={featureU} u={treeU} />
-          <ArchitectureEdge from={{ x: MAIN.x + 90, y: MAIN.y }} to={{ x: ROOT.x - 90, y: ROOT.y }} via={[{ x: 320, y: MAIN.y }, { x: 390, y: ROOT.y }]} tone="green" label="shared root" flow={treeU} u={treeU} />
-          <ArchitectureEdge from={{ x: ROOT.x + 90, y: ROOT.y }} to={{ x: TREE.x - 88, y: TREE.y }} tone="coral" label="tree" flow={treeU} u={treeU} />
-          <ArchitectureEdge from={{ x: TREE.x + 88, y: TREE.y }} to={{ x: GRID.x - 16, y: GRID.y + 146 }} via={[{ x: 760, y: TREE.y }, { x: 760, y: GRID.y + 146 }]} tone="blue" label="objects" flow={objectsU} u={objectsU} />
+          <ArchitectureEdge from={{ x: FEATURE.x + 90, y: FEATURE.y }} to={{ x: ROOT.x - 89, y: ROOT.y }} via={[{ x: 320, y: FEATURE.y }, { x: 350, y: ROOT.y }]} tone="coral" label="checkout" flow={featureU} u={treeU} />
+          <ArchitectureEdge from={{ x: MAIN.x + 90, y: MAIN.y }} to={{ x: ROOT.x - 89, y: ROOT.y }} via={[{ x: 320, y: MAIN.y }, { x: 350, y: ROOT.y }]} tone="green" label="shared root" flow={treeU} u={treeU} />
+          <ArchitectureEdge from={{ x: ROOT.x + 89, y: ROOT.y }} to={{ x: TREE.x - 89, y: TREE.y }} tone="coral" label="tree" flow={treeU} u={treeU} />
+          <ArchitectureEdge from={{ x: TREE.x + 89, y: TREE.y }} to={{ x: GRID.x - 16, y: GRID.y + 146 }} via={[{ x: 806, y: TREE.y }, { x: 806, y: GRID.y + 146 }]} tone="blue" label="objects" flow={objectsU} u={objectsU} />
 
           <ArchitectureCard x={MAIN.x} y={MAIN.y} w={172} h={70} label="main~1" meta="commit · 9D2A" badge="HEAD" tone="green" u={historyU} status="ready" />
           <ArchitectureCard x={FEATURE.x} y={FEATURE.y} w={184} h={70} label="feature" meta="commit · 74B1" badge="FORK" tone={featureU > 0.35 ? 'green' : 'neutral'} u={forkU} status={featureU > 0.5 ? 'ready' : undefined} />
@@ -192,20 +197,20 @@ export function Render({ s }: { s: SceneState }) {
           <ArchitectureGrid x={GRID.x} y={GRID.y} columns={4} rows={6} cells={objectCells(conflictU, objectsU)} cellW={76} cellH={38} gap={6} u={objectsU} dim={closeU * 0.35} />
           {conflictU > 0.02 && (
             <g opacity={conflictU}>
-              <rect x={700} y={505} width={430} height={48} rx={9} fill={PAPER} stroke={PINK} strokeWidth={1.5} />
-              <text x={915} y={535} textAnchor="middle" fill={PINK} fontSize={12} fontWeight={800} fontFamily={MONO}>conflict: two event suffixes · resolve explicitly</text>
+              <rect x={696} y={500} width={500} height={44} rx={9} fill={PAPER} stroke={PINK} strokeWidth={1.5} />
+              <text x={946} y={527} textAnchor="middle" fill={PINK} fontSize={13} fontWeight={800} fontFamily={MONO}>conflict: two event suffixes · resolve explicitly</text>
             </g>
           )}
           {bisectU > 0.02 && (
             <g opacity={bisectU}>
-              <path d="M268 545 C 340 510, 350 430, 360 380" fill="none" stroke={GREEN} strokeWidth={1.5} strokeDasharray="4 6" />
-              <text x={290} y={600} fill={MUTED} fontSize={11} fontFamily={MONO}>first divergent offset → 0005</text>
+              <path d="M185 508 L 185 420" fill="none" stroke={GREEN} strokeWidth={1.5} strokeDasharray="4 6" />
+              <text x={200} y={468} fill={LABEL} fontSize={13} fontFamily={MONO}>first divergent offset → 0005</text>
             </g>
           )}
           {closeU > 0.02 && (
             <g opacity={closeU}>
-              <rect x={340} y={135} width={600} height={52} rx={10} fill={PAPER} stroke={BLUE} strokeWidth={1.4} />
-              <text x={640} y={168} textAnchor="middle" fill={INK} fontSize={16} fontWeight={800}>Git shape at the edge · stream authority underneath</text>
+              <rect x={340} y={128} width={600} height={44} rx={10} fill={PAPER} stroke={BLUE} strokeWidth={1.4} />
+              <text x={640} y={156} textAnchor="middle" fill={INK} fontSize={16} fontWeight={800}>Git shape at the edge · stream authority underneath</text>
             </g>
           )}
         </ArchitectureFrame>

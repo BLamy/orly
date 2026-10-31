@@ -52,7 +52,9 @@ function Frame({ s }: { s: SceneState }) {
           {axisU > 0 && (
             <g opacity={axisU}>
               <line x1={PLOT.x + 20} y1={CTRY} x2={PLOT.x + PLOT.w - 20} y2={CTRY} stroke={colors.POSITIVE} strokeWidth={2} strokeDasharray="7 6" />
-              <text x={PLOT.x + PLOT.w - 24} y={CTRY - 10} textAnchor="end" fill={colors.POSITIVE} fontSize={13.5}>
+              {/* backing pill keeps the label legible over the dots */}
+              <rect x={PLOT.x + PLOT.w - 150} y={CTRY - 27} width={132} height={22} rx={5} fill={colors.BG} opacity={0.85} />
+              <text x={PLOT.x + PLOT.w - 24} y={CTRY - 10} textAnchor="end" fill={colors.POSITIVE} fontSize={14}>
                 probe direction w
               </text>
             </g>
@@ -60,18 +62,24 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* stats panel */}
           {statsU > 0 && (
-            <g opacity={statsU}>
-              <rect x={PANEL.x} y={PANEL.y} width={330} height={128} rx={12} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+            <g opacity={statsU * (1 - endU)}>
+              <rect x={PANEL.x} y={PANEL.y} width={340} height={172} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
               <text x={PANEL.x + 20} y={PANEL.y + 34} fill={colors.TEXT} fontSize={15.5} fontWeight={600}>
                 probe vs planted direction
               </text>
-              <text x={PANEL.x + 20} y={PANEL.y + 64} fill={colors.POSITIVE} fontSize={15} fontFamily="ui-monospace, monospace">
+              <text x={PANEL.x + 20} y={PANEL.y + 62} fill={colors.POSITIVE} fontSize={15} fontFamily="ui-monospace, monospace">
                 {`cos(w, v_true) = ${PROBE.cos.toFixed(3)}`}
               </text>
-              <text x={PANEL.x + 20} y={PANEL.y + 92} fill={colors.TEXT} fontSize={15} fontFamily="ui-monospace, monospace">
+              <text x={PANEL.x + 20} y={PANEL.y + 84} fill={colors.MUTED} fontSize={14}>
+                cosine: how closely two arrows point
+              </text>
+              <text x={PANEL.x + 20} y={PANEL.y + 102} fill={colors.MUTED} fontSize={14}>
+                1.0 means the arrows are identical
+              </text>
+              <text x={PANEL.x + 20} y={PANEL.y + 130} fill={colors.TEXT} fontSize={15} fontFamily="ui-monospace, monospace">
                 {`accuracy ${PROBE.acc} / ${N}`}
               </text>
-              <text x={PANEL.x + 20} y={PANEL.y + 116} fill={colors.MUTED} fontSize={13}>
+              <text x={PANEL.x + 20} y={PANEL.y + 156} fill={colors.MUTED} fontSize={14}>
                 one dot product reads the concept
               </text>
             </g>
@@ -80,12 +88,13 @@ function Frame({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed math */}
-      <MathLabel tex={'p = \\sigma(w \\cdot x + b)'} x={1010} y={62} fontSize={19} opacity={texU * dimU} />
+      {/* shown once the caption's own formula has gone (after the rotation starts) */}
+      <MathLabel tex={'p = \\sigma(w \\cdot x + b)'} x={1010} y={62} fontSize={19} opacity={texU * dimU * baseMix} />
 
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Features as Directions
           </text>

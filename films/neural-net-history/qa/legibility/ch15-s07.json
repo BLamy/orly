@@ -1,0 +1,43 @@
+{
+ "shot": "ch15-s07",
+ "at": "2026-10-14T01:13:36.090Z",
+ "minCapPx": 22,
+ "sampled": 15,
+ "texts": 6,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "30 SEPTEMBER 2025",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "bernard widrow",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "died 30 September 2025, aged 95",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…I never got over it.",
+   "capWhileSubject": 43.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Bernard Widrow, 2005, recalling",
+   "capWhileSubject": 27.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Dartmouth, 1956",
+   "capWhileSubject": 27.4,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

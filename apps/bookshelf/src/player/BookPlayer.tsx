@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
-import { Drawer } from 'vaul';
 import { ChapterPlayer } from './ChapterPlayer';
 import { BlogPanel } from './BlogPanel';
+import { BookSources } from './BookSources';
+import { ScoreCard, useBookScore } from './ScoreCard';
+import { PlayerSheet } from './PlayerSheet';
+import { COMPACT_MQ, PORTRAIT_COMPACT_MQ, useMediaQuery } from './useMediaQuery';
 import { registerAnimalPool, resolveAnimal, sortSeriesBooks } from '../library/shared';
 import { useVideoAccent } from '../shell/useVideoAccent';
 
@@ -21,6 +24,8 @@ export interface ChapterV3 {
   cues?: number[];
   /** total length (s) */
   duration?: number;
+  /** optional Strudel music bed under the narration (generator/book-score.mjs), relative to the book dir */
+  music?: { audio: string; /** 0-1 playback gain, default 0.3 */ gain?: number; /** the Strudel source, for the credits */ strudel?: string };
 }
 
 export interface ManifestV3 {
@@ -30,6 +35,8 @@ export interface ManifestV3 {
   subtitle?: string;
   animal?: string;
   accent?: string;
+  /** the book's sources page data (claims + quotations with links), relative to the book dir: 'sources.json' */
+  sources?: string;
   chapters: ChapterV3[];
 }
 
@@ -58,20 +65,6 @@ export function fmtDur(s?: number): string {
   return `${m}:${String(sec).padStart(2, '0')}`;
 }
 
-/** Reactively track a CSS media query (SSR-safe). Mirrors ChapterPlayer's private copy. */
-function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(query).matches
-  );
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    const onChange = () => setMatches(mq.matches);
-    onChange();
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, [query]);
-  return matches;
-}
 
 /**
  * "Compact" layout — the video is sized by its own aspect ratio (not
@@ -81,22 +74,12 @@ function useMediaQuery(query: string): boolean {
  * "sidebar disappears" and "drawer appears" — the two used to be decided by
  * different conditions (React checked portrait-only; a separate CSS rule
  * hid the sidebar in landscape too), which left landscape phones with
- * neither.
+ * neither. (COMPACT_MQ, in ./useMediaQuery, shared with FilmPlayer.)
  */
-const COMPACT_MQ =
-  '(max-width: 720px) and (orientation: portrait), (max-width: 1000px) and (orientation: landscape) and (max-height: 520px)';
-
 // The drawer itself is portrait-only — in landscape there isn't enough
 // vertical room for a bottom sheet without it swallowing the video, so
 // landscape just shows the video with no way to reach chapters/blog.
-const PORTRAIT_COMPACT_MQ = '(max-width: 720px) and (orientation: portrait)';
 
-// The drawer's resting (peek) height is computed from the actual rendered
-// video block so it always ends exactly where the video does — see the
-// videoH/viewportH tracking below. This is only the pre-measurement guess
-// used for the very first frame.
-const FALLBACK_PEEK_PX = 280;
-const MIN_PEEK_PX = 120;
 
 function chapterFromUrl(count: number): number | null {
   if (typeof window === 'undefined') return null;
@@ -142,53 +125,39 @@ export function BookPlayer({
   const videoAccent = useVideoAccent();
   const drawerable = useMediaQuery(PORTRAIT_COMPACT_MQ);
   const [hasBlog, setHasBlog] = useState(false);
-  const [tab, setTab] = useState<'chapters' | 'blog'>('chapters');
+  const [tab, setTab] = useState<Tab>('chapters');
+  // desktop: the sidebar card (chapters + the series' other videos) and the book's score share it as tabs
+  const [sideTab, setSideTab] = useState<Tab>('chapters');
+  const score = useBookScore(slug);
+  const hasScore = score !== null;
 
-  // Measure the actual rendered video block (topbar + aspect-ratio stage +
-  // controls) so the drawer's resting position lands exactly at its bottom
-  // edge — never covering the video, never leaving a gap under it.
+  // Measure where the rendered video block (topbar + aspect-ratio stage +
+  // controls) ends on screen so the drawer's resting position lands exactly at
+  // its bottom edge — never covering the video, never leaving a gap under it.
   const mainRef = useRef<HTMLDivElement | null>(null);
   const [videoH, setVideoH] = useState(0);
   useEffect(() => {
     if (!drawerable) return;
     const el = mainRef.current;
     if (!el) return;
-    const ro = new ResizeObserver((entries) => setVideoH(entries[0].contentRect.height));
+    // the video block's BOTTOM edge, not just its height: inside the shelf's navigation stack a bar sits above it
+    // measured a frame later: setting state inside the observer callback re-lays out within the same loop
+    let raf = 0;
+    const ro = new ResizeObserver(() => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setVideoH(Math.round(el.getBoundingClientRect().bottom)));
+    });
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
     // `.bp-main` doesn't exist until `manifest` has loaded (there's an early
     // `if (!manifest) return <loading/>` before this JSX) — depending on
     // `drawerable` alone meant this ran once against a null ref on the very
     // first render and never again, since `drawerable` doesn't change when
     // manifest arrives a moment later. Re-run once the real element exists.
   }, [drawerable, manifest]);
-  const [viewportH, setViewportH] = useState(() =>
-    typeof window !== 'undefined' ? window.innerHeight : 800
-  );
-  useEffect(() => {
-    const onResize = () => setViewportH(window.innerHeight);
-    window.addEventListener('resize', onResize);
-    window.addEventListener('orientationchange', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('orientationchange', onResize);
-    };
-  }, []);
-  const drawerPeekPx = Math.round(
-    Math.max(videoH ? viewportH - videoH : FALLBACK_PEEK_PX, MIN_PEEK_PX)
-  );
-  const drawerSnapPoints = useMemo<(number | string)[]>(
-    () => [`${drawerPeekPx}px`, 1],
-    [drawerPeekPx]
-  );
-  const [drawerSnap, setDrawerSnap] = useState<number | string | null>(`${drawerPeekPx}px`);
-  // Keep the resting snap point glued to "just below the video" as that
-  // height changes (resize, orientation change) — but leave the user's
-  // choice alone if they've dragged it open to fullscreen.
-  useEffect(() => {
-    setDrawerSnap((cur) => (cur === 1 ? cur : `${drawerPeekPx}px`));
-  }, [drawerPeekPx]);
-
   // Default to the Blog tab on mobile once we know the post exists — but
   // only the first time, so a manual tab switch sticks.
   const defaultedRef = useRef(false);
@@ -300,7 +269,16 @@ export function BookPlayer({
   const drawerListRef = useRef<HTMLUListElement | null>(null);
   useEffect(() => {
     const el = (drawerable ? drawerListRef.current : sideListRef.current)?.querySelector('.active');
-    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // scroll only the list's own scroller (scrollIntoView also moves overflow-hidden ancestors, which pushed the
+    // bottom sheet's tabs under its handle): top-aligned in the sheet, whose upper part is what shows at rest;
+    // centred in the desktop sidebar
+    const box = el?.closest('.ps-content, .bp-side') as HTMLElement | null;
+    if (el && box) {
+      const r = el.getBoundingClientRect();
+      const b = box.getBoundingClientRect();
+      const inSheet = box.classList.contains('ps-content');
+      box.scrollTo({ top: box.scrollTop + (r.top - b.top) - (inSheet ? 8 : (b.height - r.height) / 2), behavior: 'smooth' });
+    }
   }, [current, manifest, seriesGroups, drawerable]);
 
   // Keep the URL in sync with the chapter being watched, so it's shareable
@@ -369,97 +347,104 @@ export function BookPlayer({
             onNext={current < manifest.chapters.length - 1 ? () => setCurrent(current + 1) : undefined}
             onExit={goHome}
           />
-          {!compact && hasBlog && (
+          {!compact && (hasBlog || manifest.sources) && (
             <div className="bp-below-video">
-              <BlogPanel base={base} onAvailable={setHasBlog} />
+              {hasBlog && <BlogPanel base={base} onAvailable={setHasBlog} />}
+              {manifest.sources && <BookSources url={`${base}${manifest.sources}`} currentChapter={chapter.number} onChapter={(n) => setCurrent(n - 1)} />}
             </div>
           )}
         </div>
         {!compact && (
-          <aside className="bp-side" aria-label="Chapters">
-            <ChapterList
-              listRef={sideListRef}
-              flatGroups={flatGroups}
-              slug={slug}
-              current={current}
-              goToChapter={goToChapter}
-            />
+          <aside className="bp-side" aria-label="Chapters and score">
+            {hasScore && <TabBar tab={sideTab} setTab={setSideTab} hasBlog={false} hasScore />}
+            {sideTab === 'score' && score ? (
+              <ScoreCard score={score} />
+            ) : (
+              <ChapterList
+                listRef={sideListRef}
+                flatGroups={flatGroups}
+                slug={slug}
+                current={current}
+                goToChapter={goToChapter}
+              />
+            )}
           </aside>
         )}
       </div>
 
-      {/* Don't mount the drawer until we have a REAL measured video height —
-          vaul bakes its snap-point offset in at first mount and doesn't
-          reliably re-snap just because `snapPoints`/`activeSnapPoint` change
-          later, so mounting early with the FALLBACK_PEEK_PX guess left it
-          stuck too low forever (confirmed: only an orientation change, which
-          fully remounts the Drawer via the `drawerable` flip, ever fixed it). */}
+      {/* the mobile bottom sheet (FloatingSheet), resting at the video's measured bottom edge */}
       {drawerable && videoH > 0 && (
-        <Drawer.Root
-          open
-          modal={false}
-          dismissible={false}
-          snapPoints={drawerSnapPoints}
-          activeSnapPoint={drawerSnap}
-          setActiveSnapPoint={setDrawerSnap}
-        >
-          <Drawer.Portal>
-            <Drawer.Content className="bp-drawer" aria-label="Chapters and blog post">
-              <Drawer.Handle className="bp-drawer-handle" />
-              <TabBar tab={tab} setTab={setTab} hasBlog={hasBlog} />
-              <div className="bp-drawer-scroll">
-                {tab === 'chapters' ? (
-                  <ChapterList
-                    listRef={drawerListRef}
-                    flatGroups={flatGroups}
-                    slug={slug}
-                    current={current}
-                    goToChapter={goToChapter}
-                  />
-                ) : (
-                  <div className="bp-side-blog">
-                    <BlogPanel base={base} onAvailable={setHasBlog} />
-                  </div>
-                )}
-              </div>
-            </Drawer.Content>
-          </Drawer.Portal>
-        </Drawer.Root>
+        <PlayerSheet
+          label="Chapters, blog post and score"
+          top={videoH}
+          tab={tab}
+          onTab={(t) => setTab(t as Tab)}
+          tabs={[
+            {
+              id: 'chapters',
+              label: 'Chapters',
+              content: (
+                <ChapterList
+                  listRef={drawerListRef}
+                  flatGroups={flatGroups}
+                  slug={slug}
+                  current={current}
+                  goToChapter={goToChapter}
+                />
+              ),
+            },
+            ...(hasBlog
+              ? [
+                  {
+                    id: 'blog',
+                    label: 'Blog',
+                    content: (
+                      <div className="bp-side-blog">
+                        <BlogPanel base={base} onAvailable={setHasBlog} />
+                        {manifest?.sources && <BookSources url={`${base}${manifest.sources}`} currentChapter={chapter?.number} onChapter={(n) => setCurrent(n - 1)} />}
+                      </div>
+                    ),
+                  },
+                ]
+              : []),
+            ...(score ? [{ id: 'score', label: 'Score', content: <ScoreCard score={score} /> }] : []),
+          ]}
+        />
       )}
     </div>
   );
 }
 
-/** Chapters/Blog toggle — mobile drawer only; desktop shows both at once
- * (chapters in the sidebar, blog below the video), so it needs no tabs. */
+type Tab = 'chapters' | 'blog' | 'score';
+
+/** The card's tabs: Chapters (with the series' other videos), Blog and Score. The mobile drawer shows all three;
+ * desktop shows the blog below the video, so its sidebar card has Chapters and Score. */
 function TabBar({
   tab,
   setTab,
   hasBlog,
+  hasScore,
 }: {
-  tab: 'chapters' | 'blog';
-  setTab: (t: 'chapters' | 'blog') => void;
+  tab: Tab;
+  setTab: (t: Tab) => void;
   hasBlog: boolean;
+  hasScore: boolean;
 }) {
-  if (!hasBlog) return null;
+  if (!hasBlog && !hasScore) return null;
+  const tabs: [Tab, string][] = [['chapters', 'Chapters'], ...(hasBlog ? ([['blog', 'Blog']] as [Tab, string][]) : []), ...(hasScore ? ([['score', 'Score']] as [Tab, string][]) : [])];
   return (
     <div className="bp-tabbar" role="tablist">
-      <button
-        className={`bp-tab${tab === 'chapters' ? ' active' : ''}`}
-        role="tab"
-        aria-selected={tab === 'chapters'}
-        onClick={() => setTab('chapters')}
-      >
-        Chapters
-      </button>
-      <button
-        className={`bp-tab${tab === 'blog' ? ' active' : ''}`}
-        role="tab"
-        aria-selected={tab === 'blog'}
-        onClick={() => setTab('blog')}
-      >
-        Blog
-      </button>
+      {tabs.map(([id, label]) => (
+        <button
+          key={id}
+          className={`bp-tab${tab === id ? ' active' : ''}`}
+          role="tab"
+          aria-selected={tab === id}
+          onClick={() => setTab(id)}
+        >
+          {label}
+        </button>
+      ))}
     </div>
   );
 }

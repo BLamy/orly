@@ -58,19 +58,23 @@ const SPANS: Span[] = [
   { label: 'POST /charges', depth: 3, open: 0.72, close: 0.86, color: colors.TEAL, remote: true },
 ];
 
-const WF = { x0: 170, x1: 985, y0: 330, rowH: 39, barH: 24 };
+// The label column sits left of x0; the exit labels sit right of the bars. Everything
+// fits the 1280-wide stage at home zoom, so the camera pushes only tighten the framing.
+const WF = { x0: 250, x1: 870, y0: 330, rowH: 39, barH: 24 };
 const bx = (t: number) => WF.x0 + t * (WF.x1 - WF.x0);
 const rowY = (i: number) => WF.y0 + i * WF.rowH;
 
 // top strip: the live system
 const HANDLER = { x: 300, y: 160 };
 const BILLING = { x: 730, y: 160 };
-const COLLECTOR = { x: 1080, y: 160 };
-const BATCH = { x: 1022, y: 330, w: 160, h: 130 };
+const COLLECTOR = { x: 1055, y: 160 };
+const BATCH = { x: 975, y: 330, w: 160, h: 130 };
 
-const CAM_WF: CameraState = { x: 600, y: 420, k: 1.2 };
-const CAM_HOP: CameraState = { x: 620, y: 220, k: 1.3 };
-const CAM_SHIP: CameraState = { x: 950, y: 300, k: 1.28 };
+const CAM_WF: CameraState = { x: 600, y: 430, k: 1.1 };
+// the waterfall's last row (y ≈ 588) must stay above the caption pill (screen y ≈ 630)
+const CAM_HOP: CameraState = { x: 600, y: 370, k: 1.1 };
+// centred so the row labels (which start near x 75) and the batch box both stay on the stage
+const CAM_SHIP: CameraState = { x: 640, y: 380, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~75s, 12 beats)
@@ -218,7 +222,8 @@ export function Render({ s }: { s: SceneState }) {
   const rateU = s.get(scene.rateU);
   const recapU = s.get(scene.recapU);
 
-  const stageDim = 1 - recapU * 0.88;
+  // the stage fades almost to nothing under the closing panel, so no ghost labels show around it
+  const stageDim = 1 - recapU * 0.95;
   // packet: out during hopU 0..0.55, back during 0.62..1
   const outF = clamp01(hopU / 0.55);
   const backF = clamp01((hopU - 0.62) / 0.38);
@@ -259,10 +264,16 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---------------- the waterfall ---------------- */}
           <g opacity={nodesU}>
-            <rect x={WF.x0 - 20} y={WF.y0 - 26} width={WF.x1 - WF.x0 + 40} height={SPANS.length * WF.rowH + 40} rx={12} fill={colors.PANEL} fillOpacity={0.45} stroke={colors.GRID} />
-            <text x={WF.x0 - 6} y={WF.y0 - 34} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <rect x={WF.x0 - 20} y={WF.y0 - 26} width={WF.x1 - WF.x0 + 80} height={SPANS.length * WF.rowH + 40} rx={12} fill={colors.PANEL} fillOpacity={0.45} stroke={colors.GRID} />
+            <text x={WF.x0 - 6} y={WF.y0 - 34} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               trace 4bf92f3577b34da6a3ce929d0e0e4736
             </text>
+            {/* empty frame: say what it is waiting for, until the first span opens */}
+            {reqU < 0.02 && (
+              <text x={(WF.x0 + WF.x1) / 2} y={rowY(3) + WF.barH / 2 + 4} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(1 - reqU / 0.02)}>
+                no spans yet — the request has not started
+              </text>
+            )}
             {SPANS.map((sp, i) => {
               const openU = clamp01((reqU - sp.open) / 0.02);
               if (openU <= 0) return null;
@@ -273,7 +284,7 @@ export function Render({ s }: { s: SceneState }) {
               const flown = !sp.remote && closed && ended.indexOf(sp) < arrived && flyU > 0.01;
               return (
                 <g key={i} opacity={openU * (flown ? 0.35 : 1)}>
-                  <text x={WF.x0 + sp.depth * 26 - 8} y={y + WF.barH / 2 + 4} textAnchor="end" fill={sp.remote ? colors.TEAL : colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                  <text x={WF.x0 + sp.depth * 26 - 8} y={y + WF.barH / 2 + 4} textAnchor="end" fill={sp.remote ? colors.TEAL : colors.TEXT} fontSize={14} fontFamily={MONO}>
                     {sp.label}
                   </text>
                   <rect x={bx(sp.open)} y={y} width={w} height={WF.barH} rx={6} fill={sp.color} opacity={closed ? 0.5 : 0.3} stroke={sp.color} strokeWidth={1.4} />
@@ -281,12 +292,13 @@ export function Render({ s }: { s: SceneState }) {
                     <circle cx={bx(headT)} cy={y + WF.barH / 2} r={4.5} fill={sp.color} />
                   )}
                   {closed && (
-                    <text x={bx(sp.close) + 8} y={y + WF.barH / 2 + 4} fill={sp.color} fontSize={11}>
+                    <text x={bx(sp.close) + 8} y={y + WF.barH / 2 + 4} fill={sp.color} fontSize={14}>
                       {sp.color === colors.NEGATIVE ? 'exit: fail' : sp.remote ? 'remote' : 'exit: ok'}
                     </text>
                   )}
+                  {/* the remote span's note sits left of its bar, on the same row, clear of the retry rows above */}
                   {sp.remote && remLblU > 0.01 && (
-                    <text x={bx(sp.open)} y={y - 5} fill={colors.TEAL} fontSize={11} opacity={remLblU} fontStyle="italic">
+                    <text x={bx(sp.open) - 10} y={y + WF.barH / 2 + 4} textAnchor="end" fill={colors.TEAL} fontSize={14} opacity={remLblU} fontStyle="italic">
                       parented across the wire (external span)
                     </text>
                   )}
@@ -296,8 +308,8 @@ export function Render({ s }: { s: SceneState }) {
             {/* annotation chip */}
             {annU > 0.01 && (
               <g opacity={annU}>
-                <rect x={bx(0.4)} y={rowY(0) - 3} width={172} height={22} rx={6} fill={colors.BG} stroke={colors.SECONDARY} />
-                <text x={bx(0.4) + 86} y={rowY(0) + 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>
+                <rect x={bx(0.4)} y={rowY(0) - 3} width={204} height={22} rx={6} fill={colors.BG} stroke={colors.SECONDARY} />
+                <text x={bx(0.4) + 102} y={rowY(0) + 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
                   user.id = 42 · attempt = 3
                 </text>
               </g>
@@ -307,16 +319,16 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---------------- the batch + export ---------------- */}
           <g opacity={nodesU}>
             <rect x={BATCH.x} y={BATCH.y} width={BATCH.w} height={BATCH.h} rx={12} fill={colors.PANEL} stroke={rateU > 0.3 && rateU < 0.85 ? colors.WARM : colors.GRID} />
-            <text x={BATCH.x + BATCH.w / 2} y={BATCH.y + 24} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+            <text x={BATCH.x + BATCH.w / 2} y={BATCH.y + 24} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               OtlpTracer batch
             </text>
-            <text x={BATCH.x + BATCH.w / 2} y={BATCH.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={BATCH.x + BATCH.w / 2} y={BATCH.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               every 5s · max 1000
             </text>
             <text x={BATCH.x + BATCH.w / 2} y={BATCH.y + 84} textAnchor="middle" fill={colors.ACCENT} fontSize={26} fontWeight={700}>
               {Math.max(0, arrived - Math.round(shipU) * ended.length)}
             </text>
-            <text x={BATCH.x + BATCH.w / 2} y={BATCH.y + 106} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={BATCH.x + BATCH.w / 2} y={BATCH.y + 106} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               spans queued
             </text>
           </g>
@@ -357,11 +369,11 @@ export function Render({ s }: { s: SceneState }) {
                 fill={colors.ACCENT}
               />
               <text
-                x={BATCH.x + BATCH.w / 2 + (COLLECTOR.x - BATCH.x - BATCH.w / 2) * shipU}
+                x={BATCH.x + BATCH.w / 2 + (COLLECTOR.x - BATCH.x - BATCH.w / 2) * shipU + 22}
                 y={BATCH.y - 20 + (COLLECTOR.y + 40 - BATCH.y) * shipU}
-                textAnchor="middle"
+                textAnchor="start"
                 fill={colors.MUTED}
-                fontSize={10.5}
+                fontSize={13}
                 fontFamily={MONO}
               >
                 POST /v1/traces
@@ -371,12 +383,13 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* 429 → Retry-After */}
           {rateU > 0.01 && (
-            <g opacity={clamp01(rateU * 1.6) * (rateU > 0.92 ? (1 - rateU) / 0.08 : 1)}>
-              <rect x={BATCH.x - 46} y={BATCH.y + BATCH.h + 14} width={252} height={40} rx={10} fill={colors.BG} stroke={colors.WARM} />
-              <text x={BATCH.x + 80} y={BATCH.y + BATCH.h + 31} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+            // stays lit to the end of its beat: the exporter is waiting while the caption talks about it
+            <g opacity={clamp01(rateU * 1.6)}>
+              <rect x={BATCH.x - 20} y={BATCH.y + BATCH.h + 14} width={252} height={44} rx={10} fill={colors.BG} stroke={colors.WARM} />
+              <text x={BATCH.x + 106} y={BATCH.y + BATCH.h + 31} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                 429 → wait Retry-After
               </text>
-              <text x={BATCH.x + 80} y={BATCH.y + BATCH.h + 47} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={BATCH.x + 106} y={BATCH.y + BATCH.h + 49} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 Schedule.forever + addDelay
               </text>
             </g>

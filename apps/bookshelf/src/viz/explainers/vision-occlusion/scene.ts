@@ -131,8 +131,10 @@ export const DG = 4;
 export const DP = DC + DG;
 export const DROP_XY = { x: 760, y: 190 } as const; // 6·48−4 = 284
 
-export const CAM_IMG: CameraState = { x: 420, y: 330, k: 1.25 };
-export const CAM_MAP: CameraState = { x: 830, y: 330, k: 1.2 };
+// image + meter, centred on their combined span (x 96…606)
+export const CAM_IMG: CameraState = { x: 351, y: 350, k: 1.4 };
+// input, meter and drop map together (x 96…1044), so the outline and its map cells stay on stage
+export const CAM_MAP: CameraState = { x: 570, y: 340, k: 1.2 };
 
 export interface Scene {
   tl: Timeline;
@@ -198,7 +200,7 @@ export function buildScene(): Scene {
     text: 'Now do it everywhere. Slide the patch across all thirty six positions, rerun the network each time, and record every drop as a map.',
   });
   tl.tween(demoU, 0, { at: 25.2, dur: 0.6, ease: ease.move });
-  tl.tween(cam, CAMERA_HOME, { at: 25.6, dur: 1.6, ease: ease.move });
+  tl.tween(cam, CAM_MAP, { at: 25.6, dur: 1.6, ease: ease.move });
   tl.tween(sweepP, 1, { at: 26.4, dur: 8.6, ease: ease.linear });
 
   tl.caption({
@@ -238,7 +240,7 @@ export function buildScene(): Scene {
     dur: 6.0,
     text: 'This is proof by intervention — the same move interpretability researchers call ablation. Break a piece, watch the behavior, and the causes confess.',
   });
-  tl.tween(cam, CAMERA_HOME, { at: 56.8, dur: 1.6, ease: ease.move });
+  tl.tween(cam, CAM_MAP, { at: 56.8, dur: 1.6, ease: ease.move });
   tl.tween(floorU, 0, { at: 60.8, dur: 0.7, ease: ease.move });
 
   tl.caption({

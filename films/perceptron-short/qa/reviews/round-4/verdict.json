@@ -1,0 +1,341 @@
+{
+  "round": 4,
+  "pass": false,
+  "mean": 8.15,
+  "scores": {
+    "accuracy": 8.67,
+    "depth": 7.92,
+    "clarity": 8.0,
+    "story": 8.17,
+    "curiosity": 7.83,
+    "visual": 8.0,
+    "sync": 8.42,
+    "sound": 8.17
+  },
+  "gate": {
+    "minDimension": 8,
+    "minMean": 8.5,
+    "noCritical": true,
+    "failing": [
+      "depth",
+      "curiosity",
+      "mean"
+    ],
+    "criticalOpen": 0
+  },
+  "weighting": "mean across 5 reviewers, owning lens counted double (historian: accuracy; teacher: depth, clarity; story: story, curiosity; art: visual, sync; sound: sound); divisor 6",
+  "reviewerScores": {
+    "historian": {
+      "accuracy": 9,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8,
+      "visual": 8,
+      "sync": 8,
+      "sound": 8,
+      "curiosity": 8
+    },
+    "teacher": {
+      "accuracy": 8.5,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 7.5
+    },
+    "story": {
+      "accuracy": 8.5,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8.5,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 8
+    },
+    "art": {
+      "accuracy": 8.5,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 8
+    },
+    "sound": {
+      "accuracy": 8.5,
+      "depth": 7.5,
+      "clarity": 8,
+      "story": 8,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8.5,
+      "curiosity": 7.5
+    }
+  },
+  "delta": {
+    "round1Mean": 6.65,
+    "round1Scores": {
+      "accuracy": 7.5,
+      "depth": 5.17,
+      "clarity": 7.0,
+      "story": 6.5,
+      "visual": 7.33,
+      "sync": 7.33,
+      "sound": 6.42,
+      "curiosity": 5.92
+    },
+    "round2Mean": 7.43,
+    "round2Scores": {
+      "accuracy": 8.08,
+      "depth": 6.42,
+      "clarity": 7.5,
+      "story": 7.25,
+      "visual": 7.83,
+      "sync": 8.0,
+      "sound": 7.58,
+      "curiosity": 6.75
+    },
+    "round3Mean": 7.83,
+    "round3Scores": {
+      "accuracy": 8.42,
+      "depth": 7.17,
+      "clarity": 7.92,
+      "story": 7.92,
+      "visual": 7.83,
+      "sync": 8.17,
+      "sound": 7.83,
+      "curiosity": 7.42
+    }
+  },
+  "previousRounds": "Round 3's fixes nearly all landed, and every reviewer verified them on the render. Fixed: the limit is now SHOWN (a real, failing single-layer XOR mini machine from trainXor() with a never-settles unit test), the nudge-push collision at 38 s, Rosenblatt planted at the patch board (no walk-in), name-first card, the bookend head tangent, clear air at the ending (word, chord and fade about 3.1 s apart), the 1969 stamp typed on as spoken with an italic book title and a legible book, the honest NOW/THEN relabel with a ghost needle, limit staging, line levels after the compressor, STT as machine-readable QA data (32 pass), denser sheets and a current shelf copy. NOT fixed: L0105's pause after 'rule' (0.74 s; asked 1.1-1.2 s, and it got shorter, because the clip's own gap was smaller than the insertGap assumed), and s01 still shows the whole machine under the title (fourth round). Partly fixed: the 'years' dim (-16%, reads as the start of the iris), the lab value hierarchy and the lineage silhouettes (present but read as window fittings). New this round: the XOR plate collides with the gauge labels ('TICAL'), the NOW tag hides under the counter, and the try-4/5 push crops the retina.",
+  "showrunnerChecks": [
+    "Extracted render/film.mp4 at 56.4 s. Confirmed the XOR plate covers the start of the gauge's VERTICAL label (it reads 'TICAL HORIZONTAL') and its caption sits on the label baseline. The plate's try boxes show only check/cross with no case glyph, and its cells and dials are small (plate about 24% of frame width). The two learned plates, the stamp and the book all compete at full value.",
+    "Extracted 61.5 s. Confirmed the lineage diagrams are two small node plaques hung in the left windows, far from the eye and the eyeline. They read as wall fixtures, not descendants.",
+    "Extracted 2.8 s. Confirmed (fourth round) the camera stand with a lit diagonal on the eye, the desk, the lamp and all three racks read clearly under the title. The place stamp is still typing ('BUFFALO, NEW') at 2.8 s.",
+    "Extracted 22.4 s. The name card is whole at 22.4 s, but on 'Frank' Rosenblatt reaches up and away to the far rack at frame right, with his back half to the eye.",
+    "Checked line params. L0105 insertGaps.rule is 0.32, but the clip's own gap is only about 0.42 s, so the total silence is 0.74-0.80 s. Raising it to 0.68 gives about 1.1 s with no re-narration. L0108 preGap is 2.2 (the try-5 air). Taking it to 2.0 and 0.16 s from the bookend tail keeps the runtime at 67.75 s under the 68 s cap.",
+    "Checked claim limit-linear. Its evidence quotes 'a decline in neural net research in the 1970s and early 1980s', and the claim text says 'the 1970s', so a '→ the 1970s' era line is supported. Its caveat (the limit is of the single-layer machine) is why 'one layer of dials' should go on the XOR plate.",
+    "Resolved the L0105 conflict. Story wanted a clip split and sound wanted a larger insertGap. The insertGap needs no re-narration and no new take, so use it."
+  ],
+  "fixes": {
+    "shots": {
+      "ch01-s03": "Re-anchor every beat to the re-locked clock. L0105 gains about 0.36 s after 'rule', so everything after 25.6 s moves about +0.36 s, and after L0108's start the net shift is about +0.16 s. Times below are on the round-4 clock, so anchor by word, not by number. Priority order: depth (7.92) and curiosity (7.83) are what fail the gate. (1) MAKE THE XOR LIMIT LEGIBLE [major for the gate; teacher, story, art; showrunner confirmed at 56.4 s]. On 'showed just how simple' (about 55.0-56.4 s), push the camera or scale the XOR plate so it fills about 40% of frame width and sits in the free floor band, with its caption at least 24 px below the gauge-label bottom (no 'TICAL' collision). Alternatively, fade the main gauge's VERTICAL/HORIZONTAL labels to 0 over 0.3 s as the plate enters. Drop the two learned plates and the dimmed board to about 50% value, and keep the stamp and book where they are. Give each XOR try box a tiny two-dot glyph of its case (○○ ●○ ○● ●●) before its check or cross, in the main row's style. Under 'XOR · one lit, not both', add a second line in the same face: 'one layer of dials' (claim limit-linear caveat). Bring 'never settles' in on 'simple' (56.23 s), not near the iris, and add a live tally from the same real trainXor() run (for example 'best: 3 of 4'). Optional, and only if it is true of the actual run: on the first both-lit miss, show the two lit dials' tug arrows stacking past the threshold tick. Never hand-animate failure. (2) LINEAGE GROWS OUT OF THE EYE [story, teacher]. Remove the two small wall-plaque diagrams in the left windows. On 'descendants' (60.09 s), let the window light throw three stacked layer silhouettes directly behind the eye's camera box, in the same dial-and-thread vocabulary as the XOR plate. Read left to right (or back to front) as 1 → 2 → 3 layers, each larger and fainter (about 1.3x, 1.7x and 2.2x the box), joined by thin threads, and near the eyeline at about 2x the current contrast. They answer 'one layer of dials'. Fade them by 'still' (63.04 s) so the last image is again the man and the lit bar. Invent no modern specifics (claim lineage-mlp). (3) 'YEARS' [teacher, art, story]. Hold the limit tableau a little brighter (mean luma about 28-32). On 'years' (57.44 s), step the key light down a clear 25-30% over 0.3 s and hold it about 0.6 s while the XOR row keeps ticking. Add a second line under the stamp in the same era type, '→ the 1970s' (claim limit-linear), which fades with the iris. Start the iris on 'faded', not before, and take the time from the near-black stretch before the bookend, so the bookend is still open by 'Its'. (4) TRY 4-5 PUSH [art]. Clamp the 44-49.4 s push like the nudge push, keeping the full retina frame at least 24 px inside the left edge. Put the NOW tag inside the caption bar, left-aligned and set like THEN beneath it, and keep at least 16 px between the last counter box and the caption plate. (5) 'IT GUESSES' [teacher]. Finish the entry truck by about 26.9 s so the whole gauge is framed on 'guesses', and give the needle a small undecided tremble around the threshold there, committing when L0105b's tugs arrive. The empty retina must still hold through the widened silence after 'rule'. Re-sheet at the XOR beat, 'years', 'descendants', try 5 and 'guesses'.",
+      "ch01-s01": "The machine must be a rumour in the dark [story, raised for four rounds; showrunner confirmed at 2.8 s]. Hold everything on the action plane (stand, eye housing, desk, lamp, racks) below about 12% luminance, lost in shadow under the blinds. Only the window shafts, the fog and a single glint across the eye's face on 'see' (2.79 s) may read. The eye's grid stays dark after that glint and begins its glow on 'Its' (5.61 s), not at 4.3 s [art]. Start the place stamp's type-on at the title beat (about 0.8 s), so 'CORNELL AERONAUTICAL LABORATORY / BUFFALO, NEW YORK · c. 1960' is complete and readable for at least 1.5 s before it fades [historian]. No text change. Add a contact-sheet sample at 2.8 s and make the s01 critic check the action-plane luminance there.",
+      "ch01-s02": "(1) On 'Frank' (20.83 s), turn Rosenblatt camera-left so his near arm opens toward the eye on its stand (the eye glows) and he shares the frame with his machine. Hold the pose to the cut instead of reaching away to the far rack [story; showrunner confirmed at 22.4 s]. Keep the name card fully inside the s03 iris aperture: place it near the eye, or start the iris at about 22.4 s so it closes around the card, not through it. (2) Puppet in close-up [art]. At 11-15 s, either hold the camera wider (figure no more than about 600 px tall) or move the detail to the outer contour: hair mass, ear notch, collar, tie knot, cuff break, a slight forearm taper and a 10-15° wrist bend, with no interior seam strokes. At 11 s, time the truck so he is first seen against the lit patch board, or catch a window shaft on his back."
+    },
+    "cues": {
+      "m01": "Re-fit to the re-locked clock (L0105 +0.36 s after 'rule', L0108 preGap -0.2 s, tail -0.16 s). Shift every onset after about 25.6 s by the new offset. The celesta A5 (at 25.17 s) stays inside the widened gap after 'rule', and the E6 stays on 'shape'. Keep 'tugs', 'total', 'nudge', 'Wrong', 'right' and the final strike on their words. After the tail trim, keep fadeAfterStrike at 1.9 s or more (min 1.6). Optional: on 'years', thin the texture one step with the light dim. Then rerun analyze so score/analysis/summary.json is rewritten together with m01.json, and copy the measured I/LRA/TP into cues.json notes from the analysis output."
+    },
+    "lines": {
+      "L0105": "No re-narration and no text change. Raise insertGaps.rule from 0.32 to about 0.68 so the total silence between 'rule' and 'Show' is 1.1-1.15 s (measure it after the edit, because the clip's own gap is about 0.42 s, not the 0.5 s assumed). Re-lock the clock.",
+      "L0108": "No re-narration and no text change. Lower preGap from 2.2 to 2.0 s (the stated floor for the try-5 air) to pay for L0105's gap. Take the remaining about 0.16 s from the bookend tail, so the runtime stays at about 67.75 s under the 68 s cap and the fade still starts at least 1.6 s after the last strike."
+    },
+    "global": [
+      "Lab value hierarchy (sets/lab.ts and the puppet kit) [art]. Fill puppets near-black (about #0b0d0b) with a 1-2 px rim only on the window side. Keep racks one step lighter, with 1-2 px rims only on window-facing tops, and drop the strokes on side and bottom edges. Push back-wall racks another 8% into haze. Verify at 11.0 s and 21.3 s.",
+      "QA hygiene [sound, teacher]. Rewrite score/analysis/summary.json whenever a cue's analysis is rewritten (it still reports the 65.83 s clock), and add a QA check that summary cueSeconds matches the timeline duration. After this round's re-lock, re-run assemble, re-sheet and refresh the shelf copy.",
+      "Human listening sign-off [historian, sound]. This is NOT a pipeline fix; surface it to the user at the end of the loop and do not block on it. A person plays narration/clips/L0104.wav and L0108.wav and runs 'npm run film:voice -- signoff --slug perceptron-short --term Rosenblatt --by <name>' and the same with '--term Papert'. scribe_v1 already heard both names correctly."
+    ]
+  },
+  "deferred": [
+    "no-diegetic-sound (sound, optional, carried from round 2). Sound scored 8.5 without it; the score's pizz figures stand in for the mechanism. Deferred.",
+    "Full Rosenblatt puppet rebuild (art). Only the contour pass and the wider framing in ch01-s02 this round.",
+    "Story's clip split for L0105. Superseded by the insertGap fix, which needs no re-narration.",
+    "Teacher lens note: AlexNet and the transformer are out of scope for a one-minute Mark I short; not scored and no fix."
+  ],
+  "issuesMerged": [
+    {
+      "reviewer": "historian",
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "The place stamp's date is barely on screen. 'CORNELL AERONAUTICAL LABORATORY / BUFFALO, NEW YORK' is still typing at 2.58 s, '· c. 1960' completes around 3.4 s, and the stamp has faded by about 4.3 s. That leaves the only on-screen date for the Mark I readable for under a second. The date itself is fair (claim mk1-builder: 1957-1960; NMAH: built 1958; first shown in 1960).",
+      "fix": "Start the place type-on at the title beat (0.8 s) rather than at 'machine' (1.77 s), or hold the completed stamp until at least 4.6 s, so the full line including 'c. 1960' can be read for about 1.5 s or more. No text change."
+    },
+    {
+      "reviewer": "historian",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The machine-readable STT record now exists and passes (narration/stt.json: L0104 'Frank Rosenblatt' and 'Mark 1'; L0108 '1969' and 'Papert'; QA 32 pass, 0 skip). The only remaining QA warning is narration/listening: 'Rosenblatt pending; Papert pending'. The pronunciation of the two real people's names has been confirmed by a transcriber but not yet by a human listener.",
+      "fix": "A person (the user, not an agent) listens to L0104 and L0108 and runs 'film:voice signoff --slug perceptron-short --term Rosenblatt' and '--term Papert'. No re-narration is expected: scribe_v1 heard both names correctly."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The XOR plate shows THAT the rule fails, never WHAT was shown or WHY. The main try boxes carry a glyph of each shape (— ✕, | ✕), but the XOR try boxes carry only ✓ and ✗. A 15-year-old cannot tell which of the four cases (neither, top, bottom, both) each try was. The plate also never says 'one layer'. Claim limit-linear's caveat is that the limit belongs to the single-layer machine, and the Mark I itself had a random association layer. As it stands, an expert can read 'It could learn only simple patterns … XOR never settles' as a claim about the whole Mark I and about neural networks in general.",
+      "fix": "Keep the real trainXor() run. (1) Give each XOR try box a tiny two-dot glyph of its case (○○ ●○ ○● ●●) before its ✓ or ✗, matching the main row's style. (2) Under the 'XOR · one lit, not both' caption, add a second line in the same face: 'one layer of dials'. (3) Optional depth beat, only if it is true in the actual run: the first time the run gets the both-lit case wrong, show the two lit dials' tugs adding past the threshold tick (two small arc arrows stacking), so the viewer sees why. Two tugs that each say yes say yes together. This is the linear-separability intuition with no algebra. Hold to the existing beats; no narration change (runtime is 67.75 s against the 68 s cap)."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The lineage payoff is still too faint to teach. The 1-, 2- and 3-layer network silhouettes in the left windows (about 61.5-63 s) are small, low-contrast and off the eyeline, and they read as window fittings. 'Its descendants, today's neural networks' is therefore still mostly heard, and the film misses its one chance to answer the XOR plate's question: more layers.",
+      "fix": "Over 'descendants … networks' (60.09-62.3 s), raise the three layer silhouettes about 2x in contrast and size. Stage them left to right as 1 → 2 → 3 layers in the window directly behind the eye, the brightest region near the eyeline. Draw them in the same dial-and-thread vocabulary as the XOR plate, so the rhyme with 'one layer of dials' lands. Fade them before 'still learn' (63.04 s). Invent no modern specifics: lineage-mlp supports multilayer, nothing more."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "Carried from round 3 (deferred). 'For years, interest faded' (57.21-58.79 s) answers the lens's 'for how long' only with 'for years' plus the dim. The claim evidence gives the span: the 1970s and early 1980s.",
+      "fix": "On 'years' (57.44 s), extend the stamp in the same era type: '1969 · Minsky & Papert, Perceptrons' gains a second line, '→ the 1970s'. That is the minimal form the limit-linear claim text supports; use '1970s · early 1980s' only if the evidence line is accepted. It fades with the iris. It is one short line under the existing stamp, so it does not crowd the plates."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "On 'it guesses' (26.97-27.6 s) the camera is still trucking: the gauge is cut at frame right ('HORIZO…') and the needle sits idle at centre until about 29.5 s. The verb the line names has no picture. The full guess is explained by L0105b, but the first 'guess' should at least register.",
+      "fix": "Finish the truck by about 26.9 s so the full gauge is framed on 'guesses'. Give the needle a small undecided tremble around the threshold on 'guesses' (no verdict yet), and let it commit as L0105b's tugs arrive."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "QA data hygiene. score/analysis/summary.json is stale: it reports a 65.83 s cue and 71.83 s render, while m01.json and the mix use 67.75 s and 73.75 s. QA narration/listening also still warns that the human sign-off for Rosenblatt and Papert is pending. The STT records in narration/stt.json now pass, which fixes round 3's issue.",
+      "fix": "Regenerate score/analysis/summary.json whenever m01 is re-rendered. A human listens and runs film:voice signoff for both terms before publish."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Lens note: AlexNet and the transformer cannot be explained in a one-minute Mark I short, and they are not scored against this film.",
+      "fix": "None for this film. Brief a sequel as its own film if wanted."
+    },
+    {
+      "reviewer": "story",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The XOR payoff, which answers the film's second question ('simple compared with what?'), gets about 3.7 s on screen, and it shares that time with four other things. The plate arrives about 55.0 s, and the iris is near-black by 58.96 s. The 1969 stamp, the glowing book, the two learned plates and the dimmed board all sit in frame at the same moment. The XOR plate takes about 24% of the frame width, and its two cells, dials and needle are tiny. 'never settles' appears only around 58 s, just before the iris closes. The row's ✓ marks (✓✗✓…) can read as 'half-right' unless the tag is already up. A first-time viewer is likely to register that something failed, but not what XOR is or why it matters.",
+      "fix": "On 'showed just how simple' (55.0-56.4 s), push the camera (or scale the plate) so the XOR plate fills about 40% of the frame width. Drop the two learned plates and the board to about 50% value, keeping the stamp and book where they are. Bring 'never settles' in on 'simple' (56.23 s), not near the iris. Add a live tally under the row from the same real trainXor run (for example 'best: 3 of 4'), so the ✓ marks read as never all four. Start the iris on 'faded' (58.79 s), not before; take the time from the 1.0 s near-black stretch before the bookend. No new claims (limit-linear)."
+    },
+    {
+      "reviewer": "story",
+      "owner": "line",
+      "id": "L0105",
+      "severity": "minor",
+      "problem": "This was asked for in round 3 and has regressed. The beat after 'Nobody gave it the rule' is the film's one deliberate mystery. The pause is now 0.74 s ('rule' ends about 24.88 s, 'Show' at 25.62 s), shorter than round 3's 0.84 s and well under the requested 1.1-1.2 s. The picture and the celesta A5 at 25.17 s hold the empty retina well, but the line rushes on before the question can land.",
+      "fix": "Split L0105 into two clips after 'rule.', as round 3's fallback allowed, and give 'Show it a shape; it guesses.' a preGap so the silence after 'rule' is 1.15 s. Re-anchor the s03 'shape' beat and m01's celesta E6 (on 'shape'). The cost is about 0.4 s: take it from the bookend hold (3.1 s after 'mistakes'), keeping at least 2.6 s."
+    },
+    {
+      "reviewer": "story",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The 'descendants' image is too weak for the film's last idea. On 'Its descendants, today's neural networks' (60.1-62.0 s), the lineage silhouettes are two small node-and-layer diagrams, about 90-160 px wide at 1080p. They hang over the left windows, far from the eye, and read as wall plaques or signage, not as offspring of the machine. The fairy-tale opening is paid off by the man and his eye, but 'still learn from mistakes' has no image of its own.",
+      "fix": "Make the lineage grow out of the eye. On 'descendants' (60.09 s), let the window light throw two or three stacked retina-and-dial layer silhouettes directly behind the camera box. Each should be larger and fainter than the last (about 1.3x, 1.7x and 2.2x the box), with thin threads joining them, as if the eye's shadow multiplies. Fade them by 'still' (63.04 s), so the last image is again the man and the lit bar. Invent no modern specifics (claim lineage-mlp). Remove the two wall-plaque diagrams."
+    },
+    {
+      "reviewer": "story",
+      "owner": "shot",
+      "id": "ch01-s02",
+      "severity": "minor",
+      "problem": "The human introduction still undersells the character. On 'Frank' (20.83 s), Rosenblatt is facing the patch board. By 22.0 s he has turned right and is reaching off toward the far racks at the frame edge, away from the eye and the PERCEPTRON plate, so the name lands on a man walking away. Then the s03 iris opens at about 22.6 s while the name card is still up, and the card is clipped to 'K ROSENBLATT'. The one person in the film gets a 1.8 s card that is cut off.",
+      "fix": "On 'Frank' (20.83 s), turn him to camera-left so his near arm opens toward the eye on its stand (the eye glows, and he and his machine share the frame). Hold the pose to the cut. Keep the name card fully inside the iris aperture: place it near the eye, or start the iris on the eye at 22.4 s so it closes around the card, not through it. No new lines."
+    },
+    {
+      "reviewer": "story",
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "This is the fourth round this has been raised, and it is still not fixed. At 2.8 s the camera stand, the lit eye, the desk and all three racks read in clear silhouette under the title, so s02's part-by-part reveal ('Its eye… Behind it, wires, and racks of dials') shows things the viewer has already seen. The opening line 'Once, a machine learned to see' would land harder if the machine were still a rumour in the dark.",
+      "fix": "In s01, hold everything on the action plane (stand, eye housing, desk, racks) below about 12% luminance, so they are lost in the shadow under the blinds. Let only the window shafts, the fog and a single glint across the eye's face on 'see' (2.79 s) read. In s02, bring the machine up with the crossfade and the truck. Add a contact-sheet sample at 2.8 s to the s01 critic's checks so this is verified, not assumed."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The new XOR plate collides with the gauge. From about 55.0 to 58.8 s the plate's caption 'XOR · one lit, not both' sits on the gauge's label baseline, and the plate box covers the start of VERTICAL, so the hero frame of the limit beat reads 'TICAL  HORIZONTAL' (full-res 56.4 s). The plate also overlaps the gauge pedestal and lantern arm, which crowds the right third.",
+      "fix": "Move the XOR plate down and left into the free floor band right of the HORIZONTAL plate, keeping its caption at least 24 px below the gauge-label bottom. If it does not fit, scale it to about 0.85. Or fade the main gauge's VERTICAL/HORIZONTAL labels to 0 over 0.3 s as the plate enters (they carry no meaning in the limit tableau). Re-sheet at 56.4 s."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "In the try-5 NOW/THEN beat (47.3-48.6 s) the 'NOW' tag is hidden under the counter's fifth (✓) box, and only the top of the letters peeks out above it (full-res 47.5 s). The try-5 caption bar also butts directly against that box, so the bottom band is one crowded strip: five counter boxes, then a two-line caption.",
+      "fix": "Put the NOW label inside the caption bar, left-aligned and set like THEN beneath it, or move the counter group up 40 px / left 60 px for this beat. Keep at least 16 px between the last counter box and the caption plate."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The try-4/try-5 push (about 44.0-49.4 s) crops the retina at the left frame edge. Its left border is off-frame at 44.5 and 47.5 s (lit cells start at x≈0), and more is cut at 49.0 s as the camera recovers. Round 3 clamped the nudge push but not this one, so the shape the viewer is judging loses its frame on the payoff ('right').",
+      "fix": "Apply the same camera clamp to the 44-49.4 s push: keep the full retina frame at least 24 px inside the left edge (or trade some push for a slight rightward truck)."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s02",
+      "severity": "minor",
+      "problem": "Rosenblatt puppet in close-up. At 12-15 s the camera is close enough (figure about 900 px tall) to show the puppet's construction: a stiff tube arm hinged at the shoulder with no forearm taper or cuff, thin light interior strokes on the head (hairline and ear) that read as seams, a single hanging line for the tie, and a flat slab torso. At 11.0 s he is revealed as a dark figure on a dark rack, with almost no separation. Next to the reference's costumed, contour-rich figures he still reads as a mannequin, though no longer a walking one.",
+      "fix": "Silhouettes carry no interior lines: move all detail to the outer contour (hair mass, ear notch, collar, tie knot, cuff break, a slight forearm taper and a 10-15° wrist bend). Either hold the camera wider here (figure no more than about 600 px) or add those contour details first. At 11 s, catch a window shaft on his back or time the truck so he is first seen against the lit patch board."
+    },
+    {
+      "reviewer": "art",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Value hierarchy in the lab (sets/lab.ts and the puppet kit). Figures render mid-dark grey, close to the value of the racks, and racks still carry light strokes on their top and side edges (for example the PERCEPTRON rack's left edge at 21.3 s). The reference separates its planes by value: the figures are the blackest shapes, set against a hazed, lit back wall. Here the figure and the machine merge (11.0 s, 21.3 s at the dial rack).",
+      "fix": "Fill puppets near-black (about #0b0d0b) with a 1-2 px rim only on the window side. Keep the racks one step lighter, with 1-2 px rims only on window-facing tops. Drop the stroke on side and bottom edges. Back-wall racks go another 8% into haze."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The limit tableau is murky, and the 'years' dim barely registers. From 55 to 57.4 s the whole frame averages luma about 19/255, so the learned plates and the XOR plate read dim. The step on 'years' is only −16% (18.6 → 15.6) and flows straight into the iris, so it reads as the start of the iris rather than as a beat for 'for years, interest faded'.",
+      "fix": "Hold the tableau a little brighter (mean luma about 28-32), with the plates, stamp and book lit and the main machine dimmed. On 'years' (57.44 s), step the key light down a clear 25-30% over 0.3 s and hold it about 0.6 s before the iris starts, while the XOR row keeps ticking."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "The eye's grid glows (soft lit field across the whole retina) from about 4.3 s, roughly 1.3-1.6 s before 'eye' (5.97 s). This pre-empts s02's reveal, which is otherwise a clean continuous push.",
+      "fix": "Keep the grid dark after the glint on 'see' (2.79 s) and begin its glow on 'Its' (5.61 s), so it is lit on 'eye'."
+    },
+    {
+      "reviewer": "sound",
+      "id": "L0105",
+      "owner": "line",
+      "severity": "minor",
+      "problem": "Round 3's line fix for L0105 did not land. The planted question still gets only a 0.74 s word gap (0.80 s of silence at -45 dB) between 'rule' (ends 24.88) and 'Show' (25.62). The direction and the round-3 verdict asked for 1.1-1.2 s. insertGaps.rule is 0.32, but the clip's own gap is only about 0.42 s, so the total falls short, and it is now slightly shorter than round 3's 0.84 s.",
+      "fix": "Raise story/script.json L0105 insertGaps.rule from 0.32 to about 0.68, for about a 1.1 s gap, and re-lock. This adds about 0.36 s, which would put the film at about 68.1 s, over the 68 s cap. Pay for it by taking L0108's preGap from 2.2 to 2.0 s (the verdict's stated floor for the try-5 air) and about 0.16 s from the bookend hold. After the trim the fade still starts about 2.0 s after the last strike, against a 1.6 s minimum. Then shift m01's s03 onsets after 25.6 s by the new offset; the celesta A5 at 25.17 stays inside the widened gap. Also re-anchor ch01-s03's beats. Do not re-narrate."
+    },
+    {
+      "reviewer": "sound",
+      "id": "listening-signoff",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "STT confirms the words but not the stress. voice/voice.json listening entries for Rosenblatt (ROH-zen-blat) and Papert (PAP-ert, from the 'Pappert' respelling) are still 'pending', and QA 'listening' warns. This is the last unverified pronunciation risk in a film that names two real people.",
+      "fix": "A human plays narration/clips/L0104.wav and narration/clips/L0108.wav and runs npm run film:voice -- signoff --slug perceptron-short --term Rosenblatt --by <name>, then the same with --term Papert. If either is stressed wrong, re-narrate only that line with a new seed and repeat the STT round trip. The pipeline cannot do this alone, so surface it to the user at the end of the loop rather than blocking on it."
+    },
+    {
+      "reviewer": "sound",
+      "id": "score-analysis-stale",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "score/analysis/summary.json is from the old clock (cueSeconds 65.8333, duration 71.8333, -24.3 LUFS). score/analysis/m01.json and the render are current (67.75 + 6 s, -25.6 LUFS). The revision-9 note in cues.json gives -25.0 LUFS I. Nothing audible is affected, but a reviewer or the critic reading the summary is looking at the wrong cue.",
+      "fix": "Have film-score's analyze step rewrite summary.json whenever it rewrites a cue's analysis json, and copy the measured I/LRA/TP into cues.json notes from the analysis output instead of hand-typing them. Add a QA check that summary.json cueSeconds equals the timeline duration."
+    },
+    {
+      "reviewer": "sound",
+      "id": "no-diegetic-sound",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Carried forward, optional. The soundtrack is still voice plus score while the picture shows fluorescent tubes, motors turning dials and a needle crossing a threshold. The score's pizz figures stand in well for the mechanism, so this is polish, not a defect.",
+      "fix": "Optional. Add a sparse foley stem at -30 LUFS or below. Use a faint tube hum under ch01-s02 from about 6 s, ducked under speech, and 2-3 soft servo ticks on the ch01-s03 nudge updates, placed in word gaps (about 35.45, 41.65 and 42.55). Keep 'right' and the try-5 flare purely musical."
+    }
+  ],
+  "summary": "Round 4 FAILS the gate, but it is the closest yet: mean 8.15 (round 3: 7.83). Six of eight dimensions now clear 8 (accuracy 8.67, sync 8.42, story 8.17, sound 8.17, clarity 8.0, visual 8.0). Depth 7.92 and curiosity 7.83 trail just under, and no issue is critical. Nearly every round-3 fix landed and was verified. The remaining gap is the ending's teaching payload. The XOR limit is shown but is not legible: there is no case glyph, no 'one layer', it is small, it collides with the gauge labels, and 'never settles' arrives at the iris. The lineage reads as window fittings, not as more layers growing from the eye. So the two highest-leverage fixes are both in ch01-s03: (1) make XOR legible and single-layer (a bigger plate, case glyphs, 'one layer of dials', an early 'never settles' and a real tally), and (2) grow 1 → 2 → 3 layer silhouettes out of the eye on 'descendants'. Add a clear 'years' dim with '→ the 1970s'. Then fix L0105's pause after 'rule' with an insertGap of 0.68, paid for by L0108's preGap of 2.0 and a 0.16 s tail trim (runtime unchanged), re-fit m01, hide the machine in s01 (fourth round), turn Rosenblatt toward the eye on 'Frank', and do the lab value pass. The human Rosenblatt/Papert listening sign-off goes to the user, not the loop.",
+  "at": "2026-10-06T22:42:28Z"
+}

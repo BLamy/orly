@@ -1,0 +1,104 @@
+{
+ "shot": "ch14-s02",
+ "at": "2026-10-13T21:39:35.130Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 18,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "“…certain high-end chips",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "used in military applications”",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "BIS, 7 OCT 2022",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "“…the U.S. abuses export",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "control measures…”",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "MAO NING, 8 OCT 2022",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "(AP TRANSLATION)",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "THE CHOKEPOINT",
+   "capWhileSubject": 22.6,
+   "why": "named: \"chokepoint\""
+  },
+  {
+   "text": "CHINA IS A YEAR",
+   "capWhileSubject": 22.6,
+   "why": "named: \"china year\""
+  },
+  {
+   "text": "OR TWO BEHIND",
+   "capWhileSubject": 22.6,
+   "why": "named: \"behind\""
+  },
+  {
+   "text": "CAN A FENCE",
+   "capWhileSubject": 23.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AROUND CHIPS",
+   "capWhileSubject": 23.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HOLD?",
+   "capWhileSubject": 23.6,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "SCALE IS THE MAIN LEVER",
+   "maxCap": 11,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND",
+   "maxCap": 11,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DANGEROUS",
+   "maxCap": 11,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COMPUTE IS",
+   "maxCap": 22.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LIT 2022",
+   "maxCap": 17,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 5
+}

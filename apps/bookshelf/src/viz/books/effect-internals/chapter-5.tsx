@@ -37,19 +37,22 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // ---------------------------------------------------------------------------
 
 const MASK = { x: 48, y: 116, w: 264, h: 208 } as const;
-const PANEL = { x: 356, y: 96, w: 420, h: 452 } as const;
+// The panel ends above the caption pill (stage y ~630 under every camera framing).
+const PANEL = { x: 356, y: 96, w: 420, h: 420 } as const;
 const SLOT = { x: 388, y: 180, w: 208, h: 74 } as const;
 const SLOT_C = { x: SLOT.x + SLOT.w / 2, y: SLOT.y + SLOT.h / 2 } as const;
-const STACK_X = 632;
+const STACK_X = 628;
 const STACK_W = 132;
 const STACK_H = 46;
-const stackY = (i: number): number => 470 - i * 56;
+const RAIL = { x: 614, y: 262, w: 158, h: 244 } as const;
+const stackY = (i: number): number => 450 - i * 56;
 const SCOPE = { x: 856, y: 110, w: 350, h: 264 } as const;
 const TRAY = { x: 856, y: 410, w: 350, h: 74 } as const;
 
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.02 };
-const CAM_MACHINE: CameraState = { x: 620, y: 320, k: 1.2 };
-const CAM_SCOPE: CameraState = { x: 900, y: 300, k: 1.18 };
+// Both framings keep the fiber panel, the boundary stack, the Scope and the tray on stage.
+const CAM_MACHINE: CameraState = { x: 640, y: 320, k: 1.1 };
+const CAM_SCOPE: CameraState = { x: 782, y: 322, k: 1.3 };
 
 const RESOURCES = ['conn', 'file', 'lock'] as const;
 
@@ -272,7 +275,8 @@ export function Render({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
   const dimU = s.get(scene.dimU);
 
-  const mainOp = 1 - 0.88 * dimU;
+  // the old machine fades fully out so the closing recap sits on a clean stage
+  const mainOp = 1 - dimU;
   const cur = CUR[Math.min(curK, CUR.length - 1)];
   const ang = spinU * Math.PI * 2;
   const dotX = SLOT_C.x + 128 * Math.cos(ang);
@@ -281,7 +285,7 @@ export function Render({ s }: { s: SceneState }) {
   // demo pass bubbles travel bottom→top past the demo frame at stackY(0)
   const passPos = (u: number) => ({
     x: STACK_X + STACK_W / 2,
-    y: 560 - u * 300,
+    y: 512 - u * 290,
   });
   const pg = passPos(passG);
   const pr = passPos(passR);
@@ -310,12 +314,12 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* acquireUseRelease anatomy */}
-        <g opacity={maskU * mainOp}>
+        <g opacity={maskU * (1 - rewindU) * mainOp}>
           <rect x={MASK.x} y={MASK.y} width={MASK.w} height={MASK.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={MASK.x + 18} y={MASK.y + 28} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
+          <text x={MASK.x + 18} y={MASK.y + 28} fill={colors.TEXT} fontSize={14} fontWeight={600}>
             acquireUseRelease
           </text>
-          <text x={MASK.x + 18} y={MASK.y + 46} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+          <text x={MASK.x + 18} y={MASK.y + 46} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             uninterruptibleMask
           </text>
           {(['acquire', 'use', 'release'] as const).map((seg, i) => {
@@ -336,7 +340,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={MASK.x + 34} y={MASK.y + 83 + i * 46} fill={masked ? colors.WARM : colors.TEXT} fontSize={12.5} fontFamily={MONO}>
                   {seg}
                 </text>
-                <text x={MASK.x + MASK.w - 32} y={MASK.y + 83 + i * 46} textAnchor="end" fill={masked ? colors.WARM : colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>
+                <text x={MASK.x + MASK.w - 32} y={MASK.y + 83 + i * 46} textAnchor="end" fill={masked ? colors.WARM : colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                   {masked ? 'shielded' : 'restore'}
                 </text>
               </g>
@@ -350,24 +354,25 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PANEL.x + 24} y={PANEL.y + 32} fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
             FiberImpl · runLoop
           </text>
-          <text x={PANEL.x + PANEL.w - 20} y={PANEL.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={PANEL.x + PANEL.w - 20} y={PANEL.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
             internal/effect.ts
           </text>
           <ellipse cx={SLOT_C.x} cy={SLOT_C.y} rx={126} ry={54} fill="none" stroke={colors.GRID} strokeDasharray="3 6" />
           <circle cx={dotX} cy={dotY} r={5} fill={colors.SECONDARY} />
           <rect x={SLOT.x} y={SLOT.y} width={SLOT.w} height={SLOT.h} rx={10} fill={colors.BG} stroke={cur.color} strokeWidth={1.8} />
-          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={SLOT_C.x} y={SLOT_C.y - 60} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             current
           </text>
           <text x={SLOT.x + 16} y={SLOT.y + 30} fill={cur.color} fontSize={14} fontFamily={MONO} fontWeight={700}>
             {cur.label}
           </text>
-          <text x={SLOT.x + 16} y={SLOT.y + 54} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+          <text x={SLOT.x + 16} y={SLOT.y + 54} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
             {cur.sub}
           </text>
 
-          {/* the stack */}
-          <text x={STACK_X + STACK_W / 2} y={stackY(1) - 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          {/* the stack: a rail the frames stack up from the bottom */}
+          <rect x={RAIL.x} y={RAIL.y} width={RAIL.w} height={RAIL.h} rx={12} fill="none" stroke={colors.GRID} strokeDasharray="4 5" />
+          <text x={RAIL.x + 12} y={RAIL.y + 20} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             _stack
           </text>
 
@@ -384,10 +389,10 @@ export function Render({ s }: { s: SceneState }) {
                 stroke={shieldG > 0.3 ? colors.WARM : colors.TEAL}
                 strokeWidth={1.8}
               />
-              <text x={STACK_X + 10} y={stackY(0) + 20} fill={colors.TEAL} fontSize={11} fontFamily={MONO} fontWeight={600}>
+              <text x={STACK_X + 10} y={stackY(0) + 20} fill={colors.TEAL} fontSize={13} fontFamily={MONO} fontWeight={600}>
                 OnExit
               </text>
-              <text x={STACK_X + 10} y={stackY(0) + 36} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={STACK_X + 10} y={stackY(0) + 36} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 run finalizer
               </text>
               {/* both ports — it catches everything */}
@@ -396,10 +401,10 @@ export function Render({ s }: { s: SceneState }) {
               {shieldG > 0.02 && (
                 <g opacity={shieldG}>
                   <rect x={STACK_X - 6} y={stackY(0) - 6} width={STACK_W + 12} height={STACK_H + 12} rx={12} fill="none" stroke={colors.WARM} strokeWidth={2} />
-                  <text x={STACK_X + STACK_W + 14} y={stackY(0) + 16} fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+                  <text x={STACK_X - 22} y={stackY(0) + 18} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     interruptible:
                   </text>
-                  <text x={STACK_X + STACK_W + 14} y={stackY(0) + 31} fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+                  <text x={STACK_X - 22} y={stackY(0) + 33} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     false while it runs
                   </text>
                 </g>
@@ -420,12 +425,12 @@ export function Render({ s }: { s: SceneState }) {
               if (vis <= 0.01) return null;
               const busy = f.i === 0 && climbU > 0.9 && climbU < 2.1;
               return (
-                <g key={f.i} opacity={vis} transform={`translate(${skipT * 220} ${(1 - present) * 14})`}>
+                <g key={f.i} opacity={vis} transform={`translate(0 ${(1 - present) * 14 + skipT * 26})`}>
                   <rect x={STACK_X} y={stackY(f.i)} width={STACK_W} height={STACK_H} rx={9} fill={colors.PANEL} stroke={busy ? colors.WARM : f.i === 0 ? colors.TEAL : colors.GRID} strokeWidth={busy ? 2.2 : 1.4} />
-                  <text x={STACK_X + 10} y={stackY(f.i) + 20} fill={f.i === 0 ? colors.TEAL : colors.TEXT} fontSize={11} fontFamily={MONO} fontWeight={600}>
+                  <text x={STACK_X + 10} y={stackY(f.i) + 20} fill={f.i === 0 ? colors.TEAL : colors.TEXT} fontSize={12} fontFamily={MONO} fontWeight={600}>
                     {f.name}
                   </text>
-                  <text x={STACK_X + 10} y={stackY(f.i) + 36} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                  <text x={STACK_X + 10} y={stackY(f.i) + 36} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     {f.tag}
                   </text>
                   {f.i === 0 && (
@@ -436,7 +441,7 @@ export function Render({ s }: { s: SceneState }) {
                   )}
                   {f.i === 1 && <circle cx={STACK_X + STACK_W - 12} cy={stackY(1) + 14} r={5} fill={colors.POSITIVE} />}
                   {skipT > 0.15 && (
-                    <text x={STACK_X + STACK_W + 12} y={stackY(1) + 30} fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
+                    <text x={STACK_X - 22} y={stackY(1) + 30} textAnchor="end" fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
                       ✕
                     </text>
                   )}
@@ -453,8 +458,8 @@ export function Render({ s }: { s: SceneState }) {
           {passR > 0.01 && passR < 0.99 && <circle cx={pr.x} cy={pr.y} r={9} fill={colors.NEGATIVE} opacity={0.9} />}
           {relFlash % 1 > 0.05 && relFlash % 1 < 0.95 && relFlash > 0 && relFlash < 2.01 && (
             <g opacity={0.9}>
-              <rect x={STACK_X - 40} y={stackY(0) + STACK_H + 14} width={210} height={28} rx={7} fill={colors.BG} stroke={colors.TEAL} />
-              <text x={STACK_X + 65} y={stackY(0) + STACK_H + 33} textAnchor="middle" fill={colors.TEAL} fontSize={11.5} fontFamily={MONO}>
+              <rect x={362} y={stackY(1) + 6} width={230} height={28} rx={7} fill={colors.BG} stroke={colors.TEAL} />
+              <text x={477} y={stackY(1) + 25} textAnchor="middle" fill={colors.TEAL} fontSize={12} fontFamily={MONO}>
                 finalizer ran · exit passed on
               </text>
             </g>
@@ -463,14 +468,14 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the interrupt strike */}
         {strikeU > 0.01 && strikeU < 0.99 && (
-          <circle cx={120 + (SLOT_C.x - 120) * strikeU} cy={620 - (620 - SLOT_C.y) * strikeU} r={11} fill={colors.NEGATIVE} opacity={0.92} />
+          <circle cx={130 + (SLOT_C.x - 130) * strikeU} cy={470 - (470 - SLOT_C.y) * strikeU} r={11} fill={colors.NEGATIVE} opacity={0.92} />
         )}
 
         {/* the climbing exit */}
         {climbU > 0.05 && climbU < 2.95 && (
           <g>
             <circle cx={climbPos.x} cy={climbPos.y} r={10} fill={colors.NEGATIVE} opacity={0.95} />
-            <text x={climbPos.x + 18} y={climbPos.y + 4} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+            <text x={climbPos.x + 18} y={climbPos.y + 4} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
               Exit
             </text>
           </g>
@@ -482,10 +487,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={SCOPE.x + 20} y={SCOPE.y + 30} fill={colors.TEXT} fontSize={15} fontWeight={700}>
             Scope
           </text>
-          <text x={SCOPE.x + SCOPE.w - 18} y={SCOPE.y + 30} textAnchor="end" fill={scopeClosed ? colors.NEGATIVE : colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={SCOPE.x + SCOPE.w - 18} y={SCOPE.y + 30} textAnchor="end" fill={scopeClosed ? colors.NEGATIVE : colors.MUTED} fontSize={12.5} fontFamily={MONO}>
             {scopeClosed ? 'state: Closed' : 'state: Open'}
           </text>
-          <text x={SCOPE.x + 20} y={SCOPE.y + 52} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+          <text x={SCOPE.x + 20} y={SCOPE.y + 52} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             strategy: "sequential" · finalizers: Map
           </text>
           {RESOURCES.map((r, i) => {
@@ -495,12 +500,12 @@ export function Render({ s }: { s: SceneState }) {
             const vis = inU * (1 - peel);
             if (vis <= 0.01) return null;
             return (
-              <g key={r} opacity={vis} transform={`translate(${peel * 60} 0)`}>
+              <g key={r} opacity={vis}>
                 <rect x={SCOPE.x + 20} y={SCOPE.y + 68 + i * 56} width={SCOPE.w - 40} height={44} rx={9} fill={colors.BG} stroke={peel > 0.05 ? colors.WARM : colors.GRID} />
-                <text x={SCOPE.x + 36} y={SCOPE.y + 87 + i * 56} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                <text x={SCOPE.x + 36} y={SCOPE.y + 87 + i * 56} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                   key {i + 1} → release {r}
                 </text>
-                <text x={SCOPE.x + 36} y={SCOPE.y + 104 + i * 56} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                <text x={SCOPE.x + 36} y={SCOPE.y + 104 + i * 56} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   acquireRelease · filed at acquisition
                 </text>
               </g>
@@ -511,13 +516,13 @@ export function Render({ s }: { s: SceneState }) {
             const peel = clamp01(peelU - (2 - i));
             if (peel < 0.95) return null;
             return (
-              <text key={r} x={SCOPE.x + SCOPE.w - 20} y={SCOPE.y + 96 + i * 56} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+              <text key={r} x={SCOPE.x + SCOPE.w - 20} y={SCOPE.y + 96 + i * 56} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                 ✓ released
               </text>
             );
           })}
           {peelU > 0.05 && peelU < 3 && (
-            <text x={SCOPE.x + 20} y={SCOPE.y + SCOPE.h - 16} fill={colors.WARM} fontSize={11} fontFamily={MONO}>
+            <text x={SCOPE.x + 20} y={SCOPE.y + SCOPE.h - 16} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
               closing in reverse — scopeCloseUnsafe(exit)
             </text>
           )}
@@ -526,10 +531,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* the exit tray */}
         <g opacity={exitU * mainOp}>
           <rect x={TRAY.x} y={TRAY.y} width={TRAY.w} height={TRAY.h} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-          <text x={TRAY.x + 18} y={TRAY.y + 30} fill={colors.NEGATIVE} fontSize={13.5} fontFamily={MONO} fontWeight={700}>
+          <text x={TRAY.x + 18} y={TRAY.y + 30} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
             Exit · Failure · Interrupt
           </text>
-          <text x={TRAY.x + 18} y={TRAY.y + 52} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+          <text x={TRAY.x + 18} y={TRAY.y + 52} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
             unchanged · resources open: 0
           </text>
         </g>
@@ -547,10 +552,10 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={194 + i * 224} y={306} textAnchor="middle" fill={colors.ACCENT} fontSize={30} fontFamily={MONO} fontWeight={700}>
                     {r.n}
                   </text>
-                  <text x={194 + i * 224} y={344} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                  <text x={194 + i * 224} y={344} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     {r.text.split(' ').slice(0, 3).join(' ')}
                   </text>
-                  <text x={194 + i * 224} y={364} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                  <text x={194 + i * 224} y={364} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     {r.text.split(' ').slice(3).join(' ')}
                   </text>
                 </g>

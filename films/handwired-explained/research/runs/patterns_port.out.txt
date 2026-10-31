@@ -1,0 +1,109 @@
+=== 1. Combine counts and levels (the patterns.md#L46-L50 table) ===
+n=4: loop 3 in 3 | sklansky 4 in 2 | brentKung 4 in 2
+n=8: loop 7 in 7 | sklansky 12 in 3 | brentKung 11 in 4
+n=16: loop 15 in 15 | sklansky 32 in 4 | brentKung 26 in 6
+n=64: loop 63 in 63 | sklansky 192 in 6 | brentKung 120 in 10
+n=256: loop 255 in 255 | sklansky 1024 in 8 | brentKung 502 in 14
+n=1024: loop 1023 in 1023 | sklansky 5120 in 10 | brentKung 2036 in 18
+
+=== 2. 8-item running totals, grouping shown (Brent-Kung, then Sklansky) ===
+brentKungPrefix: 11 combines, 4 levels
+  combine #1 at level 1: 0 with 1
+  combine #2 at level 1: 2 with 3
+  combine #3 at level 1: 4 with 5
+  combine #4 at level 1: 6 with 7
+  combine #5 at level 2: (0+1) with (2+3)
+  combine #6 at level 2: (4+5) with (6+7)
+  combine #7 at level 3: ((0+1)+(2+3)) with ((4+5)+(6+7))
+  combine #8 at level 3: ((0+1)+(2+3)) with (4+5)
+  combine #9 at level 2: (0+1) with 2
+  combine #10 at level 3: ((0+1)+(2+3)) with 4
+  combine #11 at level 4: (((0+1)+(2+3))+(4+5)) with 6
+  prefix[0] = 0
+  prefix[1] = (0+1)
+  prefix[2] = ((0+1)+2)
+  prefix[3] = ((0+1)+(2+3))
+  prefix[4] = (((0+1)+(2+3))+4)
+  prefix[5] = (((0+1)+(2+3))+(4+5))
+  prefix[6] = ((((0+1)+(2+3))+(4+5))+6)
+  prefix[7] = (((0+1)+(2+3))+((4+5)+(6+7)))
+sklanskyPrefix: 12 combines, 3 levels
+  combine #1 at level 1: 0 with 1
+  combine #2 at level 1: 2 with 3
+  combine #3 at level 1: 4 with 5
+  combine #4 at level 1: 6 with 7
+  combine #5 at level 2: (0+1) with 2
+  combine #6 at level 2: (0+1) with (2+3)
+  combine #7 at level 2: (4+5) with 6
+  combine #8 at level 2: (4+5) with (6+7)
+  combine #9 at level 3: ((0+1)+(2+3)) with 4
+  combine #10 at level 3: ((0+1)+(2+3)) with (4+5)
+  combine #11 at level 3: ((0+1)+(2+3)) with ((4+5)+6)
+  combine #12 at level 3: ((0+1)+(2+3)) with ((4+5)+(6+7))
+  prefix[0] = 0
+  prefix[1] = (0+1)
+  prefix[2] = ((0+1)+2)
+  prefix[3] = ((0+1)+(2+3))
+  prefix[4] = (((0+1)+(2+3))+4)
+  prefix[5] = (((0+1)+(2+3))+(4+5))
+  prefix[6] = (((0+1)+(2+3))+((4+5)+6))
+  prefix[7] = (((0+1)+(2+3))+((4+5)+(6+7)))
+
+=== 3. 8-item numeric prefix sum (integers: exact in any grouping) ===
+heights         3 1 4 1 5 9 2 6
+loop totals     3 4 8 9 14 23 25 31
+brentKung       3 4 8 9 14 23 25 31
+sklansky        3 4 8 9 14 23 25 31
+
+=== 4. FP32 grouping changes the last bit (patterns.md#L39) ===
+FP32 row heights: 229, 167.39999389648438, 208.5, 194.39999389648438
+loop (((229+167.4)+208.5)+194.4) = 799.300048828125
+pairs ((229+167.4)+(208.5+194.4)) = 799.2999877929688
+brentKung last prefix          = 799.2999877929688
+float64 sum of the FP32 heights = 799.2999877929688
+difference = 0.00006103515625  2^-14 = 0.00006103515625
+
+=== 5. filter(isVisible).slice(0, K) into K slots (patterns.md#L386-L393) ===
+item             0 1 2 3 4 5 6 7
+visible          0 1 1 0 1 0 1 1
+visibleThrough   0 1 2 2 3 3 4 5
+slot 0: [visibleThrough<=0] 10000000  one-hot 01000000  -> item 1  present=1
+slot 1: [visibleThrough<=1] 11000000  one-hot 00100000  -> item 2  present=1
+slot 2: [visibleThrough<=2] 11110000  one-hot 00001000  -> item 4  present=1
+slot 3: [visibleThrough<=3] 11111100  one-hot 00000010  -> item 6  present=1
+slot 4: [visibleThrough<=4] 11111110  one-hot 00000001  -> item 7  present=1
+slot 5: [visibleThrough<=5] 11111111  one-hot 00000000  -> item (none)  present=0
+binary search for slot 2: read [7]=5; read [3]=2 <= 2, +4; read [5]=3; read [4]=3 -> position 4
+JS reference items.filter(isVisible).slice(0, 3) = [ 1, 2, 4 ]
+
+=== 6. findIndex when the test flips once (patterns.md#L74-L78) ===
+bits 1 1 1 0 0  count 3  one-hot 0 0 0 1 0  loop findIndex 3
+
+=== 7. emitFirstActive tree on hit bits (patterns.md#L107-L114) ===
+  up level 0: 0 1 0 1 0 0 1 0
+  up level 1: 1 1 0 1
+  up level 2: 1 1
+  up level 3: 1
+  one-hot of first hit: 0 1 0 0 0 0 0 0  findIndex = 1
+
+=== 8. sort as ranks (patterns.md#L366-L371) ===
+  item 0 (key 30) row: . 1 0 1 -> rank 2
+  item 1 (key 10) row: 0 . 0 0 -> rank 0
+  item 2 (key 30) row: 1 1 . 1 -> rank 3
+  item 3 (key 20) row: 0 1 0 . -> rank 1
+  JS sort order [ 1, 3, 0, 2 ] -> rank of each item [ 2, 0, 3, 1 ]
+  n=64: 2016 pairs x 2 ops + 64 rank sums = 4096
+
+=== 9. pointer jumping (patterns.md#L340-L343) ===
+  1 line later  3 3 4 6 6 8 9 9 10 10
+  2 lines later 6 6 6 9 9 10 10 10 10 10
+  line 3 starts at j1[j2[0]] = 9
+  walk loop starts 0 3 6 9 10
+
+=== 10. stack of one bit per level (patterns.md#L316-L319) ===
+  depthBefore  0   1   2   3   2   1
+  codeBefore   0   1   1   5   1   1
+  inObject     0   1   0   1   0   1
+
+=== 11. state machine tables combine as later[earlier[state]] (patterns.md#L224-L227) ===
+  downOnButton then moveOutside = pressedOutside, pressedOutside, pressedOutside

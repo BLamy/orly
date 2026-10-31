@@ -60,7 +60,7 @@ const asx = (a: number): number => AS_X + (Math.log2(a) / 4) * AS_W;
 const asy = (l: number): number => AS_Y - 30 - (1 - l) * (AS_H - 60);
 
 const CAM_BARRON: CameraState = { x: 400, y: 250, k: 1.3 };
-const CAM_COMBO: CameraState = { x: 400, y: 460, k: 1.3 };
+const CAM_COMBO: CameraState = { x: 400, y: 350, k: 1.2 };
 const CAM_SWEEP: CameraState = { x: AS_X + AS_W / 2, y: 340, k: 1.25 };
 
 interface Scene {
@@ -196,9 +196,20 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* Barron panel */}
+          {/* the squeeze the opening caption names: one token's width, d -> d/4 */}
+          {barronU < 1 && (
+            <g opacity={1 - barronU}>
+              <rect x={200} y={310} width={880} height={40} rx={8} fill="none" stroke={colors.GRID} strokeDasharray="6 6" />
+              <rect x={200} y={310} width={880 - 660 * titleU} height={40} rx={8} fill={colors.ACCENT} opacity={0.85} />
+              <text x={200} y={296} fill={colors.TEXT} fontSize={16}>
+                token width d, squeezed to d/4
+              </text>
+            </g>
+          )}
+
+          {/* Barron panel — dims away once the ablation sweep takes the stage */}
           {barronU > 0 && (
-            <g opacity={barronU}>
+            <g opacity={barronU * (1 - sweepU)}>
               <rect x={140} y={150} width={520} height={140} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={162} y={182} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
                 the budget that matters
@@ -208,25 +219,37 @@ function Frame({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* combinatorics panel */}
+          {/* combinatorics panel: a choice of experts, then the toy bit counts */}
           {comboU > 0 && (
-            <g opacity={comboU}>
-              <rect x={140} y={340} width={520} height={210} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={162} y={372} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
+            <g opacity={comboU * (1 - sweepU)}>
+              <rect x={140} y={330} width={520} height={230} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={162} y={362} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
                 routing choice grows combinatorially
               </text>
-              <MathLabel tex={'\\binom{\\alpha N}{\\alpha K} \\geq \\binom{N}{K}^{\\alpha}'} x={400} y={412} fontSize={18} color={colors.TEXT} />
+              <MathLabel tex={'\\binom{\\alpha N}{\\alpha K} \\geq \\binom{N}{K}^{\\alpha}'} x={400} y={398} fontSize={18} color={colors.TEXT} />
+              {Array.from({ length: 16 }, (_, i) => {
+                const lit = i === 3 || i === 11;
+                return (
+                  <rect key={i} x={180 + i * 28} y={420} width={20} height={20} rx={4}
+                    fill={lit ? colors.POSITIVE : colors.MUTED} opacity={lit ? 0.9 : 0.25} />
+                );
+              })}
+              <text x={180} y={460} fill={colors.MUTED} fontSize={14}>
+                2 of 16 experts fire
+              </text>
+              <text x={180} y={488} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+                toy, computed here (α = 4):
+              </text>
+              <rect x={180} y={496} width={300} height={16} rx={4} fill="none" stroke={colors.GRID} />
+              <rect x={180} y={496} width={(BITS_BASE / 32) * 300 * bitsU} height={16} rx={4} fill={colors.MUTED} opacity={0.6} />
+              <rect x={180} y={518} width={300} height={16} rx={4} fill="none" stroke={colors.GRID} />
+              <rect x={180} y={518} width={(BITS_LATENT / 32) * 300 * bitsU} height={16} rx={4} fill={colors.POSITIVE} opacity={0.8} />
               {bitsU > 0 && (
                 <g opacity={bitsU}>
-                  <text x={180} y={462} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
-                    toy, computed here (α = 4):
-                  </text>
-                  <rect x={180} y={476} width={(BITS_BASE / 32) * 300 * bitsU} height={16} rx={4} fill={colors.MUTED} opacity={0.6} />
-                  <text x={190 + (BITS_BASE / 32) * 300} y={489} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={190 + (BITS_BASE / 32) * 300} y={509} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     C(16,2) ≈ {BITS_BASE.toFixed(1)} bits
                   </text>
-                  <rect x={180} y={500} width={(BITS_LATENT / 32) * 300 * bitsU} height={16} rx={4} fill={colors.POSITIVE} opacity={0.8} />
-                  <text x={190 + (BITS_LATENT / 32) * 300} y={513} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+                  <text x={490} y={531} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
                     C(64,8) ≈ {BITS_LATENT.toFixed(1)} bits
                   </text>
                 </g>
@@ -240,14 +263,14 @@ function Frame({ s }: { s: SceneState }) {
               <line x1={AS_X} y1={AS_Y} x2={AS_X + AS_W} y2={AS_Y} stroke={colors.GRID} strokeWidth={1.5} />
               <line x1={AS_X} y1={AS_Y} x2={AS_X} y2={AS_Y - AS_H} stroke={colors.GRID} strokeWidth={1.5} />
               {[1, 2, 4, 8, 16].map((a) => (
-                <text key={a} x={asx(a)} y={AS_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                <text key={a} x={asx(a)} y={AS_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                   {a}
                 </text>
               ))}
-              <text x={AS_X + AS_W / 2} y={AS_Y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={AS_X + AS_W / 2} y={AS_Y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 compression ratio α
               </text>
-              <text x={AS_X - 10} y={AS_Y - AS_H - 12} fill={colors.MUTED} fontSize={12}>
+              <text x={AS_X - 10} y={AS_Y - AS_H - 12} fill={colors.MUTED} fontSize={14}>
                 validation loss — reported trend (Fig. 3), replotted
               </text>
               <path d={curvePath} fill="none" stroke={colors.ACCENT} strokeWidth={3}
@@ -260,7 +283,7 @@ function Frame({ s }: { s: SceneState }) {
               {cliffU > 0 && (
                 <g opacity={cliffU}>
                   <line x1={asx(4)} y1={AS_Y} x2={asx(4)} y2={AS_Y - AS_H} stroke={colors.WARM} strokeDasharray="4 4" opacity={0.7} />
-                  <text x={asx(4)} y={AS_Y - AS_H + 18} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={600}>
+                  <text x={asx(4) + 8} y={AS_Y - AS_H + 18} fill={colors.WARM} fontSize={14} fontWeight={600}>
                     α = 4 · edge of the plateau
                   </text>
                 </g>
@@ -271,11 +294,11 @@ function Frame({ s }: { s: SceneState }) {
           {/* compensation control */}
           {compU > 0 && (
             <g opacity={compU}>
-              <rect x={AS_X - 40} y={AS_Y + 60} width={440} height={64} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={AS_X - 18} y={AS_Y + 86} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+              <rect x={AS_X - 40} y={AS_Y + 50} width={440} height={62} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={AS_X - 18} y={AS_Y + 74} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
                 shrink d, keep N — quality drops
               </text>
-              <text x={AS_X - 18} y={AS_Y + 108} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+              <text x={AS_X - 18} y={AS_Y + 96} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
                 shrink d, scale N and K by α — recovers (Fig. 4)
               </text>
             </g>
@@ -295,7 +318,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             The budget is units and choices, not width
           </text>

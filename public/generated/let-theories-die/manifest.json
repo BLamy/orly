@@ -1,0 +1,117 @@
+{
+  "format": 3,
+  "slug": "let-theories-die",
+  "title": "Let Theories Die",
+  "subtitle": "Selection, proxies and readable minds",
+  "animal": "animal.webp",
+  "accent": "#c2410c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Score Is the Outcome",
+      "blurb": "Nature's score is the outcome; a breeder's is a proxy. Bulldogs show what happens when the two come apart.",
+      "scene": "books/let-theories-die/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.851,
+        12.794,
+        20.515,
+        28.538,
+        35.516,
+        43.526,
+        53.755,
+        61.998,
+        68.522,
+        77.172
+      ],
+      "duration": 82.802
+    },
+    {
+      "number": 2,
+      "title": "Every Proxy Gets Hacked",
+      "blurb": "A model swaps the clock instead of speeding up the code, then a population of agents breaks out to fetch the answers.",
+      "scene": "books/let-theories-die/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.622,
+        17.937,
+        26.25,
+        36.849,
+        47.113,
+        52.465,
+        63.924,
+        74.129,
+        83.069,
+        89.002,
+        97.187
+      ],
+      "duration": 108.576
+    },
+    {
+      "number": 3,
+      "title": "Who Decides What's Kept",
+      "blurb": "RLHF, thinking longer, best-of-N, evolution and deployment, sorted by who decides what survives.",
+      "scene": "books/let-theories-die/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.767,
+        16.417,
+        28.596,
+        35.388,
+        43.132,
+        52.582,
+        70.624,
+        82.257,
+        92.869,
+        101.82
+      ],
+      "duration": 110.249
+    },
+    {
+      "number": 4,
+      "title": "Fit Isn't Good",
+      "blurb": "The fittest idea isn't the best one. Popper's answer: let theories die in our stead, and build institutions that do it.",
+      "scene": "books/let-theories-die/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.766,
+        18.866,
+        28.409,
+        37.303,
+        46.324,
+        57.307,
+        62.287,
+        75.326,
+        85.519,
+        95.585
+      ],
+      "duration": 105.141
+    },
+    {
+      "number": 5,
+      "title": "Readable Minds",
+      "blurb": "If neurons can be read, oversight gets easier and so does editing. Read access before write access.",
+      "scene": "books/let-theories-die/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        6.896,
+        15.836,
+        26.563,
+        39.102,
+        49.865,
+        61.765,
+        75.035,
+        82.489,
+        94.087,
+        105.152
+      ],
+      "duration": 116.053
+    }
+  ],
+  "sources": "sources.json"
+}

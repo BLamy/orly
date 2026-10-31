@@ -128,9 +128,11 @@ export const cellY = (r: number): number => GRID_Y + r * CELL;
 export const cellCX = (c: number): number => cellX(c) + CELL / 2;
 export const cellCY = (r: number): number => cellY(r) + CELL / 2;
 
-export const CAM_GRID: CameraState = { x: 555, y: 300, k: 1.16 };
-export const CAM_COINS: CameraState = { x: cellCX(1.5), y: cellCY(1), k: 1.75 };
-export const CAM_TROPHY: CameraState = { x: cellCX(5.4), y: cellCY(2), k: 1.7 };
+// Each framing keeps all five rows between the title strip (y ≈ 60) and the
+// caption band (y ≈ 630), so no cell value is cropped by the caption.
+export const CAM_GRID: CameraState = { x: 516, y: 353, k: 1.04 };
+export const CAM_COINS: CameraState = { x: 470, y: 337, k: 1.1 };
+export const CAM_TROPHY: CameraState = { x: 648, y: 337, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // The timeline

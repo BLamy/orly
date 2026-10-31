@@ -12,7 +12,7 @@ description: >
 
 ## Model responsibilities
 
-Read [the project authoring workflow](../../../docs/authoring-models.md). Sol (`gpt-6.1-sol`) plans and builds Blender/Three.js 3D assets; Opus 5.5 (`claude-opus-5-5`) authors and revises D3/SVG choreography. Invoke Opus through `npx --yes @anthropic-ai/claude-code@latest`. Preserve fixed captions and record actual provider provenance. Do not substitute models on a rate limit; continue independent work for the available role.
+Read [the project authoring workflow](../../../docs/authoring-models.md). Sol (`gpt-6.1-sol`) plans and builds Blender/Three.js 3D assets; Opus 5.5 (`claude-opus-5-5`) authors and revises D3/SVG choreography. Invoke Opus through `npx --yes @anthropic-ai/claude-code@latest`. Preserve fixed captions and record actual provider provenance. If a provider reaches a limit, preserve progress and report the blocker; no model substitution is authorized.
 
 
 `apps/bookshelf/src/viz/` is a scrubbable animation suite: one `Timeline` holds every value as

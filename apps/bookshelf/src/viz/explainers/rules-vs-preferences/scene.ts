@@ -102,7 +102,7 @@ export const px = (x: number): number => PX0 + x * (PX1 - PX0);
 export const py = (v: number): number => PY0 - (v - tMin) * ((P_AMP * 2) / (tMax - tMin)) * 0.5 - 30;
 
 export const CAM_PLOT: CameraState = { x: 640, y: 320, k: 1.12 };
-export const CAM_WORST: CameraState = { x: px(XS[WORST_ITEM]), y: py(LEARNED_N[WORST_ITEM]), k: 1.6 };
+export const CAM_WORST: CameraState = { x: px(0.5), y: py(LEARNED_N[WORST_ITEM]), k: 1.0 };
 
 export interface Scene {
   tl: Timeline;

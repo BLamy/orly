@@ -1,0 +1,289 @@
+/**
+ * ch11-s03 — JSON: "A CLEAR SUCCESS", AND A FAIR TALLY (plate, first dawnGold light; paper wipe in; 13.0 s).
+ *   L1105 "JSON: “a clear success.”"
+ *   L1106 "Though on new kinds of mistake, and on whole payloads written by agents, hand-written rules still won."
+ *
+ * A parchment plate warmed by the first dawnGold light (sets/ch11-s03-plate), the camera holding still so the plate
+ * can be read (a breath of drift only). Tag 11 hangs at the right from a short stub of copper line, the light on its
+ * JSON half (the TOML half in shade).
+ *   0.3  plate     the README's verdict as a short fragment only (the narrator speaks it): “a clear success”, serif,
+ *                  in quotation marks, with its attribution.
+ *   2.23 success   the narrator's hands punch a copper rivet through the JSON half's corner (dry clack; kept).
+ *   4.23 Though    a three-row tally strip slides up into the plate's lower left: paper bars on a ruled ground, lengths
+ *                  exact to the numbers (% of payloads entirely right; final test run once; trained = mean of five
+ *                  runs). Row one, familiar mistakes: trained 79.8 against hand rules 79.6, effectively a tie. Row two
+ *                  (on "mistake"), unseen mistake types: 68.9 against 87.2. Each figure prints at its bar's tip as the
+ *                  bar arrives; the bars grow from zero on twos.
+ *   8.21 agents    row three grows: agent-written payloads, 46.3 against 56.7.
+ *  10.85 won       the hand-rules figures of the two rows they won take a short ink underline.
+ */
+import { Timeline } from '../../../core';
+import type { Camera3, PaintEnv } from '../../../film';
+import { cardPaperAlpha, cardProbe, defineShot, mixLab, textRole, withAlpha } from '../../../film';
+import { hash1 } from '../../../film/core/frame';
+import { PUPPET_NEAR_BLACK } from '../../../film/silhouette/puppet';
+import { hands } from '../cast';
+import { copperOf } from '../sets/narratorHands';
+import { KNOT_A, KNOT_B, borderTag, knotCards11, tagFrame, tagLocal } from '../sets/ch11-s02-border';
+import { PLATE_CAM, PLATE_INK, P_COPPER, P_INK, TAG11_PLATE, bigRivet, drawStub, pInk, plateNear11, plateRoom11, stubY } from '../sets/ch11-s03-plate';
+import type { TagState } from '../sets/tagLine';
+
+const ID = 'ch11-s03';
+type C2 = CanvasRenderingContext2D;
+const clamp01 = (x: number) => (x <= 0 ? 0 : x >= 1 ? 1 : x);
+const sm = (x: number) => {
+  const u = clamp01(x);
+  return u * u * (3 - 2 * u);
+};
+const seg = (t: number, a: number, b: number) => sm((t - a) / (b - a));
+const twos = (t: number) => Math.floor(t * 12 + 1e-6) / 12;
+
+// ---------------------------------------------------------------- the facts (script ch11-s03, claims LB21 / LB19)
+const ROWS = [
+  { name: 'familiar mistakes', trained: 79.8, hand: 79.6 },
+  { name: 'unseen mistake types', trained: 68.9, hand: 87.2 },
+  { name: 'agent-written payloads', trained: 46.3, hand: 56.7 },
+] as const;
+const fmt = (v: number) => v.toFixed(1);
+
+// ---------------------------------------------------------------- layout (plate px)
+const QUOTE = { x: 124, y: 150 };
+// review r1: the strip sits ~70 px (1080p) higher, so no empty band under the quote, and is ~10 % larger (bars, rows,
+// labels); its right end stays clear of tag 11's inset
+const STRIP = { x: 88, y: 284, w: 748, h: 302 };
+const BAR = { x0: 392, perPct: 4.25, th: 19, gap: 5.5 };
+const rowY = (k: number) => STRIP.y + 84 + k * 73;
+const SZ = 1.1;
+const KNOT = { x: TAG11_PLATE.x, y: stubY(TAG11_PLATE.x) };
+
+interface Beats {
+  D: number;
+  plate: number;
+  rivet: number;
+  tally: number;
+  mistake: number;
+  agents: number;
+  won: number;
+  rivetAt: number;
+  rivetDur: number;
+}
+
+export default defineShot({
+  id: ID,
+  mood: 'dawnGold',
+  build({ timing: T }) {
+    const tl = new Timeline();
+    tl.hold(0, T.duration);
+    const rivet = T.beat('rivet');
+    const rivetDur = 2.0;
+    const b: Beats = {
+      D: T.duration,
+      plate: T.beat('plate'),
+      rivet,
+      tally: T.beat('tally'),
+      mistake: T.word('L1106', 'mistake'),
+      agents: T.beat('agents'),
+      won: T.word('L1106', 'won'),
+      // the punch comes down (rivet u = .49) on 'success'
+      rivetAt: rivet - 0.49 * rivetDur,
+      rivetDur,
+    };
+    return { tl, b };
+  },
+  paint(f, _s, sc) {
+    const { b } = sc;
+    const t = f.t;
+    const tq = twos(t);
+    // the camera holds: a breath of drift only
+    const cam: Camera3 = { ...PLATE_CAM, x: PLATE_CAM.x + 4 * Math.sin(t * 0.21), z: PLATE_CAM.z + 10 * sm(t / b.D) };
+    f.camera(cam);
+    plateRoom11(f, { amberTop: 1 });
+
+    const st: TagState = {
+      id: '11', x: TAG11_PLATE.x, y: TAG11_PLATE.eyeY, scale: TAG11_PLATE.scale, knot: [], swing: 0.012, phase: 0.6,
+      rivet: seg(tq, b.rivet - 0.02, b.rivet + 0.2),
+    };
+    const uR = clamp01((tq - b.rivetAt) / b.rivetDur);
+    const rivetPt = tagLocal(st, { knotAt: KNOT, tq }, -TAG11_PLATE.scale * 60 * 0.3, 16 * TAG11_PLATE.scale);
+    // the hands come up from below the plate, left of the tag (the lower left of this inset), not from the frame's far
+    // corner: the forearm then stays short instead of spanning the whole sheet
+    const hp = tq >= b.rivetAt && uR < 0.93 ? hands.act('rivet', uR, rivetPt, { scale: 1.4, entry: { R: { x: 640, y: 930 }, L: { x: 520, y: 980 } } }) : null;
+
+    f.layer(PLATE_INK, (c, env) => {
+      // the verdict: a short verbatim fragment and its attribution (the narrator speaks it)
+      const qa = seg(t, b.plate - 0.05, b.plate + 0.5);
+      pInk(c, '“a clear success”', QUOTE.x, QUOTE.y, { font: 'displayItalic', size: 60, weight: 600, alpha: qa, id: `${ID}-quote` });
+      pInk(c, '— recovery parser README, 16 Oct 2026', QUOTE.x + 4, QUOTE.y + 46, { font: 'italic', size: 24, alpha: qa, color: mixLab(P_INK, '#6b5a44', 0.35), id: `${ID}-attr` });
+      // tag 11 at the right on its stub of line: the light on the JSON half
+      drawStub(c, env, copperOf(env, 0.5));
+      thread(c, env, st, tq);
+      // the JSON half is the subject: the TOML half dimmed to about half its value
+      borderTag(c, env, st, { knotAt: KNOT, tq, shade: { half: 'toml', u: 1.2 }, bison: 1, bisonLen: 22 });
+      textRole(c, 'texture', () => knotCards11(c, env, tagFrame(st, { knotAt: KNOT, tq }).eye, [{ text: KNOT_A, kin: 1 }, { text: KNOT_B, kin: 1 }], 1.2, false));
+      // the rivet, ~32 px with a lit rim, punched on 'success' with a 3-frame flash (it carries into ch11-s04)
+      if (t >= b.rivet - 0.02) {
+        const dt = t - b.rivet;
+        bigRivet(c, env, rivetPt, { pop: 1 + 0.22 * Math.sin(Math.PI * clamp01(dt / 0.25)), flash: dt >= -0.02 && dt < 3 / 24 ? 1 : 0 });
+      }
+      rivetClack(c, env, rivetPt, t, b.rivet);
+      tally(c, env, t, tq, b);
+      if (hp) hands.draw(c, hp, env);
+    });
+    plateNear11(f);
+  },
+});
+
+/** the tag's one lifespan thread, hanging down out of the inset (the rule is not on this plate) */
+function thread(c: C2, env: PaintEnv, st: TagState, tq: number) {
+  const fr = tagFrame(st, { knotAt: KNOT, tq });
+  const x = fr.eye.x, y0 = fr.eye.y + fr.h;
+  const g = c.createLinearGradient(0, y0, 0, y0 + 90);
+  g.addColorStop(0, withAlpha(mixLab('#8a7656', env.mood.ink, 0.2), 0.8));
+  g.addColorStop(1, withAlpha(mixLab('#8a7656', env.mood.ink, 0.2), 0));
+  c.strokeStyle = g;
+  c.lineWidth = 1.6;
+  c.beginPath();
+  c.moveTo(x, y0);
+  c.lineTo(x, y0 + 90);
+  c.stroke();
+}
+
+/** the rivet's dry clack: a brief copper flash and two flecks of paper dust */
+function rivetClack(c: C2, env: PaintEnv, p: { x: number; y: number }, t: number, at: number) {
+  const u = (t - at) / 0.35;
+  if (u < 0 || u > 1) return;
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, 26);
+  g.addColorStop(0, withAlpha(env.mood.core, 0.55 * (1 - u)));
+  g.addColorStop(1, withAlpha(env.mood.halo, 0));
+  c.fillStyle = g;
+  c.fillRect(p.x - 26, p.y - 26, 52, 52);
+  c.restore();
+}
+
+/** the tally strip: three rows of paper bars on a ruled ground (trained = copper paper, hand rules = ink paper) */
+function tally(c: C2, env: PaintEnv, t: number, tq: number, b: Beats) {
+  const inkAt = b.tally + 0.08;
+  const paper = cardPaperAlpha(t, inkAt);
+  if (paper <= 0.001) return;
+  const rise = (1 - seg(t, b.tally - 0.25, b.tally + 0.45)) * 26;
+  const trainedCol = mixLab(P_COPPER, '#b8763e', 0.35);
+  const handCol = mixLab(P_INK, '#3a3128', 0.3);
+  c.save();
+  c.translate(0, rise);
+  // the strip: a slip of warmer paper torn off along its lower edge (deckled), pinned at its top, with fine rules; a soft
+  // two-step shadow (not a hard drop) and the plate's own left-to-right light falling across it
+  const slip = new Path2D();
+  slip.moveTo(STRIP.x, STRIP.y);
+  slip.lineTo(STRIP.x + STRIP.w, STRIP.y + 1);
+  slip.lineTo(STRIP.x + STRIP.w + 1.5 * hash1(3, 1131), STRIP.y + STRIP.h - 10);
+  for (let i = 48; i >= 0; i--) {
+    const x = STRIP.x + (STRIP.w * i) / 48;
+    const tear = 5 * hash1(i, 1133) + 3 * hash1(i * 3 + 1, 1137) + (i % 2 ? 2.5 : -1.5);
+    slip.lineTo(x, STRIP.y + STRIP.h - 6 + tear);
+  }
+  slip.lineTo(STRIP.x - 1.2, STRIP.y + STRIP.h - 12);
+  slip.closePath();
+  for (const [dx, dy, a] of [[3, 4, 0.1], [7, 10, 0.05]] as const) {
+    c.save();
+    c.translate(dx, dy);
+    c.fillStyle = withAlpha('#3a2c1c', a * paper);
+    c.fill(slip);
+    c.restore();
+  }
+  c.fillStyle = withAlpha(mixLab('#efdcb8', env.mood.core, 0.22), 0.97 * paper);
+  c.fill(slip);
+  const lg = c.createLinearGradient(STRIP.x, 0, STRIP.x + STRIP.w, 0);
+  lg.addColorStop(0, withAlpha('#fff6e2', 0.16 * paper));
+  lg.addColorStop(0.45, withAlpha('#fff6e2', 0));
+  lg.addColorStop(1, withAlpha('#4a3a26', 0.16 * paper));
+  c.fillStyle = lg;
+  c.fill(slip);
+  // the torn edge's paler fibre line
+  c.strokeStyle = withAlpha('#fbf3e2', 0.4 * paper);
+  c.lineWidth = 0.8;
+  c.beginPath();
+  for (let i = 0; i <= 48; i++) {
+    const x = STRIP.x + (STRIP.w * i) / 48;
+    const tear = 5 * hash1(i, 1133) + 3 * hash1(i * 3 + 1, 1137) + (i % 2 ? 2.5 : -1.5);
+    if (i) c.lineTo(x, STRIP.y + STRIP.h - 7 + tear);
+    else c.moveTo(x, STRIP.y + STRIP.h - 7 + tear);
+  }
+  c.stroke();
+  c.strokeStyle = withAlpha('#7c6a52', 0.18 * paper);
+  c.lineWidth = 0.8;
+  c.beginPath();
+  for (let y = STRIP.y + 62; y < STRIP.y + STRIP.h - 16; y += 12) {
+    c.moveTo(STRIP.x + 14, y);
+    c.lineTo(STRIP.x + STRIP.w - 14, y);
+  }
+  c.stroke();
+  // the zero line the bars grow from
+  c.strokeStyle = withAlpha(P_INK, 0.45 * paper);
+  c.lineWidth = 1.2;
+  c.beginPath();
+  c.moveTo(BAR.x0, STRIP.y + 60);
+  c.lineTo(BAR.x0, STRIP.y + STRIP.h - 20);
+  c.stroke();
+  const ink = clamp01((t - inkAt) / (3 / 24));
+  // the header: "% of payloads entirely right · [copper] trained vs [ink] hand rules"
+  const hy = STRIP.y + 42;
+  const sw = (x: number, col: string) => {
+    c.fillStyle = withAlpha(col, ink);
+    c.fillRect(x, hy - 14, 24, 13);
+  };
+  let x = STRIP.x + 22;
+  x += pInk(c, '% of payloads entirely right ·', x, hy, { font: 'italic', size: 23 * SZ, alpha: ink, id: `${ID}-h1` }) + 12;
+  sw(x, trainedCol);
+  x += 30;
+  x += pInk(c, 'trained vs', x, hy, { font: 'italic', size: 23 * SZ, alpha: ink, id: `${ID}-h2` }) + 10;
+  sw(x, handCol);
+  x += 30;
+  pInk(c, 'hand rules', x, hy, { font: 'italic', size: 23 * SZ, alpha: ink, id: `${ID}-h3` });
+  cardProbe(c, `${ID}-strip`, STRIP.x, STRIP.y, STRIP.w, STRIP.h, paper * 0.96, ink);
+  // the rows: each grows from zero on twos as the narrator reaches it
+  const starts = [b.tally + 0.2, b.mistake - 0.05, b.agents - 0.05];
+  ROWS.forEach((r, k) => {
+    const g0 = starts[k];
+    const u = clamp01((tq - g0) / 0.75);
+    const nameA = seg(t, g0 - 0.1, g0 + 0.15);
+    if (nameA <= 0.001) return;
+    const y = rowY(k);
+    pInk(c, r.name, BAR.x0 - 16, y + BAR.th + BAR.gap / 2 + 8, { font: 'italic', size: 22 * SZ, alpha: nameA, align: 'right', id: `${ID}-row${k}` });
+    const grow = 1 - Math.pow(1 - u, 2.2);
+    ([['trained', r.trained, trainedCol, 0], ['hand', r.hand, handCol, 1]] as const).forEach(([kind, v, col, i]) => {
+      const by = y + i * (BAR.th + BAR.gap);
+      const L = v * BAR.perPct * grow;
+      if (L > 0.5) {
+        c.fillStyle = withAlpha(PUPPET_NEAR_BLACK, 0.18);
+        c.fillRect(BAR.x0 + 2, by + 2, L, BAR.th);
+        c.fillStyle = col;
+        c.fillRect(BAR.x0, by, L, BAR.th);
+        // the paper's torn end and a lighter top edge
+        c.fillStyle = withAlpha('#fff7e6', 0.22);
+        c.fillRect(BAR.x0, by, L, 2);
+      }
+      // the figure prints at the tip as the bar arrives
+      const fa = seg(tq, g0 + 0.6, g0 + 0.85);
+      if (fa > 0.001) {
+        const fx = BAR.x0 + v * BAR.perPct + 9;
+        const w = pInk(c, fmt(v), fx, by + BAR.th - 1.5, { font: 'serif', size: 22 * SZ, weight: 600, alpha: fa, color: kind === 'trained' ? mixLab(P_COPPER, P_INK, 0.35) : P_INK, id: `${ID}-v${k}${i}` });
+        // on 'won': the hand-rules figures of the rows the hand rules won take a short ink underline
+        if (kind === 'hand' && k > 0) {
+          const ul = seg(t, b.won - 0.1, b.won + 0.35);
+          if (ul > 0.001) {
+            c.strokeStyle = withAlpha(P_INK, 0.8);
+            c.lineWidth = 1.6;
+            c.beginPath();
+            c.moveTo(fx, by + BAR.th + 3);
+            c.lineTo(fx + w * ul, by + BAR.th + 3);
+            c.stroke();
+          }
+        }
+      }
+    });
+  });
+  c.restore();
+}
+

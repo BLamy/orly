@@ -38,8 +38,9 @@ const baseEvent = (kind: number) => ({
   tags: [] as string[][],
   content: '…',
 });
+// The event block is centred on the camera's focus (x 360), so the readings sit centred too
 const READING_LAYOUTS = READINGS.map((r) =>
-  layoutJson(baseEvent(r.kind), { x: 150, y: 150, fontSize: 17 }),
+  layoutJson(baseEvent(r.kind), { x: 235, y: 150, fontSize: 17 }),
 );
 
 // ---------------------------------------------------------------------------
@@ -85,14 +86,16 @@ const KINDS: Array<{ k: number; label: string }> = [
   { k: 31990, label: 'handler info' },
 ];
 const NS_COLS = 6;
-const NS = { x: 150, y: 150, dx: 168, dy: 92 };
+const NS = { x: 150, y: 150, dx: 168, dy: 84 };
 const nsPos = (i: number) => ({
   x: NS.x + (i % NS_COLS) * NS.dx,
   y: NS.y + Math.floor(i / NS_COLS) * NS.dy,
 });
 
 const CAM_EVENT: CameraState = { x: 360, y: 300, k: 1.35 };
-const CAM_NS: CameraState = { x: 640, y: 320, k: 1.0 };
+const CAM_NS: CameraState = { x: 640, y: 360, k: 1.0 };
+// Empty slots on the number line, shown as dashed ghosts in beat 6
+const UNUSED_SLOTS = [22, 23, 24, 25, 26, 27, 28, 29];
 
 export function buildScene() {
   const tl = new Timeline();
@@ -186,6 +189,8 @@ const BANDS: Array<{ band: Band; label: string }> = [
   { band: 'ephemeral', label: 'ephemeral — forwarded, forgotten' },
   { band: 'addressable', label: 'addressable — has an address' },
 ];
+// legend starts at the grid's left edge; each slot clears the previous label at 14px
+const LEGEND_X = [150, 328, 590, 905];
 
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
@@ -194,10 +199,13 @@ export function Render({ s }: { s: SceneState }) {
   const readerU = s.get(scene.readerU);
   const nsU = s.get(scene.nsU);
   const bandsU = s.get(scene.bandsU);
+  // unused slots ghost in with the range legend (no timing of their own)
+  const emptyU = bandsU;
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // fades to 0.08 so the question panel sits on a quiet ground
+  const mainOp = 1 - 0.92 * dimU;
   const ri = Math.max(0, Math.min(readF, READINGS.length - 1));
 
   return (
@@ -212,11 +220,11 @@ export function Render({ s }: { s: SceneState }) {
               <JsonDoc layout={READING_LAYOUTS[ri]} reveal={1} focus={['kind']} focusU={readerU} />
               {readerU > 0 && (
                 <g opacity={readerU}>
-                  <rect x={150} y={470} width={430} height={64} rx={10} fill={colors.PANEL} stroke={BAND_COLOR[bandOf(READINGS[ri].kind)]} />
-                  <text x={170} y={500} fill={colors.TEXT} fontSize={16} fontWeight={600}>
+                  <rect x={145} y={412} width={430} height={64} rx={10} fill={colors.PANEL} stroke={BAND_COLOR[bandOf(READINGS[ri].kind)]} />
+                  <text x={165} y={442} fill={colors.TEXT} fontSize={16} fontWeight={600}>
                     read as {READINGS[ri].label}
                   </text>
-                  <text x={170} y={522} fill={colors.MUTED} fontSize={13}>
+                  <text x={165} y={464} fill={colors.MUTED} fontSize={14}>
                     {READINGS[ri].reader}
                   </text>
                 </g>
@@ -237,8 +245,22 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={p.x + 14} y={p.y + 28} fill={c} fontSize={17} fontWeight={700} fontFamily="monospace">
                     {kd.k}
                   </text>
-                  <text x={p.x + 14} y={p.y + 50} fill={colors.TEXT} fontSize={13}>
+                  <text x={p.x + 14} y={p.y + 50} fill={colors.TEXT} fontSize={14}>
                     {kd.label}
+                  </text>
+                </g>
+              );
+            })}
+
+          {/* unused slots: the empty part of the number line */}
+          {nsU > 0 && emptyU > 0 &&
+            UNUSED_SLOTS.map((i) => {
+              const p = nsPos(i);
+              return (
+                <g key={`unused-${i}`} opacity={emptyU}>
+                  <rect x={p.x} y={p.y} width={140} height={64} rx={9} fill="none" stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="5 4" />
+                  <text x={p.x + 14} y={p.y + 40} fill={colors.MUTED} fontSize={14}>
+                    unused
                   </text>
                 </g>
               );
@@ -247,10 +269,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* range legend */}
           {bandsU > 0 && (
             <g opacity={bandsU}>
+              {/* one row above the caption pill, each item spaced for its own label width */}
               {BANDS.map((b, i) => (
-                <g key={b.band} transform={`translate(${180 + i * 245}, 560)`}>
+                <g key={b.band} transform={`translate(${LEGEND_X[i]}, 572)`}>
                   <rect x={0} y={0} width={16} height={16} rx={4} fill={BAND_COLOR[b.band]} opacity={0.9} />
-                  <text x={24} y={13} fill={colors.MUTED} fontSize={12.5}>
+                  <text x={24} y={13} fill={colors.MUTED} fontSize={14}>
                     {b.label}
                   </text>
                 </g>
@@ -262,15 +285,15 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={308} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
-            The kind number is a schema
+            Which app opens a kind nobody has seen?
           </text>
           <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
-            one open namespace — anyone can mint a kind every client can carry
+            anyone can mint a kind every client can carry — nobody owns the namespace
           </text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
-            kind ranges per NIP-01 · which app opens a kind? →
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
+            kind ranges per NIP-01 · handler records (31989, 31990) hold the answer →
           </text>
         </g>
       )}

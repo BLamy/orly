@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -62,17 +62,20 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={axU}>
               <line x1={chX(0) - 8} y1={CH_Y0} x2={chX(1) + 10} y2={CH_Y0} stroke={colors.GRID} />
               <line x1={chX(0) - 8} y1={CH_Y0} x2={chX(0) - 8} y2={chY(0.95)} stroke={colors.GRID} />
-              <text x={chX(0.5)} y={CH_Y0 + 28} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={chX(0.5)} y={CH_Y0 + 30} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 gameability: how often the exploit fools the verifier →
               </text>
-              <text x={chX(0) - 20} y={chY(0.85) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={chX(0) - 20} y={chY(0.85) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                 0.85
               </text>
-              <text x={chX(0) - 20} y={chY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={chX(0) - 20} y={chY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                 0
               </text>
-              <text x={chX(0)} y={chY(0.95) - 10} fill={colors.MUTED} fontSize={13}>
+              <text x={chX(0)} y={chY(0.95) - 10} fill={colors.MUTED} fontSize={14}>
                 final TRUE accuracy after training
+              </text>
+              <text x={chX(0)} y={chY(0.72)} fill={colors.MUTED} fontSize={14}>
+                one exploit, true success fixed at 3%
               </text>
             </g>
           )}
@@ -82,7 +85,7 @@ function Frame({ s }: { s: SceneState }) {
               {SWEEP.slice(0, Math.ceil(si) + 1).map((p) => (
                 <circle key={p.game} cx={chX(p.game)} cy={chY(p.truth)} r={4} fill={p.truth > 0.4 ? colors.POSITIVE : colors.NEGATIVE} />
               ))}
-              <text x={chX(now.game) + 10} y={chY(now.truth) - 10} fill={now.truth > 0.4 ? colors.POSITIVE : colors.NEGATIVE} fontSize={13}>
+              <text x={chX(now.game) + 10} y={chY(now.truth) - 10} fill={now.truth > 0.4 ? colors.POSITIVE : colors.NEGATIVE} fontSize={14}>
                 {`true accuracy: ${(now.truth * 100).toFixed(1)}%`}
               </text>
             </g>
@@ -90,14 +93,14 @@ function Frame({ s }: { s: SceneState }) {
           {cliffU > 0 && (
             <g opacity={cliffU}>
               <line x1={chX(CEIL)} y1={chY(0.95)} x2={chX(CEIL)} y2={CH_Y0} stroke={colors.WARM} strokeDasharray="5 5" strokeWidth={1.8} />
-              <text x={chX(CEIL)} y={chY(0.95) - 10} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+              <text x={chX(CEIL)} y={chY(0.95) - 10} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 best honest pass rate: 85%
               </text>
-              <text x={chX(0.4)} y={chY(0.62)} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={620}>
+              <text x={chX(0.4)} y={chY(0.62)} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={620}>
                 solver: 84.6% true
               </text>
-              <text x={chX(0.93)} y={chY(0.16)} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5} fontWeight={620}>
-                lock pick: 3.3%
+              <text x={chX(CEIL) + 14} y={chY(0.2)} fill={colors.NEGATIVE} fontSize={14} fontWeight={620}>
+                the exploit: 3.3% true
               </text>
             </g>
           )}
@@ -114,7 +117,7 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={LAD_X - 132} y={y - 2} fill={colors.TEXT} fontSize={14.5} fontWeight={620}>
                   {r.label}
                 </text>
-                <text x={LAD_X - 132} y={y + 18} fill={r.bad ? colors.NEGATIVE : colors.MUTED} fontSize={11.5}>
+                <text x={LAD_X - 132} y={y + 18} fill={r.bad ? colors.NEGATIVE : colors.MUTED} fontSize={14}>
                   {r.note}
                 </text>
               </g>
@@ -122,15 +125,15 @@ function Frame({ s }: { s: SceneState }) {
           })}
           {ladU > 0.6 && (
             <g opacity={clamp01((ladU - 0.6) * 2.5)}>
-              <text x={LAD_X + 214} y={LAD_Y0 + 10} fill={colors.POSITIVE} fontSize={12.5} transform={`rotate(90 ${LAD_X + 214} ${LAD_Y0 + 10})`}>
+              <text x={LAD_X + 214} y={LAD_Y0 + 10} fill={colors.POSITIVE} fontSize={14} transform={`rotate(90 ${LAD_X + 214} ${LAD_Y0 + 10})`}>
                 harder to game ↓
               </text>
             </g>
           )}
           {loopU > 0 && (
             <g opacity={loopU}>
-              <rect x={LAD_X - 150} y={LAD_Y0 + LADDER.length * LAD_DY - 8} width={340} height={44} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeDasharray="5 4" />
-              <text x={LAD_X + 20} y={LAD_Y0 + LADDER.length * LAD_DY + 19} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+              <rect x={LAD_X - 180} y={LAD_Y0 + LADDER.length * LAD_DY - 8} width={400} height={44} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeDasharray="5 4" />
+              <text x={LAD_X + 20} y={LAD_Y0 + LADDER.length * LAD_DY + 19} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                 same doctrine as the agent loop — at gradient scale
               </text>
             </g>
@@ -141,22 +144,20 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={210} y={200} width={860} height={248} rx={16} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={210} y={200} width={860} height={248} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={266} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Verifiable Rewards
           </text>
-          <MathLabel
-            tex={`\\text{gameable} < \\text{solvable} \\Rightarrow ${(SAFE.truth * 100).toFixed(0)}\\% \\qquad \\text{gameable} > \\text{solvable} \\Rightarrow ${(BROKEN.truth * 100).toFixed(0)}\\%`}
-            x={640}
-            y={324}
-            fontSize={19}
-            color={colors.TEXT}
-            opacity={endU}
-          />
-          <text x={640} y={382} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={324} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+            {`gameable < solvable  →  true accuracy ${(SAFE.truth * 100).toFixed(1)}%`}
+          </text>
+          <text x={640} y={354} textAnchor="middle" fill={colors.NEGATIVE} fontSize={19}>
+            {`gameable > solvable  →  true accuracy ${(BROKEN.truth * 100).toFixed(1)}%`}
+          </text>
+          <text x={640} y={404} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             a gradient is the strongest red team your check will ever face
           </text>
-          <text x={640} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+          <text x={640} y={432} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             build the check harder to game than the task is to solve
           </text>
         </g>

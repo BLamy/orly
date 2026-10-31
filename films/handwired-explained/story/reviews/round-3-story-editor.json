@@ -1,0 +1,119 @@
+{
+  "reviewer": "story-editor",
+  "round": 3,
+  "lens": "story, curiosity and voice",
+  "method": "Read all 182 narration lines in script.json, shot by shot, against round 2's card, and checked the visuals for ch04-s12, ch06-s02, ch06-s05b, ch06-s12, ch07-s11, ch10-s04, ch11-s01, ch12-s04 and ch12-s06. Spot-checked the lines I rewrite against claims.json (HL03, HL10, HL17, HL18, FR25, CM07, CM08, DG20, PJ15, PJ23, PJ28, PT15, LB19) and quotes.json (Q006, Q010, Q118, Q122, Q123). Ran `script.mjs assemble --check`: 2,741 words, 25.6 min (1538.1 s) at 140 wpm (there is still no voice/voice.json, so the house default pace applies), 0 errors, 1 warning (runtime above the 24-minute target, inside the brief's 22-26 range). Runtime is not critical this round. Nearly every round-2 fix landed: the open three-question refrain, the 'clock rests' gloss, the springs reorder, the TOML 'rule written before the test', the spoken tag 11, the narrower replacement for tag 8, the validator answer, and L0114 and L0809 are gone.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8.5,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 7.5
+  },
+  "critical": [
+    "ch06 (Deep Dive II) contradicts itself on its central mechanism within about forty seconds. L0605 says 'Inputs in. The loom runs once.' L0615 then strikes exactly that ('One run per frame? That held until mid-September. Now a busy drag frame runs about seventeen.', HL17). L0625 then puts it back as the lab guide's verdict: 'One frame is one evaluation of a fixed-depth circuit'. The listener leaves the deep dive unsure whether a frame is one run or seventeen. Fix: L0605 'Inputs in. The loom runs. Next state copied back. The page moves.' (the escapement beat stays on 'runs'). L0615 'One run per frame? That held until mid-September. Now a busy drag frame runs about seventeen: one for each move, at its own time, each a whole pass.' (HL03, HL17; +11 words). L0625 'Each run is what the lab's guide calls “a fixed-depth circuit”. The host turns the crank as often as it likes. The circuit never stops early.' (a verbatim substring of the same quote, and the ch06-s12 card already shows exactly that substring; about -3 words). Kleene's payoff at L0624 then lands cleanly: what's unbounded is how often the crank turns, and that's outside."
+  ],
+  "issues": [
+    {
+      "where": "ch06-s02 L0605 / ch06-s05b L0615 / ch06-s12 L0625",
+      "problem": "See critical: 'runs once', then 'about seventeen', then the lab guide's 'One frame is one evaluation' undo one another.",
+      "fix": "Apply the three rewrites in the critical note. In ch06-s12, keep the repo card's text as '“a fixed-depth circuit” — the lab guide' (it already is). Retime the beat 'repo' to the word 'circuit' in the new L0625."
+    },
+    {
+      "where": "ch11-s01 L1101 (chronology, against ch10)",
+      "problem": "ch10 runs from 20 to 27 October. ch11 then opens 'One last experiment.' and the ear hears it as coming after the strangers. In fact it ran on 15 and 16 October (PJ15, LB19), the two days after launch, before Hacker News. The card's date stamp tells the eye, but the voice misleads the ear just as the film reaches its moral ('the rule written first'), and a film about who believed what, and when, can't afford a silent time-jump.",
+      "fix": "L1101: 'Step back a week, to the two days after launch, and one last experiment. The search demo's JSON highlighter stops at the first mistake.' (+12 words). Keep the 'experiment' beat on 'experiment'."
+    },
+    {
+      "where": "ch12-s04 L1207 (the payoff of the 23-minute 'why' tag)",
+      "problem": "'To the stranger's “why?”, the README's nearest answers: “for fun”, and “Let's find out!”' The 'for fun' in Q006 qualifies the backend choice ('either run it on JS or WebGPU, for fun'), not the project. Lifted out as an answer to 'why build it?', it is a context shift, at the very line the film has been building to since minute one. It is also the second time we hear 'Let's find out!' (L0702).",
+      "fix": "Make the borrowing honest and wry: 'The repo never answers the stranger's “why?” in so many words. Its README runs the whole thing on a graphics card “for fun”, and of unfreezing it, says only: “Let's find out!”' (Q006, Q010; +14 words, paid for by the cuts below). Move the 'why' beat to the first 'why'. If that's too long, drop 'for fun' and keep: 'The repo never answers “why?” in so many words. The nearest it comes is the README's “Let's find out!”'"
+    },
+    {
+      "where": "ch08-s08 L0813 (chapter out)",
+      "problem": "'In mid-September, he settled three questions.' Still the flattest chapter-out in the film: a statement with nothing to hold. Yet the three answers on the card are three machines the viewer has already met: the index read (L0620), the comparison helper (L0414) and the springs worked out in JavaScript (L0609). The chapter is withholding a moment of recognition.",
+      "fix": "'In mid-September, he settled three questions. You've met all three answers: the index read, the comparison helper, and springs worked out ahead in JavaScript.' (PJ23, PR22, SP20; +18 words). Light each of the three cards on its noun, so the dim summer panes relight on the last."
+    },
+    {
+      "where": "ch04-s12 L0423-L0424 (the odd number)",
+      "problem": "'add a huge odd number' plants a question, and the visual pays it (the hollow odd tick, the filled even tick), but the voice never says why it's odd. 'Ties go to the even side: a half snaps up, to one' leaves the ear to work out the link while the next idea arrives. It is one sentence short of the most satisfying 'aha' in Deep Dive I.",
+      "fix": "Append to L0424: 'That's why the number is odd: from an odd start, the even neighbour is one above.' (PR08, EX02; +15 words; 8,388,609.5 ties between 8,388,609 and 8,388,610, and the even one is above). Put the tie beat's even-tick glow on 'even neighbour'."
+    },
+    {
+      "where": "ch07-s11 L0720a (pays off ch07-s03 L0706)",
+      "problem": "'The valve shuts, and every slope behind it goes dark' is the film's best gradient image. Four minutes later the lab's real unfreezing shows it at scale (24.6% of frames began with every slope at zero, DG20), and the visual has six grey cards with flat gauges. But the voice is silent, so the payoff is wasted on the ear.",
+      "fix": "L0720a: '...One gradient step solved nearly two in three moving frames. A quarter began in the dark: every slope at nought, like our shut valve.' (DG20; +13 words). Put the six flat-gauge cards on 'dark'."
+    },
+    {
+      "where": "ch06-s03 L0608",
+      "problem": "'One step multiplies two numbers, the window's distance from home and its speed: at rest, it comes out moving.' 'At rest, it comes out moving' sounds like a riddle by ear: what's at rest, and what comes out of what?",
+      "fix": "'One step multiplies two numbers, the window's distance from home and its speed. Start it still; one step later, it's moving.' (SP03; +2 words). The beat on the speed card flipping from 0 to 780 moves to 'moving'."
+    },
+    {
+      "where": "ch06-s05 L0613",
+      "problem": "'the familiar loop drifts up to three hundred and fifty-nine pixels apart'. 'The familiar loop' is never defined, and the ear hears 'loop' as the clockwork it has just watched, which is Handwired's own.",
+      "fix": "'Replay one session at two frame rates. The usual order, input first and then animation, drifts up to three hundred and fifty-nine pixels apart.' (HL18; +5 words)."
+    },
+    {
+      "where": "ch06-s07 L0617",
+      "problem": "'In pairs, then pairs of pairs: three or four.' By ear, 'three or four' sounds like a narrator who isn't sure, at the moment that should feel precise. (PT15: Sklansky 3 levels, Brent-Kung 4.)",
+      "fix": "'In pairs, then pairs of pairs: three steps deep, or four, depending on the wiring.' (+6 words). Name 'three' on the Sklansky card, 'four' on Brent-Kung."
+    },
+    {
+      "where": "ch05-s02 L0503b",
+      "problem": "'The longest chain of gates runs seventy-one deep.' A number with no consequence, dropped between the matmul idea and the 'it is a network' strike. The ear files it and forgets it.",
+      "fix": "Either cut it (-9 words, the best runtime cut in the act), or give it its consequence: 'The longest chain of gates runs seventy-one deep. A graphics card working layer by layer can never take fewer turns than that.' (CM07; +14 words). That also plants the 'what is a GPU for?' tag two lines later."
+    },
+    {
+      "where": "ch09-s07 L0920",
+      "problem": "'With eight workers, RegExp keeps up, and wins after a pause, except on that one pattern.' 'After a pause' reads as hesitation, not 'after the machine sits idle', and three qualifiers in one breath blunt the strike that follows.",
+      "fix": "'Give RegExp eight workers, and it keeps up. Let the machine sit idle first, and it wins. Only that one pattern still trips it.' (JS13, JS19; +5 words)."
+    },
+    {
+      "where": "ch10-s04 L1007",
+      "problem": "'About the lab, we found no public word: the strangers' pencils were gentler than its own.' PJ28 says only that no public discussion of the lab was found. The strangers didn't judge it gently; they never judged it at all. It's a lovely line resting on an inference.",
+      "fix": "'About the lab, we found no public word. Its sharpest pencil was its own.' (PJ28; -6 words). Move the 'gentler' beat (the pencil laid on the rail) to 'own'."
+    },
+    {
+      "where": "ch02-s03 L0206",
+      "problem": "'Our reading: a finite net remembers only so much; anything unbounded comes from outside.' The clipped 'Our reading:' and the semicolon read like a footnote, at the plant that pays off twice (L0624, L0908).",
+      "fix": "'Put plainly: a finite net can only remember so much. Anything without limit has to come from outside. Hang that on the line.' (FR07; +3 words). Keep 'an echo, not a citation' on screen at the payoffs, as now."
+    },
+    {
+      "where": "ch03-s03 L0305",
+      "problem": "'One guess falls at once, for the library itself.' 'For the library itself' is opaque by ear (it hedges against the lab's compiler, but the listener hasn't heard of that yet).",
+      "fix": "'One guess falls at once, at least for the library. The docs: “No tool converts existing JavaScript source into a program.”' (word-neutral)."
+    },
+    {
+      "where": "ch04-s07 L0412",
+      "problem": "'Past nearly seventeen million' contradicts itself (past, but nearly?).",
+      "fix": "'Beyond about seventeen million, floats start skipping whole numbers.' (+1 word)."
+    },
+    {
+      "where": "ch12-s01 L1201 (metaphor nouns)",
+      "problem": "One device goes by four names: tags (L0107), guesses (L0312, L0505), promises (L0113, L1004) and beliefs (L1109, L1201-L1202). By the finale the ear has to translate. The ruler the tags drop onto was also never introduced aloud (L0114 was cut), so 'hangs over the time it held' needs the picture.",
+      "fix": "L1201: 'Every tag in the film, guess, promise or belief, hangs above the time it held.' (+4 words). L1202 'each tag one layer after those it needs'. Bring the Lifespan Rule's marks up on 'time it held'."
+    },
+    {
+      "where": "ch12-s03 L1205 (optional payoff of ch04-s05 L0408)",
+      "problem": "'The struck ones ran too. Multiplied by nought.' This is a superb rhyme with Deep Dive I, but Deep Dive I also taught that nought times infinity isn't nought (L0408). The finale can wink at it.",
+      "fix": "Optional: 'The struck ones ran too. Multiplied by nought, and, luckily, none of them infinite.' (TE11; +5 words). Cut it if the runtime is tight."
+    },
+    {
+      "where": "global word budget (runtime note, not critical)",
+      "problem": "2,741 words against the brief's 2,280-word guide, and 25.6 min with only 0.4 min of headroom below the 26-minute ceiling. Recorded narration drifts from the wpm guess. The fixes above add about +80 words net, so they need paying for.",
+      "fix": "Pay for them: cut L0208b and reword L0209 to 'As engineering, that tag never came down.' (-22 words; Gidon is the film's only unpaid plant, a tangent in the history detour); cut L0503b unless its consequence is kept (-9); trim L0807 to 'One test of two additions scored nought out of twenty. Multiply its error by a million, which should change nothing: twenty out of twenty. A tiny safety constant had swamped the slopes.' (-2); use the shorter L1207 variant if needed. Re-run `assemble --check` and keep the estimate at or below 25.6 min."
+    }
+  ],
+  "strengths": [
+    "The refrain now has a true shape: planted at L0113, answered in full at L0419 ('Who doubted it? The validator. How long it held? While the input stayed honest.'), answered in pieces through ch08 and ch09 ('It held about eight weeks.', 'That tag held for hours.'), and finally left open, handed to the viewer at L1209. That is a real arc, not a slogan.",
+    "The planted questions are almost all paid by ear: where the weights came from (ch03, ch05), the Notes window (L0313 to L0507 to L1208), what a GPU is for (L0510 to L0907), Kleene's time-from-outside (L0206 to L0624 to L0908), eleven (ch01 to ch04 to ch10), seventeen million (L0310 to L0413), and the blank 'why' (L0107a to L1005 to L1207).",
+    "The cold open is still the film's best minute, and Deep Dive I is a genuine climb: ramp, bit, both belts, nought times infinity, the dimmer switch, the float cliff, the odd-number snap, doubles breaking labels, then the title quote and 'One honest sentence about your input saves fourteen operations.'",
+    "The best lines are lovely read aloud, and in a consistent wry voice: 'Every if here is a dimmer switch.', 'the whole trick, and the whole caveat', 'The valve shuts, and every slope behind it goes dark.', 'The network learns where. JavaScript decides who.', 'Far-off photos vote. They don't shout.', 'The record doesn't say why. So we won't guess.', 'The lab, with good grace: “RegExp is fast.”', 'This is how a belief should end: by a rule written before the test.'",
+    "The back half has stakes now. Tag 8 retired and replaced, the checker that shared the compiler's blind spot, tag 9 tied at 09:01 and struck the same day, then TOML failing by its own rule while the README refuses to over-claim. The lab is humbled fairly, and Cheng gets warmth from his own words only ('the spirit of the gallery is to learn something', 'Do it quick plz, then publish.', 'My dear friends...').",
+    "The finale is a structural rhyme worth the wait: the film's beliefs re-hung by the compiler's own layering rule, one wave of light through them, the struck tags running too, multiplied by nought, then a hinge and a blank tag held out to an open hand.",
+    "It is fair throughout: the tooling statement names Claude Code and Codex plainly and discloses that this film was written with Claude; the Sutton/Brooks dispute is given both sides; the gallery's scope is stated ('a small generic network, not a hand-written program unfrozen'); and the lab's open list closes the film's argument honestly ('not delivered by these experiments')."
+  ]
+}

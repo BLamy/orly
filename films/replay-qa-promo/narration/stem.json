@@ -1,0 +1,468 @@
+{
+ "file": "films/replay-qa-promo/narration/narration.wav",
+ "duration": 82.7083,
+ "lineLufs": -20,
+ "maxLevelingDb": 3,
+ "rides": {
+  "L0101": {
+   "lufs": -24.8,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0102": {
+   "lufs": -24.7,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0201": {
+   "lufs": -23.6,
+   "rideDb": 3,
+   "clipGainDb": -0.4,
+   "trimDb": -0.4,
+   "levelingDb": 2.6
+  },
+  "L0202": {
+   "lufs": -25,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0301": {
+   "lufs": -23.3,
+   "rideDb": 3,
+   "clipGainDb": -0.73,
+   "trimDb": -0.73,
+   "levelingDb": 2.27
+  },
+  "L0302": {
+   "lufs": -23,
+   "rideDb": 3,
+   "clipGainDb": -0.85,
+   "trimDb": -0.85,
+   "levelingDb": 2.15
+  },
+  "L0401": {
+   "lufs": -23.9,
+   "rideDb": 3,
+   "clipGainDb": -0.09,
+   "trimDb": -0.09,
+   "levelingDb": 2.91
+  },
+  "L0402": {
+   "lufs": -23.8,
+   "rideDb": 3,
+   "clipGainDb": -0.06,
+   "trimDb": -0.06,
+   "levelingDb": 2.94
+  },
+  "L0403": {
+   "lufs": -23.6,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0404": {
+   "lufs": -24.1,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0501": {
+   "lufs": -23.8,
+   "rideDb": 3,
+   "clipGainDb": -0.05,
+   "trimDb": -0.05,
+   "levelingDb": 2.95
+  },
+  "L0502": {
+   "lufs": -22.9,
+   "rideDb": 2.9,
+   "clipGainDb": -0.38,
+   "trimDb": -0.38,
+   "levelingDb": 2.52
+  },
+  "L0503": {
+   "lufs": -24.6,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0504": {
+   "lufs": -24.8,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0505": {
+   "lufs": -23.5,
+   "rideDb": 3,
+   "clipGainDb": -0.56,
+   "trimDb": -0.56,
+   "levelingDb": 2.44
+  },
+  "L0506": {
+   "lufs": -23.9,
+   "rideDb": 3,
+   "clipGainDb": -0.06,
+   "trimDb": -0.06,
+   "levelingDb": 2.94
+  },
+  "L0507": {
+   "lufs": -24.3,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0508": {
+   "lufs": -24.3,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  },
+  "L0601": {
+   "lufs": -23.1,
+   "rideDb": 3,
+   "clipGainDb": -0.21,
+   "trimDb": -0.21,
+   "levelingDb": 2.79
+  },
+  "L0602": {
+   "lufs": -24.2,
+   "rideDb": 3,
+   "clipGainDb": 0,
+   "trimDb": 0,
+   "levelingDb": 3
+  }
+ },
+ "integratedBefore": -21.1,
+ "compressor": {
+  "ratio": 2.5,
+  "attack": 10,
+  "release": 120,
+  "knee": 2.8,
+  "highpassHz": 70,
+  "thresholdDb": -16,
+  "grDb": 1.66,
+  "integratedAfter": -22.8
+ },
+ "peakStage": {
+  "ratio": 2,
+  "attack": 0.3,
+  "release": 40,
+  "thresholdDb": -8,
+  "peakCutDb": 0.59,
+  "crestBefore": 16.96,
+  "crestAfter": 16.38,
+  "crestTarget": 16.5,
+  "maxCutDb": 3,
+  "speechGrDb": 0.01
+ },
+ "chain": "highpass=f=70,acompressor=threshold=-16dB:ratio=2.5:attack=10:release=120:knee=2.8:makeup=1:detection=rms:link=maximum,acompressor=threshold=-8dB:ratio=2:attack=0.3:release=40:knee=2:makeup=1:detection=peak:link=maximum,[per-line clip gain]",
+ "gainDb": 3.9,
+ "peakBeforeDb": -6.42,
+ "limitedDb": 0,
+ "integrated": -19,
+ "truePeak": -2.5,
+ "lra": 3.2,
+ "target": -19,
+ "levels": {
+  "measure": "gated loudness per line window (LUFS)",
+  "tolerance": 0.5,
+  "warnDb": 1.5,
+  "beforeClipGain": {
+   "L0101": {
+    "M": -23.04,
+    "offsetDb": -0.47,
+    "requestedDb": 0,
+    "errorDb": -0.47,
+    "driftDb": -0.47
+   },
+   "L0102": {
+    "M": -23.01,
+    "offsetDb": -0.44,
+    "requestedDb": 0,
+    "errorDb": -0.44,
+    "driftDb": -0.44
+   },
+   "L0201": {
+    "M": -22.22,
+    "offsetDb": 0.45,
+    "requestedDb": 0,
+    "errorDb": 0.45,
+    "driftDb": 0.45
+   },
+   "L0202": {
+    "M": -23.7,
+    "offsetDb": -1.13,
+    "requestedDb": 0,
+    "errorDb": -1.13,
+    "driftDb": -1.13
+   },
+   "L0301": {
+    "M": -21.89,
+    "offsetDb": 0.78,
+    "requestedDb": 0,
+    "errorDb": 0.78,
+    "driftDb": 0.78
+   },
+   "L0302": {
+    "M": -21.77,
+    "offsetDb": 0.9,
+    "requestedDb": 0,
+    "errorDb": 0.9,
+    "driftDb": 0.9
+   },
+   "L0401": {
+    "M": -22.53,
+    "offsetDb": 0.14,
+    "requestedDb": 0,
+    "errorDb": 0.14,
+    "driftDb": 0.14
+   },
+   "L0402": {
+    "M": -22.56,
+    "offsetDb": 0.11,
+    "requestedDb": 0,
+    "errorDb": 0.11,
+    "driftDb": 0.11
+   },
+   "L0403": {
+    "M": -22.9,
+    "offsetDb": -0.33,
+    "requestedDb": 0,
+    "errorDb": -0.33,
+    "driftDb": -0.33
+   },
+   "L0404": {
+    "M": -22.67,
+    "offsetDb": -0.1,
+    "requestedDb": 0,
+    "errorDb": -0.1,
+    "driftDb": -0.1
+   },
+   "L0501": {
+    "M": -22.57,
+    "offsetDb": 0.1,
+    "requestedDb": 0,
+    "errorDb": 0.1,
+    "driftDb": 0.1
+   },
+   "L0502": {
+    "M": -22.24,
+    "offsetDb": 0.43,
+    "requestedDb": 0,
+    "errorDb": 0.43,
+    "driftDb": 0.43
+   },
+   "L0503": {
+    "M": -23.24,
+    "offsetDb": -0.67,
+    "requestedDb": 0,
+    "errorDb": -0.67,
+    "driftDb": -0.67
+   },
+   "L0504": {
+    "M": -23.33,
+    "offsetDb": -0.76,
+    "requestedDb": 0,
+    "errorDb": -0.76,
+    "driftDb": -0.76
+   },
+   "L0505": {
+    "M": -22.06,
+    "offsetDb": 0.61,
+    "requestedDb": 0,
+    "errorDb": 0.61,
+    "driftDb": 0.61
+   },
+   "L0506": {
+    "M": -22.56,
+    "offsetDb": 0.11,
+    "requestedDb": 0,
+    "errorDb": 0.11,
+    "driftDb": 0.11
+   },
+   "L0507": {
+    "M": -22.82,
+    "offsetDb": -0.25,
+    "requestedDb": 0,
+    "errorDb": -0.25,
+    "driftDb": -0.25
+   },
+   "L0508": {
+    "M": -22.73,
+    "offsetDb": -0.16,
+    "requestedDb": 0,
+    "errorDb": -0.16,
+    "driftDb": -0.16
+   },
+   "L0601": {
+    "M": -22.41,
+    "offsetDb": 0.26,
+    "requestedDb": 0,
+    "errorDb": 0.26,
+    "driftDb": 0.26
+   },
+   "L0602": {
+    "M": -22.75,
+    "offsetDb": -0.18,
+    "requestedDb": 0,
+    "errorDb": -0.18,
+    "driftDb": -0.18
+   }
+  },
+  "lines": {
+   "L0101": {
+    "M": -19.14,
+    "offsetDb": -0.42,
+    "requestedDb": 0,
+    "errorDb": -0.42,
+    "driftDb": -0.42
+   },
+   "L0102": {
+    "M": -19.11,
+    "offsetDb": -0.39,
+    "requestedDb": 0,
+    "errorDb": -0.39,
+    "driftDb": -0.39
+   },
+   "L0201": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0202": {
+    "M": -19.8,
+    "offsetDb": -1.08,
+    "requestedDb": 0,
+    "errorDb": -1.08,
+    "driftDb": -1.08
+   },
+   "L0301": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0302": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0401": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0402": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0403": {
+    "M": -19,
+    "offsetDb": -0.28,
+    "requestedDb": 0,
+    "errorDb": -0.28,
+    "driftDb": -0.28
+   },
+   "L0404": {
+    "M": -18.77,
+    "offsetDb": -0.05,
+    "requestedDb": 0,
+    "errorDb": -0.05,
+    "driftDb": -0.05
+   },
+   "L0501": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0502": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0503": {
+    "M": -19.34,
+    "offsetDb": -0.62,
+    "requestedDb": 0,
+    "errorDb": -0.62,
+    "driftDb": -0.62
+   },
+   "L0504": {
+    "M": -19.43,
+    "offsetDb": -0.71,
+    "requestedDb": 0,
+    "errorDb": -0.71,
+    "driftDb": -0.71
+   },
+   "L0505": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0506": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0507": {
+    "M": -18.92,
+    "offsetDb": -0.2,
+    "requestedDb": 0,
+    "errorDb": -0.2,
+    "driftDb": -0.2
+   },
+   "L0508": {
+    "M": -18.83,
+    "offsetDb": -0.11,
+    "requestedDb": 0,
+    "errorDb": -0.11,
+    "driftDb": -0.11
+   },
+   "L0601": {
+    "M": -18.72,
+    "offsetDb": 0.05,
+    "requestedDb": 0,
+    "errorDb": 0.05,
+    "driftDb": 0.05
+   },
+   "L0602": {
+    "M": -18.85,
+    "offsetDb": -0.13,
+    "requestedDb": 0,
+    "errorDb": -0.13,
+    "driftDb": -0.13
+   }
+  }
+ }
+}

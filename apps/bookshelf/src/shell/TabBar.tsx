@@ -1,6 +1,8 @@
 import { MobileTabBar } from '@orly/mobile-ui';
 
-export type ShelfTab = 'browse' | 'library' | 'shelf' | 'settings';
+// 'grades' is a page (?tab=grades, linked from each title's Score tab) but no longer a tab in the bar: a title's
+// score lives in its own player now
+export type ShelfTab = 'browse' | 'library' | 'shelf' | 'grades' | 'settings';
 
 interface TabDef {
   id: ShelfTab;

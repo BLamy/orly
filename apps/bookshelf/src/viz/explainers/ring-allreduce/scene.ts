@@ -75,8 +75,8 @@ export const RING_MS = (RING_GB / LINK_GBPS) * 1000; // ≈ 20 ms
 
 /** device positions on the ring */
 export const RING_CX = 400;
-export const RING_CY = 330;
-export const RING_R = 190;
+export const RING_CY = 290;
+export const RING_R = 165;
 export const devPos = (i: number): { x: number; y: number } => ({
   x: RING_CX + RING_R * Math.cos((i / N) * 2 * Math.PI - Math.PI / 2),
   y: RING_CY + RING_R * Math.sin((i / N) * 2 * Math.PI - Math.PI / 2),
@@ -85,8 +85,8 @@ export const devPos = (i: number): { x: number; y: number } => ({
 export const LED_X = 830;
 export const LED_Y0 = 170;
 
-export const CAM_RING: CameraState = { x: 430, y: 330, k: 1.2 };
-export const CAM_LEDGER: CameraState = { x: 860, y: 300, k: 1.2 };
+export const CAM_RING: CameraState = { x: 400, y: 290, k: 1.05 };
+export const CAM_LEDGER: CameraState = { x: 640, y: 290, k: 1 };
 
 export interface Scene {
   tl: Timeline;
@@ -171,7 +171,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 46.9, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 47.5, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0.1, { at: 47.5, dur: 1.1, ease: ease.move });
   tl.tween(endU, 1, { at: 48.7, dur: 0.9, ease: ease.enter });
   tl.caption({
     at: 48.7,

@@ -1,0 +1,457 @@
+{
+  "version": 1,
+  "slug": "handwired-json-search",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Thread Per Document",
+      "claims": [
+        {
+          "id": "c1-the-question",
+          "claim": "Cheng asked whether regex search or a JSON highlighter could be clearly faster on the GPU, and the lab tests that on 100,000 generated JSON documents.",
+          "status": "paraphrase",
+          "caption": 0,
+          "sources": [
+            { "label": "lab/json-search README, the question", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "52", "quote": "I was wondering if there's a point where regex search or json highlighter" }
+          ]
+        },
+        {
+          "id": "c1-one-document-cpu-vs-gpu",
+          "claim": "For one document the highlighter takes 80 µs on the CPU executor, and a round trip to the GPU alone takes 0.6 ms or more, so one document is no case for a GPU.",
+          "caption": 1,
+          "sources": [
+            { "label": "lab/json-search README, one document", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "52", "quote": "a round trip to the GPU alone takes 0.6 ms or more" }
+          ]
+        },
+        {
+          "id": "c1-thread-per-document",
+          "claim": "Every document runs the same operations and no document reads another one's values, which is why one GPU thread can take one document.",
+          "caption": 2,
+          "sources": [
+            { "label": "lab/json-search README, independence of documents", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "52", "quote": "every document runs the same operations, and no document reads another one's values" }
+          ]
+        },
+        {
+          "id": "c1-row-of-512",
+          "claim": "The document buffer lays out each document as 512 code points followed by the text's length, and one thread reads its own row.",
+          "caption": 3,
+          "sources": [
+            { "label": "json-step.ts, buffer layout", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/json-step.ts", "lines": "65", "quote": "`cellsPerDocument` is the layout of buffer 0: 512 code points, then the text's length." }
+          ]
+        },
+        {
+          "id": "c1-defect-counts",
+          "claim": "Of the 100,000 documents, 89,943 are valid and 10,057 are broken, across sixteen defect kinds, each between 474 and 748 documents.",
+          "caption": 4,
+          "sources": [
+            { "label": "lab/json-search README, the generated documents", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "189-199", "quote": "89,943 are valid and 10,057 are broken" },
+            { "label": "lab/json-search README, defect kinds", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "189", "quote": "**16 defects**" }
+          ]
+        },
+        {
+          "id": "c1-step-operations",
+          "claim": "The highlighter's step is 37 operations per position, plus 17 more to close the document, so a full 512-position row costs 18,961 operations.",
+          "caption": 5,
+          "sources": [
+            { "label": "lab/json-search README, operations per step", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "487", "quote": "| JSON highlighter | 37, 17 | 107 |" },
+            { "label": "lab/json-search README, operations per document", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "922", "quote": "17 operations instead of 2: 18,961 operations per document" }
+          ]
+        },
+        {
+          "id": "c1-loop-shader",
+          "claim": "Written once inside a loop over positions, the highlighter's shader is 107 statements and compiles in 0.04 s, against about 2 s when every position is written out.",
+          "caption": 6,
+          "sources": [
+            { "label": "lab/json-search README, loop shader compile time", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "55", "quote": "The highlighter's shader then compiles in 0.04 s" },
+            { "label": "lab/json-search README, statement count", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "487", "quote": "| JSON highlighter | 37, 17 | 107 |" }
+          ]
+        },
+        {
+          "id": "c1-written-out-compile",
+          "claim": "The first version, with every position written out, took about 2 s to compile.",
+          "caption": 7,
+          "sources": [
+            { "label": "lab/json-search README, first stage", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "54", "quote": "and the shader took about 2 s to compile" }
+          ]
+        },
+        {
+          "id": "c1-billion-operations",
+          "claim": "Across 100,000 documents, 18,961 operations per document makes about 1.9 billion operations in one pass, which is simple arithmetic and not a measured count.",
+          "status": "inferred",
+          "caption": 8,
+          "sources": [
+            { "label": "lab/json-search README, operations per document", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "922", "quote": "17 operations instead of 2: 18,961 operations per document" }
+          ]
+        },
+        {
+          "id": "c1-gpu-pass-time",
+          "claim": "With the documents already on the GPU, the highlighter's pass over all 100,000 documents takes 2.2 ms when passes follow each other.",
+          "caption": 9,
+          "sources": [
+            { "label": "lab/json-search README, highlighter pass", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "118", "quote": "the highlighter's pass takes 2.2 ms and a search 4.5 to 5.2 ms" }
+          ]
+        },
+        {
+          "id": "c1-cpu-and-match",
+          "claim": "The same program as generated JavaScript takes about 2.1 s, extrapolated from 5,000 documents, and 8.4 to 9.2 s on the CPU executor; the GPU's values matched the CPU's, with 51.6 million values and 0 different.",
+          "caption": 10,
+          "sources": [
+            { "label": "lab/json-search README, CPU times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "140", "quote": "2.1 s, extrapolated from 5,000 documents, and 8.4 to 9.2 s, with every position written out" },
+            { "label": "lab/json-search README, executor time", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "118", "quote": "takes 8.4 to 9.2 s on the executor and 2.1 s as generated JavaScript" },
+            { "label": "lab/json-search README, value comparison", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "244", "quote": "51.6 million values, 0 different" }
+          ]
+        },
+        {
+          "id": "c1-scope",
+          "claim": "The measurements are for one Apple M5 Max through Metal in headless Chrome on generated documents, and the lab says another GPU or browser may differ.",
+          "status": "paraphrase",
+          "caption": 11,
+          "sources": [
+            { "label": "lab/json-search README, machine", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "170", "quote": "may all differ on another GPU" },
+            { "label": "lab/json-search README, machine", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "170", "quote": "One Apple M5 Max, one browser, headless." }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Search Is a Matrix Product",
+      "claims": [
+        {
+          "id": "c2-pattern-is-data",
+          "claim": "The search's pattern is data: its automaton sits in cells beside the text, so a new pattern writes cells and changes no program.",
+          "caption": 0,
+          "sources": [
+            { "label": "search-step.ts, header", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "3", "quote": "its automaton and its character classes sit in cells, so a new pattern writes" }
+          ]
+        },
+        {
+          "id": "c2-states-per-pattern",
+          "claim": "A pattern has one state per character or class it reads, plus one: error has 6 states and connection reset has 17.",
+          "caption": 1,
+          "sources": [
+            { "label": "lab/json-search README, states per pattern", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "150", "quote": "A pattern has one state per character or class it reads, plus one" },
+            { "label": "lab/json-search README, example patterns", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "150", "quote": "`error` has 6 and `connection reset` has 17" }
+          ]
+        },
+        {
+          "id": "c2-classes-and-boundaries",
+          "claim": "A pattern may use up to sixteen character classes and thirty-two class boundaries, at every state capacity.",
+          "caption": 2,
+          "sources": [
+            { "label": "search-step.ts, capacities", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "37-38", "quote": "How many character classes and class boundaries a pattern may have" },
+            { "label": "search-step.ts, capacities", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "37-38", "quote": "export const classCapacity = 16" }
+          ]
+        },
+        {
+          "id": "c2-transition-matrix",
+          "claim": "Each code point's class picks a transition matrix of zeros and ones, and each step multiplies that matrix by the zero-one state vector.",
+          "caption": 3,
+          "sources": [
+            { "label": "data-program.ts, transition cells", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/regex/data-program.ts", "lines": "26-27", "quote": "transitions[c][s][t] is 1 when a step from state s reads a code point of class c" },
+            { "label": "search-step.ts, step", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "7-8", "quote": "each step multiplies the code point's transition" }
+          ]
+        },
+        {
+          "id": "c2-one-lookup-per-pair",
+          "claim": "A search step takes one table read per pair of states: 64 reads at 8 states and 1,024 at 32.",
+          "caption": 4,
+          "sources": [
+            { "label": "lab/json-search README, table reads per step", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "150", "quote": "A search step takes one table read per pair of states" }
+          ]
+        },
+        {
+          "id": "c2-reverse-pass",
+          "claim": "The reverse pass, from the end of the text, sets reach[j][s] to 1 when some path from state s at position j reads at least one code point and ends accepting.",
+          "status": "paraphrase",
+          "caption": 5,
+          "sources": [
+            { "label": "search-step.ts, reverse pass", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "9-10", "quote": "reach[j][s] is 1 when some path from state s at position j reads at" }
+          ]
+        },
+        {
+          "id": "c2-forward-pass",
+          "claim": "The forward pass, from the start, marks a code point as part of a match when a state is reached by the match in progress and also marked by the reverse pass.",
+          "status": "paraphrase",
+          "caption": 6,
+          "sources": [
+            { "label": "search-step.ts, forward pass", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "11-12", "quote": "reached[j][s] is 1 when the match in progress has reached state s by position j" },
+            { "label": "search-step.ts, forward pass", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "12", "quote": "Code point j continues the match when reached[j][s] && reach[j][s] for some state s" }
+          ]
+        },
+        {
+          "id": "c2-new-match-no-backtrack",
+          "claim": "When no match continues, a new match starts where the reverse pass marks the initial state, so the forward pass knows whether a longer match exists and never backtracks.",
+          "caption": 7,
+          "sources": [
+            { "label": "search-step.ts, match starts", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "12-14", "quote": "a match starts at j when reach[j][initial state]" },
+            { "label": "search-step.ts, no backtracking", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "13-14", "quote": "never has to go back to where a longest match ended" }
+          ]
+        },
+        {
+          "id": "c2-error-example",
+          "claim": "On the text 'no error found', the reverse pass starts a match only at the e and the forward pass carries it through five letters, so five positions are marked. This is worked out by hand from the rules above and was not executed.",
+          "status": "inferred",
+          "caption": 8,
+          "sources": [
+            { "label": "search-step.ts, rules applied by hand", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "9-14", "quote": "Code point j continues the match when reached[j][s] && reach[j][s] for some state s" }
+          ]
+        },
+        {
+          "id": "c2-operations-per-position",
+          "claim": "Per position the two passes cost 240 operations at 8 states, 664 at 16 and 2,280 at 32, whatever the length of the text.",
+          "caption": 9,
+          "sources": [
+            { "label": "search-step.ts, header", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "2", "quote": "240 operations at 8 states, whatever the number of positions" },
+            { "label": "lab/json-search README, operations table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "268", "quote": "| 32 | 1,156, 1,124 | 583,712 | 1,167,392 |" }
+          ]
+        },
+        {
+          "id": "c2-operations-per-document",
+          "claim": "Over a full 512-position document the two passes cost 122,888 operations at 8 states and 1,167,392 at 32, and every value is an integer that 32-bit floats hold exactly.",
+          "caption": 10,
+          "sources": [
+            { "label": "lab/json-search README, operations per document", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "266", "quote": "| 8 | 148, 92 | 61,448 | 122,888 |" },
+            { "label": "lab/json-search README, operations per document", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "268", "quote": "| 32 | 1,156, 1,124 | 583,712 | 1,167,392 |" },
+            { "label": "bit-emit.ts, exactness", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/bit-emit.ts", "lines": "14-16", "quote": "FP32 then computes every one of them without rounding" }
+          ]
+        },
+        {
+          "id": "c2-display-kinds",
+          "claim": "The search reads the highlighter's display kinds, so a match of a string or key never crosses an escape or a key boundary.",
+          "caption": 11,
+          "sources": [
+            { "label": "search-step.ts, searchable kinds", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/search-step.ts", "lines": "43", "quote": "so no match of 'strings' or 'keys' crosses one" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Packing the Bits",
+      "claims": [
+        {
+          "id": "c3-first-times",
+          "claim": "The first working search took 7.81, 68.8 and 945 ms at 8, 16 and 32 states for 100,000 documents, back to back.",
+          "caption": 0,
+          "sources": [
+            { "label": "lab/json-search README, loop-emit search times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "631-633", "quote": "7.81 (7.32 to 10.3)" },
+            { "label": "lab/json-search README, loop-emit search times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "632", "quote": "68.8 (64.1 to 74.3)" },
+            { "label": "lab/json-search README, loop-emit search times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "633", "quote": "945 (923 to 1012)" }
+          ]
+        },
+        {
+          "id": "c3-operations-and-statements",
+          "claim": "At 32 states a pass has 1,025 table reads, and the shader holds 4,648 statements, each a separate 32-bit float operation in the first writer.",
+          "status": "paraphrase",
+          "caption": 1,
+          "sources": [
+            { "label": "lab/json-search README, shader statements", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "268", "quote": "| 32 | 1,156, 1,124 | 583,712 | 1,167,392 | 16,481 | 4,648 |" },
+            { "label": "lab/json-search README, one f32 statement per operation", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "55", "quote": "with one f32 statement per operation" }
+          ]
+        },
+        {
+          "id": "c3-second-writer",
+          "claim": "On October 14 a second code writer, bit-emit.ts, rewrote only the shader text; the search program as written did not change, and it is still weighted sums, ReGLU gates and index reads.",
+          "status": "paraphrase",
+          "caption": 2,
+          "sources": [
+            { "label": "lab/status.md, October 14 update", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "116", "quote": "The search program as written didn't change" },
+            { "label": "lab/status.md, October 14 update", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "116", "quote": "it is still weighted sums, ReGLU gates and index reads" }
+          ]
+        },
+        {
+          "id": "c3-relu-identity",
+          "claim": "When both inputs of a relu are known to be bits, relu(a minus b) is a AND the flip of b, so a subtraction and a clamp become one logic operation.",
+          "status": "paraphrase",
+          "caption": 3,
+          "sources": [
+            { "label": "bit-emit.ts, relu identity", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/bit-emit.ts", "lines": "35", "quote": "E.g. relu(a - b) is `a & (b ^ 1u)`" }
+          ]
+        },
+        {
+          "id": "c3-word-gate",
+          "claim": "A row of up to 32 states fits one 32-bit word, so a gate reading many table entries of one row becomes one AND of two words and a test against zero.",
+          "status": "paraphrase",
+          "caption": 4,
+          "sources": [
+            { "label": "lab/json-search README, one word per row", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "435", "quote": "since a row of up to 32 states is one word there" },
+            { "label": "bit-emit.ts, word gate", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/bit-emit.ts", "lines": "47-49", "quote": "(word[base] & opens) == 0u" }
+          ]
+        },
+        {
+          "id": "c3-proven-only",
+          "claim": "The second writer packs a value into bits or integers only where the declared ranges prove it is a whole number; everywhere else it writes the same float statements.",
+          "status": "paraphrase",
+          "caption": 5,
+          "sources": [
+            { "label": "bit-emit.ts, what is proven", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/bit-emit.ts", "lines": "10", "quote": "A value is \"whole\" when it is a whole number within a range inside ±2^24" },
+            { "label": "bit-emit.ts, fallback", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/bit-emit.ts", "lines": "5-6", "quote": "Every other operation is written by emit.ts's row writer, as loop-emit.ts writes it" }
+          ]
+        },
+        {
+          "id": "c3-eight-and-sixteen",
+          "claim": "Back to back, at 8 states the search went from 7.81 to 4.60 ms and at 16 states from 68.8 to 4.72 ms, for 100,000 documents.",
+          "caption": 6,
+          "sources": [
+            { "label": "lab/json-search README, bit-emit search times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "631", "quote": "4.60 (4.13 to 8.46)" },
+            { "label": "lab/json-search README, bit-emit search times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "632", "quote": "4.72 (4.32 to 5.71)" }
+          ]
+        },
+        {
+          "id": "c3-thirty-two-ratio",
+          "claim": "At 32 states the search went from 945 to 5.24 ms, which is 1.7, 15 and 180 times less across the three sizes.",
+          "caption": 7,
+          "sources": [
+            { "label": "lab/json-search README, bit-emit search time", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "633", "quote": "5.24 (4.74 to 6.66)" },
+            { "label": "lab/json-search README, ratios", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "777", "quote": "That is 1.7, 15 and 180 times less back to back." }
+          ]
+        },
+        {
+          "id": "c3-flat-floor",
+          "claim": "Searches of 100 to 10,000 documents take 0.6 to 1.9 ms at any of the three pattern sizes, so the search no longer slows with the pattern's size.",
+          "caption": 8,
+          "sources": [
+            { "label": "lab/json-search README, floor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "780", "quote": "100 to 10,000 documents take 0.6 to 1.9 ms at any of the three sizes" }
+          ]
+        },
+        {
+          "id": "c3-pause-caveat",
+          "claim": "Those times are back to back; a search after a pause of 200 ms or more takes 2.4 to 3.2 times the back-to-back time.",
+          "status": "paraphrase",
+          "caption": 9,
+          "sources": [
+            { "label": "lab/json-search README, after a pause", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "162", "quote": "A search after a pause of 200 ms or more takes 2.4 to 3.2 times the back to back time" }
+          ]
+        },
+        {
+          "id": "c3-highlighter-keeps-first-writer",
+          "claim": "The searcher uses the bit writer for search and keeps the first writer for the highlighter, because the bit writer gave no gain for the highlighter's pass.",
+          "caption": 10,
+          "sources": [
+            { "label": "lab/json-search README, highlighter writer", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "782", "quote": "So the searcher keeps loop-emit.ts's shader for the highlighter." },
+            { "label": "searcher.ts, writer choice", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/searcher.ts", "lines": "467", "quote": "const searchWriter = options.writers?.search ?? 'bit-emit'" },
+            { "label": "searcher.ts, writer choice", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/json-search/searcher.ts", "lines": "468", "quote": "const highlighterWriter = options.writers?.highlighter ?? 'loop-emit'" }
+          ]
+        },
+        {
+          "id": "c3-same-answers",
+          "claim": "Both writers give the same answers: 2.4 million match counts and marks in 18 searches, and 103 million highlighter values, with no differences.",
+          "caption": 11,
+          "sources": [
+            { "label": "lab/json-search README, equality checks", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "779", "quote": "2.4 million match counts and marks in 18 searches" },
+            { "label": "lab/json-search README, equality checks", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "779", "quote": "103 million values of the highlighter" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Who Does It Beat",
+      "claims": [
+        {
+          "id": "c4-cpu-factor",
+          "claim": "Against the same programs on the CPU the GPU is about 950 to 3,100 times faster: 2.1 s over the 2.2 ms highlighter pass is about 950, and 14 s over the 4.5 ms search is about 3,100. This ratio is computed here from the cited times and is not a figure the lab states.",
+          "status": "inferred",
+          "caption": 1,
+          "sources": [
+            { "label": "lab/json-search README, CPU search time", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "118", "quote": "A search of a pattern of up to 8 states takes 14 s as generated JavaScript" },
+            { "label": "lab/json-search README, GPU times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "118", "quote": "the highlighter's pass takes 2.2 ms and a search 4.5 to 5.2 ms" }
+          ]
+        },
+        {
+          "id": "c4-regexp-nine",
+          "claim": "Counting every match with the browser's RegExp on one thread takes 8 to 43 ms over nine ordinary patterns, and the GPU is 1.5 to 9 times faster when searches follow each other.",
+          "caption": 2,
+          "sources": [
+            { "label": "lab/json-search README, RegExp on nine patterns", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "436", "quote": "RegExp takes 0.08 to 0.43 µs per document on the nine ordinary patterns" },
+            { "label": "lab/json-search README, speed ratio", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "122", "quote": "the GPU takes 1.5 to 9 times less than RegExp's count" }
+          ]
+        },
+        {
+          "id": "c4-keystroke-scoreboard",
+          "claim": "After a pause, a search takes 11 to 16 ms and beats RegExp on seven of the ten patterns, ties on one, and loses on the date pattern and on connection reset.",
+          "status": "paraphrase",
+          "caption": 3,
+          "sources": [
+            { "label": "lab/json-search README, after a pause", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "121", "quote": "11 to 16 ms after a pause of 200 ms or more" },
+            { "label": "lab/json-search README, per-pattern result", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "123", "quote": "it takes less on seven of the ten, up to 3.5 times less, about the same on one" }
+          ]
+        },
+        {
+          "id": "c4-backtracking",
+          "claim": "On a pattern that makes RegExp backtrack, RegExp takes 2.1 s and the GPU takes 5 to 12 ms.",
+          "caption": 4,
+          "sources": [
+            { "label": "lab/json-search README, backtracking pattern", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "124", "quote": "On a pattern that makes RegExp backtrack, it takes 5 to 12 ms against 2.1 s." }
+          ]
+        },
+        {
+          "id": "c4-crossover",
+          "claim": "The crossover is about 2,000 to 13,000 documents back to back and 15,000 to 54,000 after a pause, and these counts are interpolated between four measured sizes.",
+          "caption": 5,
+          "sources": [
+            { "label": "lab/json-search README, crossover", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "160", "quote": "from about 2,000 to about 13,000 documents on" },
+            { "label": "lab/json-search README, crossover after a pause", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "160", "quote": "from 15,000 to 54,000 after a pause" },
+            { "label": "lab/json-search README, interpolation", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "160", "quote": "interpolated between four measured counts" }
+          ]
+        },
+        {
+          "id": "c4-workers",
+          "claim": "Against JavaScript in several workers the GPU does not win: eight workers count a pattern's matches in 1.9 to 6.7 ms, against 4.5 to 5.2 ms for the GPU back to back, and the workers were not timed after a pause.",
+          "status": "paraphrase",
+          "caption": 6,
+          "sources": [
+            { "label": "lab/json-search README, workers", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "126", "quote": "with workers that weren't timed after a pause" },
+            { "label": "lab/status.md, workers", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "120", "quote": "Against JavaScript in 8 workers: still no." }
+          ]
+        },
+        {
+          "id": "c4-highlighter-from-text",
+          "claim": "For validating from raw text the GPU takes 0.15 s, where a plain JavaScript highlighter takes 0.12 to 0.15 s, so it is not clearly faster.",
+          "caption": 7,
+          "sources": [
+            { "label": "lab/json-search README, from the texts", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "120", "quote": "where the JavaScript highlighter takes 0.12 to 0.15 s" },
+            { "label": "lab/json-search README, from the texts", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "141", "quote": "0.15 s from the texts" }
+          ]
+        },
+        {
+          "id": "c4-review-corrections",
+          "claim": "A review of the write-up found problems, which were corrected: the first answer claimed more than the measurements show, and the CPU times and crossover counts were narrowed.",
+          "caption": 8,
+          "sources": [
+            { "label": "lab/json-search README, the review", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "791", "quote": "It found these problems in the write-up and gaps in the checks, which are fixed" },
+            { "label": "lab/status.md, the review", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "107", "quote": "which had claimed more than the measurements show" }
+          ]
+        },
+        {
+          "id": "c4-open-questions",
+          "claim": "Still open: why a search after a pause takes longer, which the lab did not find, and how other GPUs or browsers compare.",
+          "caption": 9,
+          "sources": [
+            { "label": "lab/status.md, open question", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "114", "quote": "Why an evaluation after a pause takes longer wasn't found." },
+            { "label": "lab/status.md, first-stage programs in a tag", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "237", "quote": "which the tag `json-regex-experiments-2026-10` has whole" }
+          ]
+        },
+        {
+          "id": "c4-summary",
+          "claim": "The GPU is faster than the same program on the CPU and often faster than RegExp, but it is not faster than JavaScript in several workers.",
+          "status": "paraphrase",
+          "caption": 10,
+          "sources": [
+            { "label": "lab/json-search README, verdict", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "129", "quote": "It doesn't take less than RegExp in 8 workers." }
+          ]
+        },
+        {
+          "id": "c4-honesty",
+          "claim": "The lab says a demo is honest if it says what it shows, and not if it claims to beat RegExp on every pattern or JavaScript in several workers.",
+          "status": "paraphrase",
+          "caption": 11,
+          "sources": [
+            { "label": "lab/json-search README, honesty line", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/json-search/README.md", "lines": "131", "quote": "It isn't honest if it claims to beat RegExp on every pattern" }
+          ]
+        }
+      ]
+    }
+  ]
+}

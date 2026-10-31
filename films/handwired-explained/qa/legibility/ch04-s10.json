@@ -1,0 +1,79 @@
+{
+ "shot": "ch04-s10",
+ "at": "2026-10-28T11:30:34.933Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "10",
+   "capWhileSubject": 26.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "12",
+   "capWhileSubject": 26.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×2¹⁴",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×2²⁴",
+   "capWhileSubject": 24.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "· ×2²⁴ ×5",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "· ×2¹⁵",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "=  2¹⁴⁹",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ops",
+   "capWhileSubject": 23.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "16",
+   "capWhileSubject": 40.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a > 4 in 16 ops · 15 layers",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "· bit 1",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ 10",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "2¹⁴⁹",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

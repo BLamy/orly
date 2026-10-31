@@ -1,0 +1,719 @@
+{
+ "id": "ch12",
+ "number": 12,
+ "title": "The Last Accomplice, and the Return to the Scene",
+ "blurb": "2017–2023. The last accomplice is a person, choosing: a simulated robot learns from a person's choices between two tries, and people's rankings train a judge that shapes a small model until it is preferred to one a hundred times larger. Then the return to the dark room: not a new engine, a new door, and the first note in the file, written that same day, still holds. The X-ray is complete and Rosenblatt's 1961 note is read over the glowing box: language was the door. A step back to 2021: the first figure through that door is a new lab, founded and told in the same grammar as every lab's founding, money and all (FTX, then Amazon and Google on the ledger). Then a stampede through the door, in the order it happened, ending with OpenAI's GPT-4 and Anthropic's Claude launched the same day; and on the Wall, one slip still half in shadow.",
+ "shots": [
+  {
+   "id": "ch12-s01",
+   "kind": "scene",
+   "setting": "A simulation stage, June 2017, night: a one-legged robot on a checkerboard floor under a lamp; a small desk with two lit screens",
+   "era": "2017",
+   "mood": "candleAmber",
+   "leadIn": 2.4,
+   "holdAfter": 2,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: the last accomplice: X-ray band 7's shears-shaped slot glints, and on a simulation stage a hand taps the better of two tries while a one-legged paper robot learns from the taps. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'The Last Accomplice, and the Return to the Scene', drops down from the frame's top edge at top-left, like a file-divider tab on a manila folder, holds for 2.5 seconds over the picture, and slides back up (top-left, so it never shares the bottom-left corner with the date stamp); no new shot, no lamp change. The tab rides over the lead-in and the first words of the line. CAMERA: X-RAY, then the stage. A plain cut from ch11-s08's board along the same amber study (study to study; the slot's ink bleed below is the chapter's one signature transition). Open in the study on the X-ray chat box (candleAmber room; the box a serverCyan practical), square-on: its top band, band 7, drawn as a dark, empty, shears-shaped slot. At 0.6 s the slot glints once (a single cold edge-light along the shears' outline), so the eye finds it; then, from 1.0 s to 2.2 s, ink bleeds from that slot (inkBleed origin = the slot) into duskRose, the bleed complete just before the first words of the line. On a paper stage, the Hopper: a one-legged robot cut from black card (thigh, shin, foot) on a checkerboard simulator floor, hopping and toppling. In the foreground, a small desk with two little lit screens side by side, each replaying a short clip of the robot's latest tries. A generic human hand (no face, no likeness) is shown two tries and taps the better of the two, left or right. Beside the desk, a small reward lantern brightens a fraction with each choice: it is learning what the person prefers, and the robot on the stage is trained toward that lantern's light. With each choice the robot on the stage hops a little steadier (the paper's '900 queries' sentence is on the end-credits sources card). On-screen text: the chapter tab (top-left), the date stamp JUNE 2017 (bottom-left, on 'choosing', after the tab has gone) and the paper's authors only.",
+   "lines": [
+    {
+     "id": "L1201",
+     "text": "The last accomplice was a person, choosing: shown two tries, which is better?",
+     "direction": "the chapter's thesis, said simply; a small pause after 'choosing', then the question asked plainly, as the hand taps one screen",
+     "pauseAfter": 0.55
+    }
+   ],
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "manila index tab typed 'The Last Accomplice, and the Return to the Scene' drops down from the frame's top edge at top-left, holds, slides back up (riding over the lead-in and the first words)"
+    },
+    {
+     "id": "slotGlint",
+     "at": {
+      "shotTime": 0.6
+     },
+     "what": "the dark shears-shaped slot at the top of the X-ray box glints once before the ink bleeds from it"
+    },
+    {
+     "id": "bleed",
+     "at": {
+      "shotTime": 1
+     },
+     "what": "ink bleeds from the shears-shaped slot into duskRose (1.0 s to 2.2 s), revealing the simulation stage"
+    },
+    {
+     "id": "choose",
+     "at": {
+      "line": "L1201",
+      "word": "choosing"
+     },
+     "what": "the two screens show two tries; the hand taps the better one; the reward lantern brightens a fraction"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "hopperRobot",
+    "checkerboardFloor",
+    "desk",
+    "twoScreens",
+    "rewardLantern",
+    "tally",
+    "clock"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "The Last Accomplice, and the Return to the Scene",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "date",
+     "text": "JUNE 2017",
+     "beat": "choose"
+    },
+    {
+     "kind": "label",
+     "text": "Christiano et al. · OpenAI and DeepMind",
+     "beat": "choose"
+    }
+   ],
+   "music": {
+    "cue": "ch12-accomplice",
+    "note": "duskRose piano with a light pizzicato hop locked to the robot's hops; a small lift as the hand chooses; then, under the hold, chapter 2's celesta figure for Turing's child machine, unspoken. Gentle, curious, intensity 0.35."
+   },
+   "claims": [
+    "e11-christiano"
+   ]
+  },
+  {
+   "id": "ch12-s02",
+   "kind": "plate",
+   "setting": "A paper-cut garden at dusk, 2022: a long overgrown hedge, a small neat topiary and a pair of shears; a labeller's desk with two scrolls",
+   "era": "2022",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 3.5,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: a paper garden: a person ranks two scrolls, a balance-scale judge tips, the shears snip a vast hedge into a small topiary, and the judges' ribbons go to the small one. A labeller (generic, at a laptop) compares two scrolls of text side by side, their lines soft and illegible, captioned 'machine-generated text', and ranks one above the other. Three garden tools hang in a row on a parchment plate as the three steps of the method: a gardener's sketch (people write example answers), a pair of balance scales, the judge (a reward model learned from their rankings), and the shears, which then move on their own (reinforcement learning against that judge). On 'judge' the scales tip toward the ranked scroll; on 'shaped' the shears lift off the plate by themselves and snip the garden behind, one snip per ranking. On the left, a vast shaggy hedge, untrimmed, with a small paper tag 175B. On the right, a small topiary, shaped by thousands of snips, tagged 1.3B. On 'preferred', a row of anonymous judges each pins a small ribbon on the topiary. As the ribbons are pinned, held through the music-only hold so it can be read, a plain caption at the foot of the plate gives the paper's own caveat: the labellers agreed with each other about 73 times in 100. Text is limited to two items (the result, then the caveat); the three-step plate is told by its pictures and by the narration.",
+   "lines": [
+    {
+     "id": "L1204",
+     "text": "By 2022, people's rankings trained a judge, and the judge shaped the model, like a gardener shaping a hedge.",
+     "direction": "even, a gardener's patience; three clear steps: rankings, judge, shaping; a small smile on 'hedge'",
+     "pauseAfter": 0.6,
+     "spoken": "By twenty twenty-two, people's rankings trained a judge, and the judge shaped the model, like a gardener shaping a hedge."
+    },
+    {
+     "id": "L1205",
+     "text": "People preferred the small, shaped model to one a hundred times larger.",
+     "direction": "a quiet surprise; land 'a hundred times'",
+     "pauseAfter": 0.6
+    }
+   ],
+   "beats": [
+    {
+     "id": "rank",
+     "at": {
+      "line": "L1204",
+      "word": "rankings"
+     },
+     "what": "the labeller ranks one scroll above the other; the three-step plate appears: sketch, scales, shears"
+    },
+    {
+     "id": "judge",
+     "at": {
+      "line": "L1204",
+      "word": "judge"
+     },
+     "what": "the balance scales (the judge) tip toward the ranked scroll"
+    },
+    {
+     "id": "snip",
+     "at": {
+      "line": "L1204",
+      "word": "shaped"
+     },
+     "what": "the shears move on their own and snip the hedge; the topiary takes shape"
+    },
+    {
+     "id": "preferred",
+     "at": {
+      "line": "L1205",
+      "word": "preferred"
+     },
+     "what": "judges pin ribbons on the small topiary beside the vast hedge"
+    },
+    {
+     "id": "caveat",
+     "at": {
+      "line": "L1205",
+      "word": "model"
+     },
+     "what": "the agreement caveat caption appears beneath the ribbons and holds through the music-only hold"
+    }
+   ],
+   "cast": [
+    "labeller"
+   ],
+   "props": [
+    "laptop",
+    "scrolls",
+    "gardenShears",
+    "hedge",
+    "topiary",
+    "balanceScales",
+    "parchmentPlate",
+    "ribbons"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "1.3B InstructGPT preferred to 175B GPT-3 · Ouyang et al. (OpenAI) · March 2022",
+     "beat": "preferred"
+    },
+    {
+     "kind": "label",
+     "text": "labellers agreed with each other about 73% of the time",
+     "beat": "caveat"
+    }
+   ],
+   "music": {
+    "cue": "ch12-accomplice",
+    "note": "The pizzicato becomes the snip of the shears, on the beat of 'shaped'; a warm chord when the ribbons are pinned, then a quiet held pad under the caveat caption. Intensity 0.35."
+   },
+   "claims": [
+    "e11-instructgpt"
+   ]
+  },
+  {
+   "id": "ch12-s06",
+   "kind": "scene",
+   "setting": "The dark room from the prologue, Wednesday 30 November 2022, night: a person at a desk, a glowing chat box, a window on a deep-blue city",
+   "era": "2022",
+   "mood": "serverCyan",
+   "leadIn": 0.6,
+   "holdAfter": 4,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: the return to the cold open: the little lit box turns translucent, swings open like a door, the first note in the file slides into its light, and the camera pulls back over the fully lit city. Crossfade from the garden plate (ch12-s02), with crossfadeMood duskRose→serverCyan under it (no dip to black), back to the exact composition of chapter 1's first shot: the anonymous person in profile at the desk, the mug, fog at desk height, the window on the blue city, the cursor blinking. This time the date stamp names it: 30 NOVEMBER 2022. Slow push in to the glowing rectangle. On 'tuned by human choices', the rectangle turns translucent for a moment and we glimpse what is behind it: anonymous racks (no location, no count) and, in front of them, the hedge and the shears from shot 2. STAGING ORDER (everything happens where the camera is): the camera stays in the room through both lines. On 'all', through the room's own window behind the person, small rectangles across the city light one by one, then in a flood, with no counter and no caption. On 'door', in frame, the chat box's outline swings open in the paper set like a door, and warm light spills across the floor of the dark room toward us. On 'file' (L1216), into that wedge of warm light slides the same folded typed slip the hands dropped into the manila file in chapter 1 (ch01-s04): it unfolds on the desk, its typed text faint except the one word 'plausible-sounding', which catches the light (prop lettering only, no new caption; its full sentence and source are already on screen in chapter 1). Then, in the music-only hold, the camera pulls back through the window and up, exactly as in chapter 1, over a city now fully lit, the open door a small warm rectangle among them.",
+   "lines": [
+    {
+     "id": "L1212",
+     "text": "November 2022, and our little lit box: an existing model, tuned by human choices, free to all.",
+     "direction": "a homecoming; slow, almost a whisper; one flowing sentence, a small breath at the colon",
+     "pauseAfter": 0.6,
+     "spoken": "November, twenty twenty-two, and our little lit box: an existing model, tuned by human choices, free to all."
+    },
+    {
+     "id": "L1215",
+     "text": "Not a new engine. A new door.",
+     "direction": "the chapter's image; a beat between the sentences",
+     "pauseAfter": 0.55
+    },
+    {
+     "id": "L1216",
+     "text": "The first note in the file was written that same day: plausible, and sometimes wrong.",
+     "direction": "quiet, a callback to the opening, fair not scolding; a small breath at the colon, then the last four words plainly",
+     "pauseAfter": 0.64
+    }
+   ],
+   "beats": [
+    {
+     "id": "stamp",
+     "at": {
+      "line": "L1212",
+      "word": "box"
+     },
+     "what": "the date stamp 30 NOVEMBER 2022 appears over the prologue's composition"
+    },
+    {
+     "id": "behind",
+     "at": {
+      "line": "L1212",
+      "word": "tuned"
+     },
+     "what": "the rectangle turns translucent: racks behind it, the hedge and the shears in front"
+    },
+    {
+     "id": "flood",
+     "at": {
+      "line": "L1212",
+      "word": "all"
+     },
+     "what": "through the room's own window, city windows light one by one, then in a flood (no counter, no caption); the camera stays in the room"
+    },
+    {
+     "id": "door",
+     "at": {
+      "line": "L1215",
+      "word": "door"
+     },
+     "what": "the chat box swings open like a door; light spills across the floor"
+    },
+    {
+     "id": "firstNote",
+     "at": {
+      "line": "L1216",
+      "word": "file"
+     },
+     "what": "chapter 1's folded typed slip slides into the door's wedge of warm light and unfolds; only 'plausible-sounding' catches the light"
+    },
+    {
+     "id": "pullBack",
+     "at": {
+      "line": "L1216",
+      "edge": "end",
+      "offset": 0.4
+     },
+     "what": "music-only hold: the camera pulls back through the window and up over the fully lit city, as in chapter 1"
+    },
+    {
+     "id": "cityLit",
+     "at": {
+      "line": "L1216",
+      "edge": "end",
+      "offset": 2.2
+     },
+     "what": "the pull-back clears the window: the fully lit city, the open door a small warm rectangle among the windows"
+    }
+   ],
+   "cast": [
+    "chat-user"
+   ],
+   "props": [
+    "desk",
+    "mug",
+    "chatBox",
+    "cursor",
+    "window",
+    "cityWindows",
+    "serverRack",
+    "hedge",
+    "gardenShears",
+    "quoteSlip"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "30 NOVEMBER 2022",
+     "beat": "stamp"
+    },
+    {
+     "kind": "label",
+     "text": "a free 'research preview' · fine-tuned from a GPT-3.5 model · trained with human feedback",
+     "beat": "behind",
+     "until": "pullBack"
+    }
+   ],
+   "music": {
+    "cue": "ch12-return",
+    "note": "Cue boundary on the return. The prologue's low sustained note and faint tape hiss come back exactly as in chapter 1, then the single high piano tone from 'wonder', now answered by a warm chord on 'new door': the first time the opening's question gets harmony. Under the first note's return, the chord thins to that single tone again, unresolved for a breath, then rises with the pull-back. Intensity 0.3 → 0.5."
+   },
+   "claims": [
+    "e12-chatgpt-launch"
+   ]
+  },
+  {
+   "id": "ch12-s07",
+   "kind": "scene",
+   "setting": "The study, 2022, night: the X-ray chat box fully lit beside the case board; two cards from the file held over it",
+   "era": "2022",
+   "mood": "candleAmber",
+   "leadIn": 6.4,
+   "holdAfter": 3.5,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: all seven X-ray bands light at last; Rosenblatt's 1961 language slip floats into the box's light, and the shears clue card is pinned. CAMERA: X-RAY, then THE FULL WIDE (one of the three reserved wides). STUDY LOCK: a crossfade, with crossfadeMood serverCyan→candleAmber under it (no dip, no tint pop), from the lit city at the end of the return to the dark room (ch12-s06) into the study, onto the X-ray box; the room is candleAmber under the green-shaded lamp; the era's colour enters only as a practical, the X-ray box glowing serverCyan, its light falling cold across the board and the hands, and the window showing the night sky. The chat box stands translucent as an X-ray plate, framed square-on, with the right-hand edge of column C4 of the case board just in frame at the left, and the fixed internal layout used in every X-ray beat of the film: a single column of seven faint, empty, unlabelled bands, read bottom to top. One slow, even tilt from its base to its top, wordless under music for the whole lead-in, lights every band in order at an even pace, each with one soft scored chime: threshold lanterns, the knobs, hidden layers and a backward arrow, furnaces and a sea of text, attention threads, next-word type sorts, and last, at the top, a pair of preference shears that clicks into the dark slot seen at the start of chapter 12 and lights. The bands carry no words and no dates: each band's era is signalled only by its own object and its chime. The seam between bands 3 and 4 stays dark: pointedly absent are the stencils, the Mark I patch cords and the clean bowl. As the tilt nears the top, Rosenblatt's 1961 slip lifts off its pin at W3 on the Wall of Forecasts and floats into the box's light, arriving as the shears click in, its Special Elite typewriter letters laid over the glowing type sorts, readable through the line and the pause after it (the same fragment as ch03-s08's card). It is read as what it was, a note on what a brain model must one day explain, not a forecast come true: no tick, no glint, no verdict (unlike Coulom's slip). The W3 slip carries, wherever it hangs (here and in ch03-s08), a small typed tag tied to its pin, prop lettering in Special Elite: 'a hunch, not a forecast · 1961', so its place on the Wall of Forecasts does not cast it as a prophecy. On 'door', the hands reach in at frame left and pin this chapter's clue card into slot C4-b, beneath the type sort in C4-a: a pair of garden shears. A breath later the Rosenblatt slip drifts back to its pin and the camera pulls back from the plate to THE FULL WIDE: the case board, the candle shelf and the Wall of Forecasts in one frame, the X-ray box glowing at the board's output, every band lit. Hold the wide, still, for at least the last 2.5 seconds of the shot.",
+   "lines": [
+    {
+     "id": "L1217",
+     "text": "Rosenblatt's 1961 note, sixty-one years on: language was the door.",
+     "direction": "slow and respectful, after a long silent look inside the box; the voice only points to the note, whose words are on screen; no prophecy in the tone, a quiet rhyme on 'door', which the next shot walks through",
+     "pauseAfter": 0.96,
+     "spoken": "Rosenblatt's nineteen sixty-one note, sixty-one years on: language was the door."
+    }
+   ],
+   "beats": [
+    {
+     "id": "tilt",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "the tilt begins: the seven bands light in order, bottom to top, at an even pace, each with a soft chime (wordless, under music)"
+    },
+    {
+     "id": "rosenblatt",
+     "at": {
+      "shotTime": 4.6
+     },
+     "what": "Rosenblatt's 1961 slip lifts off W3 and floats into the box's light as the last band lights, readable through the line"
+    },
+    {
+     "id": "shears",
+     "at": {
+      "shotTime": 5.9
+     },
+     "what": "the preference shears click into the last dark slot and light; the column is complete"
+    },
+    {
+     "id": "clueCard",
+     "at": {
+      "line": "L1217",
+      "word": "door"
+     },
+     "what": "the hands pin the clue card at frame left: a pair of garden shears, slot C4-b"
+    },
+    {
+     "id": "fullWide",
+     "at": {
+      "line": "L1217",
+      "word": "door",
+      "edge": "end",
+      "offset": 1.1
+     },
+     "what": "the Rosenblatt slip drifts back to W3; pull back to the full wide: board, shelf and Wall, the X-ray glowing at the output"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "chatBoxXray",
+    "caseBoard",
+    "wallOfForecasts",
+    "forecastSlip",
+    "clueCards",
+    "gardenShears",
+    "typedTag"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "“Linguistic capability, related to perceptual experience, is of the essence…” — Rosenblatt, 1961",
+     "beat": "rosenblatt"
+    }
+   ],
+   "music": {
+    "cue": "ch12-return",
+    "note": "Each of the seven bands lights on its own soft chime, evenly spaced, on a note of the candle motif re-orchestrated in turn through the film's era colours (celesta, valve organ, cello, piano, synth), building a chord that is complete when the shears light. Under Rosenblatt's sentence everything falls away to the 1950s valve organ alone, very soft. Near-silence for 'sixty-one years on, language was the door', then one sustained organ note that opens out under the pull-back to the full wide. Intensity peaks at 0.6, then 0.2."
+   },
+   "claims": [
+    "e12-chatgpt-launch",
+    "e2-neurodynamics"
+   ]
+  },
+  {
+   "id": "ch12-s08",
+   "kind": "montage",
+   "setting": "A dark façade of windows, December 2022 – March 2023, night; then the detective's study and the Wall of Forecasts",
+   "era": "2022–2023",
+   "mood": "serverCyan",
+   "leadIn": 0.6,
+   "holdAfter": 6.6,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: across a dark façade of windows, a stampede: four windows show the race (a corridor, a ledger line, a lantern's light copied everywhere, two lanterns lighting at once); then the case card is tilted shut. CAMERA: the façade, then BOARD, then WALL. Crossfade in from the study, with crossfadeMood candleAmber→serverCyan under it (no tint pop). First, on 'a hundred million', hundreds of tiny windows across the whole tall dark façade flicker on at once, the users, too many to count (no counter; one small label names the figure as an analyst estimate), then settle dim. Then four large windows light in succession, in the order the events happened, about a second apart, illustrating 'rival labs running after them'. The narration names 'a stampede' through ChatGPT's door and its estimated scale, and the four windows carry their events wordlessly (ch12-s03, after this shot, names Bard, LLaMA, GPT-4 and Claude). Each window's date stamp types itself beneath it and STAYS, so by the last window all four stamps are on screen together and each can be read until the cut to the study. Apart from the one estimate label, there are no captions: the events are told by the pictures and by lettering on the props. (1) 21 DEC 2022: a lamp comes on at the end of a long generic corporate corridor, a low-chroma ember (emberRed mixed about 60% into serverCyan; never full red, which the film spends once, on STATUS: OPEN), under a plain corridor sign lettered CODE RED, with a small typed tag pinned beneath it: 'reported'. (2) 23 JAN 2023: a plain ledger line in the same ledger style as Anthropic's in shot 3, its entry lettered MICROSOFT · MULTIBILLION. (3) 24 FEB → 3 MAR 2023: a lantern with a small paper tag, META, handed carefully through a window to a few researchers on request (on its own beat); then, on the next beat, 'a week later', copies of its light scatter across the city like sparks. (4) 14 MAR 2023, wordless, about 2.2 s after L1219 ends: two lanterns light at the same instant in two neighbouring windows, exactly equal in size and brightness (no logos, no ranking). The full wording of each event is on the end-credits sources card: 'a code red declared by Google's management (reported, The New York Times, 21 December 2022)'; 'a multiyear, multibillion dollar investment (Microsoft, 23 January 2023)'; 'Meta's LLaMA, shared with researchers on request (24 February 2023); its weights leaked a week later (3 March 2023)'; 'GPT-4 (OpenAI) and Claude (Anthropic), announced the same day, 14 March 2023'. Cut to the study: STUDY LOCK, the tint crossfades (crossfadeMood) from the façade's serverCyan to candleAmber as the board comes into view, so the study is the same amber room as everywhere else; the cyan survives only as the X-ray box's own glow. BOARD, wordless under music after the last line: the hands tilt the case card WHO TAUGHT IT? a little, as if the case were closing, and sit back from the board; the X-ray box glows in its frame; the lamp hums. A beat: the case looks solved, and is not. WALL: the camera begins a slow lateral truck along the Wall of Forecasts in its fixed slot order (Turing, chess, Rosenblatt 1961, Florence 2012, Coulom), past Coulom's glinting slip toward the far end, where Hinton's 2017 slip hangs. Between them, one slip hangs half in shadow, just beyond the lamp's reach: only its corner is lit, its typed text unreadable. It is the same slip whose corner was planted half-lit in chapters 1, 6 and 9, and chapter 13 opens on it. SCRIPT NOTE (review round 1): ch12 order is now s06 -> s07 -> s08 -> s03; s08 carries L1219 only (L1219b moved, rewritten, to close s03), so its windows 3-4 and the study close are wordless, after L1219.",
+   "lines": [
+    {
+     "id": "L1219",
+     "text": "Through ChatGPT’s door, a stampede. By one estimate, a hundred million monthly users within two months, and rival labs running after them.",
+     "direction": "brisk, a small lift on 'stampede'; then the estimate plainly, not boasted, with 'by one estimate' given its weight; a light quickening on 'rival labs running after them', then a music-only pause while the windows finish lighting under the pulse",
+     "pauseAfter": 2.2,
+     "spoken": "Through Chat G P T’s door, a stampede. By one estimate, a hundred million monthly users within two months, and rival labs running after them."
+    }
+   ],
+   "beats": [
+    {
+     "id": "users",
+     "at": {
+      "line": "L1219",
+      "word": "hundred"
+     },
+     "what": "across the dark façade, hundreds of tiny windows flicker on at once, too many to count (no counter), then settle dim, leaving four large windows dark"
+    },
+    {
+     "id": "codeRed",
+     "at": {
+      "line": "L1219",
+      "word": "rival"
+     },
+     "what": "window 1: a low-chroma ember lamp at the end of a long corridor under the CODE RED sign (21 Dec 2022)"
+    },
+    {
+     "id": "investment",
+     "at": {
+      "line": "L1219",
+      "word": "running"
+     },
+     "what": "window 2: the ledger line (23 Jan 2023)"
+    },
+    {
+     "id": "leak",
+     "at": {
+      "line": "L1219",
+      "edge": "end",
+      "offset": 0.4
+     },
+     "what": "window 3: a tagged lantern handed through a window (24 Feb 2023)"
+    },
+    {
+     "id": "scatter",
+     "at": {
+      "line": "L1219",
+      "edge": "end",
+      "offset": 1.2
+     },
+     "what": "window 3, a week later: copies of the lantern's light scatter across the city like sparks (3 Mar 2023)"
+    },
+    {
+     "id": "sameDay",
+     "at": {
+      "line": "L1219",
+      "edge": "end",
+      "offset": 2.2
+     },
+     "what": "window 4: two equal lanterns light at the same instant (14 Mar 2023), wordless"
+    },
+    {
+     "id": "sitBack",
+     "at": {
+      "line": "L1219",
+      "edge": "end",
+      "offset": 3.8
+     },
+     "what": "cut to the study: the hands tilt the case card as if closing and sit back; the lamp hums"
+    },
+    {
+     "id": "notQuite",
+     "at": {
+      "line": "L1219",
+      "edge": "end",
+      "offset": 5
+     },
+     "what": "the camera trucks along the Wall to the half-shadowed slip between Coulom's and Hinton's; only its corner is lit"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "windowFacade",
+    "corridor (sign lettered CODE RED, tag 'reported')",
+    "emberLamp (low-chroma)",
+    "ledger",
+    "paperLantern",
+    "sparks",
+    "caseBoard",
+    "caseCard",
+    "bankersLamp",
+    "chatBoxXray",
+    "wallOfForecasts"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "~100M monthly users, Jan 2023 · an estimate",
+     "beat": "users",
+     "until": "scatter"
+    },
+    {
+     "kind": "date",
+     "text": "21 DEC 2022",
+     "beat": "codeRed",
+     "until": "sitBack"
+    },
+    {
+     "kind": "date",
+     "text": "23 JAN 2023",
+     "beat": "investment",
+     "until": "sitBack"
+    },
+    {
+     "kind": "date",
+     "text": "24 FEB → 3 MAR 2023",
+     "beat": "leak",
+     "until": "sitBack"
+    },
+    {
+     "kind": "date",
+     "text": "14 MAR 2023",
+     "beat": "sameDay",
+     "until": "sitBack"
+    }
+   ],
+   "music": {
+    "cue": "ch12-return",
+    "note": "The graphics-card-era pulse returns at double speed, one accent per window through the four images (the fourth, the two equal lanterns, on 'Claude'), and is cut off dead once the fourth window and its stamp have held. Then near-silence in the study: the lamp's hum and a single held piano note as the hands sit back; as the camera trucks along the Wall, the candle motif's held suspension on solo celesta, unresolved, handing over to chapter 13. Intensity 0.6 → 0.15."
+   },
+   "claims": [
+    "e12-users",
+    "e12-code-red",
+    "e12-microsoft",
+    "e12-gpt4",
+    "e12-claude-launch",
+    "e12-llama-leak"
+   ]
+  },
+  {
+   "id": "ch12-s03",
+   "kind": "scene",
+   "setting": "The case board in the study, a step back to 2021 (founded in January; the announcement pinned is 28 May), under the green-shaded lamp; a ledger on the side table",
+   "era": "2021",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 1.6,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: the founding grammar again, a step back to 2021: Anthropic's announcement pinned bare in the founding row, the same warm and cold hand-lanterns on one nail, and the same plain ledger page for the money. CAMERA: BOARD. A plain cut along the study (STUDY LOCK, study to study, no lamp change) from the full wide of ch12-s07 to the founding row of the case board, for a step back in time: the first figure through the new door. The step back is carried by the date stamp and the narration ('a lab born in 2021'). FOUNDING GRAMMAR (canonical; the same objects, word for word, for every lab's founding, OpenAI's in ch09-s04 and Anthropic's here): a typewritten announcement pinned in the founding row; no name card under the pin (the founders are named only in the narration); a warm and a cold hand-lantern hanging from the same nail, whose meanings never change from lab to lab: the WARM lantern is always the promise the lab names, the COLD lantern is always the danger the lab names (OpenAI: warm on 'benefit', cold on 'damage'; Anthropic: cold on 'safety', the risk its name answers, warm on 'research'; the order of swings may differ, the meanings may not); and one plain ledger page in IBM Plex Mono for the lab's money. This shot is staged exactly as OpenAI's founding in chapter 9, and must match it. The date stamp reads 'FOUNDED JAN 2021 · ANNOUNCED 28 MAY 2021', because Anthropic's founding (January 2021) and its public announcement (28 May 2021) are different days, whereas OpenAI's 11 December 2015 stamp is its founding announcement; the stamp must not let a bare announcement date read as the founding date. No office, no garage, no spotlight, no faces, no hero framing, flat even light. On 'founded' the hands pin a typewritten announcement dated 28 May 2021 into its slot on the case board (slot F2 of the founding row, beneath column C4: the same height and size as OpenAI's 2015 announcement in F1); its text stays faint except the one phrase the narrator speaks, 'an AI safety and research company', which lights on 'safety' (exactly as ch09-s04 lights only its spoken phrases; no separate quote card, so no dollar figure appears off the ledger). No name cards under the pin: the founders are named only in the narration, exactly as OpenAI's pin in ch09-s04 carries no names (both pins bare). On 'safety', the COLD hand-lantern swings into light on the pin (the danger the name answers, as OpenAI's cold lantern swung on 'damage'); on 'research' the WARM one swings beside it (the promise, as OpenAI's warm lantern swung on 'benefit'): the same pair, the same meanings, on one nail. The lanterns are unlabelled and carry no verdict. After the second line, in a silence of about 2.5 s with no narration (L1208 was cut in review round 9; the ledger carries the money alone), the ledger on the side table turns a page; in the same plain ledger style used for every lab's money in the film (OpenAI's in ch09-s04; Microsoft–OpenAI arrives in shot 8), the entries are set in IBM Plex Mono: '$500M · FTX (later exposed as fraud; Anthropic not implicated)', then, a beat later, 'billions · Amazon, Google'. Every dollar figure for Anthropic is on the ledger and nowhere else. Nothing comments on any entry. No logos. STUDY LOCK: the study is candleAmber, the same lamp as every other study beat; no era tint on the board, the ledger or the lanterns. SCRIPT NOTE (review round 1): now follows the stampede (s08) and closes ch12. L1206 opens 'Among the runners…'; the rewritten L1219b closes the shot: Bard, LLaMA, then GPT-4 and Claude chips set down on the desk as each is named.",
+   "lines": [
+    {
+     "id": "L1206",
+     "text": "Among the runners, a lab born in 2021: former OpenAI researchers, led by Dario and Daniela Amodei, had founded Anthropic.",
+     "direction": "plain, documentary, no warmth added and none withheld; 'Among the runners' carries on from the stampede; 'Amodei' (ah-moh-DAY, three syllables, no 'moo', no 'dye') clear NARRATION: synthesize solo with 2-3 respellings of the surname in spoken ('Ah-moh-day', then 'Uh-moh-day', 'Amo-day'); keep the take whose STT returns 'Amodei' or 'Amoday' (reject any transcript with 'moo'/'mou' or 'dai'/'dye', even if the fuzzy match calls it found); record its clipSig and flag Amodei for human sign-off in voice.json listening[].",
+     "pauseAfter": 0.5,
+     "spoken": "Among the runners, a lab born in twenty twenty-one: former Open A.I. researchers, led by Dario and Daniela Ah-moh-day, had founded Anthropic.",
+     "qa": {
+      "stt": "required",
+      "expect": [
+       "Amodei"
+      ]
+     },
+     "tts": {
+      "solo": true
+     }
+    },
+    {
+     "id": "L1207",
+     "text": "It called itself “an AI safety and research company”.",
+     "direction": "level; let the two halves of the sentence sit side by side without comment",
+     "pauseAfter": 0.6,
+     "spoken": "It called itself “an A.I. safety and research company”."
+    },
+    {
+     "id": "L1219b",
+     "text": "Google announced Bard; Meta shared LLaMA with researchers, and within a week its weights leaked; GPT-4 and Claude arrived the same March day.",
+     "spoken": "Google announced Bard; Meta shared Llama with researchers, and within a week its weights leaked; G P T four and Claude arrived the same March day.",
+     "direction": "level and even-handed, three runners one after another, no lab stressed; Meta's sharing said plainly (deliberate, to researchers), 'within a week its weights leaked' as a plain fact; a small breath at each semicolon; 'the same March day' lightly, a fact worth a small raised eyebrow",
+     "pauseAfter": 0.8,
+     "preGap": 2.4
+    }
+   ],
+   "beats": [
+    {
+     "id": "pin",
+     "at": {
+      "line": "L1206",
+      "word": "founded"
+     },
+     "what": "the hands pin the typewritten announcement into its board slot; one sentence lit"
+    },
+    {
+     "id": "names",
+     "at": {
+      "line": "L1206",
+      "edge": "end",
+      "offset": 0.4
+     },
+     "what": "after the pin: the pin stays bare (no name cards, matching OpenAI's pin); the announcement settles in its slot"
+    },
+    {
+     "id": "selfDescription",
+     "at": {
+      "line": "L1207",
+      "word": "safety"
+     },
+     "what": "the announcement's spoken phrase lights; the COLD hand-lantern (the danger the name answers) swings into light on the pin"
+    },
+    {
+     "id": "largeSystems",
+     "at": {
+      "line": "L1207",
+      "word": "research"
+     },
+     "what": "the WARM hand-lantern (the promise) swings into light beside it on the same nail"
+    },
+    {
+     "id": "ledger",
+     "at": {
+      "line": "L1207",
+      "edge": "end",
+      "offset": 0.5
+     },
+     "what": "the ledger page turns; the FTX entry and its footnote are set (card text, no narration)"
+    },
+    {
+     "id": "bigTech",
+     "at": {
+      "line": "L1207",
+      "edge": "end",
+      "offset": 1.8
+     },
+     "what": "the Amazon and Google entry is set beneath, same style"
+    },
+    {
+     "id": "bard",
+     "at": {
+      "line": "L1219b",
+      "word": "Bard"
+     },
+     "what": "a BARD chip is set on the desk beside the ledger (6 Feb 2023)"
+    },
+    {
+     "id": "llama",
+     "at": {
+      "line": "L1219b",
+      "word": "leaked"
+     },
+     "what": "a LLAMA chip slides in beside it (leaked 3 Mar 2023)"
+    },
+    {
+     "id": "sameDayChips",
+     "at": {
+      "line": "L1219b",
+      "word": "Claude"
+     },
+     "what": "the GPT-4 and CLAUDE chips are set down together, the same size, at the same instant (14 Mar 2023)"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "caseBoard",
+    "typewrittenAnnouncement",
+    "twoHandLanterns (warm, cold) on one pin",
+    "bankersLamp",
+    "ledger"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "FOUNDED JAN 2021 · ANNOUNCED 28 MAY 2021",
+     "beat": "pin"
+    },
+    {
+     "kind": "label",
+     "text": "$500M · FTX (later exposed as fraud; Anthropic not implicated)",
+     "beat": "ledger"
+    },
+    {
+     "kind": "label",
+     "text": "billions · Amazon, Google",
+     "beat": "bigTech"
+    }
+   ],
+   "music": {
+    "cue": "ch12-return",
+    "note": "Inside the return cue, the full wide's sustained organ note thins to nothing; then the same plain plucked figure used for OpenAI's founding in chapter 9 (and every lab's founding), neutral and even, no swell, no heroic lift. Intensity 0.3."
+   },
+   "claims": [
+    "e11-anthropic-founding",
+    "e11-series-a",
+    "e12-anthropic-funding",
+    "e12-bard",
+    "e12-llama-leak",
+    "e12-gpt4",
+    "e12-claude-launch"
+   ]
+  }
+ ]
+}

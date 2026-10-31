@@ -1,0 +1,159 @@
+{
+ "shot": "ch06-s02",
+ "at": "2026-10-28T11:13:29.367Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 29,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "toggle · track 52 × 32 px",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "write inputs",
+   "capWhileSubject": 26.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "evaluate once",
+   "capWhileSubject": 26.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "copy next state back",
+   "capWhileSubject": 26.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "write the page",
+   "capWhileSubject": 26.3,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "5",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "6",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "8",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "9",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "10",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "11",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "12",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "13",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "14",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "15",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "16",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "17",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "18",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "19",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1280",
+   "maxCap": 9.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "800",
+   "maxCap": 9.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "x",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "y",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 24
+}

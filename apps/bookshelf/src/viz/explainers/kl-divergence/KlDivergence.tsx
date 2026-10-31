@@ -1,7 +1,7 @@
 import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
-import { CBOOK, H_P, LABELS, METER, P, PBARS, buildScene, ceAt, lenOf, qAt } from './scene';
+import { CBOOK, CE1, H_P, LABELS, METER, P, PBARS, buildScene, ceAt, lenOf, qAt } from './scene';
 
 /**
  * KL Divergence — the price of the wrong model.
@@ -15,6 +15,7 @@ scene.tl.applyOverrides(overrides as TimelineOverrides);
 const MOTION = { file: 'src/viz/explainers/kl-divergence/overrides.json', slug: 'kl-divergence' };
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
+const bits = (n: number): string => `${n} ${n === 1 ? 'bit' : 'bits'}`;
 
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
@@ -42,7 +43,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* the true distribution */}
           {pU > 0 && (
             <g opacity={pU}>
-              <text x={PBARS.x + 160} y={PBARS.y - 26} fill={colors.TEXT} fontSize={16.5}>
+              <text x={PBARS.x + (3 * PBARS.step + 72) / 2} y={PBARS.y - 26} textAnchor="middle" fill={colors.TEXT} fontSize={16.5}>
                 the true weather P
               </text>
               {P.map((p, i) => {
@@ -55,12 +56,12 @@ function Frame({ s }: { s: SceneState }) {
                     <text x={x + 36} y={PBARS.base - h - 10} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                       {p}
                     </text>
-                    <text x={x + 36} y={PBARS.base + 22} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+                    <text x={x + 36} y={PBARS.base + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                       {LABELS[i]}
                     </text>
                     {idealU > 0 && (
-                      <text x={x + 36} y={PBARS.base + 44} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="ui-monospace, monospace" opacity={idealU}>
-                        {`${-Math.log2(p)} bits`}
+                      <text x={x + 36} y={PBARS.base + 44} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="ui-monospace, monospace" opacity={idealU}>
+                        {bits(-Math.log2(p))}
                       </text>
                     )}
                   </g>
@@ -72,7 +73,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* the model's codebook: lengths -log2 q */}
           {bookU > 0 && (
             <g opacity={bookU}>
-              <text x={CBOOK.x + 180} y={CBOOK.y - 26} fill={colors.TEXT} fontSize={16.5}>
+              <text x={CBOOK.x + (3 * CBOOK.step + 80) / 2} y={CBOOK.y - 26} textAnchor="middle" fill={colors.TEXT} fontSize={16.5}>
                 {`the model's codebook — ${modelName}`}
               </text>
               {LABELS.map((lab, i) => {
@@ -93,16 +94,16 @@ function Frame({ s }: { s: SceneState }) {
                     {over < -0.02 && (
                       <rect x={x} y={CBOOK.base - hIdeal} width={80} height={hIdeal - h} rx={8} fill="none" stroke={colors.MUTED} strokeDasharray="4 4" opacity={0.7} />
                     )}
-                    <text x={x + 40} y={CBOOK.base - h - 10} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontFamily="ui-monospace, monospace">
+                    <text x={x + 40} y={CBOOK.base - h - 10} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
                       {`${len.toFixed(2)}`}
                     </text>
-                    <text x={x + 40} y={CBOOK.base + 22} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+                    <text x={x + 40} y={CBOOK.base + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                       {LABELS[i]}
                     </text>
                   </g>
                 );
               })}
-              <text x={CBOOK.x} y={CBOOK.base + 46} fill={colors.MUTED} fontSize={13}>
+              <text x={CBOOK.x} y={CBOOK.base + 46} fill={colors.MUTED} fontSize={14}>
                 purple: necessary length · red: overcharge vs the truth
               </text>
             </g>
@@ -111,7 +112,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* the average bill meter */}
           {meterU > 0 && (
             <g opacity={meterU}>
-              <text x={METER.x} y={METER.y - 12} fill={colors.TEXT} fontSize={15}>
+              <text x={METER.x} y={METER.y - 12} fill={colors.TEXT} fontSize={16}>
                 average bill per day
               </text>
               <rect x={METER.x} y={METER.y} width={METER.w} height={METER.h} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
@@ -129,7 +130,7 @@ function Frame({ s }: { s: SceneState }) {
                   {`waste = ${waste.toFixed(3)}`}
                 </text>
               )}
-              <text x={METER.x + (H_P * METER.scale) / 2} y={METER.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={0.9}>
+              <text x={METER.x + (H_P * METER.scale) / 2} y={METER.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={0.9}>
                 {`entropy ${H_P.toFixed(2)}`}
               </text>
             </g>
@@ -138,11 +139,11 @@ function Frame({ s }: { s: SceneState }) {
           {/* classifier bridge chip */}
           {lossU > 0 && (
             <g opacity={lossU}>
-              <rect x={840} y={545} width={330} height={54} rx={12} fill={colors.PANEL} opacity={0.93} stroke={colors.POSITIVE} />
-              <text x={858} y={568} fill={colors.POSITIVE} fontSize={14.5}>
+              <rect x={950} y={545} width={300} height={54} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.POSITIVE} />
+              <text x={968} y={568} fill={colors.POSITIVE} fontSize={15}>
                 cross-entropy loss = this bill
               </text>
-              <text x={858} y={589} fill={colors.MUTED} fontSize={13}>
+              <text x={968} y={589} fill={colors.MUTED} fontSize={14}>
                 training a classifier = shrinking the red
               </text>
             </g>
@@ -150,18 +151,28 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math */}
-      <MathLabel tex={'H(P,Q) = -\\textstyle\\sum_i p_i \\log_2 q_i \\qquad D_{KL}(P\\Vert Q) = H(P,Q) - H(P)'} x={640} y={62} fontSize={17} opacity={texU * dimU} />
+      {/* screen-fixed math: one equation at a time, the live value on the right */}
+      <MathLabel
+        tex={
+          wasteU < 0.5
+            ? 'H(P,Q) = -\\textstyle\\sum_i p_i \\log_2 q_i'
+            : `D_{KL}(P\\Vert Q) = H(P,Q) - H(P) = ${waste.toFixed(3)}`
+        }
+        x={640}
+        y={62}
+        fontSize={18}
+        opacity={texU * dimU}
+      />
 
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             KL Divergence
           </text>
           <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            the overcharge for the wrong codebook: 2.000 paid, 1.750 necessary
+            {`the overcharge for the wrong codebook: ${CE1.toFixed(3)} paid, ${H_P.toFixed(3)} necessary`}
           </text>
           <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             every cross-entropy loss is this bill, minimized

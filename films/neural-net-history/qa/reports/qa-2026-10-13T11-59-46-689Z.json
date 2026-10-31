@@ -1,0 +1,58 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-13T11:59:46.689Z",
+ "summary": {
+  "pass": 0,
+  "warn": 2,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "sheets",
+   "id": "coverage",
+   "status": "warn",
+   "detail": "older than the timeline: ch01-s01,ch01-s02,ch01-s03,ch01-s04,ch01-s05,ch01-s06,ch01-s07,ch02-s01,ch02-s02,ch02-s03"
+  },
+  {
+   "stage": "sheets",
+   "id": "cards",
+   "status": "warn",
+   "detail": "121 shots audited, no blank probed card; suspect unprobed paper (read the frames): ch09-s05, ch02-s05b, ch03-s01, ch03-s08, ch04-s05, ch04-s06, ch04-s07, ch05-s06",
+   "fails": [],
+   "suspects": [
+    "ch09-s05",
+    "ch02-s05b",
+    "ch03-s01",
+    "ch03-s08",
+    "ch04-s05",
+    "ch04-s06",
+    "ch04-s07",
+    "ch05-s06",
+    "ch05-s08",
+    "ch05-s10",
+    "ch06-s01",
+    "ch06-s03",
+    "ch06-s03b",
+    "ch06-s04",
+    "ch06-s07",
+    "ch07-s02",
+    "ch07-s03",
+    "ch08-s02",
+    "ch08-s14",
+    "ch09-s01",
+    "ch09-s04",
+    "ch10-s01",
+    "ch10-s02",
+    "ch10-s12",
+    "ch11-s01",
+    "ch12-s01",
+    "ch12-s02",
+    "ch14-s03",
+    "ch14-s04b",
+    "ch15-s03"
+   ],
+   "unaudited": []
+  }
+ ]
+}

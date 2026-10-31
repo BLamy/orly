@@ -1,0 +1,65 @@
+{
+  "slug": "handwired-knuth-plass",
+  "title": "Knuth-Plass",
+  "subtitle": "Optimal line breaks as a tree of min-plus matrices: one paragraph loses, many can win.",
+  "animal": "barn owl",
+  "accent": "#5b8bd6",
+  "chapters": [
+    {
+      "title": "Cheapest Breaks",
+      "blurb": "A line costs its empty space squared, and a running minimum over earlier break points finds the cheapest breaks for the whole paragraph.",
+      "captions": [
+        "Fitting a paragraph to a column means choosing where each line breaks. Knuth-Plass picks the cheapest set of breaks for the whole paragraph, instead of filling one line at a time.",
+        "This lab writes that method as a fixed program of sums, table lookups and relus, which clip negatives to zero. Cheng asked whether many paragraphs at once would then run faster on a graphics chip.",
+        "Take a tiny paragraph: four boxes, three, two, two and five pixels wide, with one pixel spaces, in a column six pixels wide. Where should the lines break?",
+        "Greedy filling packs each line until the next box won't fit. The first two boxes fill six pixels exactly. The third then sits alone, leaving four pixels empty, because the fourth is too wide to join it.",
+        "A line's cost is its empty space, squared. Four empty pixels cost sixteen. A full line costs zero, and so does the last line. Greedy's total is zero plus sixteen plus zero: sixteen.",
+        "Break after the first box instead. That line leaves three pixels empty and costs nine. The next two boxes leave one pixel and cost one. The last line is free. The total is ten, beating sixteen.",
+        "Squaring is why. One big gap costs more than two small ones: four squared is sixteen, but three squared plus one squared is ten. Greedy can't see that a worse early line buys a better later one.",
+        "A line that overflows the column costs a huge number, so it is never chosen. The one exception is a single box wider than the column, at three thousand nine hundred sixty-nine, so every paragraph has a solution.",
+        "To find the cheapest breaks overall, keep a running best. The cost of reaching a break point is the cheapest, over every earlier break point, of that point's cost plus the line from there.",
+        "Walk the break points left to right. Point one costs nine. Point two costs zero. Point three has two candidates: sixteen from point two, or nine plus one, ten, from point one. Ten wins and remembers point one.",
+        "On equal totals, the shortest last line wins. A later candidate replaces the best only when it is strictly cheaper, and the shortest line is tried first.",
+        "In the circuit, a line's cost is one table lookup and two relus. Each minimum is a relu too: left minus right, clipped at zero, is the excess, and the winner is left minus that excess.",
+        "Point four costs ten, from point three. Follow the remembered points back: four, three, one, zero. Lines end after box one, after box three, and at the end. Total ten, against greedy's sixteen."
+      ]
+    },
+    {
+      "title": "Chain Or Tree",
+      "blurb": "Each step of the running minimum is a min-plus matrix, so the steps can be merged in a tree: far fewer layers, about ten times the work.",
+      "captions": [
+        "Each step of that running minimum can be written as a matrix. The state holds the latest costs, one per box in the window. The matrix has this break point's line costs on top and shifts older costs down.",
+        "Multiplying is min-plus: add the entries, then keep the smallest. For point three, sixteen plus zero, or one plus nine. The smaller, ten, becomes the new top cost, and the others shift down.",
+        "Min-plus products are associative, once sums are clamped at the infeasible value. So two steps merge into one matrix of the same size, and any grouping of steps gives the same answer.",
+        "The chain form takes the steps in order. At one thousand twenty-four break points and a window of thirty-two boxes, that is ten thousand two hundred thirty-two layers, each waiting on the one before.",
+        "The tree form merges neighbours, then merges the merged pairs, in Brent-Kung's prefix network. The same breaks come out in only two hundred thirty layers.",
+        "The price is work. Merging two tiles of thirty-two by thirty-two is expensive. The tree totals two million eight hundred twenty-three thousand operations, about ten times the chain's two hundred seventy-seven thousand.",
+        "On the lab's own executor, the tree is slower than the chain at every size measured, taking one point seven to seven point seven times as long. Fewer layers did not buy speed there.",
+        "A plain loop beats both. For one thousand twenty-four break points it takes about seventy-five microseconds, against two thousand nine hundred twenty-five for the chain.",
+        "Those times are historical. One later commit cut the executor's cost per layer, and another cut compile time and memory. So the chain is probably faster now. The notes did not measure again.",
+        "Every value is a whole number below sixteen million, so thirty-two-bit floats hold it exactly. The lab reports that costs, pointers and breaks equal the plain reference on random paragraphs, ties included.",
+        "Last, reading the answer. Our remembered points are zero, zero, zero, one, three. The circuit doubles them: apply the table to itself, and each entry hops two steps. From point four, one hop lands on point one.",
+        "A few such tables let every break point check, in a fixed number of steps, whether it lies on the path back from the end. Points one, three and four do. Doubling is the tree idea again: depth that grows slowly."
+      ]
+    },
+    {
+      "title": "Many At Once",
+      "blurb": "One paragraph loses to the round trip; a thousand paragraphs win with the dense-rows kernel and uploaded positions, but only within a shifting range.",
+      "captions": [
+        "Back to the question: do many paragraphs at once run faster on the graphics chip? Here the tree runs one level per dispatch, with every paragraph's matrices going through together.",
+        "For one paragraph, no. Up to four thousand ninety-six break points, one evaluation takes three tenths to six tenths of a millisecond, mostly the round trip, and a plain loop takes less.",
+        "At two hundred fifty-six break points and thirty-two boxes, the plain loop needs sixteen microseconds. The chip needs about three hundred ninety. Only a big batch can hide that fixed trip.",
+        "The first kernel computes every entry of every product. At a thousand paragraphs it takes forty-two milliseconds, losing to the typed-array loop's ten and the plain loop's eighteen. That is too much work.",
+        "Most rows of those tiles only slide old costs down. The dense-rows kernel multiplies just the rows that hold costs. Same thousand paragraphs, with break positions uploaded: four and a half milliseconds.",
+        "That beats both loops, by two point three times for the typed-array loop and four times for the plain loop. The chip's time grows far more slowly than the loops' time as paragraphs are added.",
+        "What gets uploaded matters. Send the positions and the chip computes line costs itself, and it wins. Compute line costs in plain code and upload them, and it loses: twenty-three milliseconds against ten.",
+        "Where does the win start? Across six Chrome sessions, with positions uploaded: from below thirty to about one hundred five paragraphs against the plain loop, and thirty-eight to one eighty-eight against the typed one.",
+        "The lab itself says those counts are not a stable result. Near a hundred paragraphs the time is mostly the round trip, and the round trip changed about two times between sessions.",
+        "The answers are exact. In Chrome, the chip's totals and breaks matched the reference with zero mismatches across two check runs, over seven hundred thirty million values, up to two hundred seventy thousand break points.",
+        "The lab's answer to Cheng: for many paragraphs, yes; for one paragraph, no. The yes holds for one kernel, with positions or widths uploaded, on one Apple chip through Metal in headless Chrome.",
+        "Still open, by the notes: Sklansky's prefix network, a graphics mode for the page, batches of different lengths, and the demo's own justified cost. None of them was done.",
+        "So: optimal breaks are a running minimum. As matrix products they form a tree, ten thousand layers shrinking to two hundred thirty. One paragraph loses. Many can win, within a range that shifts."
+      ]
+    }
+  ]
+}

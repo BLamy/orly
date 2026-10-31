@@ -171,6 +171,15 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const fieldRand = mulberry32(41);
 const OPENINGS = Array.from({ length: 40 }, (_, i) => ({ honey: fieldRand() < 0.25, i }));
 
+// a fish-hook glyph (the honeypot), drawn so it reads the same on every platform
+function Hook({ x, y, s = 1, color, opacity = 1 }: { x: number; y: number; s?: number; color: string; opacity?: number }) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s})`} opacity={opacity}>
+      <path d="M10 0 V13 Q10 19 5 19 Q0 19 0 13" fill="none" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
+    </g>
+  );
+}
+
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const titleU = s.get(scene.titleU);
@@ -182,8 +191,11 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
-  const fieldFade = 1 - 0.85 * clamp01(barsU * 2.5);
+  const mainOp = 1 - dimU;
+  // the field shows first, leaves for the bars, and returns under the doubt note
+  const fieldOp = Math.max(fieldU * (1 - clamp01(barsU * 2.5)), clamp01(calcU) * (1 - upfrontU));
+  const barsOp = barsU * (1 - calcU);
+  const revealed = trapU > 0.5; // only the blue team sees the honeypots
 
   return (
     <>
@@ -192,9 +204,9 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* field of openings */}
-          {fieldU > 0 && fieldFade > 0.05 && (
-            <g opacity={fieldFade}>
-              <text x={220} y={180} fill={colors.MUTED} fontSize={12.5} opacity={fieldU}>
+          {fieldOp > 0.02 && (
+            <g opacity={fieldOp}>
+              <text x={220} y={180} fill={colors.MUTED} fontSize={14} opacity={fieldU}>
                 the attacker’s openings — which are real, which are bait?
               </text>
               {OPENINGS.map((o, i) => {
@@ -202,43 +214,55 @@ function Frame({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 const col = i % 10;
                 const row = Math.floor(i / 10);
-                const revealed = trapU > 0.5; // only the blue team sees the honeypots
+                const cellX = 220 + col * 58;
+                const cellY = 210 + row * 58;
+                const hooked = o.honey && revealed;
                 return (
                   <g key={i} opacity={u}>
                     <rect
-                      x={220 + col * 58}
-                      y={210 + row * 58}
+                      x={cellX}
+                      y={cellY}
                       width={44}
                       height={44}
                       rx={8}
                       fill={colors.PANEL}
                       opacity={0.9}
-                      stroke={o.honey && revealed ? colors.WARM : colors.GRID}
-                      strokeWidth={o.honey && revealed ? 2.5 : 1}
+                      stroke={hooked ? colors.WARM : colors.GRID}
+                      strokeWidth={hooked ? 2.5 : 1}
                     />
-                    <text x={242 + col * 58} y={238 + row * 58} textAnchor="middle" fontSize={16} fill={o.honey && revealed ? colors.WARM : colors.MUTED}>
-                      {o.honey && revealed ? '🪝' : '·'}
-                    </text>
+                    {hooked ? (
+                      <Hook x={cellX + 16.5} y={cellY + 11.5} s={1.1} color={colors.WARM} />
+                    ) : (
+                      <circle cx={cellX + 22} cy={cellY + 22} r={2.5} fill={colors.MUTED} />
+                    )}
+                    {calcU > 0 && (
+                      <text x={cellX + 35} y={cellY + 15} textAnchor="middle" fontSize={14} fontWeight={700} fill={colors.WARM} opacity={calcU}>
+                        ?
+                      </text>
+                    )}
                   </g>
                 );
               })}
               {trapU > 0.5 && (
-                <text x={220} y={210 + 4 * 58 + 20} fill={colors.WARM} fontSize={12.5} fontFamily="monospace" opacity={clamp01(trapU * 2 - 1)}>
-                  🪝 = honeypot (always audited) — invisible to the attacker
-                </text>
+                <g opacity={clamp01(trapU * 2 - 1)}>
+                  <Hook x={220} y={444} s={0.9} color={colors.WARM} />
+                  <text x={236} y={462} fill={colors.WARM} fontSize={14} fontFamily="monospace">
+                    = honeypot (always audited) — invisible to the attacker
+                  </text>
+                </g>
               )}
             </g>
           )}
 
           {/* the bars: evade-all vs honeypot fraction */}
           {barsU > 0 && (
-            <g>
-              <line x1={BX} y1={BY} x2={BX} y2={BY + BH} stroke={colors.GRID} strokeWidth={1.5} opacity={barsU} />
-              <line x1={BX} y1={BY + BH} x2={BX + BW} y2={BY + BH} stroke={colors.GRID} strokeWidth={1.5} opacity={barsU} />
-              <text x={BX + BW / 2} y={BY + BH + 34} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} opacity={barsU}>
+            <g opacity={barsOp}>
+              <line x1={BX} y1={BY} x2={BX} y2={BY + BH} stroke={colors.GRID} strokeWidth={1.5} />
+              <line x1={BX} y1={BY + BH} x2={BX + BW} y2={BY + BH} stroke={colors.GRID} strokeWidth={1.5} />
+              <text x={BX + BW / 2} y={BY + BH + 38} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 fraction of openings that are honeypots
               </text>
-              <text x={BX - 54} y={BY + BH / 2} fill={colors.MUTED} fontSize={12} textAnchor="middle" transform={`rotate(-90 ${BX - 54} ${BY + BH / 2})`} opacity={barsU}>
+              <text x={BX - 54} y={BY + BH / 2} fill={colors.MUTED} fontSize={14} textAnchor="middle" transform={`rotate(-90 ${BX - 54} ${BY + BH / 2})`}>
                 attacker evade-all (k=3)
               </text>
               {RESULT.map((r, i) => {
@@ -247,11 +271,11 @@ function Frame({ s }: { s: SceneState }) {
                 const h = (r.evade / BASE.evade) * BH * u;
                 return (
                   <g key={r.q}>
-                    <rect x={bx(i) - 34} y={BY + BH - h} width={68} height={h} rx={6} fill={i === 0 ? colors.NEGATIVE : colors.POSITIVE} opacity={0.8} />
-                    <text x={bx(i)} y={BY + BH - h - 10} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace" fontWeight={700}>
+                    <rect x={bx(i) - 34} y={BY + BH - h} width={68} height={h} rx={6} fill={i === 0 ? colors.NEGATIVE : colors.POSITIVE} opacity={0.85} />
+                    <text x={bx(i)} y={BY + BH - h - 10} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" fontWeight={700}>
                       {(r.evade * 100).toFixed(1)}%
                     </text>
-                    <text x={bx(i)} y={BY + BH + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                    <text x={bx(i)} y={BY + BH + 20} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                       {(r.q * 100).toFixed(0)}%
                     </text>
                   </g>
@@ -262,37 +286,25 @@ function Frame({ s }: { s: SceneState }) {
         </Camera>
       </g>
 
-      {/* attacker calculus note — screen space */}
-      {calcU > 0 && (
-        <g opacity={calcU * mainOp}>
-          <rect x={860} y={110} width={380} height={128} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.WARM} />
-          <text x={884} y={140} fill={colors.WARM} fontSize={14} fontWeight={700}>
-            the real weapon is doubt
+      {/* the opening card: the trap idea (beat 1) */}
+      {titleU > 0 && (
+        <g opacity={titleU * (1 - clamp01(fieldU * 4)) * mainOp}>
+          <rect x={470} y={220} width={340} height={180} rx={14} fill={colors.PANEL} stroke={revealed ? colors.WARM : colors.GRID} strokeWidth={revealed ? 2.5 : 1.5} />
+          <text x={640} y={256} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+            an opening that looks perfect
           </text>
-          <text x={884} y={170} fill={colors.MUTED} fontSize={12}>
-            every opening might be a trap
+          <text x={640} y={280} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            unmonitored · tempting
           </text>
-          <text x={884} y={192} fill={colors.MUTED} fontSize={12}>
-            so every defection is taxed —
+          <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={40} opacity={1 - trapU}>
+            ?
           </text>
-          <text x={884} y={214} fill={colors.MUTED} fontSize={12}>
-            even the ones you never planted
+          <Hook x={630} y={301} s={2} color={colors.WARM} opacity={trapU} />
+          <text x={640} y={436} textAnchor="middle" fill={colors.MUTED} fontSize={16} opacity={1 - trapU}>
+            real, or bait?
           </text>
-        </g>
-      )}
-
-      {/* upfront auditing panel */}
-      {upfrontU > 0 && (
-        <g opacity={upfrontU * mainOp}>
-          <rect x={210} y={110} width={520} height={100} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.SECONDARY} />
-          <text x={234} y={140} fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
-            upfront auditing — the same trick in time
-          </text>
-          <text x={234} y={168} fill={colors.MUTED} fontSize={12.5}>
-            audit heavily at the start, on tasks with known answers —
-          </text>
-          <text x={234} y={190} fill={colors.MUTED} fontSize={12.5}>
-            estimate the defection rate before extending any trust.
+          <text x={640} y={436} textAnchor="middle" fill={colors.WARM} fontSize={16} opacity={trapU}>
+            bait: always audited, an automatic catch
           </text>
         </g>
       )}
@@ -303,20 +315,82 @@ function Frame({ s }: { s: SceneState }) {
         </text>
       </g>
 
+      {/* attacker calculus note — screen space, clear of the field */}
+      {calcU > 0 && (
+        <g opacity={calcU * (1 - upfrontU) * mainOp}>
+          <rect x={940} y={200} width={300} height={150} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.WARM} />
+          <text x={964} y={232} fill={colors.WARM} fontSize={16} fontWeight={700}>
+            the real weapon is doubt
+          </text>
+          <text x={964} y={262} fill={colors.MUTED} fontSize={14}>
+            every opening might be a trap
+          </text>
+          <text x={964} y={286} fill={colors.MUTED} fontSize={14}>
+            so every defection is taxed —
+          </text>
+          <text x={964} y={310} fill={colors.MUTED} fontSize={14}>
+            even the ones you never planted
+          </text>
+        </g>
+      )}
+
+      {/* upfront auditing: a strip of tasks in time, audits first (screen space) */}
+      {upfrontU > 0 && (
+        <g opacity={upfrontU * mainOp}>
+          <rect x={164} y={150} width={952} height={110} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.SECONDARY} />
+          <text x={188} y={182} fill={colors.SECONDARY} fontSize={16} fontWeight={700}>
+            upfront auditing — the same trick in time
+          </text>
+          <text x={188} y={212} fill={colors.MUTED} fontSize={15}>
+            audit heavily at the start, on tasks with known answers —
+          </text>
+          <text x={188} y={240} fill={colors.MUTED} fontSize={15}>
+            estimate the defection rate before extending any trust.
+          </text>
+          {Array.from({ length: 20 }, (_, i) => {
+            const u = clamp01(upfrontU * 20 - i);
+            if (u <= 0) return null;
+            return (
+              <rect
+                key={i}
+                x={164 + i * 48}
+                y={300}
+                width={40}
+                height={40}
+                rx={6}
+                fill={i < 8 ? colors.SECONDARY : colors.POSITIVE}
+                opacity={0.85 * u}
+              />
+            );
+          })}
+          <path d="M164 352 V360 H540 V352" fill="none" stroke={colors.SECONDARY} strokeWidth={2} />
+          <path d="M548 352 V360 H1116 V352" fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
+          <text x={164} y={386} fill={colors.SECONDARY} fontSize={14}>
+            heavy audit: tasks with known answers
+          </text>
+          <text x={548} y={386} fill={colors.POSITIVE} fontSize={14}>
+            clean so far → a calibrated bit of rope
+          </text>
+        </g>
+      )}
+
       {/* close */}
       {closeU > 0 && (
         <g opacity={closeU}>
           <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
+          <text x={640} y={250} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            monitoring · rare-attack economics · honeypots · upfront auditing
+          </text>
+          <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Make the one rare attack a coin flip with a trap.
           </text>
-          <text x={640} y={320} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily="monospace">
+          <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily="monospace">
             k=3 evade: no traps {(BASE.evade * 100).toFixed(1)}% → 40% honeypots {(AT40.evade * 100).toFixed(1)}% (computed)
           </text>
-          <text x={640} y={362} textAnchor="middle" fill={colors.POSITIVE} fontSize={15.5}>
+          <text x={640} y={386} textAnchor="middle" fill={colors.POSITIVE} fontSize={15.5}>
             you pay to make the attacker too scared to try
           </text>
-          <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={14}>
+          <text x={640} y={428} textAnchor="middle" fill={colors.WARM} fontSize={14}>
             next: the reported state of the art
           </text>
         </g>

@@ -58,10 +58,14 @@ const SORT_Y = 372;
 // The divider trick: clamp the divider to the compartment bottom, cut both.
 const D = { x: 470, y: 470, w: 340, h: 34 } as const;
 
+// The upper-apron button slot strip, set clear of the legend and the queue.
+const SL = { x: 960, y: 270, w: 280, h: 30 } as const;
+
 const CAM_QUEUE: CameraState = { x: 620, y: 250, k: 1.12 };
 const CAM_COST: CameraState = { x: 620, y: 300, k: 1.0 };
 const CAM_SORT: CameraState = { x: 620, y: 330, k: 1.02 };
-const CAM_DIVIDER: CameraState = { x: 620, y: 470, k: 1.4 };
+// frames both queue rows and the divider; the reset counts stay on the stage
+const CAM_DIVIDER: CameraState = { x: 640, y: 432, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 620, y: 340, k: 0.92 };
 
 export interface Scene {
@@ -213,7 +217,7 @@ function Queue({
   if (u <= 0) return null;
   return (
     <g opacity={u}>
-      <text x={ROW_X - 16} y={y + SLOT_H / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+      <text x={ROW_X - 16} y={y + SLOT_H / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
         {label}
       </text>
       {seq.map((st, i) => {
@@ -229,7 +233,7 @@ function Queue({
               height={SLOT_H}
               rx={4}
               fill={done ? SET_COLOR[st] : OAK}
-              opacity={done ? 0.85 : 0.55}
+              opacity={done ? 0.85 : 0.8}
               stroke={SET_COLOR[st]}
               strokeWidth={1.6}
             />
@@ -283,11 +287,29 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           <Queue seq={NAIVE} y={NAIVE_Y} u={queueU} head={head1} label="as they occur" />
+          {runU > 0 && (
+            <text x={ROW_X} y={NAIVE_Y - 18} fill={colors.TEXT} fontSize={14} opacity={clamp01(runU * 4)}>
+              machine set to{' '}
+              <tspan fill={SET_COLOR[NAIVE[Math.min(Math.floor(head1), NAIVE.length - 1)]]} fontWeight={700}>
+                {NAIVE[Math.min(Math.floor(head1), NAIVE.length - 1)]} — {SET_NAME[NAIVE[Math.min(Math.floor(head1), NAIVE.length - 1)]]}
+              </tspan>
+            </text>
+          )}
           {costU > 0 && (
             <text x={ROW_X + NAIVE.length * (SLOT_W + 6) + 14} y={NAIVE_Y + SLOT_H / 2 + 6} fill={colors.NEGATIVE} fontSize={17} fontWeight={700} opacity={costU}>
               {changes(NAIVE) - 1} resets
             </text>
           )}
+
+          {/* the joint the first caption names: a loose tenon at a leg and apron */}
+          <g opacity={queueU * (1 - clamp01(runU * 6))}>
+            <rect x={250} y={282} width={34} height={64} rx={3} fill={OAK} stroke="#2f2415" strokeWidth={1.3} />
+            <rect x={284} y={286} width={180} height={24} rx={3} fill={OAK_LIT} stroke="#2f2415" strokeWidth={1.3} />
+            <rect x={268} y={292} width={34} height={12} rx={2} fill={colors.SECONDARY} />
+            <text x={476} y={304} fill={colors.MUTED} fontSize={14}>
+              a Domino loose tenon joins the leg to the apron
+            </text>
+          </g>
 
           <Queue seq={SORTED} y={SORT_Y} u={sortU} head={head2} label="grouped by setting" />
           {compareU > 0 && (
@@ -303,10 +325,10 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={D.x - 40} y={D.y + D.h + 20} width={D.w + 80} height={D.h} rx={3} fill={OAK} stroke="#2f2415" strokeWidth={1.3} />
               {/* the divider, dropping onto it */}
               <rect x={D.x} y={D.y - gap} width={D.w} height={D.h} rx={3} fill={OAK_LIT} stroke="#2f2415" strokeWidth={1.3} />
-              <text x={D.x - 52} y={D.y + D.h / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text x={D.x - 52} y={D.y + D.h / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 divider
               </text>
-              <text x={D.x - 52} y={D.y + D.h * 2 + 26} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text x={D.x - 52} y={D.y + D.h + 20 + D.h / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 bottom
               </text>
 
@@ -344,13 +366,13 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the 10 mm button slots ---- */}
           {slotU > 0 && (
             <g opacity={slotU}>
-              <rect x={860} y={168} width={300} height={30} rx={3} fill={OAK_LIT} stroke="#2f2415" />
+              <rect x={SL.x} y={SL.y} width={SL.w} height={SL.h} rx={3} fill={OAK_LIT} stroke="#2f2415" />
               {[0.18, 0.42, 0.66, 0.9].map((f, i) => {
                 const u = clamp01(slotU * 4 - i * 0.5);
                 if (u <= 0) return null;
-                return <rect key={i} x={860 + f * 300 - 14} y={190} width={28} height={9} rx={2} fill={colors.WARM} opacity={u} />;
+                return <rect key={i} x={SL.x + f * SL.w - 14} y={SL.y + 22} width={28} height={9} rx={2} fill={colors.WARM} opacity={u} />;
               })}
-              <text x={1010} y={158} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+              <text x={SL.x + SL.w} y={SL.y + SL.h + 26} textAnchor="end" fill={colors.WARM} fontSize={14}>
                 10 mm button slots — inside the upper aprons
               </text>
             </g>

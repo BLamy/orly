@@ -84,7 +84,8 @@ export const CTRX = PLOT.x + PLOT.w / 2 - 60;
 export const CTRY = PLOT.y + PLOT.h / 2;
 export const PANEL = { x: 850, y: 150 };
 
-export const CAM_PLOT: CameraState = { x: 400, y: 320, k: 1.22 };
+// frames the plot and keeps the stats panel (x up to 1180) on the stage
+export const CAM_PLOT: CameraState = { x: 660, y: 330, k: 1.1 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

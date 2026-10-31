@@ -7,6 +7,8 @@ import {
   BAR_H_MAX,
   BAR_W,
   BATCH,
+  CAM_GRID,
+  CAM_START,
   CELL,
   FINAL_START_P,
   GOAL,
@@ -62,6 +64,8 @@ function Frame({ s }: { s: SceneState }) {
   const badgeU = s.get(scene.badgeU);
   const dimU = s.get(scene.dimU);
   const endU = s.get(scene.endU);
+  const zoom = clamp01((cam.k - CAM_GRID.k) / (CAM_START.k - CAM_GRID.k));
+  const texOpacity = s.get(scene.texU) * (1 - zoom);
 
   const P = policyAt(iterProg);
   const startP = P[stateIdx(START.c, START.r)];
@@ -128,15 +132,28 @@ function Frame({ s }: { s: SceneState }) {
             )}
 
           {/* goal + start markers */}
-          <g opacity={goalU}>
+          <g opacity={goalU * (1 - zoom)}>
             <circle cx={cellCX(GOAL.c)} cy={cellCY(GOAL.r)} r={15} fill="none" stroke={colors.WARM} strokeWidth={3} />
             <text x={cellCX(GOAL.c)} y={cellCY(GOAL.r) + 6} textAnchor="middle" fill={colors.WARM} fontSize={16}>
               +1
             </text>
           </g>
-          <text x={cellCX(START.c)} y={cellY(START.r) + CELL - 10} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={gridU}>
+          <text x={cellCX(START.c)} y={cellY(START.r) + CELL - 10} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={gridU}>
             start
           </text>
+          {/* the start square's leading action, so the zoomed frame carries the number */}
+          {arrowsU > 0 && (
+            <text
+              x={cellCX(START.c)}
+              y={cellY(START.r) + 24}
+              textAnchor="middle"
+              fill={colors.TEXT}
+              fontSize={14}
+              opacity={arrowsU}
+            >
+              {`${(Math.max(...startP) * 100).toFixed(0)}% ${ACTION_LABELS[startP.indexOf(Math.max(...startP))]}`}
+            </text>
+          )}
 
           {/* a sampled batch of real episodes */}
           {trajU > 0 &&
@@ -153,7 +170,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* start-state probability bars */}
           {barsU > 0 && (
-            <g opacity={barsU}>
+            <g opacity={barsU * (1 - zoom)}>
               <text x={BARS_X + (4 * (BAR_W + 26)) / 2 - 13} y={BARS_Y - 36} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
                 policy at the start square
               </text>
@@ -166,7 +183,7 @@ function Frame({ s }: { s: SceneState }) {
                     <text x={x + BAR_W / 2} y={BARS_Y + BAR_H_MAX - h - 8} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                       {(p * 100).toFixed(0)}%
                     </text>
-                    <text x={x + BAR_W / 2} y={BARS_Y + BAR_H_MAX + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    <text x={x + BAR_W / 2} y={BARS_Y + BAR_H_MAX + 20} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                       {ACTION_LABELS[a]}
                     </text>
                   </g>
@@ -177,7 +194,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* success-per-batch curve */}
           {chartU > 0 && (
-            <g opacity={chartU}>
+            <g opacity={chartU * (1 - zoom)}>
               <line x1={chartX(0)} y1={chartY(0)} x2={chartX(ITERS)} y2={chartY(0)} stroke={colors.GRID} strokeWidth={1.5} />
               <line x1={chartX(0)} y1={chartY(0)} x2={chartX(0)} y2={chartY(1)} stroke={colors.GRID} strokeWidth={1.5} />
               <text x={chartX(ITERS / 2)} y={chartY(0) + 28} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
@@ -194,13 +211,14 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math + iteration badge */}
+      {/* screen-fixed math + iteration badge. The formula steps aside as the camera zooms
+          onto the start square, where its top edge would cut across the cells. */}
       <MathLabel
         tex={'\\theta \\mathrel{+}= \\alpha\\, R\\, \\nabla_\\theta \\log \\pi_\\theta(a\\mid s)'}
         x={1000}
         y={64}
         fontSize={20}
-        opacity={s.get(scene.texU)}
+        opacity={texOpacity}
       />
       {badgeU > 0 && (
         <g opacity={badgeU}>

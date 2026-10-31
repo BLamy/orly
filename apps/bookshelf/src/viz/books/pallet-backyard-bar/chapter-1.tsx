@@ -25,10 +25,10 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
 // ---------------------------------------------------------------------------
-// Salvage geometry. 1 in = 5.2 px.
+// Salvage geometry. 1 in = 4.8 px.
 // ---------------------------------------------------------------------------
 
-const IN = 5.2;
+const IN = 4.8;
 const WOOD = '#7d5a34';
 const WOOD_LIT = '#a3763f';
 
@@ -48,8 +48,8 @@ interface Candidate {
 const CANDIDATES: Candidate[] = [
   { id: 'A', lengthIn: 40, heightIn: 32, boardIn: 4, split: [], verdict: 'too short · 40 in', cx: 350, cy: 236 },
   { id: 'B', lengthIn: 48, heightIn: 40, boardIn: 6, split: [1, 4], verdict: 'cracked boards', cx: 930, cy: 236 },
-  { id: 'C', lengthIn: 47, heightIn: 40, boardIn: 6, split: [], verdict: 'the one', cx: 350, cy: 508 },
-  { id: 'D', lengthIn: 47, heightIn: 40, boardIn: 3.5, split: [], verdict: 'narrow boards · 3.5 in', cx: 930, cy: 508 },
+  { id: 'C', lengthIn: 47, heightIn: 40, boardIn: 6, split: [], verdict: 'the one', cx: 350, cy: 490 },
+  { id: 'D', lengthIn: 47, heightIn: 40, boardIn: 3.5, split: [], verdict: 'narrow boards · 3.5 in', cx: 930, cy: 500 },
 ];
 const WINNER = 2;
 
@@ -114,12 +114,14 @@ const onQuad = (q: Quad, a: number, b: number): Pt => ({
   y: lerp(lerp(q[0].y, q[1].y, a), lerp(q[3].y, q[2].y, a), b),
 });
 
-const SPEC = { x: 470, y: 96, w: 340, h: 150 } as const;
+const SPEC = { x: 490, y: 96, w: 300, h: 150 } as const;
 const SPEC_LINES = ['≈ 47 in long', '40 in tall', '6 in cross boards', 'no broken boards'];
 
 const CAM_WIDE: CameraState = { x: 640, y: 372, k: 1.0 };
 const CAM_HERO: CameraState = { x: 610, y: 396, k: 1.3 };
-const camOn = (i: number): CameraState => ({ x: CANDIDATES[i].cx, y: CANDIDATES[i].cy, k: 1.45 });
+// Gentle push toward the candidate. Zoom is kept low so the neighbouring
+// candidates, their labels and the caption band stay on the stage.
+const camOn = (i: number): CameraState => ({ x: lerp(641, CANDIDATES[i].cx, 0.4), y: 396, k: 1.1 });
 
 export interface Scene {
   tl: Timeline;
@@ -405,12 +407,13 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- the salvage pile ---- */}
-        <g opacity={othersDim}>
+        {/* fades out as the survivor stands, so the stool and dimensions sit on clear ground */}
+        <g opacity={othersDim * (1 - standU)}>
           {CANDIDATES.map((c, i) => (
             <g key={c.id}>
               <PalletFace c={c} boards={BOARDS[i]} u={clamp01(pileU * 3 - i * 0.5)} lit={i === WINNER ? crownU : 0} />
               {pileU > 0.6 && (
-                <text x={c.cx} y={c.cy - c.heightIn * IN / 2 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                <text x={c.cx} y={c.cy - c.heightIn * IN / 2 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                   {c.lengthIn} × {c.heightIn} in · {c.boardIn} in boards
                 </text>
               )}
@@ -420,11 +423,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* the survivor gets a ring, not a strike */}
           {crownU > 0 && (
             <g opacity={crownU}>
+              {/* the ring also encloses the candidate's size label above it */}
               <rect
                 x={CANDIDATES[WINNER].cx - hero.lengthIn * IN / 2 - 12}
-                y={CANDIDATES[WINNER].cy - totalH / 2 - 12}
+                y={CANDIDATES[WINNER].cy - totalH / 2 - 36}
                 width={hero.lengthIn * IN + 24}
-                height={totalH + 24}
+                height={totalH + 48}
                 rx={10}
                 fill="none"
                 stroke={colors.POSITIVE}
@@ -445,7 +449,8 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---- the spec card ---- */}
-        <g opacity={specU}>
+        {/* the card clears on the same window the pile dims in beat 7 */}
+        <g opacity={specU * clamp01((othersDim - 0.12) / 0.88)}>
           <rect x={SPEC.x} y={SPEC.y} width={SPEC.w} height={SPEC.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
           <text x={SPEC.x + 18} y={SPEC.y + 30} fill={colors.ACCENT} fontSize={14} fontWeight={700}>
             WHAT THE FRONT NEEDS
@@ -506,7 +511,7 @@ export function Render({ s }: { s: SceneState }) {
                   return (
                     <>
                       <rect x={p.x - 26} y={p.y - 16} width={52} height={32} rx={5} fill={colors.SECONDARY} opacity={0.85} />
-                      <text x={p.x} y={p.y - 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={12}>
+                      <text x={p.x} y={p.y - 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                         light sanding only
                       </text>
                     </>
@@ -539,7 +544,7 @@ export function Render({ s }: { s: SceneState }) {
                       <line x1={sx - 22} y1={seat} x2={sx - 28} y2={groundY} stroke={colors.SECONDARY} strokeWidth={4} />
                       <line x1={sx + 22} y1={seat} x2={sx + 28} y2={groundY} stroke={colors.SECONDARY} strokeWidth={4} />
                       <line x1={sx - 26} y1={groundY - 8 * IN} x2={sx + 26} y2={groundY - 8 * IN} stroke={colors.SECONDARY} strokeWidth={3} />
-                      <text x={sx} y={groundY + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+                      <text x={sx} y={groundY + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                         bar stool
                       </text>
                     </>
@@ -586,12 +591,15 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing panel ---- */}
         {closeU > 0 && (
           <g opacity={closeU}>
-            <rect x={306} y={286} width={668} height={132} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={338} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
+            <rect x={306} y={56} width={668} height={166} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+            <text x={640} y={108} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
               one pallet · 47 by 40 inches · six-inch boards · uncut
             </text>
-            <text x={640} y={380} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
+            <text x={640} y={150} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
               the front of the bar
+            </text>
+            <text x={640} y={190} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+              Source: Lee Valley, “Make a Backyard Bar Using Pallets”
             </text>
           </g>
         )}

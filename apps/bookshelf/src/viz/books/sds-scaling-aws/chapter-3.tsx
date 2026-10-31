@@ -40,6 +40,11 @@ const REPLICAS = [
   { x: 940, y: 450 },
   { x: 1090, y: 450 },
 ] as const;
+// half-widths of the boxes, so read dots stop at each box's edge
+const WEB_HW = 104;
+const CACHE_HW = 99;
+const MASTER_HW = 94;
+const REPL_HW = 74;
 
 const rand = mulberry32(20260722);
 const N_READS = 40;
@@ -49,9 +54,11 @@ const READS = Array.from({ length: N_READS }, (_, i) => ({
   toReplica: Math.floor(rand() * 2),
 }));
 
-const CAM_DB: CameraState = { x: 950, y: 330, k: 1.25 };
-const CAM_CACHE: CameraState = { x: 680, y: 300, k: 1.3 };
-const CAM_WEB: CameraState = { x: 420, y: 360, k: 1.25 };
+// Each push keeps its subject inside the stage and above the caption band (y < 630).
+// (the stage keeps every frame's subject inside y 40..630 at these pushes)
+const CAM_DB: CameraState = { x: 700, y: 340, k: 1.2 };
+const CAM_CACHE: CameraState = { x: 690, y: 340, k: 1.2 };
+const CAM_WEB: CameraState = { x: 560, y: 360, k: 1.1 };
 
 export interface Scene {
   tl: Timeline;
@@ -177,11 +184,11 @@ function Node({ x, y, w = 150, h = 56, title, sub, stroke = colors.GRID, opacity
   return (
     <g opacity={opacity}>
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={1.3} />
-      <text x={x} y={y - 1} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+      <text x={x} y={y - 1} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -202,7 +209,7 @@ export function Render({ s }: { s: SceneState }) {
   const calmU = s.get(scene.calmU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.88;
+  const dimAll = 1 - closeU;
   const health = clamp01(1 - hpU * 0.8 + calmU * 0.75);
 
   return (
@@ -212,17 +219,17 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- web fleet ---- */}
         {WEB.map((w, i) => (
           <g key={i} opacity={rigU * dimAll}>
-            <Node x={w.x} y={w.y} w={170} h={70} title={sessU > 0.9 ? 'Web Server · stateless' : 'Web Server'} sub={sessU > 0.9 ? 'identical, disposable' : 'holds sessions'} stroke={sessU > 0.9 ? colors.POSITIVE : colors.TEXT} />
-            {/* session chip inside until it flies out */}
+            <Node x={w.x} y={w.y} w={200} h={96} title={sessU > 0.9 ? 'Web Server · stateless' : 'Web Server'} sub={sessU > 0.9 ? 'identical, disposable' : 'holds sessions'} stroke={sessU > 0.9 ? colors.POSITIVE : colors.TEXT} />
+            {/* session chip inside (bottom strip) until it flies out to the cache */}
             {(() => {
               const u = clamp01(sessU * 2 - i * 0.4);
               if (u >= 1) return null;
-              const x = lerp(w.x + 55, CACHE.x - 40, u);
-              const y = lerp(w.y - 18, CACHE.y + 20, u) - Math.sin(u * Math.PI) * 30;
+              const x = lerp(w.x, CACHE.x, u);
+              const y = lerp(w.y + 32, CACHE.y + 32, u) - Math.sin(u * Math.PI) * 30;
               return (
                 <g opacity={dimAll}>
-                  <rect x={x - 30} y={y - 10} width={60} height={20} rx={5} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.1} />
-                  <text x={x} y={y + 4} textAnchor="middle" fill={colors.SECONDARY} fontSize={8.5} fontFamily="ui-monospace, monospace">
+                  <rect x={x - 38} y={y - 11} width={76} height={22} rx={5} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.1} />
+                  <text x={x} y={y + 4} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace">
                     session
                   </text>
                 </g>
@@ -233,7 +240,14 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the memory cache ---- */}
         <g opacity={cacheU * dimAll}>
-          <Node x={CACHE.x} y={CACHE.y} w={190} h={80} title="Memory Cache" sub="ElastiCache · ~250 µs" stroke={colors.WARM} />
+          <Node x={CACHE.x} y={CACHE.y} w={190} h={100} title="Memory Cache" sub="ElastiCache · ~250 µs" stroke={colors.WARM} />
+        </g>
+        {/* the sessions the cache now holds, shown once they have arrived */}
+        <g opacity={cacheU * sessU * dimAll}>
+          <rect x={CACHE.x - 60} y={CACHE.y + 24} width={120} height={22} rx={5} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.1} />
+          <text x={CACHE.x} y={CACHE.y + 39} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace">
+            user sessions
+          </text>
         </g>
 
         {/* ---- master + replicas ---- */}
@@ -251,10 +265,10 @@ export function Render({ s }: { s: SceneState }) {
         ))}
         {splitU > 0.05 && (
           <g opacity={splitU * dimAll}>
-            <text x={MASTER.x} y={MASTER.y - 74} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily="ui-monospace, monospace">
+            <text x={MASTER.x} y={MASTER.y - 74} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
               writes → master
             </text>
-            <text x={(REPLICAS[0].x + REPLICAS[1].x) / 2} y={REPLICAS[0].y + 48} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily="ui-monospace, monospace">
+            <text x={(REPLICAS[0].x + REPLICAS[1].x) / 2} y={REPLICAS[0].y + 50} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
               reads → replicas
             </text>
           </g>
@@ -271,29 +285,37 @@ export function Render({ s }: { s: SceneState }) {
           const hitCache = phase2 && i % 5 !== 0;
           const toRepl = phase2 && !hitCache && replU > 0.5;
           const target = hitCache ? CACHE : toRepl ? REPLICAS[r.toReplica] : MASTER;
-          const x = lerp(from.x + 85, target.x - 80, u);
+          const edge = hitCache ? CACHE_HW : toRepl ? REPL_HW : MASTER_HW;
+          const x = lerp(from.x + WEB_HW, target.x - edge, u);
           const y = lerp(from.y, target.y, u);
           return <circle key={`${phase2 ? 'b' : 'a'}-${i}`} cx={x} cy={y} r={4} fill={hitCache ? colors.WARM : colors.ACCENT} opacity={0.8} />;
         })}
 
         {/* the thin write line, always calm */}
         <g opacity={rigU * dimAll * 0.9}>
-          <line x1={WEB[1].x + 85} y1={WEB[1].y + 22} x2={MASTER.x - 90} y2={MASTER.y + 22} stroke={colors.POSITIVE} strokeWidth={1.4} strokeDasharray="4 8" />
-          <text x={640} y={430} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily="ui-monospace, monospace" opacity={0.8}>
+          <line x1={WEB[1].x + WEB_HW} y1={WEB[1].y + 22} x2={MASTER.x - MASTER_HW} y2={MASTER.y + 22} stroke={colors.POSITIVE} strokeWidth={1.4} strokeDasharray="4 8" />
+          <text x={640} y={430} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="ui-monospace, monospace" opacity={0.9}>
             1 write per 100 reads
+          </text>
+        </g>
+
+        {/* the ratio the opening caption names, shown as the rig fades in */}
+        <g opacity={rigU * dimAll}>
+          <text x={640} y={128} textAnchor="middle" fill={colors.TEXT} fontSize={26}>
+            100 reads for every 1 write
           </text>
         </g>
 
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
           <rect x={290} y={220} width={700} height={230} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={270} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+          <text x={640} y={270} textAnchor="middle" fill={colors.TEXT} fontSize={22}>
             surviving a hundred to one
           </text>
-          <text x={640} y={320} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+          <text x={640} y={320} textAnchor="middle" fill={colors.WARM} fontSize={14}>
             hot reads from memory · sessions out of the servers · replicas for the rest
           </text>
-          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontStyle="italic">
+          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             stateless web servers — the ticket to autoscaling
           </text>
         </g>

@@ -1,0 +1,94 @@
+{
+ "shot": "ch07-s06",
+ "at": "2026-10-28T13:17:41.614Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 16,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "weights",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "operations",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "layers",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "THE LEARNED GALLERY · 14 OCT 2026",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "seeded random start:",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "every photo a small square",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "5",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "7",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "4",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "8",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 10
+}

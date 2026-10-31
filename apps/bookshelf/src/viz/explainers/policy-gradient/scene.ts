@@ -150,7 +150,7 @@ export const cellCX = (c: number): number => cellX(c) + CELL / 2;
 export const cellCY = (r: number): number => cellY(r) + CELL / 2;
 
 export const BARS_X = 760;
-export const BARS_Y = 150;
+export const BARS_Y = 170;
 export const BAR_W = 62;
 export const BAR_H_MAX = 160;
 
@@ -161,8 +161,11 @@ export const CHART_Y1 = 400;
 export const chartX = (e: number): number => CHART_X0 + ((CHART_X1 - CHART_X0) * e) / ITERS;
 export const chartY = (v: number): number => CHART_Y0 + (CHART_Y1 - CHART_Y0) * v;
 
-export const CAM_GRID: CameraState = { x: 380, y: 312, k: 1.24 };
-export const CAM_START: CameraState = { x: cellCX(START.c) + 80, y: cellCY(START.r) - 60, k: 1.7 };
+// Grid view frames the whole board: grid, probability bars and success curve
+// all sit above the caption band (stage y 630).
+export const CAM_GRID: CameraState = { x: 670, y: 362, k: 1.12 };
+// Start-square zoom sits low so the top of the stage stays clear for the formula.
+export const CAM_START: CameraState = { x: cellCX(START.c) + 80, y: 406, k: 1.7 };
 
 // ---------------------------------------------------------------------------
 // The timeline
@@ -291,7 +294,7 @@ export function buildScene(): Scene {
 
   // — Beat 7 · recap ——————————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 63.9, dur: 1.5, ease: ease.move });
-  tl.tween(dimU, 0.15, { at: 64.5, dur: 1.2, ease: ease.move });
+  tl.tween(dimU, 0.1, { at: 64.5, dur: 1.2, ease: ease.move });
   tl.tween(texU, 0, { at: 64.5, dur: 0.8, ease: ease.move });
   tl.tween(badgeU, 0, { at: 64.5, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 65.7, dur: 0.9, ease: ease.enter });

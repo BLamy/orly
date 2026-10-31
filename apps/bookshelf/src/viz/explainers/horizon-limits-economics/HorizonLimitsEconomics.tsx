@@ -53,7 +53,8 @@ const PARAM_RATIO = 1000 / 35; // ≈ 28.6
 const TRAJ_TOKENS = 45000;
 const EQUIV_TOKENS = Math.round(TRAJ_TOKENS / PARAM_RATIO); // ≈ 1575
 
-const CAM_TRAILS: CameraState = { x: 400, y: 280, k: 1.3 };
+// both columns (trails + the authors' diagnosis) must fit the frame together
+const CAM_TRAILS: CameraState = { x: 645, y: 250, k: 1.1 };
 const CAM_MATH: CameraState = { x: 700, y: 430, k: 1.25 };
 
 interface Scene {
@@ -171,40 +172,42 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the old figures fade out fully before the closing panel lands
+  const mainOp = 1 - dimU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* trails bars */}
-          {trailsU > 0 && (
-            <g>
+          {/* trails bars: dim while the authors' panel is read, gone for the arithmetic */}
+          {trailsU > 0 && ecoU < 1 && (
+            <g opacity={(1 - 0.55 * weakU) * (1 - ecoU)}>
               <text x={130} y={140} fill={colors.TEXT} fontSize={16} opacity={trailsU}>
                 where the giants keep the lead
               </text>
-              <text x={130} y={160} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={trailsU}>
+              <text x={130} y={160} fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={trailsU}>
                 reported — replotted, not re-run
               </text>
               {TRAILS.map((b, i) => {
                 const u = clamp01(trailsU * TRAILS.length - i);
                 if (u <= 0) return null;
                 const y = 190 + i * 74;
-                const wa = (b.a1 / 90) * 380 * fillU;
-                const wb = (b.big / 90) * 380 * fillU;
+                const wa = (b.a1 / 90) * 380 * u;
+                const wb = (b.big / 90) * 380 * u;
                 return (
                   <g key={b.name} opacity={u}>
                     <text x={230} y={y + 12} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                       {b.name}
                     </text>
-                    <rect x={245} y={y} width={Math.max(wa, 2)} height={16} rx={3} fill={colors.ACCENT} opacity={0.6} />
-                    <rect x={245} y={y + 22} width={Math.max(wb, 2)} height={16} rx={3} fill={colors.NEGATIVE} opacity={0.65} />
-                    <text x={253 + wa} y={y + 13} fill={colors.ACCENT} fontSize={12} fontFamily={MONO} opacity={fillU}>
+                    <rect x={245} y={y} width={Math.max(wa, 2)} height={16} rx={3} fill={colors.ACCENT} opacity={0.35 + 0.3 * fillU} />
+                    <rect x={245} y={y + 22} width={Math.max(wb, 2)} height={16} rx={3} fill={colors.NEGATIVE} opacity={0.4 + 0.3 * fillU} />
+                    <text x={253 + wa} y={y + 13} fill={colors.ACCENT} fontSize={14} fontFamily={MONO} opacity={u}>
                       {b.a1} · Agents-A1
                     </text>
-                    <text x={253 + wb} y={y + 35} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={fillU}>
+                    <text x={253 + wb} y={y + 35} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} opacity={u}>
                       {b.big} · {b.bigOf}
                     </text>
                   </g>
@@ -213,21 +216,24 @@ function Frame({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* the authors' own diagnosis */}
-          {weakU > 0 && (
-            <g>
+          {/* the authors' own diagnosis, level with the trail rows */}
+          {weakU > 0 && ecoU < 1 && (
+            <g opacity={1 - ecoU}>
               <text x={760} y={140} fill={colors.TEXT} fontSize={16} opacity={weakU}>
                 the authors name the gap
+              </text>
+              <text x={760} y={160} fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={weakU}>
+                their words, from long ML engineering runs
               </text>
               {WEAK.map((w, i) => {
                 const u = clamp01(weakU * WEAK.length - i);
                 if (u <= 0) return null;
-                const y = 170 + i * 52;
+                const y = 190 + i * 74;
                 return (
                   <g key={w} opacity={u}>
-                    <rect x={760} y={y} width={400} height={40} rx={9} fill={colors.WARM} opacity={0.1} />
+                    <rect x={760} y={y} width={400} height={40} rx={9} fill={colors.WARM} opacity={0.14} />
                     <rect x={760} y={y} width={4} height={40} rx={2} fill={colors.WARM} />
-                    <text x={778} y={y + 25} fill={colors.TEXT} fontSize={14}>
+                    <text x={778} y={y + 25} fill={colors.TEXT} fontSize={15}>
                       {w}
                     </text>
                   </g>
@@ -239,33 +245,57 @@ function Frame({ s }: { s: SceneState }) {
           {/* economics panel */}
           {ecoU > 0 && (
             <g opacity={ecoU}>
-              <rect x={300} y={370} width={800} height={190} rx={14} fill={colors.PANEL} opacity={0.97} stroke={colors.GRID} />
-              <text x={324} y={402} fill={colors.TEXT} fontSize={16} fontWeight={600}>
+              <rect x={300} y={360} width={800} height={232} rx={14} fill={colors.PANEL} opacity={0.97} stroke={colors.GRID} />
+              <text x={324} y={392} fill={colors.TEXT} fontSize={16} fontWeight={600}>
                 cost per task — our arithmetic, not the paper's
               </text>
-              <text x={324} y={422} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={324} y={416} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 the paper reports no cost analysis; this uses public parameter counts only
               </text>
+              {/* the model sizes the caption names; they hand over to the formulas */}
+              {mathU < 1 && (
+                <g opacity={1 - mathU}>
+                  <rect x={380} y={446} width={240} height={84} rx={10} fill={colors.ACCENT} opacity={0.12} stroke={colors.ACCENT} strokeOpacity={0.5} />
+                  <text x={500} y={478} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={600}>
+                    35B
+                  </text>
+                  <text x={500} y={506} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                    small agent model
+                  </text>
+                  <text x={700} y={478} textAnchor="middle" fill={colors.MUTED} fontSize={20}>
+                    vs
+                  </text>
+                  <rect x={780} y={446} width={240} height={84} rx={10} fill={colors.NEGATIVE} opacity={0.12} stroke={colors.NEGATIVE} strokeOpacity={0.5} />
+                  <text x={900} y={478} textAnchor="middle" fill={colors.NEGATIVE} fontSize={22} fontWeight={600}>
+                    ~1T
+                  </text>
+                  <text x={900} y={506} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                    giant model
+                  </text>
+                </g>
+              )}
               {mathU > 0 && (
                 <g opacity={mathU}>
                   <MathLabel
                     tex={'\\frac{1000\\mathrm{B}}{35\\mathrm{B}} \\approx 28.6\\times \\text{ per token}'}
-                    x={520}
-                    y={480}
-                    fontSize={19}
+                    x={700}
+                    y={466}
+                    fontSize={20}
                     color={colors.TEXT}
+                    boxWidth={760}
                   />
                   <MathLabel
                     tex={'\\frac{45{,}000 \\text{ tok}}{28.6} \\approx 1{,}600 \\text{ tok}'}
-                    x={900}
-                    y={480}
-                    fontSize={19}
+                    x={700}
+                    y={514}
+                    fontSize={20}
                     color={colors.ACCENT}
+                    boxWidth={760}
                   />
                 </g>
               )}
               {punchU > 0 && (
-                <text x={700} y={535} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={600} opacity={punchU}>
+                <text x={700} y={564} textAnchor="middle" fill={colors.WARM} fontSize={16} fontWeight={600} opacity={punchU}>
                   a full 45K-token working session ≈ the giant's 1,600-token reply
                 </text>
               )}
@@ -273,9 +303,10 @@ function Frame({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {/* screen-fixed */}
-      <g opacity={titleU * mainOp}>
+      <g opacity={titleU}>
         <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Where it holds, and what it costs
         </text>
@@ -286,14 +317,14 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Horizon is cheap; coherence is not
           </text>
-          <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={340} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={17}>
             five wins, three losses, a named coherence gap — and a ~29x
           </text>
-          <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={364} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={17}>
             per-token discount that makes long verified search the default
           </text>
         </g>

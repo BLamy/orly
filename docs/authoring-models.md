@@ -1,7 +1,7 @@
 # Authoring models
 
 Orly uses **GPT-6.1 Sol (`gpt-6.1-sol`) for planning and 3D modeling**, then
-**Claude Opus 5.5 (`claude-opus-5-5`) for D3/SVG animation authoring**.
+**Claude Opus 5.5 (`claude-opus-5-5`) for D3/SVG animation and Strudel authoring**.
 This is the project default for new books, series, standalone explainers,
 Storybook scenes and revisions. This routing records the user's persistent override:
 never use Astra or Fable; use Sol and Opus 5.5. A new explicit user instruction
@@ -12,7 +12,7 @@ takes precedence over these repository defaults; provider limits never authorize
 - **Sol:** source research, visual plans, narration contracts, choice of 2D/3D/hybrid,
   Blender Python, meshes/materials/rigs, `.blend` sources, GLB exports, Three.js
   integration, QA and build/publish orchestration within the user's authorization.
-- **Opus 5.5:** D3/SVG scene implementation and revisions, timeline choreography,
+- **Opus 5.5:** D3/SVG scene implementation and revisions, Strudel music, timeline choreography,
   labels and layout, given Sol's source-grounded plan and fixed narration.
 - **Built-in ImageGen:** cover animal art, following AGENTS.md. Blender does not
   replace the existing cover workflow.
@@ -42,6 +42,14 @@ source disclosure or production publication.
 If a required provider is unavailable, save the assignment and report the precise
 blocker. Continue independent work for the available role. Do not author replacement
 D3 with Sol while waiting for Opus. A scheduled continuation follows the same split.
+
+## Separate film pipeline
+
+The Canvas/VHS film pipeline retains its all-Opus 5.5 roles at high effort,
+`generator/film/authoring-models.json`, and strict `generator/run-opus.mjs` launcher.
+It has no fallback. Book planning stays Sol and book D3/Strudel authoring stays Opus.
+Record each task’s actual model split; never credit Sol research as Opus work.
+The user’s explicit instructions take precedence over either pipeline default.
 
 ## Entry points and CI
 

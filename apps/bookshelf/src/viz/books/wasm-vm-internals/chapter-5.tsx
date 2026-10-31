@@ -34,8 +34,8 @@ const OURS = { x: 320, y: 180 };
 const IPFS = { x: 960, y: 180 };
 
 const CL_CX = 640;
-const CL_CY = 470;
-const CL_R = 150;
+const CL_CY = 410;
+const CL_R = 120;
 const N_TABS = 6;
 const TABS = Array.from({ length: N_TABS }, (_, k) => {
   const a = -Math.PI / 2 + (k * 2 * Math.PI) / N_TABS;
@@ -58,8 +58,8 @@ const STAGES = [
 
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 const CAM_STORES: CameraState = { x: 640, y: 210, k: 1.25 };
-const CAM_CLUSTER: CameraState = { x: CL_CX, y: CL_CY - 60, k: 1.22 };
-const CAM_LANE: CameraState = { x: 620, y: 240, k: 1.18 };
+const CAM_CLUSTER: CameraState = { x: CL_CX, y: 350, k: 1.12 };
+const CAM_LANE: CameraState = { x: 620, y: 330, k: 1.1 };
 
 export interface Scene {
   tl: Timeline;
@@ -295,28 +295,48 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
+// A status tag: green = built, warm = planned, muted = external. Same colour
+// convention as chapter 4's readiness ledger.
+function StatusTag({
+  x, y, text, color,
+}: { x: number; y: number; text: string; color: string }) {
+  const w = text.length * 7.4 + 18;
+  return (
+    <g>
+      <rect x={x - w} y={y} width={w} height={22} rx={6} fill={colors.PANEL} stroke={color} strokeWidth={1.2} />
+      <text x={x - w / 2} y={y + 15} textAnchor="middle" fill={color} fontSize={12.5} fontWeight={700}>
+        {text}
+      </text>
+    </g>
+  );
+}
+
 function Store({
-  x, y, u, title, addr, accent,
-}: { x: number; y: number; u: number; title: string; addr: string; accent: string }) {
+  x, y, u, title, addr, accent, status, statusColor,
+}: {
+  x: number; y: number; u: number; title: string; addr: string; accent: string;
+  status: string; statusColor: string;
+}) {
   if (u <= 0) return null;
   return (
     <g opacity={u}>
       <rect x={x - 190} y={y - 70} width={380} height={140} rx={12} fill={colors.PANEL} stroke={accent} strokeWidth={1.6} />
+      <StatusTag x={x + 180} y={y - 96} text={status} color={statusColor} />
       <text x={x} y={y - 40} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>
         {title}
       </text>
-      <text x={x} y={y - 14} textAnchor="middle" fill={accent} fontSize={12.5} fontFamily="monospace">
+      <text x={x} y={y - 14} textAnchor="middle" fill={accent} fontSize={14} fontFamily="monospace">
         {addr}
       </text>
       {[0, 1, 2].map((k) => (
         <rect key={k} x={x - 150 + k * 104} y={y + 6} width={92} height={26} rx={5} fill={accent} opacity={0.18} />
       ))}
       {[0, 1, 2].map((k) => (
-        <text key={k} x={x - 104 + k * 104} y={y + 23} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+        <text key={k} x={x - 104 + k * 104} y={y + 23} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
           {['a41f…', '9c02…', 'e7d8…'][k]}
         </text>
       ))}
-      <text x={x} y={y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+      <text x={x} y={y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
         blocks named by their own hash
       </text>
     </g>
@@ -329,21 +349,19 @@ function TabNode({
   if (u <= 0) return null;
   const gone = dead ?? 0;
   const c = gone > 0.5 ? colors.NEGATIVE : colors.SECONDARY;
+  // one chip line under the label: a public shard, or a private (sealed) shard
+  const chip = shard ?? privShard;
+  const chipColor = privShard ? colors.NEGATIVE : shard?.startsWith('p') ? colors.WARM : colors.ACCENT;
   return (
     <g opacity={u * (1 - gone * 0.75)}>
-      <rect x={x - 30} y={y - 20} width={60} height={40} rx={6} fill={colors.PANEL} stroke={c} strokeWidth={1.4} strokeDasharray={gone > 0.5 ? '4 4' : undefined} />
-      <rect x={x - 30} y={y - 20} width={60} height={10} rx={4} fill={c} opacity={0.35} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={c} fontSize={10.5}>
+      <rect x={x - 50} y={y - 20} width={100} height={40} rx={6} fill={colors.PANEL} stroke={c} strokeWidth={1.4} strokeDasharray={gone > 0.5 ? '4 4' : undefined} />
+      <rect x={x - 50} y={y - 20} width={100} height={10} rx={4} fill={c} opacity={0.35} />
+      <text x={x} y={y + 3} textAnchor="middle" fill={c} fontSize={13.5}>
         {label}
       </text>
-      {shard && gone < 0.5 && (
-        <text x={x} y={y + 16} textAnchor="middle" fill={shard.startsWith('p') ? colors.WARM : colors.ACCENT} fontSize={10} fontWeight={700} fontFamily="monospace">
-          {shard}
-        </text>
-      )}
-      {privShard && gone < 0.5 && (
-        <text x={x + 40} y={y + 4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10} fontWeight={700} fontFamily="monospace">
-          {privShard}
+      {chip && gone < 0.5 && (
+        <text x={x} y={y + 16} textAnchor="middle" fill={chipColor} fontSize={12.5} fontWeight={700} fontFamily="monospace">
+          {chip}
         </text>
       )}
     </g>
@@ -370,10 +388,10 @@ function StageBox({
             opacity={0.35}
           />
         ))}
-      <text x={x} y={LANE_Y - 1} textAnchor="middle" fill={color} fontSize={12.5} fontWeight={700}>
+      <text x={x} y={LANE_Y - 1} textAnchor="middle" fill={color} fontSize={14} fontWeight={700}>
         {label}
       </text>
-      <text x={x} y={LANE_Y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+      <text x={x} y={LANE_Y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
         {sub}
       </text>
     </g>
@@ -411,13 +429,16 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimAll}>
           {/* ---- movement 1 beats 1–2: the two stores ---- */}
-          <Store x={OURS.x} y={OURS.y} u={oursU} title="the ch-1 tailnet torrent" addr="peers trade chunks/<sha256>" accent={colors.ACCENT} />
-          <Store x={IPFS.x} y={IPFS.y} u={ipfsU} title="IPFS" addr="/ipfs/<CID>" accent={colors.WARM} />
+          <Store x={OURS.x} y={OURS.y} u={oursU} title="the ch-1 tailnet torrent" addr="peers trade chunks/<sha256>" accent={colors.ACCENT} status="built · ch 1" statusColor={colors.POSITIVE} />
+          <Store x={IPFS.x} y={IPFS.y} u={ipfsU} title="IPFS" addr="/ipfs/<CID>" accent={colors.WARM} status="external" statusColor={colors.MUTED} />
           {ipfsU > 0.3 && (
             <g opacity={clamp01(ipfsU * 2 - 0.6)}>
               <line x1={OURS.x + 196} y1={OURS.y} x2={IPFS.x - 196} y2={IPFS.y} stroke={colors.GRID} strokeWidth={1.4} />
-              <text x={640} y={OURS.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
-                same hash-named blocks — ours moves them, IPFS also PLACES them
+              <text x={640} y={OURS.y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                same hash-named blocks —
+              </text>
+              <text x={640} y={OURS.y - 8} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                ours moves them; IPFS places them
               </text>
             </g>
           )}
@@ -426,10 +447,11 @@ export function Render({ s }: { s: SceneState }) {
           {dhtU > 0 && (
             <g opacity={dhtU}>
               <rect x={400} y={300} width={480} height={96} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+              <StatusTag x={868} y={276} text="planned" color={colors.WARM} />
               <text x={640} y={338} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
                 <tspan fill={colors.NEGATIVE}>where</tspan> is chunk a41f…?   →   <tspan fill={colors.POSITIVE}>who</tspan> has chunk a41f…?
               </text>
-              <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
                 location becomes a lookup result, not part of the name
               </text>
             </g>
@@ -470,11 +492,11 @@ export function Render({ s }: { s: SceneState }) {
               ))}
               {repairU > 0.6 && scatterU < 0.4 && (
                 <g opacity={clamp01(repairU * 3 - 1.8)}>
-                  <rect x={TABS[5].x + 36} y={TABS[5].y - 20} width={40} height={40} rx={6} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-                  <text x={TABS[5].x + 56} y={TABS[5].y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={10} fontWeight={700} fontFamily="monospace">
+                  <rect x={TABS[5].x - 96} y={TABS[5].y - 20} width={40} height={40} rx={6} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
+                  <text x={TABS[5].x - 76} y={TABS[5].y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontWeight={700} fontFamily="monospace">
                     {SHARDS[CRASHED]}′
                   </text>
-                  <text x={TABS[5].x + 56} y={TABS[5].y - 28} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                  <text x={TABS[5].x - 76} y={TABS[5].y - 28} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                     rebuilt from parity
                   </text>
                 </g>
@@ -483,55 +505,56 @@ export function Render({ s }: { s: SceneState }) {
               {/* the reconciler */}
               {(annU > 0 || specU > 0) && (
                 <g opacity={Math.max(annU, specU)}>
-                  <rect x={SCHED.x - 96} y={SCHED.y - 26} width={192} height={52} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-                  <text x={SCHED.x} y={SCHED.y - 4} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700}>
+                  <rect x={SCHED.x - 116} y={SCHED.y - 26} width={232} height={52} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+                  <StatusTag x={SCHED.x + 116} y={SCHED.y - 48} text="planned" color={colors.WARM} />
+                  <text x={SCHED.x} y={SCHED.y - 4} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
                     reconciler
                   </text>
-                  <text x={SCHED.x} y={SCHED.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+                  <text x={SCHED.x} y={SCHED.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
                     compare(desired, announced)
                   </text>
                 </g>
               )}
               {specU > 0 && (
                 <g opacity={specU}>
-                  <text x={SCHED.x - 250} y={SCHED.y - 8} textAnchor="end" fill={colors.ACCENT} fontSize={12.5} fontFamily="monospace">
+                  <text x={SCHED.x - 170} y={300} textAnchor="end" fill={colors.ACCENT} fontSize={13.5} fontFamily="monospace">
                     spec: hot × 3 replicas
                   </text>
                   <text
-                    x={SCHED.x + 250}
-                    y={SCHED.y - 8}
+                    x={SCHED.x + 170}
+                    y={300}
                     textAnchor="start"
                     fill={crashU > 0.5 && repairU < 0.6 ? colors.NEGATIVE : colors.SECONDARY}
-                    fontSize={12.5}
+                    fontSize={13.5}
                     fontFamily="monospace"
                   >
                     {crashU > 0.5 && repairU < 0.6 ? 'actual: DEGRADED' : 'actual: in spec'}
                   </text>
                 </g>
               )}
-              {stripeU > 0.3 && scatterU < 0.4 && (
-                <text x={CL_CX} y={CL_CY + CL_R + 58} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={stripeU}>
-                  4 data + 2 parity shards — any 4 of 6 tabs reconstruct the region
+              {stripeU > 0.3 && scatterU < 0.4 && laneU < 0.05 && (
+                <text x={CL_CX} y={CL_CY + CL_R + 36} textAnchor="middle" fill={colors.WARM} fontSize={13.5} opacity={stripeU}>
+                  planned: 4 data + 2 parity shards — any 4 of 6 tabs reconstruct the region
                 </text>
               )}
             </g>
           )}
 
           {/* ---- movement 2 beat 10: public vs private ---- */}
-          {gapU > 0 && (
-            <g opacity={gapU}>
-              <rect x={280} y={64} width={330} height={96} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-              <text x={445} y={100} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5} fontWeight={700}>
+          {gapU * (1 - restoreU) > 0 && (
+            <g opacity={gapU * (1 - restoreU)}>
+              <rect x={280} y={40} width={330} height={80} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
+              <text x={445} y={72} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5} fontWeight={700}>
                 base image — public
               </text>
-              <text x={445} y={124} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+              <text x={445} y={96} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 shared chunks · placed by the reconciler
               </text>
-              <rect x={670} y={64} width={330} height={96} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-              <text x={835} y={100} textAnchor="middle" fill={colors.WARM} fontSize={14.5} fontWeight={700}>
+              <rect x={670} y={40} width={330} height={80} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+              <text x={835} y={72} textAnchor="middle" fill={colors.WARM} fontSize={14.5} fontWeight={700}>
                 your overlay + snapshots — private
               </text>
-              <text x={835} y={124} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+              <text x={835} y={96} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 every write since boot · exists in one place
               </text>
             </g>
@@ -567,14 +590,15 @@ export function Render({ s }: { s: SceneState }) {
               <StageBox x={STAGES[1].x} w={STAGES[1].w} u={zstdU} label={STAGES[1].label} sub={STAGES[1].sub} color={colors.POSITIVE} />
               <StageBox x={STAGES[2].x} w={STAGES[2].w} u={encU} label={STAGES[2].label} sub={STAGES[2].sub} color={colors.NEGATIVE} hatch />
               <StageBox x={STAGES[3].x} w={STAGES[3].w} u={shardU} label={STAGES[3].label} sub={STAGES[3].sub} color={colors.SECONDARY} />
+              <StatusTag x={STAGES[0].x - 66} y={LANE_Y - 70} text="planned" color={colors.WARM} />
               {zstdU > 0.5 && encU < 0.4 && (
-                <text x={455} y={LANE_Y + 48} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} opacity={clamp01(zstdU * 2 - 1)}>
+                <text x={455} y={LANE_Y + 48} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} opacity={clamp01(zstdU * 2 - 1)}>
                   compress BEFORE encrypting — ciphertext is incompressible
                 </text>
               )}
               {encU > 0.5 && (
-                <text x={665} y={LANE_Y + 48} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} opacity={clamp01(encU * 2 - 1)}>
-                  key lives only on your devices — network sees noise with a name
+                <text x={640} y={LANE_Y + 48} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={clamp01(encU * 2 - 1)}>
+                  key only on your devices — network sees named noise
                 </text>
               )}
               {shardU > 0.4 && (
@@ -582,7 +606,7 @@ export function Render({ s }: { s: SceneState }) {
                   {Array.from({ length: 6 }, (_, i) => (
                     <rect key={i} x={STAGES[3].x - 66 + i * 22} y={LANE_Y + 34} width={16} height={16} rx={3} fill={colors.SECONDARY} opacity={0.75} />
                   ))}
-                  <text x={STAGES[3].x} y={LANE_Y + 66} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+                  <text x={STAGES[3].x} y={LANE_Y + 66} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
                     s0 … s5 — Reed–Solomon (4 + 2)
                   </text>
                 </g>
@@ -614,11 +638,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* restore: live peers stream shards to the new device */}
           {restoreU > 0 && (
             <g opacity={restoreU}>
-              <rect x={CL_CX - 62} y={CL_CY - 26} width={124} height={52} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-              <text x={CL_CX} y={CL_CY - 4} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontWeight={700}>
+              <rect x={CL_CX - 95} y={CL_CY - 26} width={190} height={52} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
+              <text x={CL_CX} y={CL_CY - 4} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontWeight={700}>
                 new device
               </text>
-              <text x={CL_CX} y={CL_CY + 14} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="monospace">
+              <text x={CL_CX} y={CL_CY + 14} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
                 key unlocked · needs any 4
               </text>
               {TABS.filter((_, k) => k !== CRASHED)
@@ -635,8 +659,8 @@ export function Render({ s }: { s: SceneState }) {
                     opacity={clamp01(restoreU * 2 - k * 0.2) * 0.8}
                   />
                 ))}
-              <text x={CL_CX} y={CL_CY + CL_R + 76} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontWeight={700}>
-                decode → decrypt → decompress → hash-verify
+              <text x={CL_CX} y={CL_CY + CL_R + 36} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontWeight={700}>
+                planned: decode → decrypt → decompress → hash-verify
               </text>
             </g>
           )}
@@ -648,16 +672,16 @@ export function Render({ s }: { s: SceneState }) {
               <text x={1050} y={358} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
                 what a peer stores
               </text>
-              <text x={1050} y={382} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={1050} y={382} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 7f3a92c1… → 32 KiB of uniform noise
               </text>
-              <text x={1050} y={404} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={1050} y={404} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 no filename · no owner · no structure
               </text>
-              <text x={1050} y={428} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11}>
+              <text x={1050} y={428} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
                 3 of 6 shards + no key = zero bytes revealed
               </text>
-              <text x={1050} y={452} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+              <text x={1050} y={452} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 blast radius of a compromised peer: none
               </text>
             </g>
@@ -666,18 +690,22 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- beat 16: dedup before the lock ---- */}
           {dedupU > 0 && (
             <g opacity={dedupU}>
-              <rect x={70} y={330} width={360} height={128} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-              <text x={250} y={358} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+              <rect x={124} y={330} width={344} height={150} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+              <text x={296} y={358} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
                 spend cleverness before the lock
               </text>
-              <text x={250} y={384} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
-                snapshot N = delta(snapshot N−1) · dedup within your history
+              <StatusTag x={460} y={308} text="planned" color={colors.WARM} />
+              <text x={296} y={384} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                snapshot N = delta(N−1) · dedup in your history
               </text>
-              <text x={250} y={406} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+              <text x={296} y={406} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 then compress → encrypt → shard the minimal diff
               </text>
-              <text x={250} y={432} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontWeight={700}>
-                cross-user dedup is the price of privacy — paid knowingly
+              <text x={296} y={434} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700}>
+                cross-user dedup is the price of privacy
+              </text>
+              <text x={296} y={456} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+                — paid knowingly
               </text>
             </g>
           )}

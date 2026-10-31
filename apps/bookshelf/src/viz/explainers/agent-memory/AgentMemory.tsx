@@ -11,7 +11,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -60,10 +59,12 @@ const RATIO = CUM_100 / CUM_RETR_100; // 10.06
 // ---------------------------------------------------------------------------
 
 const PLOT_X = scaleLinear().domain([0, 100]).range([220, 700]);
-const PLOT_Y = scaleLinear().domain([0, 2_700_000]).range([560, 260]);
+const PLOT_Y = scaleLinear().domain([0, 2_700_000]).range([600, 300]);
 
-const CAM_BAR: CameraState = { x: 640, y: 240, k: 1.2 };
-const CAM_PLOT: CameraState = { x: 500, y: 420, k: 1.18 };
+// The bar sits at y 150 in stage space. On the plot camera it is panned fully
+// above the stage, so it never sits under the title or the plot heading.
+const CAM_BAR: CameraState = { x: 640, y: 330, k: 1.1 };
+const CAM_PLOT: CameraState = { x: 660, y: 495, k: 1.15 };
 
 interface Scene {
   tl: Timeline;
@@ -198,19 +199,27 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the plot and bar step aside for the closing card (fully gone once it is in)
+  const mainOp = 1 - dimU;
   const n = Math.floor(stepN);
   const transcriptTokens = Math.min(WINDOW - SYS, n * STEP_TOKENS);
+  // the three things the window holds; they leave when the plot takes over
+  const chipOp = barU * (1 - plotU) * mainOp;
+  const chips = [
+    { label: 'thought · 60', x: 220, w: 170, color: colors.SECONDARY },
+    { label: 'action · 30', x: 410, w: 170, color: colors.ACCENT },
+    { label: 'tool result · 400', x: 600, w: 200, color: colors.WARM },
+  ];
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
+      <g opacity={mainOp} display={mainOp > 0 ? undefined : 'none'}>
         <Camera {...cam}>
           {/* the filling window */}
           {barU > 0 && (
-            <g>
+            <g opacity={1 - plotU}>
               <ContextBar
                 x={220}
                 y={150}
@@ -235,12 +244,25 @@ function Frame({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* the retrieval bar */}
+          {chipOp > 0 && (
+            <g opacity={chipOp}>
+              {chips.map((c) => (
+                <g key={c.label}>
+                  <rect x={c.x} y={280} width={c.w} height={30} rx={15} fill={c.color} opacity={0.22} stroke={c.color} strokeWidth={1.5} />
+                  <text x={c.x + c.w / 2} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                    {c.label}
+                  </text>
+                </g>
+              ))}
+            </g>
+          )}
+
+          {/* the retrieval bar, in the right-hand panel beside the plot */}
           {retrBarU > 0 && (
             <g opacity={retrBarU}>
               <ContextBar
                 x={720}
-                y={300}
+                y={392}
                 w={380}
                 capacity={WINDOW}
                 reveal={retrBarU}
@@ -251,8 +273,11 @@ function Frame({ s }: { s: SceneState }) {
                   { label: 'top-3 recalled', value: RETRIEVED * OBS, color: colors.POSITIVE },
                 ]}
               />
-              <text x={720} y={372} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
-                {RETR_CTX.toLocaleString()} tokens per step, at step 10 or step 10,000
+              <text x={720} y={444} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
+                {RETR_CTX.toLocaleString()} tokens per step,
+              </text>
+              <text x={720} y={464} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
+                the same at step 10 or step 10,000.
               </text>
             </g>
           )}
@@ -260,10 +285,20 @@ function Frame({ s }: { s: SceneState }) {
           {/* the cumulative-cost plot */}
           {plotU > 0 && (
             <g>
-              <text x={PLOT_X(0)} y={236} fill={colors.TEXT} fontSize={15}>
+              <text x={PLOT_X(0)} y={276} fill={colors.TEXT} fontSize={15}>
                 cumulative prompt tokens processed
               </text>
-              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={5} yTicks={4} fontSize={10} xLabel="agent step" />
+              {quadSweep > 0 && (
+                <g opacity={quadSweep}>
+                  <text x={720} y={322} fill={colors.NEGATIVE} fontSize={26} fontFamily="monospace" fontWeight={700}>
+                    {(CUM_100 / 1e6).toFixed(2)}M tokens
+                  </text>
+                  <text x={720} y={346} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+                    keep everything, processed by step 100
+                  </text>
+                </g>
+              )}
+              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={5} yTicks={4} fontSize={12} xLabel="agent step" />
               <FunctionPlot
                 x={PLOT_X}
                 y={PLOT_Y}
@@ -273,11 +308,6 @@ function Frame({ s }: { s: SceneState }) {
                 color={colors.NEGATIVE}
                 width={2.5}
               />
-              {quadSweep >= 1 && (
-                <text x={PLOT_X(64)} y={PLOT_Y(cumTranscript(70))} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
-                  keep everything: {(CUM_100 / 1e6).toFixed(2)}M by step 100
-                </text>
-              )}
               {linSweep > 0 && (
                 <FunctionPlot
                   x={PLOT_X}
@@ -290,14 +320,19 @@ function Frame({ s }: { s: SceneState }) {
                 />
               )}
               {linSweep >= 1 && (
-                <text x={PLOT_X(60)} y={PLOT_Y(cumRetrieval(60)) - 14} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+                <text x={720} y={500} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                   retrieve top-3: {(CUM_RETR_100 / 1e3).toFixed(0)}k by step 100
                 </text>
               )}
               {ratioU > 0 && (
-                <text x={PLOT_X(2)} y={610} fill={colors.WARM} fontSize={15} fontFamily="monospace" fontWeight={700} opacity={ratioU}>
-                  {RATIO.toFixed(1)}× cheaper — and the window never fills
-                </text>
+                <g opacity={ratioU}>
+                  <text x={720} y={550} fill={colors.WARM} fontSize={26} fontFamily="monospace" fontWeight={700}>
+                    {RATIO.toFixed(1)}× cheaper
+                  </text>
+                  <text x={720} y={574} fill={colors.WARM} fontSize={14} fontFamily="monospace">
+                    and the window never fills
+                  </text>
+                </g>
               )}
             </g>
           )}
@@ -309,18 +344,13 @@ function Frame({ s }: { s: SceneState }) {
           The past is repurchased every step
         </text>
       </g>
-      <MathLabel
-        tex="\text{cost}(n) = \sum_{i=1}^{n}(s + k\,i) \sim \tfrac{k}{2}n^2"
-        x={880}
-        y={54}
-        fontSize={19}
-        color={colors.SECONDARY}
-        opacity={plotU * mainOp}
-      />
-
+      <rect x={880} y={22} width={360} height={60} rx={10} fill={colors.PANEL} stroke={colors.GRID} opacity={plotU * mainOp} />
+      <text x={1224} y={60} textAnchor="end" fill={colors.SECONDARY} fontSize={19} fontFamily="monospace" opacity={plotU * mainOp}>
+        cost(n) = Σ(s + k·i) ≈ k/2 · n²
+      </text>
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Memory is a budget, not a gift.
           </text>

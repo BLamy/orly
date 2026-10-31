@@ -95,10 +95,11 @@ export const sx = (x: number): number => PLOT.x + x * PLOT.w;
 export const sy = (y: number): number => PLOT.y + PLOT.h - y * PLOT.h;
 
 // gain curve strip under the plot? no — right column, above the tree
-export const CURVE = { x: 700, y: 90, w: 460, h: 150 };
+export const CURVE = { x: 700, y: 100, w: 460, h: 150 };
 export const TREE = { rootX: 930, rootY: 330, dx: 150, dy: 105 };
 
-export const CAM_PLOT: CameraState = { x: 340, y: 330, k: 1.35 };
+// zoomed view of the scatter: the whole plot stays above the caption pill
+export const CAM_PLOT: CameraState = { x: 340, y: 362, k: 1.1 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

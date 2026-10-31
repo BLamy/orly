@@ -20,7 +20,7 @@ const P_CERTAIN = [0.94, 0.02, 0.02, 0.02];
 
 /** Layout on the 1280×720 stage. Captions own the bottom ~12% (y ≳ 633). */
 export const CURVE = { pMin: 0.016, iMax: 6 };
-export const BARS = { x0: 700, step: 124, w: 78, base: 560, hMax: 330 };
+export const BARS = { x0: 700, step: 124, w: 78, base: 560, hMax: 400 };
 export const METER = { x: 700, y: 128, w: 480, h: 24, hMax: 2 };
 
 const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);

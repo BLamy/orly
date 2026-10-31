@@ -1,0 +1,595 @@
+{
+ "id": "ch07",
+ "number": 7,
+ "title": "Two Accomplices: Data and Fire",
+ "blurb": "2006 to 2012. The dinner bet settles, a warm-up belief is lit, and two accomplices arrive: a crowd of nearly fifty thousand labellers building ImageNet, and gaming cards that run seventy times faster. The warm-up candle gutters; the word 'pre-training' is set aside for later.",
+ "shots": [
+  {
+   "id": "ch07-s01",
+   "kind": "card",
+   "setting": "the case board in the study, night; the oxblood thread of question cards across the top",
+   "era": "timeless",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0701",
+     "text": "Who paid for dinner? Both men. By 2000, no one could yet explain why big nets work. By 2005, people were still using them. Each man lost one bet.",
+     "direction": "amused, unhurried; a small pause after the question",
+     "pauseAfter": 0.6,
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     },
+     "spoken": "Who paid for dinner? Both men. By two thousand, no one could yet explain why big nets work. By two thousand and five, people were still using them. Each man lost one bet."
+    }
+   ],
+   "leadIn": 3.6,
+   "holdAfter": 3,
+   "visual": "THIS SHOT: the dinner question is settled: the pen ticks each bet, both read LOST, and the card is unpinned into the lamp's pool. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'Two Accomplices: Data and Fire', drops down from the frame's top edge at top-left like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up; no new shot, no lamp change. CAMERA: BOARD (the Q2 card and the bet sheet below it; the ticks a 1–2 s insert). The lead-in is short, so the tab rides over the first line, as ch02-s01's does. Locked-off close on the top edge of the case board under the green-shaded desk lamp. The oxblood thread sags across frame; the card 'Who paid for dinner?' hangs from it by a brass pin in its fixed slot on the thread (the 1995 position, above the 1990s column). BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). Below it, pinned from ch06, the typed bet sheet (two numbered bets, a row of asterisks, three signatures, 'Witnessed by Y. LeCun', each dated 3/14/95), a prop seen as texture, not read. The detective's two steady hands enter from the bottom of frame. On 'lost' a fountain pen ticks a small ink mark beside EACH of the two bets, Jackel's first (due 2000: nets understood quantitatively), then Vapnik's (due 2005: no one using 1995-style nets), and a single typed slip reading both results is laid across the foot of the sheet, so the viewer reads one loss per man in the held silence after the line. In the music-only hold the hands unpin the question card; it slips off the thread, turns once in the air and drops into the lamp's pool of light on the desk, where it lies face up; its brass pin stays on the thread, empty. The thread twangs and settles. Two small wine-glass cut-outs at the board's edge (the bet's 'fancy dinner') catch a glint. Camera: a slow 3% push-in through the shot, ending as the thread stills.",
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "manila index tab typed 'Two Accomplices: Data and Fire' drops down from the top edge at top-left, holds 2.5 s, slides back up"
+    },
+    {
+     "id": "ask",
+     "at": {
+      "line": "L0701",
+      "word": "dinner"
+     },
+     "what": "the camera settles on the question card; the thread trembles"
+    },
+    {
+     "id": "tick",
+     "at": {
+      "line": "L0701",
+      "word": "lost",
+      "offset": -0.56
+     },
+     "what": "pen ticks one mark beside each bet, Jackel first, then Vapnik"
+    },
+    {
+     "id": "jackel",
+     "at": {
+      "line": "L0701",
+      "word": "bet",
+      "edge": "end",
+      "offset": 0.2
+     },
+     "what": "a faint glow on Jackel's line; the results slip is laid down"
+    },
+    {
+     "id": "vapnik",
+     "at": {
+      "line": "L0701",
+      "word": "bet",
+      "edge": "end",
+      "offset": 0.7
+     },
+     "what": "a faint glow on Vapnik's line; both LOSTs read on the slip"
+    },
+    {
+     "id": "cardDown",
+     "at": {
+      "line": "L0701",
+      "word": "bet",
+      "edge": "end",
+      "offset": 1.21
+     },
+     "what": "the hands unpin the card; it falls into the lamp's pool"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "caseBoard",
+    "redThread",
+    "questionCard",
+    "betSheet",
+    "fountainPen",
+    "bankersLamp",
+    "wineGlasses"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "Two Accomplices: Data and Fire",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "label",
+     "text": "Who paid for dinner?",
+     "beat": "ask"
+    },
+    {
+     "kind": "label",
+     "text": "JACKEL, 2000: LOST · VAPNIK, 2005: LOST",
+     "beat": "tick"
+    }
+   ],
+   "music": {
+    "cue": "ch07-thaw",
+    "note": "solo piano from the quiet years, a little lighter; a two-note pizzicato wink on \"lost\"; the card's fall lands on a soft open fifth"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e6-bet"
+   ]
+  },
+  {
+   "id": "ch07-s02",
+   "kind": "scene",
+   "setting": "the study shelf (the 1990s candle's flame), then through it to the candle stage, Toronto, 2006, evening",
+   "era": "2000s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0702",
+     "text": "In 2006, a new candle: before any right answers, warm up a deep net, many layers tall, one layer at a time, each rebuilding its own input.",
+     "direction": "a quiet announcement; 'many layers tall' plain and defining, a small lift on 'tall'; slow and clear on 'one layer at a time'; 'warm up' light, the word the chapter will reuse",
+     "spoken": "In two thousand and six, a new candle: before any right answers, warm up a deep net, many layers tall, one layer at a time, each rebuilding its own input.",
+     "pauseAfter": 1
+    },
+    {
+     "id": "L0703",
+     "text": "Fast computers, big data, good starting weights: “All three conditions are now satisfied,” Hinton and a student wrote. Nearly right: the third turned out optional.",
+     "direction": "the three conditions counted off lightly, one per beat; then read the paper's words plainly; 'Hinton' named plainly, so the ear knows whose words they are; then the smile in \"nearly right\", and the gentle reveal of \"the third turned out optional\", unhurried",
+     "pauseAfter": 0.55,
+     "spoken": "Fast computers, big data, good starting weights: “all three conditions are now satisfied,” Hinton and a student wrote. Nearly right: the third turned out optional."
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 0.5,
+   "visual": "THIS SHOT: a new candle in Toronto, 2006: a deep stack of lanterns warms up one layer at a time; three tick-boxes for computers, data and starting weights tick, and the third fades to optional. CAMERA: SHELF (low macro on the fiddly-nets flame), then the flame push onto the stage. STUDY LOCK (staging appendix): the shot opens in the study, so it opens candleAmber and its mood field names the opening location only; it arrives on a plain cut from ch07-s01 (same room). Open on the study shelf beneath the case board: the flame of the 1990s candle NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY, its ghost sleeve already about eleven rings long. Through the leadIn the camera pushes into that flame (the FLAME PUSH device from the staging appendix: a 1.2 s camera push to lens 1.6 on the flame anchor with bloom up and crossfadeMood candleAmber to dawnGold over the same 1.2 s, no foreground dip, never through black; never TRANSITIONS.lampChange inside a shot) and arrives on the candle stage. On the stage the same 1990s candle, huge and still burning, stands at frame left, its pool of light on the paper floor. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. At the rim, half in shadow and facing out, the tall lean silhouette of Hinton STANDS (allowed from the mid-2000s) holding a small hand-lantern; name card on first appearance of this older puppet. He lowers the hand-lantern to a short new candle on the floor at the very rim; its wick catches (rising fourth). CANDLE PLACEMENT (staging appendix: every belief candle stands on the one study shelf, ordered by the year on its base tag): there is NO cutaway to the shelf in this shot; the new candle is first seen in its shelf place, to the right of the 1990s candle, when ch07-s06 opens. The new candle is lettered in IBM Plex Mono small caps, a paraphrase, no quotation marks: DEEP NETS MUST BE WARMED UP LAYER BY LAYER. A small BLANK paper tag hangs from its base (it is inked with a word only in ch07-s06, when the word is spoken). Teaching image inside the new candle's glow, on the stage floor: the kit `lanternNetwork` with a custom topology and fixed weights (kit extension listed in staging kitWork; a blocking dependency for this shot), four lantern rows stacked as a tall loom, inputs at the bottom. On 'one layer at a time' the rows warm one after another from the bottom, each row lighting only when the row beneath is done, and as each row lights it briefly redraws, faintly, the glow pattern of the row beneath it (each layer learning to rebuild its own input; no labels yet: labels enter only at the top). Just after the line a single faint pulse runs through the whole stack (fine-tuning). On L0703 three small tick-boxes appear on a parchment strip beside Hinton, each marked with a pictogram and no words (a small clock for fast computers, a stack of cards for big data, a seed for good starting weights); each ticks as the narrator names it. On 'satisfied' a quote card rises beside him, set in Plex Mono on parchment. On 'nearly' the third tick (the seed) flickers, as if its ink were not quite dry. On 'optional' the seed tick's ink pales to a faint outline: still there, no longer required. Camera: slow push toward the new flame, Hinton held in the left third.",
+   "beats": [
+    {
+     "id": "lit",
+     "at": {
+      "line": "L0702",
+      "word": "candle"
+     },
+     "what": "Hinton's hand-lantern touches the wick; new candle catches; rising-fourth motif"
+    },
+    {
+     "id": "layers",
+     "at": {
+      "line": "L0702",
+      "word": "one"
+     },
+     "what": "the lantern rows warm one at a time, bottom to top; each row briefly redraws the glow pattern of the row beneath before settling (rebuilding its own input)"
+    },
+    {
+     "id": "word",
+     "at": {
+      "line": "L0702",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "a single pulse runs through the whole stack (fine-tuning); the blank tag sways at the candle base"
+    },
+    {
+     "id": "tick1",
+     "at": {
+      "line": "L0703",
+      "word": "computers"
+     },
+     "what": "first tick-box (clock pictogram) ticks"
+    },
+    {
+     "id": "tick2",
+     "at": {
+      "line": "L0703",
+      "word": "data"
+     },
+     "what": "second tick-box (stack of cards) ticks"
+    },
+    {
+     "id": "tick3",
+     "at": {
+      "line": "L0703",
+      "word": "weights"
+     },
+     "what": "third tick-box (seed) ticks"
+    },
+    {
+     "id": "quote",
+     "at": {
+      "line": "L0703",
+      "word": "computers"
+     },
+     "what": "quote card rises beside the standing figure as the three conditions are ticked"
+    },
+    {
+     "id": "nearly",
+     "at": {
+      "line": "L0703",
+      "word": "nearly"
+     },
+     "what": "the third tick (good starting weights) flickers"
+    },
+    {
+     "id": "optional",
+     "at": {
+      "line": "L0703",
+      "word": "optional"
+     },
+     "what": "the seed tick's ink pales to a faint outline (still there, no longer required)"
+    }
+   ],
+   "cast": [
+    "hinton"
+   ],
+   "props": [
+    "beliefCandle",
+    "handLantern",
+    "candleShelfStage",
+    "lanternNetwork",
+    "candleTag",
+    "tickBoxes",
+    "quoteCard"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Geoffrey Hinton · Ruslan Salakhutdinov · Toronto",
+     "beat": "lit"
+    },
+    {
+     "kind": "date",
+     "text": "TORONTO · 2006",
+     "beat": "lit"
+    },
+    {
+     "kind": "label",
+     "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+     "beat": "lit"
+    },
+    {
+     "kind": "quote",
+     "text": "All three conditions are now satisfied. — Hinton & Salakhutdinov, 2006",
+     "beat": "quote"
+    }
+   ],
+   "music": {
+    "cue": "ch07-thaw",
+    "note": "the candle motif's rising fourth on a warm synth pad under the piano (the first hint of the GPU-era colour); intensity 0.35; the suspension arrives on \"nearly\" and is left hanging; the flame push at the top rides a single soft swell, no cut in the music"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e7-dbn",
+    "e7-autoencoder",
+    "e7-pretraining-belief",
+    "e7-cifar-revival"
+   ]
+  },
+  {
+   "id": "ch07-s03",
+   "kind": "scene",
+   "setting": "Princeton, 2007, a late office; then a dark paper globe at night, 2008 to 2010",
+   "era": "2000s",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0704",
+     "text": "Accomplice one: data. Fei-Fei Li recalls colleagues telling her to do something more useful. Labelling her millions of pictures by hand would have taken nineteen years.",
+     "direction": "brisk and delighted; the colleagues' advice lightly wry, never mocking; \"nineteen years\" landed dry",
+     "pauseAfter": 0.72
+    },
+    {
+     "id": "L0705",
+     "text": "A crowd did it: almost fifty thousand people.",
+     "direction": "opening up; let the number breathe",
+     "pauseAfter": 0.6
+    },
+    {
+     "id": "L0712",
+     "text": "It became ImageNet, and a yearly contest: a thousand categories.",
+     "direction": "plain and clear; a small weight on \"ImageNet\", the name the viewer will need in the next chapter",
+     "pauseAfter": 0.5
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 2.8,
+   "visual": "THIS SHOT: accomplice one, data: Fei-Fei Li's desk calendar flips nineteen years of hand-labelling, then a dark paper globe lights window by window as a crowd labels her pictures. Plain cut (same mood as the stage). A Princeton office at night, paper-cut: bookshelves, a desk lamp, a monitor whose screen is a grid of tiny thumbnail windows. Li in profile at the desk (slight build, long straight dark hair, jacket); name card on her first appearance. Date stamp bottom left in Plex Mono. On 'nineteen' a paper desk calendar flips nineteen year-pages in a blur (no text beyond the flipping numerals). On 'Colleagues' (with her name card), two generic colleague silhouettes (no likeness, no names, no words) are revealed at the rim of the desk lamp's light, half in shadow and facing OUT, their long shadows thrown away from her lamp: the film's rule that doubters stand at the edge. As they appear, a small parchment quote card rises beside them, Plex Mono, Li's own recollection of their advice (verbatim fragment, attributed to Li; the narration says 'she recalls', and the words are never put in the colleagues' mouths): it stays up through the rest of the line and the pause and fades on 'crowd' (the spoken line is the narrator's paraphrase; the card is Li's own words). Li's name card names her co-founder, Kai Li (no relation), who is not drawn as a puppet. On 'crowd' the camera pulls straight back out through the office window and keeps going: the office becomes one lit window on a dark paper globe turning slowly against a dawnGold rim. Windows light up across the globe one by one, then by the hundred (the globe alone carries 'around the world': the line no longer says it); inside a few of them, generic crowd-worker silhouettes at home desks clicking through grids of thumbnails (vary wardrobe and hair; never a real person). A small market-stall awning cut-out (pictogram only, no lettering) sits at the globe's base: the online marketplace, a plant for ch15. As L0705 ends the thumbnails stream off the globe like sparks and settle, during the pause, onto a parchment plate. On 'ImageNet' they snap into a grid of a thousand small tiles, one per category (the plate alone teaches 'categories': no separate tree, no counter), and the single ImageNet label, which carries the crowd's numbers and the contest's, is pinned beneath it. TEXT RULE: besides the date stamp and name card this shot carries exactly two text items, the quote card (tenure beat, gone by 'crowd') and the one ImageNet label.",
+   "beats": [
+    {
+     "id": "li",
+     "at": {
+      "line": "L0704",
+      "word": "Colleagues"
+     },
+     "what": "name card (Li, with co-founder Kai Li); Li looks up from the thumbnail grid; two colleague silhouettes revealed at the rim of the lamplight, facing out; Li's quote card rises beside them"
+    },
+    {
+     "id": "years",
+     "at": {
+      "line": "L0704",
+      "word": "nineteen"
+     },
+     "what": "desk calendar flips nineteen year-pages"
+    },
+    {
+     "id": "crowd",
+     "at": {
+      "line": "L0705",
+      "word": "crowd"
+     },
+     "what": "pull back through the window to the dark globe"
+    },
+    {
+     "id": "windows",
+     "at": {
+      "line": "L0705",
+      "word": "fifty"
+     },
+     "what": "windows light across the globe, one by one then by the hundred"
+    },
+    {
+     "id": "imagenet",
+     "at": {
+      "line": "L0712",
+      "word": "ImageNet",
+      "offset": -0.46
+     },
+     "what": "the streamed thumbnails snap into a grid of a thousand tiles on the plate; the ImageNet label pinned"
+    },
+    {
+     "id": "tenure",
+     "at": {
+      "line": "L0704",
+      "word": "Labelling"
+     },
+     "what": "Li turns back to the thumbnail grid; the colleagues stay at the rim and the quote card holds"
+    }
+   ],
+   "cast": [
+    "li",
+    "crowd-worker"
+   ],
+   "props": [
+    "deskLamp",
+    "crtMonitor",
+    "thumbnailGrid",
+    "deskCalendar",
+    "paperGlobe",
+    "litWindows",
+    "marketAwning",
+    "parchmentPlate"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Fei-Fei Li, with Kai Li · Princeton",
+     "beat": "li"
+    },
+    {
+     "kind": "date",
+     "text": "PRINCETON · 2007",
+     "beat": "li"
+    },
+    {
+     "kind": "quote",
+     "text": "…do something more useful for my tenure… — Fei‑Fei Li, TED 2015",
+     "beat": "li",
+     "until": "crowd"
+    },
+    {
+     "kind": "label",
+     "text": "≈ 50,000 workers · 167 countries · contest: 1,000 categories",
+     "beat": "imagenet"
+    }
+   ],
+   "music": {
+    "cue": "ch07-thaw",
+    "note": "piano picks up a light running figure; on \"crowd\" the strings open out and each lighting window is a soft celesta pluck, density rising as the windows multiply; a small settling cadence on \"ImageNet\"; intensity 0.45"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e7-imagenet-origin",
+    "e7-imagenet-19years",
+    "e7-imagenet-skeptics",
+    "e7-imagenet-workers",
+    "e7-ilsvrc2010"
+   ]
+  },
+  {
+   "id": "ch07-s04",
+   "kind": "scene",
+   "setting": "the study desk under the banker's lamp, 2006 to 2011; a gaming card held up to the light",
+   "era": "2000s–2010s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0706",
+     "text": "Accomplice two: fire. Graphics chips, built for games, trained networks up to seventy times faster.",
+     "direction": "a touch of relish on 'fire'; 'built for games' lightly amused"
+    },
+    {
+     "id": "L0707",
+     "text": "In 2010, plain back-propagation on one graphics chip set a record on handwritten digits, no warm-up.",
+     "direction": "matter-of-fact; the last four words slower",
+     "pauseAfter": 0.55,
+     "spoken": "In twenty ten, plain back-propagation on one graphics chip set a record on handwritten digits, no warm-up."
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 2,
+   "visual": "THIS SHOT: accomplice two, fire: a gaming card held up to the lamp glows like a small furnace, weeks shrink to a day, and a plain stack trains in one pulse with no warm-up. CAMERA: a desk insert (the hands holding the graphics card up to the lamp), then the plate beside it. Occluder wipe carrying the lamp change (dawnGold to candleAmber, STUDY LOCK): the night side of the turning paper globe sweeps across frame and reveals the study desk in the banker's lamp's amber pool. The detective's hands hold a long double-slot consumer graphics card (generic `gpuCard`, no marks, two fans) up to the lamp like a jeweller with a stone. Date stamp bottom left. On 'fire' the fans spin up and the card's vents breathe an orange glow: the card becomes a small paper furnace, embers drifting up on L5 through haze on L3 (the image the clue card will keep). The era colour lives only in this practical: the furnace glow, never the room's lamp. On 'seventy' a teaching inset on a parchment plate beside it: two paper clocks, a CPU's hands crawling across several weeks while the card's clock sweeps once to about a day (Raina, Madhavan and Ng, 2009), with the speed-up label. On 'record' the clocks slide off the plate and the kit `lanternNetwork` stack from ch07-s02 takes their place, ONE image: a handwritten digit wobbling as if reflected in water (elastic deformation, IDSIA's training trick) feeds the stack's bottom row as its input, and the rows light ALL AT ONCE from random weights, no row-by-row warm-up; the record label pins beneath. On 'warm-up' the empty warm-up row-by-row cue (a faint ghost of the bottom-to-top sweep from ch07-s02) flickers and is struck through by the single all-at-once pulse. Camera: a lateral truck across the held card (x ±80) with a 3% push-in; the embers on L5 and the haze on L3 sell the depth.",
+   "beats": [
+    {
+     "id": "fire",
+     "at": {
+      "line": "L0706",
+      "word": "fire"
+     },
+     "what": "fans spin up; the card glows like a small furnace"
+    },
+    {
+     "id": "seventy",
+     "at": {
+      "line": "L0706",
+      "word": "seventy"
+     },
+     "what": "two-clock inset: weeks to about a day"
+    },
+    {
+     "id": "record",
+     "at": {
+      "line": "L0707",
+      "word": "record",
+      "offset": -0.26
+     },
+     "what": "clocks give way to the lantern stack, the wobbling digit as its input; record label pinned"
+    },
+    {
+     "id": "nowarm",
+     "at": {
+      "line": "L0707",
+      "word": "warm-up"
+     },
+     "what": "the stack skips the warm-up: all rows light together in one pulse"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "gpuCard",
+    "bankersLamp",
+    "parchmentPlate",
+    "paperClocks",
+    "lanternNetwork"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "GRAPHICS CARDS · 2006–2010",
+     "beat": "fire"
+    },
+    {
+     "kind": "label",
+     "text": "up to ≈ 70× faster: weeks → about a day (2009)",
+     "beat": "seventy"
+    },
+    {
+     "kind": "label",
+     "text": "0.35% error · no warm-up · IDSIA, 2010",
+     "beat": "record"
+    }
+   ],
+   "music": {
+    "cue": "ch07-thaw",
+    "note": "the pulsing synth of the GPU years enters under the piano on \"fire\", low and warm, a fan-whir texture in the rhythm; intensity 0.5"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "e7-cuda",
+    "e7-raina",
+    "e7-ciresan"
+   ]
+  },
+  {
+   "id": "ch07-s06",
+   "kind": "scene",
+   "setting": "the candle shelf below the case board; the study, night",
+   "era": "2012",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0710",
+     "text": "The warm-up candle guttered; nobody knows exactly when.",
+     "direction": "gentle, unsentimental"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 4.5,
+   "visual": "THIS SHOT: the warm-up candle gutters at an uncertain ring; its tag goes onto the coat hook, the X-ray column's fourth band lights, and the two accomplices' clue cards are pinned. CAMERA: SHELF (low macro; the warm-up candle gutters), then the board's edge (the coat hook), then X-RAY (square-on, band 4), then BOARD (the C3-a and C3-b pins as inserts). Crossfade within the study (candleAmber throughout, STUDY LOCK): the graphics card's furnace glow dissolves into a candle flame, and the camera settles on the long paper-cut candle shelf beneath the case board, where the 2006 candle is seen for the first time in its place, to the right of the 1990s candle (ch07-s02 no longer cuts away to it). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. The 2006 candle (DEEP NETS MUST BE WARMED UP LAYER BY LAYER) has a ghost sleeve about five rings long; on 'guttered' its flame shrinks, a thread of smoke rises and curls, and the TOP of the ghost sleeve is left with a soft, FRAYED edge rather than a clean cut (the end date is uncertain), with a small hanging tag: 'c. 2006 – c. 2010–12'. Just after the line, wordless (ch11-s01 pays this image off), the hands ink the word PRE-TRAINING on the blank tag tied to the stub since ch07-s02 and lift it off. Instead of filing it, they tie it (the same hand action as a pin) to the sleeve of a dusty paper-cut frock coat hanging on a brass hook beside the board's right edge, outside the grid; the tag sways against the coat. Frame this exactly as ch11-s01 will open on it: coat and hook in the right third, the board's edge at left (the planted rhyme; it returns in ch11). Then, music only, overlapping the last of the tie (ORDER, timed by the beats: ink the tag; tie it to the coat; the X-ray fades up while the tag still sways, and holds; only as it fades are the clue cards pinned and the threads lit, before the shot ends): the X-ray chat box from the prologue fades up at frame right and holds, a little more translucent than last time, glowing serverCyan as a practical in the amber room; of its seven faint strata (laid out in ch02-s08), exactly one new band lights, slowly and unmistakably, the fourth from the bottom: racks of graphics cards and a sea of text, above the already-lit bands of threshold units, weights, and hidden layers with the backward arrow. Last image: the hands pin this chapter's two clue cards at the head of column C3: in C3-a a small grid of a thousand tiny tiles (data, ImageNet), and in C3-b, just beneath it, a paper-cut of two small furnaces (fire). BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). A thread of light runs from the two clue cards to the pierced-stencil card (1989) and the backward-bead card (1986) in their slots.",
+   "beats": [
+    {
+     "id": "gutter",
+     "at": {
+      "line": "L0710",
+      "word": "guttered",
+      "offset": -0.36
+     },
+     "what": "flame shrinks; smoke thread; frayed sleeve top; \"c.\" tag; falling resolution"
+    },
+    {
+     "id": "tag",
+     "at": {
+      "line": "L0710",
+      "edge": "end",
+      "offset": 0.5
+     },
+     "what": "the word is inked on the blank tag; the hands lift it off the stub"
+    },
+    {
+     "id": "coat",
+     "at": {
+      "line": "L0710",
+      "edge": "end",
+      "offset": 1.2
+     },
+     "what": "the hands tie the tag to the frock coat on its brass hook; it sways"
+    },
+    {
+     "id": "xray",
+     "at": {
+      "line": "L0710",
+      "edge": "end",
+      "offset": 1.8
+     },
+     "what": "as the tag still sways, the X-ray box fades up; its fourth band (cards and a sea of text) lights slowly and holds"
+    },
+    {
+     "id": "clue",
+     "at": {
+      "line": "L0710",
+      "edge": "end",
+      "offset": 3.3
+     },
+     "what": "both clue cards (C3-a thousand tiles, C3-b two furnaces) pinned in their slots as the X-ray fades; the thread of light runs to the 1989 and 1986 cards"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "candleShelf",
+    "beliefCandle",
+    "ghostSleeve",
+    "smokeThread",
+    "candleTag",
+    "xrayChatBox",
+    "clueCard",
+    "threadOfLight",
+    "coatHook",
+    "frockCoat"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER · c. 2006 – c. 2010–12",
+     "beat": "gutter"
+    },
+    {
+     "kind": "label",
+     "text": "PRE-TRAINING",
+     "beat": "tag"
+    }
+   ],
+   "music": {
+    "cue": "ch07-thaw",
+    "note": "the candle motif's falling resolution on solo piano as the flame gutters; a small woodwind lift on \"coat\"; the X-ray moment gets a soft shimmer; ends on a held note that hands into the Florence cue"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e7-pretraining-belief"
+   ]
+  }
+ ]
+}

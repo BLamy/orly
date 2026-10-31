@@ -1,0 +1,464 @@
+{
+ "shot": "ch12-s08",
+ "at": "2026-10-14T00:33:26.757Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 90,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "~100M monthly users, Jan 2023 · an estimate",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "21 DEC",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "21 DEC 2022",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "23 JAN",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "23 JAN 2023",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "24 FEB → 3",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "24 FEB → 3 M",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "24 FEB → 3 MAR 2023",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "14 MAR 2023",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "CODE RED",
+   "maxCap": 38.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "reported",
+   "maxCap": 26.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "21 D",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MI",
+   "maxCap": 19.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "23 J",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MICR",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MICROSOFT · MULTIBILLION",
+   "maxCap": 23.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "META",
+   "maxCap": 26.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "24",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "24 F",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 15.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 15.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 15.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 15.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 13,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 13,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 13,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 11.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1989",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DATA",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2012",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2017",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GENERATING",
+   "maxCap": 13,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WIKIPEDIA ·",
+   "maxCap": 13,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2018 · GPT",
+   "maxCap": 13,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "a",
+   "maxCap": 24.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2018",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2022",
+   "maxCap": 18,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "OPENAI · 11 DEC 2015",
+   "maxCap": 13.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 8.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "years",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 12.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 13.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 13.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 13.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 14.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1984",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LANGUAGE MUST BE READ IN ORDER",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1997",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1999",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2006",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A GO MACHINE IS A DECADE AWAY",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2014",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SCALE IS THE MAIN LEVER",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2020",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HINTON · SEPT 2017",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "…some graduate student",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "who is deeply suspicious",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "of everything I have",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "said.",
+   "maxCap": 13.2,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 81
+}

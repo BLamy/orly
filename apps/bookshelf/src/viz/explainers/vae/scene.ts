@@ -125,7 +125,8 @@ export const yScale: ScaleLinear<number, number> = scaleLinear().domain([-2.5, 2
 export const zScale: ScaleLinear<number, number> = scaleLinear().domain([-3, 3]).range([880, 1230]);
 export const Z_AXIS_Y = 430;
 
-export const CAM_DATA: CameraState = { x: 430, y: 350, k: 1.22 };
+// Frames both the data cloud and the latent axis, so the number line stays on stage.
+export const CAM_DATA: CameraState = { x: 660, y: 370, k: 1.05 };
 export const CAM_LATENT: CameraState = { x: 1000, y: 400, k: 1.35 };
 
 // ---------------------------------------------------------------------------

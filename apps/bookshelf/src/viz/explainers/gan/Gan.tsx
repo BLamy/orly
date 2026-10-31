@@ -71,11 +71,11 @@ function Frame({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
       <Camera {...cam}>
-        <g opacity={dimU}>
+        <g opacity={dimU * (1 - endU)}>
           {/* shared x axis */}
           <line x1={xAxis(-4.2)} y1={pdfY(0)} x2={xAxis(4.2)} y2={pdfY(0)} stroke={colors.GRID} strokeWidth={1.5} opacity={realU} />
           {[-4, -2, 0, 2, 4].map((x) => (
-            <text key={x} x={xAxis(x)} y={pdfY(0) + 22} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={realU}>
+            <text key={x} x={xAxis(x)} y={pdfY(0) + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={realU}>
               {x}
             </text>
           ))}
@@ -105,7 +105,7 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={dU}>
               <line x1={xAxis(-4.2)} y1={dY(0.5)} x2={xAxis(4.2)} y2={dY(0.5)} stroke={colors.GRID} strokeWidth={1} strokeDasharray="4 5" />
               <path d={curvePath((x) => dOf(x, snap), dY, dU)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.6} opacity={0.9} />
-              <text x={xAxis(-4.1)} y={dY(1) - 8} fill={colors.NEGATIVE} fontSize={13}>
+              <text x={xAxis(-4.1)} y={dY(1) - 8} fill={colors.NEGATIVE} fontSize={14}>
                 detective’s verdict — 1 real, 0 fake
               </text>
             </g>
@@ -119,13 +119,13 @@ function Frame({ s }: { s: SceneState }) {
                 <line key={m} x1={trX(0)} y1={trY(m)} x2={trX(NARROW_ITERS)} y2={trY(m)} stroke={colors.ACCENT} strokeWidth={1} strokeDasharray="4 5" opacity={0.6} />
               ))}
               <path d={muTracePath(NARROW, narrow ? prog : 0)} fill="none" stroke={colors.WARM} strokeWidth={2.4} />
-              <text x={trX(NARROW_ITERS / 2)} y={trY(-3.4) + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={trX(NARROW_ITERS / 2)} y={trY(-3.4) + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 forger center over time
               </text>
-              <text x={trX(NARROW_ITERS) + 4} y={trY(2) + 4} fill={colors.ACCENT} fontSize={12}>
+              <text x={trX(NARROW_ITERS) + 6} y={trY(2) + 5} fill={colors.ACCENT} fontSize={14}>
                 +2
               </text>
-              <text x={trX(NARROW_ITERS) + 4} y={trY(-2) + 4} fill={colors.ACCENT} fontSize={12}>
+              <text x={trX(NARROW_ITERS) + 6} y={trY(-2) + 5} fill={colors.ACCENT} fontSize={14}>
                 −2
               </text>
             </g>
@@ -157,14 +157,9 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The GAN Game
           </text>
-          <MathLabel
-            tex={'\\text{no likelihood — a forger judged by a learned critic}'}
-            x={640}
-            y={345}
-            fontSize={20}
-            color={colors.WARM}
-            opacity={endU}
-          />
+          <text x={640} y={352} textAnchor="middle" fill={colors.WARM} fontSize={20}>
+            no likelihood — a forger judged by a learned critic
+          </text>
           <text x={640} y={400} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             flexible forger → a blur across both modes · narrow forger → one mode, the other vanishes
           </text>

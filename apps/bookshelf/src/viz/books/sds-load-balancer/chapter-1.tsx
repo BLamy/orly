@@ -62,8 +62,9 @@ const REQS: Req[] = Array.from({ length: N_REQ }, (_, i) => ({
 const LOADS = [0.35, 0.85, 0.4, 0.3] as const;
 
 const CAM_LB: CameraState = { x: 660, y: 360, k: 1.15 };
-const CAM_SICK: CameraState = { x: 880, y: 300, k: 1.3 };
-const CAM_SSL: CameraState = { x: 480, y: 360, k: 1.4 };
+// framings keep every server card on the stage and clear of the caption band
+const CAM_SICK: CameraState = { x: 700, y: 372, k: 1.2 };
+const CAM_SSL: CameraState = { x: 600, y: 370, k: 1.2 };
 
 export interface Scene {
   tl: Timeline;
@@ -200,12 +201,14 @@ export function Render({ s }: { s: SceneState }) {
   const pairU = s.get(scene.pairU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.88;
+  // the closing panel replaces the picture, so the old scene fades out fully
+  const dimAll = 1 - closeU;
   const dial = Math.round(dialK);
 
   // active phase for packet animation
+  // packets stop once the closing panel takes over; llU stays at 1 after its tween
   const phase: { t: number; pick: (r: Req) => number } | null =
-    llU > 0
+    closeU > 0 ? null : llU > 0
       ? { t: llU, pick: (r) => r.ll }
       : reroute > 0
         ? { t: reroute, pick: (r) => (r.rr === 1 ? (r.rr + 1) % 4 : r.rr) }
@@ -219,18 +222,22 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ---- incoming stream ---- */}
         <g opacity={rigU * dimAll}>
-          <text x={90} y={330} fill={colors.MUTED} fontSize={12} fontStyle="italic">
+          <text x={176} y={232} fill={colors.MUTED} fontSize={14} fontStyle="italic">
             requests
           </text>
         </g>
 
         {/* ---- the dispatcher ---- */}
         <g opacity={rigU * dimAll}>
+          {/* passive twin: drawn first so the active box sits on top of it */}
+          <g opacity={pairU}>
+            <rect x={LB.x - 85 + 14} y={LB.y - 75 + 14} width={170} height={150} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
+          </g>
           <rect x={LB.x - 85} y={LB.y - 75} width={170} height={150} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-          <text x={LB.x} y={LB.y - 46} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5}>
+          <text x={LB.x} y={LB.y - 46} textAnchor="middle" fill={colors.ACCENT} fontSize={15}>
             Load Balancer
           </text>
-          <text x={LB.x} y={LB.y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={LB.x} y={LB.y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             HAProxy / hardware
           </text>
           {/* the routing dial */}
@@ -243,14 +250,16 @@ export function Render({ s }: { s: SceneState }) {
             stroke={colors.WARM}
             strokeWidth={2.5}
           />
-          <text x={LB.x} y={LB.y + 62} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={LB.x} y={LB.y + 62} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
             {dial === 0 ? 'round robin' : 'least loaded'}
           </text>
-          {/* passive twin */}
+          {/* active-passive vs active-active, defined on screen while the pair forms */}
           <g opacity={pairU}>
-            <rect x={LB.x - 85 + 14} y={LB.y - 75 + 14} width={170} height={150} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} opacity={0.9} />
-            <text x={LB.x + 14} y={LB.y + 92} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
-              active–passive failover
+            <text x={LB.x} y={LB.y - 120} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              active–active: both boxes serve traffic
+            </text>
+            <text x={LB.x} y={LB.y - 98} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              active–passive: standby takes over if one dies
             </text>
           </g>
         </g>
@@ -261,7 +270,7 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={i} opacity={rigU * dimAll}>
               <rect x={sv.x - 75} y={sv.y - 34} width={150} height={68} rx={10} fill={colors.PANEL} stroke={dead ? colors.NEGATIVE : colors.GRID} strokeWidth={dead ? 2 : 1.3} />
-              <text x={sv.x} y={sv.y - 6} textAnchor="middle" fill={dead ? colors.NEGATIVE : colors.TEXT} fontSize={12.5}>
+              <text x={sv.x} y={sv.y - 6} textAnchor="middle" fill={dead ? colors.NEGATIVE : colors.TEXT} fontSize={14}>
                 server {i + 1} {dead ? '· down' : ''}
               </text>
               {/* health dot */}
@@ -275,7 +284,7 @@ export function Render({ s }: { s: SceneState }) {
               {stickU > 0.05 && i === 2 && (
                 <g opacity={stickU}>
                   <circle cx={sv.x + 58} cy={sv.y - 18} r={8} fill={colors.WARM} opacity={0.9} />
-                  <text x={sv.x + 58} y={sv.y + 40 + 14} textAnchor="middle" fill={colors.WARM} fontSize={9.5} fontFamily="ui-monospace, monospace">
+                  <text x={sv.x + 58} y={sv.y + 40 + 14} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
                     session cookie → always here
                   </text>
                 </g>
@@ -302,14 +311,14 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- ssl inset ---- */}
         <g opacity={sslU * dimAll}>
-          <rect x={250} y={470} width={230} height={110} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-          <text x={365} y={498} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
+          <rect x={180} y={455} width={300} height={106} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
+          <text x={330} y={483} textAnchor="middle" fill={colors.WARM} fontSize={15}>
             SSL termination
           </text>
-          <text x={365} y={522} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <text x={330} y={507} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
             encrypted → [decrypt] → plain
           </text>
-          <text x={365} y={546} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+          <text x={330} y={531} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             certificates live here, once
           </text>
         </g>
@@ -317,7 +326,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
           <rect x={280} y={215} width={720} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={264} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+          <text x={640} y={264} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
             what the traffic cop guarantees
           </text>
           {[
@@ -326,7 +335,7 @@ export function Render({ s }: { s: SceneState }) {
             'encryption and certificates handled at the door',
             'and the cop itself runs as a redundant pair',
           ].map((t, i) => (
-            <text key={i} x={640} y={310 + i * 32} textAnchor="middle" fill={i === 3 ? colors.ACCENT : colors.MUTED} fontSize={13.5}>
+            <text key={i} x={640} y={310 + i * 32} textAnchor="middle" fill={i === 3 ? colors.ACCENT : colors.TEXT} fontSize={15}>
               {t}
             </text>
           ))}

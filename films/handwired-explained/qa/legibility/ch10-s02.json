@@ -1,0 +1,324 @@
+{
+ "shot": "ch10-s02",
+ "at": "2026-10-28T16:02:25.952Z",
+ "minCapPx": 22,
+ "sampled": 20,
+ "texts": 62,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "For an",
+   "capWhileSubject": 34.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "integer a",
+   "capWhileSubject": 34.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a Hacker News commenter",
+   "capWhileSubject": 49.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "22 Oct 2026",
+   "capWhileSubject": 49.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "23 Oct 2026",
+   "capWhileSubject": 47.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "11",
+   "capWhileSubject": 50.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the landing",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "page's hidden",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "comment:",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a = 4.5",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "gives 11",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a = 16,777,222",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "gives 8",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "nanoGPT?",
+   "maxCap": 27.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "The neuron",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "is a logic",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "gate",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "McCulloch &",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Pitts, 1943",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Learn the",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "weights;",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "don't write",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "them",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Sutton, 2019",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1992–2026",
+   "maxCap": 27.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "suspect",
+   "maxCap": 22.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Somebody",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "trained it",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A tool",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "turned",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ordinary",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JavaScript",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "into it",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "It isn't",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "really a",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "network",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "One",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "evaluation",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "per frame",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HandwiredOS's",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "own design",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Established",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "conclusions:",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "take these as",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "given",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the July",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "briefs",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "The GPU is",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the faster",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "one",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(for the highlighter half)",
+   "maxCap": 27.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "09:01",
+   "maxCap": 22,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "fully",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "differentiable!",
+   "maxCap": 34.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README's",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "tagline",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "an hour",
+   "maxCap": 38.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a day",
+   "maxCap": 38.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a year",
+   "maxCap": 38.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a lifetime",
+   "maxCap": 38.8,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 48
+}

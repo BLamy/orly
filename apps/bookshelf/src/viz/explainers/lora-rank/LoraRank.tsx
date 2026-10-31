@@ -5,6 +5,8 @@ import {
   APPROX,
   APPROX_X,
   AB_X,
+  BAR_BASE,
+  BAR_H,
   CELL,
   D,
   DW,
@@ -101,16 +103,17 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* singular value bars */}
           {svU > 0 && (
-            <g>
+            // the payoff panel takes the bottom of the frame, so the bars step back
+            <g opacity={1 - scaleU}>
               {SVD.S.map((sv, k) => {
                 const u = clamp01(svU * D - k);
-                const h = (sv / smax) * 120 * u;
+                const h = (sv / smax) * BAR_H * u;
                 return (
                   <rect
                     key={k}
-                    x={gx(0) + k * 26}
-                    y={gy(D) + 158 - h}
-                    width={20}
+                    x={gx(0) + k * CELL}
+                    y={BAR_BASE - h}
+                    width={CELL - 4}
                     height={Math.max(1, h)}
                     rx={3}
                     fill={k < rankSel && factU > 0 ? colors.WARM : colors.SECONDARY}
@@ -118,8 +121,8 @@ function Frame({ s }: { s: SceneState }) {
                   />
                 );
               })}
-              <line x1={gx(0)} y1={gy(D) + 158} x2={gx(0) + D * 26} y2={gy(D) + 158} stroke={colors.GRID} />
-              <text x={gx(0)} y={gy(D) + 182} fill={colors.MUTED} fontSize={13} opacity={svU}>
+              <line x1={gx(0)} y1={BAR_BASE} x2={gx(D)} y2={BAR_BASE} stroke={colors.GRID} />
+              <text x={gx(0)} y={BAR_BASE + 26} fill={colors.TEXT} fontSize={14} opacity={svU * 0.85}>
                 singular values — the directions of the update, by strength
               </text>
             </g>
@@ -166,7 +169,7 @@ function Frame({ s }: { s: SceneState }) {
                   <text x={APPROX_X + 14} y={GRID_Y + D * 18 + 44} fill={colors.TEXT} fontSize={15}>
                     {`missed: ${(err * 100).toFixed(1)}% of the update`}
                   </text>
-                  <text x={APPROX_X + 14} y={GRID_Y + D * 18 + 68} fill={colors.MUTED} fontSize={13.5}>
+                  <text x={APPROX_X + 14} y={GRID_Y + D * 18 + 68} fill={colors.TEXT} opacity={0.8} fontSize={14}>
                     {`stored: ${2 * D * rankSel} numbers vs ${D * D}`}
                   </text>
                 </g>
@@ -179,7 +182,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* screen-fixed math */}
       <MathLabel
         tex={'\\Delta W \\approx B\\,A \\qquad W_{\\text{new}} = W + B\\,A'}
-        x={985}
+        x={940}
         y={64}
         fontSize={20}
         color={colors.WARM}

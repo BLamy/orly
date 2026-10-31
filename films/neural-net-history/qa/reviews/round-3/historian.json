@@ -1,0 +1,83 @@
+{
+  "reviewer": "historian",
+  "lens": "accuracy & fairness",
+  "round": 3,
+  "scores": {"accuracy": 8.5, "depth": 8, "clarity": 8, "story": 8, "visual": 8, "sync": 8, "sound": 7.5, "curiosity": 8},
+  "summary": "Every round-2 accuracy and fairness item that changes the story has landed, and I checked each one on the sheets. L1522d is spoken (33:30.2-33:37.3) under the settlement books. The ANTHROPIC and OPENAI plinth bands are up from each lab's first mention. L1522b is now grounded in e14-dow, and the government's reasoning appears on screen through the paired Lin and Katsas court quotes, at equal size and 22 px. L1219b, L1416, L1405 and L1418 match script.json, timeline.json and film.vtt. ch12-s03 now has the FTX ledger card with the caveat in full, and the four chips are struck one per beat. ch14-s05 shows both MacroPolo lines (23 px each), and the Qwen tag is gone. ch14-s04b hangs Huang, then China's MFA, then Amodei/Khan. ch15-s08 pins 'Attention is not Explanation · Jain & Wallace, 2019' beside the Anthropic card under 'the field, 2019-2025'. ch15-s10 shows the real sources URL at 28 px. The DAIR byline was re-checked at the source (Gebru, Bender, McMillan-Major only), so I withdraw my round-2 note. A machine check of all 64 banked quotations against quotes.json, covering every on-screen quote card and every quoted span in narration, found 0 mismatches. Script line text matches timeline.json for all 232 lines. 'The labs, under the same light' is now even-handed. What remains is minor. (1) There is no 'round2-shots' ledger in film.json stages.fixes, only round1-global and round2-global, so I verified everything against the sheets directly. (2) Two round-2 notes were never applied: LeCun's AMI Labs label (ch15-s06) and the Dreyfus quote card (ch05-s07). The Marcus set-up card (ch09-s05) is also still missing, its third round. (3) The DECISIVE tag, attributed to the Anthropic CEO, still hangs highest and at centre. (4) The settlement label drops the 'ANTHROPIC' prefix, and the legibility audit that passed it predates the last edit. (5) 'One to three years behind' has no dated source in claims.json.",
+  "ledgerCheck": {
+    "round2-shots": "ABSENT. film.json stages.fixes has only 'round1-global' and 'round2-global', so no per-shot fixed/partial/skipped outcomes or word times were recorded. The shots table marks ch15-s05, ch14-s05, ch15-s06, ch15-s04, ch15-s08 and ch14-s07 'revised' at 10:03-10:12Z, and ch15-s10 'approved' at 09:44Z, so every routed shot below was checked on its regenerated sheet (06:31 local = 10:31Z)."
+  },
+  "issues": [
+    {
+      "owner": "global",
+      "severity": "major",
+      "problem": "Process: round 2 wrote no per-shot fix ledger. stages.fixes has no 'round2-shots' key, even though round2-global item (1) says film-shots now writes one (film-loop passing ledger: 'round2-shots'). Without it, partial fixes go unreported. ch15-s06 (LeCun label), ch05-s07 (Dreyfus quote card) and ch09-s05 (Marcus card) are all marked 'revised', yet each lacks the item its note asked for, and nothing records that they were skipped.",
+      "fix": "Make film-shots fail its stage if stages.fixes['round<n>-shots'] is missing or lacks an entry for any routed id. Backfill 'round2-shots' from the sheets (see the ids below) before round 3's fixes run, then write 'round3-shots' with the word times checked for each id."
+    },
+    {
+      "owner": "shot",
+      "id": "ch05-s07",
+      "severity": "minor",
+      "problem": "Partial. The Dreyfus name card is in ('HUBERT DREYFUS · philosopher', 22 px, from 9:37.8). The quote card asked for in round 2 is not: from 'early' (+26.19) to 'difficulties' (+30.11), the sheet (9:43.7-9:47.6) shows only flying IF-THEN slips. The verbatim fragment q-dreyfus-pattern is therefore spoken but never sourced on screen, unlike every other quotation in the film. The name card also lacks the book and date that tie the quote to 1972.",
+      "fix": "On 'early' (+26.19), ink a quote card '…early, dramatic success followed by sudden unexpected difficulties. — Hubert Dreyfus, What Computers Can't Do, 1972' at 22 px cap or larger, and hold it to the cut (+31.38). Keep the slips falling behind it at reduced alpha. Verify on the sheet at +26.2, +28.4 and +30.4."
+    },
+    {
+      "owner": "shot",
+      "id": "ch15-s06",
+      "severity": "minor",
+      "problem": "Unapplied round-2 note (present-day lab balance). The LeCun holdout silhouette still carries only the 2024 'off-ramp' quote. Nothing from 2025-26 represents Meta or Google's own work. Act 3's present day still reads as OpenAI vs Anthropic (o1, the warning shot, the Haiku study, the Pentagon case, the settlement). Google appears only through Hassabis's forecasts, and Meta only through the 2023 leak.",
+      "fix": "Under the LeCun quote, at 'the third' (L1509, ~+6.3 s), add a 22 px label: 'left Meta, Nov 2025, to build world models · AMI Labs' [e14-lecun]. Hold it at least 2 s, through +9.9. Optionally, in ch15-s04, add 'GEMINI 3 · Google · Nov 2025' [e14-google] as a dated tick beside the METR ladder."
+    },
+    {
+      "owner": "shot",
+      "id": "ch14-s04b",
+      "severity": "minor",
+      "problem": "Mostly fixed: the order is now Huang, then China MFA, then Amodei/Khan, and the tags are much larger. But the final DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC) tag drops in highest and at centre (30:55.7-30:57.6), above the other two. In the act's even-handedness device, that layout reads as a verdict, and it is the position attributed to the film's own maker's CEO.",
+      "fix": "Hang all three tags in one row at the same y, at equal size (for example, HELPS HUAWEI left, SELF-DEFEATING centre, DECISIVE right). Keep the lighting order and timing unchanged. Verify at +12.4 and +14.3."
+    },
+    {
+      "owner": "shot",
+      "id": "ch15-s05",
+      "severity": "minor",
+      "problem": "The settlement label renders '$1.5B SETTLEMENT · PIRATED BOOKS' (settlementLabel(), ch15-s05.tsx:572; 18 px base mono). The round-2 note asked for 'ANTHROPIC · $1.5B SETTLEMENT · PIRATED BOOKS'. qa/legibility/ch15-s05.json (09:37Z) records 'ANTHROPIC · $1.5B SETTLEMENT' at 32.9 px, but the file was edited again at 10:07Z, so the audit is stale against the render. Attribution is now clear from the ANTHROPIC band and the spoken L1522d, so the fairness risk is small.",
+      "fix": "Restore the 'ANTHROPIC · ' prefix, set the label through legibleSize to at least 22 px cap inside textRole 'subject', and re-run `node generator/film/legibility.mjs --slug neural-net-history --shot ch15-s05` after the final edit. Check the sheet at +23.1 (b4) and +26.0 ('books')."
+    },
+    {
+      "owner": "shot",
+      "id": "ch09-s05",
+      "severity": "minor",
+      "problem": "This is the third round the note has gone unapplied. No 'Gary Marcus, 2018: Deep Learning: A Critical Appraisal' card appears in the silent tail (20:40.2-20:42.6 shows only the shadow slip being pinned). Marcus first appears on screen in ch11-s08 as a 2022 quote with no prior introduction, so the deep-learning era's named dissenter goes unshown in its own era, which the brief requires.",
+      "fix": "In the tail (+21.0 to +23.5), pin a horizontal name card 'GARY MARCUS · 2018 · Deep Learning: A Critical Appraisal' [e9-marcus] at 22 px cap or larger, held at least 2 s, before the dim at +23.9."
+    },
+    {
+      "owner": "line",
+      "id": "L1405",
+      "severity": "minor",
+      "problem": "The candle 'China is one to three years behind' (spoken in L1405, inked in ch14-s02, ch14-s04b and the ch15-s04 shelf) traces only to the bible's own synthesis (Era 13 belief B). The only dated estimate claims.json gives for that period is Liang Wenfeng's 'a gap of one or two years' (e13-gap, July 2024). No source gives 'three'.",
+      "fix": "Either change the belief to 'China is a year or two behind' (L1405 plus the three candle labels) [e13-gap], or have research add a dated, sourced claim for a 1-3 year consensus (for example a 2023 CSET, Stanford AI Index or US-official estimate) and cite it in ch14-s02's claims."
+    }
+  ],
+  "verifiedFixedFromRound2": [
+    "L1522d: added, narrated and captioned ('And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books.'). It plays 33:30.2-33:37.3 under the books and 'APPROVED JULY 2026', and the card clears before L1525 starts (33:38.3). The claim matches e14-copyright ('record', $1.5B, pirated library).",
+    "ch15-s05 name bands: ANTHROPIC from +4.96 (33:15.8) and OPENAI from +26.75, each 25-26 px, same face and size.",
+    "L1522b: 'The Pentagon named it a supply-chain risk, and signed with OpenAI instead.' [e14-dow]. Lin and Katsas quotes are paired under the two courthouses at 33:29.7-33:31.6, at equal size (22 px), verbatim to q14-judge-lin and q14-katsas.",
+    "L1219b: 'Meta shared LLaMA with researchers, and within a week its weights leaked' is in script, timeline and VTT, and the chips (BARD 6 FEB · LLAMA 24 FEB · WEIGHTS LEAKED 3 MAR · GPT-4 / CLAUDE 14 MAR) land one per beat (27:36.5-27:44.5).",
+    "ch12-s03 / L1208: L1208 is cut. The ledger reads '$500M · FTX (later exposed as fraud; Anthropic not implicated)' and 'billions · Amazon, Google' (27:33.8-27:35.1), matching e12-anthropic-funding.",
+    "L1416 / ch14-s05: the two-sentence line is in. 'FIRST DEGREE (NeurIPS 2022)' plus 'US 18% · CHINA 47%' on the plate, and 'WHERE THEY WORK: US FIRST · ~60% OF TOP AI INSTITUTIONS (MacroPolo)' from 31:04.7 to the end (23-23.5 px). The Qwen tag is cut.",
+    "L1405 / L1418 plus the ch14-s02 / ch14-s07 question card: 'CAN A FENCE AROUND CHIPS HOLD?' is pinned at 29:59.7 and stamped 'STATUS: OPEN' under L1418 (31:43.9 onward).",
+    "ch14-s04b ordering and size: fixed (the height parity remainder is routed above).",
+    "ch15-s08: 'THE FIELD, 2019–2025 · satisfying insight… — ANTHROPIC, 2025 · Attention is not Explanation — JAIN & WALLACE, 2019' from 34:55.4 [e10-attention-explanation, e14-biology].",
+    "ch15-s10: the SOURCES card reads 'orly.brett-lamy.workers.dev/generated/neural-net-history/sources · claims.json · quotes.json' at 28-30 px, held 35:53.2-35:58.0.",
+    "ch13-s04 DAIR byline: re-checked at the source by the supervising director (only three listed authors), so the card 'Gebru, Bender & McMillan-Major' is correct and my round-2 note is withdrawn. e12-dair also records Mitchell's separate criticism.",
+    "Quote integrity: 0 mismatches between quotes.json and every on-screen quote card or quoted span in narration (machine check). Script text equals timeline.json text for all 232 lines, and the VTT carries the new lines."
+  ],
+  "best_moments": [
+    "ch15-s05: two courthouses, two judges, two verbatim quotes at the same size ('…not based on any articulable basis…' / 'The Department reasonably feared…'). Then Anthropic's own settlement is spoken plainly before OpenAI's warning shot. 'Under the same light' is now true.",
+    "ch12-s03: the FTX ledger with its caveat, then Bard, LLaMA (shared, then leaked), GPT-4 and Claude struck as equals. Anthropic is one runner among four.",
+    "ch14-s05: the China-favourable and US-favourable halves of the MacroPolo statistic share one plate at the same size.",
+    "ch14-s07: the 'CAN A FENCE AROUND CHIPS HOLD?' card stamped OPEN beside three gap estimates from three camps and Liang's 'originality and imitation'. The film declines to call a contested race.",
+    "ch15-s08: the open interpretability question is pinned to the whole field (Jain & Wallace beside Anthropic), not to one lab.",
+    "ch15-s10: the authorship disclosure, followed by a legible, real sources URL.",
+    "ch05-s07: MYCIN's blinded test charted honestly (program 65% vs specialists 42.5-62.5%), then the era's philosopher-dissenter at the candle's rim."
+  ]
+}

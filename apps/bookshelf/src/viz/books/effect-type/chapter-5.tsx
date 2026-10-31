@@ -35,7 +35,17 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
 const P_LANE = { chipX: 100, chipY: 148, trackY: 196, serverX: 970 } as const;
 const E_LANE = { cardX: 100, cardY: 366, trackY: 440, serverX: 970 } as const;
+const CARD_W = 300;
 const SERVER_W = 92;
+// timeout race: the request's track runs from the card to the server, and a
+// clock bar above it drains at the same pace the request advances
+const RACE_X0 = E_LANE.cardX + CARD_W;
+const RACE_X1 = E_LANE.serverX - 12;
+const RACE_Y = E_LANE.trackY - 88;
+// retry chip: sits under the track, between the card and the server
+const RETRY_X = E_LANE.cardX + CARD_W + 12;
+const RETRY_Y = E_LANE.trackY + 58;
+const RETRY_W = 300;
 
 // attempt dot: out (0..0.5) and, on failure, back (0.5..1)
 const attemptPos = (u: number, fromX: number, toX: number, bounce: boolean): number => {
@@ -55,9 +65,10 @@ const RECAP_W = 184;
 const RECAP_H = 120;
 
 // camera marks
-const CAM_P: CameraState = { x: 560, y: 210, k: 1.3 };
-const CAM_P_SETTLE: CameraState = { x: 620, y: 250, k: 1.4 };
-const CAM_E: CameraState = { x: 560, y: 440, k: 1.3 };
+// visible x-range is x ± 640/k: keep the promise chip (x 100) and the server (x ~1062) in frame
+const CAM_P: CameraState = { x: 570, y: 210, k: 1.25 };
+const CAM_P_SETTLE: CameraState = { x: 590, y: 250, k: 1.2 };
+const CAM_E: CameraState = { x: 580, y: 350, k: 1.2 };
 const CAM_LANES: CameraState = { x: 640, y: 340, k: 1.1 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
@@ -167,7 +178,7 @@ export function buildScene(): Scene {
     dur: 7.2,
     text: 'Timeout is the same trick: race the description against a clock. If time runs out, the runtime interrupts the fiber, and the abort signal reaches down to cancel the real request.',
   });
-  tl.tween(cutRun, 0.5, { at: 43.2, dur: 1.2, ease: ease.linear });
+  tl.tween(cutRun, 0.3, { at: 43.2, dur: 1.2, ease: ease.linear });
   tl.tween(cutU, 1, { at: 44.8, dur: 0.7, ease: ease.pop });
   tl.hold(49.2, 0.4);
 
@@ -187,7 +198,7 @@ export function buildScene(): Scene {
     dur: 7.2,
     text: 'So retrace the journey. An Effect is a frozen description. Its type carries success, failure, and requirements. Pipes compose bigger descriptions. Fibers walk them to an exit.',
   });
-  tl.tween(laneDim, 0.08, { at: 56.4, dur: 1.2, ease: ease.move });
+  tl.tween(laneDim, 0, { at: 56.4, dur: 1.2, ease: ease.move });
   tl.tween(cam, CAM_WIDE, { at: 56.4, dur: 1.6, ease: ease.move });
   tl.tween(recapU, 1, { at: 57.2, dur: 2.6, ease: ease.move });
   tl.hold(63.6, 0.4);
@@ -235,7 +246,7 @@ function Server({ x, y, label }: { x: number; y: number; label: string }) {
       {[0, 1, 2].map((i) => (
         <line key={i} x1={x + 14} y1={y + 16 + i * 16} x2={x + SERVER_W - 14} y2={y + 16 + i * 16} stroke={colors.MUTED} strokeWidth={2} opacity={0.5} />
       ))}
-      <text x={x + SERVER_W / 2} y={y + 84} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+      <text x={x + SERVER_W / 2} y={y + 84} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14}>
         {label}
       </text>
     </g>
@@ -244,12 +255,12 @@ function Server({ x, y, label }: { x: number; y: number; label: string }) {
 
 function AttemptDot({ u, n }: { u: number; n: number }) {
   if (u <= 0.005 || u >= 0.995) return null;
-  const x = attemptPos(u, E_LANE.cardX + 262, E_LANE.serverX - 12, true);
+  const x = attemptPos(u, E_LANE.cardX + CARD_W, E_LANE.serverX - 12, true);
   const returning = u > 0.5;
   return (
     <g>
       <circle cx={x} cy={E_LANE.trackY} r={9} fill={returning ? colors.NEGATIVE : colors.ACCENT} />
-      <text x={x} y={E_LANE.trackY - 16} textAnchor="middle" fill={returning ? colors.NEGATIVE : colors.ACCENT} fontSize={11.5} fontFamily="monospace">
+      <text x={x} y={E_LANE.trackY - 16} textAnchor="middle" fill={returning ? colors.NEGATIVE : colors.ACCENT} fontSize={14} fontFamily="monospace">
         attempt {n}
       </text>
     </g>
@@ -275,8 +286,8 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const fuseX = lerp(P_LANE.chipX + 292, P_LANE.serverX - 12, pFuse);
-  const att3X = attemptPos(att3, E_LANE.cardX + 262, E_LANE.serverX - 12, false);
-  const cutX = attemptPos(cutRun, E_LANE.cardX + 262, E_LANE.serverX - 12, false);
+  const att3X = attemptPos(att3, E_LANE.cardX + CARD_W, E_LANE.serverX - 12, false);
+  const cutX = attemptPos(cutRun, E_LANE.cardX + CARD_W, E_LANE.serverX - 12, false);
 
   return (
     <>
@@ -289,7 +300,7 @@ export function Render({ s }: { s: SceneState }) {
               the promise lane
             </text>
             <rect x={P_LANE.chipX} y={P_LANE.chipY} width={292} height={52} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-            <text x={P_LANE.chipX + 18} y={P_LANE.chipY + 32} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+            <text x={P_LANE.chipX + 18} y={P_LANE.chipY + 32} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
               const p = fetch(url)
             </text>
             <line x1={P_LANE.chipX + 292} y1={P_LANE.trackY} x2={P_LANE.serverX} y2={P_LANE.trackY} stroke={colors.GRID} strokeWidth={6} strokeLinecap="round" opacity={0.6} />
@@ -309,8 +320,8 @@ export function Render({ s }: { s: SceneState }) {
             {/* settled and cached */}
             {pSettle > 0.01 && (
               <g opacity={pSettle}>
-                <rect x={P_LANE.chipX + 340} y={P_LANE.chipY - 4} width={330} height={40} rx={10} fill="#180a10" stroke={colors.NEGATIVE} strokeWidth={1.4} />
-                <text x={P_LANE.chipX + 358} y={P_LANE.chipY + 21} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
+                <rect x={P_LANE.chipX + 340} y={P_LANE.chipY - 4} width={360} height={40} rx={10} fill="#180a10" stroke={colors.NEGATIVE} strokeWidth={1.4} />
+                <text x={P_LANE.chipX + 358} y={P_LANE.chipY + 21} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                   settled: rejected · cached forever
                 </text>
               </g>
@@ -318,10 +329,10 @@ export function Render({ s }: { s: SceneState }) {
             {pType > 0.01 && (
               <g opacity={pType}>
                 <rect x={P_LANE.chipX} y={P_LANE.chipY + 66} width={310} height={48} rx={10} fill={colors.BG} stroke={colors.GRID} />
-                <text x={P_LANE.chipX + 16} y={P_LANE.chipY + 86} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                <text x={P_LANE.chipX + 16} y={P_LANE.chipY + 86} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
                   {'Promise<Response>'}
                 </text>
-                <text x={P_LANE.chipX + 16} y={P_LANE.chipY + 104} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                <text x={P_LANE.chipX + 16} y={P_LANE.chipY + 104} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
                   errors: unknown — the type shrugs
                 </text>
               </g>
@@ -336,21 +347,21 @@ export function Render({ s }: { s: SceneState }) {
               the effect lane
             </text>
             {/* the inert card */}
-            <rect x={E_LANE.cardX} y={E_LANE.cardY} width={262} height={110} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
+            <rect x={E_LANE.cardX} y={E_LANE.cardY} width={CARD_W} height={110} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
             <rect x={E_LANE.cardX + 14} y={E_LANE.cardY + 12} width={118} height={20} rx={10} fill={colors.BG} stroke={colors.GRID} />
-            <text x={E_LANE.cardX + 73} y={E_LANE.cardY + 26} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily="monospace">
+            <text x={E_LANE.cardX + 73} y={E_LANE.cardY + 26} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
               a description
             </text>
-            <text x={E_LANE.cardX + 16} y={E_LANE.cardY + 54} fill={colors.TEXT} fontSize={11} fontFamily="monospace">
+            <text x={E_LANE.cardX + 16} y={E_LANE.cardY + 54} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
               Effect.tryPromise({'{'}
             </text>
-            <text x={E_LANE.cardX + 16} y={E_LANE.cardY + 72} fill={colors.TEXT} fontSize={11} fontFamily="monospace">
+            <text x={E_LANE.cardX + 16} y={E_LANE.cardY + 72} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
               {'  try: (signal) => fetch(url),'}
             </text>
-            <text x={E_LANE.cardX + 16} y={E_LANE.cardY + 90} fill={colors.TEXT} fontSize={11} fontFamily="monospace">
+            <text x={E_LANE.cardX + 16} y={E_LANE.cardY + 90} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
               {'  catch: (e) => new HttpError(e) })'}
             </text>
-            <line x1={E_LANE.cardX + 262} y1={E_LANE.trackY} x2={E_LANE.serverX} y2={E_LANE.trackY} stroke={colors.GRID} strokeWidth={6} strokeLinecap="round" opacity={0.6} />
+            <line x1={E_LANE.cardX + CARD_W} y1={E_LANE.trackY} x2={E_LANE.serverX} y2={E_LANE.trackY} stroke={colors.GRID} strokeWidth={6} strokeLinecap="round" opacity={0.6} />
             <Server x={E_LANE.serverX} y={E_LANE.trackY - 32} label="the same flaky server" />
 
             {/* attempts 1 and 2 bounce; attempt 3 lands */}
@@ -359,7 +370,7 @@ export function Render({ s }: { s: SceneState }) {
             {att3 > 0.005 && att3 < 0.995 && (
               <g>
                 <circle cx={att3X} cy={E_LANE.trackY} r={9} fill={colors.ACCENT} />
-                <text x={att3X} y={E_LANE.trackY - 16} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5} fontFamily="monospace">
+                <text x={att3X} y={E_LANE.trackY - 16} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
                   attempt 3
                 </text>
               </g>
@@ -373,12 +384,12 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             )}
             {att1 > 0.5 && (
-              <text x={E_LANE.serverX - 30} y={E_LANE.trackY - 44} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} opacity={clamp01((att1 - 0.5) * 4)}>
+              <text x={E_LANE.serverX - 30} y={E_LANE.trackY - 62} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} opacity={clamp01((att1 - 0.5) * 4)}>
                 ✕
               </text>
             )}
             {att2 > 0.5 && (
-              <text x={E_LANE.serverX - 12} y={E_LANE.trackY - 44} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} opacity={clamp01((att2 - 0.5) * 4)}>
+              <text x={E_LANE.serverX - 12} y={E_LANE.trackY - 62} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} opacity={clamp01((att2 - 0.5) * 4)}>
                 ✕
               </text>
             )}
@@ -386,44 +397,46 @@ export function Render({ s }: { s: SceneState }) {
             {/* the retry chip: the SAME card loops back */}
             {retryU > 0.01 && (
               <g opacity={retryU}>
-                <rect x={E_LANE.cardX + 300} y={E_LANE.cardY + 118} width={300} height={34} rx={10} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-                <text x={E_LANE.cardX + 316} y={E_LANE.cardY + 140} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+                <rect x={RETRY_X} y={RETRY_Y} width={RETRY_W} height={36} rx={10} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
+                <text x={RETRY_X + 16} y={RETRY_Y + 23} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                   Effect.retry(request, policy)
                 </text>
-                {/* loop arrow under the track: server back to the card */}
+                {/* loop arrow: the failed attempt leaves the server and drops into the retry chip */}
                 <path
-                  d={`M ${E_LANE.serverX - 20} ${E_LANE.trackY + 26} C ${E_LANE.serverX - 160} ${E_LANE.trackY + 72}, ${E_LANE.cardX + 420} ${E_LANE.trackY + 72}, ${E_LANE.cardX + 290} ${E_LANE.trackY + 30}`}
+                  d={`M ${E_LANE.serverX + 2} ${E_LANE.trackY + 20} C ${E_LANE.serverX - 40} ${E_LANE.trackY + 34}, ${RETRY_X + RETRY_W + 60} ${RETRY_Y - 6}, ${RETRY_X + RETRY_W + 2} ${RETRY_Y + 18}`}
                   fill="none"
                   stroke={colors.POSITIVE}
                   strokeWidth={1.6}
                   strokeDasharray="6 6"
                   opacity={0.8}
                 />
-                <text x={(E_LANE.cardX + E_LANE.serverX) / 2 + 40} y={E_LANE.trackY + 88} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontStyle="italic">
+                <text x={RETRY_X + RETRY_W / 2} y={RETRY_Y + 58} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontStyle="italic">
                   the very same description, run again
                 </text>
               </g>
             )}
 
-            {/* timeout: the clock, the cut, the abort wire */}
-            {cutU > 0.01 && (
-              <g opacity={cutU}>
-                {/* clock over the track */}
-                <circle cx={cutX + 60} cy={E_LANE.trackY - 60} r={18} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-                <line x1={cutX + 60} y1={E_LANE.trackY - 60} x2={cutX + 60} y2={E_LANE.trackY - 72} stroke={colors.WARM} strokeWidth={2} />
-                <line x1={cutX + 60} y1={E_LANE.trackY - 60} x2={cutX + 70} y2={E_LANE.trackY - 56} stroke={colors.WARM} strokeWidth={2} />
-                <text x={cutX + 88} y={E_LANE.trackY - 66} fill={colors.WARM} fontSize={11.5} fontFamily="monospace">
+            {/* timeout race: the request advances while the clock bar drains; the cut lands when it runs out */}
+            {cutRun > 0.01 && (
+              <g>
+                <text x={RACE_X0} y={RACE_Y - 8} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                   Effect.timeout
                 </text>
-                {/* the cut */}
+                <rect x={RACE_X0} y={RACE_Y} width={RACE_X1 - RACE_X0} height={8} rx={4} fill={colors.GRID} />
+                <rect x={RACE_X0} y={RACE_Y} width={(RACE_X1 - RACE_X0) * clamp01(1 - cutRun * 2)} height={8} rx={4} fill={colors.WARM} />
+                {cutU < 0.5 && <circle cx={cutX} cy={E_LANE.trackY} r={9} fill={colors.ACCENT} />}
+              </g>
+            )}
+            {/* timeout: the cut, and the abort wire racing ahead to the server */}
+            {cutU > 0.01 && (
+              <g opacity={cutU}>
                 <line x1={cutX - 9} y1={E_LANE.trackY - 13} x2={cutX + 9} y2={E_LANE.trackY + 13} stroke={colors.NEGATIVE} strokeWidth={2.5} />
                 <line x1={cutX + 9} y1={E_LANE.trackY - 13} x2={cutX - 9} y2={E_LANE.trackY + 13} stroke={colors.NEGATIVE} strokeWidth={2.5} />
-                <text x={cutX} y={E_LANE.trackY + 32} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5}>
+                <text x={cutX} y={E_LANE.trackY + 34} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
                   fiber interrupted
                 </text>
-                {/* abort wire racing ahead to the server */}
                 <line x1={cutX + 14} y1={E_LANE.trackY - 4} x2={E_LANE.serverX - 6} y2={E_LANE.trackY - 4} stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="4 5" opacity={0.9} />
-                <text x={E_LANE.serverX - 16} y={E_LANE.trackY + 30} textAnchor="end" fill={colors.NEGATIVE} fontSize={11} fontStyle="italic">
+                <text x={E_LANE.serverX - 16} y={E_LANE.trackY - 26} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontStyle="italic">
                   abort signal cancels the real request
                 </text>
               </g>
@@ -432,8 +445,8 @@ export function Render({ s }: { s: SceneState }) {
             {/* typed all the way down */}
             {typesU > 0.01 && (
               <g opacity={typesU}>
-                <rect x={E_LANE.cardX} y={E_LANE.cardY + 118} width={262} height={34} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
-                <text x={E_LANE.cardX + 16} y={E_LANE.cardY + 140} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
+                <rect x={E_LANE.cardX} y={E_LANE.cardY + 118} width={CARD_W} height={34} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
+                <text x={E_LANE.cardX + 16} y={E_LANE.cardY + 140} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                   {'E: HttpError — named, checked'}
                 </text>
               </g>
@@ -456,7 +469,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={r.x + RECAP_W / 2} y={RECAP_Y + 64} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
                     {r.code}
                   </text>
-                  <text x={r.x + RECAP_W / 2} y={RECAP_Y + 94} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                  <text x={r.x + RECAP_W / 2} y={RECAP_Y + 94} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={12}>
                     {r.note}
                   </text>
                   {i < RECAP.length - 1 && (
@@ -478,7 +491,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={452} textAnchor="middle" fill={colors.ACCENT} fontSize={21} fontWeight={700}>
               retry · timeout · interruption, for free
             </text>
-            <text x={640} y={496} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+            <text x={640} y={496} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               Effect: The Good Parts · book one
             </text>
           </g>

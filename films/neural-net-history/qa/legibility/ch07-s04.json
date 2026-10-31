@@ -1,0 +1,33 @@
+{
+ "shot": "ch07-s04",
+ "at": "2026-10-13T04:13:41.209Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "GRAPHICS CARDS · 2006–2010",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "up to ≈ 70× faster",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "weeks → about a day (2009)",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "0.35% error · no warm-up · IDSIA, 2010",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

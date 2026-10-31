@@ -1,12 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { composeCover, drawSpine, type BookMeta } from './cover';
+import { composeVhs, drawVhsSpine, VHS_ASPECT, VHS_SPINE_RATIO } from './vhs';
 import {
   assetUrl,
   buildShelves,
   groupMatches,
   isChronologicalSeries,
   openBook,
+  RECENT_SHELF,
   registerAnimalPool,
+  setFilmOpener,
   resolveAnimal,
   searchBooks,
   useLazyVisible,
@@ -15,6 +18,7 @@ import {
 import { MobileShelf } from './MobileShelf';
 import { BrowseFeed } from './BrowseFeed';
 import { SettingsPanel } from './SettingsPanel';
+import { GradesPanel } from './GradesPanel';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import { SubscribeButton } from './SubscribeButton';
 import { getDownloadedSlugs, onDownloadsChanged } from '../offline/downloads';
@@ -31,7 +35,11 @@ import { SnakePlant } from '../shelf-decor/SnakePlant';
 import { StringOfHearts } from '../shelf-decor/StringOfHearts';
 import { SpiderPlant } from '../shelf-decor/SpiderPlant';
 import { Monstera } from '../shelf-decor/Monstera';
+import { ShelfStack, routeKey, useNavRoutes } from '../shell/nav';
 import './library.css';
+
+// a film is a tape in the VCR: the player loads when one is pushed
+const FilmPlayer = lazy(() => import('../player/FilmPlayer'));
 
 const TAB_KEY = 'orly-tab';
 function tabParam(): ShelfTab {
@@ -201,6 +209,83 @@ function SpineBook({ book, seriesIndex }: { book: BookMeta; seriesIndex?: number
   );
 }
 
+// A film: a VHS clamshell standing spine-out in the video library case. Same
+// hover-turn assembly as SpineBook (two canvas planes, one eased transform),
+// shorter and narrower than a book, with the case front as the "cover".
+const TAPE_H = 236;
+const TAPE_FACE_W = Math.round(TAPE_H * VHS_ASPECT);
+const TAPE_SPINE_W = Math.round(TAPE_H * VHS_SPINE_RATIO) + 4;
+
+function VhsTape({ book }: { book: BookMeta }) {
+  const rootRef = useRef<HTMLButtonElement | null>(null);
+  const coverRef = useRef<HTMLCanvasElement | null>(null);
+  const spineRef = useRef<HTMLCanvasElement | null>(null);
+  const visible = useLazyVisible(rootRef);
+  const [open, setOpen] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (!visible) return;
+    let dead = false;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    composeVhs(book, TAPE_FACE_W * 2, TAPE_H * 2, book.vhs?.art ?? null).then((cov) => {
+      if (dead) return;
+      const spine = spineRef.current;
+      if (spine) {
+        spine.width = TAPE_SPINE_W * dpr;
+        spine.height = TAPE_H * dpr;
+        const ctx = spine.getContext('2d');
+        if (ctx) {
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          drawVhsSpine(ctx, TAPE_SPINE_W, TAPE_H, book); // fonts are loaded once composeVhs resolves
+        }
+      }
+      const face = coverRef.current;
+      if (!face) return;
+      face.width = TAPE_FACE_W * dpr;
+      face.height = TAPE_H * dpr;
+      const ctx = face.getContext('2d');
+      if (!ctx) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.drawImage(cov, 0, 0, TAPE_FACE_W, TAPE_H);
+    });
+    return () => {
+      dead = true;
+    };
+  }, [visible, book]);
+
+  const enter = () => {
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setOpen(true), 55);
+  };
+  const leave = () => {
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setOpen(false), 55);
+  };
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  return (
+    <button
+      ref={rootRef}
+      className={`lib-book lib-tape${open ? ' is-open' : ''}`}
+      onClick={() => openBook(book)}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+      onFocus={() => setOpen(true)}
+      onBlur={leave}
+      aria-label={`Play ${book.title}`}
+      title={book.subtitle ? `${book.title} — ${book.subtitle}` : book.title}
+    >
+      <span className="lib-stage">
+        <span className="lib-turn">
+          <canvas ref={coverRef} className="lib-face lib-face-cover" style={{ width: TAPE_FACE_W, height: TAPE_H }} />
+          <canvas ref={spineRef} className="lib-face lib-face-spine" style={{ width: TAPE_SPINE_W, height: TAPE_H }} />
+        </span>
+      </span>
+    </button>
+  );
+}
+
 // A series standing together as one boxed set on the shelf. `front` shows the
 // whole set cover-out (it fits); otherwise spines with the hover-turn.
 function BoxedSet({ name, books, front }: { name: string; books: BookMeta[]; front: boolean }) {
@@ -259,7 +344,7 @@ function useRowWidth(): [number, React.RefObject<HTMLDivElement>] {
     const el = probeRef.current;
     if (!el) return;
     let t: number | undefined;
-    const measure = () => setWidth(el.getBoundingClientRect().width);
+    const measure = () => setWidth(el.clientWidth);
     measure();
     const ro = new ResizeObserver(() => {
       window.clearTimeout(t);
@@ -291,24 +376,27 @@ const fitsFront = (n: number, rowWidth: number) =>
 type ShelfItem =
   | { kind: 'book'; book: BookMeta; index?: number }
   | { kind: 'series'; name: string; books: BookMeta[] }
-  | { kind: 'plant'; plant: PlantKind; seed: number; width: number };
+  | { kind: 'plant'; plant: PlantKind; seed: number; width: number }
+  | { kind: 'tapes'; books: BookMeta[] };
 
 /** Sleeve chrome: the spine plaque gutter on the left plus the slipcase's own
  *  padding. Books inside a sleeve stand flush — no gap — so the run reads as
  *  one boxed set rather than a series of separate books. */
 const SLEEVE_CHROME = 40;
 const BOOK_W = 52; // .lib-book's width in library.css
+const TAPE_SLOT = 40; // .lib-tape's width in library.css
 
 // Ordered so the two big hangers never land next to each other and the
 // standing plants break up the trailing ones.
 const PLANT_KINDS: PlantKind[] = ['pothos', 'monstera', 'hearts', 'cactus', 'spider', 'snake'];
-const DIVIDER_WIDTHS = [110, 140, 125, 160];
+const DIVIDER_WIDTHS = [170, 200, 185, 215];
 
 /** A block is what packing treats as indivisible: one whole series (or
  *  standalone group), or the plant that separates it from the next one. A
  *  series is never broken across two boards unless it is longer than a board
- *  can hold — books in a series belong shoulder to shoulder. */
-type ShelfBlock = { items: ShelfItem[]; width: number; splittable: boolean };
+ *  can hold — books in a series belong shoulder to shoulder. A block with
+ *  `ownBoard` stands alone: nothing else shares its board. */
+type ShelfBlock = { items: ShelfItem[]; width: number; splittable: boolean; ownBoard?: boolean };
 
 /** Every shelf group as one block, with a plant block between groups.
  *  Kinds/sizes/seeds come from the group index, so a given shelf always grows
@@ -332,6 +420,24 @@ function shelfBlocks(shelves: Shelves): ShelfBlock[] {
   };
 
   const blocks: ShelfBlock[] = [];
+  if (shelves.recent.length) {
+    // the top board: the newest books in their own slipcase, a board to themselves
+    blocks.push({
+      items: [{ kind: 'series', name: RECENT_SHELF, books: shelves.recent }],
+      width: SLEEVE_CHROME + shelves.recent.length * BOOK_W + ITEM_GAP,
+      splittable: false,
+      ownBoard: true,
+    });
+  }
+  if (shelves.films.length) {
+    // the video library: every film as a VHS tape in one case, on the board under Recently Added
+    blocks.push({
+      items: [{ kind: 'tapes', books: shelves.films }],
+      width: SLEEVE_CHROME + shelves.films.length * TAPE_SLOT + ITEM_GAP,
+      splittable: false,
+      ownBoard: true,
+    });
+  }
   groups.forEach(({ name, books }, g) => {
     // A plant opens the run too, so the first series is bracketed like the
     // rest instead of starting flush against the end of the board.
@@ -381,10 +487,11 @@ function packRows(blocks: ShelfBlock[], rowWidth: number): ShelfItem[][] {
   };
 
   for (const block of blocks) {
-    if (used + block.width > capacity && row.length) flush();
+    if ((block.ownBoard || used + block.width > capacity) && row.length) flush();
     if (block.width <= capacity || !block.splittable) {
       row.push(...block.items);
       used += block.width;
+      if (block.ownBoard) flush();
       continue;
     }
     // Longer than a whole board: lay it out board by board, contiguously.
@@ -417,8 +524,18 @@ function ContinuousShelves({ shelves, rowWidth }: { shelves: Shelves; rowWidth: 
                     <SpineBook
                       key={b.slug}
                       book={b}
-                      seriesIndex={isChronologicalSeries(group.name) ? undefined : b.seriesOrder}
+                      seriesIndex={isChronologicalSeries(group.name) || group.name === RECENT_SHELF ? undefined : b.seriesOrder}
                     />
+                  ))}
+                </div>
+              );
+            }
+            if (group.kind === 'tapes') {
+              return (
+                <div className="lib-sleeve lib-vhs-case" key={`v${i}-${j}`}>
+                  <span className="lib-sleeve-plaque">Featured · Video Library</span>
+                  {group.books.map((b) => (
+                    <VhsTape key={b.slug} book={b} />
                   ))}
                 </div>
               );
@@ -450,7 +567,8 @@ function ContinuousShelves({ shelves, rowWidth }: { shelves: Shelves; rowWidth: 
 type RowGroup =
   | { kind: 'series'; name: string; books: BookMeta[] }
   | { kind: 'plant'; plant: PlantKind; seed: number; width: number }
-  | { kind: 'run'; books: { book: BookMeta; index?: number }[] };
+  | { kind: 'run'; books: { book: BookMeta; index?: number }[] }
+  | { kind: 'tapes'; books: BookMeta[] };
 
 /** Coalesces a packed row into the units the board justifies between: each
  *  sleeve, each plant, and each unbroken run of standalone books. */
@@ -580,19 +698,25 @@ export function DesktopShelf({
   );
 }
 
-export function Library({ initialBundle }: { initialBundle?: string } = {}) {
+/**
+ * The shelf: tabs, the desktop bookcase or the mobile lists. It is the root of the shelf's outer navigation stack
+ * (shell/nav.tsx), onto which a film is pushed from any tab, with a back button to the shelf; each mobile tab has
+ * its own inner stack for series and books (MobileShelf).
+ */
+export function Library() {
   const [books, setBooks] = useState<BookMeta[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
   const online = useOnline();
   const isTab = (v: unknown): v is ShelfTab =>
-    v === 'browse' || v === 'library' || v === 'shelf' || v === 'settings';
+    v === 'browse' || v === 'library' || v === 'shelf' || v === 'grades' || v === 'settings';
   const [tab, setTabState] = useState<ShelfTab>(() => {
     const fromUrl = new URLSearchParams(window.location.search).get('tab');
     if (isTab(fromUrl)) return fromUrl;
     try {
       const saved = localStorage.getItem(TAB_KEY);
-      if (isTab(saved)) return saved;
+      // the Grades page is reached by link (?tab=grades), not restored as the last tab: it has no tab in the bar
+      if (isTab(saved) && saved !== 'grades') return saved;
     } catch { /* private mode */ }
     return 'library';
   });
@@ -659,7 +783,11 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   const { hidden: chromeHidden } = useScrollChrome();
   const landscape = useLandscape();
 
-  return (
+  // films push onto the outer stack from anywhere on the shelf (openBook → setFilmOpener)
+  const films = useNavRoutes({ kinds: ['film'] });
+
+  // the shelf itself: the root screen of the film stack
+  const shelf = (
     <>
       <OfflineBanner />
       {/* desktop: a normal-flow top nav row, so it must come BEFORE the
@@ -668,6 +796,8 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
       {!mobile && <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} />}
       {visibleTab === 'settings' ? (
         <SettingsPanel />
+      ) : visibleTab === 'grades' ? (
+        <GradesPanel />
       ) : visibleTab === 'browse' ? (
         <BrowseFeed
           books={online ? books : shelfBooks}
@@ -685,6 +815,8 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
             <MobileShelf
               books={shelfBooks}
               error={books ? null : error}
+              active={visibleTab === 'shelf'}
+              covered={films.routes.length > 0}
               emptyMessage="Nothing downloaded yet — browse the Library."
               onScreenOpenChange={setShelfScreenOpen}
             />
@@ -693,7 +825,8 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
             <MobileShelf
               books={libraryBooks}
               error={error}
-              initialBundle={initialBundle}
+              active={visibleTab === 'library'}
+              covered={films.routes.length > 0}
               onScreenOpenChange={setLibraryScreenOpen}
             />
           </div>
@@ -722,5 +855,29 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
         />
       )}
     </>
+  );
+
+  const pushFilm = films.push;
+  useEffect(() => {
+    setFilmOpener((slug) => pushFilm({ kind: 'film', slug }));
+    return () => setFilmOpener(null);
+  }, [pushFilm]);
+  const filmTitle = (slug: string) => books?.find((b) => b.slug === slug)?.title ?? 'Film';
+
+  return (
+    <ShelfStack
+      rootTitle={visibleTab === 'shelf' ? 'Saved' : visibleTab === 'grades' ? 'Grades' : visibleTab === 'browse' ? 'Browse' : 'Library'}
+      root={shelf}
+      screens={films.routes.map((r) => ({
+        key: routeKey(r),
+        title: r.kind === 'film' ? filmTitle(r.slug) : '',
+        content: r.kind === 'film' && (
+          <Suspense fallback={<div className="bp-loading">Loading the tape…</div>}>
+            <FilmPlayer key={r.slug} slug={r.slug} onEject={films.pop} />
+          </Suspense>
+        ),
+      }))}
+      onPop={films.pop}
+    />
   );
 }

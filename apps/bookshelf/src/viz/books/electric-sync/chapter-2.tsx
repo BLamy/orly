@@ -46,6 +46,8 @@ const PG = { x: 1060, y: 190 } as const;
 
 const STORE = { x: 60, y: 320, w: 260, h: 178 } as const;
 const TAPE = { x0: 140, x1: 1140, y: 528, h: 26 } as const;
+// the bookmark card: sits beside the store, above the tape, clear of the rows
+const BOOK = { x: 336, y: 344, w: 328, h: 120 } as const;
 const SEG_W = 64;
 const SEG_X0 = TAPE.x0 + 34;
 
@@ -89,9 +91,10 @@ const SNAP_PATH = [
 ];
 
 // camera marks
-const CAM_CLIENT: CameraState = { x: 330, y: 300, k: 1.22 };
+// CAM_CLIENT frames client, Electric, Postgres, store and bookmark together, clear of the caption
+const CAM_CLIENT: CameraState = { x: 595, y: 400, k: 1.2 };
 const CAM_MID: CameraState = { x: 620, y: 330, k: 1.05 };
-const CAM_TAPE: CameraState = { x: 560, y: 460, k: 1.3 };
+const CAM_TAPE: CameraState = { x: 590, y: 420, k: 1.2 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -100,7 +103,7 @@ const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export function buildScene() {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAM_CLIENT, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_WIDE, cameraInterp);
 
   const nodesU = tl.channel('nodesU', 0); // the three nodes + wires
   const storeU = tl.channel('storeU', 0); // the client's empty local store
@@ -296,10 +299,10 @@ export function Render({ s }: { s: SceneState }) {
           <ServiceNode x={PG.x} y={PG.y} kind="db" label="Postgres" sublabel="public.todos" u={nodesU} />
         </g>
         <g opacity={nodesU}>
-          <ServiceNode x={CLIENT.x} y={CLIENT.y} kind="client" label="client" sublabel={stateLabel} u={nodesU} glow={clamp01(stateU - 1)} />
-          {/* client state chip */}
-          <rect x={CLIENT.x - 10} y={CLIENT.y - 40} width={86} height={24} rx={7} fill={colors.BG} stroke={stateColor} opacity={clamp01(stateU + 0.4) * dimForBook} />
-          <text x={CLIENT.x + 33} y={CLIENT.y - 23} textAnchor="middle" fill={stateColor} fontSize={12} fontFamily={MONO} opacity={dimForBook}>
+          <ServiceNode x={CLIENT.x} y={CLIENT.y} kind="client" label="client" u={nodesU} glow={clamp01(stateU - 1)} />
+          {/* client state chip, floating clear above the node (the state is shown only here) */}
+          <rect x={CLIENT.x - 43} y={CLIENT.y - 62} width={86} height={24} rx={7} fill={colors.BG} stroke={stateColor} opacity={clamp01(stateU + 0.4) * dimForBook} />
+          <text x={CLIENT.x} y={CLIENT.y - 45} textAnchor="middle" fill={stateColor} fontSize={13} fontFamily={MONO} opacity={dimForBook}>
             {stateLabel}
           </text>
         </g>
@@ -307,11 +310,15 @@ export function Render({ s }: { s: SceneState }) {
         {/* ------------------------------------------------ the local store */}
         <g opacity={storeU * dimForBook}>
           <rect x={STORE.x} y={STORE.y} width={STORE.w} height={STORE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={STORE.x + 16} y={STORE.y + 24} fill={colors.MUTED} fontSize={12}>
+          <text x={STORE.x + 16} y={STORE.y + 24} fill={colors.MUTED} fontSize={13}>
             local store
           </text>
-          <text x={STORE.x + STORE.w - 14} y={STORE.y + 24} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+          <text x={STORE.x + STORE.w - 14} y={STORE.y + 24} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             {`${SNAP_ROWS.filter((_, i) => win(rowsU, 4, i, 2) > 0.95).length} rows`}
+          </text>
+          {/* the empty store says what the caption says: no rows, no position */}
+          <text x={STORE.x + STORE.w / 2} y={STORE.y + 100} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={1 - clamp01(rowsU * 4)}>
+            no rows, no offset yet
           </text>
           {SNAP_ROWS.map((r, i) => {
             const u = win(rowsU, 4, i, 2);
@@ -319,13 +326,13 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={r.id}>
                 <rect x={STORE.x + 12} y={STORE.y + 36 + i * 34} width={STORE.w - 24} height={28} rx={6} fill="rgba(56,189,248,0.08)" stroke={colors.GRID} />
-                <text x={STORE.x + 24} y={STORE.y + 55 + i * 34} fill={r.id === 41 ? colors.WARM : colors.TEXT} fontSize={12} fontFamily={MONO}>
+                <text x={STORE.x + 24} y={STORE.y + 55 + i * 34} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
                   {r.id}
                 </text>
-                <text x={STORE.x + 58} y={STORE.y + 55 + i * 34} fill={colors.TEXT} fontSize={12}>
+                <text x={STORE.x + 58} y={STORE.y + 55 + i * 34} fill={colors.TEXT} fontSize={13}>
                   {r.title}
                 </text>
-                <text x={STORE.x + STORE.w - 22} y={STORE.y + 55 + i * 34} textAnchor="end" fill={STATUS_COLOR[r.status]} fontSize={11.5} fontFamily={MONO}>
+                <text x={STORE.x + STORE.w - 22} y={STORE.y + 55 + i * 34} textAnchor="end" fill={STATUS_COLOR[r.status]} fontSize={12.5} fontFamily={MONO}>
                   {r.status}
                 </text>
               </g>
@@ -334,13 +341,14 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ------------------------------------------------ the request */}
-        <g opacity={reqChipU * (1 - clamp01((reqU - 0.9) * 10) * 0.4) * dimForBook}>
+        {/* the request line is spent once the tape draws in: it fades to a ghost */}
+        <g opacity={reqChipU * (1 - clamp01((reqU - 0.9) * 10) * 0.4) * (1 - 0.85 * tapeU) * dimForBook}>
           <rect x={200} y={96} width={430} height={30} rx={9} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
           <text x={214} y={116} fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
             GET /v1/shape?table=todos&offset=-1&where=…
           </text>
           {/* highlight ring on offset=-1 */}
-          <rect x={432} y={99} width={82} height={24} rx={6} fill="none" stroke={colors.WARM} strokeWidth={1.6} opacity={minusU} />
+          <rect x={420} y={99} width={76} height={24} rx={6} fill="none" stroke={colors.WARM} strokeWidth={1.6} opacity={minusU} />
         </g>
         {reqU > 0.01 && reqU < 0.99 && (
           <circle cx={reqPos.x} cy={reqPos.y} r={7} fill={colors.ACCENT} stroke={colors.BG} strokeWidth={1.5} />
@@ -350,7 +358,7 @@ export function Render({ s }: { s: SceneState }) {
         {snapU > 0.01 && snapU < 0.99 && (
           <g>
             <circle cx={snapPos.x} cy={snapPos.y} r={6} fill={snapU <= 0.5 ? 'none' : colors.POSITIVE} stroke={colors.POSITIVE} strokeWidth={2} />
-            <text x={(ELECTRIC.x + PG.x) / 2 + 10} y={ELECTRIC.y - 6} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={(ELECTRIC.x + PG.x) / 2} y={ELECTRIC.y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               {"SELECT … WHERE project_id = 'p1'"}
             </text>
           </g>
@@ -364,7 +372,7 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={r.id} opacity={dimForBook}>
               <rect x={p.x - 52} y={p.y - 11} width={104} height={22} rx={6} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
-              <text x={p.x} y={p.y + 4} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+              <text x={p.x} y={p.y + 4} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
                 {`insert id=${r.id}`}
               </text>
             </g>
@@ -372,34 +380,33 @@ export function Render({ s }: { s: SceneState }) {
         })}
 
         {/* ------------------------------------------------ the bookmark headers */}
-        <g opacity={headU}>
-          {/* spotlight panel behind the bookmark during beat 9 */}
-          <rect x={STORE.x - 8} y={STORE.y + STORE.h + 8} width={STORE.w + 160} height={64} rx={10} fill={bookU > 0.02 ? colors.PANEL : 'none'} stroke={bookU > 0.02 ? colors.WARM : 'none'} opacity={0.4 + 0.6 * bookU} />
-          <rect x={STORE.x} y={STORE.y + STORE.h + 16} width={252} height={22} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1 + bookU} />
-          <text x={STORE.x + 10} y={STORE.y + STORE.h + 31} fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+        {/* the tease dims the old bookmark so the final frame is not drawn over it */}
+        <g opacity={headU * (1 - 0.85 * clamp01(teaseU))}>
+          {/* spotlight card holding the bookmark: handle, offset, and the caption's point */}
+          <rect x={BOOK.x} y={BOOK.y} width={BOOK.w} height={BOOK.h} rx={10} fill={bookU > 0.02 ? colors.PANEL : 'none'} stroke={bookU > 0.02 ? colors.WARM : 'none'} opacity={0.4 + 0.6 * bookU} />
+          <rect x={BOOK.x + 14} y={BOOK.y + 14} width={BOOK.w - 28} height={26} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1 + bookU} />
+          <text x={BOOK.x + 26} y={BOOK.y + 31} fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
             electric-handle: 62488107-17526…
           </text>
-          <rect x={STORE.x + 260} y={STORE.y + STORE.h + 16} width={140} height={22} rx={6} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1 + bookU} />
-          <text x={STORE.x + 270} y={STORE.y + STORE.h + 31} fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+          <rect x={BOOK.x + 14} y={BOOK.y + 48} width={BOOK.w - 28} height={26} rx={6} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1 + bookU} />
+          <text x={BOOK.x + 26} y={BOOK.y + 65} fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
             electric-offset: 0_3
           </text>
-          <text x={STORE.x + 4} y={STORE.y + STORE.h + 56} fill={colors.MUTED} fontSize={11} opacity={bookU}>
+          <text x={BOOK.x + 14} y={BOOK.y + 101} fill={colors.MUTED} fontSize={13} opacity={bookU}>
             the whole bookmark — nothing else to persist
           </text>
         </g>
 
         {/* ------------------------------------------------ THE TAPE */}
         <g opacity={clamp01(tapeU * 1.4) * dimForBook}>
-          <text x={TAPE.x0} y={TAPE.y - 14} fill={colors.MUTED} fontSize={12}>
-            the shape log — one tape per handle
-          </text>
-          <text x={TAPE.x1} y={TAPE.y - 14} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
-            62488107-…
+          {/* tape title sits above the playhead's travel, right of the store */}
+          <text x={BOOK.x} y={TAPE.y - 40} fill={colors.MUTED} fontSize={13}>
+            the shape log — one tape per handle · 62488107-…
           </text>
           {/* tape base */}
           <rect x={TAPE.x0} y={TAPE.y} width={(TAPE.x1 - TAPE.x0) * tapeU} height={TAPE.h} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
           {/* the -1 marker */}
-          <text x={TAPE.x0 + 12} y={TAPE.y + TAPE.h + 18} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
+          <text x={TAPE.x0 + 12} y={TAPE.y + TAPE.h + 18} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
             -1
           </text>
           {/* snapshot segments */}
@@ -408,10 +415,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={r.id} opacity={clamp01(u * 2)}>
                 <rect x={segX(i)} y={TAPE.y + 3} width={SEG_W} height={TAPE.h - 6} rx={4} fill="rgba(56,189,248,0.18)" stroke={colors.ACCENT} strokeWidth={1} />
-                <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h - 8} textAnchor="middle" fill={colors.ACCENT} fontSize={10} fontFamily={MONO}>
+                <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h - 8} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
                   {`id=${r.id}`}
                 </text>
-                <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h + 18} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+                <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   {OFFSETS[i]}
                 </text>
               </g>
@@ -420,7 +427,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the up-to-date pill at the head of the tape */}
           <g opacity={upU}>
             <rect x={segX(4)} y={TAPE.y + 1} width={112} height={TAPE.h - 2} rx={11} fill="rgba(52,211,153,0.15)" stroke={colors.POSITIVE} strokeWidth={1.4} />
-            <text x={segX(4) + 56} y={TAPE.y + TAPE.h / 2 + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>
+            <text x={segX(4) + 56} y={TAPE.y + TAPE.h / 2 + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
               up-to-date
             </text>
           </g>
@@ -428,7 +435,7 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={clamp01(tapeU * 2)}>
             <path d={`M ${phX - 7} ${TAPE.y - 16} L ${phX + 7} ${TAPE.y - 16} L ${phX} ${TAPE.y - 4} Z`} fill={colors.WARM} />
             <line x1={phX} x2={phX} y1={TAPE.y - 4} y2={TAPE.y + TAPE.h + 2} stroke={colors.WARM} strokeWidth={1.4} opacity={0.8} />
-            <text x={phX} y={TAPE.y - 24} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+            <text x={phX} y={TAPE.y - 22} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
               offset
             </text>
           </g>
@@ -436,8 +443,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ------------------------------------------------ the tease: a write flashes at Postgres */}
         <g opacity={teaseU}>
-          <rect x={PG.x - 96} y={PG.y + 78} width={330} height={28} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-          <text x={PG.x + 69} y={PG.y + 97} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+          <rect x={930} y={PG.y + 78} width={300} height={28} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
+          <text x={1080} y={PG.y + 97} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
             {"UPDATE todos SET status='done' …"}
           </text>
           <circle cx={PG.x + 26} cy={PG.y + 26} r={34 + 10 * teaseU} fill="none" stroke={colors.WARM} strokeWidth={1.5} opacity={1 - teaseU} />

@@ -1,0 +1,81 @@
+{
+  "reviewer": "creative-director",
+  "round": 2,
+  "lens": "visual direction: drawable promo ideas in the look.md register, product footage cropped and zoomed to legibility, type on words and downbeats, feasibility with the promo kit and the real takes",
+  "runtimeCheck": "script.mjs assemble --check: 0 errors, 7 warnings; 165 words, estimated 96.1 s at 140 wpm against the 90 s target. That is inside the 100 s hard ceiling, so runtime is not critical. Six of the warnings are on-screen text short of reading time (ch01-s01, ch01-s03 x2, ch02-s01, ch03-s01, ch04-s02). Fixes below should simplify, not add time.",
+  "method": "I cropped every RrwebScreen box the script names out of the take stills in .orly-work/promo/sheets/<take>/<ms>.png at the exact recording-px boxes: runs@3668, schedule@8808/11458, bug-react@3100/3200/11736, bug-sync@1603, insights@2926, new-project@2966/4737. I checked kit feasibility against .claude/skills/film-promo/SKILL.md and RrwebScreen.tsx (box height follows the crop aspect; zoom magnifies about a point inside the crop). All round-1 critical items are fixed: the ch04-s02 Add-environment crop is clean (label plus ellipsized grey line, no URL), and the ch05-s02 page now fits at 900 x 651 with zoom 1.0. The overlay/DOM layering note is applied throughout.",
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 7, "story": 7, "curiosity": 7, "visual": 7, "voice": 7 },
+  "critical": [
+    "ch05-s02: 'Loading replay…' is on screen in the hero bug shot. At the shot's tape (3040-3200) the dark Replay player panel reads 'Loading replay…' (verified on bug-react/003200.png at crop {500,80,940,680}: the text sits at about recording (968, 546), mid-frame). The script puts our overlay over the player only from the word 'milliseconds', so through L0502 ('Replay QA caught one in its own app', about 2.5-3 s) a loading state shows on Replay's own product, in the film's most important shot. look.md lists loading spinners under 'Never'. Fix: from shot time 0, OUR SVG overlay covers the player rect (recording ≈ {x: 558, y: 315, w: 820, h: 445}, mapped through crop and tilt, and appearing only once the tilt has settled; before that, cover it with a matching dark plate inside the same screen box). The 16.7 ms slot ribbon sits there, still and dim, and starts sliding on 'Sixty-seven'. ch05-s03 and ch05-s05 inherit the same crop and need the same plate whenever the player is in frame."
+  ],
+  "issues": [
+    {
+      "where": "ch05-s03 (match cut to ROOT CAUSE)",
+      "problem": "The root-cause line is not legible at the stated size. In crop {x: 540, y: 70, w: 820, h: 70} at 11736, the body text is about 13 recording px. At '≥ 1000 stage px wide' (×1.22, max ×1.56 at full width) it renders at about 16-20 stage px, below the skill's 22 px rule. Yet the braces around 'are not memoized' ask the viewer to read exactly that clause, which sits at the far right of a dense 120-character line.",
+      "fix": "Two crops in a match-cut pair. First the real 'ROOT CAUSE' heading crop {x: 540, y: 70, w: 200, h: 26}, small, as the eyebrow. Then the clause alone, crop ≈ {x: 905, y: 100, w: 330, h: 38} ('`SidebarProjectList` trees are not memoized'), shown ≈ 1050 stage px (×3.2, ≈ 42 px text), with the overlay braces on 'are not memoized'. Or keep one crop and add zoom 1.8 about recording (1160, 117) on \"Replay's\". Either way, re-check the clause's exact x on bug-react/011736.png."
+    },
+    {
+      "where": "ch05-s03 (density)",
+      "problem": "In about 6 s the shot stacks seven devices: the 67 ms bar shattering into 27 squares, the 9×3 grid draining 25, a caption, an 'illustration' tag, a screenshot camera-frame dropping over the grid, a match cut to a second RrwebScreen with braces, a kinetic '{ root cause }' label, and a pinned third RrwebScreen of the chips row at the top edge. That breaks the look's 'one idea per beat', and the pinned chips sliver (420×30 crop) is a fourth screen layer competing with the root-cause crop.",
+      "fix": "Cut the pinned chips tile. 'Open' is already established in ch05-s02 and returns in ch05-s05 and the ch06 collage. Cut the screenshot rectangle too, or make it the ONLY move on 'screenshot' by dropping the 'illustration' tag beside it, since the caption '25 of 27 renders changed nothing' is already marked as reported. Two ideas: the grid (L0505 + 'A screenshot can't see that'), then the root cause."
+    },
+    {
+      "where": "ch04-s03 (zoom vs chip cascade)",
+      "problem": "The zoom contradicts the chip choreography. On 'pull' the screen zooms 1.0 → 1.6 about recording (1015, 300). At 1.6 the visible window inside crop {500,112,940,458} is only recording y ≈ 182-469 and x ≈ 693-1281 (computed from RrwebScreen's zoom-about-a-point transform). Then on 'recorded' a chip is supposed to pop out of 'each of the eight visible run rows'. Rows 7-8 (y ≈ 500, 546) are off-frame, and row 1 is near the top edge.",
+      "fix": "Ease the zoom back to 1.0 between 'request' and 'recorded' (0.4 s), so all eight rows are in frame for the cascade. Or keep 1.6 and pop chips only from the six rows visible at that zoom (rows at y ≈ 224-454), which makes the stack six chips."
+    },
+    {
+      "where": "ch01-s03 (the three stamps)",
+      "problem": "The stamp boxes cannot hold the named crops. RrwebScreen's height follows the crop aspect (box.w / crop.w). Shown 64 px wide, crop 1 (560×200) is 23 px tall, crop 2 (240×31) is 8 px, and crop 3 (880×130) is 9 px. These are slivers, not the '64 × 44 postage stamps sitting on the baseline like letters'. Crop 1 also cuts the Status column to '✓ C…', so the green 'Completed' pills the script names are not in it. Stamp 2 uses schedule@8808, where the take's cursor sits on the chip; the text is fine because cursor is off, but ch04 deliberately uses 11458.",
+      "fix": "Use crops at about 1.45:1. Runs@3668 {x: 1000, y: 200, w: 260, h: 180} (purple 'PR #3' badges plus green 'Completed' pills). Schedule@11458 {x: 1050, y: 160, w: 250, h: 172} (the green chip and white space; verify no owner URL, which sits at x < 620). Bug-react@3100 {x: 530, y: 80, w: 290, h: 200} (the red 'Open' chip over '67ms React'). At 64 px these read as colour swatches, which is all the stamps need. Also correct the script's 'blue PR #3 badges' to purple, in ch01-s03 and ch06-s01 (B)."
+    },
+    {
+      "where": "ch06-s01 (collage reading path)",
+      "problem": "The six woven phrases zig-zag around the frame in speaking order: 'every run' left at y 210 → 'a recording' right at y 290 → 'every bug' left at y 390 → 'a root cause' right-low at y 610 → 'every fix' centre at y 360 → 'rerun to confirm' right at y 430-480. The eye goes down, up, then down again across four tiles. The reference collage weaves at most two words per beat and keeps them on one baseline ('ou … create'), so the line to remember will not read as three parallel steps.",
+      "fix": "Put the three pairs on three rows in reading order, each 'every X' in a left lane and its answer in a right lane on the same baseline. For example, y ≈ 200 'every run' / 'a recording', y ≈ 370 'every bug' / 'a root cause', y ≈ 540 'every fix' / 'rerun to confirm'. Arrange the four tiles in the gaps between rows at their tilts. Keep 'every fix / rerun to confirm' clear of the bug-sync 'Fixed' tile, as the script already requires."
+    },
+    {
+      "where": "ch04-s01 (density)",
+      "problem": "This is still a lot for one ~5 s beat: the 150 px '3:00 AM', two footage crops (Production badge plus chip), a six-tick strip with 'Sep 1' and 'Oct 6', braces with squareDots, an underline, a dim, and a 'hosted by Replay' pill. The Production badge crop (98×28, ×3) adds no meaning the narration uses.",
+      "fix": "Drop the Production badge crop. The chip alone is the name tag. That leaves one footage crop, the strip and the pill, which is the triplet's one idea plus its proof."
+    },
+    {
+      "where": "ch05-s04 (zoom centre)",
+      "problem": "The zoom centre clips 'times'. On bug-sync@1603, '258 times' sits at recording x ≈ 1265-1368, y ≈ 130. Zoom 1.6 about (1240, 140) shows x ≈ 790-1352, which cuts 'times' at the right edge.",
+      "fix": "Zoom about recording (1290, 135). The visible window becomes x ≈ 809-1371, which keeps '258 times' whole."
+    },
+    {
+      "where": "ch02-s01",
+      "problem": "The direction contradicts itself. The 104 px URL ('https://staging.your-app.dev', 28 chars ≈ 1500 px) is meant to run off the left edge, as in the reference, yet the hold 'lets the address be read whole'. The check also warns that the label gets 3.3 s of the 3.8 s it needs.",
+      "fix": "Keep the reference move (the head runs off, '…staging.your-app.dev▌' fills the frame) and drop the 'read whole' claim. Or set the type at ≈ 78 px so the whole URL lands inside 1180 px on the last key. The ch02-s02 pull-back already shows the full URL in the real input."
+    },
+    {
+      "where": "ch06-s02 (end card URL)",
+      "problem": "The call to action is the smallest type in the film. 'qa.replay.io' at 24 px (cap height ≈ 17 px) falls under the skill's 22 px legibility rule, on the one frame meant to be remembered and acted on.",
+      "fix": "Set 'qa.replay.io' at ≈ 34 px Promo Sans regular, ink at 80 %, still typed with the caret. It stays secondary to the 54 px tagline and the 40 px lock-up."
+    },
+    {
+      "where": "ch03-s01 (step details)",
+      "problem": "The grey detail lines are 18 px. Row three has no spoken word of its own: its check lands on the beat after L0302, and its meaning rides only on the detail line 'root cause for every bug'. At 18 px grey on paper that detail is under the legibility rule.",
+      "fix": "Set the details at 22 px, labels at 32 px and the title at 46 px. There is room: the list fills only the left two-thirds."
+    },
+    {
+      "where": "ch04-s02 (header vs body; brace feasibility)",
+      "problem": "The shot header says 'five environment pills' but the body (correctly) draws three: staging · preview · local. The body also says 'kit braces snap around the pill row', but kit bracket wraps its own text, not a row of canvas pills.",
+      "fix": "Change the header to 'three environment pills'. Draw the braces as two kit-style glyph halves positioned at the row's measured ends, or as the SVG bracketRect already routed to the shots stage in ch02-s02. Note the shared need once in the script's shot notes."
+    },
+    {
+      "where": "ch05-s05 (subtle beat placement)",
+      "problem": "The brief and look.md place the agent pair 'in a corner of a product shot'. Here the bug-sync title recedes to a small soft-focus card while the haze drains, so for about 6 s the frame is mostly empty paper with two small cards. The beat reads as a standalone vignette, not a quiet aside.",
+      "fix": "Keep the bug-sync title strip at ≈ 70 % size, sharp, upper-left. Sit the agent pair at scale 0.6 in the lower-right corner beneath it, so the beat literally lives in the corner of product footage. The title-only crop {x: 520, y: 110, w: 900, h: 90} keeps 'Fixed' out, as intended."
+    }
+  ],
+  "strengths": [
+    "Every shot is drawable and specific: kit calls, stage coordinates, recording-px crops, tape in/out points and word anchors. A shot author could build almost all of it without guessing.",
+    "Round-1 fixes landed. The ch04-s02 crop is clean (verified: only 'Add environment' and its ellipsized grey line, no URL). The ch05-s02 page fits at 900×651 with zoom 1.0. Every mark on footage now lives in shot.overlay(). The ch02-s01 ghost no longer crossfades during the whip. The ch05-s04 Actual card and the ch04-s01 status row are gone.",
+    "Reference fidelity is high without copying: the dawn haze line with a colour sweep, '{ intro▢▢▢ducing }' with product stamps in the gap, the giant typed URL pulling back into the real input, 'Testing your app' as the 'Building Image' list, the fanned collage with woven words, the ember end card with a bracketed tagline.",
+    "The time-travel register has real visual ideas, not stock graphics: four hollow 16.7 ms slots under a 67 ms bar while the music goes silent for four beats; a 258 counter stopping dead beside a 'checkpoint −1' tag that never moves while the rewind playhead sweeps back.",
+    "The footage is used truthfully. The Open/Fixed state is respected (no 'fixed' near the React bug, 'Fixed' hidden while the agents are on screen). The owner-named URL, chat column and cursor are kept out of crops, and every drawn device is labelled 'illustration'.",
+    "Continuity devices carry across the cuts: ▶ recording chips go from run rows into the frame ribbon, into the agent pair's handoff, then beside the end-card mark."
+  ]
+}

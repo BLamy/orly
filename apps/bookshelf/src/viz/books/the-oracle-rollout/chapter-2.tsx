@@ -31,7 +31,7 @@ export function buildScene() {
 
   tl.caption({ at: 6.8, dur: 6.1, text: 'Their mean is zero point three. The rollout at zero point four is usefully above average.' });
   tl.tween(policyMeanU, 1, { at: 7.5, dur: 0.7, ease: ease.enter });
-  tl.tween(cam, { x: sx(0.35), y: 330, k: 1.1 }, { at: 9.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.1 }, { at: 9.4, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.3, dur: 6.2, text: 'Now mix in the perfect oracle before normalizing. The baseline slides from zero point three to zero point four four.' });
   tl.tween(oracleU, 1, { at: 14.0, dur: 0.7, ease: ease.pop });
@@ -40,7 +40,7 @@ export function buildScene() {
 
   tl.caption({ at: 19.9, dur: 6.2, text: 'That zero point four rollout still beats the policy mean, yet the mixed baseline assigns it a negative advantage.' });
   tl.tween(inversionU, 1, { at: 20.6, dur: 0.6, ease: ease.pop });
-  tl.tween(cam, { x: sx(0.4), y: 330, k: 1.15 }, { at: 22.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.15 }, { at: 22.1, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 26.5, dur: 6.2, text: 'This is advantage inversion. The better the oracle is, the wider that misleading interval becomes.' });
   tl.tween(inversionU, 2, { at: 27.2, dur: 1.2, ease: ease.move });
@@ -54,7 +54,7 @@ export function buildScene() {
 
   tl.caption({ at: 46.3, dur: 6.1, text: 'The transformed policy advantages are recentered to zero, preserving a clean relative comparison.' });
   tl.tween(recenterU, 1, { at: 47.0, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 610, y: 478, k: 1.12 }, { at: 49.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 350, k: 1.1 }, { at: 49.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 52.8, dur: 6.3, text: 'The oracle gets its own detached positive anchor, capped against the strongest useful policy signal.' });
   tl.tween(anchorU, 1, { at: 53.5, dur: 0.8, ease: ease.pop });
@@ -90,6 +90,9 @@ export function Render({ s }: { s: SceneState }) {
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
       <text x="640" y="62" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">A perfect answer can move the wrong line</text>
+      <g opacity={s.get(scene.policyMeanU)}>
+        <text x="640" y="104" textAnchor="middle" fill={colors.SECONDARY} fontSize="18">advantage = reward − mean of the group</text>
+      </g>
       <g opacity={s.get(scene.axisU)}>
         <line x1="142" y1="320" x2="1138" y2="320" stroke={colors.GRID} strokeWidth="6" strokeLinecap="round" />
         {Array.from({ length: 11 }, (_, i) => <Tick key={i} value={i / 10} reveal={s.get(scene.axisU)} />)}
@@ -107,20 +110,20 @@ export function Render({ s }: { s: SceneState }) {
           <circle r={flipped ? 23 : 18 + boost * 5} fill={color} stroke="#07101d" strokeWidth="3" />
           <text y="5" textAnchor="middle" fill="#07101d" fontSize="12" fontWeight="900">o{i + 1}</text>
           <text y="-34" textAnchor="middle" fill={color} fontSize="13" fontFamily={colors.font.mono}>r={value.toFixed(1)}</text>
-          {flipped && <text y="54" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13" fontWeight="800">sign flipped</text>}
+          {flipped && <text y="-58" x="-22" textAnchor="end" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">sign flipped</text>}
         </g>;
       })}
 
       <g opacity={s.get(scene.oracleU)} transform={`translate(${sx(ORACLE_REWARD)} 254) scale(${0.84 + s.get(scene.oracleU) * 0.16})`}>
         <circle r={22 + anchor * 8} fill={colors.WARM} stroke="#07101d" strokeWidth="3" />
         <text y="5" textAnchor="middle" fill="#171000" fontSize="12" fontWeight="900">GT</text>
-        <text y="-39" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>rgt=1.0</text>
-        <text y="54" textAnchor="middle" fill={colors.WARM} fontSize="13" fontWeight="800" opacity={anchor}>Agt=0.24</text>
+        <text y="-39" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>GT r=1.0</text>
+        <text y="56" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="800" opacity={anchor}>A(GT)=0.24</text>
       </g>
 
       <g opacity={s.get(scene.policyMeanU)}>
-        {inversion > 0 && <rect x={sx(MU_OP)} y="208" width={sx(MU_AUG) - sx(MU_OP)} height="184" fill={colors.NEGATIVE} opacity={0.08 + inversion * 0.12} />}
-        <line x1={sx(mean)} y1="178" x2={sx(mean)} y2="420" stroke={restore ? colors.POSITIVE : shift > 0 ? colors.NEGATIVE : colors.ACCENT} strokeWidth="4" strokeDasharray="9 8" />
+        {inversion > 0 && <rect x={sx(MU_OP)} y="208" width={sx(MU_AUG) - sx(MU_OP)} height="112" fill={colors.NEGATIVE} opacity={0.08 + inversion * 0.12} />}
+        <line x1={sx(mean)} y1="178" x2={sx(mean)} y2="318" stroke={restore ? colors.POSITIVE : shift > 0 ? colors.NEGATIVE : colors.ACCENT} strokeWidth="4" strokeDasharray="9 8" />
         <rect x={sx(mean) - 92} y="138" width="184" height="34" rx="17" fill="#0d1526" stroke={restore ? colors.POSITIVE : shift > 0 ? colors.NEGATIVE : colors.ACCENT} />
         <text x={sx(mean)} y="160" textAnchor="middle" fill={restore ? colors.POSITIVE : shift > 0 ? colors.NEGATIVE : colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>
           {restore ? 'μop = 0.30' : shift > 0 ? `μaug = ${mean.toFixed(2)}` : 'μop = 0.30'}

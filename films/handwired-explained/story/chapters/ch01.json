@@ -1,0 +1,878 @@
+{
+  "id": "ch01",
+  "number": 1,
+  "title": "Four and a Half",
+  "blurb": "A copper thread becomes the wire under a paper desk. The desk is one neural network, and its Monitor window shows that network to itself: 234 state cells, 4,646 operations, 493 outputs, and a wallpaper with one arc for each of its 9,909 weights. The narrator ties the viewer's three likely guesses onto a copper line as suspect tags. Then the README's (a > 4) ? 10 : 12 is built from two ramps and a lever: five gives ten, three gives twelve, and four and a half gives eleven. The tag inks the README's own small print, \"For an integer a\". First full refrain, then the title.",
+  "shots": [
+    {
+      "id": "ch01-s01",
+      "kind": "scene",
+      "setting": "Black void with low haze; a copper thread draws itself across the dark and becomes the copper wire under a paper dock (HandwiredOS, October 2026, no time of day: a stage before the lamps come up)",
+      "era": "2020s",
+      "mood": "parchment",
+      "leadIn": 0,
+      "holdAfter": 0,
+      "minDuration": 6.4,
+      "lines": [],
+      "visual": "THIS SHOT: one copper thread draws itself across black and turns out to be the wire under a paper dock. Total black for a breath, then the haze lifts a little in the L1 backlight (parchment mood held very low, intensity 0.25, so the frame reads almost black with a warm floor). From frame left at 58% of frame height, a single copper thread (the film's copper line: 1.5 px core, a warm rim on its top edge, a soft halo) draws itself left to right like a slow fuse, with a tiny bright bead at its tip and the haze glowing faintly where it has passed. The camera holds still with the faintest drift (lens 1.00 to 1.02). At the 'dock' beat the line stops just past frame centre and three paper tiles fold up out of the dark above its right half (white rounded squares cut from card, rim-lit, each carrying a small cut-out glyph: a pulse line, a page, a picture), so we understand the copper thread is the wire running under the HandwiredOS dock. On the 'clack' beat, a single relay clack, and the wire's halo steps up once and settles. No narration, no type. This is the film's first image and, at the very end (ch12-s07), its last light.",
+      "beats": [
+        {
+          "id": "haze",
+          "at": {
+            "shotTime": 0.6
+          },
+          "what": "haze lifts in the backlight; the frame warms from black"
+        },
+        {
+          "id": "fuse",
+          "at": {
+            "shotTime": 1.2
+          },
+          "what": "the copper thread starts drawing itself from frame left, a bright bead at its tip"
+        },
+        {
+          "id": "dock",
+          "at": {
+            "shotTime": 5
+          },
+          "what": "the line stops past centre; three paper dock tiles fold up above it"
+        },
+        {
+          "id": "clack",
+          "at": {
+            "shotTime": 5.7
+          },
+          "what": "one relay clack; the wire's halo steps up once and settles"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "copper line (wire)",
+        "three paper dock tiles (pulse, page, picture glyphs)"
+      ],
+      "onScreenText": [],
+      "music": {
+        "cue": "c01-copper-wire",
+        "note": "No music. Paper room tone and the faint hiss of haze; one dry relay clack exactly on the 'clack' beat, nothing tonal. Machines clack, never chime."
+      },
+      "transitionIn": "fadeBlack",
+      "claims": [
+        "OS18"
+      ]
+    },
+    {
+      "id": "ch01-s02",
+      "kind": "scene",
+      "setting": "The HandwiredOS desk as a toy theatre: a paper-beige desktop with a faint dot grid, three paper windows (Monitor, Notes, Photos) hung on threads, a three-tile dock above the copper wire (a demo page, October 2026, warm lamplight)",
+      "era": "2020s",
+      "mood": "parchment",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L0101",
+          "text": "A small desktop: three windows, a dock, twelve photographs.",
+          "pauseAfter": 0.6,
+          "direction": "plain, unhurried, a guide pointing at something on a table; a small smile on 'twelve photographs'"
+        },
+        {
+          "id": "L0102",
+          "text": "Drag a window. It glides, and settles.",
+          "direction": "let 'and settles' come to rest, like the window"
+        }
+      ],
+      "visual": "THIS SHOT: the desk is revealed as a toy theatre, and a dragged window glides and settles. The camera pulls back and up from the dock of the previous shot (lens 1.10 to 1.00 over the lead-in) to a wide on the HandwiredOS desk built as a paper toy theatre: a warm paper-beige desktop flat at L3 with a faint dot grid printed in ink at 8% (the real site's look: paper, ink and one copper accent), the copper wire running under the three-tile dock along the bottom. Three paper windows hang on fine threads from the top of the proscenium, each a sheet of card with a serif title strip: Monitor (left, its sidebar and a list of rows), Notes (centre right, a short to-do list in a pen-like hand, its LAST line deliberately soft and out of focus: the plant for ch12-s05; nothing in it is legible yet), Photos (right, a 4 x 3 grid of twelve tiny landscape cut-outs: hills, a lake, a tree line). On 'windows' each window gets a brief rim kick in turn; on 'dock' the three tiles lift a hair; on 'photographs' the twelve cells of the Photos grid catch light in reading order (twelve quick ticks). On 'Drag' a small paper cursor arrow (no hand: the narrator's hands first appear in ch01-s05) presses Photos' title bar and drags it left and down; the window follows; on release ('glides') it carries on alone along the same path, slowing; on 'settles' it eases to rest and its hanging threads swing once and still. The focused window carries a faint copper wash. No logos, no browser chrome. Small fog sheet B across the desk floor.",
+      "beats": [
+        {
+          "id": "reveal",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "pull back to the wide desk; windows on threads, dot grid, dock over the copper wire"
+        },
+        {
+          "id": "windows",
+          "at": {
+            "line": "L0101",
+            "word": "windows"
+          },
+          "what": "each window gets a brief rim kick in turn: Monitor, Notes, Photos"
+        },
+        {
+          "id": "dock",
+          "at": {
+            "line": "L0101",
+            "word": "dock"
+          },
+          "what": "the three dock tiles lift a hair"
+        },
+        {
+          "id": "photos",
+          "at": {
+            "line": "L0101",
+            "word": "photographs"
+          },
+          "what": "Photos' twelve cells catch light in reading order"
+        },
+        {
+          "id": "drag",
+          "at": {
+            "line": "L0102",
+            "word": "Drag"
+          },
+          "what": "a paper cursor presses Photos' title bar and drags it left and down"
+        },
+        {
+          "id": "glides",
+          "at": {
+            "line": "L0102",
+            "word": "glides"
+          },
+          "what": "release: the window carries on alone, slowing"
+        },
+        {
+          "id": "settles",
+          "at": {
+            "line": "L0102",
+            "word": "settles"
+          },
+          "what": "it eases to rest; its threads swing once and still"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "paper desktop with dot grid",
+        "Monitor window",
+        "Notes window (to-do list, last line out of focus)",
+        "Photos window (4 x 3 grid of twelve landscapes)",
+        "three-tile dock",
+        "copper wire",
+        "paper cursor arrow"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "HandwiredOS",
+          "beat": "reveal"
+        },
+        {
+          "kind": "label",
+          "text": "one of Handwired's three live demos",
+          "beat": "windows"
+        }
+      ],
+      "music": {
+        "cue": "c01-copper-wire",
+        "note": "Still no melody: room tone, a soft paper slide under the drag, and a single soft detent click as the window settles."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "OS01",
+        "OS15",
+        "OS16",
+        "OS18",
+        "PJ18"
+      ]
+    },
+    {
+      "id": "ch01-s03",
+      "kind": "scene",
+      "setting": "A slow push into the Monitor window on the HandwiredOS desk; its sidebar and footer fill the frame (October 2026, the lamp warming)",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L0103",
+          "text": "Every move is worked out by one neural network, built with a library called Handwired. This window shows it, live.",
+          "direction": "a quiet reveal; lean very slightly on 'one', then 'live' plainly, not as a flourish"
+        }
+      ],
+      "visual": "THIS SHOT: we push into Monitor and read the program's own numbers in its sidebar. The lamp warms from parchment to candleAmber as the camera pushes in (continuous dolly z 0 to +260 over the shot; the window grows to fill two thirds of the frame). Monitor is a paper sheet with a serif title strip; its sidebar heading, set in the window's own small type, reads THIS PROGRAM, with three figures under it: State 234, Operations 4,646, Outputs 493. On the right, Monitor's list of rows (the program's own cells and operations), each row a strip of card with a name stub and a live number; as the Photos window (still easing at frame edge) settles, a handful of the row values tick to new numbers on twos, so we see the list is the network's live state, not a picture of it. On 'network' the three sidebar figures get a brief warm kick; on 'live' the ticking numbers pulse once together. The footer strip along the bottom of the window reads 130 layers · 9,909 weights (show only these two figures: no byte count). Depth: the window at L4, the dimmed desk at L3, haze between. Ends still pushing, carrying straight into the next shot.",
+      "beats": [
+        {
+          "id": "push",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "the slow push into Monitor begins; lamp warms toward candleAmber"
+        },
+        {
+          "id": "sidebar",
+          "at": {
+            "shotTime": 0.9
+          },
+          "what": "the sidebar resolves: THIS PROGRAM, State 234, Operations 4,646, Outputs 493"
+        },
+        {
+          "id": "network",
+          "at": {
+            "line": "L0103",
+            "word": "network"
+          },
+          "what": "the three sidebar figures get a brief warm kick"
+        },
+        {
+          "id": "footer",
+          "at": {
+            "line": "L0103",
+            "word": "neural"
+          },
+          "what": "the footer strip slides into view: 130 layers · 9,909 weights"
+        },
+        {
+          "id": "live",
+          "at": {
+            "line": "L0103",
+            "word": "live"
+          },
+          "what": "the live row values pulse once together"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "Monitor window (sidebar, row list, footer)",
+        "Photos window at frame edge"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "THIS PROGRAM · State 234 · Operations 4,646 · Outputs 493",
+          "beat": "sidebar"
+        },
+        {
+          "kind": "label",
+          "text": "130 layers · 9,909 weights",
+          "beat": "footer"
+        }
+      ],
+      "music": {
+        "cue": "c01-both-branches",
+        "note": "The both-branches motif enters: two muted melodic lines a whole tone apart, both always playing; the gain gate fully open on the upper line, so we hear one line clearly with the other a ghost beneath. Low intensity (0.2), woody, no chime."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "OS01",
+        "OS02",
+        "OS12",
+        "PJ20"
+      ]
+    },
+    {
+      "id": "ch01-s04",
+      "kind": "scene",
+      "setting": "Through the Monitor window into the HandwiredOS wallpaper: all 9,909 thin semicircular arcs, copper and indigo, layered in depth like loom threads (October 2026)",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 1.7,
+      "lines": [
+        {
+          "id": "L0104",
+          "text": "Even the wallpaper maps it: one arc for each weight, each number it multiplies by. Nine thousand, nine hundred and nine.",
+          "pauseAfter": 0.4,
+          "direction": "wonder held in check; say the number slowly and evenly, each part its own step"
+        }
+      ],
+      "visual": "THIS SHOT: the camera passes through Monitor into a cathedral of arcs, one per weight. The push from the previous shot continues straight through the paper of the Monitor window (it parts like a stage gauze) into the desktop's wallpaper, staged as depth: all 9,909 thin semicircular arcs, cut from foil-thin card, hung on L1 to L4, most copper, some grey-blue indigo, each a hairline with a rim on its upper edge. The arcs are the real wallpaper's rule: each one runs from a value to the operation that reads it. A multiplane dolly drifts forward (z +260 to +700) and the near arcs part to either side like threads on a loom, the far ones haze toward the backlight. On 'arc' one copper arc and one indigo arc nearest the lens brighten for a beat each (the label lands with them). On 'thousand' the whole field brightens once, layer by layer from far to near, then settles. DATA BINDING (style bible §6): the arcs are generated, not hand-placed, from research/exports/handwiredos-circuit.json, the compiled HandwiredOS circuit exported from the pinned clone at 257856e (command: bun films/handwired-explained/tools/export-handwiredos-circuit.ts .orly-work/repos/handwired; run 2026-10-28, its totals match the bible: 234 source cells, 130 layers, 4,646 live operations, 9,909 stored weights, 2,776 ReGLU, 59 boolean, longest gate chain 71). One arc per entry of its arcs array, 9,909 in all, each drawn as src/handwiredos/wiring.ts draws it: from the value it reads to the operation that reads it, copper where the sign is +1 (adding) and indigo where it is -1 (subtracting). The far layers may thin to hairlines in the haze, but every arc is drawn and none is invented, so the label 9,909 arcs · one per weight is literally true. The same export drives the ch05 loom; the shots stage records the command and totals in sources.json. Nothing in the arcs moves except by camera and haze: they are a picture of the program, drawn from its wiring, not part of its computing. Fog sheet A drifts slowly left.",
+      "beats": [
+        {
+          "id": "through",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "the push passes through the Monitor paper like a gauze"
+        },
+        {
+          "id": "arcs",
+          "at": {
+            "line": "L0104",
+            "word": "wallpaper"
+          },
+          "what": "the field of copper and indigo arcs opens in depth"
+        },
+        {
+          "id": "colours",
+          "at": {
+            "line": "L0104",
+            "word": "arc"
+          },
+          "what": "one copper and one indigo arc brighten in turn"
+        },
+        {
+          "id": "count",
+          "at": {
+            "line": "L0104",
+            "word": "thousand"
+          },
+          "what": "the whole field brightens once, far to near, then settles"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "wallpaper arcs (copper and indigo card hairlines)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "copper adds · indigo subtracts",
+          "beat": "colours"
+        },
+        {
+          "kind": "label",
+          "text": "9,909 arcs · one per weight",
+          "beat": "count"
+        }
+      ],
+      "music": {
+        "cue": "c01-both-branches",
+        "note": "The two lines continue; a slow rising swell in the low register as the arcs open (intensity 0.3), receding on the number."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "OS14",
+        "OS02"
+      ]
+    },
+    {
+      "id": "ch01-s05",
+      "kind": "scene",
+      "setting": "Pulling back out of the wallpaper to find a copper line strung across the dark in front of the HandwiredOS desk; three blank paper tags swing in (October 2026, lamplight)",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L0105",
+          "text": "Where did those weights come from?",
+          "pauseAfter": 0.5,
+          "direction": "an honest question to the viewer, not a riddle",
+          "tts": {
+            "solo": true,
+            "speed": 0.7
+          }
+        },
+        {
+          "id": "L0106",
+          "text": "Somebody trained it. A tool converted ordinary code. Or it isn’t really a network.",
+          "pauseAfter": 0.7,
+          "direction": "three guesses, each its own little beat, as the hands tie each tag on"
+        },
+        {
+          "id": "L0107",
+          "text": "They hang on this copper line, as paper tags. We'll test every one.",
+          "direction": "warm and plain; 'as paper tags' names the device for the ear; the first use of the refrain, so not underlined",
+          "pauseAfter": 0.6,
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        },
+        {
+          "id": "L0107a",
+          "text": "And one more tag, blank for now: why would anyone build it this way?",
+          "direction": "lighter, almost an aside; a real question left open, not a tease. Let 'this way' trail into the hang"
+        }
+      ],
+      "visual": "THIS SHOT: the copper line appears in front of the desk and the narrator's hands tie on three suspect tags, then hang a fourth, blank. The camera pulls back out of the wallpaper (z +700 to 0, lens 1.0) and finds the tag-keeper's workshop: a tall paned window wall at L2, the dimmed HandwiredOS desk on a workbench at L3, and in front of it, at L4, the copper line strung between two posts right across the frame at 58% of frame height, glowing at the backlight's peak; the near post at L6, frame right, is where the red pencil will rest. Three blank paper tags (manila card, a reinforced top eyelet, a fine string) swing in from the dark on 'weights' and hang slack; each already carries, in its top corner beside the eyelet, a small separate rubber-stamp mark reading suspect (faded red-brown, lower case, about a fifth of the front's cap height). The stamp is part of the tag prop, printed before the tie, never spoken, never inked on a beat, and never part of the front text. The narrator's hands (narrator-hands rig: a mid-life man's forearms in rolled linen sleeves, entering on a shallow arc from the lower left) tie each tag on, one per guess, each tie landing on the detent's soft 'tie' click, and the tag's front inks in the film's hand as he says it, its wording exactly as staging.tagLine.tags gives it (sentence case, no 'Suspect:' prefix, quoted verbatim in every later shot): 'trained' (tag 3, front: 'Somebody trained it'; its knot eyelet stays visibly EMPTY: nobody in the record holds this, it is our guess), 'tool' (tag 4, front: 'A tool turned ordinary JavaScript into it'; a tiny typeset name card reading 'the README' is threaded through its eyelet: the README's tagline is the holder, and the tagline itself is read later, in ch07 and ch12, so it is NOT set here), 'network' (tag 5, front: 'It isn't really a network'; knot EMPTY). On 'Hang' the hands withdraw lower left. On 'test' the three threads visibly hang slack: no lifespan yet (the Lifespan Rule is not shown in this shot). On 'blank' the hands come back once with a fourth tag, the why tag: manila like the others, its front left BLANK (no ink, no question mark), its knot empty; on 'why' they tie it at the far right end of the row (soft 'tie' click) and withdraw; it hangs slack and swings once, and on 'way' it turns a little into the light so its blank face reads. This blank tag stays on the line, unwritten, until ch10 and ch12 pay it. No grommets are drawn on these tags. Text discipline: the three tag fronts are the only reading items (each inks on its own beat and is spoken as it inks); the knot card is a name card; the small 'suspect' stamps are prop marks, not reading items. TAG-LINE STAGING (meta staging.tagLine): WORKSHOP (canonical): the tag-keeper's workshop, established in ch01-s05. L2 the tall paned window wall (night sky, the HandwiredOS desk's glow on the glass); L3 the workbench with the desk's dimmed silhouette and the parchment plates pinned along its back edge; L4 the copper line between two posts at 58% frame height; L5 the narrator's hands, always from lower left; L6 the near post at frame right, where the red pencil rests when not writing. The Lifespan Rule lies along the bench edge under the line.",
+      "beats": [
+        {
+          "id": "pullBack",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "pull back out of the wallpaper; the copper line resolves across the dark in front of the desk"
+        },
+        {
+          "id": "tagsIn",
+          "at": {
+            "line": "L0105",
+            "word": "weights"
+          },
+          "what": "three blank tags swing in on strings and hang slack"
+        },
+        {
+          "id": "tag3",
+          "at": {
+            "line": "L0106",
+            "word": "trained"
+          },
+          "what": "hands tie tag 3; its front inks; its knot stays empty"
+        },
+        {
+          "id": "tag4",
+          "at": {
+            "line": "L0106",
+            "word": "tool"
+          },
+          "what": "hands tie tag 4; its front inks; the README tagline card threads its eyelet"
+        },
+        {
+          "id": "tag5",
+          "at": {
+            "line": "L0106",
+            "word": "network"
+          },
+          "what": "hands tie tag 5; its front inks; its knot stays empty"
+        },
+        {
+          "id": "hang",
+          "at": {
+            "line": "L0107",
+            "word": "hang"
+          },
+          "what": "the hands withdraw lower left"
+        },
+        {
+          "id": "slack",
+          "at": {
+            "line": "L0107",
+            "word": "test"
+          },
+          "what": "the three threads hang slack: no lifespan yet"
+        },
+        {
+          "id": "whyIn",
+          "at": {
+            "line": "L0107a",
+            "word": "blank"
+          },
+          "what": "the hands return with a fourth tag, its front blank, its knot empty"
+        },
+        {
+          "id": "whyTie",
+          "at": {
+            "line": "L0107a",
+            "word": "why"
+          },
+          "what": "the blank why tag is tied at the far right end of the row (tie click); the hands withdraw"
+        },
+        {
+          "id": "whyTurn",
+          "at": {
+            "line": "L0107a",
+            "word": "way"
+          },
+          "what": "the blank tag swings once and turns its empty face into the light"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "copper line",
+        "three paper suspect tags (tags 3, 4, 5), each with a small separate 'suspect' stamp",
+        "tiny knot name card: the README",
+        "a fourth tag, blank (the why tag)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "Somebody trained it",
+          "beat": "tag3"
+        },
+        {
+          "kind": "label",
+          "text": "A tool turned ordinary JavaScript into it",
+          "beat": "tag4"
+        },
+        {
+          "kind": "nameCard",
+          "text": "the README",
+          "beat": "tag4"
+        },
+        {
+          "kind": "label",
+          "text": "It isn't really a network",
+          "beat": "tag5"
+        }
+      ],
+      "music": {
+        "cue": "c01-both-branches",
+        "note": "The two lines thin to a pulse; a soft detent 'tie' click (woodblock) lands on each of the three ties, and a fourth, softer tie on 'why'. No 'flip', no 'strike': these beliefs have not been tested, and the fourth tag is not a belief at all yet."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "OS01",
+        "PJ01"
+      ]
+    },
+    {
+      "id": "ch01-s06",
+      "kind": "plate",
+      "setting": "A parchment plate carrying the README's ternary; two hinged black boards, a lever and an output tray rise from it, with two dim belts lost in the haze behind (the README example, October 2026, lamplight on paper)",
+      "era": "2020s",
+      "mood": "parchment",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L0108",
+          "text": "A scrap of JavaScript a child could check. If a is more than four, ten. If not, twelve.",
+          "spoken": "A scrap of JavaScript a child could check. If A is more than four, ten. If not, twelve.",
+          "pauseAfter": 0.6,
+          "direction": "simple and friendly; say the variable as the letter 'ay', clearly a name, not the article"
+        },
+        {
+          "id": "L0109",
+          "text": "Build it from ramps, the stuff of neural networks. Five gives ten; three, twelve.",
+          "pauseAfter": 0.7,
+          "direction": "light and brisk on the two easy cases; they work, of course they work"
+        },
+        {
+          "id": "L0110",
+          "text": "Give it four and a half.",
+          "pauseAfter": 1.8,
+          "direction": "slower, a little lower; then a long breath of silence while the tile lands",
+          "tts": {
+            "solo": true,
+            "speed": 0.7
+          },
+          "insertGaps": {
+            "it": 0.5
+          }
+        },
+        {
+          "id": "L0111",
+          "text": "Eleven. Neither ten nor twelve.",
+          "direction": "'Eleven' alone, quietly amazed; then the rest plainly, almost amused"
+        }
+      ],
+      "visual": "THIS SHOT: two ramps and a lever compute (a > 4) ? 10 : 12; at four and a half a tile reading 11 slides out. A parchment plate inks in at L4 under the lamp: the README's line const result = (a > 4) ? 10 : 12 in monospace across its top. Two hinged black boards rise out of the plate as silhouettes against the backlight: board one flat, then climbing at 45 degrees from its hinge at 4; board two the same shape with its hinge at 5 (small ink ticks along a shared floor rule under both, no numerals). A lever between them reads the difference of their heights (it can only rest between 0 and 1). Below the lever, an output tray. Behind, at L3, deep in haze, two conveyor belts run left to right the whole shot, never stopping, DIM: low-contrast shapes we sense rather than read, their tiles unreadable, no shutters lit, no rods drawn. The belts are not explained here; their reveal is ch04-s04 (both branches run). On 'ramps' the boards, lever and tray lift into place. The narrator's hands set a brass marble on the floor rule: on 'Five' the marble rolls to 5, the lever swings fully up, a 10 tile drops into the output tray (clack). On 'Three' it rolls back to 3, the lever drops to 0, a 12 drops (clack). On 'half' a hand places the marble at 4.5, exactly midway between the hinges: the lever stops halfway and trembles; the dim belts behind keep running; then, in the silence, with one heavy clack, a tile slides out into the tray that neither number made: 11 (on the 'clack' beat). 1.6 s of near stillness: only the haze moves. On 'Eleven' the tile catches the rim light. Text discipline: two reading items only, the code line and the one surprising result (a = 4.5 → 11); the 10 and 12 tiles carry their own numerals as props, and the voice says them; nothing names the boards, lever, belts or tray (we learn the parts later). Camera: locked-off medium on the plate, a 3% push across L0110 and the silence.",
+      "beats": [
+        {
+          "id": "plate",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "the parchment plate inks in with the ternary"
+        },
+        {
+          "id": "check",
+          "at": {
+            "line": "L0108",
+            "word": "check"
+          },
+          "what": "the code line gets a brief rim kick"
+        },
+        {
+          "id": "ramps",
+          "at": {
+            "line": "L0109",
+            "word": "ramps"
+          },
+          "what": "the two hinged boards, the lever and the tray rise out of the plate; dim belts stir in the haze behind"
+        },
+        {
+          "id": "five",
+          "at": {
+            "line": "L0109",
+            "word": "Five"
+          },
+          "what": "marble rolls to 5; lever full up; a 10 tile drops (clack)"
+        },
+        {
+          "id": "three",
+          "at": {
+            "line": "L0109",
+            "word": "Three"
+          },
+          "what": "marble rolls to 3; lever at 0; a 12 tile drops (clack)"
+        },
+        {
+          "id": "half",
+          "at": {
+            "line": "L0110",
+            "word": "half"
+          },
+          "what": "a hand sets the marble at 4.5; the lever stops halfway and trembles"
+        },
+        {
+          "id": "clack",
+          "at": {
+            "line": "L0110",
+            "edge": "end",
+            "offset": 0.9
+          },
+          "what": "in the silence a tile neither belt carried slides out: 11 (heavy clack)"
+        },
+        {
+          "id": "eleven",
+          "at": {
+            "line": "L0111",
+            "word": "Eleven"
+          },
+          "what": "the 11 tile catches the rim light"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "parchment plate",
+        "two hinged black boards (hinges at 4 and 5)",
+        "lever",
+        "brass marble",
+        "output tray",
+        "two conveyor belts, dim in L3 haze (not explained until ch04-s04)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "const result = (a > 4) ? 10 : 12",
+          "beat": "plate"
+        },
+        {
+          "kind": "label",
+          "text": "a = 4.5 → 11",
+          "beat": "eleven"
+        }
+      ],
+      "music": {
+        "cue": "c01-both-branches",
+        "note": "The score is the select: the two lines a whole tone apart keep playing; at 'Five' the gain gate opens fully on the upper line, at 'Three' on the lower. At 'half' the gate sits at 0.5 and BOTH lines sound at half level: a slightly wrong, unresolved interval, the musical eleven. Hold it under the silence; the heavy clack of the 11 tile is the only percussive hit."
+      },
+      "transitionIn": "inkBleed",
+      "claims": [
+        "TE01",
+        "TE02",
+        "TE03",
+        "TE11"
+      ]
+    },
+    {
+      "id": "ch01-s07",
+      "kind": "scene",
+      "setting": "Tilt up from the plate to the copper line in front of the HandwiredOS desk; tag 6 inks the README's small print; the empty Lifespan Rule fades up along the bottom (October 2026, lamplight)",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 3.4,
+      "lines": [
+        {
+          "id": "L0112",
+          "text": "Nothing’s broken. It was built for whole numbers, and it took that on trust.",
+          "pauseAfter": 0.7,
+          "direction": "gentle, fair to the machine; no gotcha"
+        },
+        {
+          "id": "L0113",
+          "text": "This film is about promises like that: who tied them on, who doubted them, and how long they held.",
+          "direction": "the film's promise, first full refrain: even, three equal steps, unhurried; let 'held' sit",
+          "pauseAfter": 0.7
+        }
+      ],
+      "visual": "THIS SHOT: tag 6 inks the README's small print, the red pencil stops short, and the empty Lifespan Rule fades up under the line in the silence after the refrain. Tilt up from the plate (the 11 tile still in its tray at frame bottom, leaving frame) to the copper line, where the three slack suspect tags and the blank why tag hang. A fifth tag, tag 6, turns on its string into the light at frame centre; on 'whole' its front inks with the README's own small print, a verbatim span of the README's comment, its front exactly 'For an integer a' (sentence case as in the README, no stamp: tag 6 is the README's own promise, not a suspect). Its knot carries a tiny name card: the README. On 'trust' the red-pencil hand (red-pencil-hand rig: a plain cuff from frame RIGHT, the pencil held in a pinch, the only red in the frame, low chroma) approaches the tag's edge, stops a finger's width away, and does NOT write; it withdraws. On 'promises' the camera begins to ease back; on 'tied', 'doubted' and 'held' it eases back a little each time (three small steps), so the tags and the line sit together in one wide frame. On 'long' (\"how long they held\") the Lifespan Rule fades up along the bottom of the frame and is fully in by the silence the refrain leaves: a long paper ruler with copper ticks on a log scale, empty, no thread dropped to it yet; its tick labels (an hour · a day · a year · a lifetime; the week, month and decade ticks are drawn unlabelled) set in as one line. Nothing is said about it: the picture carries it. In the held silence after the line (beats hour, day, year, lifetime, 0.3 s apart) four ticks, an hour, a day, a year and a lifetime, warm in turn, left to right, each a bigger step along the ruler than the last. THE RULE'S ONE ENCODING (meta staging.tagLine, used in every later shot): a thread drops from a tag to the rule at the length of time its belief held. A struck or ended belief's thread drops to its measured lifespan and ends there in a cut, dull tip. A belief still held drops to its age as of 27 October 2026 and ends in a glowing open tip with a short copper arrow pointing right (still running). Only a belief that has really lasted longer than a lifetime runs past that tick. In this shot no thread drops yet. Tag 6 carries no grommet. The 11 is not repeated on screen and the code is not repeated (the plate just showed it); the small print is enough. TAG-LINE STAGING (meta staging.tagLine): WORKSHOP (canonical): the tag-keeper's workshop, established in ch01-s05. L2 the tall paned window wall (night sky, the HandwiredOS desk's glow on the glass); L3 the workbench with the desk's dimmed silhouette and the parchment plates pinned along its back edge; L4 the copper line between two posts at 58% frame height; L5 the narrator's hands, always from lower left; L6 the near post at frame right, where the red pencil rests when not writing. The Lifespan Rule lies along the bench edge under the line.",
+      "beats": [
+        {
+          "id": "tilt",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "tilt up from the plate to the copper line"
+        },
+        {
+          "id": "ink",
+          "at": {
+            "shotTime": 0.9
+          },
+          "what": "tag 6 turns into the light at frame centre, its knot card reading the README"
+        },
+        {
+          "id": "smallPrint",
+          "at": {
+            "line": "L0112",
+            "word": "whole"
+          },
+          "what": "tag 6's front inks the README's small print: For an integer a"
+        },
+        {
+          "id": "pencil",
+          "at": {
+            "line": "L0112",
+            "word": "trust"
+          },
+          "what": "the red pencil approaches the tag's edge, stops, and withdraws without writing"
+        },
+        {
+          "id": "tied",
+          "at": {
+            "line": "L0113",
+            "word": "tied"
+          },
+          "what": "camera eases back, step one"
+        },
+        {
+          "id": "doubted",
+          "at": {
+            "line": "L0113",
+            "word": "doubted"
+          },
+          "what": "camera eases back, step two"
+        },
+        {
+          "id": "held",
+          "at": {
+            "line": "L0113",
+            "word": "held"
+          },
+          "what": "camera eases back, step three: the tags and the line in one wide frame"
+        },
+        {
+          "id": "rule",
+          "at": {
+            "line": "L0113",
+            "word": "long"
+          },
+          "what": "the empty Lifespan Rule fades up along the bottom, its tick labels with it (no words over it)"
+        },
+        {
+          "id": "hour",
+          "at": {
+            "line": "L0113",
+            "edge": "end",
+            "offset": 0.2
+          },
+          "what": "the hour tick warms"
+        },
+        {
+          "id": "day",
+          "at": {
+            "line": "L0113",
+            "edge": "end",
+            "offset": 0.5
+          },
+          "what": "the day tick warms"
+        },
+        {
+          "id": "year",
+          "at": {
+            "line": "L0113",
+            "edge": "end",
+            "offset": 0.8
+          },
+          "what": "the year tick warms"
+        },
+        {
+          "id": "lifetime",
+          "at": {
+            "line": "L0113",
+            "edge": "end",
+            "offset": 1.1
+          },
+          "what": "the lifetime tick warms, far right: four tags' worth of empty rule beneath them"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand"
+      ],
+      "props": [
+        "copper line",
+        "tags 3, 4, 5 (slack)",
+        "the blank why tag",
+        "tag 6",
+        "knot name card: the README",
+        "red pencil",
+        "Lifespan Rule (empty)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "\"For an integer a\" — the README's small print",
+          "beat": "smallPrint"
+        },
+        {
+          "kind": "nameCard",
+          "text": "the README",
+          "beat": "ink"
+        },
+        {
+          "kind": "label",
+          "text": "an hour · a day · a year · a lifetime",
+          "beat": "rule"
+        }
+      ],
+      "music": {
+        "cue": "c01-both-branches",
+        "note": "The two lines resolve back to one under L0112 (the gate returns to 1); under the refrain, the detent figure is introduced quietly on woodblock: tie (on 'tied'), flip (on 'doubted'), and the third stroke is left unplayed on 'held', so the bar hangs. In the silence after, as the Lifespan Rule's ticks warm, only the single line, very low; no new figure."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "TE01",
+        "TE03"
+      ]
+    },
+    {
+      "id": "ch01-s08",
+      "kind": "card",
+      "setting": "Title card: ink on parchment above the copper line; a dozen blank tags slide in along it from the dark",
+      "era": "2020s",
+      "mood": "parchment",
+      "leadIn": 0,
+      "holdAfter": 0,
+      "minDuration": 10.3,
+      "lines": [],
+      "visual": "THIS SHOT: the title card, with more blank tags arriving on the line. The lamp shifts back from candleAmber to parchment. The copper line runs across the lower third; from the dark at frame right a dozen blank tags slide in along it on their strings, unwritten, evenly spaced, swinging and settling on twos (planted: the epilogue's washing line and the blank tag in the viewer's hand). Above, on parchment, ink bleeds in: HANDWIRED in large serif capitals (on 'title'); then Promises, Not Proofs in italic beneath (on 'flip'); then the subtitle in small roman (on 'subtitle'). No narration. Hold the full card for a long read; the tags have stopped swinging by the end.",
+      "beats": [
+        {
+          "id": "tags",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "a dozen blank tags slide in along the line from the right"
+        },
+        {
+          "id": "title",
+          "at": {
+            "shotTime": 0.6
+          },
+          "what": "HANDWIRED bleeds in; detent 'tie'"
+        },
+        {
+          "id": "flip",
+          "at": {
+            "shotTime": 1.0
+          },
+          "what": "Promises, Not Proofs bleeds in beneath; detent 'flip'"
+        },
+        {
+          "id": "subtitle",
+          "at": {
+            "shotTime": 1.3
+          },
+          "what": "the subtitle sets in small roman"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "copper line",
+        "a dozen blank tags"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "HANDWIRED",
+          "beat": "title"
+        },
+        {
+          "kind": "title",
+          "text": "Promises, Not Proofs",
+          "beat": "flip"
+        },
+        {
+          "kind": "label",
+          "text": "How a program becomes a hand-wired neural network, told in the things people were sure of",
+          "beat": "subtitle"
+        }
+      ],
+      "music": {
+        "cue": "c01-title",
+        "note": "The detent figure stated cleanly once: tie (soft detent click) on the title, flip (paper-card snap) on the subtitle title, and then the bar hangs with no strike. Under it, the two lines a whole tone apart, both at half level, unresolved."
+      },
+      "transitionIn": "inkBleed",
+      "claims": []
+    }
+  ]
+}

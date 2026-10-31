@@ -14,7 +14,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -61,7 +60,8 @@ const BAR_W = 54;
 const COST_Y = 430;
 
 const CAM_MIX: CameraState = { x: 500, y: 300, k: 1.2 };
-const CAM_COST: CameraState = { x: 640, y: 440, k: 1.15 };
+// lower and tighter than the mix shot, so the mix labels clear the title band
+const CAM_COST: CameraState = { x: 640, y: 390, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -199,7 +199,7 @@ function MixBars({ x, morph, u }: { x: number; morph: number; u: number }) {
             fill={e.c}
             opacity={0.85}
           />
-          <text x={x + i * (BAR_W + 46) + BAR_W / 2} y={MIX_Y + MIX_H + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <text x={x + i * (BAR_W + 46) + BAR_W / 2} y={MIX_Y + MIX_H + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             {e.k}
           </text>
         </g>
@@ -220,7 +220,9 @@ function Frame({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  // the recap dims the stage so its panel reads; the close fades it to a whisper
+  const mainOp = (1 - 0.7 * recapU) * (1 - 0.85 * closeU);
+  const titleOp = titleU * (1 - 0.85 * closeU);
 
   const costRows = [
     { label: 'one card · holds all 671B', usd: CARD_USD, c: colors.POSITIVE },
@@ -244,11 +246,15 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           <MixBars x={230} morph={morphU} u={mixU} />
 
-          {metricU > 0 && (
+          {metricU > 0 && recapU < 0.02 && (
             <g opacity={metricU}>
-              <MathLabel tex="F/B:\ \mathrm{can\ compute\ be\ fed?}" x={700} y={MIX_Y + 20} anchor="start" fontSize={18} color={colors.ACCENT} opacity={metricU} />
-              <MathLabel tex="F/S:\ \mathrm{compute\ bought\ per\ GB}" x={700} y={MIX_Y + 64} anchor="start" fontSize={18} color={colors.POSITIVE} opacity={metricU} />
-              <text x={700} y={MIX_Y + 104} fill={colors.MUTED} fontSize={13}>
+              <text x={700} y={MIX_Y + 20} fontSize={18} fontWeight={600} fill={colors.ACCENT}>
+                F/B <tspan fontWeight={400} fill={colors.TEXT}>can compute be fed?</tspan>
+              </text>
+              <text x={700} y={MIX_Y + 64} fontSize={18} fontWeight={600} fill={colors.POSITIVE}>
+                F/S <tspan fontWeight={400} fill={colors.TEXT}>compute bought per GB</tspan>
+              </text>
+              <text x={700} y={MIX_Y + 104} fill={colors.MUTED} fontSize={14}>
                 decoding wants both small; a GPU sells both large
               </text>
             </g>
@@ -264,11 +270,11 @@ function Frame({ s }: { s: SceneState }) {
                 const w = (r.usd / maxUsd) * 560 * fillU;
                 return (
                   <g key={r.label}>
-                    <text x={170} y={COST_Y + 18 + i * 44} fill={colors.MUTED} fontSize={13}>
+                    <text x={170} y={COST_Y + 18 + i * 44} fill={colors.MUTED} fontSize={14}>
                       {r.label}
                     </text>
                     <rect x={560} y={COST_Y + 6 + i * 44} width={w} height={16} rx={4} fill={r.c} opacity={0.85} />
-                    <text x={566 + w} y={COST_Y + 19 + i * 44} fill={r.c} fontSize={13} fontFamily="monospace" opacity={fillU}>
+                    <text x={566 + w} y={COST_Y + 19 + i * 44} fill={r.c} fontSize={14} fontFamily="monospace" opacity={fillU}>
                       ${Math.round(r.usd / 1000)}k
                     </text>
                   </g>
@@ -285,7 +291,7 @@ function Frame({ s }: { s: SceneState }) {
       </g>
 
       {/* screen-fixed */}
-      <g opacity={titleU * mainOp}>
+      <g opacity={titleOp}>
         <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           The economics of decoding
         </text>
@@ -297,13 +303,14 @@ function Frame({ s }: { s: SceneState }) {
       {/* recap overlay rides above the dimmed stage, below the close panel */}
       {recapU > 0 && closeU < 0.99 && (
         <g opacity={recapU * (1 - closeU)}>
+          <rect x={200} y={140} width={880} height={160} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           {recapRows.map((r, i) => {
             const u = clamp01(recapU * recapRows.length - i);
             if (u <= 0) return null;
             return (
               <g key={i} opacity={u}>
-                <circle cx={90} cy={150 + i * 34} r={5} fill={r.c} />
-                <text x={110} y={155 + i * 34} fill={colors.TEXT} fontSize={14}>
+                <circle cx={236} cy={180 + i * 40} r={5} fill={r.c} />
+                <text x={256} y={184 + i * 40} fill={colors.TEXT} fontSize={17}>
                   {r.text}
                 </text>
               </g>
@@ -314,7 +321,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={230} width={880} height={200} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={200} y={230} width={880} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             The binding constraint is the bill.
           </text>
@@ -324,7 +331,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             only for the one your tokens actually consume.
           </text>
-          <text x={640} y={402} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={402} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             arXiv:2607.12696 · 2607.08782 · 2607.13068
           </text>
         </g>

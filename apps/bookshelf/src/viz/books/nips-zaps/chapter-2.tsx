@@ -46,7 +46,7 @@ const TAG_NOTES: Array<{ path: string; label: string; note: string }> = [
 
 const RELAY = { x: 1020, y: 170 };
 const WALLET = { x: 1020, y: 470 };
-const HALF_W = 84;
+const HALF_W = 92;
 
 const CAM_JSON: CameraState = { x: 400, y: 300, k: 1.22 };
 
@@ -172,23 +172,29 @@ export function Render({ s }: { s: SceneState }) {
             focus={activeTag ? [activeTag.path] : undefined}
             focusU={tagU}
           />
-          {activeTag && (
-            <g opacity={tagU}>
-              <rect x={560} y={250} width={330} height={56} rx={10} fill={colors.PANEL} stroke={colors.WARM} opacity={0.95} />
-              <text x={578} y={274} fill={colors.WARM} fontSize={14} fontWeight={600}>
-                {activeTag.label}
-              </text>
-              <text x={578} y={294} fill={colors.TEXT} fontSize={13}>
-                {activeTag.note}
-              </text>
-            </g>
-          )}
+          {activeTag && (() => {
+            // callout sits just right of the focused line, clear of the JSON text
+            const a = LAYOUT.anchor(activeTag.path);
+            const bx = a.x + a.w + 28;
+            const by = a.cy - 28;
+            return (
+              <g opacity={tagU}>
+                <rect x={bx} y={by} width={330} height={56} rx={10} fill={colors.PANEL} stroke={colors.WARM} opacity={0.95} />
+                <text x={bx + 18} y={by + 24} fill={colors.WARM} fontSize={14} fontWeight={600}>
+                  {activeTag.label}
+                </text>
+                <text x={bx + 18} y={by + 44} fill={colors.TEXT} fontSize={14}>
+                  {activeTag.note}
+                </text>
+              </g>
+            );
+          })()}
 
           {/* the two lanes */}
           {lanesU > 0 && (
             <g opacity={lanesU}>
-              <ServiceNode x={RELAY.x} y={RELAY.y} kind="server" label="relay" sublabel="the usual road" u={lanesU} dim={0.2} />
-              <ServiceNode x={WALLET.x} y={WALLET.y} kind="server" label="wallet.example" sublabel="callback endpoint" u={lanesU} />
+              <ServiceNode x={RELAY.x} y={RELAY.y} kind="server" label="relay" sublabel="the usual road" w={184} labelSize={16} u={lanesU} dim={0.2} />
+              <ServiceNode x={WALLET.x} y={WALLET.y} kind="server" label="wallet.example" sublabel="callback endpoint" w={184} labelSize={16} u={lanesU} />
             </g>
           )}
 
@@ -200,7 +206,7 @@ export function Render({ s }: { s: SceneState }) {
               u={Math.min(1, bounceU * 1.6)}
               text="kind 9734"
               fill={colors.NEGATIVE}
-              fontSize={13}
+              fontSize={14}
               lift={60}
             />
           )}
@@ -208,7 +214,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={Math.min(1, (bounceU - 0.6) / 0.4) * (1 - sendU)}>
               <line x1={RELAY.x - HALF_W - 14} y1={RELAY.y - 16} x2={RELAY.x - HALF_W - 38} y2={RELAY.y + 16} stroke={colors.NEGATIVE} strokeWidth={3} />
               <line x1={RELAY.x - HALF_W - 38} y1={RELAY.y - 16} x2={RELAY.x - HALF_W - 14} y2={RELAY.y + 16} stroke={colors.NEGATIVE} strokeWidth={3} />
-              <text x={RELAY.x - HALF_W - 26} y={RELAY.y + 44} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
+              <text x={RELAY.x - HALF_W - 26} y={RELAY.y + 44} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
                 never published
               </text>
             </g>
@@ -224,21 +230,27 @@ export function Render({ s }: { s: SceneState }) {
                 flow={sendU * 2}
                 label="GET ?amount=21000&nostr=…"
                 color={colors.WARM}
+                labelSize={14}
               />
               <TokenFlight
                 from={{ x: DOC_ANCHOR.x + DOC_ANCHOR.w - 40, y: 320 }}
-                to={{ x: 600, y: 462 }}
+                to={{ x: 600, y: 440 }}
                 u={Math.min(1, sendU * 1.3)}
                 text="signed 9734, url-encoded"
                 fill={colors.WARM}
-                fontSize={12.5}
-                lift={50}
+                fontSize={14}
+                lift={84}
               />
             </>
           )}
           {urlU > 0 && (
-            <text x={430} y={540} fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, Menlo, monospace" opacity={urlU}>
+            <text x={430} y={540} fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, Menlo, monospace" opacity={urlU * 0.85}>
               …/lnurlp/derek/cb?amount=21000&nostr=%7B%22kind%22%3A9734…
+            </text>
+          )}
+          {urlU > 0 && (
+            <text x={WALLET.x} y={WALLET.y + 100} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} opacity={urlU}>
+              ✓ signed by the payer&apos;s key
             </text>
           )}
         </Camera>
@@ -253,7 +265,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             kind 9734 carries relays · amount · p · e — and never touches a relay
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-57 — the zap request
           </text>
         </g>

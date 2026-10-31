@@ -1,0 +1,887 @@
+{
+  "version": 1,
+  "slug": "handwired-learned-interpreter",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Program in 123 Cells",
+      "claims": [
+        {
+          "id": "c1-question",
+          "claim": "The lab asks whether learning can recover one reusable program instead of a separate answer for each input.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: the question",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "5",
+              "quote": "Can learning recover a reusable program, rather than a separate answer for each input?"
+            }
+          ]
+        },
+        {
+          "id": "c1-four-inputs",
+          "claim": "Four runtime inputs change on every example, and the same program must work across all of them.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: four inputs",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "5",
+              "quote": "Four runtime inputs change on every example; the same program must work across examples."
+            },
+            {
+              "label": "program.ts: input names",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "12",
+              "quote": "export const inputNames = ['pointerX', 'panelLeft', 'scale', 'distractor'] as const"
+            }
+          ]
+        },
+        {
+          "id": "c1-two-instructions",
+          "claim": "A program is two instructions, each choosing one operation from add, subtract and multiply and an ordered pair of registers.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "program.ts: operation names",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "15",
+              "quote": "export const operationNames = ['add', 'subtract', 'multiply'] as const"
+            },
+            {
+              "label": "README: instruction 0 choice",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "13",
+              "quote": "Instruction 0 chooses an operation and an ordered pair from four runtime inputs"
+            }
+          ]
+        },
+        {
+          "id": "c1-48-75",
+          "claim": "Instruction zero has 3 × 4 × 4 = 48 candidates; instruction one also reads instruction zero result, giving 3 × 5 × 5 = 75.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: 48 candidates",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "13",
+              "quote": "That gives `3 * 4 * 4 = 48` candidates."
+            },
+            {
+              "label": "README: 75 candidates",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "13",
+              "quote": "Instruction 1 also sees instruction 0's result, giving `3 * 5 * 5 = 75` candidates."
+            },
+            {
+              "label": "program.ts: candidate lists",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "71",
+              "quote": "createCandidates(inputNames.length + instruction)"
+            }
+          ]
+        },
+        {
+          "id": "c1-dials",
+          "claim": "The circuit computes every candidate result, multiplies each by its dial and sums them; that weighted sum is the soft program.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README: masked outputs",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "15",
+              "quote": "The fixed circuit evaluates candidate instructions and sums their masked outputs."
+            },
+            {
+              "label": "program.ts: dial multiply",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "112",
+              "quote": "emitMultiply(circuit, group.sourceWires[index]!, candidate)"
+            }
+          ]
+        },
+        {
+          "id": "c1-leftmost",
+          "claim": "After training, the leftmost largest dial wins, and hardening sets that one cell to exactly one.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: leftmost argmax",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "15",
+              "quote": "After training, leftmost argmax turns each distribution into one exact instruction."
+            },
+            {
+              "label": "program.ts: strict comparison",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "182",
+              "quote": "program[group.parameterOffset + index]! > program[group.parameterOffset + winner]!"
+            },
+            {
+              "label": "program.ts: hardening",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "196",
+              "quote": "hardened[group.parameterOffset + groupWinner(group, softProgram)] = 1"
+            }
+          ]
+        },
+        {
+          "id": "c1-cells",
+          "claim": "The program is 48 + 75 = 123 shared cells beside four input cells, 127 source cells in all.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: cell count",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "15",
+              "quote": "The source table contains four runtime cells and 123 shared program cells."
+            },
+            {
+              "label": "program.ts: program cell count",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "87",
+              "quote": "programCellCount: nextParameter,"
+            }
+          ]
+        },
+        {
+          "id": "c1-no-example",
+          "claim": "There is no example ID, learned constant or per-example parameter in the table, so nothing can be tuned per example.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: no per-example parameter",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "15",
+              "quote": "There is no example ID, learned constant, or per-example parameter."
+            }
+          ]
+        },
+        {
+          "id": "c1-tasks",
+          "claim": "The coordinate task is (pointerX − panelLeft) × scale and the two-add task is (pointerX + panelLeft) + distractor, each rounded to FP32 at every step.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "oracle.ts: coordinate target",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/oracle.ts",
+              "lines": "17",
+              "quote": "const translatedX = Math.fround(Math.fround(inputs.pointerX) - Math.fround(inputs.panelLeft))"
+            },
+            {
+              "label": "oracle.ts: two-add target",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/oracle.ts",
+              "lines": "26",
+              "quote": "return Math.fround(firstSum + Math.fround(inputs[thirdAddend]))"
+            }
+          ]
+        },
+        {
+          "id": "c1-checker",
+          "claim": "An independent oracle rounds every source value and every step to FP32, and a learned program has to match it, not just land close.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: oracle rounding",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "19",
+              "quote": "All source values are rounded to FP32 when written, including in the independent oracle."
+            }
+          ]
+        },
+        {
+          "id": "c1-operation-count",
+          "claim": "Re-run on 2026-10-21, the circuit has 250 operations, 77 affine and 173 ReGLU, and the soft and hard builds have the same count.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "report.ts: measured affine count",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/report.ts",
+              "lines": "73",
+              "quote": "affine: build.circuit.operations.filter(operation => operation.kind === 'affine').length,"
+            },
+            {
+              "label": "program.ts: build entry point",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "117",
+              "quote": "export function buildProgram("
+            }
+          ]
+        },
+        {
+          "id": "c1-one-hot",
+          "claim": "A learned program is a pair of one-hot choices, one winning card per instruction, and the hard circuit assumes exactly one winner per group.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "program.ts: one-hot assumption",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "127",
+              "quote": "if (selectionMode === 'hard') circuit.assumeOneHot(group.sourceWires)"
+            },
+            {
+              "label": "program.ts: hardening",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.ts",
+              "lines": "196",
+              "quote": "hardened[group.parameterOffset + groupWinner(group, softProgram)] = 1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Cooling the Reels",
+      "claims": [
+        {
+          "id": "c2-table",
+          "claim": "Before training, the lab scores all 3,600 complete programs on every training example and stores each program mean error in one table.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "discrete-training.ts: table allocation",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "60",
+              "quote": "const losses = new Float64Array(firstCandidates.length * secondCandidates.length)"
+            },
+            {
+              "label": "discrete-training.ts: mean over examples",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "89",
+              "quote": "losses[program] = losses[program]! / examples.length"
+            },
+            {
+              "label": "README: hard-loss matrix",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "55",
+              "quote": "The hard-loss matrix stores the mean of"
+            }
+          ]
+        },
+        {
+          "id": "c2-grid",
+          "claim": "The table has 48 rows and 75 columns, and each cell averages over 14,739 training examples.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "discrete-training.test.ts: example count",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.test.ts",
+              "lines": "30",
+              "quote": "assert.equal(twoAdd.exampleCount, 14_739)"
+            },
+            {
+              "label": "README: 14,739 combinations",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "39",
+              "quote": "There are 14,739 combinations."
+            }
+          ]
+        },
+        {
+          "id": "c2-zero-cells",
+          "claim": "Exactly two coordinate programs and twelve two-add programs have zero error on every training example.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "discrete-training.test.ts: two-add zero cells",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.test.ts",
+              "lines": "32",
+              "quote": "assert.equal(twoAdd.exactProgramCount, 12)"
+            },
+            {
+              "label": "discrete-training.test.ts: coordinate zero cells",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.test.ts",
+              "lines": "36",
+              "quote": "assert.equal(coordinate.exactProgramCount, 2)"
+            }
+          ]
+        },
+        {
+          "id": "c2-probabilities",
+          "claim": "Training keeps one probability per instruction and minimizes the expected error p0^T L p1, summed over candidate pairs.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: p0^T L p1",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "55",
+              "quote": "Separate instruction probabilities optimize `p0^T L p1`"
+            },
+            {
+              "label": "discrete-training.ts: expected loss",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "171",
+              "quote": "loss += firstProbabilities[first]! * firstLoss"
+            }
+          ]
+        },
+        {
+          "id": "c2-schedule",
+          "claim": "Temperature starts at 2 and cools through five phases of 500 steps down to one eighth.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "training.ts: phase schedule",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/training.ts",
+              "lines": "45",
+              "quote": "{steps: 500, temperature: 2, learningRate: 0.02},"
+            },
+            {
+              "label": "README: schedule unchanged",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "59",
+              "quote": "500 Adam steps at temperatures `2, 1, 0.5, 0.25, 0.125`"
+            }
+          ]
+        },
+        {
+          "id": "c2-probe-old-epsilon",
+          "claim": "In a probe of coordinate seed 541 at the original epsilon 1e-8, the second instruction locks onto add(instruction0, instruction0) and the loss stops at 0.009765625.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "discrete-training.ts: per-phase log",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "333",
+              "quote": "expectedLoss: evaluation.loss * config.lossMultiplier,"
+            }
+          ]
+        },
+        {
+          "id": "c2-adam",
+          "claim": "Adam divides each step by the square root of the gradient recent size plus epsilon, and the lab reports that the old epsilon dominated small gradients, so steps shrank.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "discrete-training.ts: Adam update",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "314",
+              "quote": "/ (Math.sqrt(correctedSecond) + config.adamEpsilon)"
+            },
+            {
+              "label": "README: epsilon dominated",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "7",
+              "quote": "An Adam epsilon that dominated small gradients caused most of the reported hard-loss failure."
+            }
+          ]
+        },
+        {
+          "id": "c2-probe-new-epsilon",
+          "claim": "The same seed at epsilon 1e-14 leaves the wrong card, and the loss falls to 6.6e-16 at temperature 0.125.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "discrete-training.ts: corrected default",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "202",
+              "quote": "adamEpsilon: 1e-14,"
+            },
+            {
+              "label": "README: hard-loss defaults",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "57",
+              "quote": "Defaults for hard-loss training are `256`, `1`, and `1e-14`."
+            }
+          ]
+        },
+        {
+          "id": "c2-near-half",
+          "claim": "The second instruction ends near one half rather than one. This is an inference: the two equivalent multiply orderings share the probability mass.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "README: two coordinate programs",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "49",
+              "quote": "Enumeration finds two coordinate programs, differing only in the operand order of multiplication."
+            }
+          ]
+        },
+        {
+          "id": "c2-loss-scaling",
+          "claim": "Multiplying the loss by 1e6 has the same effect as dividing epsilon by 1e6, and all 120 paired runs then choose identical programs.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: scaling equivalence",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "61",
+              "quote": "Multiplying all gradients by a positive factor `c` is mathematically equivalent to dividing Adam epsilon by `c`"
+            },
+            {
+              "label": "README: 120 identical programs",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "61",
+              "quote": "All 120 paired runs choose identical hardened programs."
+            },
+            {
+              "label": "discrete-training.ts: loss multiplier",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "305",
+              "quote": "const gradient = gradients[parameter]! * config.lossMultiplier"
+            }
+          ]
+        },
+        {
+          "id": "c2-scoreboard",
+          "claim": "With the original epsilon, none of 120 hard-loss runs recovered a program; corrected, 60 of 60 coordinate and 59 of 60 two-add runs get every integer example right.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: coordinate original row",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "72",
+              "quote": "| Coordinate, original 541-560 | 0 (0) | 20 (20) | 20 (20) | 20 (20) | 20 (20) |"
+            },
+            {
+              "label": "README: two-add original row",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "69",
+              "quote": "| Two adds, original 501-520 | 0 (0) | 19 (5) | 19 (5) | 20 (6) | 20 (6) |"
+            },
+            {
+              "label": "status.md: corrected tally",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "196",
+              "quote": "Corrected hard-loss optimizer: coordinate 60/60; two adds 59/60 on integers, 15/60 with fractional FP32 checks"
+            }
+          ]
+        },
+        {
+          "id": "c2-seed-519",
+          "claim": "Seed 519 is still a two-add failure with the corrected settings, which were not retuned for it, and the numerical diagnosis is unfinished.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: seed 519",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "76",
+              "quote": "Seed 519 remains a two-add failure with the corrected settings."
+            },
+            {
+              "label": "README: not retuned",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "76",
+              "quote": "The settings were not retuned to eliminate that failure."
+            },
+            {
+              "label": "reassessment: diagnosis",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reassessment-2026-09-03.md",
+              "lines": "132",
+              "quote": "Finish the numerical diagnosis before replacing the learner"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "What Integers Cannot Say",
+      "claims": [
+        {
+          "id": "c3-twelve",
+          "claim": "Training counts a program as recovered when it gets every integer example right, and twelve two-add programs do.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "program.test.ts: integer-domain count",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.test.ts",
+              "lines": "116",
+              "quote": "assert.equal(integerResult.exactPrograms.length, 12)"
+            }
+          ]
+        },
+        {
+          "id": "c3-cases",
+          "claim": "The strict checker has 39,605 cases: 37,188 integer, 2,401 fractional and 16 input-rounding cases.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: certification total",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "41",
+              "quote": "Certification now contains 39,605 cases:"
+            },
+            {
+              "label": "README: integer cases",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "43",
+              "quote": "The original 37,188 integer cases"
+            },
+            {
+              "label": "README: fractional and rounding cases",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "45",
+              "quote": "16 incoming-number cases"
+            }
+          ]
+        },
+        {
+          "id": "c3-four",
+          "claim": "Only four of the twelve survive full certification; all add pointerX and panelLeft first, then the distractor, and each addition may swap its operands.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "program.test.ts: full certification count",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.test.ts",
+              "lines": "118",
+              "quote": "assert.equal(fullResult.exactPrograms.length, 4)"
+            },
+            {
+              "label": "program.test.ts: first addition pair",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.test.ts",
+              "lines": "121",
+              "quote": "assert.deepEqual([program[0]!.left, program[0]!.right].sort(), ['panelLeft', 'pointerX'])"
+            },
+            {
+              "label": "README: four survivors",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "49",
+              "quote": "The four preserve the original pairing of `pointerX` and `panelLeft`; each individual addition may exchange its two operands."
+            }
+          ]
+        },
+        {
+          "id": "c3-ladder-first",
+          "claim": "With pointerX = 1, panelLeft = 2^-24 and distractor = -1, (pointerX + panelLeft) + distractor is exactly zero after FP32 rounding.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "program.test.ts: oracle is zero",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.test.ts",
+              "lines": "131",
+              "quote": "assert.equal(twoAddOracle(inputs, 'distractor'), 0)"
+            },
+            {
+              "label": "README: grouping example",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "51",
+              "quote": "give zero for `(pointerX + panelLeft) + distractor` after FP32 rounding"
+            }
+          ]
+        },
+        {
+          "id": "c3-ladder-second",
+          "claim": "Grouped the other way, (panelLeft + distractor) + pointerX gives 2^-24, so the same three numbers give a different answer.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "program.test.ts: reassociated result",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/program.test.ts",
+              "lines": "132",
+              "quote": "assert.equal(reassociated, 2 ** -24)"
+            },
+            {
+              "label": "README: reassociated result",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "51",
+              "quote": "Computing `(panelLeft + distractor) + pointerX` gives `2^-24`."
+            }
+          ]
+        },
+        {
+          "id": "c3-integers-cannot-tell",
+          "claim": "In this lab integer domain, small whole numbers add exactly in either grouping, so integer examples alone cannot identify the grouping required.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README: integer domain",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "39",
+              "quote": "Training remains the original integer domain"
+            },
+            {
+              "label": "README: integers cannot identify",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "51",
+              "quote": "Integer examples alone cannot identify which grouping is required."
+            }
+          ]
+        },
+        {
+          "id": "c3-tally",
+          "claim": "Of sixty corrected two-add runs, fifteen pass the full checks, while all sixty coordinate runs do; the limit is the training data, not the optimizer.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "status.md: fifteen of sixty",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "196",
+              "quote": "Corrected hard-loss optimizer: coordinate 60/60; two adds 59/60 on integers, 15/60 with fractional FP32 checks"
+            },
+            {
+              "label": "README: fifteen preserve grouping",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "7",
+              "quote": "only 15 of those 60 two-add runs preserve the specified FP32 addition grouping."
+            },
+            {
+              "label": "README: two different results",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "9",
+              "quote": "Those are two different results: an optimizer improvement and a training-domain limitation."
+            }
+          ]
+        },
+        {
+          "id": "c3-enumeration",
+          "claim": "Direct enumeration reads all 3,600 table entries and keeps the first minimum, and on these tasks that program also passes full certification.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "discrete-training.ts: first minimum",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "508",
+              "quote": "if (loss < minimumLoss) {"
+            },
+            {
+              "label": "README: enumeration reads",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "80",
+              "quote": "Direct enumeration uses 3,600 table reads and chooses the first minimum."
+            },
+            {
+              "label": "README: enumeration passes full checks",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "80",
+              "quote": "On these tasks, that chosen program also passes full certification."
+            }
+          ]
+        },
+        {
+          "id": "c3-coordinate-descent",
+          "claim": "Starting from each failed run, one sweep of exact coordinate updates reaches zero integer error in 124 table reads; it repairs a run rather than searching from scratch.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: one sweep, 124 reads",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "78",
+              "quote": "Every original failure reaches zero integer-domain loss in one sweep: 124 table reads including the starting score."
+            },
+            {
+              "label": "README: additional reads",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "78",
+              "quote": "Those are additional reads after the old training run, not the total cost of finding a program from scratch."
+            }
+          ]
+        },
+        {
+          "id": "c3-table-cost",
+          "claim": "Every hard-loss trainer and the search baselines read the full loss table, which took 53,060,400 second-instruction evaluations to build.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README: shared table cost",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "80",
+              "quote": "Every trainer and search baseline reuses that cost."
+            },
+            {
+              "label": "README: second-instruction evaluations",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "80",
+              "quote": "53,060,400 second-instruction evaluations"
+            },
+            {
+              "label": "discrete-training.ts: hard trainer builds table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/discrete-training.ts",
+              "lines": "255",
+              "quote": "const matrix = buildProgramLossMatrix(task, config.lossScale)"
+            }
+          ]
+        },
+        {
+          "id": "c3-soft-trainer",
+          "claim": "The earlier soft-output trainer recovered 11 of 20 coordinate runs and 0 of 20 full two-add runs, and those results are historical.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: soft coordinate row",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "94",
+              "quote": "| Coordinate, original 101-120 | 11/20 | 11/20 |"
+            },
+            {
+              "label": "README: soft two-add row",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "96",
+              "quote": "| Two adds, full vocabulary, original 421-440 | 0/20 | 0/20 |"
+            },
+            {
+              "label": "README: historical",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "88",
+              "quote": "Those are historical results, not assertions that tests should preserve."
+            }
+          ]
+        },
+        {
+          "id": "c3-status",
+          "claim": "The corrected optimizer result holds on this two-instruction task, narrowed to integer data; whether fractional examples identify the grouping is open.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "status.md: holds and narrowed",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "196",
+              "quote": "Corrected hard-loss optimizer: coordinate 60/60; two adds 59/60 on integers, 15/60 with fractional FP32 checks"
+            },
+            {
+              "label": "status.md: open question",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "244",
+              "quote": "The next interpreter question is whether fractional training examples identify the required addition grouping."
+            }
+          ]
+        },
+        {
+          "id": "c3-scope",
+          "claim": "Untested: data-dependent choices, loops, varying lengths, longer programs and training without a full loss table; neither result establishes scalable program synthesis.",
+          "caption": 12,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README: untested scope",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "107",
+              "quote": "It does not test data-dependent choices, loops, varying collection lengths, or UI generation."
+            },
+            {
+              "label": "status.md: longer programs",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "244",
+              "quote": "Scaling to longer programs without a complete loss table"
+            },
+            {
+              "label": "README: not established",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-interpreter/README.md",
+              "lines": "9",
+              "quote": "Neither establishes scalable program synthesis."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-06T19:25:12.923Z",
+ "summary": {
+  "pass": 5,
+  "warn": 1,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "9 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "pass",
+   "detail": "130 wpm overall",
+   "wpm": 130.1,
+   "perShot": {
+    "ch01-s01": 181.4,
+    "ch01-s02": 121.5,
+    "ch01-s03": 130.9
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all clip edges quiet",
+   "loud": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -18 LUFS (target -18), TP -2 dBTP, limiter 0.74 dB, compressor 3.48 dB GR, line rides ≤ 2.0 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "pass",
+   "detail": "2 lines round-tripped on the current clips (scribe_v1): L0104 (Mark I, Rosenblatt); L0108 (1969, Papert)",
+   "targets": [
+    "L0104",
+    "L0108"
+   ]
+  },
+  {
+   "stage": "narration",
+   "id": "listening",
+   "status": "warn",
+   "detail": "Rosenblatt pending; Papert pending — a human listens and runs film:voice signoff --slug perceptron-short --term <term> --by <name>"
+  }
+ ]
+}

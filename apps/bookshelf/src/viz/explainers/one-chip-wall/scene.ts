@@ -52,7 +52,7 @@ export const CNT_Y0 = 150;
 
 export const TWR_X = 760;
 export const TWR_W = 190;
-export const TWR_Y0 = 560; // base of the tower
+export const TWR_Y0 = 500; // base of the tower (clear of the caption pill)
 export const GB_PX = 4.4; // pixels per GB
 export const twrH = (gb: number): number => gb * GB_PX;
 

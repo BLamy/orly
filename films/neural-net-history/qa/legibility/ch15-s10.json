@@ -1,0 +1,139 @@
+{
+ "shot": "ch15-s10",
+ "at": "2026-10-14T01:13:45.285Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 25,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "We can only see a short distance ahead, but we",
+   "capWhileSubject": 37.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "can see plenty there that needs to be done.",
+   "capWhileSubject": 37.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Alan Turing, 1950",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "CREDITS",
+   "capWhileSubject": 28.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Research, script & code",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Claude Opus 5.5 · Anthropic",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Voice",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "ElevenLabs · “Dave Edge”",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Pronunciation checks",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "ElevenLabs Scribe",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Music",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Strudel · strudel.cc",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Sound effects",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "synthesized in code",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Picture",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Canvas 2D in the browser",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Render & mix",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Chromium · FFmpeg",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "SOURCES",
+   "capWhileSubject": 30.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "orly.brett-lamy.workers.dev",
+   "capWhileSubject": 28.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "/generated/neural-net-history/sources",
+   "capWhileSubject": 28.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "claims.json · quotes.json",
+   "capWhileSubject": 28.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Claude is made by Anthropic, a lab in this story, held to the same",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "sources as every other.",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Every music cue’s Strudel source: on the film’s page",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 3
+}

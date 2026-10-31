@@ -1,0 +1,38 @@
+{
+ "shot": "ch08-s11",
+ "at": "2026-10-13T05:11:41.119Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 5,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "FLORENCE · FRIDAY 12 OCTOBER 2012 · 17:05",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ImageNet challenge workshop, ECCV",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "geoffrey hinton",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "yann lecun",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the full room, by Fei-Fei Li's account",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

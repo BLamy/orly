@@ -1,0 +1,94 @@
+{
+  "reviewer": "historian",
+  "lens": "accuracy & fairness",
+  "round": 2,
+  "scores": {"accuracy": 8, "depth": 8, "clarity": 7.5, "story": 8, "visual": 8, "sync": 7.5, "sound": 7.5, "curiosity": 8},
+  "summary": "Round 1 fixes were applied faithfully. L1407 (DeepSeek's chips), 'checks' (quotes.json, the ch06-s02 card and the VTT), the published sources page (manifest film.sourcesUrl plus a library link: 221 claims, 64 quotes, 313 sources), L1219b plus the Bard/LLaMA/GPT-4/Claude chips, L1504, L1530, L1408, L0416/L0832b, L0220, L1030, L0405 and the Marcus scaling-laws label are all confirmed in script.json and on the sheets. A machine check of every on-screen and spoken quotation against quotes.json found no mismatch, and the captions agree. Spot checks against claims.json hold, including the 1958 demo, Pitts/McCulloch/Rosenblatt dates, MYCIN, the Vapnik/Jackel bet, AlexNet 15.3/26.2/18.2 and the seven-net ensemble, the ILSVRC-2013 top five, Transformer base BLEU after 12 h, 1/7 FLOPs, InstructGPT 1.3B vs 175B, CAIS signatory order, BIS/Mao Ning, DeepSeek $5.576M, Nvidia -$589B, MacroPolo 47/18, the Sept 2026 dialogue, the Nobel at 2 a.m., Widrow at 95, and the METR figures. One new fairness problem came out of the round-1 fixes. In 'The labs, under the same light' (ch15-s05), Anthropic's $1.5B piracy settlement was cut from narration to a silent, unnamed card of about 4 seconds. Anthropic's Pentagon refusal is narrated in its own principled terms, and OpenAI's incident is narrated in full. In a film written by Anthropic's model, that tilts the one segment meant to show every lab under the same standard.",
+  "issues": [
+    {
+      "owner": "line",
+      "id": "L1522c",
+      "severity": "major",
+      "problem": "Lab balance in ch15-s05. After round 1 cut L1524, Anthropic's own wrongdoing (the record $1.5B Bartz settlement over pirated books, e14-copyright) is never spoken. It survives only as a ~4s card ('$1.5B SETTLEMENT · PIRATED BOOKS', 33:13-33:17) in a silence. The card does not name Anthropic, and L1525 about OpenAI starts while it is still up, so a viewer may tie it to OpenAI. Meanwhile the narration frames Anthropic's Pentagon dispute through Anthropic's own two limits, and OpenAI's sandbox breach gets a full line plus a quote card. The segment's promise, 'under the same light', is not kept.",
+      "fix": "Restore one spoken sentence after L1522c (a new line, L1522d): 'And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books.' [e14-copyright]. Re-narrate it, re-fit ch15-s05 so the settlement card plays under that line, and retime m-cue under ch15 if needed. It stays a single sentence, so the Act 3 docket does not grow by much."
+    },
+    {
+      "owner": "shot",
+      "id": "ch15-s05",
+      "severity": "major",
+      "problem": "The two lab lamps are identified only by the narration. No on-screen tag names ANTHROPIC or OPENAI, so the only Anthropic-negative item (the settlement card) floats anonymously next to the OpenAI lamp's turn, and the seals and courthouses carry no lab name.",
+      "fix": "Hang a small name tag on each lamp plinth ('ANTHROPIC', 'OPENAI') from its first mention to the end of the shot. Set the settlement card as 'ANTHROPIC · $1.5B SETTLEMENT · PIRATED BOOKS', hold it under the new L1522d (at least 3s with narration) and clear it before L1525 begins."
+    },
+    {
+      "owner": "line",
+      "id": "L1522b",
+      "severity": "minor",
+      "problem": "'The Pentagon said a supplier may not set such limits' gives the government's side as an unsourced paraphrase. e14-dow records the designation, the removal order and the OpenAI deal, but not this rationale. The quote bank's actual counter-position is the D.C. Circuit majority's: 'The Department reasonably feared that Anthropic might manipulate Claude's design' (q14-judge-katsas, alongside q14-judge-lin). Anthropic's side is in its own words, while the other side is in the film's.",
+      "fix": "Ground it, for example: 'The Pentagon named it a supply-chain risk and signed with OpenAI instead.' [e14-dow]. Then, in ch15-s05, put the two court quotes on screen as a pair under the courthouses: Lin's 'unlawful retaliation' and Katsas's 'reasonably feared … manipulate Claude's design' [e14-dow-courts]."
+    },
+    {
+      "owner": "line",
+      "id": "L1219b",
+      "severity": "minor",
+      "problem": "'Meta's LLaMA leaked within days' reduces Meta's contribution to a leak. It omits that Meta deliberately released LLaMA to researchers on 24 Feb (the leak followed on 3 Mar), and 'within days' has no clear referent after 'Google announced Bard' (6 Feb, about four weeks earlier). The round-1 wording had 'Meta shared LLaMA with researchers'.",
+      "fix": "'Google announced Bard; Meta shared LLaMA with researchers, and within a week its weights leaked; GPT-4 and Claude arrived the same March day.' [e12-bard, e12-llama-leak, e12-gpt4, e12-claude-launch]"
+    },
+    {
+      "owner": "shot",
+      "id": "ch13-s04",
+      "severity": "minor",
+      "problem": "The DAIR 31 March 2023 statement is attributed on screen to 'Gebru, Bender & McMillan-Major'. That statement was issued by the listed authors of Stochastic Parrots, which as far as I know includes Margaret Mitchell (then at Hugging Face). The bible's speaker field also has three names, so the error may be upstream.",
+      "fix": "Check the byline against the DAIR page (https://www.dair-institute.org/blog/letter-statement-March2023/). If Mitchell is listed, set the card to 'Gebru, Bender, McMillan-Major & Mitchell' and correct the speaker field in quotes.json."
+    },
+    {
+      "owner": "shot",
+      "id": "ch14-s05",
+      "severity": "minor",
+      "problem": "Narration says only 'But America employed the most.', but the plate shows only the first-degree split (CHINA 47% · US 18%). Nothing on screen supports where the researchers worked, so the US-favourable half of the statistic is asserted while the China-favourable half is shown. 'But' also opens the shot with no spoken antecedent.",
+      "fix": "Add a second line to the plate on 'work' (3.43): 'WHERE THEY WORK: US FIRST · ~60% OF TOP AI INSTITUTIONS (MacroPolo)' [e13-talent], and hold both lines together at least 2s. Optionally make the line 'Most studied first in China. But America employed the most.'"
+    },
+    {
+      "owner": "shot",
+      "id": "ch14-s04b",
+      "severity": "minor",
+      "problem": "The three opposing export-control tags (DECISIVE · Amodei/Khan; HELPS HUAWEI · Huang; SELF-DEFEATING · China MFA) are the act's even-handedness device, but they still render at roughly caption-size type and overlap the candles (sheet 30:31-30:40). Round 1 asked for twice the size, held 2s each. At this size the balance is effectively unreadable, while the Anthropic CEO's position comes first and highest.",
+      "fix": "Double the tag type, hang the three tags at equal height and size in a row, and light each for 2s in turn. Order them so the Anthropic-attributed tag is not first, e.g. Huang, China MFA, then Amodei/Khan, or alphabetical."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Present-day lab coverage is still lopsided. Act 3 names OpenAI's o1, the OpenAI incident, Anthropic's Claude 3.5 Haiku study, the Pentagon case and the closing Anthropic quote, but no 2024-26 Google or Meta work beyond Hassabis's forecast (Gemini, e14-google, never appears; Meta's last on-screen act is the 2023 leak and LeCun's departure is off-screen). Each item is accurate, but the present day reads as a two-lab story.",
+      "fix": "In ch15-s04 (the 'candle of now') add a small era strip of frontier releases that includes Gemini 3 (Nov 2025, e14-google) and an open-weight Llama/Qwen entry beside the OpenAI and Anthropic ones. Or add one label in ch15-s06 on LeCun: 'left Meta, Nov 2025, to build world models (AMI Labs)' [e14-lecun]."
+    },
+    {
+      "owner": "shot",
+      "id": "ch15-s10",
+      "severity": "minor",
+      "problem": "script.json specifies the sources card as 'SOURCES · orly.brett-lamy.workers.dev/generated/neural-net-history/sources', but the render still reads 'SOURCES · published with the film' (ch15-s10.tsx hard-codes it). The page now exists and the manifest links it, but the film itself never tells a viewer where it is.",
+      "fix": "Render the URL from manifest film.sourcesUrl (or the script's onScreenText) on the card, in legible type, and hold it at least 4s."
+    }
+  ],
+  "verifiedFixedFromRound1": [
+    "L1407 DeepSeek chips: fixed ('rented hours for the last run only…nor the hardware it owned'), with both attributed tags kept",
+    "global sources page: fixed (public/generated/neural-net-history/sources/index.html; manifest film.sourcesUrl; library entry 'sources'); the card text is still generic (see ch15-s10)",
+    "ch06-s02 'cheques': fixed in quotes.json, on the on-screen card, in L0603 and in film.vtt",
+    "L1219b lab balance: fixed in substance (Bard, LLaMA, GPT-4, Claude with chips on the sheet); wording nit remains",
+    "L1504: fixed ('Researchers at Anthropic, in one of many such studies')",
+    "L1530: fixed ('By one 2025 measure')",
+    "L1408/L1408b: fixed ('hid those notes by design'; 'method and weights')",
+    "L0416 / L0832b: fixed ('much of the next thirty-six years near the edge')",
+    "L0220: fixed ('for Pitts at least')",
+    "L1030: fixed ('Two decades of recurrent nets…within two years')",
+    "L0405: fixed ('while naming it a problem worth settling')",
+    "ch11-s08 Marcus card: fixed ('scaling laws: mere observations that might not hold forever')"
+  ],
+  "best_moments": [
+    "Quote integrity is now airtight. Every quotation on screen, in the narration and in the captions matches quotes.json verbatim, including fragment ellipses and US spellings.",
+    "ch12-s03: the ledger writes the FTX row with 'Anthropic not implicated in its fraud', then Bard, LLaMA, GPT-4 and Claude chips land as equals, so Anthropic is one runner among four.",
+    "ch14-s02: BIS's 'military applications' and Mao Ning's 'abuses export control measures' hang on opposite shores at equal size and in the same type. A model of even-handed geopolitics.",
+    "ch14-s07: three gap estimates from three camps (Hassabis, Huang, Qwen's Lin), then Liang's 'originality and imitation', ending 'nobody agrees'.",
+    "ch08-s13 / s13b: 'seven networks voting; one alone, nearer eighteen', the IDSIA road-sign record and the CHM quote. AlexNet gets its due without erasing prior claims.",
+    "ch11-s08: 'She says she was fired · Google says it accepted her resignation': both accounts, no verdict.",
+    "ch15-s10: the authorship disclosure ('made by Anthropic, a lab in this story') with a real, linked sources page behind it."
+  ]
+}

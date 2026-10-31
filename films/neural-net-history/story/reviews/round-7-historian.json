@@ -1,0 +1,86 @@
+{
+  "reviewer": "historian",
+  "round": 7,
+  "lens": "accuracy and fairness: every narration line, spoken override and on-screen text item checked against research/claims.json and quotes.json, with the bible's era analyses, primers and contested-matters section as backup",
+  "wordCount": 3391,
+  "spokenWordCount": 3476,
+  "method": "I dumped all 15 chapters: every line, every spoken override, every onScreenText item, and each shot's cited claims. All 214 cited claim IDs resolve. I read every line and label against the text of the claims its shot cites. I machine-matched all 78 quoted fragments, spoken and on screen, against quotes.json after normalising punctuation. All 78 match word for word; the only non-match is the mentioned word 'rabbit', which is a word being named, not a quotation. I read the speaker, date and context fields of the 37 quote entries used. I re-did the arithmetic: 3.88; softmax(1,0,2,1) ≈ 0.53 to 'river'; 150,528; 83, 36, 29, 17, 16, 39 and 20 years; 'months before Seoul'; 'last year' for Widrow as of October 2026. I grepped the bible for facts the claims do not carry: 'small and shy'; Hinton tall and seated; Lee Sedol 9-dan; SIFT 1999; edges → textures → parts → objects; Uszkoreit 'proposed replacing RNNs'; the government's supply-chain position; 'held briefly by markets'; the annealing/learning distinction in the Boltzmann primer. I read the visuals of ch03-s08, ch05-s03, ch05-s04, ch05-s05, ch10-s03, ch10-s04, ch10-s10, ch10-s12, ch12-s08, ch15-s05 and ch15-s06. Round-6 status: both factual criticals are fixed. L0834 and its label now read 'seven networks voting; one alone, nearer eighteen', and the Hinton tweet card carries '(tweet, as widely reproduced)' again. Eleven of the twelve round-6 issues are fixed as specified: Papert's full Snow White sentence; the Huang 'IN CHIPS' and Lin 'OVERTAKE IN 3–5 YRS?' tags; Khan beside Amodei, with China's foreign ministry and the inferred self-reliance tag; the Rosenblatt Love card's source; 'Lenat, Prakash & Shepherd' on both cards; NVIDIA 'RECORD 1-DAY LOSS FOR A US FIRM'; 'mostly colour-blind'; 'Fei-Fei Li recalls'; 'misread the gender of'; NEURIPS 2022; 'fielded 1996'. L1217 is softened to 'language was the door'. Runtime is the one item still open: down 68 written words, but still outside the brief.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 7.5
+  },
+  "critical": [
+    "BRIEF / RUNTIME, still over. Narration is 3,391 written words and 3,476 spoken (years read out), against the target of about 3,040. At the house pace (3,040 words ≈ 32 min, about 95 words a minute including breath) that is about 36½ minutes, still outside the brief's 30–35 minute range. Round 7 cut 68 words; at least 155 more spoken words are needed just to reach 35 minutes, and about 435 to hit the target. Largest chapters: ch08 493, ch15 375, ch10 361, ch05 292. FIX, cutting only lines with no unique claim: L1101 'The old warm-up, recut: read everything first.' (8; the OST label says it). L1105 (12; keep L1107). L1301 (9). L0510, cut to 'Each tug, a step downhill in fog.' (−7; this also resolves the local-minima issue below). L1007 (10; Kelcey's card and the father's silhouette carry the doubt). L0706 'Another clue for the board.' (5). L0819 → 'Then five or six days downhill in fog, the steps cut three times by hand.' (−8). L1220–L1221 'Case solved? Not quite.' (4; the Wall truck stages it). L1416 'And the people?' (3). L0905b → 'AlphaGo learned from human games, then from itself.' (−4). L0702 drop 'A warm-up.' (2; the OST carries PRE-TRAINING). Then trim about 100 more from ch15 and ch08 descriptive clauses. Re-run the word count and the quote check afterwards.",
+    "ch15-s01 L1502, a factual error in the narration, plus a credit problem: '...and the tall man's Boltzmann machine, a net that learns as it cools.' The cooling (simulated annealing) is how the net SETTLES into a state. It is not how it learns. The bible primer says annealing 'escapes local minima', and that learning is the separate clamped-versus-free statistics rule (e4-boltzmann). The film's own ch05-s03 visual says this outright: 'the cooling is how it settles into a state, not how it learns'. 'The tall man's' also gives sole credit for a three-author paper (Ackley, Hinton & Sejnowski, 1985, per e4-boltzmann), and ch05-s03's label has dropped the co-authors too. FIX: L1502 → '...for memories that roll downhill, and the Boltzmann machine he co-invented, a net that settles as it cools.' (+1 word). Also see the ch05-s03 issue."
+  ],
+  "issues": [
+    {
+      "where": "ch05-s03 OST 'Boltzmann machine · 1985'",
+      "problem": "The authors were moved to the credits, so on screen the Boltzmann machine reads as Hinton's alone: the label sits beside his seated figure and his name card. e4-boltzmann credits Ackley, Hinton and Sejnowski. The film credits co-authors everywhere else (Rumelhart · with Hinton & Williams; Hochreiter & Schmidhuber; Lenat, Prakash & Shepherd), so this omission stands out, and it is repeated in the Nobel narration.",
+      "fix": "'Boltzmann machine · with Sejnowski & Ackley · 1985' (48 characters). Or 'Boltzmann machine · Ackley, Hinton & Sejnowski · 1985'."
+    },
+    {
+      "where": "ch05-s05 L0510 ('Timid steps get trapped.') and OST 'timid stride: trapped'",
+      "problem": "This is a mild misdirection at exactly the 1986 moment. Seen right after the 1986 paper, the staging teaches that back-propagation got stuck in false valleys. But the 1986 paper itself reported the network 'very rarely gets stuck in poor local minima' (e4-rhw-brain; the bible, era 4: 'That backprop would mostly get stuck (the 1986 paper found it \"very rarely\" did)' was a belief that did not last). Fear of local minima belongs to the 1990s case against nets (era 6), where it was a critics' complaint, not a finding. The shot cites only e4-rhw.",
+      "fix": "Cutting 'Timid steps get trapped' also helps runtime. Keep the picture but relabel it 'a timid stride can stall in a false valley · rare in the 1986 tests', and add e4-rhw-brain to claims. Or move the trapped-traveller beat to ch06-s04 as the critics' complaint ('fiddly'), labelled as their belief."
+    },
+    {
+      "where": "ch10-s03 / ch10-s04 (Transformer authorship)",
+      "problem": "This is a fairness issue in credit. The only Transformer people named on screen are Uszkoreit and Polosukhin (name cards at lunch), plus Kelcey as the doubter. The paper's eight authors, including first-listed Ashish Vaswani and Noam Shazeer, appear only in the end-credits sources ('Vaswani et al., 2017'). The film names all three authors of the 1986 and 2012 papers, so the deep-dive paper is the only one whose authors go unseen, and a viewer leaves thinking the Transformer was a two-person lunch idea. The bible's quote entry q10-aiayn-abstract lists all eight, and the paper states that the listing order is random.",
+      "fix": "On the ch10-s04 banner, under ATTENTION IS ALL YOU NEED, add one prop line in the banner's hand: 'Vaswani · Shazeer · Parmar · Uszkoreit · Jones · Gomez · Kaiser · Polosukhin · 2017'. No narration is needed. If the TEXT RULE is binding, swap it for the separate 'THE TRANSFORMER · 2017' label."
+    },
+    {
+      "where": "ch15-s05 OST 'Two courts, two rulings (Aug, Sep 2026)'",
+      "problem": "The narration gives the government's position in full ('The Pentagon said a supplier may not set such limits, and named it a supply-chain risk'). Anthropic's side, that the label was retaliation, which the N.D. Cal. court accepted, is not given anywhere in words. The bible's rule 2 ('Contested means two voices') and the contested entry for e14-dow-courts give both. 'Two courts, two rulings' does not say which court found what, so only the government's argument comes through.",
+      "fix": "Keep it to one label of 70 characters or fewer, matching the gavels: 'AUG: UNLAWFUL RETALIATION (N.D. CAL.) · SEP: UPHELD 2–1 (D.C. CIR.)' (66 characters). Optionally add 'ongoing' if it fits."
+    },
+    {
+      "where": "ch15-s07 OST '…I never got over it. — Bernard Widrow, on Dartmouth, 1956' (and ch02-s07 '— Bernard Widrow', undated)",
+      "problem": "This is a misleading date. q-widrow-dartmouth is dated 'January 2005 (recalling 1956)'. '—, on Dartmouth, 1956' reads as if he wrote it in 1956. The ch02-s07 card has no date at all, which breaks the film's own rule that every quote card carries a source year.",
+      "fix": "ch15-s07: '— Bernard Widrow, 2005, recalling Dartmouth, 1956'. ch02-s07: '— Bernard Widrow, recalling Dartmouth (2005)'."
+    },
+    {
+      "where": "ch14-s04b L1410 ('For one day, markets bet chips no longer mattered')",
+      "problem": "This is a slight overstatement. The bible (era 13, belief C) words the market's belief as 'maybe compute doesn't matter', 'held briefly by markets'. A 17% fall in one stock is a bet that chips might matter less, not that they 'no longer mattered'. Nothing in the claims says the belief lasted exactly one day.",
+      "fix": "'For a day, markets bet chips might matter less: a struck match.' (same length)."
+    },
+    {
+      "where": "ch11-s05 L1110 ('the note from Florence came back as a smooth, predictable law')",
+      "problem": "The venues are conflated. The 'simply by waiting for faster GPUs' sentence comes from the AlexNet paper (NIPS 2012, Lake Tahoe), not from the Florence talk at the ECCV workshop. The film pins it in ch08-s14 right after Florence and attributes it to 'the paper', which is correct, but the callback renames it.",
+      "fix": "'In 2020, the note from 2012 came back as a smooth, predictable law...' (same length). Or 'the waiting note came back...'."
+    },
+    {
+      "where": "ch12-s07 / ch03-s08 / ch12-s08 (Wall of Forecasts slot W3)",
+      "problem": "This is a carry-over, and minor. L1217 is fixed ('language was the door'), but the staging still pins Rosenblatt's 1961 sentence to the Wall of FORECASTS, between the chess forecast and the Florence 'waiting' note. In Neurodynamics the sentence says what an intelligent system needs. It is not a prediction (e2-neurodynamics: 'first and foremost a brain model'), so the slot casts it as a prophecy all the same.",
+      "fix": "Give the W3 slip a small typed tag 'a hunch, not a forecast · 1961'. Or pin it to the case board rather than the Wall. No narration change is needed."
+    },
+    {
+      "where": "ch15-s02 OST 'DeepSeek-R1 · Jan 2025 · reasoning ≈ $294K, base ≈ $6M'",
+      "problem": "Two dates are merged. R1 was released in January 2025, but the $294K reasoning-training figure was disclosed in Nature on 17 September 2025 (e14-r1). As written, the January label implies the figure was public at launch, when the cost was already a live public argument (the ch14 DeepSeek beat).",
+      "fix": "'DeepSeek-R1 · Jan 2025 · reasoning ≈ $294K, base ≈ $6M (Nature, Sep 2025)'."
+    },
+    {
+      "where": "ch07-s03 OST '≈ 50,000 workers · 167 countries · 1,000 categories'",
+      "problem": "A minor mix-up. The 50,000 workers built ImageNet itself, which had over 15,000 categories (e7-imagenet-19years). The 1,000 categories belong to the contest subset (e7-ilsvrc2010). Placed together, they suggest ImageNet had 1,000 categories.",
+      "fix": "'≈ 50,000 workers · 167 countries · contest: 1,000 categories'."
+    },
+    {
+      "where": "ch08-s13b OST CHM quote",
+      "problem": "This is minor. It is the only quote card in the film without a year. q-chm-beforeafter is dated 20 March 2025, a retrospective judgement, which is worth knowing because the card states a historical consensus.",
+      "fix": "'— Computer History Museum, 2025'."
+    }
+  ],
+  "strengths": [
+    "Quote discipline is airtight. All 78 quoted fragments, spoken and on screen, match quotes.json word for word, including split and stitched quotes (OpenAI 2015 'could benefit society' / 'damage society…', Stochastic Parrots 'haphazardly stitching together' / 'without any reference to meaning', Lenat 'practically nothing' / 'the raw text'). The provenance markers are all present: 'tweet, as widely reproduced'; AP, ChinaTalk and DigiChina translations; 'as quoted by Gary Marcus'; 'as reported by Cade Metz'; 'Fei-Fei Li recalls'; 'writing in 2020'; 'replying to the March pause letter'; 'Lenat, Prakash & Shepherd'; 'The New Yorker, 1958'. Paraphrases (Fodor and Pylyshyn, Hassabis's odds, Huang, Lin) carry no quotation marks.",
+    "Every round-6 accuracy fix landed in the film's voice. The ensemble line now reads 'seven networks voting; one alone, nearer eighteen', and its label marks the two networks pre-trained on extra data. The gap tags carry their real scope ('IN CHIPS', 'OVERTAKE IN 3–5 YRS?'). The export-controls debate now has four voices with parallel affiliations, Beijing's own position included and the inferred one marked as inferred. Papert's whole Snow White sentence is shown. Gender Shades is scoped to gender classification. The NeurIPS figure is dated 2022. The Nvidia loss is scoped to one firm.",
+    "Contested matters carry the hedge their claims require, every time: bedroom or lab (CHM vs NVIDIA); Mark I 1958–60; eight names for back-propagation with 'credit still disputed' and Hinton's own disclaimer; 'Historians still argue; there were several blows', with four equal cards; systematicity 'still argued · a 2023 reply claims to meet it'; the warm-up candle 'nobody knows exactly when'; Gebru's departure, with both accounts at equal size; the auction 'by one reporter's account'; the seven-network ensemble and the IDSIA wins credited; speech going first in July 2012; DeepSeek's cost with the report's own caveat and an outside estimate; the Nobel with 'a bit of a stretch'; the METR trial its own authors now call out of date.",
+    "Even-handedness across labs and nations holds up under a line-by-line read. OpenAI's and Anthropic's foundings share one pin-and-ledger grammar. FTX carries 'not implicated'. Anthropic's $1.5 billion settlement and the Pentagon designation sit beside OpenAI's sandbox escape under an explicit equal-lamp rule, with OpenAI's own 'warning shot'. Anthropic's interpretability claim is hedged twice ('a simplified copy'; 'about a quarter of the prompts'). Washington's stated reason and Beijing's reply are both quoted verbatim. China's plan 'named no rival'. The talent figure is paired with 'America employed the most'. Bletchley and the September 2026 dialogue sit beside 'Chip rules unchanged'. The closing card discloses that the film was written with an Anthropic model.",
+    "The deep-dive mechanics check out exactly. 224×224×3 = 150,528. The worked stencil sums to 3.88. 96 first-layer stencils; 55·27·13·13·13 → 4096·4096·1000; about 60 million weights against about 12 million bits of labels (the paper's own 10-bit argument). ×2048 augmentation. Dropout on fc6/fc7 only. ReLU's 6× scoped to the CIFAR-10 test net. The step size cut ÷10 three times. Scores 2,0,4,2 ÷ √4 → softmax ≈ 0.53 to 'river'. √64 = 8; 8 heads × 64; ×6 blocks. Sinusoidal positions. n² cost. The GNMT+RL one-seventh is marked as derived. The 1986 XOR run is honestly lettered as a demonstration, because the paper's own demos were family trees and symmetry.",
+    "The candle clock matches the bible's era durations: logic machine 1943–59 (16); learning machine about 7; sterile extension 1969–86 (17); knowledge about 1980–87 (about 7); hand-cut stencils 1999–2012 (13, the bible's 'SIFT (1999) to 2012'); fiddly nets ending with AlexNet; read-in-order 1997–2017 (20); one-to-three-years-behind about 2; the market match one day; Cyc 1984–2023 (39), correctly the longest. Deaths are dated and handled with restraint."
+  ]
+}

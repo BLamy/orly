@@ -32,7 +32,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 const RING = { cx: 410, cy: 332, r: 172 };
 const TAPE = { x: 700, y: 150, w: 430, h: 28 };
-const LEDGER = { x: 720, y: 292, w: 390 };
+const LEDGER = { x: 704, y: 292, w: 420 };
 
 const STOPS = [
   { label: 'builder', color: colors.ACCENT },
@@ -214,10 +214,10 @@ function ClaimCard({ u, dim }: { u: number; dim: number }) {
   return (
     <g transform={`translate(242 ${300 + (1 - uu) * 12})`} opacity={uu * (1 - 0.82 * dim)}>
       <rect width={336} height={70} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-      <text x={16} y={25} fill={colors.ACCENT} fontSize={12} fontFamily={MONO} fontWeight={700}>
+      <text x={16} y={25} fill={colors.ACCENT} fontSize={13} fontFamily={MONO} fontWeight={700}>
         builder claim · exact HEAD
       </text>
-      <text x={16} y={48} fill={colors.TEXT} fontSize={12}>
+      <text x={16} y={50} fill={colors.TEXT} fontSize={13}>
         “this change works under the task contract”
       </text>
     </g>
@@ -232,8 +232,8 @@ function Ledger({ u, pulse, dim }: { u: number; pulse: number; dim: number }) {
       <text x={LEDGER.x} y={LEDGER.y - 30} fill={colors.TEXT} fontSize={14} fontWeight={700}>
         Durable Streams task history
       </text>
-      <text x={LEDGER.x} y={LEDGER.y - 10} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
-        append only · offset addressed · replay to digest
+      <text x={LEDGER.x} y={LEDGER.y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        append only · offsets · replay to digest
       </text>
       <line
         x1={LEDGER.x + 14}
@@ -260,10 +260,10 @@ function Ledger({ u, pulse, dim }: { u: number; pulse: number; dim: number }) {
               stroke={event.color}
               strokeWidth={i === visible - 1 ? 1.5 + 1.3 * pulse : 1}
             />
-            <text x={LEDGER.x + 48} y={y + 21} fill={event.color} fontSize={10.5} fontFamily={MONO}>
+            <text x={LEDGER.x + 48} y={y + 21} fill={event.color} fontSize={12} fontFamily={MONO}>
               {event.label}
             </text>
-            <text x={LEDGER.x - 6} y={y + 20} textAnchor="end" fill={colors.MUTED} fontSize={9} fontFamily={MONO}>
+            <text x={LEDGER.x - 6} y={y + 20} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               {String(i).padStart(4, '0')}
             </text>
           </g>
@@ -278,12 +278,12 @@ function SensitivityCard({ u, refuted, dim }: { u: number; refuted: number; dim:
   if (uu <= 0) return null;
   const bad = clamp01(refuted);
   return (
-    <g transform={`translate(215 ${510 + (1 - uu) * 10})`} opacity={uu * (1 - 0.82 * dim)}>
-      <rect width={390} height={74} rx={12} fill={colors.PANEL} stroke={bad > 0 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.6} />
-      <text x={16} y={25} fill={colors.WARM} fontSize={11.5} fontFamily={MONO} fontWeight={700}>
+    <g transform={`translate(215 ${548 + (1 - uu) * 10})`} opacity={uu * (1 - 0.82 * dim)}>
+      <rect width={390} height={64} rx={12} fill={colors.PANEL} stroke={bad > 0 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.6} />
+      <text x={16} y={23} fill={colors.WARM} fontSize={12.5} fontFamily={MONO} fontWeight={700}>
         sensitivity probe · disposable worktree
       </text>
-      <text x={16} y={50} fill={bad > 0 ? colors.NEGATIVE : colors.TEXT} fontSize={12} fontFamily={MONO}>
+      <text x={16} y={47} fill={bad > 0 ? colors.NEGATIVE : colors.TEXT} fontSize={13} fontFamily={MONO}>
         {bad > 0 ? 'tests stayed green → VERDICT: refuted' : 'invert one guard → tests must go red'}
       </text>
     </g>
@@ -302,7 +302,7 @@ function ClosingCard({ u }: { u: number }) {
       <text x={640} y={343} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
         the loop closes with a history
       </text>
-      <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+      <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
         recording point · stream offset · digest · sensitivity proof
       </text>
     </g>
@@ -313,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
   const closeDim = clamp01(s.get(scene.closeDim));
   const oldDim = clamp01(s.get(scene.oldDim));
   const links: RecordingLink[] = [
-    { at: 0.82, label: 'critic prediction checked here', pop: s.get(scene.pointU) },
+    { at: 0.82, label: 'predicted: console error at 0:42', pop: s.get(scene.pointU) },
   ];
 
   return (
@@ -341,7 +341,7 @@ export function Render({ s }: { s: SceneState }) {
             reveal={s.get(scene.tapeU)}
             u={s.get(scene.sweepU)}
             links={links}
-            title="Replay QA recording — the browser witness"
+            title="Replay QA · browser witness"
             dim={oldDim}
           />
           <Ledger u={s.get(scene.ledgerU)} pulse={s.get(scene.ledgerPulse)} dim={0} />

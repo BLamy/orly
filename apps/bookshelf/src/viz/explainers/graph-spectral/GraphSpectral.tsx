@@ -77,7 +77,7 @@ function renderFrame(s: SceneState) {
       {/* zero line during the mode beat */}
       {modeU > 0.02 && barU < 0.98 && (
         <line
-          x1={200}
+          x1={MAT.x + MAT_W + 24}
           y1={345}
           x2={1080}
           y2={345}
@@ -108,7 +108,7 @@ function renderFrame(s: SceneState) {
             </text>
             {/* Fiedler value chip during the sign beat */}
             <g opacity={Math.max(signU * modeU * (1 - barU), barU)}>
-              <text x={p.x} y={p.y - 22} textAnchor="middle" fill={nodeColor(i)} fontSize={12}>
+              <text x={p.x} y={p.y - 22} textAnchor="middle" fill={nodeColor(i)} fontSize={13}>
                 {FIEDLER[i].toFixed(2)}
               </text>
             </g>
@@ -117,7 +117,7 @@ function renderFrame(s: SceneState) {
       })}
 
       {/* ── the Laplacian matrix ── */}
-      <text x={MAT.x + MAT_W / 2} y={MAT.y - 30} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={clamp01(matU * 8)}>
+      <text x={MAT.x} y={MAT.y - 30} textAnchor="start" fill={colors.TEXT} fontSize={14} opacity={0.85 * clamp01(matU * 8) * (1 - 0.5 * barU) * (1 - closeU)}>
         Laplacian · degree on the diagonal, −1 per edge
       </text>
       <MatrixGrid
@@ -128,7 +128,17 @@ function renderFrame(s: SceneState) {
         gap={MG}
         cellU={(i, j) => clamp01(matU * 100 - (i * 10 + j))}
         emphasize={2}
-        opacity={1 - 0.7 * barU}
+        opacity={(1 - 0.45 * modeU) * (1 - 0.7 * barU) * (1 - 0.85 * closeU)}
+      />
+
+      {/* the eigen-equation sits under the matrix once the spectrum appears */}
+      <MathLabel
+        tex="L v = \lambda_2 v"
+        x={MAT.x + MAT_W / 2}
+        y={MAT.y + MAT_W + 48}
+        fontSize={20}
+        color={colors.TEXT}
+        opacity={barU * (1 - closeU)}
       />
 
       {/* λ₂ chip */}
@@ -151,7 +161,7 @@ function renderFrame(s: SceneState) {
       <MathLabel
         tex="A \;\to\; \text{messages} \;\to\; \text{tasks} \;\to\; \text{spectrum}"
         x={640}
-        y={70}
+        y={100}
         fontSize={21}
         color={colors.TEXT}
         opacity={closeU}

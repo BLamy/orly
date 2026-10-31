@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -35,6 +35,15 @@ function trendPath(y0: number, y1: number): string {
   }
   return d;
 }
+// label anchor per reported point: GPT-3 left, Chinchilla below-right,
+// Llama 2 above-right, Llama 3 left (its dashed extrapolation runs up-right)
+const POINT_LABEL: Record<number, { x: number; y: number; textAnchor?: 'end' }> = {
+  2020: { x: chX(2020) - 12, y: chY(0.3) + 4, textAnchor: 'end' },
+  2022: { x: chX(2022) + 12, y: chY(1.4) + 24 },
+  2023: { x: chX(2023) + 12, y: chY(2) - 8 },
+  2024: { x: chX(2024) - 12, y: chY(15) + 5, textAnchor: 'end' },
+};
+
 const SOLID_TREND = trendPath(2020, 2024);
 const DASHED_TREND = trendPath(2024, 2031);
 
@@ -60,19 +69,19 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={axU}>
               <line x1={chX(2019)} y1={CH_Y0} x2={chX(YEAR1)} y2={CH_Y0} stroke={colors.GRID} />
               {[2020, 2022, 2024, 2026, 2028, 2030, 2032].map((y) => (
-                <text key={y} x={chX(y)} y={CH_Y0 + 22} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                <text key={y} x={chX(y)} y={CH_Y0 + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   {y}
                 </text>
               ))}
               {[0.1, 1, 10, 100, 1000].map((t) => (
                 <g key={t}>
                   <line x1={chX(2019)} y1={chY(t)} x2={chX(YEAR1)} y2={chY(t)} stroke={colors.GRID} opacity={0.35} />
-                  <text x={chX(2019) - 10} y={chY(t) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11}>
+                  <text x={chX(2019) - 10} y={chY(t) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                     {t >= 1 ? `${t}T` : '0.1T'}
                   </text>
                 </g>
               ))}
-              <text x={chX(2019)} y={chY(1000) - 16} fill={colors.MUTED} fontSize={12.5}>
+              <text x={chX(2019)} y={chY(1000) - 16} fill={colors.MUTED} fontSize={13}>
                 training tokens (log scale) · all points labeled reported
               </text>
             </g>
@@ -85,14 +94,15 @@ function Frame({ s }: { s: SceneState }) {
             return (
               <g key={r.label} opacity={u}>
                 <circle cx={chX(r.year)} cy={chY(r.tokens)} r={7} fill={colors.ACCENT} />
-                <text x={chX(r.year) + 12} y={chY(r.tokens) - 8} fill={colors.ACCENT} fontSize={12.5}>
+                {/* labels sit clear of the trend line and of each other */}
+                <text {...POINT_LABEL[r.year]} fill={colors.ACCENT} fontSize={14}>
                   {r.label}
                 </text>
               </g>
             );
           })}
           {ptsU > 3.5 && (
-            <text x={chX(2020)} y={chY(0.3) + 28} fill={colors.WARM} fontSize={11.5} fontStyle="italic" opacity={clamp01(ptsU - 3.5)}>
+            <text x={chX(2020)} y={chY(0.3) + 28} fill={colors.WARM} fontSize={12} fontStyle="italic" opacity={clamp01(ptsU - 3.5)}>
               reported training-set sizes
             </text>
           )}
@@ -101,10 +111,10 @@ function Frame({ s }: { s: SceneState }) {
           {wallU > 0 && (
             <g opacity={wallU}>
               <line x1={chX(2019)} y1={chY(STOCK_T)} x2={chX(YEAR1)} y2={chY(STOCK_T)} stroke={colors.NEGATIVE} strokeWidth={2.5} />
-              <text x={chX(2019.3)} y={chY(STOCK_T) - 10} fill={colors.NEGATIVE} fontSize={13} fontWeight={640}>
+              <text x={chX(2019.3)} y={chY(STOCK_T) - 10} fill={colors.NEGATIVE} fontSize={14} fontWeight={640}>
                 ~300T: effective stock of public human text
               </text>
-              <text x={chX(2019.3)} y={chY(STOCK_T) + 18} fill={colors.WARM} fontSize={11.5} fontStyle="italic">
+              <text x={chX(2019.3)} y={chY(STOCK_T) + 18} fill={colors.WARM} fontSize={12} fontStyle="italic">
                 reported — Villalobos et al., Epoch AI
               </text>
             </g>
@@ -115,7 +125,7 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <path d={SOLID_TREND} fill="none" stroke={colors.TEXT} strokeWidth={2.2} opacity={trendU * 0.9} />
               <path d={DASHED_TREND} fill="none" stroke={colors.TEXT} strokeWidth={2.2} strokeDasharray="7 6" opacity={trendU * 0.7} />
-              <text x={chX(2028.6)} y={chY(fitTokens(2028)) + 26} fill={colors.MUTED} fontSize={11.5} opacity={trendU}>
+              <text x={chX(2028.6)} y={chY(fitTokens(2028)) + 26} fill={colors.MUTED} fontSize={13} opacity={trendU}>
                 extrapolated fit (ours)
               </text>
               <circle cx={chX(CROSS_YEAR)} cy={chY(STOCK_T)} r={8} fill="none" stroke={colors.WARM} strokeWidth={2.5} opacity={trendU} />
@@ -124,7 +134,8 @@ function Frame({ s }: { s: SceneState }) {
           {bandU > 0 && (
             <g opacity={bandU}>
               <rect x={chX(PROJ_LO)} y={chY(STOCK_T) - 60} width={chX(PROJ_HI) - chX(PROJ_LO)} height={120} fill={colors.WARM} opacity={0.1} />
-              <text x={chX((PROJ_LO + PROJ_HI) / 2)} y={chY(STOCK_T) - 70} textAnchor="middle" fill={colors.WARM} fontSize={12}>
+              {/* below the band, clear of the dashed fit that crosses its top-left */}
+              <text x={chX((PROJ_LO + PROJ_HI) / 2)} y={chY(STOCK_T) + 78} textAnchor="middle" fill={colors.WARM} fontSize={13}>
                 reported projection: full use 2026–2032
               </text>
             </g>
@@ -134,13 +145,13 @@ function Frame({ s }: { s: SceneState }) {
           {synthU > 0 && (
             <g opacity={synthU}>
               <rect x={chX(2025)} y={chY(1) - 30} width={chX(YEAR1) - chX(2025) - 10} height={96} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-              <text x={(chX(2025) + chX(YEAR1) - 10) / 2} y={chY(1)} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={640}>
+              <text x={(chX(2025) + chX(YEAR1) - 10) / 2} y={chY(1)} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={640}>
                 past the wall: generate → verify → keep
               </text>
-              <text x={(chX(2025) + chX(YEAR1) - 10) / 2} y={chY(1) + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={(chX(2025) + chX(YEAR1) - 10) / 2} y={chY(1) + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 each kept sample carries information
               </text>
-              <text x={(chX(2025) + chX(YEAR1) - 10) / 2} y={chY(1) + 44} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={(chX(2025) + chX(YEAR1) - 10) / 2} y={chY(1) + 44} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 the check extracted from reality
               </text>
             </g>
@@ -151,22 +162,17 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={210} y={200} width={860} height={248} rx={16} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={210} y={200} width={860} height={248} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={266} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The Data Wall
           </text>
           <text x={640} y={318} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             the loop · the collapse · the filter · the bootstrap · the wall
           </text>
-          <MathLabel
-            tex={'\\text{data was never the resource — checked data is}'}
-            x={640}
-            y={374}
-            fontSize={20}
-            color={colors.POSITIVE}
-            opacity={endU}
-          />
-          <text x={640} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+          <text x={640} y={374} textAnchor="middle" fill={colors.POSITIVE} fontSize={22} fontWeight={600}>
+            data was never the resource — checked data is
+          </text>
+          <text x={640} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             the bottleneck becomes how much verification you can afford
           </text>
         </g>

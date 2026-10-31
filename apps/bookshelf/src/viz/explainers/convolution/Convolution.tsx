@@ -77,7 +77,7 @@ function renderFrame(s: SceneState) {
         cellU={(i, j) => clamp01(imgP * 64 - (i * 8 + j))}
         emphasize={2}
         showValues={fmt2}
-        labelSize={12}
+        labelSize={14}
       />
 
       {/* ── the kernel: a small floating window of weights, top-center ── */}
@@ -114,24 +114,13 @@ function renderFrame(s: SceneState) {
                 y={IMG.y + (oi + u) * PITCH + CELL - 5}
                 textAnchor="middle"
                 fill={colors.WARM}
-                fontSize={10}
+                fontSize={12}
                 fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
               >
                 ×0.11
               </text>
             )),
           )}
-          {/* window → the output pixel it is writing */}
-          <line
-            x1={wx + WIN_W + 10}
-            y1={wy + WIN_W / 2}
-            x2={OUT.x + oj * PITCH - 6}
-            y2={OUT.y + oi * PITCH + CELL / 2}
-            stroke={colors.MUTED}
-            strokeWidth={1.5}
-            strokeDasharray="3 7"
-            opacity={0.8}
-          />
         </g>
       )}
 
@@ -151,7 +140,7 @@ function renderFrame(s: SceneState) {
         cellU={outCellU}
         emphasize={outEmphasize}
         showValues={fmt2}
-        labelSize={12}
+        labelSize={14}
         highlight={{ cell: [oi, oj] as [number, number], color: colors.WARM, u: ovU }}
       />
 

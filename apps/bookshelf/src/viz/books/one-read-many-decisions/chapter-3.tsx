@@ -71,7 +71,7 @@ const SLOTS = [
   { x: OBJ.codeX + 9 * OBJ.ch, y: LINE_Y[1] },
   { x: OBJ.codeX + 11 * OBJ.ch, y: LINE_Y[2] },
 ];
-const TAPE = { x: 175, y: 338, step: 52, w: 48, h: 32 };
+const TAPE = { x: 175, y: 338, step: 56, w: 54, h: 32 };
 
 const CAM_LEFT: CameraState = { x: 420, y: 250, k: 1.25 };
 const CAM_HOME: CameraState = { x: 640, y: 360, k: 1 };
@@ -209,13 +209,15 @@ export function Render({ s }: { s: SceneState }) {
 
   return (
     <Camera {...s.get(scene.cam)}>
+      {/* the closing frame clears the board: everything before it fades to a ghost */}
+      <g opacity={1 - 0.85 * closeU}>
       {/* the shared trunk both rows stand on */}
       <g opacity={clamp01(matU * 3)}>
         {range(6).map((l) => (
           <rect key={l} x={90} y={160 + l * 24} width={60} height={20} rx={3} fill={heatColor(0.35 + 0.6 * hash01(l, 2))} />
         ))}
-        <Label x={120} y={150} anchor="middle" text="shared" size={13} color={ROLE.MODEL} mono />
-        <Label x={120} y={318} anchor="middle" text="state" size={13} color={ROLE.MODEL} mono />
+        <Label x={120} y={150} anchor="middle" text="shared" size={14} color={ROLE.MODEL} mono />
+        <Label x={120} y={318} anchor="middle" text="state" size={14} color={ROLE.MODEL} mono />
         {ROWS.map((r) => (
           <line key={r.y} x1={150} x2={MAT.x - 2} y1={r.y + MAT.h / 2} y2={r.y + MAT.h / 2} stroke={ROLE.MODEL} strokeWidth={2.4} />
         ))}
@@ -226,12 +228,12 @@ export function Render({ s }: { s: SceneState }) {
         <g key={k}>
           <Label x={MAT.x} y={k === 0 ? 150 : 322} text={`row ${k} · ${FIELDS[k].name} question · ${r.pieces.length} pieces`} u={clamp01(matU * 3 - k)} size={15} weight={650} />
           {r.pieces.map((p, i) => (
-            <Cell key={i} x={MAT.x + i * MAT.step} y={r.y} w={MAT.w} h={MAT.h} text={p} size={13} u={clamp01(matU * 6 - k * 2 - i * 0.5)} />
+            <Cell key={i} x={MAT.x + i * MAT.step} y={r.y} w={MAT.w} h={MAT.h} text={p} size={14} u={clamp01(matU * 6 - k * 2 - i * 0.5)} />
           ))}
           {range(COLS).map((i) => {
             const real = i < r.pieces.length;
             const u = real ? clamp01(stripU * 6 - i) : padU;
-            return <Label key={i} x={MAT.x + i * MAT.step + MAT.w / 2} y={r.y + MAT.h + 15} anchor="middle" text={real ? `✓ p+${i}` : '∅ mask'} u={u} size={12} color={real ? ROLE.CHECKED : ROLE.INVALID} mono />;
+            return <Label key={i} x={MAT.x + i * MAT.step + MAT.w / 2} y={r.y + MAT.h + 15} anchor="middle" text={real ? `✓ p+${i}` : '∅ mask'} u={u} size={13} color={real ? ROLE.CHECKED : ROLE.INVALID} mono />;
           })}
         </g>
       ))}
@@ -248,11 +250,11 @@ export function Render({ s }: { s: SceneState }) {
       {fenceU > 0.002 && (
         <g opacity={fenceU}>
           <path d={`M${MAT.x - 4} ${ROWS[0].y - 5}H${MAT.x + 4 * MAT.step - 6}V${ROWS[0].y + MAT.h + 22}H${MAT.x - 4}Z`} fill="none" stroke={ROLE.CHECKED} strokeWidth={2} pathLength={1} strokeDasharray={`${fenceU} 1`} />
-          <Label x={MAT.x} y={134} text="row 0 sees: shared state + own 4 pieces" size={13} color={ROLE.CHECKED} mono />
+          <Label x={MAT.x} y={134} text="row 0 sees: shared state + own 4 pieces" size={14} color={ROLE.CHECKED} mono />
         </g>
       )}
-      <Label x={MAT.x} y={350} text="p = length of the shared context · positions continue from it" u={s.get(scene.posNoteU)} size={14} color={colors.MUTED} />
-      <Chip x={MAT.x} y={364} text="✕ not: two unrelated chat requests" color={ROLE.INVALID} fill="#2a0c14" size={14} u={s.get(scene.notChatU)} />
+      <Label x={MAT.x} y={344} text="p = length of the shared context · positions continue from it" u={s.get(scene.posNoteU)} size={14} color={colors.MUTED} />
+      <Chip x={MAT.x} y={370} text="✕ not: two unrelated chat requests" color={ROLE.INVALID} fill="#2a0c14" size={14} u={s.get(scene.notChatU)} />
 
       {/* the model window — rows enter together, one sweep serves both */}
       {winU > 0.002 && (
@@ -271,7 +273,7 @@ export function Render({ s }: { s: SceneState }) {
         ))}
 
       {/* next-piece scores per row; everything outside the permitted choices dims */}
-      <Label x={740} y={120} text="illustrative ranking scores · not probabilities" u={barsU} size={13} color={ROLE.PENDING} mono />
+      <Label x={740} y={120} text="illustrative ranking scores · not probabilities" u={barsU} size={14} color={ROLE.PENDING} mono />
       {barsU > 0.002 &&
         ROWS.map((_, k) => (
           <g key={k}>
@@ -285,15 +287,15 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i} opacity={ok ? 1 - 0.7 * flown : 1 - 0.8 * maskU}>
                   <rect x={VX(i)!} y={BASE[k] - h} width={VX.bandwidth()} height={h} rx={2} fill={ok ? ROLE.MODEL : '#4b4580'} stroke={chosen && picks[k] > 0.5 ? ROLE.CHECKED : 'none'} strokeWidth={2.4} />
-                  {ok && <Label x={VX(i)! + VX.bandwidth() / 2} y={BASE[k] + 18} anchor="middle" text={FIELDS[k].choices[c]} u={maskU} size={13} mono color={chosen && picks[k] > 0.5 ? ROLE.CHECKED : colors.TEXT} />}
+                  {ok && <Label x={VX(i)! + VX.bandwidth() / 2} y={BASE[k] + 18} anchor="middle" text={FIELDS[k].choices[c]} u={maskU} size={14} mono color={chosen && picks[k] > 0.5 ? ROLE.CHECKED : colors.TEXT} />}
                   {chosen && <Label x={VX(i)! + VX.bandwidth() / 2} y={BASE[k] - h - 8} anchor="middle" text="✓" u={picks[k]} size={17} color={ROLE.CHECKED} weight={800} />}
                 </g>
               );
             })}
           </g>
         ))}
-      <Chip x={740} y={362} text="policy: highest permitted score" color={ROLE.MODEL} u={s.get(scene.policyU)} />
-      <Chip x={740} y={398} text="? longer or colliding answers → more work" color={ROLE.PENDING} fill="#1a1405" dashed u={s.get(scene.moreU)} />
+      <Chip x={740} y={362} text="policy: highest permitted score" color={ROLE.MODEL} size={14} u={s.get(scene.policyU)} />
+      <Chip x={740} y={398} text="? longer or colliding answers → more work" color={ROLE.PENDING} fill="#1a1405" size={14} dashed u={s.get(scene.moreU)} />
 
       {/* the typed object: structure by code, values by selection */}
       {objU > 0.002 && (
@@ -355,7 +357,7 @@ export function Render({ s }: { s: SceneState }) {
             const su = dec ? 0 : clamp01(strikeU * 12 - i);
             return (
               <g key={i} opacity={clamp01(tapeU * 12 - i) * (1 - 0.6 * su)}>
-                <Cell x={TAPE.x + i * TAPE.step} y={TAPE.y} w={TAPE.w} h={TAPE.h} text={p} size={11.5} tone={dec ? ROLE.CHECKED : ROLE.MODEL} dashed={!dec} strong={dec ? 1 : 0} />
+                <Cell x={TAPE.x + i * TAPE.step} y={TAPE.y} w={TAPE.w} h={TAPE.h} text={p} size={14} tone={dec ? ROLE.CHECKED : ROLE.MODEL} dashed={!dec} strong={dec ? 1 : 0} />
                 {su > 0.002 && <line x1={TAPE.x + i * TAPE.step + 4} x2={TAPE.x + i * TAPE.step + 4 + (TAPE.w - 8) * su} y1={TAPE.y + TAPE.h / 2} y2={TAPE.y + TAPE.h / 2} stroke={ROLE.INVALID} strokeWidth={2.4} />}
               </g>
             );
@@ -373,13 +375,14 @@ export function Render({ s }: { s: SceneState }) {
           ) : (
             <Label x={MAT_RIGHT + 35} y={ROWS[0].y + 66} anchor="middle" text="✕" size={22} color={ROLE.INVALID} weight={800} />
           )}
-          <Label x={MAT.x} y={352} text="✓ independent: neither row sees the other's new answer" u={clamp01(indepU * 2 - 1) * (1 - depU)} size={15} color={ROLE.CHECKED} weight={650} />
+          <Label x={MAT.x} y={352} text="✓ independent: neither row sees the other's new answer" u={clamp01(indepU * 2 - 1) * (1 - clamp01(depU * 4))} size={15} color={ROLE.CHECKED} weight={650} />
           <Label x={MAT.x} y={352} text="? if topic changed what urgency may mean: a real dependency" u={depU} size={15} color={ROLE.PENDING} weight={650} />
           <Label x={MAT.x} y={374} text="→ represent it: ask in order, or choose jointly" u={clamp01(depU * 2 - 1)} size={15} />
         </g>
       )}
       <StatusTag x={740} y={362} kind="INTENDED" text="contract, not yet the browser demo" u={clamp01(indepU * 2 - 1) * (1 - closeU)} />
 
+      </g>
       <Panel x={250} y={392} w={780} h={150} u={closeU} stroke={ROLE.PENDING}>
         <text x={640} y={456} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={750}>
           Batch only what is truly independent.

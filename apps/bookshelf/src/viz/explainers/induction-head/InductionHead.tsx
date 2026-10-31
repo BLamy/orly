@@ -38,6 +38,10 @@ function Frame({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
 
   const qi = Math.max(10, Math.min(18, Math.round(qPos)));
+  // head 2's strongest target for the query: the token it copies
+  const attn = FULL.A2[qi];
+  let jStar = 0;
+  for (let j = 1; j < attn.length; j++) if (attn[j] > attn[jStar]) jStar = j;
 
   return (
     <>
@@ -46,14 +50,14 @@ function Frame({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimU}>
           {/* half markers */}
-          <g opacity={stripU * 0.8}>
-            <text x={tokX(4.5)} y={STRIP.y - 120} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+          <g opacity={stripU}>
+            <text x={tokX(4.5)} y={STRIP.y - 120} textAnchor="middle" fill={colors.MUTED} fontSize={14.5}>
               first pass
             </text>
-            <text x={tokX(14.5)} y={STRIP.y - 120} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+            <text x={tokX(14.5)} y={STRIP.y - 120} textAnchor="middle" fill={colors.MUTED} fontSize={14.5}>
               the repeat
             </text>
-            <line x1={tokX(9.5)} y1={STRIP.y - 110} x2={tokX(9.5)} y2={STRIP.y + 90} stroke={colors.GRID} strokeWidth={1.4} strokeDasharray="4 5" />
+            <line x1={tokX(9.5)} y1={STRIP.y - 110} x2={tokX(9.5)} y2={STRIP.y + 16} stroke={colors.GRID} strokeWidth={1.4} strokeDasharray="4 5" />
           </g>
 
           {/* token chips */}
@@ -87,7 +91,7 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
           {h1Prog > 2 && (
-            <text x={STRIP.x + 6} y={STRIP.y + 86} fill={colors.SECONDARY} fontSize={13.5} opacity={clamp01(h1Prog / 4)}>
+            <text x={STRIP.x + 6} y={STRIP.y + 94} fill={colors.SECONDARY} fontSize={14} opacity={clamp01(h1Prog / 4)}>
               head 1 — attends one step back (weight ≈ 1.0)
             </text>
           )}
@@ -98,8 +102,8 @@ function Frame({ s }: { s: SceneState }) {
               if (i === 0) return null;
               return (
                 <g key={i} opacity={h1WriteU * 0.9}>
-                  <rect x={tokX(i) - STEPX * 0.3} y={STRIP.y + 32} width={STEPX * 0.6} height={22} rx={6} fill="none" stroke={TOKC[TOKS[i - 1]]} strokeWidth={1.4} strokeDasharray="3 3" />
-                  <text x={tokX(i)} y={STRIP.y + 48} textAnchor="middle" fill={TOKC[TOKS[i - 1]]} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                  <rect x={tokX(i) - STEPX * 0.3} y={STRIP.y + 54} width={STEPX * 0.6} height={22} rx={6} fill={colors.PANEL} stroke={TOKC[TOKS[i - 1]]} strokeWidth={1.4} strokeDasharray="3 3" />
+                  <text x={tokX(i)} y={STRIP.y + 70} textAnchor="middle" fill={TOKC[TOKS[i - 1]]} fontSize={13} fontFamily="ui-monospace, monospace">
                     {GLYPHS[TOKS[i - 1]]}
                   </text>
                 </g>
@@ -121,11 +125,12 @@ function Frame({ s }: { s: SceneState }) {
                   />
                 ) : null,
               )}
+              <rect x={tokX(jStar) - STEPX * 0.36 - 4} y={STRIP.y - 24} width={STEPX * 0.72 + 8} height={48} rx={11} fill="none" stroke={colors.WARM} strokeWidth={2.2} />
               <circle cx={tokX(qi)} cy={STRIP.y - 30} r={6} fill={colors.WARM} />
-              <text x={tokX(qi)} y={STRIP.y - 42} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
-                query
+              <text x={tokX(qi) + 14} y={STRIP.y - 26} fill={colors.WARM} fontSize={14}>
+                query → copies {GLYPHS[FULL.pred[qi]]}
               </text>
-              <text x={STRIP.x + 6} y={STRIP.y - 96} fill={colors.WARM} fontSize={13.5}>
+              <text x={STRIP.x + 6} y={STRIP.y - 96} fill={colors.WARM} fontSize={14}>
                 head 2 — attends where its note matches the current token
               </text>
             </g>
@@ -140,26 +145,26 @@ function Frame({ s }: { s: SceneState }) {
             const okP = pred === TOKS[i + 1];
             return (
               <g key={i} opacity={u}>
-                <text x={tokX(i) + STEPX / 2} y={STRIP.y + 116} textAnchor="middle" fill={okP ? colors.POSITIVE : colors.NEGATIVE} fontSize={14} fontFamily="ui-monospace, monospace">
+                <text x={tokX(i)} y={STRIP.y + 116} textAnchor="middle" fill={okP ? colors.POSITIVE : colors.NEGATIVE} fontSize={15} fontFamily="ui-monospace, monospace">
                   {GLYPHS[pred]}
                 </text>
-                <text x={tokX(i) + STEPX / 2} y={STRIP.y + 134} textAnchor="middle" fill={okP ? colors.POSITIVE : colors.NEGATIVE} fontSize={11}>
+                <text x={tokX(i)} y={STRIP.y + 134} textAnchor="middle" fill={okP ? colors.POSITIVE : colors.NEGATIVE} fontSize={13}>
                   {okP ? '✓' : '✗'}
                 </text>
               </g>
             );
           })}
           {predProg > 0.5 && (
-            <text x={STRIP.x + 6} y={STRIP.y + 134} fill={colors.MUTED} fontSize={13} opacity={clamp01(predProg)}>
+            <text x={tokX(9) + STEPX / 2 - 8} y={STRIP.y + 116} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={clamp01(predProg)}>
               predicted next:
             </text>
           )}
 
-          {/* badge */}
+          {/* badge, centred under the nine predictions */}
           {badgeU > 0 && (
             <g opacity={badgeU}>
-              <rect x={tokX(13)} y={STRIP.y + 156} width={220} height={38} rx={10} fill={colors.PANEL} opacity={0.93} stroke={colors.POSITIVE} />
-              <text x={tokX(13) + 110} y={STRIP.y + 181} textAnchor="middle" fill={colors.POSITIVE} fontSize={15.5}>
+              <rect x={(tokX(10) + tokX(18)) / 2 - 110} y={STRIP.y + 156} width={220} height={38} rx={10} fill={colors.PANEL} opacity={0.93} stroke={colors.POSITIVE} />
+              <text x={(tokX(10) + tokX(18)) / 2} y={STRIP.y + 181} textAnchor="middle" fill={colors.POSITIVE} fontSize={15.5}>
                 repeat half: 9 / 9 correct
               </text>
             </g>
@@ -167,17 +172,18 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* clean ending card */}
+      {/* clean ending card, on a solid backdrop so the faded circuit does not show through */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.9} />
+          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The Induction Circuit
           </text>
           <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             match the current token in the past, step forward, copy — 9 / 9
           </text>
-          <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             an algorithm read directly off two attention heads
           </text>
         </g>

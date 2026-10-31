@@ -1,0 +1,18 @@
+{
+ "id": "m04",
+ "start": 322.2217,
+ "end": 368.9917,
+ "file": "films/neural-net-history/score/renders/m04.wav",
+ "duration": 52.77,
+ "I": -23.8,
+ "LRA": 12.7,
+ "TP": -6.5,
+ "expected": 52.77,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m04.png",
+ "cueSeconds": 46.77,
+ "cps": 1,
+ "lastStrikeLocal": 42,
+ "lastStrike": 364.222
+}

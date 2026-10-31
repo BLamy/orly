@@ -1,0 +1,351 @@
+{
+  "version": 1,
+  "slug": "handwired-user-effort",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Law We Wrote",
+      "claims": [
+        {
+          "id": "c1-purpose",
+          "claim": "The lab is a small synthetic demonstration: it learns how long a task might take, then chooses a permitted layout for explicitly supplied tasks.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 3", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "3", "quote": "A small synthetic demonstration of two separate jobs: learn how long a task might take" }
+          ]
+        },
+        {
+          "id": "c1-authored-inputs",
+          "claim": "The simulator takes a distance, a target width, a clutter number and a motor-context number, and the last two are authored values between zero and one.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 29", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "29", "quote": "`clutter` and `motorContext` are authored numbers between zero and one." },
+            { "label": "lab/user-effort/simulator.ts line 4", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/simulator.ts", "lines": "4", "quote": "export function meanDurationMs(input: EffortInput): number {" }
+          ]
+        },
+        {
+          "id": "c1-difficulty",
+          "claim": "Distance and target width fold into one difficulty, the base-two logarithm of one plus distance over width.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/simulator.ts line 5", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/simulator.ts", "lines": "5", "quote": "const difficulty = Math.log2(1 + input.distance / input.targetWidth)" }
+          ]
+        },
+        {
+          "id": "c1-mean-base-and-clutter",
+          "claim": "The mean duration is 200 ms plus 110 ms per unit of difficulty plus 180 ms per unit of clutter.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/simulator.ts line 6", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/simulator.ts", "lines": "6", "quote": "return 200 + 110 * difficulty + 180 * input.clutter" }
+          ]
+        },
+        {
+          "id": "c1-motor-terms",
+          "claim": "The mean adds 80 ms per unit of motor context, plus 65 ms per unit of motor context times difficulty.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/simulator.ts line 6", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/simulator.ts", "lines": "6", "quote": "80 * input.motorContext + 65 * input.motorContext * difficulty" }
+          ]
+        },
+        {
+          "id": "c1-uniform-noise",
+          "claim": "Each observation gets uniform noise of up to 35 ms either way, whose standard deviation is about 20.21 ms.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/simulator.ts line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/simulator.ts", "lines": "9", "quote": "export const noiseHalfWidthMs = 35" },
+            { "label": "lab/user-effort/README.md line 54", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "54", "quote": "The injected uniform noise has a standard deviation of about `20.21` ms" }
+          ]
+        },
+        {
+          "id": "c1-training-set",
+          "claim": "The training set has 720 observations drawn from one grid of distances, widths, clutter levels and context levels.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 37", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "37", "quote": "There are 720 training observations and 192 held-out observations." },
+            { "label": "lab/user-effort/simulator.ts line 10", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/simulator.ts", "lines": "10", "quote": "export const trainingLevels = {" }
+          ]
+        },
+        {
+          "id": "c1-held-out-values",
+          "claim": "The 192 held-out observations use distances, widths, clutter values and motor contexts that training never used.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 37", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "37", "quote": "The held-out distances, widths, clutter values, and motor contexts do not appear in training" },
+            { "label": "lab/user-effort/simulator.ts line 16", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/simulator.ts", "lines": "16", "quote": "export const heldOutLevels = {" }
+          ]
+        },
+        {
+          "id": "c1-three-features",
+          "claim": "The predictor receives three features: difficulty divided by six, clutter, and motor context. The formula's constants are not among its inputs.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/predictor.ts line 10", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/predictor.ts", "lines": "10", "quote": "return Float32Array.of(Math.log2(1 + input.distance / input.targetWidth) / 6, input.clutter, input.motorContext)" }
+          ]
+        },
+        {
+          "id": "c1-circuit-shape",
+          "claim": "The circuit multiplies difficulty by motor context once and sums five weighted terms: six operations in three layers, with five coefficients to learn.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/predictor.ts line 22", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/predictor.ts", "lines": "22", "quote": "const interaction = circuit.multiply(difficulty, motorContext)" },
+            { "label": "lab/user-effort/README.md line 33", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "33", "quote": "The circuit has six operations and three layers." }
+          ]
+        },
+        {
+          "id": "c1-favorable-setting",
+          "claim": "The feature formula deliberately matches the simulator, so this is fitting an authored law and the setting is deliberately favorable.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 31", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "31", "quote": "Its feature formula deliberately matches the simulator" },
+            { "label": "lab/user-effort/README.md line 54", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "54", "quote": "deliberately favorable setting" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Fitting It, Then Testing It",
+      "claims": [
+        {
+          "id": "c2-zero-start",
+          "claim": "Training starts with all five coefficients at zero, and the initial mean squared error is about 0.593 seconds squared; running the lab's report at the pin prints 0.5931.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/predictor.ts line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/predictor.ts", "lines": "13", "quote": "export function createPredictor(parameters: readonly number[] = [0, 0, 0, 0, 0]) {" },
+            { "label": "lab/user-effort/report.ts line 23", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/report.ts", "lines": "23", "quote": "initialMseSecondsSquared: trained.losses[0]" }
+          ]
+        },
+        {
+          "id": "c2-backprop-through-circuit",
+          "claim": "Each step runs the circuit on all 720 durations and backpropagates exact gradients through the same circuit.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/predictor.ts lines 55-60", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/predictor.ts", "lines": "55-60", "quote": "const backward = model.circuit.backpropagateReference(values, outputGradients)" },
+            { "label": "lab/user-effort/README.md line 31", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "31", "quote": "Training uses the core's reverse-mode derivatives." }
+          ]
+        },
+        {
+          "id": "c2-adam-settings",
+          "claim": "Adam runs for 800 steps at learning rate 0.04, and the README says the hyperparameters were not tuned against the test cases.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 33", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "33", "quote": "using 800 updates, learning rate `0.04`, and epsilon `1e-8`" },
+            { "label": "lab/user-effort/README.md line 41", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "41", "quote": "The study does not tune hyperparameters against these test cases." }
+          ]
+        },
+        {
+          "id": "c2-loss-curve",
+          "claim": "The recorded loss is about 0.025 at step 10, about 0.00105 at step 100, and flat near 0.0004 from step 400 on; the value recorded at step ten is taken before that step's update.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/predictor.ts line 71", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/predictor.ts", "lines": "71", "quote": "losses.push(loss)" }
+          ]
+        },
+        {
+          "id": "c2-learned-coefficients",
+          "claim": "The learned coefficients in seconds are 0.1998, 0.6640, 0.1791, 0.0753 and 0.3999, in the order base, difficulty, clutter, motor context, and the interaction.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/report.ts line 25", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/report.ts", "lines": "25", "quote": "parametersSeconds: parameterNames.map((name, index) => ({name, value: trained.parameters[index]}))" }
+          ]
+        },
+        {
+          "id": "c2-authored-in-seconds",
+          "claim": "Converted to seconds on the feature scale, the authored values are 0.2, 0.66, 0.18, 0.08 and 0.39, so each learned coefficient is within about 0.01 of its authored value. This conversion is inferred by reading the formula; the lab does not print it.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/user-effort/simulator.ts line 6", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/simulator.ts", "lines": "6", "quote": "return 200 + 110 * difficulty + 180 * input.clutter + 80 * input.motorContext + 65 * input.motorContext * difficulty" },
+            { "label": "lab/user-effort/predictor.ts line 10", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/predictor.ts", "lines": "10", "quote": "Math.log2(1 + input.distance / input.targetWidth) / 6" }
+          ]
+        },
+        {
+          "id": "c2-held-out-error",
+          "claim": "On held-out points, the error against the noise-free simulator mean is 1.68 ms, against 133.94 ms for a constant guess at the training mean.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 51", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "51", "quote": "Held-out, simulator mean | 1.68" },
+            { "label": "lab/user-effort/README.md line 52", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "52", "quote": "Constant training-mean baseline, held-out simulator mean | 133.94" }
+          ]
+        },
+        {
+          "id": "c2-noise-floor",
+          "claim": "Against noisy observations the held-out error is 20.22 ms, matching the 20.21 ms standard deviation of the injected noise. Because that noise has zero mean, no predictor can do better in expectation; this last step is inferred from the noise definition.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 50", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "50", "quote": "Held-out, noisy observations | 20.22" },
+            { "label": "lab/user-effort/README.md line 54", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "54", "quote": "The injected uniform noise has a standard deviation of about `20.21` ms" }
+          ]
+        },
+        {
+          "id": "c2-fresh-seeds",
+          "claim": "Three fresh training seeds give held-out errors of 0.76, 0.67 and 0.86 ms against the noise-free formula.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 54", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "54", "quote": "Three fresh training seeds give held-out mean errors of `0.76`, `0.67`, and `0.86` ms." }
+          ]
+        },
+        {
+          "id": "c2-scope",
+          "claim": "The held-out test is interpolation within the same family of authored values, not a test of unfamiliar human behavior.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 37", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "37", "quote": "This is interpolation, not a test of unfamiliar human behavior." }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Choosing a Layout",
+      "claims": [
+        {
+          "id": "c3-selection-job",
+          "claim": "Layout selection minimizes the probability-weighted predicted duration over the candidates.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 56", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "56", "quote": "Layout selection minimizes probability-weighted predicted duration." }
+          ]
+        },
+        {
+          "id": "c3-four-layouts",
+          "claim": "The four authored layouts are near-small, with 32 px buttons near the pointer, wide-confirm, wide-details, and balanced, with 72 px buttons in a column.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/selection.ts line 7", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "7", "quote": "export const candidates: readonly Layout[] = [" },
+            { "label": "lab/user-effort/selection.ts line 8", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "8", "quote": "control('confirm', 190, 220, 32)" },
+            { "label": "lab/user-effort/selection.ts line 11", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "11", "quote": "control('confirm', 430, 200, 72)" }
+          ]
+        },
+        {
+          "id": "c3-expected-cost",
+          "claim": "A layout's expected cost is each task's probability times its predicted duration, summed over the tasks.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/selection.ts line 25", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "25", "quote": "for (const task of controlIDs) total += situation.taskProbabilities[task] * cost(effortInput(layout, task, situation.pointer, situation.motorContext))" }
+          ]
+        },
+        {
+          "id": "c3-motor-0375-example",
+          "claim": "At motor context 0.375 with 80% confirm, wide-confirm wins at 546.27 ms, balanced takes 589.51 ms, wide-details 659.46 ms, and near-small 685.33 ms, all simulator means.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/report.ts line 42", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/report.ts", "lines": "42", "quote": "row.situation.motorContext === 0.375" },
+            { "label": "lab/user-effort/selection.ts line 8", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "8", "quote": "control('confirm', 190, 220, 32)" }
+          ]
+        },
+        {
+          "id": "c3-details-common",
+          "claim": "With details as the common task, wide-details has the same 546.27 ms optimum, because it is wide-confirm with the confirm and details ids swapped; the trained weights are unchanged. The 546.27 ms figure is from report.ts's details-heavy row at the pin.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/selection.ts line 10", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "10", "quote": "control('details', 340, 240, 104)" },
+            { "label": "lab/user-effort/selection.ts line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "9", "quote": "control('confirm', 340, 240, 104)" }
+          ]
+        },
+        {
+          "id": "c3-shortest-distance-rule",
+          "claim": "A rule that minimizes distance from the pointer favors near-small, whose expected distance is 120.49 px against 279.70, 372.97 and 347.18 for the others, while the simulator and the fitted model both rank near-small last at 685 ms or more. The distances and costs are from a probe that calls the lab's own functions at the pin, not from a printed line.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/selection.ts line 69", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "69", "quote": "{name: 'shortest-distance', cost: (input: EffortInput) => input.distance}," }
+          ]
+        },
+        {
+          "id": "c3-constraints",
+          "claim": "Designers can forbid layouts with a minimum target width or a maximum clutter; invalid layouts are skipped, and an exact tie goes to the earlier layout in the list.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/selection.ts line 34", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "34", "quote": "if (layoutViolations(layout, situation.constraints).length !== 0) continue" },
+            { "label": "lab/user-effort/selection.ts line 37", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "37", "quote": "if (value < minimum) {" }
+          ]
+        },
+        {
+          "id": "c3-120-situations",
+          "claim": "Across 120 situations, learned effort averages 606.37 ms and matches the simulator's best layout 120 times; shortest expected distance averages 624.08 ms and matches 88 times.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 60", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "60", "quote": "Learned effort | 606.37 ms | 120/120" },
+            { "label": "lab/user-effort/README.md line 61", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "61", "quote": "Shortest expected distance | 624.08 ms | 88/120" }
+          ]
+        },
+        {
+          "id": "c3-real-choices",
+          "claim": "Of the 120 situations, 40 allow only one valid layout, 60 allow three, and 20 allow all four, so the 40 single-layout cases are trivial wins.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 64", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "64", "quote": "Some constraints allow only one candidate, making those cases trivial." },
+            { "label": "lab/user-effort/selection.ts line 56", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/selection.ts", "lines": "56", "quote": "for (const minimumTargetWidth of [32, 48, 72]) {" }
+          ]
+        },
+        {
+          "id": "c3-open-situations",
+          "claim": "In the 20 situations where all four layouts are allowed, learned effort matches the simulator's choice 20 times out of 20; shortest distance matches none and costs 102.58 ms more on average.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 64", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "64", "quote": "learned effort matches the simulator's choice 20/20; shortest distance matches 0/20 and costs an extra `102.58` ms on average." }
+          ]
+        },
+        {
+          "id": "c3-soft-win",
+          "claim": "The best layout is judged by the same formula the predictor's features come from, so matching it is close to expected; both the simulator and the predictor's functional form were supplied by the authors.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 70", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "70", "quote": "Both the simulator and the predictor's functional form were supplied by us." }
+          ]
+        },
+        {
+          "id": "c3-status-and-limits",
+          "claim": "At the pinned commit the eleven tests pass, the report reproduces the README's numbers, and there are no human observations, error prediction, or uncertainty estimates.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 74", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "74", "quote": "Candidate selection uses point predictions, without uncertainty estimates." },
+            { "label": "lab/status.md line 198", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "198", "quote": "No human observations, error prediction, or usability claim." }
+          ]
+        },
+        {
+          "id": "c3-not-user-wants",
+          "claim": "The lab does not learn what the user should want: it predicts duration only, and it is a clean pipeline test rather than evidence about real users.",
+          "caption": 12,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/user-effort/README.md line 3", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "3", "quote": "It does not learn what the user should want." },
+            { "label": "lab/user-effort/README.md line 70", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/user-effort/README.md", "lines": "70", "quote": "There are no human usability results." }
+          ]
+        }
+      ]
+    }
+  ]
+}

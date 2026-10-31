@@ -58,11 +58,14 @@ const SCREWS = [0, 1, 2, 3].flatMap((i) =>
 // Side-elevation inset: does the front stand up on its own?
 const INSET = { x: 936, y: 168, w: 300, h: 250 } as const;
 
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 0.94 };
-const CAM_CUT: CameraState = { x: 500, y: 250, k: 1.5 };
-const CAM_JOINT: CameraState = { x: 560, y: 430, k: 1.55 };
-const CAM_U: CameraState = { x: 620, y: 366, k: 1.22 };
-const CAM_INSET: CameraState = { x: 1010, y: 300, k: 1.35 };
+// Framings are chosen so every label stays on the 1280×720 stage and above the
+// caption band (y < 630). The inset and closing panel are screen-space overlays.
+// The camera opens on CAM_WIDE: the original timing has no separate move for it.
+const CAM_WIDE: CameraState = { x: 737, y: 421, k: 1.35 }; // both wings, full depth
+const CAM_CUT: CameraState = { x: 615, y: 377, k: 1.4 }; // the measure and the cut line
+const CAM_JOINT: CameraState = { x: 640, y: 480, k: 1.3 }; // the screws at the joints
+const CAM_U: CameraState = { x: 640, y: 479, k: 1.5 }; // the finished U, filling the stage
+const CAM_INSET: CameraState = { x: 807, y: 400, k: 1.2 }; // the U slides left for the side view
 
 export interface Scene {
   tl: Timeline;
@@ -145,7 +148,7 @@ export function buildScene(): Scene {
     dur: 7.15,
     text: 'And here is the detail that separates a build that looks finished from one that looks salvaged. Each side is turned so its raw cut end points forward, where the bar top will run out over it and hide it.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 26.5, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_U, { at: 26.5, dur: 1.5, ease: ease.move });
   tl.tween(flipU, 1, { at: 27.6, dur: 1.8, ease: ease.move });
   tl.hold(32.9, 0.6);
 
@@ -313,7 +316,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* ---- plan label ---- */}
           {frontU > 0 && (
-            <text x={X(FRONT_LEN) + 22} y={Y(FRONT_Y + THICK) + 6} fill={colors.MUTED} fontSize={13} opacity={frontU}>
+            <text x={X(FRONT_LEN) + 22} y={Y(FRONT_Y + THICK) + 6} fill={colors.MUTED} fontSize={14} opacity={frontU}>
               seen from above
             </text>
           )}
@@ -349,6 +352,16 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
+
+          {/* the depth of a lone wing, before it is cut */}
+          {wingU > 0 && offcutU < 1 && (
+            <g opacity={wingU * clamp01(1 - offcutU * 2)}>
+              <line x1={X(FRONT_LEN + 5)} y1={Y(wingBackY)} x2={X(FRONT_LEN + 5)} y2={Y(FRONT_Y)} stroke={colors.TEXT} strokeWidth={1.6} />
+              <text x={X(FRONT_LEN + 5) + 8} y={Y((wingBackY + FRONT_Y) / 2) + 5} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+                47 in deep
+              </text>
+            </g>
+          )}
 
           {/* the 2-ft measurement */}
           {measureU > 0 && (
@@ -390,7 +403,7 @@ export function Render({ s }: { s: SceneState }) {
               y={Y(FRONT_Y) - 12}
               textAnchor="middle"
               fill={CUT_FACE}
-              fontSize={13.5}
+              fontSize={14}
               opacity={clamp01(flipU * 1.6 - 0.5)}
             >
               cut ends face the front
@@ -426,7 +439,7 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
           {screwU > 0.6 && (
-            <text x={X(FRONT_LEN) + 22} y={Y(FRONT_Y) - 6} fill={colors.ACCENT} fontSize={13} opacity={clamp01(screwU * 2 - 1.2)}>
+            <text x={X(FRONT_LEN) + 22} y={Y(FRONT_Y) - 6} fill={colors.ACCENT} fontSize={14} opacity={clamp01(screwU * 2 - 1.2)}>
               deck screws, into the stringers
             </text>
           )}
@@ -448,75 +461,80 @@ export function Render({ s }: { s: SceneState }) {
               <text x={X(FRONT_LEN / 2)} y={Y(FRONT_Y - SIDE_CUT) - 24} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={clamp01(dimU * 2 - 1)}>
                 open at the back — the bartender stands here
               </text>
+              {/* the bartender, seen from above, standing in the U between the wings */}
+              <g opacity={clamp01(dimU * 1.5 - 0.2)}>
+                <ellipse cx={X(FRONT_LEN / 2)} cy={Y(12)} rx={7 * PX} ry={4.5 * PX} fill={colors.POSITIVE} fillOpacity={0.22} stroke={colors.POSITIVE} strokeWidth={1.5} />
+                <circle cx={X(FRONT_LEN / 2)} cy={Y(12) - 4.5 * PX} r={2.6 * PX} fill={colors.POSITIVE} fillOpacity={0.45} stroke={colors.POSITIVE} strokeWidth={1.5} />
+              </g>
             </g>
           )}
         </g>
-
-        {/* ---- side-elevation inset: standing up, or not ---- */}
-        {insetU > 0 && (
-          <g opacity={insetU * dimAll}>
-            <rect x={INSET.x - 34} y={INSET.y - 52} width={INSET.w} height={INSET.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={INSET.x + INSET.w / 2 - 34} y={INSET.y - 26} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
-              the same bar, from the end
-            </text>
-            {(() => {
-              const baseX = INSET.x + 66;
-              const baseY = INSET.y + 158;
-              const h = 132;
-              const angle = tipU * 62; // degrees of falling over
-              return (
-                <>
-                  <line x1={INSET.x - 14} y1={baseY} x2={INSET.x + INSET.w - 54} y2={baseY} stroke={colors.GRID} strokeWidth={2} />
-                  {/* the front panel, hinging at its foot */}
-                  <g transform={`rotate(${angle}, ${baseX}, ${baseY})`}>
-                    <rect x={baseX - 7} y={baseY - h} width={14} height={h} rx={2} fill={WOOD_LIT} stroke="#2a1f13" />
-                  </g>
-                  {/* the wing that stops it */}
-                  {braceU > 0 && (
-                    <g opacity={braceU}>
-                      <rect x={baseX} y={baseY - 16} width={SIDE_CUT * 3.4} height={14} rx={2} fill={WOOD} stroke="#2a1f13" />
-                      <text x={baseX + 46} y={baseY + 30} fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
-                        2 ft of wing
-                      </text>
-                    </g>
-                  )}
-                  {/* the push */}
-                  <g opacity={clamp01(insetU * 1.4 - 0.3)}>
-                    <line x1={baseX - 78} y1={baseY - h + 14} x2={baseX - 20} y2={baseY - h + 14} stroke={colors.NEGATIVE} strokeWidth={3} />
-                    <polygon
-                      points={`${baseX - 16},${baseY - h + 14} ${baseX - 30},${baseY - h + 8} ${baseX - 30},${baseY - h + 20}`}
-                      fill={colors.NEGATIVE}
-                    />
-                  </g>
-                  <text
-                    x={INSET.x + INSET.w / 2 - 34}
-                    y={INSET.y + 190}
-                    textAnchor="middle"
-                    fill={braceU > 0.5 ? colors.POSITIVE : colors.NEGATIVE}
-                    fontSize={14}
-                    fontWeight={700}
-                  >
-                    {braceU > 0.5 ? 'braced' : tipU > 0.4 ? 'over it goes' : 'nothing holding it'}
-                  </text>
-                </>
-              );
-            })()}
-          </g>
-        )}
-
-        {/* ---- closing panel ---- */}
-        {closeU > 0 && (
-          <g opacity={closeU}>
-            <rect x={318} y={252} width={644} height={140} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
-              three pallets · two cuts · cut ends forward
-            </text>
-            <text x={640} y={348} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
-              a U that stands on its own
-            </text>
-          </g>
-        )}
       </Camera>
+
+      {/* ---- side-elevation inset: standing up, or not (screen space) ---- */}
+      {insetU > 0 && (
+        <g opacity={insetU * dimAll}>
+          <rect x={INSET.x - 34} y={INSET.y - 52} width={INSET.w} height={INSET.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={INSET.x + INSET.w / 2 - 34} y={INSET.y - 26} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+            the front pallet, from the side
+          </text>
+          {(() => {
+            const baseX = INSET.x + 66;
+            const baseY = INSET.y + 158;
+            const h = 132;
+            const angle = tipU * 62; // degrees of falling over
+            return (
+              <>
+                <line x1={INSET.x - 14} y1={baseY} x2={INSET.x + INSET.w - 54} y2={baseY} stroke={colors.GRID} strokeWidth={2} />
+                {/* the front panel, hinging at its foot */}
+                <g transform={`rotate(${angle}, ${baseX}, ${baseY})`}>
+                  <rect x={baseX - 7} y={baseY - h} width={14} height={h} rx={2} fill={WOOD_LIT} stroke="#2a1f13" />
+                </g>
+                {/* the wing that stops it, labelled above so it clears the verdict */}
+                {braceU > 0 && (
+                  <g opacity={braceU}>
+                    <rect x={baseX} y={baseY - 16} width={SIDE_CUT * 3.4} height={14} rx={2} fill={WOOD} stroke="#2a1f13" />
+                    <text x={baseX + 46} y={baseY - 24} fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
+                      2 ft of wing
+                    </text>
+                  </g>
+                )}
+                {/* the push */}
+                <g opacity={clamp01(insetU * 1.4 - 0.3)}>
+                  <line x1={baseX - 78} y1={baseY - h + 14} x2={baseX - 20} y2={baseY - h + 14} stroke={colors.NEGATIVE} strokeWidth={3} />
+                  <polygon
+                    points={`${baseX - 16},${baseY - h + 14} ${baseX - 30},${baseY - h + 8} ${baseX - 30},${baseY - h + 20}`}
+                    fill={colors.NEGATIVE}
+                  />
+                </g>
+                <text
+                  x={INSET.x + INSET.w / 2 - 34}
+                  y={INSET.y + 190}
+                  textAnchor="middle"
+                  fill={braceU > 0.5 ? colors.POSITIVE : colors.NEGATIVE}
+                  fontSize={14}
+                  fontWeight={700}
+                >
+                  {braceU > 0.5 ? 'braced' : tipU > 0.4 ? 'over it goes' : 'nothing holding it'}
+                </text>
+              </>
+            );
+          })()}
+        </g>
+      )}
+
+      {/* ---- closing panel (screen space, opaque, so it reads over the faded plan) ---- */}
+      {closeU > 0 && (
+        <g opacity={closeU}>
+          <rect x={318} y={252} width={644} height={140} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+          <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
+            three pallets · two cuts · cut ends forward
+          </text>
+          <text x={640} y={348} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
+            a U that stands on its own
+          </text>
+        </g>
+      )}
     </>
   );
 }

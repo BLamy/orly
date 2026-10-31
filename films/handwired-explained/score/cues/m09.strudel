@@ -1,0 +1,125 @@
+// m09 · THE SUMMER'S CERTAINTIES (ch08-s01 … ch08-s08) · the film's low point
+// Window 981.20-1095.20 (114.00 s, clock 1455.42 s). 52 BPM, one 4/4 bar per cycle (4.615 s), rubato:
+// every event is placed by cue-local seconds (absolute - 981.20) from narration/timeline.json.
+// Tonal story: home darkened to G minor. The low G (contrabass + bowed pad, lpf 400) is the only voice
+// for the first forty seconds; on 'held' it steps DOWN to F and stays there through the reversal and the
+// two tickets; under the silent plate (ch08-s06) the bass steps down once more, to Eb, but the chord on it
+// is the first major chord of the chapter (Eb major: the low note "lifts" by turning warm), the piano
+// climbs in M1's shape (G Bb C Bb: 3-5-6-5 of Eb), and the bass settles back onto G (Eb/G). The chord holds
+// under the typing; in ch08-s08 the rising D-G-A-B figure puts the B natural back, the strike's bass falls
+// D -> G and the drawer closes on G MAJOR (a Picardy third: the belief ended, the method held).
+// Descending bass of the whole cue: G - F - Eb - G(major).
+// Last strike: the drawer + G major at 'rule' 111.52 (1092.72). Fade 113.30-114.00; the chord rings on.
+setcpm(52/4)
+const CPS = 52/240, DUR = 114.00
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = Math.ceil(DUR * CPS * Q); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const bars = s => qn(s) / Q
+const loop = (pat, d) => pat.fast(bars(d))
+const hall = x => x.room(0.4).rsize(5)
+const at = (ts, d, p) => ts.map(t => [t, d, p])           // the same event at several times
+
+// ---------------------------------------------------------------- the low line: G ... F ... Eb ... G
+// G from the fade-in; the bowed pad thins out under 'So we won't guess' (8.02) and comes back with the
+// pane (10.45). 'held' (38.84): the note moves for the first time, one step down, to F, and holds.
+$: tl([0.0, 39.2, note("g1")], [79.81, 4.6, note("eb2")], [84.40, 26.52, note("g1")], [110.92, 0.60, note("d2")], [111.52, 2.4, note("g1")])
+  .s("gm_contrabass").velocity(0.25).attack(1.6).release(2.5).lpf(400)
+$: tl([38.84, 41.2, note("f1")]).s("gm_contrabass").velocity(0.23).attack(1.4).release(2.5).lpf(380)
+$: tl([0.0, 7.8, note("g2")], [10.45, 28.6, note("g2")], [79.81, 4.6, note("[eb2,bb2]")], [84.40, 4.4, note("[g2,bb2]")])
+  .s("gm_pad_bowed").velocity(0.18).attack(2.2).release(3).lpf(400)
+$: tl([38.84, 40.9, note("f2")]).s("gm_pad_bowed").velocity(0.14).attack(2).release(3).lpf(360)
+// room tone: a breath of paper air under the whole low point
+$: tl([0.0, 113.9, s("pink")]).hpf(300).lpf(1400).gain(0.0035).attack(2).release(2)
+
+// ---------------------------------------------------------------- ch08-s01 · July and August
+// six faint taps, small lamps far apart, as July's six panes come into frame ('july' 2.98); then NOTHING
+// under 'August' (4.72): the drone alone
+$: tl(...at([2.98, 3.24, 3.52, 3.76, 4.06, 4.34], 0.2, note("a5"))).s("gm_woodblock").velocity(0.13).decay(0.03).sustain(0).room(0.15).rsize(3)
+
+// ---------------------------------------------------------------- ch08-s02 · the conclusions taken as given
+// a faint, steady two-note figure, D-G in plain quarters from the pane (10.45): confident, a little too
+// regular; it stops dead on the review's flip (27.92)
+$: tl([10.45, 17.47, loop(note("d3 g2 d3 g2"), 17.47)]).s("gm_pizzicato_strings").velocity(0.075).lpf(800)
+// the detent's TIE on 'knot' (18.52): a soft detent click, the tonic barely touched below
+$: tl([18.50, 0.3, note("e6")]).s("gm_woodblock").velocity(0.18).decay(0.03).sustain(0)
+$: tl([18.50, 1.2, note("g2")]).s("gm_pizzicato_strings").velocity(0.10).lpf(900)
+
+// ---------------------------------------------------------------- ch08-s03 · the review retires ten claims
+// FLIP on 'flip' (27.92): the paper-card snap over the dominant
+$: tl([27.92, 0.2, s("white")]).hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(0.11)
+$: tl([27.92, 1.5, note("d3")]).s("gm_pizzicato_strings").velocity(0.11).lpf(900)
+// ten dry pencil scratches from 'ten' (29.22), in triplet eighths, the only percussion: high and dry
+// (band 5-6 kHz, above the words' intelligibility band)
+$: tl(...at([0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => 29.22 + i * 0.385), 0.2, s("white"))).bpf(5200).bpq(1.4).attack(0.01).decay(0.11).sustain(0).gain(0.05)
+
+// ---------------------------------------------------------------- ch08-s04 · the reversal
+// one dry ratchet click per detent of the six-detent dial, from 'Multiply' (46.77) to 'twenty' (51.00)
+$: tl(...at([0, 1, 2, 3, 4, 5].map(i => 46.77 + i * 0.846), 0.2, note("c6"))).s("gm_woodblock").velocity(0.15).decay(0.02).sustain(0)
+$: tl(...at([0, 1, 2, 3, 4, 5].map(i => 46.77 + i * 0.846), 0.2, s("white"))).hpf(3500).decay(0.01).sustain(0).gain(0.035)
+// on 'twenty' (51.00): a single low pluck that does not resolve (Bb over the F: an unstable six-four)
+$: tl([51.00, 6.0, note("[bb1,f2]")]).s("piano").velocity(0.13).lpf(480).release(2).room(0.3).rsize(5)
+
+// ---------------------------------------------------------------- ch08-s05 · the two tickets
+// two short tones a whole tone apart: D for the first ticket ('zero' 62.07), C for the second ('skip'
+// 67.36): the both-branches interval, heard one at a time, unresolved
+$: hall(tl([62.07, 1.6, note("d5")], [67.36, 1.6, note("c5")]).s("piano").velocity(0.22).lpf(1300).release(0.9))
+// the checker's needle ('bug' 69.37): a single soft click
+$: tl([69.37, 0.2, note("g5")]).s("gm_woodblock").velocity(0.12).decay(0.02).sustain(0)
+// the Deep Dive I plate returns ('q038' 73.26): M1's two lines together at half level (the eleven's own
+// voicing, B/A D/C E/D), briefly, then they fall away
+$: hall(tl([73.26, 3.4, note("b4@0.6 d5@0.6 e5@2.2")]).s("piano").velocity(0.40).gain(0.5).lpf(1400).pan(0.58).release(1.2))
+$: hall(tl([73.26, 3.4, note("a4@0.6 c5@0.6 d5@2.2")]).s("piano").velocity(0.40).gain(0.5).lpf(1400).pan(0.42).release(1.2))
+
+// ---------------------------------------------------------------- ch08-s06 · MUSIC ALONE: the climb back
+// (the long speech-free stretch 77.70-89.11). The first light ('plate' 79.81): Eb MAJOR, strings and a
+// soft harp spread; the felt piano sings M1's shape in Eb (G Bb C Bb) and, after the stamp, climbs by
+// step (C D Eb, a lean on F) and settles on Eb as the bass returns to G (Eb/G). Back down to a whisper
+// by 88.6 so L0810 enters in clear air.
+$: hall(tl([79.81, 4.6, note("[eb2,bb2,g3,bb3]").velocity(0.26)], [84.40, 3.3, note("[g2,bb2,eb3,g3]").velocity(0.22)])
+  .s("gm_string_ensemble_1").attack(1.4).release(2.2).lpf(1500))
+$: hall(tl([79.95, 2.0, note("eb3 g3 bb3 eb4")]).s("gm_orchestral_harp").velocity(0.24).lpf(2200))
+$: hall(tl([80.55, 3.30, note("g4@0.55 bb4@0.55 c5@1.1 bb4@1.1")],
+           [84.30, 4.30, note("c5@0.5 d5@0.5 eb5@0.75 f5@0.75 eb5@1.5")])
+  .s("piano").velocity(0.36).lpf(2000).release(1.1))
+$: hall(tl([80.55, 3.3, note("[eb3,bb3]")], [84.30, 4.3, note("[g2,eb3]")]).s("piano").velocity(0.20).lpf(900).release(1.2))
+// the stamp ('fixed' 83.91): a firm wooden detent; the brass counter's clicks run up to 274 and stop
+$: tl([83.91, 0.4, note("g5")]).s("gm_woodblock").velocity(0.45).decay(0.04).sustain(0)
+$: tl([83.91, 0.4, note("c2")]).s("gm_taiko_drum").velocity(0.20).decay(0.18).sustain(0).lpf(600)
+// n clicks, each gap k times the last (an accelerating run), then rest to the end of the slot
+const accel = (n, total, d0, k) => { const out = []; let t = 0, d = d0
+  for (let i = 0; i < n && t + d < total - 1e-6; i++) { out.push('e6@' + d.toFixed(3)); t += d; d = Math.max(0.03, d * k) }
+  out.push('~@' + (total - t).toFixed(3)); return out.join(' ') }
+$: tl([84.05, 1.55, note(mini(accel(24, 1.55, 0.12, 0.92)))]).s("gm_woodblock").velocity(0.10).decay(0.015).sustain(0)
+
+// ---------------------------------------------------------------- ch08-s07 · almost nothing: the typing
+// the warm chord (Eb/G) held very quietly under the hands; the typing is the only rhythm: soft paper key
+// clicks from 'agent' (92.00), the second hand half a beat behind (no motif: nothing reads as a verdict)
+$: tl([88.80, 17.8, note("[g2,bb2,eb3]")]).s("gm_string_ensemble_1").velocity(0.045).attack(2.5).release(2.5).lpf(650)
+$: tl([92.00, 13.6, loop(s("white*16").degradeBy(0.55), 13.6)]).hpf(4200).lpf(9000).decay(0.012).sustain(0).gain(0.022).pan(0.4)
+$: tl([92.00, 13.6, loop(s("white*16").degradeBy(0.62).late(0.125), 13.6)]).hpf(3800).lpf(8000).decay(0.012).sustain(0).gain(0.017).pan(0.62)
+
+// ---------------------------------------------------------------- ch08-s08 · three questions settled
+// the chord darkens to C minor over the G for the desk, then empties to the bare G for the figure
+$: tl([106.60, 4.2, note("[g2,c3,eb3]")]).s("gm_string_ensemble_1").velocity(0.05).attack(1.5).release(1.2).lpf(650)
+// three firm stamps as wooden knocks, one per card, from 'questions' (108.98)
+$: tl(...at([108.98, 109.28, 109.58], 0.25, note("d5"))).s("gm_woodblock").velocity(0.32).decay(0.04).sustain(0)
+$: tl(...at([108.98, 109.28, 109.58], 0.25, note("c3"))).s("gm_taiko_drum").velocity(0.13).decay(0.12).sustain(0).lpf(700)
+// September relights ('relight' 109.72): a gentle rising figure D-G-A-B, the first motion since June;
+// the B natural is the first major third of the chapter
+$: hall(tl([109.80, 1.7, note("d4@0.27 g4@0.27 a4@0.27 b4@0.89")]).s("gm_orchestral_harp").velocity(0.22).lpf(2600))
+$: hall(tl([109.80, 1.7, note("d4@0.27 g4@0.27 a4@0.27 b4@0.89")]).s("piano").velocity(0.13).lpf(1800).release(0.6))
+// THE STRIKE ('strike' 110.92): the dry pencil scratch over the dominant ...
+$: tl([110.92, 0.4, s("white")]).bpf(3000).bpq(2).attack(0.02).decay(0.30).sustain(0).gain(0.07)
+$: hall(tl([110.92, 0.6, note("[d3,a3,f#4]")]).s("gm_string_ensemble_1").velocity(0.10).attack(0.2).release(0.5).lpf(1200))
+// ... resolving into the wooden drawer closing on G MAJOR at 'rule' (111.52): the last strike
+$: tl([111.52, 0.5, note("c2")]).s("gm_taiko_drum").velocity(0.32).decay(0.25).sustain(0).lpf(700)
+$: tl([111.52, 0.3, s("brown")]).lpf(300).decay(0.15).sustain(0).gain(0.2)
+$: hall(tl([111.52, 2.4, note("[g2,d3,b3,g4]")]).s("gm_string_ensemble_1").velocity(0.22).attack(0.25).release(4).lpf(1800))
+$: hall(tl([111.52, 2.4, note("[g2,d3,g3,b3,d4]")]).s("piano").velocity(0.26).lpf(1800).release(4))
+$: hall(tl([111.60, 2.0, note("g3 b3 d4 g4")]).s("gm_orchestral_harp").velocity(0.13).lpf(2400))
+
+all(x => x.postgain(1.8))

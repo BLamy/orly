@@ -1,0 +1,39 @@
+{
+  "voiceId": "EapdDtSsMC291mjfSNe7",
+  "name": "Peter (library voice EapdDtSsMC291mjfSNe7) - middle-aged, well-spoken British factual narrator; replaces the too-old AK voice",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.8
+  },
+  "seed": 1958,
+  "format": "mp3_44100_192",
+  "wpm": 131.8,
+  "lockedAt": "2026-10-06T04:32:48.804Z",
+  "notes": "Library voice chosen by audition; not a clone or imitation of any real person.",
+  "listening": [
+    {
+      "term": "Rosenblatt",
+      "line": "L0104",
+      "expect": "ROH-zen-blat: stress on the first syllable, said as one fluent word",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "Words confirmed by STT (narration/stt.json L0104, scribe_v1, 2026-10-06T19:23Z: \"Frank Rosenblatt\"). Stress needs a human ear: play narration/clips/L0104.wav, then npm run film:voice -- signoff --slug perceptron-short --term Rosenblatt --by \"<name>\"."
+    },
+    {
+      "term": "Papert",
+      "line": "L0108",
+      "expect": "PAP-ert: stress on the first syllable, not French pa-PAIR",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "Words confirmed by STT (narration/stt.json L0108: \"Minsky and Papert\"). Stress needs a human ear: play narration/clips/L0108.wav, then npm run film:voice -- signoff --slug perceptron-short --term Papert --by \"<name>\"."
+    }
+  ]
+}

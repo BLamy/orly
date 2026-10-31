@@ -1,0 +1,154 @@
+{
+ "shot": "ch10-s06",
+ "at": "2026-10-13T06:20:56.438Z",
+ "minCapPx": 22,
+ "sampled": 39,
+ "texts": 28,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "ILLUSTRATIVE",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "crossed",
+   "capWhileSubject": 30.1,
+   "why": "named: \"crossed\""
+  },
+  {
+   "text": "river",
+   "capWhileSubject": 33,
+   "why": "named: \"river\""
+  },
+  {
+   "text": "bank",
+   "capWhileSubject": 33,
+   "why": "named: \"bank\""
+  },
+  {
+   "text": "label",
+   "capWhileSubject": 30.3,
+   "why": "named: \"label\""
+  },
+  {
+   "text": "multiply, add",
+   "capWhileSubject": 30.5,
+   "why": "named: \"multiply add\""
+  },
+  {
+   "text": "score",
+   "capWhileSubject": 30.8,
+   "why": "named: \"score\""
+  },
+  {
+   "text": "2 · 0 · 4 · 2   ÷ √4   →   1 · 0 · 2 · 1",
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "SOFTMAX",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "the jug of light: shares that sum to one",
+   "capWhileSubject": 22,
+   "why": "named: \"jug light\""
+  },
+  {
+   "text": "softmax",
+   "capWhileSubject": 31.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "water",
+   "capWhileSubject": 24.6,
+   "why": "named: \"water\""
+  },
+  {
+   "text": "bank now means",
+   "capWhileSubject": 26.6,
+   "why": "named: \"now means\""
+  },
+  {
+   "text": "water  0.53",
+   "capWhileSubject": 25.2,
+   "why": "named: \"water\""
+  }
+ ],
+ "texture": [
+  {
+   "text": "the",
+   "maxCap": 33,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 53.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 40.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "question",
+   "maxCap": 30.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2",
+   "maxCap": 53.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "4",
+   "maxCap": 49.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "÷ √4",
+   "maxCap": 30.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.20",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.07",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.53",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "action",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "money",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "action  0.20",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "money  0.20",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 14
+}

@@ -80,8 +80,9 @@ export const stateY = (v: number): number => PLOT_Y_MID - v * PLOT_AMP;
 export const CELL_CX = 640;
 export const CELL_CY = 175;
 
-export const CAM_CELL: CameraState = { x: 640, y: 190, k: 1.45 };
-export const CAM_PLOT: CameraState = { x: 640, y: 400, k: 1.12 };
+// Framed so the belt and the whole state plot stay on stage above the caption pill.
+export const CAM_CELL: CameraState = { x: 640, y: 250, k: 1.2 };
+export const CAM_PLOT: CameraState = { x: 640, y: 340, k: 1.12 };
 
 export interface Scene {
   tl: Timeline;
@@ -172,7 +173,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · the moral ———————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 47.7, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 48.3, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 48.3, dur: 1.1, ease: ease.move });
   tl.tween(eqU, 0, { at: 48.3, dur: 0.8, ease: ease.move });
   tl.tween(readU, 0, { at: 48.3, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 49.5, dur: 0.9, ease: ease.enter });

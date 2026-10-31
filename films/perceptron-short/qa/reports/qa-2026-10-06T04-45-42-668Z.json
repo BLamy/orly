@@ -1,0 +1,51 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-06T04:45:42.668Z",
+ "summary": {
+  "pass": 4,
+  "warn": 0,
+  "fail": 0,
+  "skip": 1
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "9 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "pass",
+   "detail": "138 wpm overall",
+   "wpm": 137.7,
+   "perShot": {
+    "ch01-s01": 181.4,
+    "ch01-s02": 138.7,
+    "ch01-s03": 133.9
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all clip edges quiet",
+   "loud": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -18 LUFS (target -18), TP -1.9 dBTP, limiter 0.44 dB, compressor 3.44 dB GR, line rides ≤ 1.1 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "skip",
+   "detail": "STT round-trip on names not automated (no local STT; ElevenLabs speech-to-text would spend credits) — listen to lines with lexicon entries"
+  }
+ ]
+}

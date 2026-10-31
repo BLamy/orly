@@ -1,0 +1,219 @@
+{
+ "shot": "ch09-s05",
+ "at": "2026-10-13T23:03:33.764Z",
+ "minCapPx": 22,
+ "sampled": 35,
+ "texts": 41,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "gender misread:",
+   "capWhileSubject": 22.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "darker-skinned women up to 34.7%",
+   "capWhileSubject": 22.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "lighter-skinned men up to 0.8%",
+   "capWhileSubject": 22.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Buolamwini & Gebru, 2018",
+   "capWhileSubject": 22.7,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "lit 2012 · still burning, still argued",
+   "capWhileSubject": 22.9,
+   "why": "named: \"still still argued\""
+  }
+ ],
+ "texture": [
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 16.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 19.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 16.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 16.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 16.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 16.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 16.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 11,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 19.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 19.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 19.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 16.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 19.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "years",
+   "maxCap": 19.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 15.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 17.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2012",
+   "maxCap": 18.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "panda 57.7%",
+   "maxCap": 30.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "gibbon 99.3%",
+   "maxCap": 31.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1984",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1999",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2006",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2014",
+   "maxCap": 12.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN",
+   "maxCap": 23.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DATA AND ARITHMETIC",
+   "maxCap": 23.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit 2012 · still burning",
+   "maxCap": 22.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "The future depends on",
+   "maxCap": 11.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "as quoted by G. Marcus, 2018",
+   "maxCap": 6.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE",
+   "maxCap": 8.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GARY MARCUS · 2018 ·",
+   "maxCap": 25,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Deep Learning: A Critical Appraisal",
+   "maxCap": 23.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 36
+}

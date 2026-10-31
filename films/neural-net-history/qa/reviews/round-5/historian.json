@@ -1,0 +1,72 @@
+{
+  "reviewer": "historian",
+  "lens": "accuracy & fairness",
+  "round": 5,
+  "scores": {"accuracy": 8.5, "depth": 8.5, "clarity": 8, "story": 8.5, "visual": 8, "sync": 8.5, "sound": 8, "curiosity": 8.5},
+  "summary": "The facts are clean. I ran a fresh machine check: all 233 script lines match timeline.json, and every quoted span in the narration is verbatim in quotes.json (0 mismatches). A scan of every curly-quoted string literal in the shot sources finds 0 unsourced quotations; the one hit is the AAAI-84 panel title, which is a name, not a quote. Every cited claim id exists, and every contested claim is framed as contested on screen. The VTT carries the new L1410b and L1502 wording on the 2164 s clock. I checked the round-4 rewrites against the research. L1410b ('China a year or two behind? That belief burned about two years.') matches e13-gap and e13-crash: lit Oct 2022, out Jan 2025. L1502 keeps 'nobody he met', which is faithful to q-hopfield-versailles. 'Two in the morning' matches e12-nobel-physics, and 'physicist · aged 91' is right. The round-4 removals hold on sheets rendered at 21:58-22:05Z, after every recordedAt. ch15-s06 has no Hassabis caption and no hand. ch10-s12 has no compute ratio. ch10-s10 has no 'toy weights' caption. ch15-s04 has its METR source line, and ch15-s05 letters all four labs. Two fairness regressions came in with this round's critic and credits passes, and both concern the narrator's maker. (1) ch15-s10: the end card no longer says that Anthropic, the lab that made the film's author model, is a lab in this story. The CREDITS card now reads only 'Claude Opus 5.5 · Anthropic'. The disclosure survives in credits.mjs 'detail' and on the sources page, not in the film. (2) ch14-s04b: in the three-position export-control row, a critic note moved DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC) to land about 5 s after the other two tags. It now lands alone in the silent tail and holds as the shot's last word. Smaller items: the script.json onScreenText still carries the three removed texts (an invitation to re-add them), and name pronunciations still have no human sign-off (fourth round).",
+  "ledgerCheck": {
+    "round4-shots": "PRESENT and finalized (21:43:49Z; 25 ids: 24 fixed, 1 partial). Sheets were regenerated 21:58-22:05Z, so they show the ledgered code. Accuracy-bearing ids checked at their word times:",
+    "confirmedFixed": [
+      "ch15-s06: no hand and no 'Hassabis, 2025 · AGI…' caption at +0.29, +0.88, +1.79 or +2.67. Wall slips sit at rest alpha. The name card reads 'GEOFFREY HINTON · YOSHUA BENGIO · YANN LECUN / 2018 Turing Award' from +4.04. The LeCun off-ramp quote and the 'left Meta, Nov 2025, to build world models · AMI Labs' label (matches e14-lecun) run from +8.08 to the end. Closed after three rounds.",
+      "ch10-s12: the TIME card carries one fact, '12 hours · one machine, 8 GPUs', from +9.63 to +13.54 (e10-results). No cost block, divider or ratio in any spelling. Closed after four rounds. (The beat is still named 'seventh' in the clock. It is harmless, but see the global hygiene note.)",
+      "ch10-s10: grep finds no 'untrained toy weights: real bindings' in the shot source.",
+      "ch15-s04: 'METR estimates · frontier models' sits under the ruler from b3 (+8.0; seen +10.12 and +12.0). 'UNRELIABLE ABOVE HERE' sits beside the 16-HOURS rung, matching METR's own >16 h caveat in e14-metr-horizon. No single lab is named.",
+      "ch15-s05: the four plinth tags read GOOGLE DEEPMIND / ANTHROPIC / OPENAI / META with 'as of October 2026' (+0.38, +0.96, +2.88). The settlement label is 'ANTHROPIC · $1.5B SETTLEMENT · PIRATED BOOKS' (+22.25 to +26.13; e14-copyright). Lin and Katsas are quoted verbatim at equal size (+18.38). 'JULY 2026' for the OpenAI incident matches e14-hf-incident.",
+      "ch15-s01: the JOHN HOPFIELD / physicist · aged 91 card is up at +14.50. The Wendy Hall card, '…it does seem a bit of a stretch', is verbatim and attributed (+29.96).",
+      "ch14-s04b: the named card rises on 'behind' (+7.79 to +8.75: 'CHINA IS A YEAR OR TWO BEHIND · lit Oct 2022 · out Jan 2025 · ≈ 2 years'). The text is fixed, but the tag timing has regressed (see issue).",
+      "ch14-s07: three gap tags at +4.87 to +6.87, then the Liang quote (attributed July 2024, ChinaTalk translation), then the fence card stamped STATUS: OPEN on 'stands' (+14.29 to +14.75).",
+      "ch12-s03: the FTX caveat '(later exposed as fraud; Anthropic not implicated)' is intact (+16.29 to the end). GPT-4 and CLAUDE are struck together, '14 MAR 2023' (+25.87). The LLaMA leak is dated 3 MAR 2023, consistent with 'within a week'.",
+      "ch09-s05: 'GARY MARCUS · 2018 · Deep Learning: A Critical Appraisal' is fully legible from +22.00 to +23.92 (about 2.5 s readable).",
+      "ch15-s09: the verdict slip 'LEARNING + ACCOMPLICES / NEVER ONE PERSON' is under WHO TAUGHT IT?, and STATUS: OPEN is struck on the CASE FILE tab at b3 (+12.75 and +13.92), not on the question. The film no longer takes back its answer.",
+      "ch15-s08: marked PARTIAL only because the note check looked for a literal T.word 'open' anchor. The picture is done. STATUS: OPEN strikes on the 'stamp' beat (= 'open', +37.92) on HOW FAR? HOW FAST? at the ch15-s09 size and red. fx-stamp-howfar sounds at 2103.887 (mix.foley PASS). Close it as fixed."
+    ],
+    "markedFixedButRegressed": {
+      "ch14-s04b": "Ledger reason: 'DECISIVE now arrives at T.wordEnd(years)+0.4 (~11.5, silent tail)'. The text and row are kept, but DECISIVE now lands 5-6 s after HELPS HUAWEI (+5.59) and SELF-DEFEATING (+6.19). The sheet shows two tags at +10.71 and three at +12.67. The fairness reason for one equal row is lost.",
+      "ch15-s10": "Ledger reason: 'layout unchanged (Turing 0.5-8.5, credits 8.5-21.3, sources 21.3-27.9)'. The round-3/4 'disclosure' card was replaced by a CREDITS card built from credits.json. The on-screen sentence that Anthropic is a lab in this story is gone (sheet at +10.5 to +20.08)."
+    }
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch15-s10",
+      "severity": "major",
+      "problem": "The film's conflict-of-interest disclosure is gone from the picture. In rounds 2-4 the end card said the film was made by Anthropic's model, and that Anthropic is a lab in this story. The new CREDITS card (credits.json 'card' rows, 8.5-21.3 s) says only 'Research, script & code: Claude Opus 5.5 · Anthropic'. The film covers Anthropic's founding, its FTX money, its Pentagon dispute and its $1.5B settlement. A viewer of the film alone is never told that the author's maker is a party to the story. The sentence still exists, but only in generator/film/lib/credits.mjs 'detail' (player panel) and on the sources page. The user's 2026-10-13 direction was to credit more than Claude, not to drop the disclosure.",
+      "fix": "Put the disclosure back on the CREDITS card itself as its footer line, at the same 22 px cap italic mono. Text: 'Claude is made by Anthropic, a lab in this story, held to the same sources as every other.' Keep 'Every music cue's Strudel source: on the film's page' as a second footer line, or move it to the SOURCES card under 'claims.json · quotes.json'. Make the change in credits.mjs (card footer) so credits.json regenerates, then re-sheet ch15-s10 at +10.5 and +18.0. The layout stays as it is (credits 8.5-21.3, sources 21.3-27.9), with no clock change."
+    },
+    {
+      "owner": "shot",
+      "id": "ch14-s04b",
+      "severity": "major",
+      "problem": "This is a fairness regression in the export-control row. Rounds 3-4 fixed the three positions as one row at equal size, so the film shows the dispute without ruling on it. A round-4 critic note then delayed DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC) to T.wordEnd('years')+0.4 (~11.5 s). HELPS HUAWEI lands at 5.59 and SELF-DEFEATING at 6.19, but the Anthropic-led position arrives 5-6 s later, alone, in the silent tail (sheet: 2 tags at +10.71, 3 at +12.67), and holds as the shot's final image. Because it arrives last and in silence, it reads as the verdict, and it is the position of the narrator's own maker.",
+      "fix": "Bring all three tags in together: DECISIVE at tag2 + 0.6 s (~6.8). Better, stagger all three 0.6 s apart in left-to-right order from tag1 (5.59 / 6.19 / 6.79), so no tag lands alone in silence. Keep the slot, size, warm-grey paper and order. Do not give any one tag a solo beat, a light change or a push. Re-sheet at 7.0, 10.26 and 14.5, and confirm all three are at full ink by 7.0."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "story/script.json onScreenText still lists three texts the review removed from the picture: ch10-s10 'untrained toy weights: real bindings', ch10-s12 '12 hours · one machine, 8 GPUs · ≈ 1/7 the compute of GNMT+RL (derived)' and ch15-s06 'Hassabis, 2025 · AGI in 5 to 10 years · about even odds'. This is the spec that authors and critics read. ch10-s12 was re-added by respelling three times, so a stale spec is a standing invitation to bring them back. ch10-s12 also still cites e10-flops and keeps a beat named 'seventh'.",
+      "fix": "In story/chapters/ch10.json and ch15.json, delete those onScreenText entries. Set ch10-s12's sundial label to '12 hours · one machine, 8 GPUs', drop e10-flops from ch10-s12 claims (keep it in claims.json) and rename the 'seventh' beat (e.g. 'gpus'; nothing in the shot anchors to it now). Then reassemble script.json. This is a text-only change with no clock change, because no line changes."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "This is the fourth round with no human sign-off on how the narrator says real people's names. narration.listening still marks Uszkoreit, Amodei, Hochreiter, Schmidhuber, Rumelhart, LeCun and Lenat as pending. STT round-trips pass, which is partial evidence, but a transcriber matching a spelling is not a listener hearing respect.",
+      "fix": "This is a human hand-off before publish (unchanged). Listen to L1006, L1206, L0614, L0507, L0821 (with L0601, L0609 and L1311) and L1104 (with L0515 and L1316). For each term, run `npm run film:voice -- signoff --slug neural-net-history --term <term> --by <name>`. Any rejection becomes a solo retake with a voice.json respelling."
+    }
+  ],
+  "verifiedFixedFromRound4": [
+    "L1410b: rewritten to 'China a year or two behind? That belief burned about two years.' (e13-gap, e13-crash). It reads that way in the script, the timeline and the VTT, and ch14-s04b re-anchors on 'behind'.",
+    "L1502: the Versailles callback is spoken with 'nobody he met' intact, which is faithful to Hopfield's 'never met anyone who remembered hearing the talk'. The Boltzmann machine is described as 'Hinton co-invented', consistent with the ch05-s03 card 'with Sejnowski & Ackley'.",
+    "L0114: re-taken solo, now 194 wpm (was 221). It is no longer a QA pacing failure, only a 'fast' warning. With the user's rejection of slowed or excited readings, I do not re-route it. A listener can decide at sign-off.",
+    "ch15-s08 foley partial: fx-stamp-howfar at 2103.887 s on 'open' and fx-stamp-fence at 1906.872 s on 'stands'. mix.foley PASS (7 events); the film's three STATUS: OPEN stamps now all sound.",
+    "ch13-s01 Hinton likeness: the cast now gives him sweptBack hair (receding front, raised crown) and a standing idle. Closed.",
+    "ch15-s06, ch10-s12, ch10-s10, ch15-s04, ch15-s05 and ch09-s05: see ledgerCheck.confirmedFixed."
+  ],
+  "best_moments": [
+    "ch15-s05: four labs lettered under one light. Two judges, two courts, verbatim and at equal size. Anthropic's own record settlement, named and dated. Then OpenAI's 'warning shot' in OpenAI's own words. No lab gets a pass.",
+    "ch14-s07: three gap estimates from three camps (Hassabis, Huang, Lin), then Liang's 'originality and imitation', then the fence stamped STATUS: OPEN on 'stands', with the clack now audible. A contested race is left contested.",
+    "ch12-s03: the FTX caveat in full, then GPT-4 and Claude struck together on the same March day, as equals beside Bard and the leaked LLaMA weights.",
+    "ch15-s04: the METR ladder carries its own 'UNRELIABLE ABOVE HERE' warning, and the RCT that cuts the other way ('19% slower · felt 20% faster'), which the narration also says its authors now call out of date.",
+    "ch15-s09: the verdict slip 'LEARNING + ACCOMPLICES / NEVER ONE PERSON' answers the case, and the open stamp goes on the file, not the answer. Credit is spread, as the backprop-priority card in ch05-s06 spreads it.",
+    "ch05-s06 and ch08-s13: 'Who invented the messenger? Several people, separately' with the full Kelley-to-Le Cun priority list on screen, and 'Fair credit: that was seven networks voting' with IDSIA's earlier GPU wins. Credit disputes are shown, not settled."
+  ]
+}

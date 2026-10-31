@@ -1,0 +1,90 @@
+{
+  "reviewer": "art-director",
+  "round": 3,
+  "lens": "visual direction",
+  "method": "Read all 103 shots (12 chapters) of story/script.json in full: visual, lines, onScreenText and beats, plus the staging appendix. Checked them against docs/film/kit-catalog.md (transitions.ts: lampChange is a 3 s dim to black and relight; kit.ts paperLantern/thread/knot; architecture skyline 'bayArea'; mistyHills), the style bible (sec. 6 binding rule; pacing 'roughly one transition device per 60-120 s ... signature transitions mark chapter and era boundaries only') and the round-2 art-director card. Ran `node generator/film/script.mjs assemble --slug handwired-explained --check`: 0 errors, 1 warning, 'estimated 25.6 min (1538.1 s, at 140 wpm) against a 24.0 min target', 2,741 words, 182 lines. No voice/voice.json is locked yet, so 140 wpm applies. That is inside the brief's 22-26 min, so runtime is not critical, but only 0.4 min of headroom is left. research/exports/handwiredos-circuit.json now exists (130 layers, 9,909 arcs, longestGateChain). No gallery trainer run is in research/runs. Transition census: 41 crossfade, 32 cut, 13 lampChange, 8 paperWipe, 6 inkBleed, 3 fadeBlack, so 30 signature devices in 25.6 min. Round-2 fixes verified as applied: the Lifespan encoding (one rule, tip positions per tag), ch02-s06 dates off the rule, ch09-s01 crane geometry, the ch09-s05 one-way strip, the ch06-s01 straight track, the ch05-s05 flashback loom, the ch07-s11 25-card strip, the ch04-s14 20x50 grid, ch11-s03 figures at bar tips, the ch08-s05 ink blots, the ch12 hook-to-hinge rhyme, ch02-s02 paperLanterns, the canonical rule ticks, the ch08-late variant, and the narrowed hand rule. Re-checked the arithmetic: spring stamp 0.9896/0.00328/-2.6/0.82 applied to (-300, 0) gives (-296.88, 780), consistent as one semi-implicit step; lens train 14+5x24+15 = 149; the forced shutters give 2x10 + (1-2)x12 = 8; ranks 2 0 3 1; K-slot items 1, 2, 4. All check.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8.5,
+    "clarity": 8,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 8
+  },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch05-s04 (above all), ch06-s06, ch08-s03, ch08-s06, ch09-s03, ch09-s08, ch11-s04",
+      "problem": "lampChange is still used inside chapters where the visual describes continuous action, and in the kit it is a 3 s dim-to-black-and-relight (transitions.ts). ch05-s04 is the film's identity image: during a dolly back, 'each thread becomes its own arc, 9,909 in all'. That literal thread-to-arc dissolve would black out halfway. ch06-s06 'follows the COUNT arm out' through a blackout. ch08-s03 is the same tag with the window lightening. ch11-s04 is still 'Lamp change across the same plate', the exact break of cause and effect that round 2 flagged (the JSON half riveted, then the TOML half struck). There are 13 lampChanges against the 6 recommended, and 30 signature devices in 25.6 min (about one every 51 s), against the bible's one per 60-120 s at chapter and era boundaries.",
+      "fix": "Set transitionIn to 'crossfade' for ch05-s04, ch08-s03, ch08-s06, ch09-s03 and ch09-s08, and to 'cut' (same plate, same set) for ch06-s06 and ch11-s04. Write each mood change into the visual as a 2-4 s in-shot tint interpolation, as ch04-s06/s07/s09 and ch07-s03 already do. In ch05-s04, have the serverCyan-to-candleAmber tint run under the dolly so the threads stay on screen the whole time they become arcs. Keep lampChange only on ch03-s01, ch05-s06 (the furnace), ch07-s01, ch09-s01, ch11-s01 and ch12-s05."
+    },
+    {
+      "where": "ch03-s06, ch05-s05, ch05-s06, ch06-s12, ch07-s11, ch09-s03, staging.tagLine",
+      "problem": "The question-card system is only half built, so the refrain 'Hang that on the line' still promises pictures that never come. (a) ch03-s06 ties an untracked ordinary tag (the 'holds no text' fragment). It is not in staging.tagLine.tags, nobody unties or pays it in ch05-s05, and it is missing from the ch12-s01 roster and the ch12-s02 depth map. (b) In ch05-s06 the narrator says 'Hang that on the line' over a visual that says 'nothing is tied yet: the question is spoken, not written'. (c) ch02-s03 says qK 'is paid in ch06-s12, where the hands untie it and pin it to the host clockwork', but ch06-s12 has cast None and shows only a dial echo in the haze. (d) Staging lists 'the nanoGPT question' among the plain-loop cards, yet ch07-s11 hangs it from tag 10 itself.",
+      "fix": "Add five QUESTION CARDS to staging.tagLine.tags, each a small square card on a plain loop, no knot card and no drop: qK (dial outline), qNotes (a cut text-box outline with a caret), qGPU (a chip silhouette), qNano (a question mark) and why. ch03-s06: on 'Hang' the hands hang qNotes, not a lettered tag. ch05-s05: add narrator-hands; on 'browser' they untie qNotes and pin it to the native text box. ch05-s06: on 'Hang' they hang qGPU in tie order. ch09-s03: on 'GPU' they untie qGPU and pin it to the relit furnace grate. ch06-s12: add narrator-hands; on 'finite' they untie qK and pin it where the dial echo settles over the loom. ch07-s11: hang qNano on its own plain loop just right of tag 10. ch12-s01 then shows three empty plain loops (paid) plus qNano and why still hanging."
+    },
+    {
+      "where": "ch03-s03, ch03-s06, ch05-s03, ch06-s05b, ch09-s03b, ch10-s01, ch04-s08, ch04-s11, ch10-s02",
+      "problem": "Tag fronts still re-letter themselves between shots (round-2 issue, partly unfixed). ch01-s05 makes the fronts canonical: sentence case, no 'Suspect:' prefix, the knot card 'the README'. Yet ch03-s03's onScreenText is 'Suspect: a tool turned ordinary JavaScript into it', with the knot card 'the README's tagline'. ch03-s06 has 'Suspect: somebody trained it'. ch05-s03 has 'SUSPECT: IT ISN'T REALLY A NETWORK', and ch10-s01 has 'Suspect: a tool...'. ch06-s05b 'ONE EVALUATION PER FRAME' and ch09-s03b 'THE GPU IS THE FASTER ONE' are in capitals. Tag 6 has three different fronts. ch01-s07 has exactly 'For an integer a'. ch04-s08 and ch10-s02 have '(a > 4) ? 10 : 12 with the small print For an integer a'. ch04-s08 re-letters it 'grid 1', and ch04-s11 shows 'For an integer a' again with no beat. Its knot card is 'the README' in one shot and 'the README example' (ch10-s02) in another.",
+      "fix": "Add staging.tagLine.fronts with {front, knot, back[]} for every tag, then quote those strings verbatim in each visual and onScreenText item. Recommended fronts, all in sentence case: 3 'Somebody trained it', 4 'A tool turned ordinary JavaScript into it' (knot 'the README'), 5 'It isn't really a network', 6 'For an integer a' (knot 'the README'), 7 'One evaluation per frame', 9 'The GPU is the faster one (for the highlighter half)'. For tag 6, keep 'grid 1' as a second inked line under the small print from ch04-s08 to the end, and have ch04-s11 and ch10-s02 show both lines, so nothing re-letters back without a beat."
+    },
+    {
+      "where": "ch10-s02, ch10-s01 (tag backs)",
+      "problem": "The backs of the tags contradict earlier shots. In ch04-s09 the red pencil writes 'validator' on tag 6's back. ch10-s02 then turns tag 6 over to find only the grey launch-day hidden-comment slip, with 'nothing for it to write'. In ch03-s03 the red pencil writes the docs fragment on tag 4's back, and ch10-s01 calls it 'small grey ink'. The red pencil is the film's grammar of doubt, so its marks must persist in red.",
+      "fix": "ch10-s02: the back shows the red 'validator' from ch04 at the top and, pinned beneath it, the grey hidden-comment slip from launch day, so the doubt and the README's own disclosure are seen together. ch10-s01: 'the docs' fragment written there in red pencil in ch03, small, as texture'."
+    },
+    {
+      "where": "ch12-s01, ch12-s02",
+      "problem": "The finale roster is incomplete, and one round-2 fix was missed. ch12-s01's 'left to right' inventory leaves out qK, the ch02-s06 'others' typed card and the ch03-s06 Notes tag. ch12-s02's re-hang places only tags 1-11 plus why, and does not say what happens to the non-belief objects still on the washing line. ch12-s01 still gives tag 7 a 'frayed start', although ch06-s05b now gives it a plain thread, because fraying is tag 1's sign for 'refuted as biology'.",
+      "fix": "Write the full tie-order roster into ch12-s01 (1, qK, 2, others card, 3-5, why, 6, qNotes loop, qGPU loop, 7, 10, qNano, 8, 9, 11, with each tip as already given) and change tag 7 to 'plain thread, cut end at about three months'. In ch12-s02, state that question cards, empty loops and the others card stay on the washing line. On 'loom' that line is drawn up out of frame, so only belief tags enter the six columns and qNano and why ride the line out with them. Or, if why must stay in frame 1 as now, say that it alone is lifted across by the hands."
+    },
+    {
+      "where": "ch09-s01",
+      "problem": "The geometry is now right, but the time is not there. leadIn 3 (chapter card), L0901 and L0902 (about 6 s with the pause) and holdAfter 2.5 make a shot of about 12 s. 'four' lands at about 7.5 s, which leaves about 4.5 s for the four-column annexe to fill 683 panes, a crane of three frame heights, the pull back to the 53-storey wide, and 24 clock marks lighting. That plays as a whip pan, against the film's slow-camera grammar, and it is the score's biggest music moment.",
+      "fix": "Set minDuration about 17 and holdAfter about 6.5 so the cascade, the crane and the pull back are music-led (crane about 4 s, pull back about 3 s, hold 2 s on the lit clock). To keep the runtime at or under 25.6 min, take the same 4 s from the holds: ch05-s05 3.4 to 2.2, ch08-s08 3.4 to 2.2, ch11-s05 3.1 to 2.2, ch03-s01 3.4 to 2.6."
+    },
+    {
+      "where": "ch05-s05",
+      "problem": "The flashback's Window Calendar inset breaks the calendar's binding and spoils ch09. 'its October column with one pane lit for the thirteenth' contradicts one pane per commit (13 October is 242 panes, 41 storeys), and showing the 13 October column at all gives away the tower reveal that ch09-s01 is built around.",
+      "fix": "Drop the inset. The 13 OCT 2026 date stamp and the cooler ghost tint already mark the flashback. If a calendar cue is still wanted, use the main block's October column with its first-storey panes for 1-12 October lit and a faint brace above it, with no annexe drawn."
+    },
+    {
+      "where": "ch05-s01, ch05-s04, ch07-s04, staging.buildList.matmulLoom; ch07-s09",
+      "problem": "The export now exists (research/exports/handwiredos-circuit.json: 130 layers, 9,909 arcs, the longest gate chain, and its $command recorded), but four places still carry the conditional branch. ch05-s01 says a summary export 'reportedly matched'. ch05-s04 says 'If the export cannot be run ... side by side'. ch07-s04 says 'If that export does not exist ... uniform schematic density'. The buildList data note still says 'the story stage did not run the full export'. Shot authors will see two films. In ch07-s09 the loss-curve ridge and the traveller (the best mistyHills use in the film) still depend on a gallery trainer run that is not in research/runs.",
+      "fix": "Collapse each of the four fields to the single true branch, citing the export path and its $command. For ch07-s09, run the gallery trainer now (Story preset, seed 0x517a9e), commit the loss series beside the circuit export, and remove the 'only if the trainer run exists' clauses. Otherwise cut the traveller and the curve ridge outright, so the shot is not left undecided at story lock."
+    },
+    {
+      "where": "ch10-s03 (beat 'why')",
+      "problem": "The beat says 'the narrator's hands ink why? on a small tag and hang it on a slack thread'. That contradicts the visual (the red-pencil hand writes on the blank why tag that has hung there since ch01-s05) and the hand signature (the narrator's hands never write).",
+      "fix": "Rewrite the beat: 'the narrator's hands turn the blank why tag into the light; the red-pencil hand writes why? on it and withdraws; no knot card'."
+    },
+    {
+      "where": "ch08-s05 (beat q038, props)",
+      "problem": "The beat says 'Deep Dive I's plate slides in beside the checker' and the props list 'Deep Dive I's docs plate', but the visual has a new small parchment plate inking the fragment 'two evaluators agree'. The shot author cannot tell whether to reuse the ch04-s13 exactness plate.",
+      "fix": "Choose one. Recommended: the visual's version, a small new plate with the fragment and attribution. Change the beat and props to match. If the ch04-s13 'exact = equal to the FP32 calculation' plate is wanted as an echo, say so and keep its text off-screen to stay within the two-item rule."
+    },
+    {
+      "where": "ch07-s10 (beat slider), ch07-s01",
+      "problem": "Stale staging leftovers. ch07-s10's slider beat ends 'the README card inks', but there is no README card in the shot. ch07-s01's lampChange is described as 'out of ch06's labGreen X-ray', but ch06-s13 is candleAmber.",
+      "fix": "Delete 'the README card inks' from ch07-s10. In ch07-s01, write 'out of ch06's candleAmber X-ray'."
+    },
+    {
+      "where": "ch12-s04",
+      "problem": "'three resting red pencils' (on tags 2, 10 and 4's knot) multiplies a prop the film has kept singular: one red-pencil hand, one pencil, entering from frame right. Three pencils in one frame read as three doubters.",
+      "fix": "Keep one pencil. On 'argued' the red-pencil hand lays it beside tag 2, on 'differentiable' moves it to tag 10, and on 'claim' rests it against tag 4's tagline knot, where it stays. Alternatively, leave a small red rest-mark on each post with the pencil resting at the last."
+    },
+    {
+      "where": "runtime (film-wide)",
+      "problem": "The check estimates 25.6 min at the default 140 wpm (no voice.json is locked). That is inside the range, but only 0.4 min under the brief's 26-min ceiling. A slower locked voice, or any hold added for the fixes above, could push it out of range.",
+      "fix": "Make every visual fix in this card time-neutral (the ch09-s01 trade above is). After film-narrate locks voice.json, re-run --check at once. If it exceeds about 25.8 min, trim words first from ch06-s03 L0609 and ch07-s02 L0703/L0704, which the on-screen ledgers already carry."
+    }
+  ],
+  "strengths": [
+    "Round 2's two critical visual problems are solved properly. The Lifespan Rule now has one written encoding with a tip position for every tag (a cut dull end for an ended belief; a glowing open tip with a copper arrow for one still held; only tag 1's engineering strand passes 'a lifetime'), and each tag shot states its own tip. The finale wide in ch12-s01 will read as states (split, struck, riveted, still growing), not as a decorative row.",
+    "The teaching machines are real arithmetic made into theatre, and they check. The ramp ledgers (0 0 1 2 96 / 0 0 0 1 95), shutters that scale their tiles (5 + 6 = 11, 2.5 + 9 = 11.5, a copper 20 plus an indigo -12 = 8), the 2^24 ruler with its missing tick, the hollow-odd and filled-even detent at 8,388,609, the lens train winding to 2^149, the spring stamp and a squaring press whose counter stays frozen while the step dial spins, the 10,000-drawer cabinet reusing Deep Dive I's shutters (30,002 against 1), the ReGLU valve's 0.15 / 0.225 / 0.45 / 1.5 and its shut state at -0.15, and the Huber clamp's collared springs. None of them is boxes and arrows.",
+    "Data binding is now real where it matters. The circuit export exists with 9,909 arcs and 130 layers, so the cathedral of arcs in ch01-s04, the ch05 loom and the ch05-s04 wallpaper dissolve can be literally one program. The ch05-s05 flashback ghost loom ('density ~ operations', then 4,251 ticking up to 4,646 on the pinned loom) keeps three different figures honest in one image.",
+    "The fixed sets give the shot authors buildable geography. The tag-keeper's workshop has per-chapter variants (period rooms, through the loom, above the clockwork, the cyan grain, out of doors, the thawing window). The Window Calendar has a fixed grid, now choreographed so the October annexe becomes a 53-storey tower over a 12-storey plinth. The five-beat silent X-ray desk accumulates the source table, gates, loom, ratchet and finally a dark valve.",
+    "The rhymes are strong and now closed. The cold furnace in ch05-s06 is relit cyan in ch09-s03. Kleene's dial, with its crank outside the frame, settles over the loom. The 1943 paperLanterns return as the ghost beside the shut valve. The one-way reading head feeds the strip forward on both passes. RegExp gets a spool winder, not a loom, and eight winders shown in equal light. The bare hinge-profile hook in frame 5 is bent from the dock wire in ch12-s06 and placed in the viewer's open palm. The finale re-hangs the film's own beliefs by the compiler's dependency-depth rule and sends a forward pass through them, with the struck tags computed and then shuttered to zero."
+  ]
+}

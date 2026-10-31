@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -80,16 +80,16 @@ function Frame({ s }: { s: SceneState }) {
           })}
           {gridU > 0.5 && (
             <g opacity={gridU * Math.max(0, 1 - 1.4 * axU)}>
-              <text x={cellPos(0).x} y={cellPos(0).y - 24} fill={colors.MUTED} fontSize={13}>
-                {`300 problems · heat = chance one attempt succeeds · round ${roundIdx}`}
+              <text x={cellPos(0).x} y={cellPos(0).y - 44} fill={colors.TEXT} fontSize={15}>
+                {`accuracy ${(acc * 100).toFixed(1)}%${roundIdx > 0 ? ` · kept last round ${(HIST[Math.max(1, roundIdx)].keptFrac * 100).toFixed(0)}%` : ''}`}
               </text>
-              <text x={cellPos(0).x} y={cellPos(M - 1).y + 48} fill={colors.MUTED} fontSize={12.5}>
-                {`accuracy: ${(acc * 100).toFixed(1)}%${roundIdx > 0 ? ` · kept last round: ${(HIST[Math.max(1, roundIdx)].keptFrac * 100).toFixed(0)}%` : ''}`}
+              <text x={cellPos(0).x} y={cellPos(0).y - 22} fill={colors.MUTED} fontSize={14}>
+                {`300 problems · heat = chance one attempt succeeds · round ${roundIdx}`}
               </text>
             </g>
           )}
           {stuckU > 0 && (
-            <text x={cellPos(0).x} y={cellPos(M - 1).y + 74} fill={colors.NEGATIVE} fontSize={12.5} opacity={stuckU}>
+            <text x={cellPos(0).x} y={cellPos(M - 1).y + 52} fill={colors.NEGATIVE} fontSize={14} opacity={stuckU}>
               {`outlined: ${STUCK} problems that never yielded a verified chain`}
             </text>
           )}
@@ -100,14 +100,14 @@ function Frame({ s }: { s: SceneState }) {
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={chX(ROUNDS) + 10} y2={CH_Y0} stroke={colors.GRID} />
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={CH_X0 - 8} y2={chY(1.02)} stroke={colors.GRID} />
               {Array.from({ length: ROUNDS + 1 }, (_, r) => (
-                <text key={r} x={chX(r)} y={CH_Y0 + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                <text key={r} x={chX(r)} y={CH_Y0 + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                   {r}
                 </text>
               ))}
-              <text x={chX(ROUNDS / 2)} y={CH_Y0 + 44} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={chX(ROUNDS / 2)} y={CH_Y0 + 48} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 bootstrap round →
               </text>
-              <text x={CH_X0 - 18} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 18} y={chY(1) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 1.0
               </text>
             </g>
@@ -116,7 +116,7 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <path d={accPath(round)} fill="none" stroke={colors.POSITIVE} strokeWidth={3} opacity={axU} />
               <circle cx={chX(Math.min(round, ROUNDS))} cy={chY(acc)} r={5} fill={colors.POSITIVE} opacity={axU} />
-              <text x={chX(Math.min(round, ROUNDS)) - 8} y={chY(acc) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={13.5} opacity={axU}>
+              <text x={chX(Math.min(round, ROUNDS)) - 8} y={chY(acc) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={15} opacity={axU}>
                 {`${(acc * 100).toFixed(1)}%`}
               </text>
             </g>
@@ -127,18 +127,13 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Curriculum and Bootstrapping
           </text>
-          <MathLabel
-            tex={`\\text{keep only verified} \\Rightarrow 36.6\\% \\to ${(FINAL.acc * 100).toFixed(1)}\\% \\quad (${STUCK}\\ \\text{never move})`}
-            x={640}
-            y={340}
-            fontSize={19}
-            color={colors.POSITIVE}
-            opacity={endU}
-          />
+          <text x={640} y={340} textAnchor="middle" fill={colors.POSITIVE} fontSize={20}>
+            {`keep only verified: ${(HIST[0].acc * 100).toFixed(1)}% → ${(FINAL.acc * 100).toFixed(1)}% · ${STUCK} never move`}
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             collapse becomes curriculum when a check stands at the gate
           </text>

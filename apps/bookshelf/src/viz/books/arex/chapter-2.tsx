@@ -10,11 +10,45 @@ import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
+const TOOL_R = 64;
 const TOOLS = [
-  { label: 'search', sub: 'serp_search_v1', x: 930, y: 190, color: colors.ACCENT },
-  { label: 'google_scholar', sub: 'search_type=scholar', x: 1060, y: 330, color: colors.SECONDARY },
-  { label: 'visit', sub: 'visit_pages_v1', x: 930, y: 470, color: colors.WARM },
+  { label: 'search', sub: ['serp_search_v1'], x: 1210, y: 170, color: colors.ACCENT },
+  { label: 'google_scholar', sub: ['search_type=', 'scholar'], x: 1210, y: 330, color: colors.SECONDARY },
+  { label: 'visit', sub: ['visit_pages_v1'], x: 1210, y: 490, color: colors.WARM },
 ];
+const CARD_W = 190;
+const CARD_H = 66;
+const cardX = (i: number) => 18 + i * 156;
+const cardY = (i: number) => 240 + (i % 2) * 90;
+// Packet route: a horizontal corridor above the tape cards, so the packet never crosses a card or a label.
+const CORRIDOR_Y = 222;
+const toolEdgeX = TOOLS[0].x - Math.sqrt(TOOL_R * TOOL_R - (CORRIDOR_Y - TOOLS[0].y) ** 2);
+const centerX = (i: number) => cardX(i) + CARD_W / 2;
+const ROUTE_OUT = [
+  { x: centerX(2), y: cardY(2) },
+  { x: centerX(2), y: CORRIDOR_Y },
+  { x: toolEdgeX, y: CORRIDOR_Y },
+];
+const ROUTE_BACK = [
+  { x: toolEdgeX, y: CORRIDOR_Y },
+  { x: centerX(3), y: CORRIDOR_Y },
+  { x: centerX(3), y: cardY(3) - 4 },
+];
+function pointAlong(points: { x: number; y: number }[], u: number) {
+  const legs = points.slice(1).map((p, i) => Math.hypot(p.x - points[i].x, p.y - points[i].y));
+  const total = legs.reduce((a, b) => a + b, 0);
+  let d = clamp01(u) * total;
+  for (let i = 0; i < legs.length; i++) {
+    if (d <= legs[i] || i === legs.length - 1) {
+      const f = legs[i] === 0 ? 0 : Math.min(1, d / legs[i]);
+      const a = points[i];
+      const b = points[i + 1];
+      return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f };
+    }
+    d -= legs[i];
+  }
+  return points[points.length - 1];
+}
 const TAPE = [
   { role: 'system', text: 'SYSTEM_PROMPT_MAIN', color: colors.MUTED },
   { role: 'user', text: 'USER_PROMPT_MAIN', color: colors.ACCENT },
@@ -91,13 +125,13 @@ const scene = buildScene();
 
 function TapeCard({ i, u }: { i: number; u: number }) {
   const c = TAPE[i];
-  const x = 85 + i * 108;
-  const y = 225 + (i % 2) * 88;
+  const x = cardX(i);
+  const y = cardY(i);
   return (
     <g transform={`translate(${x} ${y + (1 - u) * 18})`} opacity={u}>
-      <rect width={96} height={62} rx={10} fill={colors.PANEL} stroke={c.color} />
-      <text x={10} y={20} fill={c.color} fontSize={8.5} fontFamily={MONO}>{c.role}</text>
-      <text x={10} y={42} fill={colors.TEXT} fontSize={8.2} fontFamily={MONO}>{c.text}</text>
+      <rect width={CARD_W} height={CARD_H} rx={10} fill={colors.PANEL} stroke={c.color} />
+      <text x={10} y={22} fill={c.color} fontSize={14} fontFamily={MONO}>{c.role}</text>
+      <text x={10} y={46} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{c.text}</text>
     </g>
   );
 }
@@ -107,9 +141,8 @@ export function Render({ s }: { s: SceneState }) {
   const toolU = s.get(scene.toolU);
   const packet = s.get(scene.packet);
   const mainOpacity = 1 - 0.86 * s.get(scene.dimU);
-  const p = packet < 0.5
-    ? { x: 380 + (TOOLS[0].x - 380) * packet * 2, y: 260 + (TOOLS[0].y - 260) * packet * 2 }
-    : { x: TOOLS[0].x + (490 - TOOLS[0].x) * (packet - 0.5) * 2, y: TOOLS[0].y + (402 - TOOLS[0].y) * (packet - 0.5) * 2 };
+  // The packet leaves the assistant's search call along the corridor, reaches the search tool's rim, and returns to the tool_response card.
+  const p = packet < 0.5 ? pointAlong(ROUTE_OUT, packet * 2) : pointAlong(ROUTE_BACK, (packet - 0.5) * 2);
 
   return (
     <>
@@ -117,17 +150,17 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={70} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={700}>The released inner loop</text>
-          <text x={640} y={97} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>AREXReActClient.run · messages.append(...)</text>
+          <text x={640} y={97} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>AREXReActClient.run · messages.append(...)</text>
 
-          <path d="M 82 354 C 300 380 560 380 810 354" fill="none" stroke={colors.GRID} strokeWidth={3} />
+          <path d="M 24 414 L 1150 414" fill="none" stroke={colors.GRID} strokeWidth={3} />
           {TAPE.map((_, i) => <TapeCard key={i} i={i} u={clamp01(tapeP - i)} />)}
 
           {s.get(scene.parseU) > 0 && (
             <g opacity={s.get(scene.parseU)}>
-              <path d="M 330 222 C 365 175 420 165 470 177" fill="none" stroke={colors.SECONDARY} strokeWidth={2} strokeDasharray="6 5" />
-              <rect x={470} y={145} width={260} height={58} rx={11} fill={colors.PANEL} stroke={colors.SECONDARY} />
-              <text x={600} y={170} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>extract_fn_call_multi(response)</text>
-              <text x={600} y={190} textAnchor="middle" fill={colors.SECONDARY} fontSize={9.5} fontFamily={MONO}>function + arguments</text>
+              <path d={`M ${centerX(2)} 240 C ${centerX(2)} 210 440 166 500 166`} fill="none" stroke={colors.SECONDARY} strokeWidth={2} strokeDasharray="6 5" />
+              <rect x={500} y={136} width={340} height={60} rx={11} fill={colors.PANEL} stroke={colors.SECONDARY} />
+              <text x={670} y={162} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>extract_fn_call_multi(response)</text>
+              <text x={670} y={183} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>function + arguments</text>
             </g>
           )}
 
@@ -135,42 +168,55 @@ export function Render({ s }: { s: SceneState }) {
             const u = clamp01(toolU - i);
             return (
               <g key={tool.label} transform={`translate(${tool.x} ${tool.y})`} opacity={u}>
-                <circle r={54} fill={tool.color} fillOpacity={0.1} stroke={tool.color} strokeWidth={2} />
-                <text y={-3} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>{tool.label}</text>
-                <text y={17} textAnchor="middle" fill={tool.color} fontSize={8.5} fontFamily={MONO}>{tool.sub}</text>
+                <circle r={TOOL_R} fill={tool.color} fillOpacity={0.1} stroke={tool.color} strokeWidth={2} />
+                <text y={-3} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{tool.label}</text>
+                {tool.sub.map((line, j) => (
+                  <text key={line} y={16 + j * 15} textAnchor="middle" fill={tool.color} fontSize={12} fontFamily={MONO}>{line}</text>
+                ))}
               </g>
             );
           })}
 
           {packet > 0 && packet < 1 && (
-            <g transform={`translate(${p.x} ${p.y})`}>
-              <circle r={16} fill={colors.ACCENT} opacity={0.16} />
-              <circle r={6} fill={colors.ACCENT} />
-              <text y={-13} textAnchor="middle" fill={colors.ACCENT} fontSize={9} fontFamily={MONO}>{packet < 0.5 ? 'query' : 'organic[]'}</text>
+            <g>
+              <path
+                d={`M ${ROUTE_OUT.map((q) => `${q.x} ${q.y}`).join(' L ')} L ${ROUTE_BACK.slice(1).map((q) => `${q.x} ${q.y}`).join(' L ')}`}
+                fill="none"
+                stroke={colors.ACCENT}
+                strokeOpacity={0.25}
+                strokeWidth={2}
+                strokeDasharray="2 6"
+              />
+              <g transform={`translate(${p.x} ${p.y})`}>
+                <circle r={14} fill={colors.ACCENT} opacity={0.16} />
+                <circle r={6} fill={colors.ACCENT} />
+                <text y={-12} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>{packet < 0.5 ? 'query' : 'organic[]'}</text>
+              </g>
             </g>
           )}
 
           {s.get(scene.resultU) > 0 && (
-            <text x={490} y={436} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO} opacity={s.get(scene.resultU)}>&lt;tool_response&gt; evidence &lt;/tool_response&gt;</text>
+            <text x={centerX(3)} y={446} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={s.get(scene.resultU)}>&lt;tool_response&gt; evidence &lt;/tool_response&gt;</text>
           )}
 
           {s.get(scene.visitU) > 0 && (
             <g opacity={s.get(scene.visitU)}>
-              <rect x={860} y={530} width={320} height={70} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
-              <rect x={880} y={550} width={170 * (1 - 0.52 * s.get(scene.extractU))} height={10} rx={5} fill={colors.MUTED} opacity={0.55} />
-              <rect x={880} y={570} width={255 * (1 - 0.62 * s.get(scene.extractU))} height={10} rx={5} fill={colors.MUTED} opacity={0.35} />
-              <text x={1160} y={576} textAnchor="end" fill={colors.WARM} fontSize={9} fontFamily={MONO}>EXTRACTOR_PROMPT</text>
+              <rect x={900} y={560} width={340} height={66} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
+              <text x={920} y={580} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>page text, bounded</text>
+              <text x={1220} y={580} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO}>EXTRACTOR_PROMPT</text>
+              <rect x={920} y={596} width={170 * (1 - 0.52 * s.get(scene.extractU))} height={10} rx={5} fill={colors.MUTED} opacity={0.55} />
+              <rect x={920} y={612} width={255 * (1 - 0.62 * s.get(scene.extractU))} height={10} rx={5} fill={colors.MUTED} opacity={0.35} />
             </g>
           )}
 
           {s.get(scene.limitU) > 0 && (
-            <text x={640} y={585} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={s.get(scene.limitU)}>for round_idx in range(1, max_rounds + 1) · default 600</text>
+            <g opacity={s.get(scene.limitU)}>
+              <text x={560} y={496} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>for round_idx in range(1, max_rounds + 1)</text>
+              <text x={560} y={520} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>AREX_MAX_ROUNDS · default 600 (a ceiling)</text>
+            </g>
           )}
           {s.get(scene.finishU) > 0 && (
-            <g opacity={s.get(scene.finishU)}>
-              <circle cx={820} cy={465} r={34} fill={colors.POSITIVE} opacity={0.13} stroke={colors.POSITIVE} />
-              <text x={820} y={469} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily={MONO}>no calls</text>
-            </g>
+            <text x={centerX(6)} y={334} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={s.get(scene.finishU)}>no tool call</text>
           )}
         </g>
       </Camera>
@@ -179,7 +225,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={235} y={245} width={810} height={182} rx={20} fill={colors.PANEL} stroke={colors.ACCENT} />
           <text x={640} y={305} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={700}>Action → observation → append</text>
           <text x={640} y={351} textAnchor="middle" fill={colors.MUTED} fontSize={16}>the public quickstart implements this inner research loop</text>
-          <text x={640} y={390} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>search · google_scholar · visit · final plain text</text>
+          <text x={640} y={390} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>search · google_scholar · visit · final plain text</text>
         </g>
       )}
     </>

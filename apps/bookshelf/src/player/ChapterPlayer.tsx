@@ -1,3 +1,4 @@
+import { PlayIcon } from './icons';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
@@ -7,6 +8,8 @@ import { fmtDur, type ChapterV3 } from './BookPlayer';
 import { retimeTimelineToNarration } from './narration-timing';
 import { speechSupported, useSpokenCaption } from './speech';
 import { useVideoAnalytics } from '../analytics';
+import { useNarrationSource } from './narration-source';
+import { useMusicBed } from './music-bed';
 
 // A stable empty timeline so usePlayback (a hook — unconditional) has
 // something to sample while the real scene chunk is still loading.
@@ -29,18 +32,6 @@ function CaptionPill({ c }: { c: CaptionItem }) {
         <span style={{ marginLeft: 12 }} dangerouslySetInnerHTML={{ __html: texHtml }} />
       )}
     </div>
-  );
-}
-
-function PlayIcon({ playing }: { playing: boolean }) {
-  return playing ? (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden>
-      <path d="M7 5h4v14H7zM13 5h4v14h-4z" />
-    </svg>
-  ) : (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden>
-      <path d="M8 5l11 7-11 7z" />
-    </svg>
   );
 }
 
@@ -112,6 +103,7 @@ export function ChapterPlayer({
   const wasPlayingRef = useRef(false);
 
   const audioUrl = chapter.audio ? `${base}${chapter.audio}` : null;
+  const { src: audioSource, pending: audioPending } = useNarrationSource(audioUrl);
   const useAudioClock = !!audioUrl && !audioFailed;
 
   // Load the scene module (one chunk per scene) and build its timeline once.
@@ -149,6 +141,12 @@ export function ChapterPlayer({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const pb = usePlayback(built?.tl ?? FALLBACK_TL, { audioRef, useAudioClock });
+  // optional Strudel music bed (generator/book-score.mjs), mirrored off the narration clock
+  useMusicBed(audioRef, chapter.music ? `${base}${chapter.music.audio}` : null, {
+    gain: chapter.music?.gain,
+    muted,
+    enabled: useAudioClock,
+  });
   useVideoAnalytics({
     contentId: `${base.split('/').filter(Boolean).at(-1)}/${chapter.number}`,
     title: `${bookTitle} — ${chapter.title}`,
@@ -165,8 +163,28 @@ export function ChapterPlayer({
   // `state.captions` briefly holds two overlapping entries, but stacking them
   // read as a jumble over the video. Show the most recently started one and
   // let it cut to the next, like real closed captions.
-  const activeCaption =
+  const sampledCaption =
     pb.state.captions.length > 0 ? pb.state.captions[pb.state.captions.length - 1] : null;
+  // With a recording, a line stays up from its cue until the next line's cue. An authored caption's own span can end
+  // while the voice is still reading it (the scene holds after a beat, and the retime stretches the hold), which
+  // blanked the pill mid-sentence; the cues are where the voice really is.
+  const cuedCaptions = useMemo(
+    () => (built && useAudioClock && chapter.cues?.length ? [...built.tl.describe().captions].sort((a, b) => a.at - b.at) : null),
+    [built, useAudioClock, chapter.cues],
+  );
+  const activeCaption: CaptionItem | null = (() => {
+    const cues = chapter.cues;
+    if (!cuedCaptions || !cues?.length || pb.t < cues[0]) return sampledCaption;
+    let i = 0;
+    while (i + 1 < cues.length && cues[i + 1] <= pb.t) i++;
+    const c = cuedCaptions[i];
+    if (!c) return sampledCaption;
+    const end = cues[i + 1] ?? chapter.duration ?? pb.duration;
+    if (pb.t >= end) return null;
+    const fade = 0.25;
+    const u = Math.min(1, (pb.t - cues[i]) / fade, (end - pb.t) / fade);
+    return { id: c.id, text: c.text, tex: c.tex, u: Math.max(0, u) };
+  })();
 
   // No recorded narration → speak the captions with the browser's best voice.
   const speechNarration = !useAudioClock && speechSupported();
@@ -184,7 +202,7 @@ export function ChapterPlayer({
   // renders (the user's tap then starts playback with a live gesture).
   const startedRef = useRef(false);
   useEffect(() => {
-    if (!built || startedRef.current) return;
+    if (!built || audioPending || startedRef.current) return;
     startedRef.current = true;
     const a = audioRef.current;
     if (useAudioClock && a) {
@@ -195,7 +213,7 @@ export function ChapterPlayer({
     } else {
       pbRef.current.play();
     }
-  }, [built, useAudioClock]);
+  }, [built, useAudioClock, audioPending]);
 
   // End detection → "Up next" card. Audio mode ends at the MANIFEST duration
   // (the aligned narration end) — TTS sometimes appends trailing junk to the
@@ -277,7 +295,7 @@ export function ChapterPlayer({
   return (
     <div className="bp-player">
       <header className="bp-topbar">
-        <button className="bp-chip" onClick={onExit}>
+        <button className="bp-chip bp-home" onClick={onExit}>
           ← Home
         </button>
         <div className="bp-topbar-title">
@@ -291,11 +309,11 @@ export function ChapterPlayer({
         </span>
       </header>
 
-      <div className="bp-stagewrap" onClick={() => built && !ended && pb.toggle()}>
+      <div className="bp-stagewrap" onClick={() => built && !audioPending && !ended && pb.toggle()}>
         {failed ? (
           <div className="bp-stage-msg">This chapter’s scene isn’t available.</div>
-        ) : !built ? (
-          <div className="bp-spinner" role="status" aria-label="Loading animation" />
+        ) : !built || audioPending ? (
+          <div className="bp-spinner" role="status" aria-label={audioPending ? 'Loading narration' : 'Loading animation'} />
         ) : (
           <div className="bp-stage">
             <Stage style={{ height: '100%' }}>{entry!.Render({ s: pb.state })}</Stage>
@@ -346,6 +364,7 @@ export function ChapterPlayer({
           min={0}
           max={seekMax}
           step={0.05}
+          disabled={audioPending}
           value={Math.min(pb.t, seekMax)}
           onChange={(e) => {
             setEnded(false);
@@ -371,7 +390,7 @@ export function ChapterPlayer({
                 <path d="M6 5h2v14H6zM20 5l-11 7 11 7z" />
               </svg>
             </button>
-            <button className="bp-btn bp-play" onClick={pb.toggle} aria-label={pb.playing ? 'Pause' : 'Play'}>
+            <button className="bp-btn bp-play" onClick={pb.toggle} disabled={audioPending} aria-label={pb.playing ? 'Pause' : 'Play'}>
               <PlayIcon playing={pb.playing} />
             </button>
             <button className="bp-btn" onClick={onNext} disabled={!onNext} aria-label="Next chapter">
@@ -413,7 +432,7 @@ export function ChapterPlayer({
       {audioUrl && (
         <audio
           ref={audioRef}
-          src={audioUrl}
+          src={audioSource ?? undefined}
           preload="auto"
           muted={muted}
           onError={() => setAudioFailed(true)}

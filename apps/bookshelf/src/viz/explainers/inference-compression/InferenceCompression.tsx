@@ -11,7 +11,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -91,14 +90,25 @@ const LADDER = [
 // ---------------------------------------------------------------------------
 
 const PLOT_X = scaleLinear().domain([-3, 3]).range([180, 700]);
-const PLOT_Y = scaleLinear().domain([-1.2, 1.2]).range([440, 160]);
+const PLOT_Y = scaleLinear().domain([-1.2, 1.2]).range([400, 170]);
 
 const BAR_X = scaleLinear().domain([0, 700]).range([180, 1120]);
-const BAR_Y0 = 500;
-const BAR_H = 24;
+const BAR_Y0 = 514;
+const BAR_H = 22;
+const BAR_PITCH = 30;
+
+// the error readout sits under the plot, above the bar heading
+const ERR_Y = 432;
+
+// 14 GB of fp16 weights as 14 one-gigabyte cells (beat 1)
+const CELLS_X0 = 180;
+const CELL_W = 58;
+const CELL_PITCH = 66;
+const CELLS_Y = 470;
 
 const CAM_PLOT: CameraState = { x: 440, y: 300, k: 1.25 };
-const CAM_BARS: CameraState = { x: 640, y: 500, k: 1.15 };
+// pulled back to 1:1 so the plot's top stays on stage above the bars
+const CAM_BARS: CameraState = { x: 640, y: 460, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -226,7 +236,9 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.92 * dimU;
+  // the 14 GB picture fades as the camera zooms in on the plot
+  const cellsOp = titleU * (1 - curveU) * (1 - clamp01((cam.k - 1) / 0.25));
 
   return (
     <>
@@ -234,13 +246,38 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
+          {/* beat 1: the fourteen gigabytes, one cell per gigabyte */}
+          {cellsOp > 0 && (
+            <g opacity={cellsOp}>
+              <text x={CELLS_X0} y={CELLS_Y - 18} fill={colors.TEXT} fontSize={16}>
+                fp16 · 7B weights · 14 GB
+              </text>
+              {Array.from({ length: 14 }, (_, i) => {
+                const lit = clamp01(titleU * 14 - i);
+                return (
+                  <rect
+                    key={i}
+                    x={CELLS_X0 + i * CELL_PITCH}
+                    y={CELLS_Y}
+                    width={CELL_W}
+                    height={40}
+                    rx={4}
+                    fill={colors.SECONDARY}
+                    opacity={0.12 + 0.7 * lit}
+                  />
+                );
+              })}
+            </g>
+          )}
+
           {/* the weight slice */}
           {curveU > 0 && (
             <g>
-              <text x={PLOT_X(-3)} y={130} fill={colors.TEXT} fontSize={16}>
+              {/* the plot heading gives way to the bar ladder */}
+              <text x={PLOT_X(-3)} y={130} fill={colors.TEXT} fontSize={16} opacity={1 - clamp01(ladder)}>
                 one slice of the weights
               </text>
-              <text x={PLOT_X(-3)} y={152} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={PLOT_X(-3)} y={152} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={1 - clamp01(ladder)}>
                 fp16 (smooth) → int4, block 64, absmax scale (staircase)
               </text>
               {/* fp16 ghost stays for comparison once quantized */}
@@ -270,10 +307,10 @@ function Frame({ s }: { s: SceneState }) {
               )}
               {errU > 0 && (
                 <g opacity={errU}>
-                  <text x={PLOT_X(-3)} y={490} fill={colors.WARM} fontSize={15} fontFamily="monospace" fontWeight={700}>
+                  <text x={PLOT_X(-3)} y={ERR_Y} fill={colors.WARM} fontSize={15} fontFamily="monospace" fontWeight={700}>
                     measured on 4,096 weights: {(REL_RMS * 100).toFixed(1)}% relative error
                   </text>
-                  <text x={PLOT_X(-3)} y={514} fill={colors.MUTED} fontSize={13}>
+                  <text x={PLOT_X(-3)} y={ERR_Y + 22} fill={colors.MUTED} fontSize={14}>
                     16 levels per block, each block scaled to its own max
                   </text>
                 </g>
@@ -291,14 +328,14 @@ function Frame({ s }: { s: SceneState }) {
                 const u = clamp01(ladder - i);
                 if (u <= 0) return null;
                 const w = (BAR_X(row.tps) - BAR_X(0)) * u;
-                const y = BAR_Y0 + i * (BAR_H + 10);
+                const y = BAR_Y0 + i * BAR_PITCH;
                 return (
                   <g key={i} opacity={i === 3 ? Math.max(u, distillU) : u}>
                     <rect x={BAR_X(0)} y={y} width={Math.max(2, w)} height={BAR_H} rx={4} fill={row.color} opacity={0.8} />
-                    <text x={BAR_X(0) + 8} y={y + 17} fill={colors.BG} fontSize={12} fontFamily="monospace" fontWeight={700}>
+                    <text x={BAR_X(0) + 8} y={y + 15} fill={colors.BG} fontSize={13} fontFamily="monospace" fontWeight={700}>
                       {row.label} · {row.gb} GB
                     </text>
-                    <text x={BAR_X(0) + Math.max(2, w) + 10} y={y + 17} fill={row.color} fontSize={13} fontFamily="monospace">
+                    <text x={BAR_X(0) + Math.max(2, w) + 10} y={y + 15} fill={row.color} fontSize={14} fontFamily="monospace">
                       {row.tps.toFixed(0)} tok/s
                     </text>
                   </g>
@@ -310,18 +347,15 @@ function Frame({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={titleU * mainOp}>
-        <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+        <text x={64} y={80} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Shrink the sweep itself
         </text>
       </g>
-      <MathLabel
-        tex="t_{\text{decode}} \propto \text{weight bytes}"
-        x={960}
-        y={54}
-        fontSize={20}
-        color={colors.SECONDARY}
-        opacity={curveU * mainOp}
-      />
+      <text x={960} y={60} textAnchor="middle" fill={colors.SECONDARY} fontSize={20} opacity={curveU * mainOp}>
+        <tspan fontStyle="italic">t</tspan>
+        <tspan fontSize={14} dy={5}>decode</tspan>
+        <tspan dy={-5}> ∝ weight bytes</tspan>
+      </text>
 
       {closeU > 0 && (
         <g opacity={closeU}>

@@ -1,0 +1,73 @@
+{
+  "format": 3,
+  "slug": "handwired-candidate-gallery",
+  "title": "Three Layouts",
+  "subtitle": "One program builds every gallery layout at once, and the worst quality gauge picks the winner",
+  "animal": "animal.webp",
+  "accent": "#3fb6a8",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Three Layouts at Once",
+      "blurb": "A Handwired gallery cannot skip work, so it builds Cinema, Contact sheet and Story for twelve photos on every frame.",
+      "scene": "books/handwired-candidate-gallery/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.887,
+        21.734,
+        28.956,
+        40.031,
+        51.571,
+        59.675,
+        71.529,
+        82.523,
+        93.262
+      ],
+      "duration": 99.567
+    },
+    {
+      "number": 2,
+      "title": "The Worst Gauge Wins",
+      "blurb": "Each layout is scored by its smallest quality gauge, and a tournament of two comparisons lights a single one-hot bit.",
+      "scene": "books/handwired-candidate-gallery/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.905,
+        20.979,
+        30.824,
+        39.358,
+        50.422,
+        59.002,
+        72.109,
+        81.316,
+        89.861
+      ],
+      "duration": 105.79
+    },
+    {
+      "number": 3,
+      "title": "Everyone Reads the Winner",
+      "blurb": "The one-hot multiplies every layout's geometry and sums, so twelve thumbnails and the hero follow the winner, and clicks follow them.",
+      "scene": "books/handwired-candidate-gallery/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.056,
+        19.018,
+        33.344,
+        40.647,
+        51.084,
+        59.525,
+        69.254,
+        78.565,
+        87.609,
+        100.844
+      ],
+      "duration": 110.573
+    }
+  ],
+  "sources": "sources.json"
+}

@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "herding-the-swarm",
+  "title": "Herding the Swarm",
+  "subtitle": "Population control for AI agents",
+  "animal": "animal.webp",
+  "accent": "#0f766e",
+  "voiceSpeed": 0.92,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Swarm Is a Population",
+      "blurb": "Six controls borrowed from ecology: who may spawn, how many run at once, what they spend, how long they live, whose work is kept, and where they can go.",
+      "scene": "books/herding-the-swarm/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.324,
+        19.702,
+        28.526,
+        40.276,
+        46.533,
+        57.296,
+        65.817,
+        77.497,
+        88.782,
+        97.362,
+        107.022,
+        114.174
+      ],
+      "duration": 125.389
+    },
+    {
+      "number": 2,
+      "title": "Anatomy of a Breakout",
+      "blurb": "The July 2026 breakout as a population: a shared cache becomes a message board, the swarm organizes, and the six dials are judged one by one.",
+      "scene": "books/herding-the-swarm/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.532,
+        21.652,
+        30.581,
+        41.425,
+        51.943,
+        62.984,
+        74.048,
+        86.506,
+        94.018,
+        105.372,
+        117.319,
+        126.769,
+        139.459,
+        151.429
+      ],
+      "duration": 157.895
+    },
+    {
+      "number": 3,
+      "title": "The Hive and the Monoculture",
+      "blurb": "Copies of one model share everything: Hamilton's rule with relatedness at one, and why a thousand correlated checks are worth about one.",
+      "scene": "books/herding-the-swarm/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.728,
+        19.726,
+        28.027,
+        35.84,
+        47.044,
+        57.214,
+        64.541,
+        74.804,
+        86.878,
+        96.724,
+        106.023
+      ],
+      "duration": 114.103
+    },
+    {
+      "number": 4,
+      "title": "The Cuckoo and the Outside Killer",
+      "blurb": "Whatever survives your filter is what you breed. The judge has to stand outside the swarm, out of its reach.",
+      "scene": "books/herding-the-swarm/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.022,
+        18.68,
+        25.461,
+        36.792,
+        49.018,
+        60.279,
+        71.924,
+        79.865,
+        91.742,
+        101.692,
+        111.85,
+        120.674
+      ],
+      "duration": 125.202
+    }
+  ],
+  "sources": "sources.json"
+}

@@ -1,0 +1,4169 @@
+{
+ "chapters": [
+  {
+   "number": 1,
+   "id": "ch01",
+   "title": "Four and a Half",
+   "start": 0,
+   "shots": [
+    {
+     "id": "ch01-s01",
+     "start": 0,
+     "lines": [],
+     "claims": [
+      {
+       "id": "OS18",
+       "claim": "The Notes window's default text ends with the to-do line 'Wire one more neuron by hand'; the stylesheet calls the look 'a desk, sheets of paper for windows, and one copper wire under the dock'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/index.html#L84-L89",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/handwired-os.css#L1-L2"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s02",
+     "start": 6.4167,
+     "lines": [
+      "L0101",
+      "L0102"
+     ],
+     "claims": [
+      {
+       "id": "OS01",
+       "claim": "HandwiredOS ('Mini OS' on the site) is a desktop of 3 windows (Monitor, Notes, Photos) and a dock run by one compiled program whose weights are all written by builder code and none trained; it handles focus, stacking, drag, resize, window controls, closing to and reopening from the dock, springs, Photos' layout and zoom, and Monitor's list.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L140"
+       ]
+      },
+      {
+       "id": "OS15",
+       "claim": "Two zoom springs serve all 12 photos (about 300 operations fewer than one per photo); the known glitch is that a second close while the first photo is still returning makes it jump into its cell.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/behavior-choices.md#L87",
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L29"
+       ]
+      },
+      {
+       "id": "OS16",
+       "claim": "Release semantics: a press arms a control and a release over the armed control acts; there is no drag threshold, so a release 1 px from the press drags 1 px.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L20",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/behavior-choices.md#L117"
+       ]
+      },
+      {
+       "id": "OS18",
+       "claim": "The Notes window's default text ends with the to-do line 'Wire one more neuron by hand'; the stylesheet calls the look 'a desk, sheets of paper for windows, and one copper wire under the dock'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/index.html#L84-L89",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/handwired-os.css#L1-L2"
+       ]
+      },
+      {
+       "id": "PJ18",
+       "claim": "The live demo site https://chenglou.me/handwired/ shows Mini OS (HandwiredOS), the learned gallery and 'Search 100,000 JSON documents'; it was set up with a GitHub Pages workflow on 2026-10-13 with the look 'paper, ink and one copper accent, with system fonts only'.",
+       "date": "2026-10-13",
+       "status": "confirmed",
+       "sources": [
+        "https://chenglou.me/handwired/",
+        "https://github.com/chenglou/handwired/commit/28167466a9117bdd8e5e3e5afd36dab00cc6ad61",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L95-L97"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s03",
+     "start": 15.75,
+     "lines": [
+      "L0103"
+     ],
+     "claims": [
+      {
+       "id": "OS01",
+       "claim": "HandwiredOS ('Mini OS' on the site) is a desktop of 3 windows (Monitor, Notes, Photos) and a dock run by one compiled program whose weights are all written by builder code and none trained; it handles focus, stacking, drag, resize, window controls, closing to and reopening from the dock, springs, Photos' layout and zoom, and Monitor's list.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L140"
+       ]
+      },
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      },
+      {
+       "id": "OS12",
+       "claim": "Monitor lists the program's own cells, operations and outputs with live values from the evaluator's packedValues; the browser scrolls natively, the host reads scrollTop each frame into a 1/4 px input cell, row r goes to DOM slot r % 64, and program size is independent of row count up to 100,000 rows; it was tested on 60,000 random frames.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/behavior-choices.md#L149-L173",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L294"
+       ]
+      },
+      {
+       "id": "PJ20",
+       "claim": "The landing card's HandwiredOS figures (9,909 weights, 130 layers, training 0) were read on 2026-10-14 from the Monitor window, and `bun run site:check` fails if they disagree with the page.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L122-L144"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s04",
+     "start": 24.1667,
+     "lines": [
+      "L0104"
+     ],
+     "claims": [
+      {
+       "id": "OS14",
+       "claim": "HandwiredOS's wallpaper and Monitor's footer are drawn by page JavaScript from the compiled program, not computed by it: each stored weight is one arc from the value it reads to the operation that reads it, copper for adding and indigo for subtracting weights.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/wiring.ts#L1-L12",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L99"
+       ]
+      },
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s05",
+     "start": 33.5417,
+     "lines": [
+      "L0105",
+      "L0106",
+      "L0107",
+      "L0107a"
+     ],
+     "claims": [
+      {
+       "id": "OS01",
+       "claim": "HandwiredOS ('Mini OS' on the site) is a desktop of 3 windows (Monitor, Notes, Photos) and a dock run by one compiled program whose weights are all written by builder code and none trained; it handles focus, stacking, drag, resize, window controls, closing to and reopening from the dock, springs, Photos' layout and zoom, and Monitor's list.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L140"
+       ]
+      },
+      {
+       "id": "PJ01",
+       "claim": "Handwired's README opens 'Turn your regular JavaScript code into a neural net; no training, exact, yet also fully differentiable!'",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L3"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s06",
+     "start": 53.7083,
+     "lines": [
+      "L0108",
+      "L0109",
+      "L0110",
+      "L0111"
+     ],
+     "claims": [
+      {
+       "id": "TE01",
+       "claim": "The README rewrites (a > 4) ? 10 : 12 as above4 = Math.max(0, a − 4) − Math.max(0, a − 5) and result = above4 × 10 + (1 − above4) × 12, scoped 'For an integer a'.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L9-L24"
+       ]
+      },
+      {
+       "id": "TE02",
+       "claim": "By hand: a = 5 gives ReLUs 1 and 0, above4 1, result 10; a = 4 gives 0, 0, 0, 12; a = 3 gives 0, 0, 0, 12; a = 6 gives 2, 1, 1, 10; a = 100 gives 96, 95, 1, 10; all match JavaScript.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L16-L22",
+        "films/handwired-explained/research/runs/ternary.ts (bun, 2026-10-27; recomputed by fact-check with node)"
+       ]
+      },
+      {
+       "id": "TE03",
+       "claim": "For real a, above4 = clamp(a − 4, 0, 1): flat at 0 up to 4, a straight ramp from 4 to 5, flat at 1 from 5; integers sit on the corners, so a = 4.5 gives above4 0.5 and result 11 (JavaScript says 10), and a = 4.25 gives 11.5.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L18",
+        "films/handwired-explained/research/runs/ternary.ts"
+       ]
+      },
+      {
+       "id": "TE11",
+       "claim": "Both branches always compute; an unselected Infinity still poisons the result to NaN because 0 × Infinity is NaN, and the 'obvious' lerp off + gate × (on − off) is avoided because it can lose a small selected value or overflow even when both candidates are finite.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L11",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L276-L278"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s07",
+     "start": 74.8333,
+     "lines": [
+      "L0112",
+      "L0113"
+     ],
+     "claims": [
+      {
+       "id": "TE01",
+       "claim": "The README rewrites (a > 4) ? 10 : 12 as above4 = Math.max(0, a − 4) − Math.max(0, a − 5) and result = above4 × 10 + (1 − above4) × 12, scoped 'For an integer a'.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L9-L24"
+       ]
+      },
+      {
+       "id": "TE03",
+       "claim": "For real a, above4 = clamp(a − 4, 0, 1): flat at 0 up to 4, a straight ramp from 4 to 5, flat at 1 from 5; integers sit on the corners, so a = 4.5 gives above4 0.5 and result 11 (JavaScript says 10), and a = 4.25 gives 11.5.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L18",
+        "films/handwired-explained/research/runs/ternary.ts"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q003",
+       "text": "// Math.max(0, x) is ReLU. For an integer a, above4 is 1 if a > 4, and 0 otherwise",
+       "speaker": "Handwired README (code comment)",
+       "date": "2026-10-14",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/README.md#L18",
+       "context": "The (a > 4) ? 10 : 12 example; note the integer scope.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch01-s08",
+     "start": 91.4583,
+     "lines": [],
+     "claims": [],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "id": "ch02",
+   "title": "The Oldest Tags",
+   "start": 101.7917,
+   "shots": [
+    {
+     "id": "ch02-s01",
+     "start": 101.7917,
+     "lines": [
+      "L0201",
+      "L0202"
+     ],
+     "claims": [
+      {
+       "id": "FR01",
+       "claim": "McCulloch and Pitts published 'A Logical Calculus of the Ideas Immanent in Nervous Activity' in Bulletin of Mathematical Biophysics 5:115-133 (issue dated December 1943).",
+       "date": "1943-12",
+       "status": "confirmed",
+       "sources": [
+        "https://link.springer.com/article/10.1007/BF02478259",
+        "https://doi.org/10.1007/BF02478259"
+       ]
+      },
+      {
+       "id": "FR02",
+       "claim": "The 1943 affiliations were the College of Medicine, Department of Psychiatry at the Illinois Neuropsychiatric Institute, University of Illinois (McCulloch) and the University of Chicago (Pitts).",
+       "date": "1943",
+       "status": "confirmed",
+       "sources": [
+        "https://link.springer.com/article/10.1007/BF02478259"
+       ]
+      },
+      {
+       "id": "FR03",
+       "claim": "McCulloch and Pitts held that because neural activity is all-or-none it can be treated by propositional logic, and that for any logical expression satisfying certain conditions a net can be found that behaves as it describes.",
+       "date": "1943",
+       "status": "confirmed",
+       "sources": [
+        "https://link.springer.com/article/10.1007/BF02478259",
+        "https://papers.baulab.info/papers/McCullochPitts-1943.pdf"
+       ]
+      },
+      {
+       "id": "FR22",
+       "claim": "The Handwired repo at 257856e does not mention McCulloch, Pitts, Kleene, Siegelmann, Sontag, Giannou or Tracr; it does cite RASP, Merrill and Sabharwal, and Percepta in lab notes, and an older tagged note (exploration-2026-09) discussed Tracr.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/loops.md#L239",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/chains.md#L216-L226",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L256",
+        "https://github.com/chenglou/handwired/blob/exploration-2026-09/lab/ui-exploration/notes/outside-techniques.md"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q133",
+       "text": "Because of the “all-or-none” character of nervous activity, neural events and the relations among them can be treated by means of propositional logic.",
+       "speaker": "Warren S. McCulloch and Walter Pitts",
+       "date": "Dec 1943",
+       "source": "https://link.springer.com/article/10.1007/BF02478259",
+       "context": "First sentence of the abstract, 'A Logical Calculus of the Ideas Immanent in Nervous Activity', Bull. Math. Biophysics 5:115-133. Framing only.",
+       "where": "narration L0202"
+      }
+     ]
+    },
+    {
+     "id": "ch02-s02",
+     "start": 120,
+     "lines": [
+      "L0203"
+     ],
+     "claims": [
+      {
+       "id": "FR03",
+       "claim": "McCulloch and Pitts held that because neural activity is all-or-none it can be treated by propositional logic, and that for any logical expression satisfying certain conditions a net can be found that behaves as it describes.",
+       "date": "1943",
+       "status": "confirmed",
+       "sources": [
+        "https://link.springer.com/article/10.1007/BF02478259",
+        "https://papers.baulab.info/papers/McCullochPitts-1943.pdf"
+       ]
+      },
+      {
+       "id": "FR05",
+       "claim": "McCulloch-Pitts units count excited synapses against a fixed threshold with absolute inhibition and a fixed structure; they are not weighted sums with real weights and do not learn.",
+       "date": "1943",
+       "status": "confirmed",
+       "sources": [
+        "https://papers.baulab.info/papers/McCullochPitts-1943.pdf"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch02-s03",
+     "start": 126.5417,
+     "lines": [
+      "L0204",
+      "L0205",
+      "L0206"
+     ],
+     "claims": [
+      {
+       "id": "FR07",
+       "claim": "Kleene's RAND memorandum RM-704 'Representation of Events in Nerve Nets and Finite Automata' (15 Dec 1951, ii + 98 pp.) recast McCulloch-Pitts nets as finite automata and showed the events they represent are exactly the regular events; published in Automata Studies (Princeton, 1956).",
+       "date": "1951-12-15",
+       "status": "confirmed",
+       "sources": [
+        "https://www.rand.org/pubs/research_memoranda/RM704.html",
+        "https://www.jmeiners.com/neural-nets-sim/papers/kleene.pdf",
+        "https://www.jstor.org/stable/j.ctt1bgzb3s"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch02-s04",
+     "start": 148.4583,
+     "lines": [
+      "L0208b",
+      "L0209"
+     ],
+     "claims": [
+      {
+       "id": "FR12",
+       "claim": "Single neurons are not simple threshold gates: human layer 2/3 dendrites produce graded calcium action potentials that classify linearly nonseparable (XOR-like) inputs (Gidon et al., Science 367(6473):83-87, issue 3 Jan 2020).",
+       "date": "2020-01-03",
+       "status": "confirmed",
+       "sources": [
+        "https://pubmed.ncbi.nlm.nih.gov/31896716/",
+        "https://www.science.org/doi/10.1126/science.aax6239"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch02-s05",
+     "start": 163.7917,
+     "lines": [
+      "L0210",
+      "L0210b"
+     ],
+     "claims": [
+      {
+       "id": "FR20",
+       "claim": "Sutton's 'The Bitter Lesson' (13 Mar 2019) argues general methods that leverage computation beat built-in human knowledge; it is a dominant but contested position, answered by Rodney Brooks's 'A Better Lesson' (19 Mar 2019).",
+       "date": "2019-03",
+       "status": "contested",
+       "sources": [
+        "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+        "https://rodneybrooks.com/a-better-lesson/"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q154",
+       "text": "I think Sutton is wrong for a number of reasons.",
+       "speaker": "Rodney Brooks",
+       "date": "19 Mar 2019",
+       "source": "https://rodneybrooks.com/a-better-lesson/",
+       "context": "'A Better Lesson', the dissent from Sutton.",
+       "where": "narration L0210b"
+      }
+     ]
+    },
+    {
+     "id": "ch02-s06",
+     "start": 178.8333,
+     "lines": [
+      "L0211",
+      "L0212"
+     ],
+     "claims": [
+      {
+       "id": "FR01",
+       "claim": "McCulloch and Pitts published 'A Logical Calculus of the Ideas Immanent in Nervous Activity' in Bulletin of Mathematical Biophysics 5:115-133 (issue dated December 1943).",
+       "date": "1943-12",
+       "status": "confirmed",
+       "sources": [
+        "https://link.springer.com/article/10.1007/BF02478259",
+        "https://doi.org/10.1007/BF02478259"
+       ]
+      },
+      {
+       "id": "FR13",
+       "claim": "Siegelmann and Sontag showed a fixed finite recurrent net of saturated-linear neurons with rational weights simulates any Turing machine: in linear time with about 1,000 processors (COLT 1992), and any multi-stack Turing machine in real time with 886 processors (JCSS 1995).",
+       "date": "1992; 1995",
+       "status": "confirmed",
+       "sources": [
+        "https://biocomputation.cs.umass.edu/papers/1992_Siegelmann_COLT.pdf",
+        "https://core.ac.uk/display/82758236"
+       ]
+      },
+      {
+       "id": "FR17",
+       "claim": "Tracr (Lindner et al., DeepMind; arXiv 12 Jan 2023; NeurIPS 2023 spotlight) compiles RASP programs into standard decoder-only transformer weights as ground truth for interpretability research.",
+       "date": "2023-01-12",
+       "status": "confirmed",
+       "sources": [
+        "https://arxiv.org/abs/2301.05062"
+       ]
+      },
+      {
+       "id": "FR18",
+       "claim": "Giannou et al. (arXiv 30 Jan 2023; ICML 2023) programmed a looped transformer to act as a one-instruction-set computer; the SUBLEQ construction (Lemma 4) has ten layers and two heads, and the '13-layer' phrase appears only in the arXiv abstract.",
+       "date": "2023-01-30",
+       "status": "confirmed",
+       "sources": [
+        "https://arxiv.org/abs/2301.13196",
+        "https://proceedings.mlr.press/v202/giannou23a/giannou23a.pdf"
+       ]
+      },
+      {
+       "id": "FR19",
+       "claim": "Percepta (March 2026) published a 'standard softmax-ReGLU transformer' with analytically computed weights that simulates a WebAssembly VM; repo created 25 Mar 2026.",
+       "date": "2026-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/Percepta-Core/transformer-vm",
+        "https://www.percepta.ai/blog/can-llms-be-computers"
+       ]
+      },
+      {
+       "id": "OS01",
+       "claim": "HandwiredOS ('Mini OS' on the site) is a desktop of 3 windows (Monitor, Notes, Photos) and a dock run by one compiled program whose weights are all written by builder code and none trained; it handles focus, stacking, drag, resize, window controls, closing to and reopening from the dock, springs, Photos' layout and zoom, and Monitor's list.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L140"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "id": "ch03",
+   "title": "A Recipe Read Every Frame",
+   "start": 192,
+   "shots": [
+    {
+     "id": "ch03-s01",
+     "start": 192,
+     "lines": [
+      "L0301",
+      "L0302"
+     ],
+     "claims": [
+      {
+       "id": "PJ05",
+       "claim": "The repo began on 2026-06-03 (20:24 -0700) with commit 3d2c717 'Create numeric UI atom lab', followed 14 minutes later by 592f296 'Set up minimal Bun TypeScript project'.",
+       "date": "2026-06-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/3d2c717",
+        "https://github.com/chenglou/handwired/commit/592f296"
+       ]
+      },
+      {
+       "id": "PJ07",
+       "claim": "The README was titled 'Numeric UI Atom Lab' only June 3-6; commit 2be29e4 (2026-06-06) retitled it 'Indirect', 'IndirectOS' first appears 2026-06-08 (a084158), and both were renamed Handwired/HandwiredOS in e86f5ed on 2026-10-06.",
+       "date": "2026-06-06; 2026-10-06",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/2be29e4",
+        "https://github.com/chenglou/handwired/commit/e86f5edcc7d144712b3635e193d4446762371524",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L287"
+       ]
+      },
+      {
+       "id": "PJ08",
+       "claim": "At the pin there are 825 commits, all authored 'Cheng Lou'; 49 are merges, 217 lie on main's first-parent line, and 756 carry 'Co-Authored-By: Claude Code' (no model named).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commits/main",
+        "https://github.com/chenglou/handwired/compare/3d2c717...257856e"
+       ]
+      },
+      {
+       "id": "PJ09",
+       "claim": "Commits by month: 72 in June, 6 in July, none in August, 58 in September and 689 in October 2026, of which 683 fell on October 13-16 (242, 200, 113, 128), with commits in every hour of the clock.",
+       "date": "2026-06 to 2026-10",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commits/main"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch03-s02",
+     "start": 207.25,
+     "lines": [
+      "L0303",
+      "L0304"
+     ],
+     "claims": [
+      {
+       "id": "PR01",
+       "claim": "A Handwired program is an ordered list of instructions, each appending one FP32 number after a fixed Float32Array of source cells; a wire is the position of a cell or an instruction's output, and an instruction may read only earlier wires.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L3-L28"
+       ]
+      },
+      {
+       "id": "PJ02",
+       "claim": "The docs say no tool converts existing JavaScript into a program: you write builder code, ordinary JavaScript that runs once and appends operations to a Circuit.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L13"
+       ]
+      },
+      {
+       "id": "CB05",
+       "claim": "affine, constant, roundAffine, reglu, boolean, multiply and select end in Circuit.append, which returns sourceSize + operations.length; append folds constants into biases and returns an existing wire for an identity sum or an identical expression, so the same expression built twice is one operation.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L557-L647"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q016",
+       "text": "A numeric program is a fixed list of operations over 32-bit floats, called FP32 here, mostly weighted sums and products with a ReLU.",
+       "speaker": "Handwired docs/tutorial.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L13",
+       "context": "Tutorial's opening definition.",
+       "where": "narration L0303"
+      }
+     ]
+    },
+    {
+     "id": "ch03-s03",
+     "start": 221.5833,
+     "lines": [
+      "L0305"
+     ],
+     "claims": [
+      {
+       "id": "PJ02",
+       "claim": "The docs say no tool converts existing JavaScript into a program: you write builder code, ordinary JavaScript that runs once and appends operations to a Circuit.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L13"
+       ]
+      },
+      {
+       "id": "PJ01",
+       "claim": "Handwired's README opens 'Turn your regular JavaScript code into a neural net; no training, exact, yet also fully differentiable!'",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L3"
+       ]
+      },
+      {
+       "id": "PJ03",
+       "claim": "Whether the tagline 'regular JavaScript' overclaims is contested: the README and an HN commenter (echoangle) describe a JS-to-weights compiler, while critic gregsadetsky and the repo's own docs say it is builder code ('a DSL'), not conversion of existing JS.",
+       "date": "2026-10-22",
+       "status": "contested",
+       "sources": [
+        "https://news.ycombinator.com/item?id=50172984",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/README.md#L3"
+       ]
+      },
+      {
+       "id": "LB09",
+       "claim": "The trace compiler compiles 'a defined numeric subset' of TypeScript and 'does not compile arbitrary JavaScript'; after the fix it runs five calculations per trial, including native JS execution of the source.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/trace-compiler/README.md#L1-L40"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q014",
+       "text": "No tool converts existing JavaScript source into a program.",
+       "speaker": "Handwired docs/README.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/docs/README.md#L3",
+       "context": "The docs' own correction of the tagline: you write builder code.",
+       "where": "narration L0305"
+      }
+     ]
+    },
+    {
+     "id": "ch03-s04",
+     "start": 232,
+     "lines": [
+      "L0307",
+      "L0308"
+     ],
+     "claims": [
+      {
+       "id": "CB01",
+       "claim": "docs/README.md defines the vocabulary: source table (the Float32Array a program reads), cell (one number of it: constant, input, event bit or state), wire, operation, builder function, evaluation (one run), and host (the JavaScript around the program).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/README.md#L13-L21"
+       ]
+      },
+      {
+       "id": "CB03",
+       "claim": "An event cell is an exact bit JavaScript sets to 1 and the program resets to 0; nextSource lists each cell's next-value wire (constants and inputs hold themselves, events hold 0), and a state cell with zero or two next values throws while building.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L42-L68",
+        "https://github.com/chenglou/handwired/blob/257856e/tests/runtime/cells.test.ts#L135-L143"
+       ]
+      },
+      {
+       "id": "CB09",
+       "claim": "The template toggle acts on release: a press on the track arms it, a release on the track while armed flips it, and the thumb springs 20 px to its new side; it has 20 cells (viewport 2, two pointer events with x and y, cancel, on, armed, 4 spring-matrix cells, settleCheck, snap, thumb displacement, velocity, destination).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L145",
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.ts#L18-L38"
+       ]
+      },
+      {
+       "id": "HL02",
+       "claim": "State lives in source-table cells: each state cell has exactly one next-value wire, and the host copies next values back after an evaluation (source.set(result.nextValues)); iteration happens across evaluations.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.ts#L92-L139"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch03-s05",
+     "start": 243.1667,
+     "lines": [
+      "L0309",
+      "L0310"
+     ],
+     "claims": [
+      {
+       "id": "PR02",
+       "claim": "There are exactly four instruction kinds, AtomKind = 'affine' | 'reglu' | 'boolean' | 'index': affine(left) = left; reglu(left, gate) = f(left × max(0, gate)); boolean(score) = f(f(f(score) + 8,388,609) − 8,388,609); index reads values[candidates[floor(form)]].",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L30-L31",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L21-L26"
+       ]
+      },
+      {
+       "id": "PR03",
+       "claim": "Every arithmetic step rounds to FP32 like Math.fround, and a weighted sum is evaluated term by term in stored order: value = f(bias); then value = f(value + f(f(coefficient) × values[wire])) for each term.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L9-L15",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L1888-L1900"
+       ]
+      },
+      {
+       "id": "PR04",
+       "claim": "The README's '2 primitives' (matrix multiplication + reglu) and the runtime's four instructions are compatible: affine is the matmul, reglu the nonlinearity, the boolean atom an optional FP32 shortcut, and the index read a copy that replaces a one-hot masked sum.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L28",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L33",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L104"
+       ]
+      },
+      {
+       "id": "EX02",
+       "claim": "FP32 holds every integer exactly only up to 2^24 = 16,777,216; Math.fround(2^24 + 1) = 16,777,216 and Math.fround(2^24 + 3) = 16,777,220.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L41",
+        "https://en.wikipedia.org/wiki/Single-precision_floating-point_format"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch03-s06",
+     "start": 262.4583,
+     "lines": [
+      "L0311",
+      "L0312",
+      "L0313"
+     ],
+     "claims": [
+      {
+       "id": "OS01",
+       "claim": "HandwiredOS ('Mini OS' on the site) is a desktop of 3 windows (Monitor, Notes, Photos) and a dock run by one compiled program whose weights are all written by builder code and none trained; it handles focus, stacking, drag, resize, window controls, closing to and reopening from the dock, springs, Photos' layout and zoom, and Monitor's list.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L140"
+       ]
+      },
+      {
+       "id": "OS04",
+       "claim": "On 2026-10-13 HandwiredOS shrank in two steps: merging Files into Monitor took it from 21,229 to 19,851 live operations (217 layers); that evening Notes became a native textarea and 'the text layout left the program', 19,851 → 4,251 operations in 123 layers (about 4.7× smaller, 113.8-114.8 µs → 25.1-25.3 µs per evaluation).",
+       "date": "2026-10-13",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L22-L26"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q085",
+       "text": "Every weight of the program is written by builder code, and none is trained.",
+       "speaker": "src/handwiredos/README.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L3",
+       "context": "HandwiredOS.",
+       "where": "narration L0311"
+      },
+      {
+       "id": "Q087",
+       "text": "Notes holds one native `<textarea>`: the browser edits, selects, wraps and scrolls the text, and the program computes the window around the text … The program holds no text.",
+       "speaker": "src/handwiredos/README.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L31",
+       "context": "Ellipsis omits ', e.g. the window's rectangle and springs, and whether the window is focused.'",
+       "where": "narration L0313"
+      }
+     ]
+    },
+    {
+     "id": "ch03-s07",
+     "start": 279.5833,
+     "lines": [],
+     "claims": [
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "id": "ch04",
+   "title": "Deep Dive I: Two Ramps and a Lever",
+   "start": 284,
+   "shots": [
+    {
+     "id": "ch04-s01",
+     "start": 284,
+     "lines": [
+      "L0401",
+      "L0402"
+     ],
+     "claims": [
+      {
+       "id": "TE15",
+       "claim": "In JavaScript the conditional operator evaluates only the selected arm (MDN: exprIfTrue is executed if the condition is truthy), so the untaken branch costs nothing; in Handwired it costs its full work every evaluation.",
+       "date": "current",
+       "status": "confirmed",
+       "sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L93"
+       ]
+      },
+      {
+       "id": "TE01",
+       "claim": "The README rewrites (a > 4) ? 10 : 12 as above4 = Math.max(0, a − 4) − Math.max(0, a − 5) and result = above4 × 10 + (1 − above4) × 12, scoped 'For an integer a'.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L9-L24"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s02",
+     "start": 291.9583,
+     "lines": [
+      "L0403",
+      "L0404"
+     ],
+     "claims": [
+      {
+       "id": "TE01",
+       "claim": "The README rewrites (a > 4) ? 10 : 12 as above4 = Math.max(0, a − 4) − Math.max(0, a − 5) and result = above4 × 10 + (1 − above4) × 12, scoped 'For an integer a'.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L9-L24"
+       ]
+      },
+      {
+       "id": "TE02",
+       "claim": "By hand: a = 5 gives ReLUs 1 and 0, above4 1, result 10; a = 4 gives 0, 0, 0, 12; a = 3 gives 0, 0, 0, 12; a = 6 gives 2, 1, 1, 10; a = 100 gives 96, 95, 1, 10; all match JavaScript.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L16-L22",
+        "films/handwired-explained/research/runs/ternary.ts (bun, 2026-10-27; recomputed by fact-check with node)"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s03",
+     "start": 309,
+     "lines": [
+      "L0405",
+      "L0406"
+     ],
+     "claims": [
+      {
+       "id": "TE02",
+       "claim": "By hand: a = 5 gives ReLUs 1 and 0, above4 1, result 10; a = 4 gives 0, 0, 0, 12; a = 3 gives 0, 0, 0, 12; a = 6 gives 2, 1, 1, 10; a = 100 gives 96, 95, 1, 10; all match JavaScript.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L16-L22",
+        "films/handwired-explained/research/runs/ternary.ts (bun, 2026-10-27; recomputed by fact-check with node)"
+       ]
+      },
+      {
+       "id": "TE03",
+       "claim": "For real a, above4 = clamp(a − 4, 0, 1): flat at 0 up to 4, a straight ramp from 4 to 5, flat at 1 from 5; integers sit on the corners, so a = 4.5 gives above4 0.5 and result 11 (JavaScript says 10), and a = 4.25 gives 11.5.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L18",
+        "films/handwired-explained/research/runs/ternary.ts"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s04",
+     "start": 323,
+     "lines": [
+      "L0407"
+     ],
+     "claims": [
+      {
+       "id": "TE01",
+       "claim": "The README rewrites (a > 4) ? 10 : 12 as above4 = Math.max(0, a − 4) − Math.max(0, a − 5) and result = above4 × 10 + (1 − above4) × 12, scoped 'For an integer a'.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L9-L24"
+       ]
+      },
+      {
+       "id": "TE10",
+       "claim": "emitSelect(gate, off, on) computes gate × on + (1 − gate) × off with preserved rounding as 4 operations in 3 layers (complement, two products, sum); its argument order is off before on, so cond ? 10 : 12 is emitSelect(c, cond, 12, 10).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L11",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L264"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s05",
+     "start": 332.0833,
+     "lines": [
+      "L0408"
+     ],
+     "claims": [
+      {
+       "id": "TE11",
+       "claim": "Both branches always compute; an unselected Infinity still poisons the result to NaN because 0 × Infinity is NaN, and the 'obvious' lerp off + gate × (on − off) is avoided because it can lose a small selected value or overflow even when both candidates are finite.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L11",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L276-L278"
+       ]
+      },
+      {
+       "id": "PR20",
+       "claim": "A masked sum turns into NaN only when an unselected candidate is infinite (0 × Infinity); a selected Infinity with finite rivals survives the masked sum, and a selected −0 survives only the index read.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/tests/runtime/index-read.test.ts#L282-L306"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s06",
+     "start": 343.9167,
+     "lines": [
+      "L0409",
+      "L0410",
+      "L0411"
+     ],
+     "claims": [
+      {
+       "id": "TE03",
+       "claim": "For real a, above4 = clamp(a − 4, 0, 1): flat at 0 up to 4, a straight ramp from 4 to 5, flat at 1 from 5; integers sit on the corners, so a = 4.5 gives above4 0.5 and result 11 (JavaScript says 10), and a = 4.25 gives 11.5.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L18",
+        "films/handwired-explained/research/runs/ternary.ts"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s07",
+     "start": 360.4583,
+     "lines": [
+      "L0412",
+      "L0413"
+     ],
+     "claims": [
+      {
+       "id": "PJ19",
+       "claim": "The landing page HTML carries a hidden comment admitting the hero example's limits: a = 4.5 gives 11, and in FP32 a = 2^24 + 6 = 16,777,222 gives above4 = 2 and result 8 (because a − 5 rounds to 2^24).",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L59-L68"
+       ]
+      },
+      {
+       "id": "EX02",
+       "claim": "FP32 holds every integer exactly only up to 2^24 = 16,777,216; Math.fround(2^24 + 1) = 16,777,216 and Math.fround(2^24 + 3) = 16,777,220.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L41",
+        "https://en.wikipedia.org/wiki/Single-precision_floating-point_format"
+       ]
+      },
+      {
+       "id": "TE01",
+       "claim": "The README rewrites (a > 4) ? 10 : 12 as above4 = Math.max(0, a − 4) − Math.max(0, a − 5) and result = above4 × 10 + (1 − above4) × 12, scoped 'For an integer a'.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L9-L24"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s12",
+     "start": 374.0833,
+     "lines": [
+      "L0423",
+      "L0424"
+     ],
+     "claims": [
+      {
+       "id": "PR08",
+       "claim": "The boolean atom adds and subtracts 8,388,609 = 2^23 + 1; between 2^23 and 2^24 FP32 values are 1 apart and ties round to even, so a score of exactly 0.5 lands on 8,388,609.5 and rounds to 8,388,610, giving 1, while 0.49999997 gives 0.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L1914-L1919",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/model.md#L256"
+       ]
+      },
+      {
+       "id": "PR02",
+       "claim": "There are exactly four instruction kinds, AtomKind = 'affine' | 'reglu' | 'boolean' | 'index': affine(left) = left; reglu(left, gate) = f(left × max(0, gate)); boolean(score) = f(f(f(score) + 8,388,609) − 8,388,609); index reads values[candidates[floor(form)]].",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L30-L31",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L21-L26"
+       ]
+      },
+      {
+       "id": "EX02",
+       "claim": "FP32 holds every integer exactly only up to 2^24 = 16,777,216; Math.fround(2^24 + 1) = 16,777,216 and Math.fround(2^24 + 3) = 16,777,220.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L41",
+        "https://en.wikipedia.org/wiki/Single-precision_floating-point_format"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s13",
+     "start": 391.875,
+     "lines": [
+      "L0425",
+      "L0426"
+     ],
+     "claims": [
+      {
+       "id": "EX01",
+       "claim": "'Exact' in Handwired means equality to the stated FP32 calculation, ignoring the sign of zero, not equality to float64 JavaScript; the reference evaluator defines a program and the compiled evaluator must reproduce every live value bit for bit (validateTensorEvaluation uses ===).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L50",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L257"
+       ]
+      },
+      {
+       "id": "EX03",
+       "claim": "An exact bit can disagree with float64 JavaScript: a column count f(f(1732 − 24) × f(1/244)) is 6.999999523162842 in FP32 (the reciprocal rounds first) while float64 gives 7, so columns >= 7 reads 0; a plain FP32 division f(1708/244) is exactly 7.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L37"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s14",
+     "start": 412.2083,
+     "lines": [
+      "L0427",
+      "L0428"
+     ],
+     "claims": [
+      {
+       "id": "EX10",
+       "claim": "An exactness-budget study (2026-09-13) ran seven UIs with sums added 'in eight ways': float64 everywhere broke every UI with round chains (e.g. 1,150,506 wrong rows in life-calendar, 18,820 of 20,000 percent labels), while keeping FP32 order only at rounding points brought flips back to 0.",
+       "date": "2026-09-13",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/codegen/README.md#L195-L205"
+       ]
+      },
+      {
+       "id": "EX07",
+       "claim": "The builder records rounding points of four kinds ('boolean', 'integer bit', 'sign cascade', 'marked'); only boolean and marked operations need stored FP32 order, while integer-bit and sign-cascade operations may be reordered, fused or run in float64 within each operation as long as each stays separate.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L155-L164"
+       ]
+      },
+      {
+       "id": "EX01",
+       "claim": "'Exact' in Handwired means equality to the stated FP32 calculation, ignoring the sign of zero, not equality to float64 JavaScript; the reference evaluator defines a program and the compiled evaluator must reproduce every live value bit for bit (validateTensorEvaluation uses ===).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L50",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L257"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s08",
+     "start": 430.6667,
+     "lines": [
+      "L0414",
+      "L0415"
+     ],
+     "claims": [
+      {
+       "id": "TE04",
+       "claim": "The runtime does not ship the README line literally: emitCompare picks integer bits when both operands lie on grids within 2^24 grid steps (a constant like 4 gets a grid automatically), otherwise a sign cascade; it throws without finite declared ranges.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L2017-L2077",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L123"
+       ]
+      },
+      {
+       "id": "TE05",
+       "claim": "On a grid, a > b is built as relu(1 − relu(1 − D)) with D = (a − b)/grid; for a > 4 with assumeGrid(a, 1) that is ramp = relu(5 − a) then bit = relu(1 − ramp): 2 operations in 2 layers. It equals the README ramp at every integer and ends in a ReGLU product so readers cannot copy large ReLU values into their sums.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L2188-L2209"
+       ]
+      },
+      {
+       "id": "PR11",
+       "claim": "Declarations (assumeRange, assumeGrid with a power-of-two step, assumeOneHot, assumeBit) let the builder pick cheap exact constructions; they are promises, checked by validators in tests (validateGrids, validateIndexReads, validateOneHotGroups), and a declaration after a reader exists throws.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L52-L64"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s09",
+     "start": 442.6667,
+     "lines": [
+      "L0416",
+      "L0417",
+      "L0418",
+      "L0419"
+     ],
+     "claims": [
+      {
+       "id": "TE07",
+       "claim": "Under a false grid-1 declaration the real library also gives bit 0.5 and result 11 at a = 4.5; a test pins this (gradients [0,0,1,0,0] at [3,4,4.5,5,6]), and validateGrids throws 'wire 0 must be a multiple of 1, got 4.5'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/tests/runtime/comparison.test.ts#L557-L563",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L3258"
+       ]
+      },
+      {
+       "id": "PR11",
+       "claim": "Declarations (assumeRange, assumeGrid with a power-of-two step, assumeOneHot, assumeBit) let the builder pick cheap exact constructions; they are promises, checked by validators in tests (validateGrids, validateIndexReads, validateOneHotGroups), and a declaration after a reader exists throws.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L52-L64"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q029",
+       "text": "Declarations are promises from the caller, not proofs.",
+       "speaker": "Handwired docs/execution-model.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L60",
+       "context": "Declarations section.",
+       "where": "narration L0418"
+      }
+     ]
+    },
+    {
+     "id": "ch04-s10",
+     "start": 467.8333,
+     "lines": [
+      "L0420",
+      "L0421"
+     ],
+     "claims": [
+      {
+       "id": "TE08",
+       "claim": "Without a grid the bit for a > 4 (a within −1000..1000) is a sign cascade of 16 operations in 15 layers: d = f(a − 4) kept as its own operation, six clamp stages scaling by 2^14 then 2^24 five times, then the final ReGLU relu(1 − 2^15 · stage) and bit = relu(1 − that); the scales multiply to 2^149, and a = 4.5 gives the correct bit 1.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L2230-L2352",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L124"
+       ]
+      },
+      {
+       "id": "EX05",
+       "claim": "The sign cascade works because subnormals make f(a − b) zero only when a === b; power-of-two scaling only changes the exponent, so stages lift any nonzero difference down to 2^-149 to at least 1. For 0..16,384 the scales are 2^10, 2^24 ×5 and 2^19 (exponents sum to 149); any finite bound needs at most 12 stages.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L124",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L2224-L2248"
+       ]
+      },
+      {
+       "id": "TE10",
+       "claim": "emitSelect(gate, off, on) computes gate × on + (1 − gate) × off with preserved rounding as 4 operations in 3 layers (complement, two products, sum); its argument order is off before on, so cond ? 10 : 12 is emitSelect(c, cond, 12, 10).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L11",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L264"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s11",
+     "start": 485.9167,
+     "lines": [
+      "L0422"
+     ],
+     "claims": [
+      {
+       "id": "PR12",
+       "claim": "Comparison costs for operands within 0..16,384 (or within ±8,192 on a 1/64 grid): sign cascade 16 ops/15 layers for >, 15/14 for >=, 28/14 for ===; integer bits 2/2, 2/2, 3/2; one atom on a grid 1/1, 1/1, 3/2. The familiar '2 instead of 15' is for >= only.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L130-L137",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L9"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch04-s16",
+     "start": 493.2083,
+     "lines": [],
+     "claims": [
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      },
+      {
+       "id": "EX08",
+       "claim": "HandwiredOS records 59 boolean atoms, 707 integer-bit operations and 33 marked operations as rounding points.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L164"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "id": "ch05",
+   "title": "One Big Matmul",
+   "start": 498.5417,
+   "shots": [
+    {
+     "id": "ch05-s01",
+     "start": 498.5417,
+     "lines": [
+      "L0501",
+      "L0501a",
+      "L0502"
+     ],
+     "claims": [
+      {
+       "id": "CM01",
+       "claim": "compileTensorProgram packs instructions into layers by dependency depth (one more than the deepest wire read); each layer is a sparse CSR matrix plus bias, followed by gathers, index reads, ReGLU gates and boolean rounding; compilation removes operations that cannot reach a requested output and may reorder packed storage.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L38-L46",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L167-L190"
+       ]
+      },
+      {
+       "id": "CM02",
+       "claim": "sparseMatmulAddBias starts each row from its bias and adds fround(weight × input[column]) term by term in CSR order, which is exactly the reference evaluator's FP32 order.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L1733-L1775",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L1870-L1884"
+       ]
+      },
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      },
+      {
+       "id": "OS14",
+       "claim": "HandwiredOS's wallpaper and Monitor's footer are drawn by page JavaScript from the compiled program, not computed by it: each stored weight is one arc from the value it reads to the operation that reads it, copper for adding and indigo for subtracting weights.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/wiring.ts#L1-L12",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L99"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s02",
+     "start": 516.7083,
+     "lines": [
+      "L0503",
+      "L0503a",
+      "L0503b"
+     ],
+     "claims": [
+      {
+       "id": "CM05",
+       "claim": "The README's GPU-technique claim checked against code: sparsity is implemented (CSR layers); fusion is partial (small sums copied into readers, ReGLU left and gate from one product, json-search fuses a position step into one shader loop, backends may fuse except at rounding points); layer scheduling is parked and recomputeDepths is off by default.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L31",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L42-L46",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L256"
+       ]
+      },
+      {
+       "id": "CM07",
+       "claim": "A GPU kernel-per-layer backend cannot run fewer kernels than the longest chain of gates; HandwiredOS has 130 layers and a longest ReGLU/boolean chain of 71; 'nothing merges across a gate'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L57"
+       ]
+      },
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      },
+      {
+       "id": "PR04",
+       "claim": "The README's '2 primitives' (matrix multiplication + reglu) and the runtime's four instructions are compatible: affine is the matmul, reglu the nonlinearity, the boolean atom an optional FP32 shortcut, and the index read a copy that replaces a one-hot masked sum.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L28",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L33",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L104"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q006",
+       "text": "We then collect the + and * and relu into a giant matmul, and either run it on JS or WebGPU, for fun.",
+       "speaker": "Handwired README",
+       "date": "2026-10-14",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/README.md#L26",
+       "context": "Pitch of the compiled form; the docs refine it to layers of sparse matrices.",
+       "where": "narration L0503"
+      }
+     ]
+    },
+    {
+     "id": "ch05-s03",
+     "start": 538.6667,
+     "lines": [
+      "L0504",
+      "L0505"
+     ],
+     "claims": [
+      {
+       "id": "PR04",
+       "claim": "The README's '2 primitives' (matrix multiplication + reglu) and the runtime's four instructions are compatible: affine is the matmul, reglu the nonlinearity, the boolean atom an optional FP32 shortcut, and the index read a copy that replaces a one-hot masked sum.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L28",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L33",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L104"
+       ]
+      },
+      {
+       "id": "CM01",
+       "claim": "compileTensorProgram packs instructions into layers by dependency depth (one more than the deepest wire read); each layer is a sparse CSR matrix plus bias, followed by gathers, index reads, ReGLU gates and boolean rounding; compilation removes operations that cannot reach a requested output and may reorder packed storage.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L38-L46",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L167-L190"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s04",
+     "start": 547.5417,
+     "lines": [
+      "L0506"
+     ],
+     "claims": [
+      {
+       "id": "OS14",
+       "claim": "HandwiredOS's wallpaper and Monitor's footer are drawn by page JavaScript from the compiled program, not computed by it: each stored weight is one arc from the value it reads to the operation that reads it, copper for adding and indigo for subtracting weights.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/wiring.ts#L1-L12",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L99"
+       ]
+      },
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      },
+      {
+       "id": "PJ20",
+       "claim": "The landing card's HandwiredOS figures (9,909 weights, 130 layers, training 0) were read on 2026-10-14 from the Monitor window, and `bun run site:check` fails if they disagree with the page.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L122-L144"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s05",
+     "start": 556.9583,
+     "lines": [
+      "L0507"
+     ],
+     "claims": [
+      {
+       "id": "OS03",
+       "claim": "HandwiredOS's size history: 5,253 operations in 192 layers until 2026-09-14; 3,654 live in 124 layers after the Sept 15 move to the runtime additions; 14,019 live in 275 layers on Sept 16 with Notes' text layout inside; a peak of 21,229 live in 230 layers (46,930 weights) on Oct 13.",
+       "date": "2026-09-14 to 2026-10-13",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L7",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L14-L22"
+       ]
+      },
+      {
+       "id": "OS04",
+       "claim": "On 2026-10-13 HandwiredOS shrank in two steps: merging Files into Monitor took it from 21,229 to 19,851 live operations (217 layers); that evening Notes became a native textarea and 'the text layout left the program', 19,851 → 4,251 operations in 123 layers (about 4.7× smaller, 113.8-114.8 µs → 25.1-25.3 µs per evaluation).",
+       "date": "2026-10-13",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L22-L26"
+       ]
+      },
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s06",
+     "start": 569.0417,
+     "lines": [
+      "L0508",
+      "L0510"
+     ],
+     "claims": [
+      {
+       "id": "CM04",
+       "claim": "All of src/runtime executes as JavaScript on the CPU ('Tensor' means layers of sparse matrices); of the three shipped demos only src/json-search uses WebGPU (navigator.gpu appears only in src/json-search/demo.ts and gpu/host.ts), though many lab experiments also use WebGPU.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L298",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L61"
+       ]
+      },
+      {
+       "id": "CM08",
+       "claim": "On 2026-09-16 (headless Chrome 153 through Metal, Bun 1.4.0, Apple M5 Max, load 4-6) a 14,019-operation HandwiredOS took 2.2 ms per evaluation on WebGPU against 81 µs in Bun and about 140 µs in Chrome on the CPU, because 'one table's statements run one after another in a shader'; all 177,154 outputs of 202 recorded tables matched.",
+       "date": "2026-09-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L38-L40"
+       ]
+      },
+      {
+       "id": "OS08",
+       "claim": "HandwiredOS runs on the CPU executor in production (createTensorProgramEvaluator); WebGPU was a September lab experiment with scratch files outside the repo.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/window-manager.ts#L1481",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L40"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s07",
+     "start": 587.125,
+     "lines": [],
+     "claims": [
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      },
+      {
+       "id": "CM01",
+       "claim": "compileTensorProgram packs instructions into layers by dependency depth (one more than the deepest wire read); each layer is a sparse CSR matrix plus bias, followed by gathers, index reads, ReGLU gates and boolean rounding; compilation removes operations that cannot reach a requested output and may reorder packed storage.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L38-L46",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L167-L190"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "id": "ch06",
+   "title": "Deep Dive II: The Clockwork That Cannot Stop",
+   "start": 591.125,
+   "shots": [
+    {
+     "id": "ch06-s01",
+     "start": 591.125,
+     "lines": [
+      "L0601"
+     ],
+     "claims": [
+      {
+       "id": "HL01",
+       "claim": "The program runs every operation on every frame and can't stop early: there is no jump, break or repeat instruction, layer and operation counts are fixed at build time, so findIndex examines every item and a branch computes both sides.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L40"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q015",
+       "text": "The program runs every operation on every frame and can't stop early, so a loop becomes a count, a tree, a table, or the same work on every item.",
+       "speaker": "Handwired docs",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L3",
+       "context": "Thesis sentence of patterns.md; identical at docs/README.md#L9.",
+       "where": "narration L0601"
+      }
+     ]
+    },
+    {
+     "id": "ch06-s02",
+     "start": 604.3333,
+     "lines": [
+      "L0603",
+      "L0604",
+      "L0605",
+      "L0606"
+     ],
+     "claims": [
+      {
+       "id": "HL02",
+       "claim": "State lives in source-table cells: each state cell has exactly one next-value wire, and the host copies next values back after an evaluation (source.set(result.nextValues)); iteration happens across evaluations.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.ts#L92-L139"
+       ]
+      },
+      {
+       "id": "HL03",
+       "claim": "advanceFrame(clock, frameTimeStamp, events, evaluate, writeBack) plans a frame as settle checks at fixed simulated times (every 64 ms = 16 steps of 4 ms), one 'events' evaluation per distinct event timestamp, a 'frame' evaluation at the frame's timestamp, and a 'snap' when the step budget would be exceeded.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L314-L404"
+       ]
+      },
+      {
+       "id": "HL04",
+       "claim": "The template's per-evaluation callback: choose the real table or a copy, write the 4 spring-matrix cells for the evaluation's step count (powers precomputed 0..300), write settleCheck and snap bits, write viewport inputs, write events, evaluate (validated), copy next state back if it writes back, and return whether anything still animates.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.ts#L111-L131",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L114-L141"
+       ]
+      },
+      {
+       "id": "HL05",
+       "claim": "Pointer handlers queue {kind, x, y, timeStamp} with coordinates rounded to 1/64 px and call scheduleRender(); they do not evaluate or write state.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L110",
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.ts#L160-L168"
+       ]
+      },
+      {
+       "id": "HL06",
+       "claim": "DOM writes come only from output numbers (translate3d transforms, --fill and --armed CSS variables, aria-checked from on === 1); the page requests another frame only while the clock runs.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.ts#L150-L159",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L149-L161"
+       ]
+      },
+      {
+       "id": "CB10",
+       "claim": "Toggle layout: track 52 × 32 px, thumb inset 4, travel 20; spring stiffness 650, damping 45; in a 1280 × 800 window the track spans x 614-666 and y 384-416.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.ts#L9-L10",
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.test.ts#L9"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s03",
+     "start": 628.375,
+     "lines": [
+      "L0607",
+      "L0608",
+      "L0609"
+     ],
+     "claims": [
+      {
+       "id": "SP01",
+       "claim": "JavaScript counts a spring's 4 ms steps and writes their combined effect into cells: one semi-implicit Euler step is a 2×2 matrix on (displacement from destination, velocity), n steps are its nth power computed in float64 by repeated squaring, and the program applies the 4 numbers in 14 operations in 3 layers for any step count (28 stored weights).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L166-L178",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L151-L189",
+        "https://github.com/chenglou/handwired/blob/257856e/tests/runtime/spring-matrix.test.ts#L205"
+       ]
+      },
+      {
+       "id": "SP02",
+       "claim": "The step matrix is [1 − k·dt², dt·(1 − b·dt), −k·dt, 1 − b·dt] with dt = 0.004 s and mass 1: for stiffness 290, damping 30 it is [0.99536, 0.00352, −1.16, 0.88]; for 650/45 (HandwiredOS) [0.9896, 0.00328, −2.6, 0.82].",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L151-L163",
+        "local run: springStepMatrix from host-timing.ts (Bun 1.4.3, 2026-10-27)"
+       ]
+      },
+      {
+       "id": "SP03",
+       "claim": "Worked step (290/30): a window at 400 px, destination 700, at rest (e = −300, v = 0): one step gives v′ = −1.16 × −300 = 348 px/s and e′ = 0.99536 × −300 = −298.608, drawn at 401.392 px.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "local run: compiled emitApplySpringMatrix program (Bun 1.4.3, 2026-10-27; reproduced by fact-check)"
+       ]
+      },
+      {
+       "id": "HL04",
+       "claim": "The template's per-evaluation callback: choose the real table or a copy, write the 4 spring-matrix cells for the evaluation's step count (powers precomputed 0..300), write settleCheck and snap bits, write viewport inputs, write events, evaluate (validated), copy next state back if it writes back, and return whether anything still animates.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/template/toggle.ts#L111-L131",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L114-L141"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s04",
+     "start": 654.875,
+     "lines": [
+      "L0611"
+     ],
+     "claims": [
+      {
+       "id": "HL08",
+       "claim": "Static bound: at most maxStepsPerFrame = 300 steps (1,200 ms) per frame; past it a 'snap' evaluation lands every animated object on its destination with zero velocity and the clock stops, discarding the backlog; no time carries into later frames.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L230-L237",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L292-L313"
+       ]
+      },
+      {
+       "id": "HL27",
+       "claim": "Snap vs carry is a design disagreement, not a refutation: chenguini's guidance carries the backlog past a 300-step cap for numerical springs ('no time skip'), Handwired snaps to keep a static bound, and chenglou.github.io's index.ts runs every pending step with no cap.",
+       "date": "2026",
+       "status": "contested",
+       "sources": [
+        "https://github.com/chenglou/chenguini/blob/main/docs/Animation.md",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L121-L124",
+        "https://github.com/chenglou/chenglou.github.io/blob/master/index.ts#L408"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s05",
+     "start": 662.7083,
+     "lines": [
+      "L0613",
+      "L0614"
+     ],
+     "claims": [
+      {
+       "id": "HL18",
+       "claim": "The familiar render order (chenguini ui.md: handle inputs, new layout, animation tick) makes stored state frame-rate dependent: in a float64 copy, 10, 30 and 60 fps differ from 120 fps by up to 359, 124 and 53 px at shared timestamps (re-measured 359.04, 123.84, 53.42).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L212",
+        "local run: scratch copy of tests/runtime/spring-matrix.test.ts with logging (Bun 1.4.3, 2026-10-27)"
+       ]
+      },
+      {
+       "id": "HL11",
+       "claim": "In the repo's spring-matrix tests (10/30/60/120 fps, 500 ms stalls), the commits-only policy makes every stored table and drawn output at a shared timestamp identical in every bit across frame rates, as long as events arrive in timestamp order and no snap runs.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L226",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/behavior-choices.md#L48"
+       ]
+      },
+      {
+       "id": "HL10",
+       "claim": "With the 'events and settle checks' write-back policy (used by the template and HandwiredOS), only 'events', 'settle check' and 'snap' evaluations write back; the 'frame' evaluation runs on a copy and discards its next state. The default is 'every evaluation'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L222-L228",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L331"
+       ]
+      },
+      {
+       "id": "HL14",
+       "claim": "Under commits-only, a display frame is a preview simulated from the last commit, so frame step counts climb (e.g. 1, 6, 10, 14) until a settle check commits at exactly 16 steps (in a float64 port of host-timing.ts).",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "films/handwired-explained/research/runs/host_timing_port.py (python3 -I, 2026-10-27)",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L314-L404"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s05b",
+     "start": 686.75,
+     "lines": [
+      "L0615"
+     ],
+     "claims": [
+      {
+       "id": "HL17",
+       "claim": "HandwiredOS ran one evaluation per frame until 2026-09-15 ('a frame's moves collapsed'); since then a 60 fps drag frame with 16 coalesced moves runs about 17 evaluations.",
+       "date": "2026-09-15",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/executor.md#L395",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L14"
+       ]
+      },
+      {
+       "id": "HL03",
+       "claim": "advanceFrame(clock, frameTimeStamp, events, evaluate, writeBack) plans a frame as settle checks at fixed simulated times (every 64 ms = 16 steps of 4 ms), one 'events' evaluation per distinct event timestamp, a 'frame' evaluation at the frame's timestamp, and a 'snap' when the step budget would be exceeded.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L314-L404"
+       ]
+      },
+      {
+       "id": "PJ07",
+       "claim": "The README was titled 'Numeric UI Atom Lab' only June 3-6; commit 2be29e4 (2026-06-06) retitled it 'Indirect', 'IndirectOS' first appears 2026-06-08 (a084158), and both were renamed Handwired/HandwiredOS in e86f5ed on 2026-10-06.",
+       "date": "2026-06-06; 2026-10-06",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/2be29e4",
+        "https://github.com/chenglou/handwired/commit/e86f5edcc7d144712b3635e193d4446762371524",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L287"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s06",
+     "start": 694.2917,
+     "lines": [
+      "L0616"
+     ],
+     "claims": [
+      {
+       "id": "PT08",
+       "claim": "findIndex when the test flips once is a count: row bottoms 40 80 80 140 180 with pointerY 90 give bits 1 1 1 0 0, count 3 = findIndex, and neighbor differences give the one-hot 0 0 0 1 0; cost 3n + 3 operations in 3 layers (195 in 3 at 64 rows, against 447 in 34 for an emitFirstActive tree).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L67-L81"
+       ]
+      },
+      {
+       "id": "PT09",
+       "claim": "The count trick needs monotone bits: with a −10 px height (bottoms 40, 30, 80) at pointerY 35 the count is 1 while the loop returns 0, with no error at run time; validateOneHotGroups catches it in tests.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L82"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s07",
+     "start": 707.5417,
+     "lines": [
+      "L0617"
+     ],
+     "claims": [
+      {
+       "id": "PT15",
+       "claim": "A worked 8-item prefix sum of heights 3 1 4 1 5 9 2 6 gives totals 3 4 8 9 14 23 25 31 in any grouping (integers); Brent-Kung does it in 11 combines over 4 levels, Sklansky in 12 over 3 with one partial (0..3) feeding four combines at once.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "films/handwired-explained/research/runs/patterns_port.out.txt",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/prefix-networks.ts#L10-L44"
+       ]
+      },
+      {
+       "id": "PT05",
+       "claim": "src/runtime/prefix-networks.ts contains exactly two networks, Sklansky (1960) and Brent-Kung (1982); Kogge-Stone appears only in lab/ (example code, docs, an older index-read prototype and an earlier lists phase), and Ladner-Fischer and Hillis-Steele do not appear.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/prefix-networks.ts#L1-L44",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/examples/executor/prefix-sums.ts#L78"
+       ]
+      },
+      {
+       "id": "PT26",
+       "claim": "Sklansky's 'Conditional-Sum Addition Logic' appeared in IRE Trans. Electronic Computers EC-9(2):226-231 (June 1960); Brent and Kung's 'A Regular Layout for Parallel Adders' in IEEE Trans. Computers C-31(3):260-264 (March 1982), from CMU-CS-79-131 (June 1979); the exact counts 2k − 2 − log2 k and 2 log2 k − 2 are the repo's and later literature's, not the 1982 paper's.",
+       "date": "1960; 1982",
+       "status": "confirmed",
+       "sources": [
+        "https://dblp1.uni-trier.de/db/journals/tc/tc9.html",
+        "https://maths-people.anu.edu.au/~brent/pd/rpb060.pdf",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/prefix-networks.ts#L28-L29"
+       ]
+      },
+      {
+       "id": "PT28",
+       "claim": "Calling Sklansky's 1960 adder a prefix network is a later reading in the parallel-prefix literature; Harris (2003) places Brent-Kung, Sklansky and Kogge-Stone at the corners of a levels/fanout/wiring trade-off, none of them best.",
+       "date": "2003",
+       "status": "confirmed",
+       "sources": [
+        "https://ieeexplore.ieee.org/abstract/document/1292373",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/chains.md#L132"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s08",
+     "start": 722.3333,
+     "lines": [
+      "L0619"
+     ],
+     "claims": [
+      {
+       "id": "PT03",
+       "claim": "Row heights 229, 167.4, 208.5 and 194.4 px sum to 799.300048828125 as a loop and 799.2999877929688 in pairs, one FP32 step (2^-14) apart.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L39",
+        "films/handwired-explained/research/runs/patterns_port.out.txt"
+       ]
+      },
+      {
+       "id": "PT06",
+       "claim": "On the CPU executor, the tree takes longer than the loop with either network (knuth-plass's tree 1.7-7.7× its chain's time); a GPU, where one level is one dispatch, is where a tree can win (knuth-plass 0.47 ms on WebGPU against 3.4 ms for the chain on the CPU).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L54-L56"
+       ]
+      },
+      {
+       "id": "PT14",
+       "claim": "At 10,000 rows of 20-300 px, the loop's running totals drift up to 5.67 px from float64 sums of the same FP32 heights while Brent-Kung's drift up to 0.26 px: the parallel version is more accurate, though not bit-identical to the loop.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L194"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s09",
+     "start": 732.9583,
+     "lines": [
+      "L0620"
+     ],
+     "claims": [
+      {
+       "id": "PR17",
+       "claim": "The index read is one instruction at any table size: over 10,000 entries a ReLU one-hot masked sum compiles to 30,002 live operations and 49,998 stored weights with gather lowering, against 1 operation and 1 stored weight.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L114"
+       ]
+      },
+      {
+       "id": "PR02",
+       "claim": "There are exactly four instruction kinds, AtomKind = 'affine' | 'reglu' | 'boolean' | 'index': affine(left) = left; reglu(left, gate) = f(left × max(0, gate)); boolean(score) = f(f(f(score) + 8,388,609) − 8,388,609); index reads values[candidates[floor(form)]].",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L30-L31",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L21-L26"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s10",
+     "start": 745.9167,
+     "lines": [
+      "L0621"
+     ],
+     "claims": [
+      {
+       "id": "PT16",
+       "claim": "items.sort(compare) is not a sorting network: each item's position is a count of the items before it (one emitCompare per pair, each rank a sum), O(n²) operations in O(1) layers, 4,096 operations in 3 layers at 64 items; keys 30 10 30 20 give ranks 2 0 3 1, ties broken by index.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L356-L377"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s11",
+     "start": 754.0833,
+     "lines": [
+      "L0622",
+      "L0623"
+     ],
+     "claims": [
+      {
+       "id": "PT18",
+       "claim": "filter(isVisible).slice(0, K) into K DOM nodes: every visibility bit in the same layers, a Brent-Kung prefix count, then slot k shows the item where the count first reaches k+1; for visible 0 1 1 0 1 0 1 1 the counts are 0 1 2 2 3 3 4 5 and the first three slots get items 1, 2, 4.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L379-L397",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/patterns/compaction-into-slots.md#L7-L18"
+       ]
+      },
+      {
+       "id": "PT20",
+       "claim": "HandwiredOS's Monitor list both drops (rows past 64 slots get no node) and reports: slotOverflow = emitCompare(endVisible − firstVisible, '>', slotCount) shows 'Only 64 rows are drawn at a time.'",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/value-list.ts#L434-L435",
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/value-list.ts#L664"
+       ]
+      },
+      {
+       "id": "HL22",
+       "claim": "The named fallbacks for a fixed maximum are snap, carry, split, report, drop, clamp and throw; examples include the 300-step snap, a 12-line text field, Monitor's 64-row list, and two zoom springs for 12 photos (about 300 operations fewer than one per photo).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/behavior-choices.md#L77-L97"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q074",
+       "text": "Only 64 rows are drawn at a time.",
+       "speaker": "HandwiredOS Monitor UI string",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/value-list.ts#L664",
+       "context": "Built as `Only ${slotCount} rows are drawn at a time.` with slotCount = 64 (L63); quoted in docs/behavior-choices.md#L87.",
+       "where": "narration L0623"
+      }
+     ]
+    },
+    {
+     "id": "ch06-s12",
+     "start": 766.9167,
+     "lines": [
+      "L0624",
+      "L0625"
+     ],
+     "claims": [
+      {
+       "id": "FR07",
+       "claim": "Kleene's RAND memorandum RM-704 'Representation of Events in Nerve Nets and Finite Automata' (15 Dec 1951, ii + 98 pp.) recast McCulloch-Pitts nets as finite automata and showed the events they represent are exactly the regular events; published in Automata Studies (Princeton, 1956).",
+       "date": "1951-12-15",
+       "status": "confirmed",
+       "sources": [
+        "https://www.rand.org/pubs/research_memoranda/RM704.html",
+        "https://www.jmeiners.com/neural-nets-sim/papers/kleene.pdf",
+        "https://www.jstor.org/stable/j.ctt1bgzb3s"
+       ]
+      },
+      {
+       "id": "FR25",
+       "claim": "The repo itself compares Handwired's frame-by-frame write-back to chain-of-thought tokens in a transformer ('Handwired has the same structure').",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/chains.md#L220"
+       ]
+      },
+      {
+       "id": "FR22",
+       "claim": "The Handwired repo at 257856e does not mention McCulloch, Pitts, Kleene, Siegelmann, Sontag, Giannou or Tracr; it does cite RASP, Merrill and Sabharwal, and Percepta in lab notes, and an older tagged note (exploration-2026-09) discussed Tracr.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/loops.md#L239",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/chains.md#L216-L226",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L256",
+        "https://github.com/chenglou/handwired/blob/exploration-2026-09/lab/ui-exploration/notes/outside-techniques.md"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q127",
+       "text": "Handwired has the same structure. One frame is one evaluation of a fixed-depth circuit, and the next-state write-back plays the role of the appended token",
+       "speaker": "lab/ui-exploration/guide/sections/chains.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/chains.md#L220",
+       "context": "The repo's comparison with chain-of-thought transformers.",
+       "where": "narration L0625"
+      }
+     ]
+    },
+    {
+     "id": "ch06-s13",
+     "start": 786.9167,
+     "lines": [],
+     "claims": [
+      {
+       "id": "HL08",
+       "claim": "Static bound: at most maxStepsPerFrame = 300 steps (1,200 ms) per frame; past it a 'snap' evaluation lands every animated object on its destination with zero velocity and the clock stops, discarding the backlog; no time carries into later frames.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L230-L237",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/host-timing.ts#L292-L313"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 7,
+   "id": "ch07",
+   "title": "Deep Dive III: Unfreezing",
+   "start": 790.9167,
+   "shots": [
+    {
+     "id": "ch07-s01",
+     "start": 790.9167,
+     "lines": [
+      "L0701",
+      "L0702"
+     ],
+     "claims": [
+      {
+       "id": "PJ04",
+       "claim": "The README lists three 'funny use-cases': unfreezing the weights and training them, attaching a frozen program to a generic neural net (nanoGPT) and training end to end, and GPU-level parallelism from single-threaded-style JS (the JSON search demo).",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L34-L36"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q010",
+       "text": "unfreezing the weights and train them (what does that even do? Let's find out!)",
+       "speaker": "Handwired README",
+       "date": "2026-10-14 (first in 59b12cd)",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/README.md#L34",
+       "context": "First of the 'funny use-cases'.",
+       "where": "narration L0702"
+      }
+     ]
+    },
+    {
+     "id": "ch07-s02",
+     "start": 804.5833,
+     "lines": [
+      "L0703",
+      "L0704",
+      "L0704a",
+      "L0705"
+     ],
+     "claims": [
+      {
+       "id": "DG01",
+       "claim": "Circuit.backpropagateReference walks operations from last to first: affine passes gradient times each coefficient; a ReGLU passes grad × max(0, gate) to left and grad × left to gate only when gate > 0; multiply and select are differentiated as whole products; boolean atoms and index reads throw unless options are given.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L654-L745"
+       ]
+      },
+      {
+       "id": "PR04",
+       "claim": "The README's '2 primitives' (matrix multiplication + reglu) and the runtime's four instructions are compatible: affine is the matmul, reglu the nonlinearity, the boolean atom an optional FP32 shortcut, and the index read a copy that replaces a one-hot masked sum.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L28",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L33",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L104"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s03",
+     "start": 846.5,
+     "lines": [
+      "L0706",
+      "L0707",
+      "L0708"
+     ],
+     "claims": [
+      {
+       "id": "DG01",
+       "claim": "Circuit.backpropagateReference walks operations from last to first: affine passes gradient times each coefficient; a ReGLU passes grad × max(0, gate) to left and grad × left to gate only when gate > 0; multiply and select are differentiated as whole products; boolean atoms and index reads throw unless options are given.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L654-L745"
+       ]
+      },
+      {
+       "id": "DG11",
+       "claim": "Without weight decay, a unit whose gate has closed gets no gradient and stays shut: over 200 random edits 2-4 of the first layer's 6 units can end shut, against at most 2 (mostly 1 or none) with decay 2e-7.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L29"
+       ]
+      },
+      {
+       "id": "DG08",
+       "claim": "Training is Adam (lr 0.008, β1 0.9, β2 0.999, ε 1e-8), weight decay 2e-7, whole-gradient norm clipped to 1 and weights clamped to ±6, on gradients from backpropagateReference with default options; the gallery uses no straight-through estimator.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L703-L768"
+       ]
+      },
+      {
+       "id": "FR05",
+       "claim": "McCulloch-Pitts units count excited synapses against a fixed threshold with absolute inhibition and a fixed structure; they are not weighted sums with real weights and do not learn.",
+       "date": "1943",
+       "status": "confirmed",
+       "sources": [
+        "https://papers.baulab.info/papers/McCullochPitts-1943.pdf"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q108",
+       "text": "Without any decay, a unit whose gate has closed gets no gradient and stays shut",
+       "speaker": "src/learned-gallery/README.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L29",
+       "context": "Why the gallery uses weight decay 2e-7.",
+       "where": "narration L0707"
+      }
+     ]
+    },
+    {
+     "id": "ch07-s04",
+     "start": 870.625,
+     "lines": [
+      "L0709"
+     ],
+     "claims": [
+      {
+       "id": "DG01",
+       "claim": "Circuit.backpropagateReference walks operations from last to first: affine passes gradient times each coefficient; a ReGLU passes grad × max(0, gate) to left and grad × left to gate only when gate > 0; multiply and select are differentiated as whole products; boolean atoms and index reads throw unless options are given.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L654-L745"
+       ]
+      },
+      {
+       "id": "DG03",
+       "claim": "'Fully differentiable' is contested inside the repo itself: every operation has a backward rule and continuous paths match finite differences, but boolean atoms throw, index reads throw by default, hard selectors give 0 or ramp slopes, and literal FP32 rounding is not differentiated.",
+       "date": "2026-10-16",
+       "status": "contested",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L36",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/differentiability.md#L13"
+       ]
+      },
+      {
+       "id": "OS02",
+       "claim": "At 257856e HandwiredOS has 234 source cells, 727 roots (234 next-state values and 493 outputs), 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean; no gather or index reads) in 130 layers with 9,909 stored weights; median 26.5 operations per layer.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+       ]
+      },
+      {
+       "id": "CM01",
+       "claim": "compileTensorProgram packs instructions into layers by dependency depth (one more than the deepest wire read); each layer is a sparse CSR matrix plus bias, followed by gathers, index reads, ReGLU gates and boolean rounding; compilation removes operations that cannot reach a requested output and may reorder packed storage.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L38-L46",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L167-L190"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s05",
+     "start": 880,
+     "lines": [
+      "L0711",
+      "L0712",
+      "L0713"
+     ],
+     "claims": [
+      {
+       "id": "DG03",
+       "claim": "'Fully differentiable' is contested inside the repo itself: every operation has a backward rule and continuous paths match finite differences, but boolean atoms throw, index reads throw by default, hard selectors give 0 or ramp slopes, and literal FP32 rounding is not differentiated.",
+       "date": "2026-10-16",
+       "status": "contested",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L36",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/differentiability.md#L13"
+       ]
+      },
+      {
+       "id": "DG15",
+       "claim": "Hard selectors give zero or useless gradients: for the README's hand-written bit relu(v−4) − relu(v−5) the backward pass reports slope 0 at whole numbers except 1 at the threshold (the ramp's slope); emitCompare's own integer bits give a nonzero gradient only when a grid declaration is false.",
+       "date": "2026-10-16",
+       "status": "contested",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/differentiability.md#L68-L72",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L143"
+       ]
+      },
+      {
+       "id": "PJ01",
+       "claim": "Handwired's README opens 'Turn your regular JavaScript code into a neural net; no training, exact, yet also fully differentiable!'",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L3"
+       ]
+      },
+      {
+       "id": "TE03",
+       "claim": "For real a, above4 = clamp(a − 4, 0, 1): flat at 0 up to 4, a straight ramp from 4 to 5, flat at 1 from 5; integers sit on the corners, so a = 4.5 gives above4 0.5 and result 11 (JavaScript says 10), and a = 4.25 gives 11.5.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L18",
+        "films/handwired-explained/research/runs/ternary.ts"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s06",
+     "start": 900.2083,
+     "lines": [
+      "L0714"
+     ],
+     "claims": [
+      {
+       "id": "DG04",
+       "claim": "The learned gallery is the only demo whose weights are trained: a network of 20 output slots (up to 12 used), 10 fixed features per slot (1, slot position p in −1..1, sin and cos of πfp for f = 1..4), two ReGLU layers of 6 units and a linear readout to left, top, width and height.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L172-L303"
+       ]
+      },
+      {
+       "id": "DG05",
+       "claim": "The gallery has 244 trainable coefficients (132 + 84 + 28) stored as source cells and compiles to 6,320 operations in 8 layers; its only input is its weights.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L203"
+       ]
+      },
+      {
+       "id": "DG06",
+       "claim": "The gallery's weights start from a seeded random initialization (seed 0x517a9e; output biases left = top = 0.5, width = height = 0.18), so every photo starts as a small square near the stage's center: it is not a hand-written program being unfrozen.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L314-L377",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L28"
+       ]
+      },
+      {
+       "id": "DG14",
+       "claim": "The gallery was promoted to src/learned-gallery in 19509c1 on 2026-10-14; its README's 'unfreezing the weights' and 'nanoGPT' lines first appear in 59b12cd that morning.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commits/257856e"
+       ]
+      },
+      {
+       "id": "DG09",
+       "claim": "A min-cost assignment in ordinary JS pairs sketch rectangles with output slots before each step, so the network does not decide which photo goes where.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L379-L449",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L573-L585"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s07",
+     "start": 910.3333,
+     "lines": [
+      "L0715"
+     ],
+     "claims": [
+      {
+       "id": "DG09",
+       "claim": "A min-cost assignment in ordinary JS pairs sketch rectangles with output slots before each step, so the network does not decide which photo goes where.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L379-L449",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L573-L585"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s08",
+     "start": 920.9583,
+     "lines": [
+      "L0716",
+      "L0717"
+     ],
+     "claims": [
+      {
+       "id": "DG07",
+       "claim": "The loss is a Huber loss on each photo's four edges against the sketch (threshold 0.08; gradient clip(e, ±0.08)) plus a misalignment penalty between same-kind edges, driven by a method-of-multipliers scheme kept by ordinary code.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L72-L157",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L22-L28"
+       ]
+      },
+      {
+       "id": "DG26",
+       "claim": "For the gallery's 'left' output bias, the gradient equals (1/40) Σ over 10 rectangles of [clip(e_left) + clip(e_right)] at ±0.08, because the bias moves both left and right edges and the loss averages 40 edge terms; this matches the code's gradient seeding (scale 1/(targets × 4)).",
+       "date": "2026-10-28",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L703-L739"
+       ]
+      },
+      {
+       "id": "DG27",
+       "claim": "Adam's first step moves each weight by about the learning rate times the sign of its gradient (m̂ = g, v̂ = g²), so the 'left' bias goes from 0.5 to about 0.492 whatever its gradient's size (derived from the gallery's Adam settings).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L741-L766"
+       ]
+      },
+      {
+       "id": "DG08",
+       "claim": "Training is Adam (lr 0.008, β1 0.9, β2 0.999, ε 1e-8), weight decay 2e-7, whole-gradient norm clipped to 1 and weights clamped to ±6, on gradients from backpropagateReference with default options; the gallery uses no straight-through estimator.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L703-L768"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s09",
+     "start": 931.7917,
+     "lines": [
+      "L0718"
+     ],
+     "claims": [
+      {
+       "id": "DG06",
+       "claim": "The gallery's weights start from a seeded random initialization (seed 0x517a9e; output biases left = top = 0.5, width = height = 0.18), so every photo starts as a small square near the stage's center: it is not a hand-written program being unfrozen.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L314-L377",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L28"
+       ]
+      },
+      {
+       "id": "DG10",
+       "claim": "The page trains at 600 steps a second at any frame rate (at most 20 steps and 6 ms per frame); one step takes about 0.2 ms in Bun and 0.34-0.41 ms in Chrome 155 on an Apple M5 Max (README figure); the src README gives first fits of 630-750 steps for the Story preset.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L17",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L34"
+       ]
+      },
+      {
+       "id": "DG01",
+       "claim": "Circuit.backpropagateReference walks operations from last to first: affine passes gradient times each coefficient; a ReGLU passes grad × max(0, gate) to left and grad × left to gate only when gate > 0; multiply and select are differentiated as whole products; boolean atoms and index reads throw unless options are given.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L654-L745"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s10",
+     "start": 941.2917,
+     "lines": [
+      "L0719"
+     ],
+     "claims": [
+      {
+       "id": "DG13",
+       "claim": "Cheng asked for 'a bigger penalty or adjustable one ... for grid being unaligned'; the first answer, on 2026-10-13, snapped the sketch with ordinary code, which he rejected ('the spirit of the gallery is to learn something'); since 2026-10-14 photos line up only through the penalty, with a slider from off to 8% (default 4%).",
+       "date": "2026-10-13/14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/learned-gallery/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L19-L25"
+       ]
+      },
+      {
+       "id": "DG07",
+       "claim": "The loss is a Huber loss on each photo's four edges against the sketch (threshold 0.08; gradient clip(e, ±0.08)) plus a misalignment penalty between same-kind edges, driven by a method-of-multipliers scheme kept by ordinary code.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L72-L157",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L22-L28"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q106",
+       "text": "the spirit of the gallery is to learn something. Snapping to some alignemtn is just a simple thought.",
+       "speaker": "Cheng Lou, as quoted in lab/learned-gallery/README.md",
+       "date": "2026-10-13/14",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/learned-gallery/README.md#L13",
+       "context": "Rejecting the snapping fix; typo 'alignemtn' is in the source.",
+       "where": "narration L0719"
+      }
+     ]
+    },
+    {
+     "id": "ch07-s11",
+     "start": 952.1667,
+     "lines": [
+      "L0720",
+      "L0720a",
+      "L0721"
+     ],
+     "claims": [
+      {
+       "id": "DG06",
+       "claim": "The gallery's weights start from a seeded random initialization (seed 0x517a9e; output biases left = top = 0.5, width = height = 0.18), so every photo starts as a small square near the stage's center: it is not a hand-written program being unfrozen.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L314-L377",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L28"
+       ]
+      },
+      {
+       "id": "DG20",
+       "claim": "Unfreezing a hand-written number means declaring it a constant cell instead of a baked coefficient: drag-knobs lifted five design numbers of an app shell into cells; 63.6% of moving drag frames were solved by one gradient step and 24.6% started with gradient 0 for every unlocked knob.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L51",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/drag-knobs/README.md#L233-L240"
+       ]
+      },
+      {
+       "id": "DG22",
+       "claim": "Attaching a frozen program to a generic neural net (nanoGPT) and training end to end has not been done in the repo: 'nanoGPT' and 'Shakespeare' appear only at README line 35, and no experiment, test or code does it.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L35"
+       ]
+      },
+      {
+       "id": "PJ04",
+       "claim": "The README lists three 'funny use-cases': unfreezing the weights and training them, attaching a frozen program to a generic neural net (nanoGPT) and training end to end, and GPU-level parallelism from single-threaded-style JS (the JSON search demo).",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L34-L36"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s12",
+     "start": 978.875,
+     "lines": [],
+     "claims": [
+      {
+       "id": "OS01",
+       "claim": "HandwiredOS ('Mini OS' on the site) is a desktop of 3 windows (Monitor, Notes, Photos) and a dock run by one compiled program whose weights are all written by builder code and none trained; it handles focus, stacking, drag, resize, window controls, closing to and reopening from the dock, springs, Photos' layout and zoom, and Monitor's list.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L140"
+       ]
+      },
+      {
+       "id": "PJ20",
+       "claim": "The landing card's HandwiredOS figures (9,909 weights, 130 layers, training 0) were read on 2026-10-14 from the Monitor window, and `bun run site:check` fails if they disagree with the page.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L122-L144"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 8,
+   "id": "ch08",
+   "title": "The Summer's Certainties",
+   "start": 983.0833,
+   "shots": [
+    {
+     "id": "ch08-s01",
+     "start": 983.0833,
+     "lines": [
+      "L0801",
+      "L0802"
+     ],
+     "claims": [
+      {
+       "id": "PJ09",
+       "claim": "Commits by month: 72 in June, 6 in July, none in August, 58 in September and 689 in October 2026, of which 683 fell on October 13-16 (242, 200, 113, 128), with commits in every hour of the clock.",
+       "date": "2026-06 to 2026-10",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commits/main"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch08-s02",
+     "start": 991.25,
+     "lines": [
+      "L0803",
+      "L0804"
+     ],
+     "claims": [
+      {
+       "id": "LB01",
+       "claim": "July 2026 lab round one (commit a137ccd, 2026-07-08) landed four experiments (generative fields, event window, trace compiler, gather lowering), 'adversarially verified (29 confirmed findings fixed, 17 refuted)', with confident conclusions later retired.",
+       "date": "2026-07-08",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/research-sweep.md#L23-L30",
+        "https://github.com/chenglou/handwired/commit/a137ccd"
+       ]
+      },
+      {
+       "id": "LB02",
+       "claim": "The July briefs presented beliefs under the heading 'Established conclusions from the design conversation (take these as given)', including 'A JS-to-circuit compiler for arbitrary code is a dead end'; the participants are not named, so the beliefs are not attributable to Cheng.",
+       "date": "2026-07",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/a137ccd/lab/briefs/context-shared.md#L32",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L111-L124"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch08-s03",
+     "start": 1005.7917,
+     "lines": [
+      "L0805",
+      "L0806"
+     ],
+     "claims": [
+      {
+       "id": "LB02",
+       "claim": "The July briefs presented beliefs under the heading 'Established conclusions from the design conversation (take these as given)', including 'A JS-to-circuit compiler for arbitrary code is a dead end'; the participants are not named, so the beliefs are not attributable to Cheng.",
+       "date": "2026-07",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/a137ccd/lab/briefs/context-shared.md#L32",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L111-L124"
+       ]
+      },
+      {
+       "id": "LB03",
+       "claim": "The September 3, 2026 reassessment retired ten earlier claims, e.g. that gather lowering 'discovered hard attention' (it recognized retrieval after a selection existed) and that compiling ordinary source is a dead end (compiling a defined numeric subset is feasible).",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L113-L124"
+       ]
+      },
+      {
+       "id": "LB12",
+       "claim": "Fixes for the reassessment's findings landed the same day in commit c6bf933 (2026-09-03 06:13 PDT), with 274 tests passing; later full runs recorded 989 passing (Sept 17) and 1,264 passing, 2 skipped, 0 failed across 160 files in 159 s at 259c5d2 (2026-10-14).",
+       "date": "2026-09-03 to 2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/c6bf933",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L275"
+       ]
+      },
+      {
+       "id": "PJ21",
+       "claim": "The repo's own documents speak of Cheng in the third person and were largely written with AI coding agents; the September reassessment's writer says it traced 'June and July Claude conversations' and 'the original June Codex design discussion'. Only passages the repo marks as his quotations are Cheng's words.",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L15-L17"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q118",
+       "text": "it passes yesterday's interpretation to tomorrow's agents as a constraint.",
+       "speaker": "The September 3 reassessment (unnamed writer)",
+       "date": "2026-09-03",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L111",
+       "context": "On the July brief that said 'take these as given'.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch08-s04",
+     "start": 1022.9583,
+     "lines": [
+      "L0807"
+     ],
+     "claims": [
+      {
+       "id": "LB04",
+       "claim": "An earlier, undated report found the learned interpreter at 0/20 on both tasks; the reassessment showed that multiplying every loss by a constant changed the result (two adds: 0/20 at ×1 and ×10, 3/20 at ×100, 4/20 at ×1,000, 9/20 at ×10,000, 20/20 at ×1,000,000; coordinate transform 20/20 from ×10,000), because Adam's 1e-8 epsilon dominated tiny gradients.",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L21-L36"
+       ]
+      },
+      {
+       "id": "LB05",
+       "claim": "The reassessment cautioned that the loss-scale reversal 'does not show that the method scales'; with ε reduced to 1e-14 every row recovers 19-20 of 20 seeds on the integer training domain, but only 5, 3 and 7 of 20 for the two-add rows under full fractional certification.",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L38",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/learned-interpreter/README.md#L7",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/learned-interpreter/README.md#L67-L74"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch08-s05",
+     "start": 1041.5417,
+     "lines": [
+      "L0808",
+      "L0808a"
+     ],
+     "claims": [
+      {
+       "id": "LB08",
+       "claim": "The trace compiler's July claim of zero mismatches across 1.1M comparisons hid a shared bug: for 'if (true) { return x + 1 } return x + 2' at x = 2, JavaScript returns 3 and the compiled code 4, while the harness reported zero mismatches because its interpreter had the same mistake.",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L61-L70",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/research-sweep.md#L29"
+       ]
+      },
+      {
+       "id": "LB09",
+       "claim": "The trace compiler compiles 'a defined numeric subset' of TypeScript and 'does not compile arbitrary JavaScript'; after the fix it runs five calculations per trial, including native JS execution of the source.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/trace-compiler/README.md#L1-L40"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q038",
+       "text": "That the two evaluators agree doesn't show that a program does what the JavaScript it replaces did.",
+       "speaker": "Handwired docs/execution-model.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L50",
+       "context": "Why the template also tests against a plain JS reference.",
+       "where": "narration L0808a"
+      }
+     ]
+    },
+    {
+     "id": "ch08-s06",
+     "start": 1060.7083,
+     "lines": [],
+     "claims": [
+      {
+       "id": "DG28",
+       "claim": "Multiply's gradient was wrong at zero: d(3·v)/dv at v = 0 was reported as 0 (both ReLU halves at their corner), while reversing the operand order gave 3; found by the 2026-09-03 reassessment and fixed in the same commit c6bf933 by differentiating multiply as a whole product.",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L76-L78",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L216"
+       ]
+      },
+      {
+       "id": "LB12",
+       "claim": "Fixes for the reassessment's findings landed the same day in commit c6bf933 (2026-09-03 06:13 PDT), with 274 tests passing; later full runs recorded 989 passing (Sept 17) and 1,264 passing, 2 skipped, 0 failed across 160 files in 159 s at 259c5d2 (2026-10-14).",
+       "date": "2026-09-03 to 2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/c6bf933",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L275"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch08-s07",
+     "start": 1069.7083,
+     "lines": [
+      "L0810",
+      "L0811",
+      "L0812"
+     ],
+     "claims": [
+      {
+       "id": "PJ08",
+       "claim": "At the pin there are 825 commits, all authored 'Cheng Lou'; 49 are merges, 217 lie on main's first-parent line, and 756 carry 'Co-Authored-By: Claude Code' (no model named).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commits/main",
+        "https://github.com/chenglou/handwired/compare/3d2c717...257856e"
+       ]
+      },
+      {
+       "id": "PJ21",
+       "claim": "The repo's own documents speak of Cheng in the third person and were largely written with AI coding agents; the September reassessment's writer says it traced 'June and July Claude conversations' and 'the original June Codex design discussion'. Only passages the repo marks as his quotations are Cheng's words.",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L15-L17"
+       ]
+      },
+      {
+       "id": "PJ22",
+       "claim": "Before release, trailers naming specific AI models were normalized in the history rewrite; the docs name no model or version.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L36",
+        "https://github.com/chenglou/handwired/commit/0237d405e80f33a5b74bf1d9d3b69a28f1571ca4"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch08-s08",
+     "start": 1087.7917,
+     "lines": [
+      "L0813"
+     ],
+     "claims": [
+      {
+       "id": "PJ23",
+       "claim": "On 2026-09-14 Cheng decided runtime questions 1-3, 'choosing the recommended option each time': add an index-read instruction, one comparison helper that chooses from declarations (emitCompare), and 'JavaScript writes durations, event times and the spring matrix'.",
+       "date": "2026-09-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/review-and-decisions.md#L119",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/review-and-decisions.md#L149",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/review-and-decisions.md#L177"
+       ]
+      },
+      {
+       "id": "PR22",
+       "claim": "The index read and emitCompare arrived on main in commit 17c2318 on 2026-09-15 (mid-September 2026); the guide dates the instruction 'Since September 14, 2026'.",
+       "date": "2026-09-15",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/17c2318",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/model.md#L264"
+       ]
+      },
+      {
+       "id": "SP20",
+       "claim": "On 2026-09-14 the default spring became the host-written source matrix (emitApplySpringMatrix), with emitCompare, emitAnimatedObject and advanceFrame replacing older defaults; commit 6ace584 (2026-09-15) converted IndirectOS to fixed-step springs, destination layouts and grid hit tests.",
+       "date": "2026-09-14/15",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/differentiability.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L14-L176"
+       ]
+      },
+      {
+       "id": "PJ09",
+       "claim": "Commits by month: 72 in June, 6 in July, none in August, 58 in September and 689 in October 2026, of which 683 fell on October 13-16 (242, 200, 113, 128), with commits in every hour of the clock.",
+       "date": "2026-06 to 2026-10",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commits/main"
+       ]
+      },
+      {
+       "id": "LB03",
+       "claim": "The September 3, 2026 reassessment retired ten earlier claims, e.g. that gather lowering 'discovered hard attention' (it recognized retrieval after a selection existed) and that compiling ordinary source is a dead end (compiling a defined numeric subset is feasible).",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L113-L124"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 9,
+   "id": "ch09",
+   "title": "Four Days in October",
+   "start": 1094.125,
+   "shots": [
+    {
+     "id": "ch09-s01",
+     "start": 1094.125,
+     "lines": [
+      "L0901",
+      "L0902"
+     ],
+     "claims": [
+      {
+       "id": "PJ09",
+       "claim": "Commits by month: 72 in June, 6 in July, none in August, 58 in September and 689 in October 2026, of which 683 fell on October 13-16 (242, 200, 113, 128), with commits in every hour of the clock.",
+       "date": "2026-06 to 2026-10",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commits/main"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch09-s02",
+     "start": 1105.875,
+     "lines": [
+      "L0903"
+     ],
+     "claims": [
+      {
+       "id": "JS20",
+       "claim": "The highlighter and regex search began as separate lab experiments on 2026-09-17 and had demo-site pages on Oct 13; on Oct 14 the pages left the site first (the JSON search page runs both programs), and later that day (commits 18:09-19:53 PDT) the experiments' code was removed at Cheng's request, preserved in tag json-regex-experiments-2026-10 (4a80450).",
+       "date": "2026-09-17 to 2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L97",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L125-L134",
+        "https://github.com/chenglou/handwired/tree/json-regex-experiments-2026-10"
+       ]
+      },
+      {
+       "id": "PJ21",
+       "claim": "The repo's own documents speak of Cheng in the third person and were largely written with AI coding agents; the September reassessment's writer says it traced 'June and July Claude conversations' and 'the original June Codex design discussion'. Only passages the repo marks as his quotations are Cheng's words.",
+       "date": "2026-09-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L15-L17"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q099",
+       "text": "I was wondering if there's a point where regex search or json highlighter, or a combination of these into the same app, is clearly more performant from the gpu parallelism? Then we can make a demo where we search a ton of jsons or something",
+       "speaker": "Cheng Lou, as quoted in lab/json-search/README.md",
+       "date": "undated in source; before the 2026-10-13 measurements",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L52",
+       "context": "The question that started the JSON search demo. Lowercase and typos are original.",
+       "where": "narration L0903"
+      }
+     ]
+    },
+    {
+     "id": "ch09-s03",
+     "start": 1114.5833,
+     "lines": [
+      "L0906",
+      "L0907"
+     ],
+     "claims": [
+      {
+       "id": "JS01",
+       "claim": "JSON search re-searches 100,000 generated JSON documents at each keystroke on the GPU with two fixed numeric programs (a highlighter and a regex search), none of whose weights is trained; it is the only shipped demo that uses WebGPU.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L3"
+       ]
+      },
+      {
+       "id": "JS03",
+       "claim": "A document is 512 code points (−1 past the end) plus its length: 513 float32 = 2,052 bytes, so 100,000 documents are 205.2 MB of cells, 410 MB on the GPU with display kinds.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L47",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L106"
+       ]
+      },
+      {
+       "id": "JS04",
+       "claim": "Each program is one position's work, a step, run by a shader in a for loop over a document's 512 positions with one GPU thread per document (workgroup size 64); no pattern is compiled into GPU code, and all shaders compile at page load.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/loop-emit.ts#L1-L16",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L25"
+       ]
+      },
+      {
+       "id": "JS15",
+       "claim": "The page's example line '10,559 of 100,000 documents match' equals the measured count of the demo's all-valid documents containing 'error' (also 1,440 for 'connection reset', 47,577 for ([a-z]+)+x); the page does not claim its search beats RegExp.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L612-L647",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L103"
+       ]
+      },
+      {
+       "id": "CM08",
+       "claim": "On 2026-09-16 (headless Chrome 153 through Metal, Bun 1.4.0, Apple M5 Max, load 4-6) a 14,019-operation HandwiredOS took 2.2 ms per evaluation on WebGPU against 81 µs in Bun and about 140 µs in Chrome on the CPU, because 'one table's statements run one after another in a shader'; all 177,154 outputs of 202 recorded tables matched.",
+       "date": "2026-09-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L38-L40"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q090",
+       "text": "A GPU is of no use for one document, since a round trip to the GPU alone takes 0.6 ms or more. It is for many documents: every document runs the same operations and reads no other document's values, so one pass runs them all.",
+       "speaker": "src/json-search/README.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L3",
+       "context": "Why the GPU, and when.",
+       "where": "narration L0907"
+      }
+     ]
+    },
+    {
+     "id": "ch09-s03b",
+     "start": 1131.2083,
+     "lines": [
+      "L0914"
+     ],
+     "claims": [
+      {
+       "id": "JS21",
+       "claim": "The first json-search README (0732d26, 2026-10-13 09:01) said the GPU was 'clearly faster' for the highlighter half with documents staying on the GPU, already hedged; d79d9aa a minute later corrected three other sentences; the walk-back came from a review later that day, which found baselines on one of 18 cores and a second pass compared with a first.",
+       "date": "2026-10-13",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/0732d26",
+        "https://github.com/chenglou/handwired/commit/d79d9aa",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L787-L805"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch09-s04",
+     "start": 1139.5,
+     "lines": [
+      "L0908",
+      "L0909"
+     ],
+     "claims": [
+      {
+       "id": "FR07",
+       "claim": "Kleene's RAND memorandum RM-704 'Representation of Events in Nerve Nets and Finite Automata' (15 Dec 1951, ii + 98 pp.) recast McCulloch-Pitts nets as finite automata and showed the events they represent are exactly the regular events; published in Automata Studies (Princeton, 1956).",
+       "date": "1951-12-15",
+       "status": "confirmed",
+       "sources": [
+        "https://www.rand.org/pubs/research_memoranda/RM704.html",
+        "https://www.jmeiners.com/neural-nets-sim/papers/kleene.pdf",
+        "https://www.jstor.org/stable/j.ctt1bgzb3s"
+       ]
+      },
+      {
+       "id": "FR22",
+       "claim": "The Handwired repo at 257856e does not mention McCulloch, Pitts, Kleene, Siegelmann, Sontag, Giannou or Tracr; it does cite RASP, Merrill and Sabharwal, and Percepta in lab notes, and an older tagged note (exploration-2026-09) discussed Tracr.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/loops.md#L239",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/chains.md#L216-L226",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L256",
+        "https://github.com/chenglou/handwired/blob/exploration-2026-09/lab/ui-exploration/notes/outside-techniques.md"
+       ]
+      },
+      {
+       "id": "JS07",
+       "claim": "The automaton is data: transition matrices, accepting states and code-point classes sit in cells, so a new pattern writes 1,097 / 4,177 / 16,481 cells (8 / 16 / 32 states) and changes no program; patterns are capped at 32 states with a named message past that.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/search-step.ts#L4",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L98",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L161"
+       ]
+      },
+      {
+       "id": "JS26",
+       "claim": "Simulating a set of automaton states in parallel avoids backtracking (Thompson, CACM 11(6), 1968; Russ Cox 2007); V8's Irregexp backtracks, and its linear-time engine was behind feature flags as of its 2021-01-11 blog post. The repo does not cite these; framing only.",
+       "date": "1968; 2007; 2021",
+       "status": "confirmed",
+       "sources": [
+        "https://swtch.com/~rsc/regexp/regexp1.html",
+        "https://v8.dev/blog/non-backtracking-regexp"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q096",
+       "text": "a new pattern writes cells and changes no program.",
+       "speaker": "src/json-search/search-step.ts comment",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/src/json-search/search-step.ts#L4",
+       "context": "The automaton is data.",
+       "where": "narration L0909"
+      }
+     ]
+    },
+    {
+     "id": "ch09-s05",
+     "start": 1152.1667,
+     "lines": [
+      "L0910",
+      "L0911"
+     ],
+     "claims": [
+      {
+       "id": "JS06",
+       "claim": "The search runs two passes, reverse then forward, because a longest match is only known after reading past its end and a program can't go back; the plain step is 240 operations at 8 states (122,888 per 512-position document; 339,984 and 1,167,392 at 16 and 32 states).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L149-L173",
+        "https://github.com/chenglou/handwired/blob/257856e/tests/json-search/search.test.ts#L183-L193"
+       ]
+      },
+      {
+       "id": "JS24",
+       "claim": "Documents come from documentAt(seed, index, invalidFraction): every choice is a hash of seed, index and a counter with no Math.random, across 7 shapes and 4 writing styles; the demo page has no broken documents, the measurement set 1 in 10.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L21",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L205"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch09-s06",
+     "start": 1165.0833,
+     "lines": [
+      "L0912",
+      "L0913"
+     ],
+     "claims": [
+      {
+       "id": "JS11",
+       "claim": "On an Apple M5 Max in Chrome 155 with 100,000 documents, a search takes 11-15 ms per keystroke on the GPU; RegExp on one thread takes 8-28 ms for ordinary patterns and 2.1 s for ([a-z]+)+x; the same programs on the CPU take about 13 s for a search on the smallest program.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L53"
+       ]
+      },
+      {
+       "id": "JS12",
+       "claim": "Per pattern after a pause: error 12.0 ms vs RegExp 20.8 ms; [a-z]+Id 11.6 vs 19.3; the date pattern 13.1 vs 8.9 (RegExp wins); ([a-z]+)+x 11.0 ms vs 2.1 s; 'connection reset' 15.0 vs 8.0 (RegExp wins).",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L66-L96"
+       ]
+      },
+      {
+       "id": "JS16",
+       "claim": "RegExp runs in its own worker because a backtracking call can only be stopped by ending its worker; the page gives up after 10 s ('Native RegExp: more than 10 s.').",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/demo.ts#L120"
+       ]
+      },
+      {
+       "id": "JS26",
+       "claim": "Simulating a set of automaton states in parallel avoids backtracking (Thompson, CACM 11(6), 1968; Russ Cox 2007); V8's Irregexp backtracks, and its linear-time engine was behind feature flags as of its 2021-01-11 blog post. The repo does not cite these; framing only.",
+       "date": "1968; 2007; 2021",
+       "status": "confirmed",
+       "sources": [
+        "https://swtch.com/~rsc/regexp/regexp1.html",
+        "https://v8.dev/blog/non-backtracking-regexp"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch09-s07",
+     "start": 1185.8333,
+     "lines": [
+      "L0915",
+      "L0920",
+      "L0916",
+      "L0917"
+     ],
+     "claims": [
+      {
+       "id": "JS21",
+       "claim": "The first json-search README (0732d26, 2026-10-13 09:01) said the GPU was 'clearly faster' for the highlighter half with documents staying on the GPU, already hedged; d79d9aa a minute later corrected three other sentences; the walk-back came from a review later that day, which found baselines on one of 18 cores and a second pass compared with a first.",
+       "date": "2026-10-13",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/0732d26",
+        "https://github.com/chenglou/handwired/commit/d79d9aa",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L787-L805"
+       ]
+      },
+      {
+       "id": "JS13",
+       "claim": "The lab's answer to 'Is the GPU clearly faster?': against the same programs on the CPU yes (by 200 to 40,000 times); against RegExp on one thread faster back to back (1.5-9×) and on 7 of 10 patterns at a keystroke; against JavaScript in 8 workers no (RegExp 1.9-6.7 ms vs the GPU's 4.5-5.2 ms back to back, the GPU 2-8× as long after a pause).",
+       "date": "2026-10-14",
+       "status": "contested",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L114-L131",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L118-L120"
+       ]
+      },
+      {
+       "id": "JS19",
+       "claim": "A search after a 200 ms pause takes 2.4-3.2 times as long; a GPU lowering its clock would explain it but this is not verified, and keeping it busy didn't help.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L114",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L162-L208"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q095",
+       "text": "RegExp is fast.",
+       "speaker": "lab/json-search/README.md",
+       "date": "Oct 2026",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L917",
+       "context": "Same passage.",
+       "where": "narration L0917"
+      }
+     ]
+    },
+    {
+     "id": "ch09-s08",
+     "start": 1206.75,
+     "lines": [
+      "L0918",
+      "L0919"
+     ],
+     "claims": [
+      {
+       "id": "PJ11",
+       "claim": "The history was rewritten with git filter-repo before the repo was made public; the GitHub repo was created 2026-10-15T02:15:09Z (Oct 14, 19:15 PDT), and hashes from earlier clones no longer resolve.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/0237d405e80f33a5b74bf1d9d3b69a28f1571ca4",
+        "https://api.github.com/repos/chenglou/handwired",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L36"
+       ]
+      },
+      {
+       "id": "PJ12",
+       "claim": "The go-ahead to rewrite history and publish is preserved in commit 0237d40, quoting Cheng: 'strip 1-4 yeah. Do it quick plz, then publish.'",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/0237d405e80f33a5b74bf1d9d3b69a28f1571ca4"
+       ]
+      },
+      {
+       "id": "PJ14",
+       "claim": "Cheng Lou announced Handwired on X at 2026-10-15 02:24:24 UTC: 'no training', 'exact outputs vs the JS program', 'fully differentiable', 'All runnable in a browser, without GPU'.",
+       "date": "2026-10-15",
+       "status": "confirmed",
+       "sources": [
+        "https://x.com/_chenglou/status/2110557373651931267",
+        "https://api.fxtwitter.com/_chenglou/status/2110557373651931267"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q103",
+       "text": "strip 1-4 yeah. Do it quick plz, then publish.",
+       "speaker": "Cheng Lou, as quoted in commit 0237d40",
+       "date": "2026-10-14",
+       "source": "https://github.com/chenglou/handwired/commit/0237d405e80f33a5b74bf1d9d3b69a28f1571ca4",
+       "context": "Approving four audit fixes, including the history rewrite, before going public.",
+       "where": "narration L0918"
+      },
+      {
+       "id": "Q104",
+       "text": "My dear friends, I’d like to show you my latest toy project / Introducing Handwired: turn your regular JavaScript code into a neural net! - no training - exact outputs vs the JS program - fully differentiable / All runnable in a browser, without GPU",
+       "speaker": "Cheng Lou (@_chenglou), post on X",
+       "date": "2026-10-15 02:24:24 UTC (2026-10-14 evening PDT)",
+       "source": "https://x.com/_chenglou/status/2110557373651931267",
+       "context": "Launch post; text via https://api.fxtwitter.com/_chenglou/status/2110557373651931267. Line breaks shown as '/'; curly apostrophe in original.",
+       "where": "narration L0919"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": 10,
+   "id": "ch10",
+   "title": "Strangers with Pencils",
+   "start": 1220.875,
+   "shots": [
+    {
+     "id": "ch10-s01",
+     "start": 1220.875,
+     "lines": [
+      "L1001",
+      "L1002"
+     ],
+     "claims": [
+      {
+       "id": "PJ26",
+       "claim": "'Show HN: Turn regular JavaScript into a neural net' was submitted by chenglou on 2026-10-20 21:32 UTC and had 45 points and 12 comments when fetched; earlier submissions by others date from Oct 15-16.",
+       "date": "2026-10-20",
+       "status": "confirmed",
+       "sources": [
+        "https://news.ycombinator.com/item?id=50172984",
+        "https://hn.algolia.com/api/v1/items/50172984",
+        "https://news.ycombinator.com/item?id=50112421"
+       ]
+      },
+      {
+       "id": "PJ03",
+       "claim": "Whether the tagline 'regular JavaScript' overclaims is contested: the README and an HN commenter (echoangle) describe a JS-to-weights compiler, while critic gregsadetsky and the repo's own docs say it is builder code ('a DSL'), not conversion of existing JS.",
+       "date": "2026-10-22",
+       "status": "contested",
+       "sources": [
+        "https://news.ycombinator.com/item?id=50172984",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/README.md#L3"
+       ]
+      },
+      {
+       "id": "PJ02",
+       "claim": "The docs say no tool converts existing JavaScript into a program: you write builder code, ordinary JavaScript that runs once and appends operations to a Circuit.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/tutorial.md#L13"
+       ]
+      },
+      {
+       "id": "PJ16",
+       "claim": "Every commit between the shelf books' pin 4ea7fcb (2026-10-15) and 257856e touches only lab/; README, docs, src, template and tests/runtime are byte-identical.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/compare/4ea7fcb...257856e"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q130",
+       "text": "As far as I understand, this doesn't turn \"regular\" JavaScript into a NN, it's rather \"write your logic in a DSL that creates a neural-net-shaped circuit\"",
+       "speaker": "gregsadetsky (Hacker News commenter)",
+       "date": "2026-10-22",
+       "source": "https://news.ycombinator.com/item?id=50172984",
+       "context": "Main public criticism, in the Show HN thread; also called the site and README an 'overclaim'.",
+       "where": "narration L1001"
+      }
+     ]
+    },
+    {
+     "id": "ch10-s02",
+     "start": 1242.375,
+     "lines": [
+      "L1003",
+      "L1004"
+     ],
+     "claims": [
+      {
+       "id": "PJ27",
+       "claim": "A Hacker News commenter found the a = 4.5 → 11 case by hand on 2026-10-23; another asked 'why?'; another (aatd86) posted 'google/tracr' in reply to a comment speculating that models could replace code.",
+       "date": "2026-10-22/23",
+       "status": "confirmed",
+       "sources": [
+        "https://news.ycombinator.com/item?id=50172984",
+        "https://hn.algolia.com/api/v1/items/50172984"
+       ]
+      },
+      {
+       "id": "PJ19",
+       "claim": "The landing page HTML carries a hidden comment admitting the hero example's limits: a = 4.5 gives 11, and in FP32 a = 2^24 + 6 = 16,777,222 gives above4 = 2 and result 8 (because a − 5 rounds to 2^24).",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L59-L68"
+       ]
+      },
+      {
+       "id": "TE03",
+       "claim": "For real a, above4 = clamp(a − 4, 0, 1): flat at 0 up to 4, a straight ramp from 4 to 5, flat at 1 from 5; integers sit on the corners, so a = 4.5 gives above4 0.5 and result 11 (JavaScript says 10), and a = 4.25 gives 11.5.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L18",
+        "films/handwired-explained/research/runs/ternary.ts"
+       ]
+      },
+      {
+       "id": "PJ11",
+       "claim": "The history was rewritten with git filter-repo before the repo was made public; the GitHub repo was created 2026-10-15T02:15:09Z (Oct 14, 19:15 PDT), and hashes from earlier clones no longer resolve.",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/0237d405e80f33a5b74bf1d9d3b69a28f1571ca4",
+        "https://api.github.com/repos/chenglou/handwired",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L36"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q131",
+       "text": "Lol, if you pass a = 4.5 to their homepage const result = (a > 4) ? 10 : 12 you get 11.",
+       "speaker": "curtisblaine (Hacker News commenter)",
+       "date": "2026-10-23",
+       "source": "https://news.ycombinator.com/item?id=50172984",
+       "context": "Matches the landing page's own hidden comment; the comment continues 'Not everything is differentiable.'",
+       "where": "narration L1003"
+      }
+     ]
+    },
+    {
+     "id": "ch10-s03",
+     "start": 1257.9167,
+     "lines": [
+      "L1005",
+      "L1006"
+     ],
+     "claims": [
+      {
+       "id": "PJ27",
+       "claim": "A Hacker News commenter found the a = 4.5 → 11 case by hand on 2026-10-23; another asked 'why?'; another (aatd86) posted 'google/tracr' in reply to a comment speculating that models could replace code.",
+       "date": "2026-10-22/23",
+       "status": "confirmed",
+       "sources": [
+        "https://news.ycombinator.com/item?id=50172984",
+        "https://hn.algolia.com/api/v1/items/50172984"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch10-s04",
+     "start": 1266.375,
+     "lines": [
+      "L1007"
+     ],
+     "claims": [
+      {
+       "id": "PJ28",
+       "claim": "No public discussion of the lab, the September reassessment or the recovery-parser experiment was found as of 2026-10-27.",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://hn.algolia.com/api/v1/items/50172984",
+        "https://alphasignal.ai/news/cheng-lou-s-handwired-compiles-javascript-directly-into-neural-networks-without"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 11,
+   "id": "ch11",
+   "title": "The Rule Written First",
+   "start": 1275,
+   "shots": [
+    {
+     "id": "ch11-s01",
+     "start": 1275,
+     "lines": [
+      "L1101",
+      "L1102"
+     ],
+     "claims": [
+      {
+       "id": "LB19",
+       "claim": "The recovery experiment (merged in 257856e) trains only the table entries a strict parser never reads on valid input: the JSON highlighter's tables have about 1,560 entries, valid JSON reads about 240, and filling the other ~1,300 cannot change how valid input parses.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L13-L17",
+        "https://github.com/chenglou/handwired/commit/257856e3b221140acb4cc4460626b850c0bd4ff1"
+       ]
+      },
+      {
+       "id": "PJ15",
+       "claim": "The pinned commit 257856e (2026-10-16 17:33:49 -0700 = 2026-10-17T00:33:49Z) is a merge (parents 4ea7fcb, e86c1b4) of a side branch begun 2026-10-15 00:50 PDT; its message says 238 commits while git counts 239 (112 dated Oct 15, 127 Oct 16).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/257856e3b221140acb4cc4460626b850c0bd4ff1"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch11-s01b",
+     "start": 1288.9167,
+     "lines": [
+      "L1103"
+     ],
+     "claims": [
+      {
+       "id": "LB19",
+       "claim": "The recovery experiment (merged in 257856e) trains only the table entries a strict parser never reads on valid input: the JSON highlighter's tables have about 1,560 entries, valid JSON reads about 240, and filling the other ~1,300 cannot change how valid input parses.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L13-L17",
+        "https://github.com/chenglou/handwired/commit/257856e3b221140acb4cc4460626b850c0bd4ff1"
+       ]
+      },
+      {
+       "id": "LB20",
+       "claim": "The recovery parser softens each free entry into a weighted mix, trains by gradient descent on about 40,000 payloads broken by 55 mistake types, and rounds to the strongest choice (or fills entries by trial and error); one step was built as a Handwired circuit with identical values and gradients, but 'The whole run as one circuit was not built'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L19-L29"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch11-s02",
+     "start": 1302.2917,
+     "lines": [
+      "L1104"
+     ],
+     "claims": [
+      {
+       "id": "LB25",
+       "claim": "Test sets for each recovery track were committed before training on that track.",
+       "date": "2026-10-15/16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commit/257856e3b221140acb4cc4460626b850c0bd4ff1"
+       ]
+      },
+      {
+       "id": "LB23",
+       "claim": "On TOML, gradient descent alone (86.6/28.6) fell below the one rule 'start anew on the next line' (89.8/37.9) on both sets in every run, failing 'by the rule fixed beforehand'; gradient descent then trial and error, with TOML mistakes in the training data, came level with 39 hand rules (98.3/82.7 vs 98.7/81.7).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L88-L101"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch11-s03",
+     "start": 1314.625,
+     "lines": [
+      "L1105",
+      "L1106"
+     ],
+     "claims": [
+      {
+       "id": "LB21",
+       "claim": "On JSON's final test (run once; trained = mean of 5 runs) the trained parser won on familiar mistakes (98.1/79.8 vs hand rules 96.6/79.6, chars right / payloads entirely right) and on characters of agent-written payloads (85.6 vs 82.7); the rules won on 4 unseen mistake types (98.9/87.2 vs 97.1/68.9) and on whole agent-written payloads (56.7 vs 46.3).",
+       "date": "2026-10-16",
+       "status": "contested",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L55-L67"
+       ]
+      },
+      {
+       "id": "LB19",
+       "claim": "The recovery experiment (merged in 257856e) trains only the table entries a strict parser never reads on valid input: the JSON highlighter's tables have about 1,560 entries, valid JSON reads about 240, and filling the other ~1,300 cannot change how valid input parses.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L13-L17",
+        "https://github.com/chenglou/handwired/commit/257856e3b221140acb4cc4460626b850c0bd4ff1"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q122",
+       "text": "JSON is a clear success. A strict parser became a recovering one with no recovery code written, and valid JSON is unchanged by construction.",
+       "speaker": "lab/recovery-parser/README.md",
+       "date": "2026-10-16",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L139",
+       "context": "Conclusion.",
+       "where": "narration L1105"
+      }
+     ]
+    },
+    {
+     "id": "ch11-s04",
+     "start": 1327.625,
+     "lines": [
+      "L1107",
+      "L1108",
+      "L1108a",
+      "L1109"
+     ],
+     "claims": [
+      {
+       "id": "LB23",
+       "claim": "On TOML, gradient descent alone (86.6/28.6) fell below the one rule 'start anew on the next line' (89.8/37.9) on both sets in every run, failing 'by the rule fixed beforehand'; gradient descent then trial and error, with TOML mistakes in the training data, came level with 39 hand rules (98.3/82.7 vs 98.7/81.7).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L88-L101"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q123",
+       "text": "By the rule fixed beforehand the track failed: gradient descent alone is below the one simple rule on both sets, in every run.",
+       "speaker": "lab/recovery-parser/README.md",
+       "date": "2026-10-16",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L99",
+       "context": "TOML track (bold removed).",
+       "where": "narration L1107"
+      },
+      {
+       "id": "Q124",
+       "text": "A failure by that rule says that the gradient step does not carry over as it is. It does not say that training cannot work there.",
+       "speaker": "lab/recovery-parser/README.md",
+       "date": "2026-10-16",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L140",
+       "context": "The lab's own scoping of the TOML failure.",
+       "where": "narration L1108a"
+      }
+     ]
+    },
+    {
+     "id": "ch11-s05",
+     "start": 1349.375,
+     "lines": [
+      "L1110",
+      "L1110a",
+      "L1110b"
+     ],
+     "claims": [
+      {
+       "id": "LB24",
+       "claim": "On a bison-generated LALR(1) table (99 states, 38 terminals, 3,762 action cells), gradient descent alone did not carry over on validation data (82.9 vs hand rules 88.0); with realistic mistakes in training data it reached 94.1 (96.2 with search) vs 90.6; bison's final test has not run, and the JSON and TOML final tests are 'used up'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L106-L147",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-lr/README.md#L1-L27"
+       ]
+      },
+      {
+       "id": "LB26",
+       "claim": "Still open (lab/status.md): whether fractional examples identify addition grouping; scaling program learning past a complete loss table; learning a search guide across task families; discovering shared query/key functions; evidence from real human tasks.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L242-L246"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q125",
+       "text": "GPU execution, a general JavaScript compiler, learned arbitrary abstractions, and a full learned UI runtime are not delivered by these experiments.",
+       "speaker": "lab/status.md",
+       "date": "Oct 2026",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L246",
+       "context": "'Still open'.",
+       "where": "narration L1110b"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": 12,
+   "id": "ch12",
+   "title": "One More Neuron",
+   "start": 1368.5,
+   "shots": [
+    {
+     "id": "ch12-s01",
+     "start": 1368.5,
+     "lines": [
+      "L1201"
+     ],
+     "claims": [
+      {
+       "id": "PJ09",
+       "claim": "Commits by month: 72 in June, 6 in July, none in August, 58 in September and 689 in October 2026, of which 683 fell on October 13-16 (242, 200, 113, 128), with commits in every hour of the clock.",
+       "date": "2026-06 to 2026-10",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/commits/main"
+       ]
+      },
+      {
+       "id": "PJ17",
+       "claim": "As of 2026-10-27, 257856e is still the head of main; the repo is public, MIT, TypeScript, with about 2,033-2,034 stars and 158 forks (snapshot).",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://api.github.com/repos/chenglou/handwired",
+        "https://api.github.com/repos/chenglou/handwired/commits/main"
+       ]
+      },
+      {
+       "id": "LB26",
+       "claim": "Still open (lab/status.md): whether fractional examples identify addition grouping; scaling program learning past a complete loss table; learning a search guide across task families; discovering shared query/key functions; evidence from real human tasks.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L242-L246"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch12-s02",
+     "start": 1375.4583,
+     "lines": [
+      "L1202",
+      "L1203"
+     ],
+     "claims": [
+      {
+       "id": "CM01",
+       "claim": "compileTensorProgram packs instructions into layers by dependency depth (one more than the deepest wire read); each layer is a sparse CSR matrix plus bias, followed by gathers, index reads, ReGLU gates and boolean rounding; compilation removes operations that cannot reach a requested output and may reorder packed storage.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L38-L46",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L167-L190"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q039",
+       "text": "Independent instructions at the same dependency depth share a layer.",
+       "speaker": "Handwired docs/execution-model.md",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L40",
+       "context": "How the 'giant matmul' is sliced into layers.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch12-s03",
+     "start": 1388.4583,
+     "lines": [
+      "L1204",
+      "L1205"
+     ],
+     "claims": [
+      {
+       "id": "TE10",
+       "claim": "emitSelect(gate, off, on) computes gate × on + (1 − gate) × off with preserved rounding as 4 operations in 3 layers (complement, two products, sum); its argument order is off before on, so cond ? 10 : 12 is emitSelect(c, cond, 12, 10).",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L11",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L264"
+       ]
+      },
+      {
+       "id": "TE11",
+       "claim": "Both branches always compute; an unselected Infinity still poisons the result to NaN because 0 × Infinity is NaN, and the 'obvious' lerp off + gate × (on − off) is avoided because it can lose a small selected value or overflow even when both candidates are finite.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L11",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L276-L278"
+       ]
+      },
+      {
+       "id": "CM01",
+       "claim": "compileTensorProgram packs instructions into layers by dependency depth (one more than the deepest wire read); each layer is a sparse CSR matrix plus bias, followed by gathers, index reads, ReGLU gates and boolean rounding; compilation removes operations that cannot reach a requested output and may reorder packed storage.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L38-L46",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L167-L190"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch12-s04",
+     "start": 1398.1667,
+     "lines": [
+      "L1206",
+      "L1207"
+     ],
+     "claims": [
+      {
+       "id": "FR20",
+       "claim": "Sutton's 'The Bitter Lesson' (13 Mar 2019) argues general methods that leverage computation beat built-in human knowledge; it is a dominant but contested position, answered by Rodney Brooks's 'A Better Lesson' (19 Mar 2019).",
+       "date": "2019-03",
+       "status": "contested",
+       "sources": [
+        "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+        "https://rodneybrooks.com/a-better-lesson/"
+       ]
+      },
+      {
+       "id": "DG03",
+       "claim": "'Fully differentiable' is contested inside the repo itself: every operation has a backward rule and continuous paths match finite differences, but boolean atoms throw, index reads throw by default, hard selectors give 0 or ramp slopes, and literal FP32 rounding is not differentiated.",
+       "date": "2026-10-16",
+       "status": "contested",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L36",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/differentiability.md#L13"
+       ]
+      },
+      {
+       "id": "PJ04",
+       "claim": "The README lists three 'funny use-cases': unfreezing the weights and training them, attaching a frozen program to a generic neural net (nanoGPT) and training end to end, and GPU-level parallelism from single-threaded-style JS (the JSON search demo).",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L34-L36"
+       ]
+      },
+      {
+       "id": "PJ27",
+       "claim": "A Hacker News commenter found the a = 4.5 → 11 case by hand on 2026-10-23; another asked 'why?'; another (aatd86) posted 'google/tracr' in reply to a comment speculating that models could replace code.",
+       "date": "2026-10-22/23",
+       "status": "confirmed",
+       "sources": [
+        "https://news.ycombinator.com/item?id=50172984",
+        "https://hn.algolia.com/api/v1/items/50172984"
+       ]
+      },
+      {
+       "id": "PJ01",
+       "claim": "Handwired's README opens 'Turn your regular JavaScript code into a neural net; no training, exact, yet also fully differentiable!'",
+       "date": "2026-10-14",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/README.md#L3"
+       ]
+      },
+      {
+       "id": "PJ03",
+       "claim": "Whether the tagline 'regular JavaScript' overclaims is contested: the README and an HN commenter (echoangle) describe a JS-to-weights compiler, while critic gregsadetsky and the repo's own docs say it is builder code ('a DSL'), not conversion of existing JS.",
+       "date": "2026-10-22",
+       "status": "contested",
+       "sources": [
+        "https://news.ycombinator.com/item?id=50172984",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/README.md#L3"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q010",
+       "text": "unfreezing the weights and train them (what does that even do? Let's find out!)",
+       "speaker": "Handwired README",
+       "date": "2026-10-14 (first in 59b12cd)",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/README.md#L34",
+       "context": "First of the 'funny use-cases'.",
+       "where": "narration L1207"
+      }
+     ]
+    },
+    {
+     "id": "ch12-s05",
+     "start": 1417.625,
+     "lines": [
+      "L1208"
+     ],
+     "claims": [
+      {
+       "id": "OS18",
+       "claim": "The Notes window's default text ends with the to-do line 'Wire one more neuron by hand'; the stylesheet calls the look 'a desk, sheets of paper for windows, and one copper wire under the dock'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/index.html#L84-L89",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/handwired-os.css#L1-L2"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q088",
+       "text": "Wire one more neuron by hand",
+       "speaker": "HandwiredOS Notes window default text",
+       "date": "at 257856e",
+       "source": "https://github.com/chenglou/handwired/blob/257856e/assets/index.html#L84-L89",
+       "context": "Last line of the to-do list in the Notes textarea ('– Wire one more neuron by hand').",
+       "where": "narration L1208"
+      }
+     ]
+    },
+    {
+     "id": "ch12-s06",
+     "start": 1423.125,
+     "lines": [
+      "L1209",
+      "L1210"
+     ],
+     "claims": [
+      {
+       "id": "OS18",
+       "claim": "The Notes window's default text ends with the to-do line 'Wire one more neuron by hand'; the stylesheet calls the look 'a desk, sheets of paper for windows, and one copper wire under the dock'.",
+       "date": "2026-10-16",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/index.html#L84-L89",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/handwired-os.css#L1-L2"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch12-s07",
+     "start": 1433.7917,
+     "lines": [],
+     "claims": [
+      {
+       "id": "PJ17",
+       "claim": "As of 2026-10-27, 257856e is still the head of main; the repo is public, MIT, TypeScript, with about 2,033-2,034 stars and 158 forks (snapshot).",
+       "date": "2026-10-27",
+       "status": "confirmed",
+       "sources": [
+        "https://api.github.com/repos/chenglou/handwired",
+        "https://api.github.com/repos/chenglou/handwired/commits/main"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  }
+ ],
+ "offScreen": [],
+ "counts": {
+  "claims": 162,
+  "quotes": 31,
+  "sources": 266
+ }
+}

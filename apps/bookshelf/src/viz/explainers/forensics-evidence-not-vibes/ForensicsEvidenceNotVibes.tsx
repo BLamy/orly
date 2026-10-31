@@ -51,10 +51,10 @@ const JOURNEY = [
 
 // scale layout
 const PIVOT_X = 640;
-const PIVOT_Y = 360;
+const PIVOT_Y = 300;
 const BEAM_HALF = 300;
 
-const CAM_SCALE: CameraState = { x: 640, y: 340, k: 1.2 };
+const CAM_SCALE: CameraState = { x: 640, y: 310, k: 1.2 };
 
 interface Scene {
   tl: Timeline;
@@ -187,8 +187,9 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const mainOp = 1 - 0.85 * dimU;
-  // beam angle: vibes side down first, then evidence side down
-  const angle = 8 * vibesU * (1 - tiltU) - 10 * tiltU;
+  // beam angle (screen y grows downward): vibes side down first, then the
+  // evidence side tips the beam down
+  const angle = -8 * vibesU * (1 - tiltU) + 10 * tiltU;
   const rad = (angle * Math.PI) / 180;
   const leftX = PIVOT_X - BEAM_HALF * Math.cos(rad);
   const leftY = PIVOT_Y - BEAM_HALF * Math.sin(rad);
@@ -213,16 +214,16 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* the scale */}
           {scaleU > 0 && (
-            <g opacity={scaleU * (1 - 0.85 * journeyU)}>
+            <g opacity={scaleU * clamp01(1 - 3 * journeyU)}>
               <line x1={PIVOT_X} y1={PIVOT_Y + 120} x2={PIVOT_X} y2={PIVOT_Y} stroke={colors.GRID} strokeWidth={4} />
               <line x1={leftX} y1={leftY} x2={rightX} y2={rightY} stroke={colors.TEXT} strokeWidth={3} opacity={0.8} />
               <circle cx={PIVOT_X} cy={PIVOT_Y} r={7} fill={colors.TEXT} />
 
               {/* vibes pan (left) */}
-              <g transform={`translate(${leftX}, ${leftY})`} opacity={vibesU}>
+              <g transform={`translate(${leftX}, ${leftY})`} opacity={scaleU}>
                 <line x1={0} y1={0} x2={0} y2={30} stroke={colors.GRID} strokeWidth={2} />
                 <rect x={-95} y={30} width={190} height={40} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={0} y={55} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                <text x={0} y={55} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
                   “it looks scheming”
                 </text>
               </g>
@@ -233,17 +234,17 @@ function Frame({ s }: { s: SceneState }) {
                 {EVIDENCE.map((e, i) => {
                   const u = clamp01(chipsU * EVIDENCE.length - i);
                   if (u <= 0) return null;
-                  const y = 30 + (EVIDENCE.length - 1 - i) * 44;
+                  const y = 30 + (EVIDENCE.length - 1 - i) * 38;
                   return (
                     <g key={e.label} opacity={u}>
-                      <rect x={-120} y={y} width={240} height={38} rx={9}
+                      <rect x={-120} y={y} width={240} height={34} rx={9}
                         fill={e.strong ? colors.ACCENT : colors.MUTED}
-                        opacity={0.14 + 0.22 * e.weight}
+                        opacity={0.22 + 0.28 * e.weight}
                         stroke={e.strong ? colors.ACCENT : colors.GRID} />
-                      <text x={0} y={y + 17} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={600}>
+                      <text x={0} y={y + 15} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={600}>
                         {e.label}
                       </text>
-                      <text x={0} y={y + 32} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                      <text x={0} y={y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={12} opacity={0.8}>
                         {e.sub}
                       </text>
                     </g>
@@ -255,7 +256,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* journey recap */}
           {journeyU > 0 && (
-            <g opacity={journeyU}>
+            <g opacity={journeyU * (1 - closeU)}>
               {JOURNEY.map((line, i) => {
                 const u = clamp01(journeyU * JOURNEY.length - i);
                 if (u <= 0) return null;
@@ -276,7 +277,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* bridge chip */}
           {bridgeU > 0 && (
-            <g opacity={bridgeU}>
+            <g opacity={bridgeU * (1 - closeU)}>
               <rect x={330} y={430} width={620} height={64} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} />
               <text x={640} y={457} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontWeight={600}>
                 the shelf's one rule, from both directions
@@ -301,7 +302,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={225} width={860} height={200} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={225} width={860} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Behavior claims need forensic evidence
           </text>

@@ -1,0 +1,74 @@
+{
+  "reviewer": "creative-director",
+  "round": 3,
+  "lens": "visual direction: drawable promo ideas in the look.md register, product footage cropped and zoomed to legibility, type on words and downbeats, feasibility with the promo kit and the real takes",
+  "runtimeCheck": "I ran script.mjs assemble --check: 0 errors and 11 warnings. The script has 177 words, estimated at 99.4 s at 140 wpm against a 90 s target. That is inside the 100 s hard ceiling, so runtime is not critical, but only 0.6 s of headroom is left. Every fix below removes or moves material and adds no time. Ten warnings are on-screen text short of reading time, all within 0.1-1.2 s.",
+  "method": "I cropped every recording-px box the script names out of the take stills in .orly-work/promo/sheets/<take>/<ms>.png: bug-react@3100/3200/11300, bug-sync@1603, schedule@11458, runs@3668, insights@2926 and new-project@4737. I checked feasibility against film-promo/SKILL.md, RrwebScreen.tsx (props: no children; the tilt is an internal CSS transform; height follows crop aspect) and index.ts agentPair (a canvas painter, so it draws under the DOM layer). I also checked the round-2 creative-director items one by one. Eleven of twelve landed. The 'blue PR #3' wording was fixed in ch01-s03 and ch06-s01 but is still in ch04-s03.",
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 7, "story": 7, "curiosity": 7, "visual": 7, "voice": 7 },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch06-s01 (collage tiles)",
+      "problem": "The collage is a grid of thin slivers, not 'each cropped to one readable detail'. Tile A (insights crop 860x100 shown 520 wide) comes out 520x60 with its labels at about 7 px. Tile B (runs crop 940x280 shown 440 wide) has table text at about 6 px. Tiles C and D have no exact crop given. 'Chips row + title' shown about 490 wide puts the bug titles at about 13 px and the 'Open'/'Fixed' chips at about 7 px. With three type rows and two flat bands of strips, the frame reads as a table, not the reference's fanned stack of photos ('ou [stack] create'). It is also top-heavy: tiles crowd y 36-325, and everything below row 3 (y 560-720) is empty paper.",
+      "fix": "Keep the three-row reading path. Re-crop each tile to ONE detail at about 1.2-1.5:1 so it reads at its stage size, and fan the tiles as overlapping cards at depth in the bands. Suggested crops: (A) insights@2926 {x: 850, y: 165, w: 340, h: 95}, the '1151 JOURNEYS' and '89 EXPLORATIONS' tiles; (B) runs@3668 {x: 980, y: 200, w: 260, h: 180} (the ch01 stamp crop: purple PR #3 badges and green Completed pills, verified); (C) bug-react@3150 {x: 530, y: 76, w: 290, h: 200} (the Open/Medium chips over '67ms React commit', verified as stamp 3); (D) bug-sync@1603 {x: 1180, y: 115, w: 260, h: 90} or similar ('258 times' with the end of the path, plus the 'Fixed' chip if a taller crop holds it; re-verify on 001603.png). Show each one at about 300-380 stage px so its text is at least 22 px. Spread the bands so the lowest tile sits between rows 2 and 3, not in an empty bottom third."
+    },
+    {
+      "where": "ch05-s03 (root cause: three labels for one idea)",
+      "problem": "After the match cut, the frame says 'root cause' three times: the real 'ROOT CAUSE' eyebrow crop (shown 300 px), our kinetic '{ root cause }' at 44 px 'above', and overlay braces on 'are not memoized'. Two brace devices plus two identical words compete in about 2.5 s. The look's 'one idea per beat' wants the real page to carry it. Both crops are verified clean and legible: 'ROOT CAUSE' at 100x22, and \"`SidebarProjectList` trees are not memoized\" at 274x24.",
+      "fix": "Drop the kinetic '{ root cause }' label. Let the real 'ROOT CAUSE' eyebrow be the title (it is proof, ours is decoration), and put the colour sweep on the overlay braces around 'are not memoized' landing on the last 'can'. If you keep a bracket device, make it the one around the clause and remove the separate braces."
+    },
+    {
+      "where": "ch05-s03 ('screen' beat, the film's pivot)",
+      "problem": "The video-frame outline that shows only the 2 solid renders drops on 'screen' and fades on 'that', which is about 1 s. That is the one image explaining why a screen recording misses this, and it disappears before the eye has compared the frame with the 25 hollow squares outside it.",
+      "fix": "Drop it 0.2 s before 'screen' and hold it through 'that' until the match cut (word 6, -0.25 s), so it stays on screen about 1.6 s. The match cut itself clears it, so no extra time is needed."
+    },
+    {
+      "where": "ch05-s02 (player plate feasibility)",
+      "problem": "The direction asks for a dark plate 'INSIDE the same screen box, tilting with it' from frame 0, then a hand-off to a flat SVG overlay plate on 'own'. RrwebScreen takes no children, and its tilt is an internal CSS transform, so a plate inside the box is not available. It would have to be a sibling div that copies RrwebScreen's perspective/rotate transform, box and transform-origin exactly. A one-frame mismatch during the hand-off flashes 'Loading replay…' (verified at recording (968, 546) on 003200.png), which look.md forbids.",
+      "fix": "Simplest: no tilt for this one screen. It blurs and fades in flat (opacity 0 to 1 with a style filter blur over 0.4 s), so the overlay plate is pixel-exact from frame 0 and needs no hand-off. If the tilt is kept, the shots stage must draw the plate as a sibling div with the identical transform string. Check it on stills at shot time 0, mid-tilt and the hand-off frame."
+    },
+    {
+      "where": "ch05-s04 (lower-third clutter)",
+      "problem": "On top of the counter, the 258-bar ribbon, the 'checkpoint −1' tag, the snapping bookmark flag, the underline and the 258-bar flash, the shot adds the struck-through cursor glyph and a grey label '≈ 160 s · 2 clicks · no keypresses'. The narration here never says 'no click' (that was ch05-s02). The label repeats 'under three minutes' in a second unit and puts '2 clicks' on screen, which undercuts the ch05-s02 device it reuses. That makes seven devices in about 7 s.",
+      "fix": "Cut the cursor glyph and its label from ch05-s04. The idea is the stuck checkpoint: counter, ribbon, tag, snap-backs. If the duration must be on screen, put a small '< 3 min' under the counter, matching the narration."
+    },
+    {
+      "where": "ch05-s05 (dangling ✓ chip; compressed pull-back; agent margin)",
+      "problem": "(1) A green '✓' chip detaches and drifts off the right edge 'so ch06-s01 can carry it into the collage beside rerun to confirm', but ch06-s01's direction and beats never pick it up. It is a loose end, and if it did land beside 'every fix / rerun to confirm' with the bug-sync 'Fixed' tile in frame, it would tie the agents to that fix, which the shot carefully avoids. (2) The pull-back (tile conversion, chips row, second tile sliding in, tilt and fan) is crammed into the last 0.2 s of a 6.4 s shot. (3) agentPair at x 860, scale 0.6 is (230+210+230) x 0.6 = 402 px wide, so it ends at x 1262: 18 px from the frame edge on a 1280 stage.",
+      "fix": "(1) Cut the ✓ chip drift and let the pair just fade. (2) End ch05-s05 at 6.15 s on the bug-sync title strip alone. Start ch06-s01 with the strip becoming tile D and the others fanning in during its 0.3 s lead-in. Runtime stays the same or shrinks slightly. (3) Place agentPair at x ≈ 800 (right margin ≈ 78 px) and keep it under the strip."
+    },
+    {
+      "where": "ch04-s03 (badge colour; zoom legibility)",
+      "problem": "The body text and beat b-pr still say 'the first blue PR #3 badge'. The badge is purple (verified on runs@3668), and round 2 asked for this fix. Separately, zoom 1.6 on a box about 1000 px wide renders the 11 px badge text at about 19 stage px, under the skill's 22 px / zoom ≥ 1.8 rule, on the one thing the braces point at.",
+      "fix": "Change 'blue' to 'purple' in the visual text, the chapter summary and beat b-pr. Raise the zoom to 1.9 about (1015, 260). At 1.9 the window is y ≈ 183-424 and x ≈ 750-1245, which keeps the first two PR #3 rows and their Completed pills. Keep the 0.4 s ease back to 1.0 before 'recorded' so all eight rows are in frame for the chip cascade."
+    },
+    {
+      "where": "ch04-s01 (double emphasis on the chip)",
+      "problem": "On 'schedule' the chip gets braces with corner squareDots AND a red-pink underline under 'Tue at 3:00 AM', while the 150 px '3:00 AM' sits above it and the tick strip and the 'hosted by Replay' pill arrive within 0.3 s. Two emphasis marks on one 735 px chip reads busy. The check also warns that 'Sep 1 – Oct 6' gets 2.3 of 2.6 s.",
+      "fix": "Keep the braces and dots, which are the look's signature, and drop the underline. Start the tick strip on 'schedule' instead of 0.3 s after, so 'Sep 1' / 'Oct 6' get their full reading time."
+    },
+    {
+      "where": "ch02-s01 (URL fit)",
+      "problem": "The 78 px size is asserted to fit 'https://staging.your-app.dev' inside about 1180 px, but Inter regular at 78 px averages about 0.5-0.55 em per glyph, which gives about 1090-1200 px. That is right at the margin, with text-anchor end 50 px from the right edge.",
+      "fix": "Tell the shots stage to measure the full string with measureText (or getComputedTextLength in the SVG twin) and fit the size so the final string spans at most 1160 px. Do not hard-code 78."
+    },
+    {
+      "where": "ch06-s02 (end card lock-up)",
+      "problem": "The '▶ recording' chip settles 'to the right of the mark' and 'Replay QA'. Next to the wordmark, a dark pill reads as part of the logo lock-up ('Replay QA ▶ recording'), which the reference's clean end card never does.",
+      "fix": "Let the chip land and dissolve into the caret of the typed 'qa.replay.io' (the chip becomes the caret), or have it fade before 'End-to-end'. The lock-up stays the mark plus 'Replay QA' only."
+    },
+    {
+      "where": "kit gaps (route to the shots stage once)",
+      "problem": "The script relies on four things the kit does not provide. (1) An SVG twin of `typed` for the overlay (ch02-s01, ch02-s02). (2) An SVG bracketRect that frames a measured rectangle, used in ch02-s02, ch04-s01, ch04-s02, ch04-s03 and ch05-s02/s03. (3) A recording-px → stage-px mapping helper through crop, zoom and tilt, so overlay marks ride the footage. (4) A custom chip/ribbon/ticks painter. Each shot re-specifies these ad hoc, which invites five slightly different brace weights.",
+      "fix": "Add one 'shared shot needs' note to the script (or to the shots-stage notes): a single overlay bracketRect matching kit bracket's weight-300 brace and squareDots, a mapRect(crop, zoom, box) helper, an overlay typed twin, and one chip style used from ch04-s03 to ch06-s02. Each shot then cites these by name."
+    }
+  ],
+  "strengths": [
+    "Every shot is buildable without guessing: kit calls, stage coordinates, recording-px crops with tape in/out points, and word-anchored beats. The crops I re-cut from the take stills are clean and legible: the schedule chip, the Add environment row, the runs table, the bug-react page at 900 px with the title at about 23 px, the bug-sync title with '258 times', and the ROOT CAUSE eyebrow plus the 'are not memoized' clause.",
+    "Round-2 fixes landed. 'Loading replay…' is planned out from frame 0. The root cause is now a match-cut pair of crops at legible size. The ch04-s03 zoom eases back before the chip cascade. ch01-s03 stamps are true 1.45:1 colour swatches. The collage follows a three-row reading path. The end-card URL is 34 px. Step details are 22 px. The agents sit in the corner of a sharp product strip. The ch05-s04 zoom keeps '258 times' whole.",
+    "Reference fidelity without copying: a dawn haze line with a colour sweep; '{ intro▢▢▢ducing }' with product stamps in the gap; the giant typed URL pulling back into the real New project input; 'Testing your app' as the 'Building Image' list; a fanned collage with woven words; an ember end card with a bracketed tagline.",
+    "The time-travel register has real images, not stock graphics: four hollow 16.7 ms slots under a 67 ms bar while the music falls silent for four beats; 25 hollow renders a video-frame outline cannot see; a counter stopping dead at 258 beside a checkpoint that never moves.",
+    "The footage is used truthfully. Open and Fixed states are respected. The owner-named URL, chat column, idle cursor and loading panel are kept out. Every drawn device is tagged 'illustration'. The empty explore take, a blank white player, is rightly left unused.",
+    "Strong continuity objects: ▶ recording chips pop out of run rows, become the rewind ribbon, then the agents' hand-off, then the collage drift. Type and cuts are anchored to downbeats throughout."
+  ]
+}

@@ -52,6 +52,8 @@ function Frame({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
 
   const snap = snapAt(train);
+  // the critic sketch from beat 1 gives way to the group as it stamps in
+  const sketchU = clamp01(1 - grpU * 2);
 
   return (
     <>
@@ -59,11 +61,26 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         <g opacity={dimU}>
+          {/* beat 1: the critic everyone used to need */}
+          {sketchU > 0 && (
+            <g opacity={sketchU}>
+              <rect x={GRP_X - 90} y={150} width={230} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={GRP_X + 25} y={177} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                policy · writes attempts
+              </text>
+              <rect x={GRP_X - 90} y={226} width={230} height={44} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeDasharray="5 4" />
+              <text x={GRP_X + 25} y={253} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                critic · a second network
+              </text>
+              <line x1={GRP_X - 80} y1={248} x2={GRP_X + 130} y2={248} stroke={colors.NEGATIVE} strokeWidth={2.5} strokeLinecap="round" />
+            </g>
+          )}
+
           {/* prompt header */}
           {grpU > 0 && (
             <g opacity={grpU}>
-              <rect x={GRP_X - 110} y={64} width={330} height={36} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={GRP_X + 55} y={87} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              <rect x={GRP_X - 110} y={56} width={330} height={36} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={GRP_X + 55} y={79} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 one prompt · sample a group of {G}
               </text>
             </g>
@@ -80,18 +97,18 @@ function Frame({ s }: { s: SceneState }) {
                 <rect
                   x={GRP_X - 90}
                   y={grpY(i) - 18}
-                  width={200}
+                  width={230}
                   height={38}
                   rx={8}
                   fill={colors.PANEL}
                   stroke={stamped > 0.5 ? (r ? colors.POSITIVE : colors.NEGATIVE) : colors.GRID}
                   strokeWidth={stamped > 0.5 && r ? 2 : 1.2}
                 />
-                <text x={GRP_X - 74} y={grpY(i) + 6} fill={colors.MUTED} fontSize={12.5}>
+                <text x={GRP_X - 74} y={grpY(i) + 6} fill={colors.MUTED} fontSize={14}>
                   {`completion ${i + 1} · strategy ${SHOWCASE.acts[i] + 1}`}
                 </text>
                 {stamped > 0.3 && (
-                  <text x={GRP_X + 128} y={grpY(i) + 6} fill={r ? colors.POSITIVE : colors.NEGATIVE} fontSize={13.5} fontWeight={640} opacity={stamped}>
+                  <text x={GRP_X + 152} y={grpY(i) + 6} fill={r ? colors.POSITIVE : colors.NEGATIVE} fontSize={14} fontWeight={640} opacity={stamped}>
                     {r ? 'pass · 1' : 'fail · 0'}
                   </text>
                 )}
@@ -112,7 +129,7 @@ function Frame({ s }: { s: SceneState }) {
                       y={grpY(i) + 4.5}
                       textAnchor={adv > 0 ? 'start' : 'end'}
                       fill={adv > 0 ? colors.POSITIVE : colors.NEGATIVE}
-                      fontSize={12.5}
+                      fontSize={14}
                     >
                       {adv > 0 ? `+${adv.toFixed(2)}` : adv.toFixed(2)}
                     </text>
@@ -122,7 +139,7 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
           {advU > 0.4 && (
-            <text x={ADV_X + 10} y={grpY(G - 1) + 40} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} opacity={advU}>
+            <text x={ADV_X + 10} y={grpY(G - 1) + 40} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={advU}>
               advantage per completion
             </text>
           )}
@@ -130,8 +147,8 @@ function Frame({ s }: { s: SceneState }) {
           {/* group stats */}
           {statU > 0 && (
             <g opacity={statU}>
-              <rect x={GRP_X - 110} y={grpY(G - 1) + 52} width={330} height={40} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={GRP_X + 55} y={grpY(G - 1) + 77} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+              <rect x={GRP_X - 110} y={grpY(G - 1) + 42} width={330} height={40} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={GRP_X + 55} y={grpY(G - 1) + 66} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 {`group mean = ${SHOWCASE.mean.toFixed(3)} · std = ${SHOWCASE.sd.toFixed(3)}`}
               </text>
             </g>
@@ -142,11 +159,11 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={axU}>
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={chX(T_STEPS) + 10} y2={CH_Y0} stroke={colors.GRID} />
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={CH_X0 - 8} y2={chY(0.92)} stroke={colors.GRID} />
-              <text x={chX(T_STEPS / 2)} y={CH_Y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={chX(T_STEPS / 2)} y={CH_Y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 training steps (groups of 8) →
               </text>
               <line x1={CH_X0 - 8} y1={chY(0.85)} x2={chX(T_STEPS) + 10} y2={chY(0.85)} stroke={colors.GRID} strokeDasharray="4 5" />
-              <text x={chX(T_STEPS) - 4} y={chY(0.85) - 8} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 8} y={chY(0.85) - 8} textAnchor="start" fill={colors.MUTED} fontSize={14}>
                 best strategy ceiling 0.85
               </text>
             </g>
@@ -155,10 +172,10 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <path d={passCurve(train)} fill="none" stroke={colors.SECONDARY} strokeWidth={3} />
               <circle cx={chX(Math.min(train, T_STEPS))} cy={chY(snap.expPass)} r={5} fill={colors.SECONDARY} />
-              <text x={chX(Math.min(train, T_STEPS)) - 10} y={chY(snap.expPass) - 12} textAnchor="end" fill={colors.SECONDARY} fontSize={13.5}>
+              <text x={chX(Math.min(train, T_STEPS)) - 10} y={chY(snap.expPass) - 12} textAnchor="end" fill={colors.SECONDARY} fontSize={14}>
                 {`pass rate: ${(snap.expPass * 100).toFixed(1)}%`}
               </text>
-              <text x={CH_X0} y={CH_Y0 + 50} fill={colors.MUTED} fontSize={12.5}>
+              <text x={CH_X0} y={CH_Y0 + 50} fill={colors.MUTED} fontSize={14}>
                 {`step ${Math.round(snap.step)} · no value network`}
               </text>
             </g>
@@ -179,7 +196,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Group-Relative Policy Optimization
           </text>

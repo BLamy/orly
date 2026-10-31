@@ -142,10 +142,13 @@ export const SAMPLES: [number, number][] = (() => {
 export const xScale: ScaleLinear<number, number> = scaleLinear().domain([-3.4, 3.4]).range([120, 940]);
 export const yScale: ScaleLinear<number, number> = scaleLinear().domain([-2.6, 2.6]).range([620, 40]);
 
-export const llX: ScaleLinear<number, number> = scaleLinear().domain([0, N_ITERS]).range([1000, 1230]);
-export const llY: ScaleLinear<number, number> = scaleLinear().domain([LL_FIRST - 20, LL_LAST + 20]).range([420, 200]);
+// The log-likelihood chart is screen-fixed (drawn outside the camera), in the
+// right column that the data cloud leaves free.
+export const llX: ScaleLinear<number, number> = scaleLinear().domain([0, N_ITERS]).range([1040, 1180]);
+export const llY: ScaleLinear<number, number> = scaleLinear().domain([LL_FIRST - 20, LL_LAST + 20]).range([400, 280]);
 
-export const CAM_DATA: CameraState = { x: 530, y: 330, k: 1.18 };
+// Pulled a little left of the old framing so the data clears the right column.
+export const CAM_DATA: CameraState = { x: 600, y: 330, k: 1.14 };
 
 // ---------------------------------------------------------------------------
 // The timeline

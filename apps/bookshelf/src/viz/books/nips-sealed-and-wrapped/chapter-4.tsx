@@ -29,7 +29,7 @@ const X_MAX = 520;
 const SAMPLES = Array.from({ length: X_MAX }, (_, i) => calcPaddedLen(i + 1));
 const Y_MAX = Math.max(...SAMPLES) * 1.15;
 
-const PLOT = { x: 150, y: 120, w: 700, h: 360 };
+const PLOT = { x: 150, y: 120, w: 700, h: 320 };
 const px = (len: number) => PLOT.x + (len / X_MAX) * PLOT.w;
 const py = (v: number) => PLOT.y + PLOT.h - (v / Y_MAX) * PLOT.h;
 
@@ -40,7 +40,7 @@ const OBS_LENS = [3, 9, 14, 20, 26, 31, 33, 41, 47, 58, 64, 70, 88, 96, 120, 130
 const BUCKETS = [...new Set(OBS_LENS.map(calcPaddedLen))].sort((a, b) => a - b);
 
 const CAM_PLOT: CameraState = { x: 500, y: 300, k: 1.15 };
-const CAM_OBS: CameraState = { x: 900, y: 330, k: 1.15 };
+const CAM_OBS: CameraState = { x: 680, y: 330, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -177,7 +177,7 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.92 * dimU;
   const typedLen = Math.max(0, growN);
   const padded = typedLen > 0 ? calcPaddedLen(typedLen) : 32;
 
@@ -192,26 +192,34 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={axesU}>
               <line x1={PLOT.x} y1={PLOT.y + PLOT.h} x2={PLOT.x + PLOT.w * axesU} y2={PLOT.y + PLOT.h} stroke={colors.GRID} strokeWidth={1.5} />
               <line x1={PLOT.x} y1={PLOT.y + PLOT.h} x2={PLOT.x} y2={PLOT.y + PLOT.h - PLOT.h * axesU} stroke={colors.GRID} strokeWidth={1.5} />
-              <text x={PLOT.x + PLOT.w - 4} y={PLOT.y + PLOT.h + 26} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              <text x={PLOT.x + PLOT.w - 4} y={PLOT.y + PLOT.h + 26} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 true length (bytes)
               </text>
-              <text x={PLOT.x - 10} y={PLOT.y - 10} fill={colors.MUTED} fontSize={12}>
+              <text x={PLOT.x - 10} y={PLOT.y - 10} fill={colors.MUTED} fontSize={14}>
                 padded length
               </text>
               {[32, 64, 128, 256, 480].map((v) => (
-                <text key={v} x={PLOT.x - 8} y={py(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+                <text key={v} x={PLOT.x - 8} y={py(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                   {v}
                 </text>
               ))}
+              {/* the true lengths of the 24 messages, as dots on the floor of the plot */}
+              {OBS_LENS.map((l) => (
+                <circle key={l} cx={px(l)} cy={PLOT.y + PLOT.h} r={3.5} fill={colors.SECONDARY} opacity={0.85 * axesU} />
+              ))}
+              {/* identity line: what the padded size would be with no padding at all */}
+              <line x1={px(1)} y1={py(1)} x2={px(X_MAX * axesU)} y2={py(X_MAX * axesU)} stroke={colors.GRID} strokeWidth={1} strokeDasharray="3 5" opacity={0.7 * axesU} />
+              <text x={px(300) + 10} y={py(300) + 20} fill={colors.MUTED} fontSize={14} opacity={axesU}>
+                no padding: padded = true length
+              </text>
             </g>
           )}
 
-          {/* identity line for contrast + staircase */}
+          {/* the staircase */}
           {stairU > 0 && (
             <g>
-              <line x1={px(1)} y1={py(1)} x2={px(X_MAX * Math.min(1, stairU))} y2={py(X_MAX * Math.min(1, stairU))} stroke={colors.GRID} strokeWidth={1} strokeDasharray="3 5" opacity={0.7} />
               <path d={stairPath(stairU)} fill="none" stroke={colors.ACCENT} strokeWidth={2.2} />
-              <text x={px(X_MAX) - 6} y={py(SAMPLES[X_MAX - 1]) - 10} textAnchor="end" fill={colors.ACCENT} fontSize={12} opacity={clamp01(stairU * 2 - 1)}>
+              <text x={px(X_MAX) - 6} y={py(SAMPLES[X_MAX - 1]) - 18} textAnchor="end" fill={colors.ACCENT} fontSize={14} opacity={clamp01(stairU * 2 - 1)}>
                 calc_padded_len — the real function
               </text>
             </g>
@@ -222,10 +230,10 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <circle cx={px(typedLen)} cy={py(padded)} r={7} fill={colors.WARM} />
               <line x1={px(typedLen)} y1={PLOT.y + PLOT.h} x2={px(typedLen)} y2={py(padded)} stroke={colors.WARM} strokeWidth={1} strokeDasharray="3 4" opacity={0.6} />
-              <text x={PLOT.x} y={PLOT.y + PLOT.h + 52} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+              <text x={PLOT.x} y={PLOT.y + PLOT.h + 52} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 "{DEMO_MSG.slice(0, typedLen)}"
               </text>
-              <text x={PLOT.x} y={PLOT.y + PLOT.h + 74} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <text x={PLOT.x} y={PLOT.y + PLOT.h + 74} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 typed: {typedLen} B → sent: {padded} B
               </text>
             </g>
@@ -237,7 +245,7 @@ function Frame({ s }: { s: SceneState }) {
               {[32, 64, 96, 128, 160, 192, 224, 256, 320, 384, 448].map((b) => (
                 <line key={b} x1={PLOT.x} y1={py(b)} x2={PLOT.x + PLOT.w} y2={py(b)} stroke={colors.SECONDARY} strokeWidth={0.7} strokeDasharray="2 6" opacity={0.5} />
               ))}
-              <text x={PLOT.x + PLOT.w - 4} y={py(448) - 8} textAnchor="end" fill={colors.SECONDARY} fontSize={11}>
+              <text x={PLOT.x + 8} y={py(448) - 8} fill={colors.SECONDARY} fontSize={14}>
                 the only sizes an observer ever sees
               </text>
             </g>
@@ -249,21 +257,21 @@ function Frame({ s }: { s: SceneState }) {
               <text x={950} y={150} fill={colors.NEGATIVE} fontSize={14} fontWeight={600} opacity={Math.min(1, obsU * 3)}>
                 observer’s view
               </text>
-              <text x={950} y={170} fill={colors.MUTED} fontSize={11} opacity={Math.min(1, obsU * 3)}>
+              <text x={950} y={170} fill={colors.MUTED} fontSize={14} opacity={Math.min(1, obsU * 3)}>
                 {OBS_LENS.length} messages → {BUCKETS.length} sizes
               </text>
               {BUCKETS.map((b, i) => {
                 const count = OBS_LENS.filter((l) => calcPaddedLen(l) === b).length;
                 const u = clamp01(obsU * BUCKETS.length - i);
                 if (u <= 0) return null;
-                const y = 200 + i * 44;
+                const y = 192 + i * 30;
                 return (
                   <g key={b} opacity={u}>
-                    <text x={1000} y={y + 14} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                    <text x={1000} y={y + 14} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                       {b} B
                     </text>
                     <rect x={1010} y={y} width={count * 22 * u} height={20} rx={4} fill={colors.NEGATIVE} opacity={0.55} />
-                    <text x={1016 + count * 22 * u} y={y + 14} fill={colors.NEGATIVE} fontSize={11} fontFamily="monospace">
+                    <text x={1016 + count * 22 * u} y={y + 14} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                       ×{count}
                     </text>
                   </g>
@@ -275,11 +283,11 @@ function Frame({ s }: { s: SceneState }) {
           {/* floor price */}
           {minU > 0 && (
             <g opacity={minU}>
-              <rect x={905} y={470} width={300} height={56} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={1055} y={493} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <rect x={905} y={530} width={300} height={56} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
+              <text x={1055} y={553} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 min payload: 99 bytes decoded
               </text>
-              <text x={1055} y={513} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={1055} y={573} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 1 + 32 + 34 + 32 · base64 ≥ 132 chars
               </text>
             </g>
@@ -287,7 +295,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* honest limit */}
           {limitU > 0 && (
-            <text x={PLOT.x} y={560} fill={colors.MUTED} fontSize={13} opacity={limitU}>
+            <text x={PLOT.x} y={560} fill={colors.MUTED} fontSize={14} opacity={limitU}>
               spec’s own words: a “limited message size leak” remains — buckets blur length, they don’t erase it
             </text>
           )}
@@ -296,14 +304,16 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          {/* solid under the panel so the faded chart cannot show through */}
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.BG} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Hide in a bucket, not in a haystack
           </text>
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             true lengths are rounded up the staircase; observers see steps, not floors
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-44 · calc_padded_len · min 99 B · power-of-two chunks
           </text>
         </g>

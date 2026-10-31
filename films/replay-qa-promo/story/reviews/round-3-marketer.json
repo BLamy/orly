@@ -1,0 +1,58 @@
+{
+  "reviewer": "marketer",
+  "round": 3,
+  "lens": "message clarity and specificity",
+  "runtimeCheck": "script.mjs assemble --check (140 wpm, voice.json): 0 errors, 11 warnings; 177 words, 20 lines, 15 shots; estimated 99.4 s against the 90 s target. That is inside the brief's 100 s hard ceiling, so it is not critical, but only 0.6 s of headroom is left. Any added word must be paid for with a held beat or a cut word.",
+  "round2Followup": "Fixed: L0101 now names the category ('end-to-end'); L0506 now contrasts a screen recording with a time-travel recording and has a matching video-frame graphic; the agent pair is on screen for about 6.05 s (inside 6-8 s), and the 'Fixed' chip is held back until the pair has gone; the PR #3 badge is now 'purple', which matches runs/003668.png. Still open: the 258 bug never says that the recording explained it.",
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 8, "story": 8, "curiosity": 7, "visual": 8, "voice": 8 },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch05-s04 / L0507-L0508 (the 258 bug)",
+      "problem": "This is still the weaker of the two time bugs, and the film never ties it to time travel. A developer hears 'one list, fetched two hundred fifty-eight times' and thinks 'my network tab shows that too'. The bible limits the network claim to the WHY, not the WHETHER [TIME-C2], and the why (a checkpoint that never moves) is narrated as a bare fact. The film never says that the recording is what revealed it. After L0506's 'A time-travel recording can', this beat should pay that line off, and it doesn't.",
+      "fix": "Preferred, zero runtime: on 'never' in L0508, have a small kinetic label blur in over the 'checkpoint −1' tag, '{ why }' or 'found in the recording' (Promo Sans 28 px, white), in the same bracket device as '{ root cause }' in ch05-s03, so the two bugs rhyme. If a word budget is freed (see the runtime issue), use narration instead: L0508 'The recording shows why: it never saved its place, so it kept starting over.' (+4 words) [TIME-11][TIME-C2]."
+    },
+    {
+      "where": "ch05-s04 (overlay load)",
+      "problem": "The shot carries too much in about 7 s: a zoom on '258', a counter racing to 258, a 258-bar ribbon, the 'checkpoint −1' tag, a bookmark flag that snaps back three times, an underline, all the bars flashing, AND a struck-through cursor glyph labelled '≈ 160 s · 2 clicks · no keypresses'. That last element mixes its message: the strike-through says 'no clicks' while its label says '2 clicks'. Its '≈ 160 s' also restates the time in a second unit right after the voice said 'in under three minutes'. A first-time viewer will lose the one idea that matters, a bookmark that never moves. The 'no user input' idea was already made by the 67 ms bug's 'No click.'",
+      "fix": "Cut the cursor glyph and its '≈ 160 s · 2 clicks · no keypresses' label from ch05-s04 (onScreenText and beat 'nobody'). Spend that screen space and time on the checkpoint flag's three snap-backs, plus the '{ why }' label above."
+    },
+    {
+      "where": "L0503 ('One update.')",
+      "problem": "'One update.' is vague to the ear. It also contradicts the real title on screen at that moment, which reads 'RTK-Query updates' (plural). The subject of the beat is the 67 ms commit, and L0504 already names its trigger ('A background refresh').",
+      "fix": "Cut 'One update.': L0503 becomes 'Sixty-seven milliseconds. Four dropped frames.' (−2 words, about 0.9 s back to the runtime budget). Move beat 'update' (the braces snapping around '67ms') onto 'Sixty-seven'. The ribbon, the four hollow slots and the silence carry the rest [TIME-08][TIME-18]."
+    },
+    {
+      "where": "runtime (whole film)",
+      "problem": "At 99.4 s against a 100 s ceiling, the script has no room for the 258 payoff or for drift in the recorded ElevenLabs narration. Long silent holds are eating the budget: ch02-s01 holdAfter 1.5 s on a URL the narrator never reads, ch01-s01 holdAfter 1.0, and ch05-s05's 6.4 s unnarrated beat (which must stay).",
+      "fix": "Take about 2 s back without touching the agent beat. Cut 'One update.' (≈0.9 s). Lower ch02-s01 holdAfter from 1.5 to 1.0 (the caret is still blinking under ch02-s02's pull-back, so the URL stays readable). Lower ch01-s01 holdAfter from 1.0 to 0.7. That lands around 97.6 s, with room for the optional +4-word 258 line."
+    },
+    {
+      "where": "ch03-s01 (the 'explores' claim has no product proof)",
+      "problem": "Every other promise in the film is proven on real footage: the schedule chip, the environment line, the PR #3 runs, both bug pages. The first promise of the loop, 'It explores your app in a real browser', is shown only as a generic type step list and a small grey Insights number. The right third of the frame is left as bare paper by design. The 'explore' take is never used, even though look.md lists it as one of the takes the message hangs on.",
+      "fix": "Put one small floating RrwebScreen in the empty right third: take explore, tape around 6868 to 8000 (from mark play onward), cropped to the Exploration card's '1 / 9', the timer and the agent subtitle ('Starting the exploration of the Electric Forest app…'), with cursor={false}. Never crop the empty player picture or narrate it as watching the agent [LOOP-10][LOOP-11]. It lifts in on 'explores' and settles as row one's check lands. The step list keeps its left two-thirds."
+    },
+    {
+      "where": "L0302 → L0401 ('and runs them.' / 'Then it runs on Replay's browsers.')",
+      "problem": "Two different 'runs' in a row. The second has no object, so on first hearing 'it runs on Replay's browsers' could mean the product itself runs there rather than your journeys. The 'fully managed' meaning (Replay hosts the browsers, not you) depends on that line being heard correctly.",
+      "fix": "Make the object explicit at no word cost. L0401 becomes 'They run on Replay's browsers. On a schedule, while you sleep.' ('Then it' → 'They', −1 word; 'They' = the journeys), or 'Then runs them on Replay's browsers…' if the 'Then' pickup must stay. The 'hosted by Replay' pill already makes the rest clear on screen [CONT-19]."
+    },
+    {
+      "where": "ch05-s05 (the agent beat)",
+      "problem": "The beat is present, subtle and timed correctly (about 6.05 s, scale 0.6, unnarrated, with 'Fixed' kept out of frame), and the green ✓ drifting toward 'rerun to confirm' is a good payoff. One clarity risk remains: the critic card carries only an eye glyph and the word 'critic', so nothing tells the viewer that the critic is Replay QA's rerun. The beat can read as a third-party AI reviewer, which makes it a cute aside rather than a quiet demonstration of the product.",
+      "fix": "Keep it unnarrated. Give the critic card a tiny grey sub-label 'reruns the journey' (Promo Sans 18 px at 0.6 scale, or the label pair 'developer · Replay QA' in place of 'developer · critic'). This grounds 'not yet / good' in the documented fix-and-rerun loop [AGENT-02][PROOF-07] without naming the undocumented judge links [AGENT-15]."
+    },
+    {
+      "where": "ch06-s02 (end card)",
+      "problem": "The spoken hook 'Catch bugs that only exist in time.' never appears as type on the end card. While it is spoken, the screen is typing 'qa.replay.io'. Because the hook exists only in audio, a muted autoplay viewer (the usual way promos are seen in social feeds) leaves with 'End-to-end testing · fully managed' and loses the differentiator.",
+      "fix": "Under the lock-up, on 'Catch', blur in a small grey line 'Catch bugs that only exist { in time }', reusing ch05-s01's brace device with the red-pink sweep on 'in time'. Type 'qa.replay.io' beneath it on 'time', or in the last 0.8 s hold. No new words."
+    }
+  ],
+  "strengths": [
+    "A first-time viewer gets the primary message unmistakably and in order: the category in the first line ('end-to-end tests you never write'), one URL, explore → journeys → runs, Replay's browsers on a real 'Tue at 3:00 AM' schedule chip with six real Tuesdays, staging / preview / localhost, a real PR #3 runs table, 'recorded, then reviewed', and the end-card lock-up '{ End-to-end testing · fully managed }'.",
+    "The 67 ms bug is the film's best stretch and is fully concrete: Replay QA caught a performance bug in its own Projects page; 67 ms, four dropped frames shown as four hollow frame slots during a silence; no click; 25 of 27 renders changed nothing; the video-frame outline that keeps only the 2 renders that did change something; then a match cut to the real 'not memoized' Root Cause line. The 'Open' chip stays honest.",
+    "L0404's 'For what breaks, and what's slow.' is a clean bridge from functional e2e testing to the performance hook. It is grounded in the polish passes that filed both featured bugs.",
+    "L0601 'Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.' is the line to remember. It puts recordings, root cause and verification in eleven words, staged as a reading path over real product tiles.",
+    "Guardrails are respected throughout: 'about' and exact figures as the bible requires, Insights figures carry their 'Insights:' tag, 'every night' never appears near the weekly chip, there is no 'fixes your bugs' claim, the 258 never shares a frame with the Insights 258, and the agents are generic and unbranded."
+  ]
+}

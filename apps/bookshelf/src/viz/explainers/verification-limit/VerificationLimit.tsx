@@ -58,11 +58,11 @@ const RUNGS = [
 ];
 
 const RUNG_X = 260;
-const RUNG_W = 760;
+const RUNG_W = 600; // ends at x 860, clear of the promotion-ladder card at x 880
 const RUNG_H = 96;
 const RUNG_GAP = 30;
 const rungY = (i: number) => 530 - i * (RUNG_H + RUNG_GAP); // rung 0 at bottom (bottom edge 626, clear of the CC strip)
-const CAM_RUNG = (i: number): CameraState => ({ x: 640, y: rungY(i) + RUNG_H / 2, k: 1.35 });
+const CAM_RUNG = (i: number): CameraState => ({ x: RUNG_X + RUNG_W / 2, y: rungY(i) + RUNG_H / 2, k: 1.35 });
 
 interface Scene {
   tl: Timeline;
@@ -203,10 +203,13 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
   const finalU = s.get(scene.finalU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
   const dotOn = dotI > -0.5;
   const dotIdx = clamp01((dotI + 1) / 4) * 4 - 1; // continuous rung index
   const dotY = dotOn ? rungY(Math.max(0, dotIdx)) + RUNG_H / 2 : rungY(0) + RUNG_H + 40;
+  // Zoomed in on a rung, rungs two or more steps away would sit under the caption
+  // strip, so they fade out; at home zoom (k 1) the whole ladder stays visible.
+  const zoomHide = clamp01((cam.k - 1) / 0.35);
 
   return (
     <>
@@ -218,16 +221,6 @@ function Frame({ s }: { s: SceneState }) {
           {axisU > 0 && (
             <g opacity={axisU}>
               <line x1={RUNG_X - 60} y1={rungY(0) + RUNG_H} x2={RUNG_X - 60} y2={rungY(3)} stroke={colors.GRID} strokeWidth={2} />
-              <text
-                x={RUNG_X - 78}
-                y={(rungY(0) + rungY(3) + RUNG_H) / 2}
-                fill={colors.MUTED}
-                fontSize={13}
-                textAnchor="middle"
-                transform={`rotate(-90 ${RUNG_X - 78} ${(rungY(0) + rungY(3) + RUNG_H) / 2})`}
-              >
-                negotiability of the verdict ↓
-              </text>
             </g>
           )}
 
@@ -236,9 +229,11 @@ function Frame({ s }: { s: SceneState }) {
             const u = clamp01(rungU * RUNGS.length - i);
             if (u <= 0) return null;
             const y = rungY(i);
-            const active = Math.abs(dotIdx - i) < 0.5 && dotOn;
+            const dist = Math.abs(dotIdx - i);
+            const active = dist < 0.5 && dotOn;
+            const far = dotOn ? clamp01((dist - 1.2) / 0.5) : 0;
             return (
-              <g key={r.name} opacity={u * (active || !dotOn ? 1 : 0.42)}>
+              <g key={r.name} opacity={u * (1 - far * zoomHide) * (active || !dotOn ? 1 : 0.55)}>
                 <rect x={RUNG_X} y={y} width={RUNG_W} height={RUNG_H} rx={12} fill={colors.PANEL} opacity={0.95} stroke={r.color} strokeWidth={active ? 2.5 : 1.2} />
                 <text x={RUNG_X + 26} y={y + 34} fill={r.color} fontSize={17} fontWeight={700}>
                   {r.name}
@@ -247,7 +242,7 @@ function Frame({ s }: { s: SceneState }) {
                   what the claimant can still do: {r.negotiation}
                 </text>
                 {(active && factU > 0) && (
-                  <text x={RUNG_X + 26} y={y + 82} fill={colors.TEXT} fontSize={12} fontFamily="monospace" opacity={factU}>
+                  <text x={RUNG_X + 26} y={y + 82} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={factU}>
                     {r.fact}
                   </text>
                 )}
@@ -259,13 +254,36 @@ function Frame({ s }: { s: SceneState }) {
           {dotOn && (
             <g>
               <circle cx={RUNG_X - 26} cy={dotY} r={11} fill={colors.ACCENT} />
-              <text x={RUNG_X - 26} y={dotY - 20} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily="monospace" fontWeight={700}>
+              <text x={RUNG_X - 26} y={dotY - 20} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace" fontWeight={700}>
                 “it works”
               </text>
             </g>
           )}
         </Camera>
       </g>
+
+      {/* the axis label — screen space, pinned beside the axis and kept inside the
+          stage (clear of the header band and the caption strip) as the camera moves */}
+      {axisU > 0 && (
+        <g opacity={axisU * mainOp}>
+          {(() => {
+            const labelX = 640 + cam.k * (RUNG_X - 78 - cam.x);
+            const labelY = Math.min(530, Math.max(130, 360 + cam.k * ((rungY(0) + rungY(3) + RUNG_H) / 2 - cam.y)));
+            return (
+              <text
+                x={labelX}
+                y={labelY}
+                fill={colors.MUTED}
+                fontSize={13}
+                textAnchor="middle"
+                transform={`rotate(-90 ${labelX} ${labelY})`}
+              >
+                negotiability of the verdict ↓
+              </text>
+            );
+          })()}
+        </g>
+      )}
 
       {/* the agent connection — screen space */}
       {agentU > 0 && (
@@ -283,12 +301,14 @@ function Frame({ s }: { s: SceneState }) {
           <text x={904} y={230} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
             spec → machine-checked proof
           </text>
-          <text x={904} y={262} fill={colors.POSITIVE} fontSize={12}>
+          <text x={904} y={262} fill={colors.POSITIVE} fontSize={13}>
             each promotion retires one negotiation
           </text>
         </g>
       )}
 
+      {/* header band: solid, so rungs panning past the top edge stop under the title */}
+      <rect x={0} y={0} width={STAGE_W} height={72} fill={colors.BG} />
       <g opacity={titleU * mainOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           The unnegotiable verifier
@@ -298,7 +318,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* close */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={180} y={200} width={920} height={264} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={180} y={214} width={920} height={218} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={262} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Proof, or it didn’t happen.
           </text>

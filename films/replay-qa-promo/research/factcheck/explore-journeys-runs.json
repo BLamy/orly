@@ -1,0 +1,95 @@
+{
+  "id": "explore-journeys-runs",
+  "checked": 18,
+  "confirmed": 10,
+  "corrected": 7,
+  "unverifiable": 1,
+  "corrections": [
+    {
+      "original": "The account's Insights page shows 50 projects, 1151 journeys and 89 explorations ... 50 is the full set of projects behind the totals / 'Across the 50 projects in the account'",
+      "verdict": "corrected",
+      "fix": "The on-screen figures are exact (50 / 711 / 389 open / 29% / 1151 / 89; the 50 Scorecard rows sum to 711, 389 and 1151, and resolved 207 gives 29%). But the live REST API reports total 67 projects (52 active, 15 paused). The newest 50 by created_at sum to exactly 711 bugs, and the 17 older projects (2026-05-13 to 2026-06-12) hold 72 more (783 in all). So Insights, the sidebar and the Projects page show a 50-project subset (inferred cap). Say 'Insights: 50 projects · 1151 journeys · 89 explorations', never 'in the account' or 'all projects'.",
+      "sources": [
+        "https://qa.replay.io/insights (live, Claude in Chrome, 2026-10-14)",
+        "https://qa.replay.io/api/v1/projects?page_size=100 (signed-in, count-only, 2026-10-14: total 67)",
+        "films/replay-qa-promo/capture/clean/insights.json @ 0 ms",
+        "films/replay-qa-promo/capture/clean/projects.json @ 0 ms (50 project-card elements)"
+      ]
+    },
+    {
+      "original": "projects_total = 20 ... very likely one page (inferred); 50 is the authoritative on-screen project count; 41 distinct names",
+      "verdict": "corrected",
+      "fix": "The pagination artifact is now verified, not inferred: the default page_size of 20 returns 20 items with total 67. 50 is authoritative only as the Insights/on-screen figure, not as the account's project count (67). 41 distinct names among the 50 Insights rows is confirmed. 27 of the 50 rows contain 'PR #', plus 'Electric Forest PR 4650 Preview'.",
+      "sources": [
+        "https://qa.replay.io/api/v1/projects (live, count-only, 2026-10-14)",
+        "films/replay-qa-promo/research/sources/openapi.json (GET /api/v1/projects page_size default 20, max 100)",
+        "films/replay-qa-promo/capture/clean/insights.json"
+      ]
+    },
+    {
+      "original": "Electric Forest (context only): 160 journeys, 126 bugs all resolved, 9 explorations ... the digest's run-status counts (... = 792) are not test-run counts",
+      "verdict": "corrected",
+      "fix": "160 journeys, 9 explorations (blocked 4, cancelled 2, completed 2, failed 1), 'Exploration 1 / 9', 'Test runs 25' and the 792 total are all confirmed, and the 792 is now verified live as journey-run records (test-runs items carry journey_id). But '126 all resolved' means Scorecard 'Resolved 126': only 101 were fixed, 24 invalid and 1 won't fix. Never say '126 bugs fixed'.",
+      "sources": [
+        "films/replay-qa-promo/research/sources/account-digest.json (projects.\"Electric Forest\")",
+        "https://qa.replay.io/insights (Scorecard row: 126 / — / 126 / 160 / 100%)",
+        "https://qa.replay.io/api/v1/projects/proj-electric-forest-ms8w0nv1/test-runs (live, count-only: total 792)",
+        "films/replay-qa-promo/capture/clean/explore.json @ 0 ms"
+      ]
+    },
+    {
+      "original": "Explore take: the play click lands at 2821 ms; the player timer runs from 0:00 to 0:13 of 10:28, and the agent subtitle appears",
+      "verdict": "corrected",
+      "fix": "The click events are at 2331 ms (mouse down) to 2408 ms (click). 2821 ms is the 'play' mark, set after the 900 ms click motion. The timer reads 0:00 at the mark, first ticks to 0:01 at 3064 ms and reaches 0:13 at 11064 ms (total 10:28). The subtitle 'Starting the exploration of the Electric Forest app. I'll begin with the public home page's in-page navigation…' is added at 6868 ms (verbatim confirmed). The rr-block player at 0x0 is confirmed.",
+      "sources": [
+        "films/replay-qa-promo/capture/clean/explore.json (mouse-interaction and text-mutation events)",
+        "films/replay-qa-promo/capture/takes/explore.mjs"
+      ]
+    },
+    {
+      "original": "Runs take: ... the scroll to 'scrolled' 5923 ms reveals the 50-journey Failed run and the 08/12/2026 Initial Test Run (a 600 px scroll)",
+      "verdict": "corrected",
+      "fix": "All 13 rows (verified row by row), the columns, the PR #1/#3 badges linking to github.com/replayio/replayqa-cli-in-ci/pull/1 and /pull/3, the 12-journey Completed run with 0/0/13/0, and 'Test runs 13' are confirmed. But the requested 600 px scroll moves main#main-content only 27.5 px (4696 to 5273 ms), the page's full scroll range. The older rows are therefore most likely already visible at 'list' (inferred; no layout boxes are recorded). Don't script it as 'scroll to reveal older runs'.",
+      "sources": [
+        "films/replay-qa-promo/capture/clean/runs.json (scroll events on node 68 = main#main-content; DOM at 3668 ms)",
+        "films/replay-qa-promo/capture/takes/runs.mjs"
+      ]
+    },
+    {
+      "original": "One Electric Forest round on 09/30/2026, 'Main page load and broad site navigation sweep', completed 131 journeys / 'exercised 131 journeys'",
+      "verdict": "corrected",
+      "fix": "The date, title, Local environment, Completed status and 131 journeys are confirmed (table and chat card: Journeys finished 131 / 131). But the chat card shows Passed journeys 1, Failed journeys 0, Bugs found 0, and the table's Bugs cell is 0/0/0/0. Don't imply 131 passing tests or any bugs found. Safe wording: 'one round, 131 journeys'.",
+      "sources": [
+        "films/replay-qa-promo/capture/clean/explore.json @ 0 ms (chat run card and Test Runs card)"
+      ]
+    },
+    {
+      "original": "The Electric Forest chat shows real blocked cases: an authentication wall, a seeded-data barrier, an app that never finished loading",
+      "verdict": "corrected",
+      "fix": "The sign-in message (verbatim: '⚠️ I stopped exploring because the app requires a sign-in I couldn't complete, so signed-in areas couldn't be tested.') and the seeded-data barrier message (Sep 1) are confirmed. The 'never finished loading a usable page' message (Aug 31, 2:28 PM) explains an authentication wall in its own detail text (the Auth0 emulator rejected the credentials), so it is not a real example of the 'app will not load' case.",
+      "sources": [
+        "films/replay-qa-promo/capture/clean/explore.json @ 0 ms (project chat)"
+      ]
+    },
+    {
+      "original": "The overview's exploration player ... is not the Replay runtime recording that each journey run produces",
+      "verdict": "unverifiable",
+      "fix": "Confirmed that the player renders rrweb DOM events plus thought/note/error/system subtitles (recording-events). But the API serves the same stream 'for one task, test run, exploration, or Replay recording', and GET /explorations mentions 'the exploration's own recording'. Whether an exploration also has a Replay runtime recording is unverified. Limit the claim to what the player renders.",
+      "sources": [
+        "films/replay-qa-promo/research/sources/openapi.json (GET /api/v1/projects/{project_id}/recording-events; GET /api/v1/explorations/{exploration_id})"
+      ]
+    }
+  ],
+  "confirmed_claims": [
+    "1 The loop (concepts page 'The loop', verbatim; live Chrome read 2026-10-14)",
+    "2 Exploration definition; later explorations add coverage and do not replace journeys (concepts page)",
+    "3 Blocked exploration causes plus the verbatim Electric Forest chat quote (concepts page; explore.json)",
+    "4 Journey starts as a description; concrete steps once confident; API 'Create an unstepped (agent-driven) test journey' (concepts page; openapi.json)",
+    "5 Start URL / Session settings; every edit creates a version and schedules a run if active (concepts page)",
+    "6 Test run = one round in Replay Browser; each journey run produces a Replay recording; investigate before filing; recovers from a broken step (concepts page)",
+    "7 Run end states (concepts page); on-screen statuses Completed/Failed/Cancelled/Blocked (data-testids in runs.json, explore.json)",
+    "8 'records the inputs to the runtime ... re-runs exactly the same execution' (time-travel page, live); 'capture a deterministic runtime recording of what happened' (overview, live)",
+    "9 Five steps (overview, live) vs three on the home page: Explore, Test & Record, Investigate & Report (https://www.replay.io/, live)",
+    "14 (core) The player renders rrweb DOM plus narration subtitles via recording-events (openapi.json)"
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "working_title": "Replay QA: Bugs That Only Exist in Time",
+  "audience": "Engineering leads, front-end developers and teams shipping web apps with AI coding agents who want end-to-end QA without writing or maintaining browser tests; a ~90 s product promo, so every claim must be a capability or an exact number they can check in the product or docs.",
+  "central_questions": [
+    "What exactly does Replay QA do when you point it at a URL, and what does 'fully managed end-to-end testing' mean in its own vocabulary (projects, explorations, journeys, test runs, bugs, polish passes, versions, recordings)?",
+    "How does Replay QA keep testing without a human: environment schedules, staging/production/preview/local environments, main-branch deployments and every pull request, with results posted back to GitHub and bugs filed to trackers?",
+    "Why are some bugs (polling loops, re-fetch storms, long React commits that drop frames) only provable with a time-travel recording of the runtime, and what are the exact numbers in the account's featured bugs?",
+    "What does a Replay QA bug report contain (root cause, causal chain, evidence, severity, status) and how is a fix verified, and what do the account's Insights totals show?",
+    "How do coding agents drive the same loop (llms.txt, REST API, MCP, Replay MCP on a recording), which grounds the subtle developer-agent / critic-agent beat?"
+  ],
+  "topics": [
+    {
+      "id": "point-it-at-your-app",
+      "title": "Point it at your app: project setup from one URL",
+      "era": "product, as of 2026-10-14",
+      "questions": [
+        "What does the New Project page say and do (heading, sub-copy, the chat-guided setup), as captured in the new-project take?",
+        "What does Replay QA need to reach an app: a public URL, localhost or a private network via the managed reverse proxy, or a build inside CI via the CLI tunnel?",
+        "What guidance can a project carry (instructions, design document, test logins and variables, enabled polish passes, credit budget, bug limit), and what is optional?",
+        "Is 'no existing test suite and no reproduction steps needed' stated by the vendor, in which words?"
+      ],
+      "must_cover": [
+        "New project page copy verbatim from account-digest.json new_project_page and capture/clean/new-project.json marks (typing 1100 ms, typed 2966 ms, hover-start 4737 ms)",
+        "research/sources/basics_replay-qa_overview.txt: 'Connect the application' (public URL, localhost reverse proxy, CI build)",
+        "research/sources/basics_replay-qa_concepts.txt: Project definition (target URL, guidance, credit budget, bug limit, active/paused)",
+        "research/sources/basics_replay-qa_getting-good-results.txt: what to tell it before the first run",
+        "The agent prompt 'Use Replay QA to test and fix this app. Start at https://docs.replay.io/llms.txt and follow it.' (exact wording, two sources)",
+        "Which URL the film's typed prompt will show, confirmed from the redacted take (no credentials, no e-mails)",
+        "Public page https://qa.replay.io/ and https://docs.replay.io/ for current positioning copy"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "explore-journeys-runs",
+      "title": "The managed loop: explore, build journeys, run them in Replay Browser",
+      "era": "product, as of 2026-10-14",
+      "questions": [
+        "How does an exploration discover an app's flows and turn them into journeys, and when does it end 'blocked'?",
+        "How does a journey go from a description to recorded concrete steps, and what are its settings (start URL, saved session vs clean browser)?",
+        "What is a test run, what states can it end in, and in what sense is 'every run a recording'?",
+        "What do the explore and runs takes actually show on screen (marks: explore play 2821 ms; runs list 3668 ms, scrolled 5923 ms)?",
+        "What are the account-level counts the film may show (journeys, explorations, projects) and which figure is authoritative?"
+      ],
+      "must_cover": [
+        "research/sources/basics_replay-qa_concepts.txt: Exploration, Journey, Test run, Recording, 'The loop'",
+        "research/sources/basics_replay-qa_overview.txt: 'How Replay QA works' five steps",
+        "account-digest.json insights: journeys 1151, explorations 89, projects 50",
+        "Discrepancy to resolve and label: insights.projects = 50 vs projects_total = 20 in account-digest.json (different scopes? archived/visible projects?) before any project count goes on screen",
+        "Electric Forest example counts (journeys 160; test runs completed 106, failed 56, infra-failed 49, incomplete 50, cancelled 394, blocked 137) as context only, not headline numbers",
+        "capture/clean/explore.json and capture/clean/runs.json: on-screen labels and copy at each mark",
+        "Replay Browser and deterministic recording (research/sources/reference_time-travel_how-does-time-travel-work.txt)"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "continuous-everywhere",
+      "title": "Continuous by default: schedules, environments, and every pull request",
+      "era": "product, as of 2026-10-14",
+      "questions": [
+        "How are environment schedules configured (the settings page example 'Production · ... · Tue at 3:00 AM · America/New_York') and which environment kinds exist (production, staging, development, preview, local)?",
+        "How does GitHub integration work: main-branch modes (None / Detect main branch deployments / Listen to GitHub events), pull request testing against preview deployments, the PR comment edited in place, the Replay QA check, and Require approval?",
+        "How does a PR build that exists only in CI get tested (replayqa proxy --ci, replayqa ci; GitHub Actions and CircleCI)?",
+        "Where do bugs go (GitHub Issues, Linear, Jira) and what is the pr-closed status?",
+        "What do the schedule, runs and projects takes show for PRs and environments, and does that agree with account-digest.json per_pull_request_projects = [] ?",
+        "What do 'Project status: Active — Running test loops automatically', budget and 'Processing concurrency (5 max)' mean for 'fully managed'?"
+      ],
+      "must_cover": [
+        "account-digest.json settings_page_facts (header copy, environments_example, add_environment copy, integrations list, project status, budget, concurrency 5 max, security testing)",
+        "capture/clean/schedule.json marks: polish 2226 ms, schedule 8808 ms, add-env 11458 ms",
+        "research/sources/basics_replay-qa_github.txt: main-branch modes, PR flow, Require approval, issue trackers, GitLab/Bitbucket not supported",
+        "research/sources/basics_replay-qa_frpc-ci.txt: CI tunnel workflow",
+        "Reconcile look.md claim (runs take shows PR #3 / PR #1 environments; projects take 'filtered = per-PR projects') against account-digest.json per_pull_request_projects = [] and the take's actual DOM text; label the PR claim UNVERIFIED for this account if the takes do not show it",
+        "Exact wording for the kinetic line 'Every deploy. Every PR. Every night.' must be supported by docs (main-branch deployments, PR revisions, schedules)"
+      ],
+      "deep_dive": true
+    },
+    {
+      "id": "bugs-in-time",
+      "title": "Bugs that only exist in time: runtime replay, network and React polish passes",
+      "era": "product, as of 2026-10-14",
+      "questions": [
+        "Why does Runtime Replay (re-running recorded runtime inputs) expose timing and performance bugs that Session Replay (DOM replay), a screenshot or a log line cannot?",
+        "What do the Network performance and React rendering polish passes report, and what setup do they need (React only; source maps improve names)?",
+        "What are the exact numbers in each featured bug (67 ms commit at T=383.2s, 4 dropped frames, 25 of 27 fibers wasted, ~34 ms waste, 16.7 ms frame budget; 56 ms commit, 87 fibers, 3 dropped frames; 258 re-fetches, checkpoint -1, ~631 ms avg; 105 identical empty responses every ~800 ms, waitMs=500 vs 10000)?",
+        "What do the bug-react and bug-sync takes show on screen at each mark (bug-react report 3032, actual 8723, rootcause 12008 ms; bug-sync report 1603, actual 5402, rootcause 8154 ms)?",
+        "Which featured bugs are open vs fixed, and which product does each come from (the 67 ms and 56 ms bugs are on Replay QA's own Projects page; the 258 and 105 bugs are on a 'reading-room' app)?"
+      ],
+      "must_cover": [
+        "research/sources/reference_time-travel_how-does-time-travel-work.txt: Runtime Replay vs Session Replay, determinism, 'removes the reproduction step'",
+        "research/sources/reference_replay-qa_polish-passes.txt: full pass list and how passes run",
+        "account-digest.json featured_bugs: react_commit_67ms (bug-muen719p-vdmh, open, medium), navigation_commit_56ms (bug-muemtceb-we4e, open, medium), live_sync_258 (bug-mtmk9vtr-21c2, fixed, medium), board_poll_105 (bug-mtmjva2o-pah7, fixed, low); every number copied exactly",
+        "Brief's hook phrase 'a poll that fires every 800 ms': board_poll_105 says '~800ms' in the title and '~700-900ms' in the body; the film must say 'about 800 ms' or 'every ~800 ms', not an exact 800",
+        "Enabled polish passes on the settings page: Network Performance, React Rendering, Layout Shift, Glitches, User Experience, Accessibility, UI Details (7 enabled)",
+        "Discovery source split: polish analysis 453 bugs (64%) vs journey testing 258 (36%), noting the coincidence that 258 is also the live-sync request count so the script does not conflate them",
+        "Replay's public product pages on time travel (replay.io) for the current claim wording"
+      ],
+      "deep_dive": true
+    },
+    {
+      "id": "proof-in-every-report",
+      "title": "A finding carries its proof: bug reports, verification, and the account's totals",
+      "era": "product, as of 2026-10-14",
+      "questions": [
+        "What fields does a bug report contain (title, description, severity, steps with screenshots, expected/actual, root cause, causal chain, recording, category) and what does Replay QA not do (no code patch)?",
+        "How do severity and status work, how is deduplication done, and how does marking a bug fixed trigger a rerun that reopens or files a new bug?",
+        "What do the Insights page and take show (marks stats 2926 ms, severity 6905 ms) and which totals are exact?",
+        "How do bugs export (Markdown, REST GET /bugs/{bug_id}, MCP get_bug, issue trackers)?"
+      ],
+      "must_cover": [
+        "research/sources/reference_replay-qa_bug-reports.txt: fields, severity table, status table, formats",
+        "account-digest.json insights: total_bugs 711, open_bugs 389, resolution_rate 29%, severity critical 4 / high 238 / medium 369 / low 100, journeys 1151, explorations 89",
+        "Arithmetic check: 4+238+369+100 = 711 and 258+453 = 711",
+        "capture/clean/insights.json on-screen values match account-digest.json (flag any difference; the recording wins for what is shown, the digest for narration)",
+        "research/sources/openapi.json: bug status enum and GET /bugs/{bug_id}",
+        "Electric Forest bug categories (network-performance 33, journey 39, glitches 20, accessibility 26, user-experience 5, layout-shift 3) and statuses (fixed 101, invalid 24, wontfix 1) as optional proof points"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "agents-and-the-critic",
+      "title": "Agents in the loop: coding agents drive Replay QA and hand recordings to a critic",
+      "era": "product, as of 2026-10-14",
+      "questions": [
+        "How does a coding agent drive the whole loop (create project, wait, read bugs, fix, mark fixed, loop until no open bugs) via llms.txt, the REST API, the Replay QA MCP server (claude mcp add --transport http replay-qa https://qa.replay.io/api/mcp) and the CLI?",
+        "What does Replay MCP let an agent do with a recording (console, code, network from the actual failure)?",
+        "What product feature grounds the developer/critic pairing: look.md cites Requirements / Evidence / Acceptance 'judges' on bug pages; is that visible in the bug-react or bug-sync takes, and in what exact words?",
+        "Which agents does the vendor name (Claude Code, Cursor, Codex, Obvious) and how should the film depict them without imitating other brands?"
+      ],
+      "must_cover": [
+        "research/sources/basics_replay-qa_agent-integration.txt: continuous QA loop, MCP connection, credential types named only generically (no tokens copied)",
+        "research/sources/basics_replay-mcp_overview.txt: what Replay MCP exposes",
+        "research/sources/llms.txt: entry-point contents",
+        "Verify the 'judges' (Requirements / Evidence / Acceptance) claim in capture/clean/bug-*.json DOM text or the replay-qa book (public/generated/replay-qa/manifest.json, chapters 'The Agent Reads the Tape', 'Green Must Be Proven'); if not found, mark UNVERIFIED and ground the beat only in the documented fix-and-rerun loop",
+        "The beat stays subtle (6-8 s, corner of frame): the critic's 'not yet' / 'good' is depiction of the documented verify-on-fix loop, not a quoted product feature unless verified"
+      ],
+      "deep_dive": false
+    }
+  ]
+}

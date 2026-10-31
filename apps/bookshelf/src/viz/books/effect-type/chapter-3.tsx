@@ -36,9 +36,13 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 const AXIS_Y = 352;
 const SRC = { x: 96, y: AXIS_Y - 44, w: 216, h: 88 } as const;
 const LENS = { cx: 480, cy: AXIS_Y, r: 54 } as const;
-const JCT = { x: 660, y: AXIS_Y - 60, w: 230, h: 120 } as const;
-const OUT_X = 1120;
+// the junction's top band sits above the axis so the bead runs through empty space
+const JCT = { x: 660, y: AXIS_Y - 24, w: 290, h: 156 } as const;
+const OUT_X = 1040;
 const RED_Y = 520;
+// the red exit sits under the green one, clear of the junction's text column
+const RED_X = OUT_X - 40;
+const DROP_X = JCT.x + JCT.w - 24;
 
 // bead path — piecewise linear along the pipeline; the sad run branches down
 // at the junction. Pure function of (u, sad).
@@ -51,9 +55,9 @@ function beadPos(u: number, sad: boolean): { x: number; y: number } {
     return { x: lerp(JCT.x + JCT.w - 20, OUT_X, (u - 0.72) / 0.28), y: AXIS_Y };
   }
   // sad: route down the failure track inside the junction, then out
-  if (u <= 0.68) return { x: lerp(JCT.x + 30, JCT.x + 115, (u - 0.52) / 0.16), y: AXIS_Y };
-  if (u <= 0.84) return { x: JCT.x + 115, y: lerp(AXIS_Y, RED_Y, (u - 0.68) / 0.16) };
-  return { x: lerp(JCT.x + 115, OUT_X - 100, (u - 0.84) / 0.16), y: RED_Y };
+  if (u <= 0.68) return { x: lerp(JCT.x + 30, DROP_X, (u - 0.52) / 0.16), y: AXIS_Y };
+  if (u <= 0.84) return { x: DROP_X, y: lerp(AXIS_Y, RED_Y, (u - 0.68) / 0.16) };
+  return { x: lerp(DROP_X, RED_X - 12, (u - 0.84) / 0.16), y: RED_Y };
 }
 
 // the value the bead carries at each leg
@@ -64,10 +68,12 @@ function beadValue(u: number, sad: boolean): string {
 }
 
 // camera marks
-const CAM_TANGLE: CameraState = { x: 420, y: 190, k: 1.42 };
+const CAM_TANGLE: CameraState = { x: 420, y: 200, k: 1.42 };
 const CAM_PIPE: CameraState = { x: 620, y: 360, k: 1.16 };
-const CAM_LENS: CameraState = { x: 490, y: 340, k: 1.5 };
-const CAM_JCT: CameraState = { x: 780, y: 390, k: 1.42 };
+// a little higher than the lens so the "nested" heading stays in frame
+const CAM_LENS: CameraState = { x: 490, y: 290, k: 1.5 };
+// wide enough to keep the code panel and the exits both in frame
+const CAM_JCT: CameraState = { x: 620, y: 360, k: 1.16 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -233,10 +239,13 @@ function Bead({ u, sad, dim }: { u: number; sad: boolean; dim: number }) {
   const p = beadPos(u, sad);
   const label = beadValue(u, sad);
   const failing = sad && u > 0.55;
+  // inside the junction the label drops below the track, so it stays off the box's top edge
+  const inJct = p.x > JCT.x - 16 && p.x < JCT.x + JCT.w + 16;
+  const labelY = inJct ? p.y + 30 : p.y - 18;
   return (
     <g opacity={dim}>
       <circle cx={p.x} cy={p.y} r={11} fill={failing ? colors.NEGATIVE : colors.WARM} />
-      <text x={p.x} y={p.y - 18} textAnchor="middle" fill={failing ? colors.NEGATIVE : colors.WARM} fontSize={12.5} fontFamily="monospace" fontWeight={700}>
+      <text x={p.x} y={labelY} textAnchor="middle" fill={failing ? colors.NEGATIVE : colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
         {label}
       </text>
     </g>
@@ -270,33 +279,34 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the tangle vs pipe (top strip) ---- */}
         {tangleU > 0.01 && (
           <g opacity={tangleU * dimU}>
+            {/* the heading stays at full strength: it is the label the pipe version is compared against */}
+            <text x={108} y={72} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily="monospace">
+              nested — read inside out
+            </text>
             <g opacity={tangleDim}>
-              <text x={110} y={120} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={108} y={94} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 Effect.flatMap(Effect.map(fetchTransactionAmount,
               </text>
-              <text x={110} y={140} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={108} y={114} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 {'  (amount) => amount * 2), (amount) => applyDiscount(amount, 5))'}
-              </text>
-              <text x={110} y={98} fill={colors.NEGATIVE} fontSize={12.5} opacity={0.9}>
-                nested — read inside out
               </text>
             </g>
             {pipeCodeU > 0.01 && (
               <g opacity={pipeCodeU}>
-                <rect x={90} y={158} width={560} height={104} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={108} y={182} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+                <rect x={90} y={146} width={560} height={104} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+                <text x={108} y={170} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                   const finalAmount = <tspan fill={colors.ACCENT}>pipe</tspan>(
                 </text>
-                <text x={126} y={202} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+                <text x={126} y={190} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                   fetchTransactionAmount,
                 </text>
-                <text x={126} y={222} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+                <text x={126} y={210} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                   <tspan fill={colors.ACCENT}>Effect.map</tspan>{'((amount) => amount * 2),'}
                 </text>
-                <text x={126} y={242} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+                <text x={126} y={230} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                   <tspan fill={colors.ACCENT}>Effect.flatMap</tspan>{'((amount) => applyDiscount(amount, 5)))'}
                 </text>
-                <text x={664} y={182} fill={colors.POSITIVE} fontSize={12.5}>
+                <text x={664} y={170} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                   ← left to right, like a story
                 </text>
               </g>
@@ -307,9 +317,9 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- one big card border: the whole pipeline is ONE description ---- */}
         {wholeU > 0.01 && (
           <g opacity={wholeU * dimU}>
-            <rect x={70} y={270} width={1110} height={180} rx={18} fill="none" stroke={colors.ACCENT} strokeWidth={1.6} strokeDasharray="12 8" />
-            <rect x={92} y={256} width={190} height={26} rx={13} fill={colors.BG} stroke={colors.GRID} />
-            <text x={187} y={274} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+            <rect x={70} y={270} width={1060} height={270} rx={18} fill="none" stroke={colors.ACCENT} strokeWidth={1.6} strokeDasharray="12 8" />
+            <rect x={92} y={256} width={220} height={26} rx={13} fill={colors.BG} stroke={colors.GRID} />
+            <text x={202} y={274} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
               still one description
             </text>
           </g>
@@ -318,11 +328,14 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- source: fetchTransactionAmount ---- */}
         <g opacity={srcU * dimU}>
           <rect x={SRC.x} y={SRC.y} width={SRC.w} height={SRC.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-          <text x={SRC.x + SRC.w / 2} y={SRC.y + 34} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+          <text x={SRC.x + SRC.w / 2} y={SRC.y + 30} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             fetchTransactionAmount
           </text>
-          <text x={SRC.x + SRC.w / 2} y={SRC.y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
-            {'Effect<number>  · resolves 100'}
+          <text x={SRC.x + SRC.w / 2} y={SRC.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+            Effect&lt;number&gt;
+          </text>
+          <text x={SRC.x + SRC.w / 2} y={SRC.y + 72} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+            resolves 100
           </text>
           {/* pipe to the lens */}
           <line x1={SRC.x + SRC.w} y1={AXIS_Y} x2={LENS.cx - LENS.r} y2={AXIS_Y} stroke={colors.GRID} strokeWidth={10} strokeLinecap="round" opacity={0.7} />
@@ -332,14 +345,17 @@ export function Render({ s }: { s: SceneState }) {
         {mapU > 0.01 && (
           <g opacity={mapU * dimU}>
             <circle cx={LENS.cx} cy={LENS.cy} r={LENS.r} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
-            <circle cx={LENS.cx} cy={LENS.cy} r={LENS.r - 12} fill="none" stroke={colors.POSITIVE} strokeWidth={1} opacity={0.5} strokeDasharray="4 5" />
-            <text x={LENS.cx} y={LENS.cy - 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+            {/* labels sit above and below the bead's track so the running value stays readable */}
+            <text x={LENS.cx} y={LENS.cy - 26} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
               map
             </text>
-            <text x={LENS.cx} y={LENS.cy + 16} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
-              {'(amount) => amount * 2'}
+            <text x={LENS.cx} y={LENS.cy + 24} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+              {'(amount) =>'}
             </text>
-            <text x={LENS.cx} y={LENS.cy - LENS.r - 14} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={LENS.cx} y={LENS.cy + 38} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+              {'amount * 2'}
+            </text>
+            <text x={LENS.cx} y={LENS.cy - LENS.r - 14} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               a pure transform — value in, value out
             </text>
             <line x1={LENS.cx + LENS.r} y1={AXIS_Y} x2={JCT.x} y2={AXIS_Y} stroke={colors.GRID} strokeWidth={10} strokeLinecap="round" opacity={0.7 * pipeAfterLens} />
@@ -358,29 +374,33 @@ export function Render({ s }: { s: SceneState }) {
         {flatU > 0.01 && (
           <g opacity={flatU * dimU}>
             <rect x={JCT.x} y={JCT.y} width={JCT.w} height={JCT.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.8} />
-            <text x={JCT.x + JCT.w / 2} y={JCT.y - 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+            <text x={JCT.x + JCT.w / 2} y={JCT.y - 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace" fontWeight={700}>
               flatMap
             </text>
-            <text x={JCT.x + JCT.w / 2} y={JCT.y + 30} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily="monospace">
+            {/* text is left-aligned below the axis; the bead runs through the empty top band */}
+            <text x={JCT.x + 16} y={JCT.y + 74} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
               {'(amount) =>'}
             </text>
-            <text x={JCT.x + JCT.w / 2} y={JCT.y + 48} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily="monospace">
+            <text x={JCT.x + 16} y={JCT.y + 96} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
               applyDiscount(amount, 5)
             </text>
-            <text x={JCT.x + JCT.w / 2} y={JCT.y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
-              {'→ Effect<number, DiscountRateError>'}
+            <text x={JCT.x + 16} y={JCT.y + 124} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+              {'→ Effect<number,'}
+            </text>
+            <text x={JCT.x + 16} y={JCT.y + 144} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+              {'DiscountRateError>'}
             </text>
             {/* two tracks out */}
             <line x1={JCT.x + JCT.w} y1={AXIS_Y} x2={OUT_X} y2={AXIS_Y} stroke={colors.GRID} strokeWidth={10} strokeLinecap="round" opacity={0.7 * greenExit} />
-            <path d={`M ${JCT.x + 115} ${JCT.y + JCT.h} L ${JCT.x + 115} ${RED_Y} L ${OUT_X - 100} ${RED_Y}`} fill="none" stroke={colors.GRID} strokeWidth={8} strokeLinecap="round" opacity={0.5 * greenExit} />
+            <path d={`M ${DROP_X} ${JCT.y + JCT.h} L ${DROP_X} ${RED_Y} L ${RED_X - 12} ${RED_Y}`} fill="none" stroke={colors.GRID} strokeWidth={8} strokeLinecap="round" opacity={0.5 * greenExit} />
             {/* exit labels */}
             <g opacity={greenExit}>
               <circle cx={OUT_X + 18} cy={AXIS_Y} r={12} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-              <text x={OUT_X + 40} y={AXIS_Y + 5} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
+              <text x={OUT_X + 40} y={AXIS_Y + 5} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 A
               </text>
-              <circle cx={OUT_X - 76} cy={RED_Y} r={12} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
-              <text x={OUT_X - 54} y={RED_Y + 5} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
+              <circle cx={RED_X} cy={RED_Y} r={12} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
+              <text x={RED_X + 22} y={RED_Y + 5} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                 E
               </text>
             </g>
@@ -390,15 +410,16 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- op tag chips: the honest data ---- */}
         {opTagU > 0.01 && (
           <g opacity={opTagU * dimU}>
-            {[{ x: 600, label: 'op: "OnSuccess"' }, { x: 920, label: 'op: "OnSuccess"' }].map((c, i) => (
+            {/* one chip under each joint: the lens, then the junction */}
+            {[{ x: LENS.cx, y: LENS.cy + LENS.r + 10 }, { x: JCT.x + JCT.w / 2, y: JCT.y + JCT.h + 10 }].map((c, i) => (
               <g key={i}>
-                <rect x={c.x - 74} y={AXIS_Y + 34} width={148} height={26} rx={13} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
-                <text x={c.x} y={AXIS_Y + 51} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontFamily="monospace">
-                  {c.label}
+                <rect x={c.x - 74} y={c.y} width={148} height={28} rx={14} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
+                <text x={c.x} y={c.y + 19} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
+                  op: "OnSuccess"
                 </text>
               </g>
             ))}
-            <text x={640} y={AXIS_Y + 92} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={640} y={566} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
               each joint is a real object holding the previous step and your function
             </text>
           </g>
@@ -408,7 +429,7 @@ export function Render({ s }: { s: SceneState }) {
         {rate0U > 0.01 && (
           <g opacity={rate0U * dimU}>
             <rect x={JCT.x + 20} y={JCT.y - 62} width={190} height={30} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-            <text x={JCT.x + 115} y={JCT.y - 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
+            <text x={JCT.x + 115} y={JCT.y - 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
               discountRate = 0
             </text>
           </g>
@@ -419,12 +440,12 @@ export function Render({ s }: { s: SceneState }) {
         <Bead u={bead2} sad={true} dim={dimU} />
         {/* landed results */}
         {bead1 >= 0.995 && (
-          <text x={OUT_X + 40} y={AXIS_Y - 24} fill={colors.POSITIVE} fontSize={15} fontFamily="monospace" fontWeight={700} opacity={dimU}>
+          <text x={OUT_X + 40} y={AXIS_Y - 24} fill={colors.POSITIVE} fontSize={16} fontFamily="monospace" fontWeight={700} opacity={dimU}>
             190
           </text>
         )}
         {bead2 >= 0.995 && (
-          <text x={OUT_X - 76} y={RED_Y + 36} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace" fontWeight={700} opacity={dimU}>
+          <text x={RED_X} y={RED_Y + 36} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={dimU}>
             DiscountRateError
           </text>
         )}

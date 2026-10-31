@@ -1,0 +1,60 @@
+{
+  "reviewer": "story",
+  "lens": "STORY & CURIOSITY: arc, stakes, emotion, pacing, memorable images, questions planted and paid off",
+  "round": 4,
+  "previousRounds": "I checked the round-3 story issues against render/film.mp4 (67.75 s; frames pulled at 2.8, 22.6, 24.9, 25.4, 37.9, 46.0, 47.5, 55.6, 56.5, 58.2, 60.6, 61.5, 61.8, 64.2, 66.0 and 67.6 s), the s01-s03 sheets and narration/timeline.json. FIXED: (1) The limit is now shown, not only told. An XOR plate ('XOR · one lit, not both') arrives on 'showed' (about 55.0 s). Its mini try row ticks ✓✗✓✗✓✗✗✗ and is tagged 'never settles'. The key light dims on 'years': mean luma is 18.8 at 57.3 s, 15.6 at 57.8 s and 13.2 at 58.4 s. (2) The planted question is no longer undercut. The disclaimer now reads 'an illustration, simplified' and arrives after L0105 (first seen at 29.5 s). The retina is empty through the gap after 'rule', and 'correct answer: horizontal' appears only when the guess settles (33.7 s). (3) The NOW/THEN label is honest: 'try 5 · a new horizontal bar · said horizontal · RIGHT' over 'THEN try 1 · a horizontal bar · said vertical · WRONG'. (4) Bookend tangent: a sliver of window light now separates Rosenblatt's profile from the camera box (64.2 and 66.0 s). The picture holds after 'mistakes' and fades to black on the last frame. (5) Rosenblatt is already at the patch board when the truck reaches him (11.46 s), not walking in from the frame edge. (6) The 38 s nudge-push collision is gone: the tag sits above the counter and the full retina and gauge are in frame. (7) The 1969 stamp types on with '1969' at 52.07 s, sets Perceptrons in italic as a book title, and shows a legible closed book on a shelf. NOT FIXED: (a) L0105's pause after 'rule' is 0.74 s. Round 3 asked for 1.1-1.2 s, and the round-3 take had 0.84 s, so it got shorter. (b) s01 still shows the stand, desk and all three racks in clear silhouette at 2.8 s; this is the fourth round. PARTLY FIXED: on 'Frank' Rosenblatt reaches right toward the racks, away from the plate and the eye.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 8,
+    "story": 8.5,
+    "visual": 8,
+    "sync": 8.5,
+    "sound": 8,
+    "curiosity": 8
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The XOR payoff, which answers the film's second question ('simple compared with what?'), gets about 3.7 s on screen, and it shares that time with four other things. The plate arrives about 55.0 s, and the iris is near-black by 58.96 s. The 1969 stamp, the glowing book, the two learned plates and the dimmed board all sit in frame at the same moment. The XOR plate takes about 24% of the frame width, and its two cells, dials and needle are tiny. 'never settles' appears only around 58 s, just before the iris closes. The row's ✓ marks (✓✗✓…) can read as 'half-right' unless the tag is already up. A first-time viewer is likely to register that something failed, but not what XOR is or why it matters.",
+      "fix": "On 'showed just how simple' (55.0-56.4 s), push the camera (or scale the plate) so the XOR plate fills about 40% of the frame width. Drop the two learned plates and the board to about 50% value, keeping the stamp and book where they are. Bring 'never settles' in on 'simple' (56.23 s), not near the iris. Add a live tally under the row from the same real trainXor run (for example 'best: 3 of 4'), so the ✓ marks read as never all four. Start the iris on 'faded' (58.79 s), not before; take the time from the 1.0 s near-black stretch before the bookend. No new claims (limit-linear)."
+    },
+    {
+      "owner": "line",
+      "id": "L0105",
+      "severity": "minor",
+      "problem": "This was asked for in round 3 and has regressed. The beat after 'Nobody gave it the rule' is the film's one deliberate mystery. The pause is now 0.74 s ('rule' ends about 24.88 s, 'Show' at 25.62 s), shorter than round 3's 0.84 s and well under the requested 1.1-1.2 s. The picture and the celesta A5 at 25.17 s hold the empty retina well, but the line rushes on before the question can land.",
+      "fix": "Split L0105 into two clips after 'rule.', as round 3's fallback allowed, and give 'Show it a shape; it guesses.' a preGap so the silence after 'rule' is 1.15 s. Re-anchor the s03 'shape' beat and m01's celesta E6 (on 'shape'). The cost is about 0.4 s: take it from the bookend hold (3.1 s after 'mistakes'), keeping at least 2.6 s."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The 'descendants' image is too weak for the film's last idea. On 'Its descendants, today's neural networks' (60.1-62.0 s), the lineage silhouettes are two small node-and-layer diagrams, about 90-160 px wide at 1080p. They hang over the left windows, far from the eye, and read as wall plaques or signage, not as offspring of the machine. The fairy-tale opening is paid off by the man and his eye, but 'still learn from mistakes' has no image of its own.",
+      "fix": "Make the lineage grow out of the eye. On 'descendants' (60.09 s), let the window light throw two or three stacked retina-and-dial layer silhouettes directly behind the camera box. Each should be larger and fainter than the last (about 1.3x, 1.7x and 2.2x the box), with thin threads joining them, as if the eye's shadow multiplies. Fade them by 'still' (63.04 s), so the last image is again the man and the lit bar. Invent no modern specifics (claim lineage-mlp). Remove the two wall-plaque diagrams."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s02",
+      "severity": "minor",
+      "problem": "The human introduction still undersells the character. On 'Frank' (20.83 s), Rosenblatt is facing the patch board. By 22.0 s he has turned right and is reaching off toward the far racks at the frame edge, away from the eye and the PERCEPTRON plate, so the name lands on a man walking away. Then the s03 iris opens at about 22.6 s while the name card is still up, and the card is clipped to 'K ROSENBLATT'. The one person in the film gets a 1.8 s card that is cut off.",
+      "fix": "On 'Frank' (20.83 s), turn him to camera-left so his near arm opens toward the eye on its stand (the eye glows, and he and his machine share the frame). Hold the pose to the cut. Keep the name card fully inside the iris aperture: place it near the eye, or start the iris on the eye at 22.4 s so it closes around the card, not through it. No new lines."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "This is the fourth round this has been raised, and it is still not fixed. At 2.8 s the camera stand, the lit eye, the desk and all three racks read in clear silhouette under the title, so s02's part-by-part reveal ('Its eye… Behind it, wires, and racks of dials') shows things the viewer has already seen. The opening line 'Once, a machine learned to see' would land harder if the machine were still a rumour in the dark.",
+      "fix": "In s01, hold everything on the action plane (stand, eye housing, desk, racks) below about 12% luminance, so they are lost in the shadow under the blinds. Let only the window shafts, the fog and a single glint across the eye's face on 'see' (2.79 s) read. In s02, bring the machine up with the crossfade and the truck. Add a contact-sheet sample at 2.8 s to the s01 critic's checks so this is verified, not assumed."
+    }
+  ],
+  "best_moments": [
+    "The XOR plate ticking ✓✗✓✗✓✗✗✗ under 'never settles' while the stage light drops on 'years': the film's rhythm of 'wrong, wrong again… right' comes back as a case where 'right' never stays. The limit is now felt, not just stated.",
+    "'Wrong, and wrong again, and then, quite suddenly... right' (41.1-45.8 s), with a 1.03 s held breath after 'suddenly' and the lantern flaring exactly on 'right'. This is still the emotional peak, and it is earned.",
+    "Try 5's honest NOW/THEN (47.5 s): 'a new horizontal bar · said horizontal · RIGHT' over the ghost of try 1's 'said vertical · WRONG'. Learning is proven as a before and after, in a clear-air beat of its own.",
+    "The planted question now has room. 'Nobody gave it the rule' plays over an empty retina with no on-screen 'rule' caption to contradict it, and the teacher's answer appears only after the guess settles. Guess first, correction second, which is exactly the idea.",
+    "The bookend: the iris dissolves back to the night lab, Rosenblatt now clearly separated from the box and looking into the eye's lit bar as the title returns. 'Once, a machine learned to see' is paid off by a man watching it see, and the picture holds in clear air before it fades."
+  ]
+}

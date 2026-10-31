@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-30",
+  "authoring": "Sol, explicitly requested for books 4\u20136",
+  "completedBooks": [
+    "recordings-become-practice",
+    "fast-path-thoughtful-fallback",
+    "tab-into-the-future"
+  ],
+  "newScenes": 9,
+  "newRecordings": 9,
+  "newCaptions": 72,
+  "newBlogSections": 18,
+  "seriesRegression": {
+    "books": 6,
+    "chapters": 19,
+    "captions": 150,
+    "recordedAudioClockAndForwardReverseCues": "passed",
+    "bookAndStorybookDeterministicSeeking": "passed"
+  },
+  "checks": {
+    "pinnedSourcesAndExactCaptions": "passed",
+    "typecheck": "passed",
+    "uncachedProductionBuild": "passed",
+    "productionNewBookPlayback": "9 chapters passed",
+    "standaloneNewBlogs": "18 silent live SVG sections passed",
+    "builtDesktopAndMobileNavigation": "passed",
+    "issueDropdownAndStagedYaml": "passed",
+    "diffWhitespace": "passed"
+  },
+  "visualReview": "All 72 new narration beat frames and existing covers inspected; caption-safe layout corrected; nine full-stage chapter previews regenerated and reviewed",
+  "preservation": "148 existing live library entries preserved exactly; original checkout workflow edits and concurrent wasm work untouched",
+  "limits": "Training/score/page fixtures are illustrative; predictive Tab and GLM branching are proposed or conditional; no new benchmark or provider capability claim",
+  "buildCaveat": "Use npm run build -- --skip-nx-cache because existing Nx cache inputs exclude generated public assets"
+}

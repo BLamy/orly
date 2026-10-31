@@ -1,0 +1,164 @@
+// m08 — THE QUIET YEARS (duskRose): solo piano, unhurried. D minor; F major for the clean bowl (a
+// perfectly resolved V-I) and the kernel trick that follows it; M1 in D minor (A -> D, then the held
+// suspension A-D-E under the rim); the bet's waltz; the whisper and the protected pipe (M3 descending);
+// the chess slip falls drily in the wrong key; ends on the fog's unresolved A, held under the silent card,
+// leaning into m09's Bb.
+// CLOCK RE-FIT (2026-10-13, clock 2159.9583 s): window 638.353-790.803 (152.45 s), moved +13.833 s bodily, so
+// every cue-local time below is unchanged except THE KERNEL TRICK, re-placed on the split L0607b (689.59-694.26)
+// and the new L0607c (695.16-705.03). Times are cue-local seconds (absolute - 638.353); the absolute times in the
+// older comments below are on the 2139.54 s clock (add 13.833).
+// Previous re-fit (2026-10-12, clock 2139.54 s): window 624.52-776.97 (152.45 s; was 144.99). Up to the bet nothing moved. The re-narrated L0610 (the two bets, now 91.62-110.48,
+// 5.6 s longer) gets a waltz of FOURTEEN bars (was ten), Jackel's bet on bar 6 ('Jackel' 98.60) and Vapnik's
+// counter-bet restarting the tune on bar 10 (104.2, 'Vapnik' 104.54); the unresolved chord stays on 'paid'
+// (L0612, 111.69). Everything after it is +7.458 s (whisper, pipe, chess slip, Turing, bowl, fog).
+// Under speech: right hand at D5 and above (or in the gaps), left hand low.
+// (2026-10-12 level pass: the bowl's V-I on 'bottom' and the candle's D on 'candle' land on words, so both are
+// struck about 2 dB softer: they were the two loudest moments under the voice in this cue.)
+// Last onset 147.848 (772.37, the fog on 'card'); it rings through the fade 774.57-776.97 (after L0616 ends 774.37).
+setcpm(66/4)
+const CPS = 66/240, DUR = 152.45
+// Times are quantized to 1/128 bar (integer step weights) so the pattern arithmetic stays exact and fast.
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const P = x => x.s("piano").room(.55).rsize(6)
+
+// ================= LEFT HAND: the patient low register (D minor; F major for the bowl and the kernel)
+$: P(tl(
+  [0.3, 4.4, note("[d2,a2]").velocity(.2)],
+  // the sorter's rollers ('sorter' 640.53 = 16.01): a modest quarter-note pulse, unbothered
+  [16.01, 3.3, note("d2 a2 f2 a2").velocity("[.17 .12 .14 .12]")],
+  // back inside after "not of use" (L0604 ends 22.97): the pulse resumes in the gap
+  [22.97, 3.54, note("d2 a2 f2 a2").velocity("[.16 .11 .13 .11]")],
+  // the rivals, one bar per panel: 'rivals' 26.51, 'translation' 30.61, 'forest' 35.23
+  [26.51, 4.1, note("d2 a2 e2 a2").velocity("[.15 .1 .12 .1]")],
+  [30.61, 4.62, note("bb1 f2 d2 f2").velocity("[.15 .1 .12 .1]")],
+  [35.23, 2.76, note("c2 g2 e2 g2").velocity("[.15 .1 .12 .1]")],
+  // the favourite (L0606 37.99): F major, classical Alberti under Vapnik's machine, then V7 -> I on
+  // 'bottom' (673.42 = 48.90); 'bowl' (47.00) sits inside the dominant bar
+  // (r3 low band: the Alberti and the cadence sit behind lpf 350 so the narrator's chest register stays clear)
+  [37.99, 3.65, note("f2 c3 a2 c3 f2 c3 a2 c3").velocity(.075).lpf(300)],
+  [41.64, 3.63, note("f2 c3 a2 c3 f2 c3 a2 c3").velocity(.075).lpf(300)],
+  [45.27, 3.63, note("c2 g2 bb2 g2 c2 g2 bb2 g2").velocity(.075).lpf(300)],
+  [48.90, 2.3, note("[f1,f2,c3]").velocity(.12).lpf(300)],
+  // THE KERNEL TRICK (2026-10-13 re-fit: L0607b 689.59-694.26 = 51.24-55.91 and L0607c 695.16-705.03 =
+  // 56.81-66.68): the stencil's careful steps, low and stepwise, from 'expert' (51.44); D minor shades
+  // "no straight line would do" ('straight' 57.31); IV on 'kernel' (58.81) and the left hand lifts an
+  // octave on 'lifted' (59.51, still below D3); V on 'flat cut' (61.88)
+  [51.44, 4.44, note("f1 g1 a1").velocity("[.1 .09 .09]").lpf(200)],
+  [57.31, 1.5, note("d2").velocity(.12)],
+  [58.81, 3.07, note("bb1 bb2@3").velocity("[.12 .11]")],
+  [61.88, 1.98, note("c2").velocity(.12)],
+  // the quiet resolution: V7 on 'learning' (63.86) -> I on 'hand-made' (65.89), then rest
+  [63.86, 2.03, note("[c2,g2,bb2]").velocity(.11)],
+  [65.89, 5.0, note("[f1,c2]").velocity(.12)],
+  // the fiddly-nets candle, D minor ('lit' 696.77 = 72.25), then A-E under the held D (the rim, 79.24)
+  [72.1, 6.6, note("[d2,a2]").velocity(.14).lpf(320)],
+  [78.75, 11.4, note("[a1,e2]").velocity(.08).lpf(250)],
+  // THE BET: a light, mischievous waltz (3/4, one bar = 1.4 s), oom-pah-pah, kept low and dry under the
+  // long line (L0610 91.62-110.48): fourteen bars. Bars 1-7 (91.6-101.4) Jackel's bet, the A7 of bar 6 on
+  // 'Jackel' (98.60); bars 8-9 a shrug (E half-dim -> A); bar 10 (104.2) the tune starts again for Vapnik's
+  // counter-bet ('Vapnik' 104.54), and it ends on the dominant (109.8-111.2) before the card
+  // (r3 low band: the oom behind lpf 300; the pahs moved up an octave, out of the narrator's chest register,
+  // lighter and more music-box-like; see the PAH layer below)
+  [91.6, 19.6, note("[d2 ~ ~] [a1 ~ ~] [d2 ~ ~] [g1 ~ ~] [d2 ~ ~] [a1 ~ ~] [d2 ~ ~] [e2 ~ ~] [a1 ~ ~] [d2 ~ ~] [a1 ~ ~] [d2 ~ ~] [g1 ~ ~] [a1 ~ ~]").velocity(.12).lpf(250)],
+  // 'card' ('paid' 736.21 = 111.69): stops on an unresolved chord, E half-diminished: who paid? (r3: the root
+  // and fifth low behind lpf, D-G above the voice's fundamental)
+  [111.69, 2.6, stack(note("[e1,bb1]").velocity(.07).lpf(200), note("[d4,g4]").velocity(.06))],
+  // the protected pipe ('pipe' 750.98 = 126.46): the piano's low D under the organ
+  [126.76, 5.0, note("d2").velocity(.12).lpf(320)],
+  // the chess slip: drily, in the wrong key: E major under the C -> B fall ('match' 759.38 = 134.86)
+  [134.658, 4.4, note("[e2,b2,g#3]").velocity(.1).lpf(450)],
+  // music only: the clean bowl once more (F: V -> I on 'bowl' 769.61 = 145.09), then the fog ('card' 147.84)
+  [143.958, 1.13, note("[c2,g2,bb2]").velocity(.12)],
+  [145.088, 1.13, note("[f1,c2,a2]").velocity(.1).lpf(400)],
+))
+// ================= THE BET's pahs (r3): an octave above the old voicing, soft, behind lpf 1200
+$: P(tl([91.6, 19.6, note("[~ [f4,a4] [f4,a4]] [~ [e4,g4] [e4,g4]] [~ [f4,a4] [f4,a4]] [~ [d4,g4] [d4,bb4]] [~ [f4,a4] [f4,a4]] [~ [e4,g4] [e4,c#5]] [~ [f4,a4] [f4,a4]] [~ [d4,g4] [d4,bb4]] [~ [e4,g4] [e4,g4]] [~ [f4,a4] [f4,a4]] [~ [e4,g4] [e4,c#5]] [~ [f4,a4] [f4,a4]] [~ ~ [d4,bb4]] [~ [e4,g4] [c#4,g4]]").velocity(.045).lpf(1200)]))
+
+// ================= RIGHT HAND: high, small, polite
+$: P(tl(
+  // alone in the gap before L0601 (3.75): the quiet years answer m07's falling D minor figure (which
+  // stopped on E) and complete it on D, an octave higher
+  [1.95, 1.7, note("a5 f5 e5 d5@2").velocity("[.12 .11 .1 .12]")],
+  // Bell Labs: a two-note stencil figure ('stencil' 632.17 = 7.65); a warm amused grace on "Buffalo's mail"
+  // (9.56), a smaller one as the ghost stamp prints ('again' 635.09 = 10.57); then on twos in the gap
+  // (r3 per word: the first stencil step sits on 'learns' and the grace on "Buffalo's", so both are half as
+  // loud and short; the steps on twos after the line keep their level)
+  [7.65, 0.5, note("d6 a5").velocity(.07)],
+  [9.43, 1.08, note("c#6 d6@3 a5@4").velocity("[.04 .075@3 .055@4]")],
+  [10.57, 0.92, note("g#5 a5@6").velocity(.08)],
+  [11.55, 0.96, note("d6 a5").velocity(.12)],
+  [13.40, 0.96, note("d6 a5").velocity(.1)],
+  // the gap after "not of use" (22.97-26.29): back inside, the right hand hums a small D minor phrase
+  [23.10, 2.95, note("a4 d5 f5 e5@2").velocity("[.11 .12 .13 .1@2]")],
+  // the rivals, one small bright figure per panel, polite and competent (above D5)
+  [26.51, 1.2, note("f5 a5 c6@3").velocity(.13)],
+  [30.61, 1.2, note("g5 bb5 d6@3").velocity(.13)],
+  [35.23, 1.2, note("e5 g5 c6@3").velocity(.12)],
+  // the clean bowl: a lucid, balanced classical phrase in F, perfectly resolved on 'bottom' (48.90)
+  [41.64, 3.63, note("c6 a5 f5 a5").velocity(.1)],
+  [45.27, 3.63, note("bb5 g5 e5 [g5 e5]").velocity(.075)],
+  [48.90, 2.1, note("[f5,a5,f6]").velocity(.08)],
+  // THE KERNEL TRICK: the ruler's simple line, one plain held C on 'line' (55.43), ringing into the breath
+  // before L0607c; a soft lift in register on 'lifted' (59.51: up to A); a single clear chime on 'flat cut'
+  // (61.88, the celesta below); the 4-3 that resolves quietly on 'hand-made' (bb -> a over V -> I,
+  // 63.86 -> 65.89), struck softly on the words
+  [55.43, 1.38, note("c6").velocity(.1)],
+  [59.51, 1.58, note("a6").velocity(.06)],
+  [63.86, 2.03, note("[bb5,c6]").velocity(.065)],
+  [65.89, 5.0, note("[a5,c6]").velocity(.07)],
+  // M1, the fiddly-nets candle, plainly: A on the breath before L0608, D on 'candle' (72.25); D held
+  [71.80, 6.0, note("a5 d6@11").velocity("[.15 .055]")],   // r3: the D on 'candle' soft (the cello and the left hand hold it)
+  // a soft rising step as each holdout is named: Hinton 82.47, LeCun 83.76, Bengio 85.23
+  [82.47, 1.29, note("e6").velocity(.09)], [83.76, 1.47, note("f6").velocity(.09)], [85.23, 1.48, note("g6").velocity(.09)],
+  // the thread joins three hand-lanterns ('thread' 711.23 = 86.71): M4's opening fourth passed between
+  // them, A->D, E->A, A->D: a small private chord (A-D-E) inside the room's silence
+  [86.71, 4.0, note("[a5 d6@2] [e5 a5@2] [a5 d6@2]").velocity(.11)],
+  // the waltz's mischief: a little chromatic turn high up, sparse, one figure per bar (thirteen bars, the
+  // turn heard once for each bet: bars 2-8 and again, a shade higher in feeling, bars 9-14)
+  [93.0, 18.2, note("[~ a5 bb5] [a5 ~ ~] [~ ~ ~] [~ f6 e6] [d6 ~ ~] [~ ~ ~] [~ a5 g#5] [a5 ~ ~] [~ ~ ~] [~ f6 e6] [d6 ~ ~] [~ ~ ~] [~ a5 g#5]").velocity(.09)],
+  [111.69, 2.5, note("[bb5,e6]").velocity(.08)],
+  // THE WHISPER: M3 running back, each note half as loud as the last, gone before 'gone' (746.86 = 122.34)
+  [116.958, 6.2, note("e6 d6 a5 f5 d5").velocity("[.16 .08 .04 .02 .01]")],
+  // a breath of silence, then the same figure inside the protected pipe, at even volume ('pipe' 126.46)
+  [126.88, 5.1, note("e6 d6 a5 f5 d5@2").velocity(.13)],   // r3: on 'pipe', after 'protected' 
+  // Turing's curling slip ('turing' 766.34 = 141.82): one high note held, unresolved (B, a sixth over D)
+  [141.818, 2.1, note("b5").velocity(.08)],
+  // music only: the bowl phrase once, small (V -> I), then the fog's A, held under the silent card
+  [143.958, 2.26, note("bb5 g5 [f5,a5]@2").velocity(.13)],
+  [147.848, 4.5, note("[e5,a5]").velocity(.045)]
+))
+
+// ================= the snow at the window ('window' 643.95 = 19.43): bowed glass and a high harmonic
+$: tl([19.43, 3.5, note("[a5,d6,e6]")]).s("gm_pad_bowed").velocity(.055).lpf(1800).attack(1.2).release(2.5).room(.6).rsize(6)
+// (2026-10-13: the celesta glint at the window was cut: it sat in the 1-4 kHz band under L0604)
+// the misty hills beside the bowl: a faint fogged echo of m06's hollow note (A, low and veiled), and again
+// for the fog at the end ('fog' 771.81 = 147.29)
+$: tl([49.6, 3.6, note("[a2,e3]")]).s("gm_pad_bowed").velocity(.05).attack(1.5).release(3).lpf(700).room(.6).rsize(6)
+// the kernel's chime on 'flat' (700.23 = 61.88): one clear high piano tone, F6, soft under the line (the
+// celesta was too bright in the consonant band here)
+$: P(tl([61.88, 2.0, note("f6")]).velocity(.075))
+// the hold after "hand-made" (66.68-72.04): out of quiet, a low D gathers under the decaying F, so
+// the D minor candle is lit from below
+$: tl([68.0, 4.1, note("d2")]).s("gm_cello").velocity(.07).attack(2.2).release(2).lpf(450).room(.6).rsize(6)
+// the rim's held suspension, a breath of strings far below the voice (A-E with D held above)
+// (r3 low band: the cello's A-E became a pure A1, below the voice; the piano's struck fifth carries the E)
+$: tl([78.75, 11.4, note("a1")]).s("sine").gain(.03).attack(1.5).release(3)
+
+// ================= the protected pipe: a soft organ pedal sustains the even figure
+$: tl([126.66, 6.0, note("[d2,a2]")]).s("gm_drawbar_organ").velocity(.11).attack(.6).release(1.5).lpf(700).room(.5).rsize(6)
+
+// ================= the study returns (the chess slip): the lamp's hum and the low clarinet
+$: tl([131.478, 12.0, note("d1")]).s("sine").gain(.022).attack(1.5).release(2)
+$: tl([134.858, 3.4, note("c4@1.25 b3@2")]).s("gm_clarinet").velocity(.055).attack(.08).release(1).lpf(1500).room(.5).rsize(6)
+
+// the fog at the end: the same veiled A-E, as a plain sine pair (no bowed-loop swells), fading by itself
+// (r3 low band: the veiled fifth sits above the voice's fundamental, A3-E4, with a pure A1 below)
+$: tl([147.288, 2.8, note("a1")]).s("sine").gain(.03).attack(1.2).release(3)
+$: tl([147.288, 2.8, note("[e4,a4]")]).s("sine").gain(.006).attack(1.2).release(3).lpf(700)
+
+all(x => x.postgain(5.0))

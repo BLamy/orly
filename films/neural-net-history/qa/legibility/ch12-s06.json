@@ -1,0 +1,39 @@
+{
+ "shot": "ch12-s06",
+ "at": "2026-10-13T04:14:15.173Z",
+ "minCapPx": 22,
+ "sampled": 27,
+ "texts": 5,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "30 NOVEMBER 2022",
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "a free ‘research preview’",
+   "capWhileSubject": 27.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "fine-tuned from a GPT-3.5 model",
+   "capWhileSubject": 24.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "trained with human feedback",
+   "capWhileSubject": 24.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "plausible-sounding",
+   "maxCap": 29.4,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 1
+}

@@ -1,0 +1,20 @@
+{
+  "67": "sixty-seven",
+  "258": "two hundred fifty-eight",
+  "800": "eight hundred",
+  "$notes": "Voice-only respellings (subtitles and on-screen type keep the written text). Re-scanned all 20 lines of story/script.json (L0101-L0602, script revision of 2026-10-14 17:21) on 2026-10-14, including each line's explicit spoken form. Entries that fire in this script: 'QA' -> 'Q A' (L0102, L0602: the product name 'Replay QA' is always said as the letters Q-A, never 'kwah'); 'localhost' -> 'local host' (L0402, per the line direction). L0502's explicit spoken text already writes the letters as 'Q.A.' (a deliberate respelling after STT heard 'Replay cue A'); explicit spoken text only takes exact-case lexicon keys, so 'QA' does not touch it. Deliberately NOT respelled because the voice reads them as plain English: end-to-end, Replay's, re-rendered, rerun, time-travel, what's, and the numbers, which the script writes as words (sixty-seven, twenty-five of twenty-seven, two hundred fifty-eight). 'Against' (L0402) is a delivery issue, not a pronunciation one: it is handled by the line's comma break and the voice.json listening entry. No person's name is spoken in this film. The remaining entries are product and testing terms that appear on screen and in the research (PR, CI, UI, URL, API, AI, E2E, rrweb, replay.io, ms, and key figures written as digits), kept so later line fixes stay safe; they do not fire on the current script. Playwright is left plain (a hyphenated respelling tends to be read choppily).",
+  "QA": "Q A",
+  "localhost": "local host",
+  "E2E": "end-to-end",
+  "PR": "P R",
+  "PRs": "P Rs",
+  "CI": "C I",
+  "UI": "U I",
+  "URL": "U R L",
+  "URLs": "U R Ls",
+  "API": "A P I",
+  "AI": "A I",
+  "rrweb": "R R web",
+  "replay.io": "replay dot I O",
+  "ms": "milliseconds"
+}

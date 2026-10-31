@@ -1,0 +1,97 @@
+{
+  "format": 3,
+  "slug": "wolf-dog-model",
+  "title": "Wolf, Dog, Model",
+  "subtitle": "Domestication vs breeding in AI training",
+  "animal": "animal.webp",
+  "accent": "#7c3aed",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Two Kinds of Choosing",
+      "blurb": "Breeding aims at one trait; domestication makes living together possible, and comes first.",
+      "scene": "books/wolf-dog-model/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        13.653,
+        23.081,
+        32.671,
+        41.831,
+        51.932,
+        62.056,
+        74.27,
+        83.488,
+        91.568,
+        96.491
+      ],
+      "duration": 103.329
+    },
+    {
+      "number": 2,
+      "title": "The Fox Farm",
+      "blurb": "Belyaev's foxes were selected for tameness alone and changed in many other ways, though how far that generalizes is contested.",
+      "scene": "books/wolf-dog-model/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.009,
+        19.552,
+        27.934,
+        34.866,
+        43.225,
+        51.131,
+        62.056,
+        70.067,
+        81.654,
+        93.798,
+        102.61
+      ],
+      "duration": 110.249
+    },
+    {
+      "number": 3,
+      "title": "Three Layers of a Model",
+      "blurb": "Pretraining as the wild animal, human feedback as domestication, verifiers as breeding, and the side effects that come with the package.",
+      "scene": "books/wolf-dog-model/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.759,
+        15.024,
+        23.766,
+        32.474,
+        46.243,
+        56.367,
+        68.51,
+        78.506,
+        90.116,
+        101.377,
+        108.599
+      ],
+      "duration": 118.096
+    },
+    {
+      "number": 4,
+      "title": "Leash or Colleague",
+      "blurb": "Domestication runs both ways; values need checking from outside; the goal is a colleague, not an animal on a leash.",
+      "scene": "books/wolf-dog-model/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.626,
+        17.67,
+        27.004,
+        36.699,
+        44.385,
+        53.185,
+        62.124,
+        72.423,
+        81.072,
+        86.401
+      ],
+      "duration": 94.969
+    }
+  ],
+  "sources": "sources.json"
+}

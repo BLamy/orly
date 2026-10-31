@@ -1,0 +1,1367 @@
+{
+  "id": "ch04",
+  "number": 4,
+  "title": "Deep Dive I: Two Ramps and a Lever",
+  "blurb": "The README's (a > 4) ? 10 : 12, worked by hand on one growing machine at a backlit workbench. A bend of copper becomes a ReLU ramp; two ramps and a lever make a bit; both belts always run and each shutter scales the tile it passes; infinity on the closed belt still poisons the tray. Four and a half gives five and six, fused into eleven; past two to the twenty-fourth a whole number gives twenty minus twelve, eight. Just below that edge, the odd number on the plate snaps a score to a bit in one instruction. What exact means, and why doubles broke things. Then the real library demands a promise about its input, shrinks the comparison to two operations, and gives eleven again when the promise is false: declarations are promises, not proofs. Promise only a range and a lens train magnifies by two to the hundred and forty-ninth. Sixteen against two, and a silent plant for later.",
+  "shots": [
+    {
+      "id": "ch04-s01",
+      "kind": "plate",
+      "setting": "parchment plate: the README's ternary, and a JavaScript fork in a paper road (timeless; the README of 14 October 2026)",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0401",
+          "text": "Back to four and a half. In JavaScript, only the chosen side runs.",
+          "pauseAfter": 0.6,
+          "direction": "settling in for the long explanation, warm and unhurried; 'only the chosen side' clear and light",
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        },
+        {
+          "id": "L0402",
+          "text": "A network has no if.",
+          "direction": "slow and plain, a small stress on 'no'; 'if' said as the word, not a question"
+        }
+      ],
+      "leadIn": 1,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: the question of Deep Dive I. inkBleed from the X-ray desk into a parchment plate, camera locked. A deep-dive title tab drops in at top-left at the first frame and holds (beat title). On 'line' the README's ternary is inked across the upper third in monospace (beat code). Below it, a paper road (a cut strip of card) runs in from the left and forks at a border marker cut along a dotted line, labelled with the comparison; the left arm leads to a tile '10', the right arm to a tile '12'. On 'chosen' a small paper marble rolls up the road, and at the fork only one arm lights up in copper ink while the other stays plain paper, untouched (beat fork). At the end of the line the unlit arm fades a little further, a dotted outline: in JavaScript it is never travelled. On 'no' the whole road lifts off the plate as an ink silhouette and the fork's marker splits along its dotted line (beat noif): a network cannot take one road. Hold on the split marker.",
+      "beats": [
+        {
+          "id": "title",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "deep-dive title tab drops in at top-left"
+        },
+        {
+          "id": "code",
+          "at": {
+            "line": "L0401",
+            "word": "JavaScript"
+          },
+          "what": "the README's ternary inks across the plate"
+        },
+        {
+          "id": "fork",
+          "at": {
+            "line": "L0401",
+            "word": "chosen"
+          },
+          "what": "the marble rolls up the paper road; only one arm of the fork lights"
+        },
+        {
+          "id": "unlit",
+          "at": {
+            "line": "L0401",
+            "edge": "end",
+            "offset": 0.2
+          },
+          "what": "the untaken arm fades to a dotted outline"
+        },
+        {
+          "id": "noif",
+          "at": {
+            "line": "L0402",
+            "word": "no"
+          },
+          "what": "the road lifts away; the border marker splits along its dotted line"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "paper road with a fork",
+        "border marker cut along a dotted line",
+        "paper marble",
+        "tiles 10 and 12"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "Deep Dive I · Two Ramps and a Lever",
+          "beat": "title"
+        },
+        {
+          "kind": "equation",
+          "text": "const result = (a > 4) ? 10 : 12",
+          "beat": "code"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-ramps",
+        "note": "the deep dive opens in near-silence: a single woodblock tick as the code inks in; the both-branches motif enters on ONE line only while JavaScript takes one road; on 'no if' the line stops, leaving room tone"
+      },
+      "transitionIn": "inkBleed",
+      "claims": [
+        "TE15",
+        "TE01"
+      ]
+    },
+    {
+      "id": "ch04-s02",
+      "kind": "scene",
+      "setting": "the backlit workbench (Two Ramps and a Lever): a long black bench before a tall window bay glowing warm at L2, a low haze at board height, a black post at L6 framing the right edge, the formula on a small card clipped to the post; a bit of copper wire bent into a hinge, growing into a hinged black board; a marble; an ink ledger",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0403",
+          "text": "Bend a hinge: flat, then up. A ramp is all a ReLU is.",
+          "pauseAfter": 0.7,
+          "direction": "hands-on, as if bending the wire yourself; 'flat, then up' traced slowly; ReLU said RAY-loo; a quiet delight in how little it is",
+          "insertGaps": {
+            "ReLU": 0.15
+          }
+        },
+        {
+          "id": "L0404",
+          "text": "This one wakes at four. Three gives nought. Five gives one. A hundred gives ninety-six.",
+          "direction": "reading a ledger aloud as the marble rolls; three short, separate sentences with a clear stop after each; 'ninety-six' with a smile, it just keeps climbing"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "THIS SHOT: the first ramp (Two Ramps and a Lever, machine 1; the copper hinge is the dive's emblem). Cut on motion from the lifting road to the backlit workbench: a long black bench in front of a tall window bay glowing warm (L2), a low haze lying at board height, a black post at L6 framing the right edge. The narrator's hands take a short length of the copper line itself and bend it: flat, then a 45-degree climb, a silhouette against the window (beat hinge). On 'ramp' the hinge grows into a hinged black board, flat to a corner at 4 then climbing, the haze catching its edge, with a cut-paper number line beneath marked 3 4 5 6 and a break mark before 100; its formula appears on a small card clipped to the post (beat ramp). On 'Three' the marble rolls to each value in turn and the board's height at the marble is read off into an ink ledger on the bench, one cell per stop: 3 gives 0, 4 gives 0, 5 gives 1, 6 gives 2, then the marble rolls far off along the break to 100 and the ledger reads 96 (beat ledger; the ledger shows all five stops even though the narration names three). In the hold the marble rolls back to 4, sits exactly on the corner, and stops.",
+      "beats": [
+        {
+          "id": "hinge",
+          "at": {
+            "line": "L0403",
+            "word": "Bend"
+          },
+          "what": "the narrator's hands bend a bit of copper wire into a flat-then-45-degree hinge"
+        },
+        {
+          "id": "ramp",
+          "at": {
+            "line": "L0403",
+            "word": "ramp"
+          },
+          "what": "the hinge grows into a hinged board with its corner at 4; formula inks in"
+        },
+        {
+          "id": "ledger",
+          "at": {
+            "line": "L0404",
+            "word": "Three"
+          },
+          "what": "the marble visits 3, 4, 5, 6, 100; the ledger fills 0, 0, 1, 2, 96"
+        },
+        {
+          "id": "corner",
+          "at": {
+            "line": "L0404",
+            "edge": "end",
+            "offset": 0.8
+          },
+          "what": "the marble rolls back and stops exactly on the corner at 4"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "the backlit workbench (window bay, haze, L6 post)",
+        "a bent length of copper line (the hinge)",
+        "hinged black board",
+        "paper marble",
+        "ink ledger",
+        "clipped formula card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "max(0, a − 4)",
+          "beat": "ramp"
+        },
+        {
+          "kind": "label",
+          "text": "a: 3 · 4 · 5 · 6 · 100  →  0 · 0 · 1 · 2 · 96",
+          "beat": "ledger"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-ramps",
+        "note": "a soft wire-bend creak, then one dry tick per marble stop, pitched to the ramp's height (flat, flat, up, up, a long glissando away to 96); the motif's single line returns underneath, patient"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "TE01",
+        "TE02"
+      ]
+    },
+    {
+      "id": "ch04-s03",
+      "kind": "scene",
+      "setting": "the backlit workbench (Two Ramps and a Lever): a long black bench before a tall window bay glowing warm at L2, a low haze at board height, a black post at L6 framing the right edge, the formula on a small card clipped to the post; a second hinged board one step later, a lever between the two boards, the marble's path drawn in copper",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0405",
+          "text": "A second ramp wakes at five. Take it from the first.",
+          "pauseAfter": 0.7,
+          "direction": "brisk and practical; let the lever move in the pause",
+          "tts": {
+            "solo": true,
+            "speed": 0.82
+          },
+          "insertGaps": {
+            "five": 0.4
+          }
+        },
+        {
+          "id": "L0406",
+          "text": "Nought up to four, one from five: a bit. Whole numbers sit on the corners: the whole trick, and the whole caveat.",
+          "direction": "trace the shape: 'Nought up to four' flat, 'one from five' arriving; then slower and lower for 'the whole trick, and the whole caveat', a wry warning",
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: the second ramp and the lever (machine 1 complete), on the backlit workbench. On 'second' a second hinged black board rises beside the first in silhouette against the window bay, its corner one step later at 5; its ledger row fills 0, 0, 0, 1, 95 under the same five stops (beat second), the formula on the clipped card. On 'Take' a black paper lever between the two boards tips to show the difference of the two heights, and a third ledger row fills 0, 0, 1, 1, 1 (beat lever). On 'Nought' the marble's path is drawn in glowing copper through the haze as it rolls from 2 to 6: flat along 0, a straight climb between 4 and 5, flat along 1 (beat path), and the clamp formula replaces the first on the clipped card. On 'corners' two small copper rings drop onto the path's corners at 4 and 5, and small cut dots mark the whole numbers 2 3 4 5 6 sitting on the flats or the corners, never on the slope (beat corners). On 'caveat' the stretch of slope between 4 and 5 is lightly hatched in red pencil, the one place the machine was never meant to be read (beat caveat). Hold.",
+      "beats": [
+        {
+          "id": "second",
+          "at": {
+            "line": "L0405",
+            "word": "second"
+          },
+          "what": "the second board rises, corner at 5; its ledger row fills 0, 0, 0, 1, 95"
+        },
+        {
+          "id": "lever",
+          "at": {
+            "line": "L0405",
+            "word": "Take"
+          },
+          "what": "the lever shows the difference; ledger row 0, 0, 1, 1, 1"
+        },
+        {
+          "id": "path",
+          "at": {
+            "line": "L0406",
+            "word": "Nought"
+          },
+          "what": "the marble's copper path: flat, climb from 4 to 5, flat; clamp formula"
+        },
+        {
+          "id": "corners",
+          "at": {
+            "line": "L0406",
+            "word": "corners"
+          },
+          "what": "rings on the corners at 4 and 5; whole numbers marked, none on the slope"
+        },
+        {
+          "id": "caveat",
+          "at": {
+            "line": "L0406",
+            "word": "caveat"
+          },
+          "what": "the slope between 4 and 5 is hatched in red pencil"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "the backlit workbench",
+        "two hinged black boards",
+        "black paper lever",
+        "paper marble",
+        "copper path",
+        "ink ledger with three rows",
+        "red pencil hatching",
+        "clipped formula card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "max(0, a − 5)  →  0 · 0 · 0 · 1 · 95",
+          "beat": "second"
+        },
+        {
+          "kind": "equation",
+          "text": "above4 = max(0, a − 4) − max(0, a − 5) = clamp(a − 4, 0, 1)",
+          "beat": "path"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-ramps",
+        "note": "the lever's tilt as a two-note wooden knock; on the copper path a low tone that holds, rises a whole tone across 4 to 5, and holds again; a faint dissonant scratch on 'caveat'"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "TE02",
+        "TE03"
+      ]
+    },
+    {
+      "id": "ch04-s04",
+      "kind": "scene",
+      "setting": "the workbench, seen from behind the ramps: two endless conveyor belts carrying 10 and 12 tiles, each through a paper shutter that scales what it passes, feeding one output tray",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0407",
+          "text": "Two belts carry both answers, every time: ten and twelve. The bit opens one shutter, shuts the other.",
+          "direction": "even and mechanical, like describing a factory floor; 'every time' firm; 'shuts the other' clipped"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.9,
+      "visual": "THIS SHOT: both branches run (machine 2). Cut on motion: the camera rises behind the ramps as they stand in silhouette against the window bay, revealing two black conveyor belts that never stop, one carrying '10' tiles and the other '12' tiles, each running toward a single output tray through its own paper shutter. On 'Both' the belts come up to speed (beat belts). On 'bit' a thin rod from the lever of s03 runs to both shutters: as the marble sits at 5, the lever reads 1 and the 10 shutter swings fully open while the 12 shutter closes fully. The shutters SCALE what they pass (the rule for the whole dive): a fully open shutter lets a 10 through unchanged; a shut shutter squeezes each 12 flat and re-letters it 0 as it passes, and the 0 tiles slide harmlessly into the tray beside the 10 (beat shutters). The formula appears on the clipped card. On 'other' the marble rolls to 3: the lever reads 0 and the shutters swap with a single clack; now the 10s come through as 0 and a whole 12 drops into the tray (beat swap). Hold: the belts keep running, both of them, the whole time.",
+      "beats": [
+        {
+          "id": "belts",
+          "at": {
+            "line": "L0407",
+            "word": "belts"
+          },
+          "what": "two belts carrying 10 and 12 tiles come up to speed"
+        },
+        {
+          "id": "shutters",
+          "at": {
+            "line": "L0407",
+            "word": "bit"
+          },
+          "what": "the lever opens the 10 shutter fully and shuts the 12 shutter; the shut shutter re-letters each 12 it passes to 0; formula on the card"
+        },
+        {
+          "id": "swap",
+          "at": {
+            "line": "L0407",
+            "word": "other"
+          },
+          "what": "the marble rolls to 3; shutters swap with a clack; 10s pass as 0, a 12 drops into the tray"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "the backlit workbench",
+        "two black conveyor belts",
+        "10 and 12 tiles (re-lettered as they pass a shutter)",
+        "two paper shutters",
+        "output tray",
+        "lever rod",
+        "clipped formula card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "result = above4 × 10 + (1 − above4) × 12",
+          "beat": "shutters"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-ramps",
+        "note": "the both-branches motif in full: two lines a whole tone apart, both always playing, the gain gate at exactly 1 then 0 so we hear only one; the belts as a soft, even mechanical pulse; the shutter swap is one dry clack and the audible line switches"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "TE01",
+        "TE10"
+      ]
+    },
+    {
+      "id": "ch04-s05",
+      "kind": "scene",
+      "setting": "the same belts on the workbench: an infinity tile riding the closed belt; the output tray filling with grey sand",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0408",
+          "text": "Say the side you didn’t choose overflows, past the biggest float, to infinity. Nought times infinity isn’t nought. It isn’t a number at all.",
+          "direction": "a gentle warning; 'overflows, past the biggest float' plain, giving the cause; 'isn't nought' with a small surprise; 'It isn't a number at all' slow and plain"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: the poison. Same belts, shutters as at the end of s04 (12 open, 10 shut). On 'overflows' an infinity tile, a lemniscate cut from black card, rides onto the CLOSED belt, a 10 tile that has overflowed past the biggest float, and passes behind its shut shutter (beat inf). On 'Nought' the shut shutter tries to re-letter it 0 as it does every other tile, a thin ink 'times nought' line across the shutter, and the tile slips through anyway as a grey puff (beat times). On 'number' the output tray, which was about to receive a clean 12, fills instead with grey sand stamped NaN, and the 12 tile sinks into it (beat nan). Hold on the grey tray against the warm window; both belts still running.",
+      "beats": [
+        {
+          "id": "inf",
+          "at": {
+            "line": "L0408",
+            "word": "overflows"
+          },
+          "what": "an infinity tile rides onto the closed belt"
+        },
+        {
+          "id": "times",
+          "at": {
+            "line": "L0408",
+            "word": "Nought"
+          },
+          "what": "the shut shutter's 'times nought' cannot zero it; a grey puff passes"
+        },
+        {
+          "id": "nan",
+          "at": {
+            "line": "L0408",
+            "word": "number"
+          },
+          "what": "the tray fills with grey sand stamped NaN; the 12 sinks into it"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "the two belts and shutters",
+        "an infinity tile (black card lemniscate)",
+        "output tray of grey sand stamped NaN"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "0 × ∞ = NaN",
+          "beat": "times"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-ramps",
+        "note": "both lines keep playing; on the infinity tile the silent line rises in level for a moment and smears (a detuned grey wash), then the tray fills with a soft dry hiss of sand; no chime, no sting"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "TE11",
+        "PR20"
+      ]
+    },
+    {
+      "id": "ch04-s06",
+      "kind": "scene",
+      "setting": "the workbench under warm lamplight: the marble at 4.5 on the ramp; both shutters half open, halving the tiles they pass; 5 and 6 fusing into 11; then the marble at 4.25",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "lines": [
+        {
+          "id": "L0409",
+          "text": "Now four and a half. The bit reads a half: half of ten, half of twelve.",
+          "pauseAfter": 0.7,
+          "direction": "slowing right down, the prologue's moment returning; 'half of ten, half of twelve' evenly weighed"
+        },
+        {
+          "id": "L0410",
+          "text": "Eleven.",
+          "pauseAfter": 1.6,
+          "direction": "one word, quiet, as in the prologue; then let the tile land in silence"
+        },
+        {
+          "id": "L0411",
+          "text": "Every if here is a dimmer switch. The program’s job: keep it fully on, or fully off.",
+          "direction": "the dive's teaching line: warm, clear, a little slower; stress 'if' and 'dimmer'; 'fully on, or fully off' evenly"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: the prologue's eleven, explained as arithmetic. A 3 s tint crossfade warms the workbench to candleAmber. The narrator's hands place the marble on the copper path at 4.5, halfway up the slope that s03 hatched in red (beat half). On 'reads' the lever stops exactly halfway; behind, both shutters stand half open, and each squeezes the tile it passes to half: a 10 comes through re-lettered 5, a 12 comes through re-lettered 6 (beat both). The equation appears on the clipped card. On 'Eleven' the 5 and the 6 slide together in the tray and fuse with a heavy clack into one tile: 11 (beat eleven). Silence for a breath; only the haze moves. In the pause the hands nudge the marble down to 4.25: the lever sits a quarter of the way, the 10 shutter a quarter open and the 12 shutter three quarters; a 2.5 and a 9 come through and fuse into 11.5 (beat quarter). On 'dimmer' the part-open shutters are redrawn for a moment as a dimmer knob turned to a middle setting, then snap back to shutters (beat dimmer); on 'off' the hands roll the marble back onto the corner at 5, and both shutters slam fully open and fully shut: a 10 and a 0, which fuse to 10 (beat full).",
+      "beats": [
+        {
+          "id": "half",
+          "at": {
+            "line": "L0409",
+            "word": "four"
+          },
+          "what": "the narrator's hands place the marble at 4.5, halfway up the slope"
+        },
+        {
+          "id": "both",
+          "at": {
+            "line": "L0409",
+            "word": "reads"
+          },
+          "what": "the lever stops halfway; both shutters half open; 10 passes as 5, 12 passes as 6; equation on the card"
+        },
+        {
+          "id": "eleven",
+          "at": {
+            "line": "L0410",
+            "word": "Eleven"
+          },
+          "what": "a heavy clack; the 5 and the 6 fuse in the tray into an 11"
+        },
+        {
+          "id": "quarter",
+          "at": {
+            "line": "L0410",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "the marble nudged to 4.25: a 2.5 and a 9 fuse into 11.5"
+        },
+        {
+          "id": "dimmer",
+          "at": {
+            "line": "L0411",
+            "word": "dimmer"
+          },
+          "what": "the part-open shutters redrawn for a moment as a dimmer knob at a middle setting"
+        },
+        {
+          "id": "full",
+          "at": {
+            "line": "L0411",
+            "word": "off"
+          },
+          "what": "the marble back on the corner at 5; shutters fully open and fully shut; 10 and 0 make 10"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "the backlit workbench",
+        "the ramps, lever, belts and shutters",
+        "paper marble",
+        "tiles re-lettered 5, 6, 2.5 and 9",
+        "fused tiles 11 and 11.5",
+        "a paper dimmer knob"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "a = 4.5:  0.5 × 10 + 0.5 × 12 = 5 + 6 = 11",
+          "beat": "both"
+        },
+        {
+          "kind": "equation",
+          "text": "a = 4.25:  2.5 + 9 = 11.5",
+          "beat": "quarter"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-ramps",
+        "note": "the musical eleven: the gain gate drops to 0.5 and both lines sound at half level, a slightly wrong, unresolved whole-tone interval; 1.6 s of near-silence after 'Eleven'; at 4.25 the balance tips (a quarter and three quarters); on 'fully off' the gate snaps back to 1 and one line rings clean"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "TE03"
+      ]
+    },
+    {
+      "id": "ch04-s07",
+      "kind": "scene",
+      "setting": "the workbench's number line run far out past the window bay into cold blue light: a giant ruler at 16,777,216, ticks 2 apart beyond it",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L0412",
+          "text": "Past nearly seventeen million, floats skip whole numbers.",
+          "pauseAfter": 0.7,
+          "direction": "cooler and quieter, a traveller's aside; 'skip whole numbers' with mild wonder"
+        },
+        {
+          "id": "L0413",
+          "text": "Just past it, the second ramp’s input rounds down. A bit meant for nought or one reads two. Answer: eight.",
+          "direction": "step by step, like a sum on a blackboard; a small lift of strangeness on 'reads two'; a beat before 'eight', said flatly, the absurdity left to the viewer"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: the second limit, past 2^24, the dive's one cold excursion. A 3 s tint crossfade to winterBlue as the camera makes a fast lateral pan along the bench's number line, out past the window bay's frame, haze streaking, to a giant ruler far out: up to 16,777,216 every whole number has a tick; on 'seventeen' the ruler's ticks spread to 2 apart past that mark, the odd numbers falling through gaps (beat edge). On 'past' the marble lands at 16,777,222 (beat far); the first board reads a minus four at 16,777,218, a tick that exists; on 'rounds' the second board's a minus five at 16,777,217 has no tick and slides down to 16,777,216 (beat rounds). On 'two' the lever, reading the difference, swings past its stop to 2, bending the stop (beat two). On 'eight' the over-open 10 shutter doubles what it passes and a copper 20 tile comes through; the 12 shutter, pushed to 'minus one', passes an INDIGO −12 tile (the film's copper-adds, indigo-subtracts code); in the tray the 20 and the −12 fuse into an 8 (beat eight). Hold, cold.",
+      "beats": [
+        {
+          "id": "edge",
+          "at": {
+            "line": "L0412",
+            "word": "seventeen"
+          },
+          "what": "past 16,777,216 the ruler’s ticks spread to 2 apart"
+        },
+        {
+          "id": "far",
+          "at": {
+            "line": "L0413",
+            "word": "past"
+          },
+          "what": "the marble lands at 16,777,222"
+        },
+        {
+          "id": "rounds",
+          "at": {
+            "line": "L0413",
+            "word": "rounds"
+          },
+          "what": "a minus five has no tick and slides down to 16,777,216"
+        },
+        {
+          "id": "two",
+          "at": {
+            "line": "L0413",
+            "word": "two"
+          },
+          "what": "the lever swings past its stop to 2"
+        },
+        {
+          "id": "eight",
+          "at": {
+            "line": "L0413",
+            "word": "eight"
+          },
+          "what": "a copper 20 and an indigo −12 come through the forced shutters and fuse into an 8"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "giant number ruler with ticks 1 then 2 apart",
+        "the ramps and lever",
+        "paper marble",
+        "a copper 20 tile and an indigo −12 tile",
+        "an 8 tile"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "2^24 = 16,777,216",
+          "beat": "edge"
+        },
+        {
+          "kind": "equation",
+          "text": "a = 16,777,222 · bit = 2 · 20 − 12 = 8",
+          "beat": "rounds"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-ramps",
+        "note": "the cue cools: one sustained low note, the motif's lines thinned to a single far-off pair; a hollow wooden knock for each tick on the spread ruler; the lever bending its stop is a dull clunk; no resolution on 'eight'"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "PJ19",
+        "EX02",
+        "TE01"
+      ]
+    },
+    {
+      "id": "ch04-s12",
+      "kind": "plate",
+      "setting": "parchment plate: the cold ruler redrawn in ink, back below 16,777,216 where the ticks are one apart; the boolean-atom detent, a fine ruler slid onto the giant ruler at 8,388,609",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0423",
+          "text": "Another way to make a bit, in one instruction: add a huge odd number to a score, then take it away.",
+          "pauseAfter": 0.7,
+          "direction": "a detective's 'remember this?' on 'That odd number'; 'one instruction' a small, pleased reveal; brisk on the procedure",
+          "tts": {
+            "solo": true,
+            "speed": 0.85
+          }
+        },
+        {
+          "id": "L0424",
+          "text": "Up there floats sit one apart, so the score snaps whole. Ties go to the even side: a half snaps up, to one.",
+          "direction": "careful and clear, a mechanism you can hear click; small pause at the colon; 'snaps up, to one' with quiet pleasure"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: the boolean-atom detent (machine 4; payoff of ch03-s05's silent plant). Crossfade from the cold ruler: the giant ruler is redrawn in ink on a parchment plate as the blue light warms back to paper, and the camera slides back down it, below 16,777,216 where every tick is again one apart, to 8,388,609; a small inset of ch03-s05's instruction plate shows its third row's 8,388,609 glowing faintly copper (beat odd). On 'Add' a fine ruler marked 0 to 1 slides onto the giant one at the 8,388,609 mark, carrying a small pointer (the score) (beat add). On 'snaps' a score of 0.49999997 slides on: the pointer is caught by the nearest tick and snaps back to 8,388,609; the fine ruler slides away and the result reads 0 (beat snap). On 'Ties' a score of exactly 0.5 slides on and stops exactly halfway between 8,388,609 (odd, drawn hollow) and 8,388,610 (even, drawn filled) (beat tie); on 'up' it snaps to the even tick, and when the start is taken away it reads 1 (beat up).",
+      "beats": [
+        {
+          "id": "odd",
+          "at": {
+            "line": "L0423",
+            "word": "odd"
+          },
+          "what": "slide back down the ruler to 8,388,609; the instruction-plate inset glows"
+        },
+        {
+          "id": "add",
+          "at": {
+            "line": "L0423",
+            "word": "Add"
+          },
+          "what": "a fine 0-to-1 ruler slides onto the giant ruler at its start mark"
+        },
+        {
+          "id": "snap",
+          "at": {
+            "line": "L0424",
+            "word": "snaps"
+          },
+          "what": "0.49999997 snaps back to the start tick: result 0"
+        },
+        {
+          "id": "tie",
+          "at": {
+            "line": "L0424",
+            "word": "Ties"
+          },
+          "what": "exactly 0.5 stops halfway between the odd tick and the even tick"
+        },
+        {
+          "id": "up",
+          "at": {
+            "line": "L0424",
+            "word": 20
+          },
+          "what": "it snaps to the even tick: result 1"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "giant paper ruler starting at 8,388,609",
+        "fine ruler with a pointer",
+        "odd and even ticks (hollow and filled)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "8,388,609 = 2^23 + 1",
+          "beat": "odd"
+        },
+        {
+          "kind": "equation",
+          "text": "0.49999997 → 0   ·   0.5 → 8,388,609.5 → 8,388,610 → 1",
+          "beat": "snap"
+        }
+      ],
+      "music": {
+        "cue": "ch04-c-exact",
+        "note": "a third cue, finer-grained: the detent as a precise ratchet, a small wooden click for each snap; the tie held for a breath on two notes a semitone apart, resolving upward on 'snaps up'"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "PR08",
+        "PR02",
+        "EX02"
+      ]
+    },
+    {
+      "id": "ch04-s13",
+      "kind": "plate",
+      "setting": "parchment plate: the docs' definition of exactness; a paper window 1,732 px wide counting its columns",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0425",
+          "text": "Each trick is exact. Against what? The thirty-two-bit calculation, not JavaScript’s usual sixty-four-bit doubles.",
+          "pauseAfter": 0.7,
+          "direction": "a careful definition, slightly slower; the question asked on the viewer's behalf; stress 'thirty-two-bit calculation' and 'not'"
+        },
+        {
+          "id": "L0426",
+          "text": "Fit columns in a window seventeen hundred and thirty-two pixels wide. Doubles fit seven; thirty-two-bit floats fall a hair short.",
+          "direction": "concrete and a little amused; 'Fit columns' sets the task; 'Doubles fit seven' plain; 'fall a hair short' gently, as if holding up a thread, the consequence; then let the seventh card fail to arrive in the hold"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: what exact means. Cut on motion: the inked ruler of s12 rolls up and the plate beneath it is clear. On 'what' the definition sets in across the top third and holds through the shot (beat def). On 'seventeen' a paper window 1,732 px wide is drawn below, with a 24 px margin, and column cards slide into it one by one (beat window); a ledger beside it works the calculation in ink, the reciprocal rounding first. On 'seven' the double-precision tally (drawn in a faint grey) reaches 7 (beat seven). On 'hair' the thirty-two-bit tally stops at 6.999999523162842, a hair's breadth short of the seventh mark, and the check 'columns at least 7' reads 0 (beat hair). The seventh column card hovers at the window's edge and does not enter. Hold.",
+      "beats": [
+        {
+          "id": "def",
+          "at": {
+            "line": "L0425",
+            "word": "what"
+          },
+          "what": "the definition of exactness sets in and holds"
+        },
+        {
+          "id": "window",
+          "at": {
+            "line": "L0426",
+            "word": "seventeen"
+          },
+          "what": "a 1,732 px paper window; column cards slide in; ledger works the calculation"
+        },
+        {
+          "id": "seven",
+          "at": {
+            "line": "L0426",
+            "word": "seven"
+          },
+          "what": "the float64 tally reaches 7"
+        },
+        {
+          "id": "hair",
+          "at": {
+            "line": "L0426",
+            "word": "hair"
+          },
+          "what": "the FP32 tally stops at 6.999999523162842; columns ≥ 7 reads 0"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "a paper window 1,732 px wide",
+        "column cards",
+        "ink ledger"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "exact = equal to the FP32 calculation, not float64",
+          "beat": "def"
+        },
+        {
+          "kind": "equation",
+          "text": "f(f(1732 − 24) × f(1/244)) = 6.999999523162842   ·   float64: 7",
+          "beat": "window"
+        }
+      ],
+      "music": {
+        "cue": "ch04-c-exact",
+        "note": "spare and attentive: the motif's two lines very quiet under the definition; one soft tick per column card; the seventh tick is withheld and the phrase hangs"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "EX01",
+        "EX03"
+      ]
+    },
+    {
+      "id": "ch04-s14",
+      "kind": "plate",
+      "setting": "parchment plate: a study card dated 13 September 2026, a grid of tiny percentage labels, copper pins along a ribbon",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0427",
+          "text": "Why not doubles everywhere? A September study tried. Of twenty thousand percent labels, nearly nineteen thousand went wrong.",
+          "pauseAfter": 0.7,
+          "direction": "the fair question, asked on the viewer's behalf; 'A September study tried.' a short full stop; the two numbers read evenly, without drama"
+        },
+        {
+          "id": "L0428",
+          "text": "More precision broke it. Keep thirty-two-bit order at the rounding points alone, and every label came back.",
+          "direction": "'More precision broke it' dry and wry, a beat after; then the remedy, plain and clear; 'at the rounding points alone' marked; 'every label came back' satisfied"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "THIS SHOT: why not just use doubles? Cut on motion: a study card slides onto the plate and is pinned, dated 13 September 2026 (beat study). As the line continues a grid of tiny percentage labels fills the card: 20 rows by 50 columns, 1,000 cells, each cell standing for 20 of the study's 20,000 percent labels. On 'wrong' 941 of the 1,000 cells (18,820 labels) flip to red-pencil marks, a red field with only 59 plain cells left, scattered (beat wrong). On 'More' a beat of stillness. On 'Keep' the rounding points of the program are marked with small copper pins along a ribbon (only those), and all 941 red cells turn back to plain ink, every one (beat fixed). In the hold the card slides aside toward the workbench, where tag 6 waits on the copper line.",
+      "beats": [
+        {
+          "id": "study",
+          "at": {
+            "line": "L0427",
+            "word": "September"
+          },
+          "what": "a study card dated 13 September 2026 pinned to the plate"
+        },
+        {
+          "id": "wrong",
+          "at": {
+            "line": "L0427",
+            "word": "wrong"
+          },
+          "what": "941 of the grid's 1,000 cells (1 cell = 20 labels) flip to red"
+        },
+        {
+          "id": "fixed",
+          "at": {
+            "line": "L0428",
+            "word": "Keep"
+          },
+          "what": "copper pins at the rounding points; all 941 red cells return to ink"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "study card dated 13 September 2026",
+        "grid of 1,000 percentage-label cells (20 × 50; 1 cell = 20 labels)",
+        "copper pins on a ribbon"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "13 Sept 2026 · float64 everywhere: 18,820 of 20,000 percent labels wrong",
+          "beat": "study"
+        },
+        {
+          "kind": "label",
+          "text": "FP32 order at rounding points only: 0 wrong",
+          "beat": "fixed"
+        }
+      ],
+      "music": {
+        "cue": "ch04-c-exact",
+        "note": "a dry scattering of pencil ticks as the labels flip red; a small silence on 'More precision broke it'; a soft copper click for each pin, the red marks clearing, settling into the cue's last held interval"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "EX10",
+        "EX07",
+        "EX01"
+      ]
+    },
+    {
+      "id": "ch04-s08",
+      "kind": "scene",
+      "setting": "the backlit workbench (Two Ramps and a Lever): a long black bench before a tall window bay glowing warm at L2, a low haze at board height, a black post at L6 framing the right edge, the formula on a small card clipped to the post; the copper line in front of the machine: tag 6 is untied, carried to the wire of a and re-tied there as 'grid 1'; the rig shrinks to two ramps' worth; an operation counter",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0414",
+          "text": "The real library won’t compare until you promise a range.",
+          "pauseAfter": 0.7,
+          "direction": "turning from the README to the runtime; firm, matter-of-fact; 'promise' a key word, slightly marked"
+        },
+        {
+          "id": "L0415",
+          "text": "Promise more, that a is a whole number, and the comparison takes two operations.",
+          "direction": "a pleased reveal; 'two operations' crisp, almost a wink",
+          "spoken": "Promise more, that A is a whole number, and the comparison takes two operations."
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 2.0,
+      "visual": "THIS SHOT: what the runtime really builds (Tags on Wires, machine 5). Crossfade back to the backlit workbench, the window bay warm, haze at board height. The input a is drawn as a single copper wire running into the machine. On 'compare' a monospace label chip clips to the comparison and the machine's lever locks with a small red stop: no range, no comparison (beat refuse). On 'range' the narrator's hands tie a small card to the wire of a giving its range (beat rangeTag). On 'Promise' the hands reach up to the copper line, untie tag 6 (the README's (a > 4) ? 10 : 12 with its small print 'For an integer a') and carry it down (beat retie); on 'whole' they re-tie it onto the wire of a and the tag's small print re-letters itself in ink as 'grid 1', lettering on the tag itself (beat reletter). On 'number' the two ramps and lever fold together into a smaller rig of two little boards in series, with its two formulas on the clipped card (beat shrink); a brass operation counter on the post ticks down and stops at 2. In the hold the marble checks three whole numbers on the existing number line (beat checks): at 5 the first board reads 0 and the second 1, and a 10 tile drops; at 4 they read 1 and 0, a 12; at 3 they read 2 and nought (the ramp cannot go below zero), a 12. Tiles only, no new text.",
+      "beats": [
+        {
+          "id": "refuse",
+          "at": {
+            "line": "L0414",
+            "word": "compare"
+          },
+          "what": "the comparison locks with a red stop; label chip clips on"
+        },
+        {
+          "id": "rangeTag",
+          "at": {
+            "line": "L0414",
+            "word": "range"
+          },
+          "what": "the narrator's hands tie a range card to the wire of a; the lock releases"
+        },
+        {
+          "id": "retie",
+          "at": {
+            "line": "L0415",
+            "word": "Promise"
+          },
+          "what": "the narrator's hands untie tag 6 from the copper line and carry it down to the wire of a"
+        },
+        {
+          "id": "reletter",
+          "at": {
+            "line": "L0415",
+            "word": "whole"
+          },
+          "what": "tag 6's small print re-letters itself as 'grid 1'"
+        },
+        {
+          "id": "shrink",
+          "at": {
+            "line": "L0415",
+            "word": "number"
+          },
+          "what": "the rig folds into two small boards in series; formulas on the card; counter stops at 2"
+        },
+        {
+          "id": "checks",
+          "at": {
+            "line": "L0415",
+            "edge": "end",
+            "offset": 0.5
+          },
+          "what": "the marble checks 5, 4 and 3 on the number line: 10, 12, 12 tiles drop into the tray (no new text)"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "the wire of a (copper)",
+        "Promise Tag 6, re-tied and re-lettered 'grid 1'",
+        "range card",
+        "two small boards in series",
+        "operation counters"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "emitCompare: needs a declared range",
+          "beat": "refuse"
+        },
+        {
+          "kind": "equation",
+          "text": "ramp = relu(5 − a)   bit = relu(1 − ramp)",
+          "beat": "shrink"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-promise",
+        "note": "a new cue, cleaner and more confident: the detent figure's tie stroke as tag 6 is re-tied (a soft detent click), then a tidy two-click figure as the rig shrinks to two operations; the motif's two lines back at full, gate at exactly 0 and 1"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "TE04",
+        "TE05",
+        "PR11"
+      ]
+    },
+    {
+      "id": "ch04-s09",
+      "kind": "scene",
+      "setting": "the workbench in low amber light: the marble pushed to 4.5 down the wire tagged 'grid 1'; a 5 and a 6 fusing into 11; a monospace validator slip; the red pencil at tag 6's back",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "lines": [
+        {
+          "id": "L0416",
+          "text": "Now break the promise: four and a half, down a wire tagged whole.",
+          "pauseAfter": 0.7,
+          "direction": "quietly mischievous, a teacher testing the rule; slow on 'down a wire tagged whole'"
+        },
+        {
+          "id": "L0417",
+          "text": "Eleven again. A validator objects.",
+          "pauseAfter": 0.7,
+          "direction": "'Eleven again' with a rueful half-laugh; 'objects' plain"
+        },
+        {
+          "id": "L0418",
+          "text": "As the docs put it, “Declarations are promises from the caller, not proofs.”",
+          "pauseAfter": 0.7,
+          "direction": "the chapter's climax and the film's title: read the docs' sentence exactly, as a quotation, unhurried, with weight and warmth on 'promises' and a clean stop on 'proofs'"
+        },
+        {
+          "id": "L0419",
+          "text": "Who tied it on? The caller. Who doubted it? The validator. How long it held? While the input stayed honest.",
+          "direction": "the refrain in full, second of three uses, now answered: each question light, each answer plain and short; 'While the input stayed honest' slower, warm, the lesson of the dive"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: the false promise. A 3 s tint crossfade lowers the bench lamp to a deeper amber. The small two-board rig on its tagged wire. On 'break' the narrator's hands push the marble onto the wire of a at 4.5, right under the 'grid 1' tag (beat push). On 'Eleven' the bit reads 0.5, both shutters stand half open, a 10 comes through as 5 and a 12 as 6, and they fuse in the tray into 11, exactly as in s06 (beat eleven). On 'validator' a monospace slip slides up from below the rig like a typed line from a test run, and the machine's frame gives a single sharp clack (beat validator). On 'Declarations' the camera tilts up to tag 6 on the wire, the typed slip staying pinned at the lower edge of frame, and a short attribution sets in beside the tag (beat quote). On 'caller' the narrator's hand touches the knot where the tag was tied (beat caller); on 'doubted' the tag flips and the red-pencil hand writes 'validator' on its back (beat flipTag); on 'honest' the pencil comes to rest beside the tag without striking it: the README's own small print had already said 'for an integer a' (beat rest). The detent's third stroke is withheld. Hold on the tag, turning slowly on the wire. TAG-LINE STAGING (meta staging.tagLine): WORKSHOP AT THE BENCH: tag 6 is lifted from the line onto the bench's plates and back; the line sits higher in frame (66%), cropped by the plates below.",
+      "beats": [
+        {
+          "id": "push",
+          "at": {
+            "line": "L0416",
+            "word": "break"
+          },
+          "what": "the marble pushed to 4.5 down the wire tagged grid 1"
+        },
+        {
+          "id": "eleven",
+          "at": {
+            "line": "L0417",
+            "word": "Eleven"
+          },
+          "what": "bit 0.5; shutters half open; a 5 and a 6 fuse into 11"
+        },
+        {
+          "id": "validator",
+          "at": {
+            "line": "L0417",
+            "word": "validator"
+          },
+          "what": "a monospace validator slip slides up; one sharp clack"
+        },
+        {
+          "id": "quote",
+          "at": {
+            "line": "L0418",
+            "word": "Declarations"
+          },
+          "what": "tilt up to tag 6; a short attribution to the docs sets in"
+        },
+        {
+          "id": "caller",
+          "at": {
+            "line": "L0419",
+            "word": "caller"
+          },
+          "what": "the narrator's hand touches the tag's knot"
+        },
+        {
+          "id": "flipTag",
+          "at": {
+            "line": "L0419",
+            "word": "doubted"
+          },
+          "what": "tag 6 flips; the red pencil writes 'validator' on its back"
+        },
+        {
+          "id": "rest",
+          "at": {
+            "line": "L0419",
+            "word": "honest"
+          },
+          "what": "the red pencil rests beside the tag without striking it"
+        }
+      ],
+      "cast": [
+        "narrator-hands",
+        "red-pencil-hand"
+      ],
+      "props": [
+        "the backlit workbench",
+        "the two-board rig on the wire of a",
+        "Promise Tag 6 ('grid 1')",
+        "paper marble",
+        "a 5 and a 6 tile fusing into 11",
+        "a typed validator slip",
+        "red pencil"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "wire 0 must be a multiple of 1, got 4.5",
+          "beat": "validator"
+        },
+        {
+          "kind": "quote",
+          "text": "“promises from the caller, not proofs” — the docs",
+          "beat": "quote"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-promise",
+        "note": "the gate drops to 0.5 again, both lines at half level (the musical eleven, now under a promise); a single sharp clack for the validator; under the docs' sentence everything thins to one held interval; the refrain gets the detent figure, tie and flip only, the third stroke withheld and the bar left hanging"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "TE07",
+        "PR11"
+      ]
+    },
+    {
+      "id": "ch04-s10",
+      "kind": "scene",
+      "setting": "the far end of the workbench, its lamp lowered nearly to dark: a hairline of copper light passing through six backlit paper lenses with stops, a seventh stage and a flip; a magnification dial; an operation counter",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "lines": [
+        {
+          "id": "L0420",
+          "text": "Promise only a range, and it must tell the tiniest difference from none. It magnifies by two to the hundred and forty-ninth.",
+          "pauseAfter": 0.7,
+          "direction": "wonder building; 'any gap from none' precise; let the lenses pass in the pause before 'two to the hundred and forty-ninth', slow and savoured",
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        },
+        {
+          "id": "L0421",
+          "text": "The faintest difference becomes a full bar. A sixteen-operation comparison, and four and a half gives ten. Correct.",
+          "direction": "the payoff, quietly impressed; 'Correct.' as a small, satisfied full stop"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: no grid, only a range: the sign-cascade lens train (machine 3; one of the film's five images). Cut on motion: the camera follows the wire of a along the bench to its far end, where the lamp is lowered nearly to dark and only the lenses glow. From the left a hairline of copper light, the difference a minus four, so thin it is barely visible, enters a train of six backlit paper lenses mounted on black card stands. On 'gap' the hairline is shown flickering at the edge of visibility (beat hairline). On 'magnifies' it passes the first lens, marked ×2^14, and thickens; each of the next five lenses, marked ×2^24, follows at one lens per beat of the score, each followed by a stop that clips the beam at height 1 (beat lenses); a brass magnification dial winds to 2^149. On 'faintest' the beam reaches the seventh stage, the final ReGLU (×2^15 inside a ramp), then a flip, and floods the frame's right side as a solid copper bar (beat bar). On 'sixteen-operation' an operation counter settles at 16 ops in 15 layers, counting the comparison bit alone, and the bit reads 1 (beat sixteen); on 'ten' the bit drives the select: the bar opens the 10 shutter fully and a 10 tile drops (beat ten). Hold on the full bar.",
+      "beats": [
+        {
+          "id": "hairline",
+          "at": {
+            "line": "L0420",
+            "word": "difference"
+          },
+          "what": "a hairline of copper light, the difference, barely visible"
+        },
+        {
+          "id": "lenses",
+          "at": {
+            "line": "L0420",
+            "word": "magnifies"
+          },
+          "what": "lens 1 (×2^14) then five lenses (×2^24), one per beat, each with a stop at height 1; dial winds toward 2^149"
+        },
+        {
+          "id": "bar",
+          "at": {
+            "line": "L0421",
+            "word": "faintest"
+          },
+          "what": "the seventh stage and the flip; the beam floods as a solid copper bar"
+        },
+        {
+          "id": "sixteen",
+          "at": {
+            "line": "L0421",
+            "word": "sixteen-operation"
+          },
+          "what": "the counter settles at 16 ops in 15 layers for the comparison bit alone; the bit reads 1"
+        },
+        {
+          "id": "ten",
+          "at": {
+            "line": "L0421",
+            "word": "ten"
+          },
+          "what": "the bar opens the 10 shutter; a 10 tile drops"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "six backlit paper lenses on stands, each with a stop",
+        "a seventh stage and a flip",
+        "brass magnification dial",
+        "operation counter",
+        "a 10 tile"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "×2^14 · ×2^24 ×5 · ×2^15  =  2^149",
+          "beat": "lenses"
+        },
+        {
+          "kind": "label",
+          "text": "a > 4 in 16 ops · 15 layers · bit 1 → 10",
+          "beat": "sixteen"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-promise",
+        "note": "a slow climb: one soft mechanical click per lens, each a step higher, the texture thickening with the beam; at the full bar a broad, warm sustained chord (no chime); the motif's gate at exactly 1"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "TE08",
+        "EX05",
+        "TE10"
+      ]
+    },
+    {
+      "id": "ch04-s11",
+      "kind": "plate",
+      "setting": "parchment plate: the two rigs side by side, the long lens train and the small two-board rig; tag 6 returning to the copper line",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0422",
+          "text": "Sixteen against two. One honest sentence about your input saves fourteen operations.",
+          "direction": "the moral, said lightly and with real affection for the idea; 'One honest sentence' slower"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "THIS SHOT: the lesson. crossfade to a parchment plate: the lens train (left, long) and the two-board rig (right, small) drawn side by side in ink at the same scale, the lens train running nearly the width of the plate. On 'Sixteen' each rig's operation count inks beneath it (beat compare). On 'sentence' the 'grid 1' tag on the small rig's wire glows copper (beat honest); on 'fourteen' fourteen of the lens train's sixteen operation marks fade out one by one, leaving two, matching the small rig (beat fourteen). In the hold, the narrator's hands untie tag 6 from the wire and carry it back up to the copper line, where it hangs again, its small print 'For an integer a' showing, a slack thread over the Lifespan Rule. TAG-LINE STAGING (meta staging.tagLine): WORKSHOP AT THE BENCH: tag 6 is lifted from the line onto the bench's plates and back; the line sits higher in frame (66%), cropped by the plates below.",
+      "beats": [
+        {
+          "id": "compare",
+          "at": {
+            "line": "L0422",
+            "word": "Sixteen"
+          },
+          "what": "the two rigs' operation counts ink beneath them"
+        },
+        {
+          "id": "honest",
+          "at": {
+            "line": "L0422",
+            "word": "sentence"
+          },
+          "what": "the grid 1 tag glows copper"
+        },
+        {
+          "id": "fourteen",
+          "at": {
+            "line": "L0422",
+            "word": "fourteen"
+          },
+          "what": "fourteen of sixteen operation marks fade, leaving two"
+        },
+        {
+          "id": "return",
+          "at": {
+            "line": "L0422",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "tag 6 carried back to the copper line"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "parchment plate",
+        "ink drawings of the lens train and the two-board rig",
+        "Promise Tag 6",
+        "the copper line"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "a range only: 16 ops · 15 layers    grid 1: 2 ops · 2 layers",
+          "beat": "compare"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-promise",
+        "note": "a gentle cadence, the cue's resolution: fourteen tiny dry ticks falling away to two; the motif settles at full gate and holds"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "PR12"
+      ]
+    },
+    {
+      "id": "ch04-s16",
+      "kind": "scene",
+      "setting": "the HandwiredOS desk in low amber light, more translucent than before; ReGLU ramps and 0/1 shutters lit inside it (silent)",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "lines": [],
+      "leadIn": 0.6,
+      "holdAfter": 0.8,
+      "minDuration": 5.3,
+      "visual": "THIS SHOT: X-ray desk beat 2 of 5 (Device 3), silent. crossfade to the HandwiredOS desk, a little more translucent than in ch03-s07, in low amber light; the 234-cell source table still faintly lit inside. At 0.8 s, throughout the desk, thousands of tiny paper ramps and shutters light up in copper, like the ones we just built, packed behind the windows and the dock (beat gates); a scatter of 59 small detent wheels glints among them. One relay clack. No narration; the camera holds.",
+      "beats": [
+        {
+          "id": "gates",
+          "at": {
+            "shotTime": 0.8
+          },
+          "what": "inside the desk, thousands of tiny ramps and shutters light in copper; 59 detent wheels glint"
+        },
+        {
+          "id": "clack",
+          "at": {
+            "shotTime": 3
+          },
+          "what": "one relay clack"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "the HandwiredOS desk (translucent)",
+        "tiny ReGLU ramps and shutters",
+        "59 detent wheels"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "2,776 ReGLU gates · 59 boolean atoms",
+          "beat": "gates"
+        }
+      ],
+      "music": {
+        "cue": "ch04-c-exact",
+        "note": "music out; room tone and one relay clack; the silence carries into the next chapter"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "OS02",
+        "EX08"
+      ]
+    }
+  ]
+}

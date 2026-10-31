@@ -1,0 +1,291 @@
+{
+ "shot": "ch11-s02",
+ "at": "2026-10-13T20:02:39.358Z",
+ "step": 0.0833,
+ "sampled": 358,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch11-s02/gw-held",
+  "ch11-s02/gw",
+  "ch11-s02/gpt-held",
+  "ch11-s02/gpt",
+  "ch11-s02/2019-held",
+  "ch11-s02/2019",
+  "ch11-s02/1985-file",
+  "ch11-s02/1985-held",
+  "ch11-s02/1985",
+  "ch11-s02/cyc-label"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@378,433",
+   "probed": false,
+   "from": 0.05,
+   "to": 9.133,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-60,146",
+   "probed": false,
+   "from": 0.05,
+   "to": 2.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-59,356",
+   "probed": false,
+   "from": 0.05,
+   "to": 2.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-60,553",
+   "probed": false,
+   "from": 0.05,
+   "to": 2.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-61,782",
+   "probed": false,
+   "from": 0.05,
+   "to": 2.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@200,147",
+   "probed": false,
+   "from": 0.05,
+   "to": 6.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@207,342",
+   "probed": false,
+   "from": 0.05,
+   "to": 6.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@199,516",
+   "probed": false,
+   "from": 0.05,
+   "to": 6.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@192,730",
+   "probed": false,
+   "from": 0.05,
+   "to": 6.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@200,898",
+   "probed": false,
+   "from": 0.05,
+   "to": 5.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@700,217",
+   "probed": false,
+   "from": 0.05,
+   "to": 9.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@699,390",
+   "probed": false,
+   "from": 0.05,
+   "to": 14.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@698,563",
+   "probed": false,
+   "from": 0.05,
+   "to": 14.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@700,739",
+   "probed": false,
+   "from": 0.05,
+   "to": 14.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@692,927",
+   "probed": false,
+   "from": 0.05,
+   "to": 4.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/gw-held",
+   "probed": true,
+   "from": 0.217,
+   "to": 0.633,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/gw",
+   "probed": true,
+   "from": 0.717,
+   "to": 18.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/gpt-held",
+   "probed": true,
+   "from": 3.05,
+   "to": 3.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/gpt",
+   "probed": true,
+   "from": 3.467,
+   "to": 18.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/2019-held",
+   "probed": true,
+   "from": 8.883,
+   "to": 9.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@264,946",
+   "probed": false,
+   "from": 9.217,
+   "to": 14.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/2019",
+   "probed": true,
+   "from": 9.467,
+   "to": 18.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-130,-137",
+   "probed": false,
+   "from": 16.3,
+   "to": 16.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@435,92",
+   "probed": false,
+   "from": 16.3,
+   "to": 18.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@437,401",
+   "probed": false,
+   "from": 16.3,
+   "to": 18.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@423,732",
+   "probed": false,
+   "from": 16.3,
+   "to": 18.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/1985-file",
+   "probed": true,
+   "from": 18.8,
+   "to": 20.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/gw",
+   "probed": true,
+   "from": 20.467,
+   "to": 29.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/gpt",
+   "probed": true,
+   "from": 20.467,
+   "to": 29.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/2019",
+   "probed": true,
+   "from": 20.467,
+   "to": 29.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/1985-held",
+   "probed": true,
+   "from": 20.467,
+   "to": 20.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@47,77",
+   "probed": false,
+   "from": 20.467,
+   "to": 21.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@454,22",
+   "probed": false,
+   "from": 20.467,
+   "to": 21.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@453,241",
+   "probed": false,
+   "from": 20.467,
+   "to": 21.467,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@454,464",
+   "probed": false,
+   "from": 20.467,
+   "to": 21.467,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@444,702",
+   "probed": false,
+   "from": 20.467,
+   "to": 21.467,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/1985",
+   "probed": true,
+   "from": 20.883,
+   "to": 29.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s02/cyc-label",
+   "probed": true,
+   "from": 24.8,
+   "to": 29.8,
+   "minInkWhilePaper": 0.52
+  }
+ ]
+}

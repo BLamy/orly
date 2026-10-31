@@ -1,0 +1,104 @@
+{
+ "shot": "ch03-s09",
+ "at": "2026-10-13T04:13:14.027Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 18,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "1958 – c. 1965 · about 7 years",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 20.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 34.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 60.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 60.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 34.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 30.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 34.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 29.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 29.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 29.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 29.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 25.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 25.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 25.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 30.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "AND IF NO STRAIGHT LINE",
+   "maxCap": 34.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXISTS?",
+   "maxCap": 34.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 17
+}

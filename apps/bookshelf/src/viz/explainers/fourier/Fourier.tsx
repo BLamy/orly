@@ -34,6 +34,9 @@ const traceX = scaleLinear([0, HISTORY], [SQ.traceX0, SQ.traceX1]);
 const traceY = scaleLinear([-1.25, 1.25], [SQ.cy + SQ.R * 1.25, SQ.cy - SQ.R * 1.25]);
 const specX = scaleLinear([0, 26], [SPEC.x0, SPEC.x1]);
 
+/** The drawing the arrows are retuned to, as a faint dashed guide (built once). */
+const SHAPE_GHOST = `M${SHAPE_PATH.map((p) => `${(SHAPE.cx + p.x).toFixed(1)} ${(SHAPE.cy + p.y).toFixed(1)}`).join(' L')} Z`;
+
 /** The finale chain: 128 DFT circles drawing a star, revealed by lap phase. */
 function StarChain({ theta, opacity }: { theta: number; opacity: number }) {
   const cum = shapeChain(theta);
@@ -50,6 +53,8 @@ function StarChain({ theta, opacity }: { theta: number; opacity: number }) {
 
   return (
     <g opacity={opacity}>
+      {/* the target drawing, fading out as the trace fills it in */}
+      <path d={SHAPE_GHOST} fill="none" stroke={colors.MUTED} strokeWidth={1.2} strokeDasharray="4 6" opacity={0.45 * (1 - frac)} />
       {SHAPE_COEFS.map((c, i) =>
         c.amp > 1.5 ? (
           <circle
@@ -116,8 +121,11 @@ function renderFrame(s: SceneState) {
             ) : null,
           )}
           {/* …and the arrows riding them */}
-          {ODD.map((n, i) =>
-            amps[i] > 0.01 ? (
+          {ODD.map((n, i) => {
+            if (amps[i] <= 0.01) return null;
+            // shrink the arrowhead with the arrow so the small harmonics don't pile into blobs
+            const len = Math.hypot(chain[i + 1].x - chain[i].x, chain[i + 1].y - chain[i].y);
+            return (
               <Vec
                 key={`v${n}`}
                 x1={SQ.cx + chain[i].x}
@@ -126,10 +134,10 @@ function renderFrame(s: SceneState) {
                 y2={SQ.cy + chain[i + 1].y}
                 color={colors.TEXT}
                 width={2}
-                head={8}
+                head={Math.min(8, Math.max(3, len * 0.35))}
               />
-            ) : null,
-          )}
+            );
+          })}
 
           {/* tip → trace connector (horizontal: the tip's height IS the wave) */}
           <line x1={tipX} y1={tipY} x2={SQ.traceX0} y2={headY} stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="3 7" opacity={0.9} />

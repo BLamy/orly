@@ -1,0 +1,235 @@
+{
+ "id": "alexnet-deep-dive",
+ "checked": 70,
+ "confirmed": 40,
+ "corrected": 19,
+ "unverifiable": 8,
+ "contested": 3,
+ "corrections": [
+  {
+   "original": "SuperVision submitted its results on 30 September 2012",
+   "verdict": "corrected",
+   "fix": "30 Sep 2012 (Sunday, 23:00 GMT) was the deadline, extended on 17 Sep; SuperVision's own submission day is not published. Say 'by the 30 September deadline'.",
+   "sources": [
+    "https://image-net.org/challenges/LSVRC/2012/index.php"
+   ]
+  },
+  {
+   "original": "Paper's '150,000 testing images' is looser phrasing than ILSVRC-2012's ~100,000",
+   "verdict": "corrected",
+   "fix": "The paper's 1.2M/50K/150K describes ILSVRC (2010 split); ILSVRC-2012 had 100,000 test images (150,000 val+test minus 50,000 val; Karpathy: 'full test set of 100,000 images').",
+   "sources": [
+    "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+    "https://image-net.org/challenges/LSVRC/2012/index.php",
+    "https://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/"
+   ]
+  },
+  {
+   "original": "224 input only works as 227; most reimplementations use 227; cause UNVERIFIED; Wikipedia credits Karpathy",
+   "verdict": "corrected",
+   "fix": "Original 2012 code computes conv output as 1+ceil((2p+n-f)/s), so 224 with padding=0 gives 55: the paper is internally consistent under cuda-convnet's convention. Caffe uses 227 but torchvision uses 224 with padding=2, so 'most use 227' is overstated. Current Wikipedia has no Karpathy attribution; removed.",
+   "sources": [
+    "https://github.com/computerhistory/AlexNet-Source-Code/blob/main/layer.py",
+    "https://github.com/computerhistory/AlexNet-Source-Code/blob/main/layers/layers-120.cfg",
+    "https://github.com/pytorch/vision/blob/main/torchvision/models/alexnet.py",
+    "https://en.wikipedia.org/wiki/AlexNet"
+   ]
+  },
+  {
+   "original": "Zeiler & Fergus replicated AlexNet single-model result to within 0.2%",
+   "verdict": "corrected",
+   "fix": "Paper says 'within 0.1% of their reported value on the ImageNet 2012 validation set'.",
+   "sources": [
+    "https://arxiv.org/abs/1311.2901"
+   ]
+  },
+  {
+   "original": "By ILSVRC 2013 the entire top five classification entries were convnets",
+   "verdict": "corrected",
+   "fix": "All top-five teams used CNNs, but NUS (2nd, 0.12953) was a hybrid: rectified CNN outputs combined with its refined PASCAL VOC12 winning (traditional) solution.",
+   "sources": [
+    "https://image-net.org/challenges/LSVRC/2013/results.php"
+   ]
+  },
+  {
+   "original": "Jitendra Malik: late 50s in 2012",
+   "verdict": "corrected",
+   "fix": "Born 11 Oct 1960, so 51-52 in 2012: early 50s.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jitendra_Malik"
+   ]
+  },
+  {
+   "original": "Fei-Fei Li: late 30s in 2012",
+   "verdict": "corrected",
+   "fix": "Born 3 Jul 1976, so 36 in 2012.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Fei-Fei_Li"
+   ]
+  },
+  {
+   "original": "Krizhevsky born in the Ukrainian SSR, per Wikipedia (VERIFIED-SECONDARY)",
+   "verdict": "unverifiable",
+   "fix": "Current Wikipedia states no birthplace or birth year ('Year of birth missing'); no reliable source found. Do not state.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Alex_Krizhevsky"
+   ]
+  },
+  {
+   "original": "Karpathy 2 Sep 2014: 'Human accuracy is not a point...' and the ~3% expert-ensemble estimate",
+   "verdict": "corrected",
+   "fix": "Both come from the post's February 2015 update, not the 2 Sep 2014 original. Other labellers: one expert ~12% on 280 images; labmates with pruned interface 13-15%.",
+   "sources": [
+    "https://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/"
+   ]
+  },
+  {
+   "original": "VGG on LRN (from-memory quote: 'does not improve on the model A without any normalisation layers')",
+   "verdict": "corrected",
+   "fix": "Verified text: 'such normalisation does not improve the performance on the ILSVRC dataset, but leads to increased memory consumption and computation time'; A-LRN 29.7/10.5 vs A 29.6/10.4.",
+   "sources": [
+    "https://arxiv.org/abs/1409.1556"
+   ]
+  },
+  {
+   "original": "Batch Normalization ~4.8-4.9% top-5, exceeding human raters (from memory)",
+   "verdict": "corrected",
+   "fix": "Verified: '4.9% top-5 validation error (and 4.8% test error), exceeding the accuracy of human raters' (4.82% per ILSVRC server); arXiv 11 Feb 2015.",
+   "sources": [
+    "https://arxiv.org/abs/1502.03167"
+   ]
+  },
+  {
+   "original": "GTX 580 reached market 'late 2010' (month from memory)",
+   "verdict": "corrected",
+   "fix": "Launched 9 November 2010 as the first GeForce 500-series card.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/GeForce_500_series"
+   ]
+  },
+  {
+   "original": "NIPS 2012 3-8 Dec at Harrah's/Harveys (dates from memory)",
+   "verdict": "corrected",
+   "fix": "Verified: 'Mon Dec 3rd through Sat the 8th, Harrahs and Harveys, Lake Tahoe'. Status upgraded.",
+   "sources": [
+    "https://nips.cc/Conferences/2012"
+   ]
+  },
+  {
+   "original": "Auction: DeepMind dropped out early, then Microsoft; laptop on an upturned wastebasket; Wired page not fetched",
+   "verdict": "corrected",
+   "fix": "Wired (16 Mar 2021) read directly: DeepMind bid in shares and dropped out; Microsoft dropped out at $15-20M, returned, dropped out again near $22M; window cut to 30 min; laptop 'sat on a trash can turned upside down on a table'; the Google dinner was on Hinton's 65th birthday; stopped at $44M, chose Google.",
+   "sources": [
+    "https://www.wired.com/story/secret-auction-race-ai-supremacy-google-microsoft-baidu/"
+   ]
+  },
+  {
+   "original": "ISI (runner-up, 0.26172) used Fisher Vectors + Graphical Gaussian Vectors",
+   "verdict": "corrected",
+   "fix": "The scoring entry is described as weighted sum of SIFT+FV, LBP+FV, GIST+FV, CSIFT+FV classifiers; GGV appears only in the team abstract. Say 'Fisher Vectors'.",
+   "sources": [
+    "https://image-net.org/challenges/LSVRC/2012/results.html"
+   ]
+  },
+  {
+   "original": "Two-GPU split cut error 1.7%/1.2% vs a half-size one-GPU net",
+   "verdict": "corrected",
+   "fix": "Paper's footnote 2: the one-GPU baseline kept full size in the last conv and FC layers, so the comparison 'is biased in favor of the one-GPU net' (it was bigger than half).",
+   "sources": [
+    "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf"
+   ]
+  },
+  {
+   "original": "Hinton could not travel because of his back",
+   "verdict": "corrected",
+   "fix": "Li: 'Hinton couldn't attend because of a chronic back problem'. He could not sit (so no flights) but travelled overland to Lake Tahoe lying down in December 2012. Say 'did not attend because of his back'.",
+   "sources": [
+    "https://www.goodreads.com/notes/65211854-the-worlds-i-see/185327722-daniel-dantas?page=5",
+    "https://www.wired.com/story/secret-auction-race-ai-supremacy-google-microsoft-baidu/"
+   ]
+  },
+  {
+   "original": "Sutskever GTC 2023 'great fit for GPUs ... unbelievably fast' wording comes from a summary (UNVERIFIED)",
+   "verdict": "corrected",
+   "fix": "NVIDIA's blog prints it in quotation marks as Sutskever's words, in two fragments joined by blog prose: VERIFIED-SECONDARY as fragments; check the video before quoting as one sentence.",
+   "sources": [
+    "https://blogs.nvidia.com/blog/sutskever-openai-gtc/"
+   ]
+  },
+  {
+   "original": "Jensen Huang (GTC 2023) said AlexNet trained on '14 million images' and 'ignited the big bang of AI' [S48]",
+   "verdict": "unverifiable",
+   "fix": "S48 contains no '14 million'; 'Big Bang of AI' is the blog author's paraphrase, not a quote. Attribution unverified; the number is wrong regardless.",
+   "sources": [
+    "https://blogs.nvidia.com/blog/sutskever-openai-gtc/"
+   ]
+  },
+  {
+   "original": "LeCun: 'an unequivocal turning point in the history of computer vision'",
+   "verdict": "unverifiable",
+   "fix": "Trail now leads to Cade Metz (Genius Makers), relayed by Timothy B. Lee ('This is proof.'); no primary record and Metz page unread. Use the CHM's paraphrase 'pronounced it a turning point for AI', or attribute to Metz.",
+   "sources": [
+    "https://www.understandingai.org/p/why-the-deep-learning-boom-caught",
+    "https://computerhistory.org/blog/chm-releases-alexnet-source-code/"
+   ]
+  },
+  {
+   "original": "Training ran in Krizhevsky's bedroom at his parents' house",
+   "verdict": "contested",
+   "fix": "CHM (with Krizhevsky's clarifications, Hinton's review) says bedroom; NVIDIA's 2023 blog says 'a few GeForce GTX 580 GPUs in a University of Toronto lab'. Prefer CHM; note conflict.",
+   "sources": [
+    "https://computerhistory.org/blog/chm-releases-alexnet-source-code/",
+    "https://blogs.nvidia.com/blog/sutskever-openai-gtc/"
+   ]
+  },
+  {
+   "original": "ILSVRC 2012 workshop discussion until 18:00",
+   "verdict": "corrected",
+   "fix": "ILSVRC page says 17:30-18:00 discussion; PASCAL VOC page lists the ILSVRC block 15:30-18:15. Malik gave an invited PASCAL talk 14:30-15:00 the same day.",
+   "sources": [
+    "https://image-net.org/challenges/LSVRC/2012/index.php",
+    "https://www.robots.ox.ac.uk/~vgg/projects/pascal/VOC/voc2012/workshop/index.html"
+   ]
+  },
+  {
+   "original": "Hinton Toronto Star quote 'work on whatever we like...' (via Varsity)",
+   "verdict": "corrected",
+   "fix": "Re-verified via Wayback copy (live page 403); extended with the following sentence 'It doesn't put any constraints on what we work on and when we publish'.",
+   "sources": [
+    "https://web.archive.org/web/2016/https://thevarsity.ca/2013/03/18/google-acquires-u-of-t-start-up/"
+   ]
+  },
+  {
+   "original": "LeCun 2012 CVPR open letter 'So, I'm giving up on submitting to computer vision conferences altogether.'",
+   "verdict": "unverifiable",
+   "fix": "No primary text retrieved; remains UNVERIFIED.",
+   "sources": []
+  },
+  {
+   "original": "LeCun: 'In 2012, you couldn't get a paper accepted at CVPR if you used neural networks...'",
+   "verdict": "unverifiable",
+   "fix": "No source; remains UNVERIFIED.",
+   "sources": []
+  },
+  {
+   "original": "Hinton's '1% improvement buys a week' anecdote with Krizhevsky",
+   "verdict": "unverifiable",
+   "fix": "Only divergent second-hand retellings; remains UNVERIFIED.",
+   "sources": [
+    "https://medium.com/@hasanimranmalik245/listening-to-geoffrey-hinton-234466eb996e"
+   ]
+  },
+  {
+   "original": "Sutskever Eye on AI podcast line",
+   "verdict": "unverifiable",
+   "fix": "Transcript not retrieved; remains UNVERIFIED.",
+   "sources": []
+  },
+  {
+   "original": "Figure 2 is cropped at the top in the published PDF",
+   "verdict": "unverifiable",
+   "fix": "Not visually checked in this pass; keep 'verify visually'.",
+   "sources": []
+  }
+ ]
+}

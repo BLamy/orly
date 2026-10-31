@@ -12,7 +12,6 @@
 // command builder stacks the full flag column that a manual launch would make
 // you type yourself. Both roads end at the same booted server.
 import {
-  CAMERA_HOME,
   Camera,
   STAGE_H,
   STAGE_W,
@@ -40,7 +39,7 @@ const ALIASES = [
   ['r1', 'DeepSeek-R1-0528'],
 ] as const;
 
-const CMD = { x: 520, y: 196, w: 330, h: 330 } as const;
+const CMD = { x: 520, y: 196, w: 370, h: 304 } as const;
 // The real flag stack (kt-kernel/README.md, Qwen3-30B-A3B AMXINT8 example).
 const FLAGS = [
   'python -m sglang.launch_server',
@@ -55,12 +54,14 @@ const FLAGS = [
   '--mem-fraction-static  0.92',
 ] as const;
 
-const SRV = { x: 1060, y: 330 } as const;
+const SRV = { x: 1100, y: 330 } as const;
 const MANUAL = { x: 950, y: 90 } as const;
 
-const CAM_REG: CameraState = { x: 330, y: 270, k: 1.45 };
-const CAM_CMD: CameraState = { x: 685, y: 360, k: 1.35 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+// Each frame keeps every live element inside the 1280×720 stage.
+const CAM_TERM: CameraState = { x: 330, y: 110, k: 1.6 };
+const CAM_REG: CameraState = { x: 330, y: 290, k: 1.45 };
+const CAM_CMD: CameraState = { x: 485, y: 315, k: 1.4 };
+const CAM_WIDE: CameraState = { x: 640, y: 300, k: 1.12 };
 
 export interface Scene {
   tl: Timeline;
@@ -82,7 +83,7 @@ export interface Scene {
 
 export function buildScene(): Scene {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_TERM, cameraInterp);
   const termU = tl.channel('termU', 0); // terminal chrome
   const typeU = tl.channel('typeU', 0); // "kt run m2" typing on
   const regU = tl.channel('regU', 0); // registry card
@@ -235,7 +236,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- registry card ---- */}
           <g opacity={regU}>
             <rect x={REG.x} y={REG.y} width={REG.w} height={REG.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
-            <text x={REG.x + 16} y={REG.y + 24} fill={colors.SECONDARY} fontSize={12.5} fontFamily="ui-monospace, monospace">
+            <text x={REG.x + 16} y={REG.y + 24} fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace">
               model_registry.py
             </text>
             {ALIASES.map(([a, m], i) => {
@@ -244,15 +245,28 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={a} opacity={rowU}>
                   <rect x={REG.x + 12} y={REG.y + 38 + i * 32} width={REG.w - 24} height={26} rx={6} fill={hot > 0.3 ? colors.BG : 'none'} stroke={hot > 0.3 ? colors.WARM : colors.GRID} strokeWidth={hot > 0.3 ? 1.5 : 0.8} />
-                  <text x={REG.x + 24} y={REG.y + 56 + i * 32} fill={hot > 0.3 ? colors.WARM : colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                  <text x={REG.x + 24} y={REG.y + 56 + i * 32} fill={hot > 0.3 ? colors.WARM : colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
                     {a}
                   </text>
-                  <text x={REG.x + 90} y={REG.y + 56 + i * 32} fill={colors.TEXT} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                  <text x={REG.x + 90} y={REG.y + 56 + i * 32} fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
                     → {m}
                   </text>
                 </g>
               );
             })}
+          </g>
+          {/* the matched row's record: where it comes from, and where its defaults go */}
+          <g opacity={hitU}>
+            <rect x={REG.x} y={REG.y + REG.h + 16} width={REG.w} height={84} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
+            <text x={REG.x + 16} y={REG.y + REG.h + 40} fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
+              m2 → MiniMax-M2
+            </text>
+            <text x={REG.x + 16} y={REG.y + REG.h + 62} fill={colors.TEXT} fontSize={13}>
+              source: its model page
+            </text>
+            <text x={REG.x + 16} y={REG.y + REG.h + 82} fill={colors.TEXT} fontSize={13}>
+              defaults: the launch flags
+            </text>
           </g>
           {/* alias packet terminal → registry */}
           {lookU > 0 && lookU < 1 && (
@@ -271,24 +285,29 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- command builder ---- */}
           <g opacity={buildU}>
             <rect x={CMD.x} y={CMD.y} width={CMD.w} height={CMD.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-            <text x={CMD.x + 16} y={CMD.y + 24} fill={colors.ACCENT} fontSize={12.5} fontFamily="ui-monospace, monospace">
+            <text x={CMD.x + 16} y={CMD.y + 24} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
               _build_sglang_command()
             </text>
+            {/* the three values the builder fills in from the box */}
+            <rect x={CMD.x + 12} y={CMD.y + 146} width={CMD.w - 24} height={74} rx={6} fill={colors.WARM} opacity={0.14 * tuneU} />
             {FLAGS.map((f, i) => {
               const u = clamp01(flagsU * FLAGS.length - i);
               const tuned = i >= 4 && i <= 6; // cpuinfer / threadpool / gpu-experts
+              // shell-style continuation so the column reads as one command
+              const cont = i < FLAGS.length - 1 ? ' \\' : '';
               return (
                 <text
                   key={f}
                   x={CMD.x + 20 + (i > 0 ? 14 : 0)}
                   y={CMD.y + 52 + i * 27}
-                  fill={tuned && tuneU > 0.3 ? colors.WARM : i === 0 ? colors.TEXT : colors.MUTED}
-                  fontSize={11}
+                  fill={tuned && tuneU > 0.3 ? colors.WARM : colors.TEXT}
+                  fontSize={13}
                   fontFamily="ui-monospace, monospace"
-                  opacity={u}
+                  opacity={i === 0 || (tuned && tuneU > 0.3) ? u : u * 0.8}
                 >
                   {f}
-                  {tuned && tuneU > 0.3 ? '   ← yours' : ''}
+                  {cont}
+                  {tuned && tuneU > 0.3 ? '   ← auto-filled' : ''}
                 </text>
               );
             })}
@@ -297,11 +316,11 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- the manual road ---- */}
           <g opacity={manualU}>
-            <rect x={MANUAL.x - 110} y={MANUAL.y - 24} width={220} height={48} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={MANUAL.x} y={MANUAL.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+            <rect x={MANUAL.x - 125} y={MANUAL.y - 24} width={250} height={48} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+            <text x={MANUAL.x} y={MANUAL.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               the manual road
             </text>
-            <text x={MANUAL.x} y={MANUAL.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+            <text x={MANUAL.x} y={MANUAL.y + 14} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
               you type every flag yourself
             </text>
             <Connection from={{ x: MANUAL.x, y: MANUAL.y + 24 }} to={{ x: CMD.x + CMD.w - 40, y: CMD.y }} u={manualU} color={colors.GRID} dashed arrow width={1.2} />
@@ -330,10 +349,10 @@ export function Render({ s }: { s: SceneState }) {
             ].map(([cmd, sub], i) => (
               <g key={cmd}>
                 <rect x={SRV.x - 85 + i * 10} y={SRV.y + 64 + i * 44} width={160} height={36} rx={9} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
-                <text x={SRV.x - 75 + i * 10} y={SRV.y + 79 + i * 44} fill={colors.POSITIVE} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                <text x={SRV.x - 75 + i * 10} y={SRV.y + 79 + i * 44} fill={colors.POSITIVE} fontSize={14} fontFamily="ui-monospace, monospace">
                   {cmd}
                 </text>
-                <text x={SRV.x - 75 + i * 10} y={SRV.y + 94 + i * 44} fill={colors.MUTED} fontSize={10}>
+                <text x={SRV.x - 75 + i * 10} y={SRV.y + 94 + i * 44} fill={colors.TEXT} fontSize={13}>
                   {sub}
                 </text>
               </g>
@@ -344,16 +363,16 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- close ---- */}
         <g opacity={closeU}>
           <rect x={330} y={228} width={620} height={204} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={274} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+          <text x={640} y={274} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
             two roads, one server
           </text>
-          <text x={640} y={312} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={312} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             kt run resolves an alias, tunes the flags to your box, launches
           </text>
-          <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             the manual road types the same flags by hand
           </text>
-          <text x={640} y={392} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={392} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             kt run m2 · python -m sglang.launch_server --kt-method … --kt-num-gpu-experts …
           </text>
         </g>

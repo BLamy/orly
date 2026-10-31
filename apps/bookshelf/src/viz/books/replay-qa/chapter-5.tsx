@@ -36,7 +36,7 @@ const QUEUE = { x: 84, y: 250, w: 470 };
 const PATH_Y = 330;
 const STEP_XS = [660, 812, 964, 1116];
 const TAPE = { x: 620, y: 470, w: 540, h: 40 };
-const GRID = { x: 292, y: 128, cell: 42, gap: 6, rows: 8, cols: 16 };
+const GRID = { x: 256, y: 128, cell: 42, gap: 6, rows: 8, cols: 16 };
 
 /* ------------------------------------------------------------------ data */
 const JOURNEY_STEPS = ['browse', 'add to cart', 'checkout', 'pay'] as const;
@@ -69,8 +69,7 @@ const cellHeat = (i: number, j: number, runs: number) =>
 
 /* ------------------------------------------------------------- cameras */
 const CAM_BUG: CameraState = { x: 430, y: 300, k: 1.25 };
-const CAM_RUN: CameraState = { x: 850, y: 380, k: 1.2 };
-const CAM_MOMENT: CameraState = { x: STEP_XS[FIX_STEP], y: 400, k: 1.9 };
+const CAM_RUN: CameraState = { x: 640, y: 380, k: 1.0 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 
 /* -------------------------------------------------------------- timeline */
@@ -134,7 +133,7 @@ export function buildScene() {
     dur: 6.0,
     text: 'A fresh container spins up and a fresh run begins, with a brand-new Replay recording as its spine — because yesterday’s tape cannot prove today’s claim.',
   });
-  tl.tween(gLeft, 0.15, { at: t - 5.6, dur: 0.9, ease: ease.move });
+  tl.tween(gLeft, 0.5, { at: t - 5.6, dur: 0.9, ease: ease.move });
   tl.tween(cam, CAM_RUN, { at: t - 5.4, dur: 1.5, ease: ease.move });
   tl.tween(pathU, 1, { at: t - 4.2, dur: 1.4, ease: ease.draw });
   t = tl.hold(t, 0.5);
@@ -155,7 +154,7 @@ export function buildScene() {
     dur: 6.6,
     text: 'And at the moment that used to fail, the new tape shows a two hundred where the five hundred lived. That — not the webhook — is what green means here.',
   });
-  tl.tween(cam, CAM_MOMENT, { at: t - 6.2, dur: 1.5, ease: ease.move });
+  tl.tween(gLeft, 1, { at: t - 6.2, dur: 1.5, ease: ease.move }); // the bug card comes back into focus
   tl.tween(insetU, 1, { at: t - 4.6, dur: 0.8, ease: ease.enter });
   t = tl.hold(t, 0.7);
 
@@ -233,24 +232,24 @@ function BugCard({ u, post, fixed, doubt, proven, fade }: {
   return (
     <g opacity={fade}>
       <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu}>
-        <rect width={w} height={118} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
-        <text x={18} y={28} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+        <rect width={w} height={118} rx={12} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.4} />
+        <text x={18} y={28} fill={colors.TEXT} opacity={0.9} fontSize={13.5} fontFamily={mono}>
           bug-002 · Checkout fails with 500 on payment
         </text>
         {/* status chip: open → fixed */}
-        <rect x={18} y={44} width={64} height={24} rx={12} fill={f > 0.5 ? colors.POSITIVE : colors.WARM} opacity={0.2} />
-        <text x={50} y={61} textAnchor="middle" fill={f > 0.5 ? colors.POSITIVE : colors.WARM} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+        <rect x={18} y={44} width={64} height={24} rx={12} fill={f > 0.5 ? colors.POSITIVE : colors.WARM} opacity={0.28} />
+        <text x={50} y={61} textAnchor="middle" fill={f > 0.5 ? colors.POSITIVE : colors.WARM} fontSize={13.5} fontWeight={700} fontFamily={mono}>
           {f > 0.5 ? 'fixed' : 'open'}
         </text>
         {clamp01(doubt) > 0 && (
-          <text x={18} y={92} fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={mono} opacity={clamp01(doubt)}>
+          <text x={18} y={96} fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily={mono} opacity={clamp01(doubt)}>
             claimed — no recording of the fix yet
           </text>
         )}
         {clamp01(proven) > 0 && (
           <g opacity={clamp01(proven)}>
             <rect x={94} y={44} width={78} height={24} rx={12} fill="none" stroke={colors.POSITIVE} strokeWidth={1.6} />
-            <text x={133} y={61} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontWeight={700} fontFamily={mono}>
+            <text x={133} y={61} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={700} fontFamily={mono}>
               on tape
             </text>
           </g>
@@ -260,7 +259,7 @@ function BugCard({ u, post, fixed, doubt, proven, fade }: {
         <circle cx={px} cy={y + 58} r={6} fill={colors.TEAL} opacity={0.95} />
       )}
       {p > 0.15 && (
-        <text x={x + w + 12} y={y + 34} fill={colors.TEAL} fontSize={10.5} fontFamily={mono} opacity={Math.min(1, p * 2) * 0.9}>
+        <text x={x + w + 12} y={y + 34} fill={colors.TEAL} fontSize={13} fontFamily={mono} opacity={Math.min(1, p * 2) * 0.9}>
           POST /api/bug-fixed-webhook/bug-002
         </text>
       )}
@@ -277,7 +276,7 @@ function RetryPanel({ u, rows, fade }: { u: number; rows: number; fade: number }
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * fade}>
       <rect width={w} height={116} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-      <text x={16} y={24} fill={colors.ACCENT} fontSize={12} fontWeight={700} fontFamily={mono}>
+      <text x={16} y={26} fill={colors.ACCENT} fontSize={13.5} fontWeight={700} fontFamily={mono}>
         triggerJourneyRetryIfReady(bug)
       </text>
       {CHECKS.map((c, i) => {
@@ -285,13 +284,13 @@ function RetryPanel({ u, rows, fade }: { u: number; rows: number; fade: number }
         if (cu <= 0) return null;
         return (
           <g key={i} opacity={cu}>
-            <text x={20} y={48 + i * 22} fill={colors.POSITIVE} fontSize={12} fontFamily={mono}>✓</text>
-            <text x={38} y={48 + i * 22} fill={colors.TEXT} fontSize={11.5} fontFamily={mono}>{c}</text>
+            <text x={20} y={52 + i * 24} fill={colors.POSITIVE} fontSize={14} fontFamily={mono}>✓</text>
+            <text x={38} y={52 + i * 24} fill={colors.TEXT} fontSize={13} fontFamily={mono}>{c}</text>
           </g>
         );
       })}
       {rows > 1.6 && (
-        <text x={16} y={102} fill={colors.SECONDARY} fontSize={11.5} fontWeight={700} fontFamily={mono} opacity={clamp01((rows - 1.6) / 0.4)}>
+        <text x={16} y={104} fill={colors.SECONDARY} fontSize={13} fontWeight={700} fontFamily={mono} opacity={clamp01((rows - 1.6) / 0.4)}>
           → scheduleJourneyRun · journey: checkout
         </text>
       )}
@@ -324,19 +323,23 @@ function FreshRun({ path, run, tape, inset, fade }: {
             {passed && (
               <text x={sx} y={PATH_Y + 4.5} textAnchor="middle" fill={colors.BG} fontSize={11} fontWeight={800}>✓</text>
             )}
-            <text x={sx} y={PATH_Y - 20} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+            <text x={sx} y={PATH_Y - 22} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14} fontFamily={mono}>
               {JOURNEY_STEPS[i]}
             </text>
           </g>
         );
       })}
       {r > 0 && r < 1 && <circle cx={dotX} cy={PATH_Y} r={6.5} fill={colors.ACCENT} />}
+      {/* ring the step that used to fail, so the comparison below points at it */}
+      {iu > 0 && (
+        <circle cx={STEP_XS[FIX_STEP]} cy={PATH_Y} r={13} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.6} opacity={iu} />
+      )}
 
       {/* the fresh tape, growing in lockstep with the run */}
       {clamp01(tape) > 0 && (
-        <g>
+        <g opacity={1 - iu}>
           <rect x={TAPE.x} y={TAPE.y} width={TAPE.w * clamp01(tape)} height={TAPE.h} rx={7} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
-          <text x={TAPE.x} y={TAPE.y - 8} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+          <text x={TAPE.x} y={TAPE.y - 10} fill={colors.TEXT} opacity={0.85} fontSize={14} fontFamily={mono}>
             fresh recording · rec-9c1d… (run-005)
           </text>
           {Array.from({ length: 12 }, (_, i) => {
@@ -347,23 +350,45 @@ function FreshRun({ path, run, tape, inset, fade }: {
         </g>
       )}
 
-      {/* the interrogated moment: 200 where the 500 lived */}
+      {/* the interrogated moment: the old 500 tape beside the fresh 200 tape */}
       {iu > 0 && (
-        <g transform={`translate(${STEP_XS[FIX_STEP]}, ${PATH_Y + 34 + (1 - iu) * 8})`} opacity={iu}>
-          <line x1={0} y1={-24} x2={0} y2={-2} stroke={colors.POSITIVE} strokeWidth={1.2} />
-          <rect x={-150} y={0} width={300} height={58} rx={8} fill={colors.BG} opacity={0.94} />
-          <rect x={-150} y={0} width={300} height={58} rx={8} fill="none" stroke={colors.POSITIVE} strokeWidth={1.4} />
-          <text x={-134} y={22} fill={colors.TEXT} fontSize={11} fontFamily={mono}>
-            POST /api/checkout
+        <g transform={`translate(0, ${(1 - iu) * 8})`} opacity={iu}>
+          <rect x={654} y={344} width={620} height={112} rx={10} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
+          <text x={670} y={366} fill={colors.TEXT} opacity={0.85} fontSize={14} fontFamily={mono}>
+            POST /api/checkout · the step that used to fail
           </text>
-          <text x={-134} y={44} fill={colors.POSITIVE} fontSize={11.5} fontWeight={800} fontFamily={mono}>
-            ← 200 OK
-          </text>
-          <text x={56} y={44} fill={colors.NEGATIVE} fontSize={10.5} fontFamily={mono} opacity={0.55} textDecoration="line-through">
-            was 500
-          </text>
+          <MomentTape
+            x={668}
+            color={colors.NEGATIVE}
+            label="run-004 · before the fix"
+            status="500 Internal Error"
+            note="recording rec-4a7e… (old tape)"
+            opacity={1}
+          />
+          <MomentTape
+            x={972}
+            color={colors.POSITIVE}
+            label="run-005 · fresh run"
+            status="200 OK"
+            note="recording rec-9c1d… (new tape)"
+            opacity={clamp01((iu - 0.35) / 0.65)}
+          />
         </g>
       )}
+    </g>
+  );
+}
+
+/** One tape in the before/after pair at the payoff: a status label, not a box. */
+function MomentTape({ x, color, label, status, note, opacity }: {
+  x: number; color: string; label: string; status: string; note: string; opacity: number;
+}) {
+  return (
+    <g opacity={opacity}>
+      <rect x={x} y={378} width={288} height={70} rx={8} fill={colors.PANEL} stroke={color} strokeWidth={1.6} />
+      <text x={x + 14} y={398} fill={colors.TEXT} opacity={0.85} fontSize={13} fontFamily={mono}>{label}</text>
+      <text x={x + 14} y={424} fill={color} fontSize={18} fontWeight={800} fontFamily={mono}>{status}</text>
+      <text x={x + 14} y={440} fill={colors.TEXT} opacity={0.75} fontSize={12.5} fontFamily={mono}>{note}</text>
     </g>
   );
 }
@@ -381,9 +406,24 @@ function CoverageField({ enter, runs, counter, finale }: {
   const runCount = Math.max(1, Math.min(N_RUNS, Math.floor(runs) + 1));
   return (
     <g opacity={eu}>
-      <text x={cx} y={GRID.y - 34} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+      <text x={cx} y={GRID.y - 34} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={15} fontFamily={mono}>
         Acme Store · pages × journeys
       </text>
+      {/* the unexplored map: every cell drawn empty, so the field never goes blank */}
+      {FIRST_RUN.map((row, i) => row.map((_, j) => (
+        <rect
+          key={`s${i}-${j}`}
+          x={GRID.x + j * (GRID.cell + GRID.gap)}
+          y={GRID.y + i * (GRID.cell + GRID.gap)}
+          width={GRID.cell}
+          height={GRID.cell}
+          rx={6}
+          fill={colors.PANEL}
+          stroke={colors.MUTED}
+          strokeWidth={1}
+          opacity={0.6}
+        />
+      )))}
       <MatrixGrid
         x={GRID.x}
         y={GRID.y}
@@ -393,14 +433,14 @@ function CoverageField({ enter, runs, counter, finale }: {
         cellU={(i, j) => clamp01(runs - FIRST_RUN[i][j] + 1)}
       />
       {clamp01(counter) > 0 && (
-        <text x={cx} y={gridB + 26} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontWeight={700} fontFamily={mono} opacity={clamp01(counter)}>
+        <text x={cx} y={gridB + 28} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontWeight={700} fontFamily={mono} opacity={clamp01(counter)}>
           run {runCount} · {runCount} recordings
         </text>
       )}
       {clamp01(finale) > 0 && (
         <g opacity={clamp01(finale)}>
-          <rect x={cx - 250} y={gridB + 42} width={500} height={36} rx={18} fill={colors.BG} opacity={0.92} />
-          <text x={cx} y={gridB + 66} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>
+          <rect x={cx - 250} y={gridB + 44} width={500} height={38} rx={19} fill={colors.BG} stroke={colors.MUTED} strokeWidth={1} />
+          <text x={cx} y={gridB + 69} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>
             Every expensive claim ends on tape.
           </text>
         </g>

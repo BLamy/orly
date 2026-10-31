@@ -1,0 +1,47 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-13T14:27:08.402Z",
+ "summary": {
+  "pass": 5,
+  "warn": 0,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "pass",
+   "detail": "21 cues rendered at exact length",
+   "problems": [],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "pass",
+   "detail": "summary current: 21 cue(s) on the 2153.5417 s clock",
+   "problems": []
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "pass",
+   "detail": "20 cue changes, each in the clear before the next line",
+   "under": [],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "notesClock",
+   "status": "pass",
+   "detail": "every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)"
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "36.4 min of music over 35.9 min (101%)"
+  }
+ ]
+}

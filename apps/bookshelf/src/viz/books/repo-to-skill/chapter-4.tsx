@@ -4,11 +4,16 @@ import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const RESULTS = [
-  { name: 'MLE-bench', metric: 'Any Medal (%)', base: 31.11, skill: 72.89, max: 100, gain: '+134.3%' },
-  { name: 'PaperBench', metric: 'replication score', base: 29.45, skill: 39.59, max: 100, gain: '+34.4%' },
-  { name: 'FrontierCS', metric: 'Agent Track score', base: 70.63, skill: 77.14, max: 100, gain: '+9.22%' },
-  { name: 'PassNet', metric: 'AS Score', base: 1.343, skill: 1.5313, max: 2, gain: '+14.0%' },
+  { name: 'MLE-bench', metric: 'Any Medal (%)', gloss: 'share of runs that earn any medal', base: 31.11, skill: 72.89, max: 100, gain: '+134.3%' },
+  { name: 'PaperBench', metric: 'replication score', gloss: 'average score reproducing paper results', base: 29.45, skill: 39.59, max: 100, gain: '+34.4%' },
+  { name: 'FrontierCS', metric: 'Agent Track score', gloss: 'score on algorithm optimization tasks', base: 70.63, skill: 77.14, max: 100, gain: '+9.22%' },
+  { name: 'PassNet', metric: 'AS Score', gloss: 'aggregate score on compiler pass tasks', base: 1.343, skill: 1.5313, max: 2, gain: '+14.0%' },
 ] as const;
+// Bars run along a fixed track; their values sit in one right-aligned column past the track's end.
+const TRACK_X = 165;
+const TRACK_W = 575;
+const VALUE_X = 840;
+const ROW_H = 84;
 const ROUTE = ['anchor z', 'evidence X', 'candidate G̃', 'verified G', 'routed K', 'execution'];
 
 export function buildScene() {
@@ -73,12 +78,15 @@ export function Render({ s }: { s: SceneState }) {
   const close = s.get(scene.closeU);
   const gains = s.get(scene.gainU);
   const route = s.get(scene.routeU);
+  // The bar chart and its title leave the stage before the route panel opens, so nothing sits under it.
+  const chart = clamp01(1 - route * 2);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
+      <g opacity={chart}>
       <text x="640" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">hold everything else still</text>
       <g opacity={s.get(scene.lockU)}>
         <rect x="118" y="92" width="1044" height="74" rx="22" fill={colors.PANEL} stroke={colors.WARM} strokeWidth="3" />
-        {['GPT-5.5 backbone', 'Codex harness', 'downstream budget'].map((label, i) => <g key={label} transform={`translate(${300 + i * 340} 130)`}>
+        {['version 5.5 backbone', 'Codex harness', 'downstream budget'].map((label, i) => <g key={label} transform={`translate(${300 + i * 340} 130)`}>
           <circle cx="-92" r="11" fill={colors.WARM} />
           <path d="M-98 -2 v-8 a6 6 0 0 1 12 0 v8" fill="none" stroke={colors.WARM} strokeWidth="3" />
           <text x="-70" y="6" fill={colors.TEXT} fontSize="15" fontWeight="700">{label}</text>
@@ -87,26 +95,27 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.splitU)}>
         <path d="M130 194 H510" stroke={colors.SECONDARY} strokeWidth="6" strokeLinecap="round" />
         <path d="M770 194 H1150" stroke={colors.POSITIVE} strokeWidth="6" strokeLinecap="round" />
-        <text x="320" y="218" textAnchor="middle" fill={colors.SECONDARY} fontSize="13">construction · before execution</text>
-        <text x="960" y="218" textAnchor="middle" fill={colors.POSITIVE} fontSize="13">running · matched downstream budget</text>
-        <path d="M610 184 h60 v20 h-60 z" fill={colors.PANEL} stroke={colors.WARM} strokeWidth="2" />
-        <text x="640" y="199" textAnchor="middle" fill={colors.WARM} fontSize="11">freeze</text>
+        <text x="320" y="218" textAnchor="middle" fill={colors.SECONDARY} fontSize="14">construction · before execution</text>
+        <text x="960" y="218" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">running · matched downstream budget</text>
+        <path d="M520 180 h240 v26 h-240 z" fill={colors.PANEL} stroke={colors.WARM} strokeWidth="2" />
+        <text x="640" y="199" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="700">held fixed in both arms</text>
       </g>
 
       <g transform="translate(124 252)">
         {RESULTS.map((r, i) => {
-          const y = i * 86;
-          const baseW = 690 * (r.base / r.max) * s.get(scene.baseU[i]);
-          const skillW = 690 * (r.skill / r.max) * s.get(scene.skillU[i]);
+          const y = i * ROW_H;
+          const baseW = TRACK_W * (r.base / r.max) * s.get(scene.baseU[i]);
+          const skillW = TRACK_W * (r.skill / r.max) * s.get(scene.skillU[i]);
           return <g key={r.name} transform={`translate(0 ${y})`}>
             <text x="0" y="8" fill={colors.TEXT} fontSize="16" fontWeight="800">{r.name}</text>
-            <text x="0" y="29" fill={colors.MUTED} fontSize="11">{r.metric}</text>
-            <line x1="165" y1="0" x2="855" y2="0" stroke={colors.GRID} strokeWidth="16" strokeLinecap="round" />
-            <line x1="165" y1="-10" x2={165 + baseW} y2="-10" stroke={colors.MUTED} strokeWidth="12" strokeLinecap="round" />
-            <line x1="165" y1="10" x2={165 + skillW} y2="10" stroke={colors.POSITIVE} strokeWidth="12" strokeLinecap="round" />
-            <text x={180 + baseW} y="-6" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{r.base}</text>
-            <text x={180 + skillW} y="15" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>{r.skill}</text>
-            <g opacity={gains} transform="translate(930 0)">
+            <text x="0" y="29" fill={colors.MUTED} fontSize="14">{r.metric}</text>
+            <text x="0" y="50" fill={colors.MUTED} fontSize="14">{r.gloss}</text>
+            <line x1={TRACK_X} y1="0" x2={TRACK_X + TRACK_W} y2="0" stroke={colors.GRID} strokeWidth="16" strokeLinecap="round" />
+            <line x1={TRACK_X} y1="-10" x2={TRACK_X + baseW} y2="-10" stroke={colors.MUTED} strokeWidth="12" strokeLinecap="round" />
+            <line x1={TRACK_X} y1="10" x2={TRACK_X + skillW} y2="10" stroke={colors.POSITIVE} strokeWidth="12" strokeLinecap="round" />
+            <text x={VALUE_X} y="-2" textAnchor="end" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>{r.base}</text>
+            <text x={VALUE_X} y="18" textAnchor="end" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>{r.skill}</text>
+            <g opacity={gains} transform="translate(1000 0)">
               <rect x="-55" y="-24" width="110" height="48" rx="16" fill="#102a22" stroke={colors.POSITIVE} />
               <text y="6" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="850">{r.gain}</text>
             </g>
@@ -116,24 +125,25 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.scaleU)} transform="translate(900 596)">
         <rect x="-254" y="-31" width="508" height="62" rx="18" fill={colors.PANEL} stroke={colors.ACCENT} />
         <text y="-5" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontWeight="800">WITHIN-ROW COMPARISON</text>
-        <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">each benchmark keeps its own metric and scale</text>
+        <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="14">each benchmark keeps its own metric and scale</text>
       </g>
       <g opacity={s.get(scene.regressU)} transform="translate(350 596)">
         <rect x="-226" y="-31" width="452" height="62" rx="18" fill="#2a1720" stroke={colors.NEGATIVE} />
         <text y="-5" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">2 OF 20 PAPERBENCH TASKS REGRESS</text>
-        <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">retrieval precision remains a failure mode</text>
+        <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="14">retrieval precision remains a failure mode</text>
+      </g>
       </g>
 
       <g opacity={route}>
-        <rect x="90" y="240" width="1100" height="350" rx="36" fill={colors.BG} opacity={0.96} stroke={colors.ACCENT} strokeWidth="3" />
+        <rect x="90" y="240" width="1100" height="350" rx="36" fill={colors.BG} stroke={colors.ACCENT} strokeWidth="3" />
         <text x="640" y="304" textAnchor="middle" fill={colors.TEXT} fontSize="30" fontWeight="850">the mechanism, end to end</text>
         {ROUTE.map((label, i) => {
           const u = clamp01(route * ROUTE.length - i);
           const x = 180 + i * 184;
           return <g key={label} opacity={u} transform={`translate(${x} 430) scale(${0.82 + 0.18 * u})`}>
-            {i < ROUTE.length - 1 && <path d="M54 0 H125" stroke={colors.ACCENT} strokeWidth="4" />}
-            <circle r="48" fill={colors.PANEL} stroke={i >= 3 ? colors.POSITIVE : colors.SECONDARY} strokeWidth="3" />
-            <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="13">{label}</text>
+            {i < ROUTE.length - 1 && <path d="M66 0 H118" stroke={colors.ACCENT} strokeWidth="4" />}
+            <circle r="60" fill={colors.PANEL} stroke={i >= 3 ? colors.POSITIVE : colors.SECONDARY} strokeWidth="3" />
+            <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{label}</text>
           </g>;
         })}
       </g>
@@ -147,7 +157,7 @@ export function Render({ s }: { s: SceneState }) {
         ].map(([label, state, color], i) => <g key={label} transform={`translate(${(i - 1) * 220} 0)`}>
           <circle r={label === 'K' ? 70 : 58} fill={colors.PANEL} stroke={color} strokeWidth={label === 'K' ? 5 : 3} />
           <text y="-3" textAnchor="middle" fill={color} fontSize="30" fontWeight="850">{label}</text>
-          <text y="25" textAnchor="middle" fill={colors.MUTED} fontSize="13">{state}</text>
+          <text y="25" textAnchor="middle" fill={colors.MUTED} fontSize="14">{state}</text>
         </g>)}
       </g>
       <text x="640" y="485" textAnchor="middle" fill={colors.WARM} fontSize="21">better operating context at the moment of action</text>

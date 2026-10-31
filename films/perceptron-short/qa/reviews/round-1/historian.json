@@ -1,0 +1,34 @@
+{
+  "reviewer": "historian",
+  "lens": "accuracy & fairness",
+  "round": 1,
+  "scores": { "accuracy": 7, "depth": 4, "clarity": 7, "story": 6, "visual": 8, "sync": 7, "sound": 6, "curiosity": 5 },
+  "issues": [
+    { "owner": "line", "id": "L0106", "severity": "major",
+      "problem": "\"the motors nudge each dial\" misstates the learning rule and goes beyond claim mk1-rule (\"its weights were nudged\"). Under error correction only the weights fed by active units move; inactive inputs get no update. The shot shows this correctly: in ch01-s03 at 30.5-33.7 s only the handful of dials threaded to the lit cells glow and turn. So the narration contradicts its own picture at the film's central teaching moment.",
+      "fix": "Re-narrate L0106 as \"When it guesses wrong, the motors nudge the dials that were lit a little toward the right answer.\" (or \"...nudge the dials that had a say...\"). Keep the visual as it is; re-time the 'nudge' beat to the new word timings." },
+    { "owner": "line", "id": "L0101", "severity": "minor",
+      "problem": "\"Once, a machine learned to see\" overreaches. No claim supports 'see'. The brief's own scope is 'learned to tell shapes apart', and the film shows a two-way bar classifier. Unqualified 'learned to see' repeats the hype the perceptron was historically criticised for, with nothing in the film to balance it.",
+      "fix": "Change L0101 to \"Once, a machine learned to tell shapes apart.\" The title card can keep 'The Machine That Learned to See' as a metaphor once the first spoken line grounds it. Alternatively, keep L0101 and make the last line or a hold card say what it could actually do (simple shapes)." },
+    { "owner": "line", "id": "L0104", "severity": "minor",
+      "problem": "\"The psychologist who built it\" gives sole construction credit to Rosenblatt. Claim mk1-builder says it was built by 'Rosenblatt's project at the Cornell Aeronautical Laboratory'. The hardware was a team build with laboratory engineers. Separately, 'called it a perceptron' (Rosenblatt coining or naming the term) is true but has no entry in claims.json, which the brief makes the only allowed source.",
+      "fix": "Re-narrate as \"The psychologist behind it, Frank Rosenblatt, called it a perceptron.\" Add a claim to research/claims.json (e.g. 'rosenblatt-named', sourced to Rosenblatt's 1957 Cornell Aeronautical Laboratory report 'The Perceptron: a perceiving and recognizing automaton') and cite it on ch01-s02." },
+    { "owner": "shot", "id": "ch01-s03", "severity": "minor",
+      "problem": "The log-style captions ('presentation 1 · said \"vertical\" — wrong', '... presentation 5 · said \"horizontal\" — right') and the horizontal-vs-vertical bar task read like a record of a real Mark I session. No claim documents that task or count. Nothing marks the theatre as an illustrative model, and the dial board labelled 'WEIGHTS · DIALS' drops the Mark I's random association layer (claims are silent on it, but the bible's patch board implies it).",
+      "fix": "Add a small era-type caption to the first frame, such as 'an illustration of the rule'. Change the counter wording from 'presentation N' to 'try N' so it does not read as a lab log. Optionally route the threads from the retina visibly through a tangle (echoing the ch01-s02 patch board) before they reach the dials, so the picture does not suggest pixel-to-dial wiring." },
+    { "owner": "shot", "id": "ch01-s02", "severity": "minor",
+      "problem": "Depiction against the bible. Rosenblatt wears a knee-length lab coat that reads as a long robe in silhouette (cast wardrobe 'labCoat'), but the bible specifies suit and tie or shirt sleeves. The three-meter console cabinet at right has no grounding in the bible or claims. The photocell 'eye' is drawn as a stage lamp on a tripod rather than the bible's camera-like box.",
+      "fix": "Set rosenblatt.wardrobe to a suit, or shirtsleeves with a tie, in script.json/cast.ts. Replace the meter console with a fourth potentiometer rack or a plain patch-panel end, or drop it. Give the retina a camera-box housing aimed at a lit stimulus card instead of a lamp silhouette." },
+    { "owner": "shot", "id": "ch01-s01", "severity": "minor",
+      "problem": "The film never anchors a date ('Once...'); claims give 1957-1960 (Mark I working c. 1960). A historical short with no year leaves viewers unable to place it. The contact-sheet header also reports 'in: cut' although the script asks for fadeBlack, and the 0.5 s frame is a dim lab rather than black.",
+      "fix": "Extend the place stamp to 'CORNELL AERONAUTICAL LABORATORY · BUFFALO, NEW YORK · c. 1960' (backed by mk1-retina/mk1-weights dates). Honour transitionIn fadeBlack so the first ~0.8 s is true black." },
+    { "owner": "global", "severity": "minor",
+      "problem": "Depth and runtime: 44.75 s against the 60 s target (QA warn), with no context beyond the mechanism. There is no 'so what': what the machine could and could not do, or why it matters. Given the 'learned to see' framing, that missing limit is also a fairness gap.",
+      "fix": "Use the ~15 s of headroom for one closing line, backed by a new verified claim, that states the machine's scope honestly. For example, it could separate only simple patterns, yet its rule of learning from mistakes is the ancestor of today's networks. Research must add and verify that claim before story writes the line." }
+  ],
+  "best_moments": [
+    "ch01-s03 at 30.5-33.7 s: only the dials threaded to the lit retina cells glow and turn on a wrong guess. That is a faithful picture of error-correction (weights change only where inputs were active), better than the narration says.",
+    "ch01-s02 at 10.9 s: the '20' bracket and '400 light cells' callout on a visibly ~20 x 20 grid lands exactly on claim mk1-retina, and the narration says the same numbers.",
+    "ch01-s03 at 36.8-43.2 s: the needle swings from VERTICAL to HORIZONTAL across 'wrong, and wrong again', then the lantern lights on 'right'. Gradual weight change flipping a thresholded output is shown honestly as the source of the 'quite suddenly'."
+  ]
+}

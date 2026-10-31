@@ -1,0 +1,453 @@
+{
+  "version": 1,
+  "slug": "handwired-trace-compiler",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Source Becomes Wires",
+      "claims": [
+        {
+          "id": "c1-gallery-221-photos",
+          "claim": "The lab targets Cheng Lou's photo gallery, whose layout code runs over 221 photos.",
+          "caption": 0,
+          "sources": [
+            { "label": "lab README, reproduction note", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "15", "quote": "reproduces the reported statement locations and 221-photo count" },
+            { "label": "fixture README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/fixtures/README.md", "lines": "3", "quote": "are copied from `chenglou/chenglou.github.io`" }
+          ]
+        },
+        {
+          "id": "c1-frozen-fixture",
+          "claim": "The measured source is a frozen copy of the gallery's code, taken from gallery commit f315d58 of June 20, 2026.",
+          "caption": 1,
+          "sources": [
+            { "label": "fixture README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/fixtures/README.md", "lines": "3", "quote": "commit `f315d5864a21b9e10126b741456e232d8ece681e` (June 20, 2026" }
+          ]
+        },
+        {
+          "id": "c1-syntax-tree-not-tracer",
+          "claim": "The compiler reads the source as a syntax tree with symbolic values, each a constant or a wire, and is not a runtime tracer.",
+          "caption": 2,
+          "sources": [
+            { "label": "compile.ts design summary", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "4-5", "quote": "The compiler walks the TypeScript AST with symbolic values. Compile-time constants fold;" },
+            { "label": "trace-compiler README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "3", "quote": "it is not a runtime tracer and does not compile arbitrary JavaScript." }
+          ]
+        },
+        {
+          "id": "c1-constant-division-folds",
+          "claim": "Compile-time constants fold away, and the substrate has no division, so a / b lowers to a multiply by 1/b.",
+          "caption": 3,
+          "sources": [
+            { "label": "compile.ts divide", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "676", "quote": "The substrate has no division; a / b lowers to a * (1/b)." }
+          ]
+        },
+        {
+          "id": "c1-reciprocal-policy",
+          "claim": "The reciprocal is rounded once to single precision, and the FP32 interpreter does the same as an explicit policy, not JavaScript's own division.",
+          "caption": 4,
+          "sources": [
+            { "label": "compile.ts reciprocal", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "680", "quote": "const reciprocal = f32(1 / b.value)" },
+            { "label": "trace-compiler README, precision drift", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "31", "quote": "That is an explicit arithmetic policy, not exact preservation of JavaScript division." }
+          ]
+        },
+        {
+          "id": "c1-runtime-subtraction-rounds",
+          "claim": "A runtime subtraction is tagged as a rounding point, so the builder cannot merge it into the next step and erase the rounding.",
+          "caption": 5,
+          "sources": [
+            { "label": "trace-compiler README, lowering and rounding", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "62", "quote": "`roundAffine` now expresses that requirement directly." },
+            { "label": "compile.ts affineStep", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "237", "quote": "const wire = this.circuit.roundAffine(wireTerms, foldedBias)" }
+          ]
+        },
+        {
+          "id": "c1-select-two-products",
+          "claim": "A conditional is lowered as two products and a sum, where each product multiplies by exactly one or zero.",
+          "caption": 6,
+          "sources": [
+            { "label": "compile.ts select", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "372-373", "quote": "products multiply by exact 1 or 0 and the final addition adds an exact zero." }
+          ]
+        },
+        {
+          "id": "c1-old-select-overflow",
+          "claim": "The older library select form computes off + bit times (on - off), which overflows at fround(3e38) and returns NaN when the bit is zero.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "reassessment, September 3, 2026", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/reassessment-2026-09-03.md", "lines": "92", "quote": "its `off + bit * (on - off)` expansion can overflow the subtraction" }
+          ]
+        },
+        {
+          "id": "c1-branch-range-rejected",
+          "claim": "Both branches of a select are computed even when masked off, so a branch whose range does not fit in single precision is rejected at compile time.",
+          "caption": 8,
+          "sources": [
+            { "label": "compile.ts select guard", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "380-388", "quote": "Both branches are computed even when masked off, so both must stay representable in FP32" }
+          ]
+        },
+        {
+          "id": "c1-loop-unrolls-with-mask",
+          "claim": "A loop with a finite integer bound unrolls over its static range, and a mask bit per iteration decides which writes count.",
+          "caption": 9,
+          "sources": [
+            { "label": "compile.ts design summary", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "4-6", "quote": "unroll over the static range with a per-iteration mask bit." },
+            { "label": "trace-compiler README, supported constructs", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "41", "quote": "The compiler unrolls the static range and masks each iteration's writes." }
+          ]
+        },
+        {
+          "id": "c1-weighted-sums-and-relu",
+          "claim": "The compiled output is the same kind of circuit as the first book's hand-written programs: weighted sums and ReLU gates, now generated from source.",
+          "caption": 10,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "handwired docs, FP32 overview", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "docs/README.md", "lines": "3", "quote": "mostly weighted sums and products with a ReLU" },
+            { "label": "trace-compiler README, circuit contents", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "62", "quote": "The circuit now contains affine operations as well as ReGLUs" }
+          ]
+        },
+        {
+          "id": "c1-small-subset-on-purpose",
+          "claim": "The compiled subset is small by design: numbers, fixed arrays, bounded loops and ternaries, and not arbitrary JavaScript.",
+          "caption": 11,
+          "sources": [
+            { "label": "trace-compiler README, supported constructs", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "37-39", "quote": "The implemented subset includes numeric declarations and assignments; fixed object and array structures" },
+            { "label": "trace-compiler README, scope", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "3", "quote": "does not compile arbitrary JavaScript." }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "One Step Below Seven",
+      "claims": [
+        {
+          "id": "c2-width-1732-below-seven",
+          "claim": "At viewport width 1732, the reciprocal multiplication lands one single-precision step below seven.",
+          "caption": 0,
+          "sources": [
+            { "label": "trace-compiler README, sign cascade", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "72", "quote": "reciprocal multiplication lands one FP32 step below seven" }
+          ]
+        },
+        {
+          "id": "c2-gap-is-one-step",
+          "claim": "The gap between the two values is one single-precision step at seven, about 4.8e-7, which is the smallest step single precision has at that size.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "trace-compiler README, sign cascade", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "72", "quote": "lands one FP32 step below seven" }
+          ]
+        },
+        {
+          "id": "c2-july-policy-loses-step",
+          "claim": "The July policy scaled the difference into a score near one half, and that score loses the small difference at exact column boundaries.",
+          "caption": 2,
+          "sources": [
+            { "label": "trace-compiler README, sign cascade", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "72", "quote": "while the score loses that small difference" }
+          ]
+        },
+        {
+          "id": "c2-relu-keeps-positive",
+          "claim": "The replacement keeps only positive differences with a ReLU, so zero and negative differences come out as zero.",
+          "caption": 3,
+          "sources": [
+            { "label": "compile.ts exactPositiveBit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "514", "quote": "relu(d) keeps positive values" }
+          ]
+        },
+        {
+          "id": "c2-first-scale-power-of-two",
+          "claim": "The first scale is a power of two chosen from the value's declared range, 2^(23 - ceil(log2 magnitude)), which is 2^20 for a magnitude of seven.",
+          "caption": 4,
+          "sources": [
+            { "label": "compile.ts exactPositiveBit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "545", "quote": "const firstExponent = Math.min(23 - Math.ceil(Math.log2(magnitude)), 120)" }
+          ]
+        },
+        {
+          "id": "c2-clamp-and-scale-stage",
+          "claim": "Each stage clamps the value at one, using a value minus a ReLU of value minus one, and then scales by 2^23.",
+          "caption": 5,
+          "sources": [
+            { "label": "compile.ts cascade loop", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "552", "quote": "value = this.multiplyConstant(node, value, 2 ** 23)" },
+            { "label": "compile.ts clamp", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "566", "quote": "const aboveOne = this.relu(value, -1)" }
+          ]
+        },
+        {
+          "id": "c2-power-of-two-exact",
+          "claim": "Scaling by a power of two is exact in FP32, and the clamp is exact below 2^24, so every intermediate is an exact rescaling or exactly one.",
+          "caption": 6,
+          "sources": [
+            { "label": "compile.ts exactPositiveBit comment", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "516-518", "quote": "Multiplying by a power of two is exact in FP32" },
+            { "label": "compile.ts clamp comment", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "517-518", "quote": "clamp01(v) = v - relu(v - 1) is exact" }
+          ]
+        },
+        {
+          "id": "c2-six-stages-for-seven",
+          "claim": "The loop keeps scaling until the smallest positive single-precision value would reach one, which takes six scale stages for a magnitude of seven.",
+          "caption": 7,
+          "sources": [
+            { "label": "compile.ts cascade loop", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "547-550", "quote": "The smallest positive FP32 value is 2**-149; keep scaling by 2**23 until even that" },
+            { "label": "compile.ts loop bound", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "550", "quote": "while (totalExponent < 150) {" }
+          ]
+        },
+        {
+          "id": "c2-zero-difference-argument",
+          "claim": "The lab argues that a zero difference stays zero and that the bit matches a native comparison on every input in range, ties included. No check samples this argument.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "compile.ts exactPositiveBit comment", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "519-521", "quote": "so this bit agrees with the native comparison on every" },
+            { "label": "compile.ts exactPositiveBit comment", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "519", "quote": "zero exactly when a equals b" }
+          ]
+        },
+        {
+          "id": "c2-clean-zero-one-bit",
+          "claim": "The output is exactly zero or one and is marked as an integer in the range zero to one, and the test circuits emit no boolean atoms.",
+          "caption": 9,
+          "sources": [
+            { "label": "compile.ts exactPositiveBit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "558", "quote": "The cascade produces exactly 0 or 1, so downstream logic may treat the wire as integral." },
+            { "label": "trace-compiler README, coverage table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "96", "quote": "All rows emit zero boolean atoms." }
+          ]
+        },
+        {
+          "id": "c2-scope-not-differentiable",
+          "claim": "The construction is exact going forward, but it does not make hard comparisons usefully differentiable, and it does not prove a long cascade is the fastest execution method.",
+          "caption": 10,
+          "sources": [
+            { "label": "trace-compiler README, sign cascade", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "76", "quote": "It does not make hard comparisons usefully differentiable, nor prove that a long cascade is the fastest execution method." }
+          ]
+        },
+        {
+          "id": "c2-library-emitcompare",
+          "claim": "A newer library routine, emitCompare, plans cascade stages from declared ranges, for example 15 operations for a comparison within 0..16,384, while the compiler still builds its own cascade.",
+          "caption": 11,
+          "sources": [
+            { "label": "trace-compiler README, September 15 update", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "78", "quote": "`emitCompare` plans cascade stages from declared ranges" },
+            { "label": "trace-compiler README, September 15 update", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "78", "quote": "compile.ts still builds its own cascade" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Five Calculations",
+      "claims": [
+        {
+          "id": "c3-five-calculations",
+          "claim": "Every sampled trial runs five calculations on the same input.",
+          "caption": 0,
+          "sources": [
+            { "label": "trace-compiler README, what is checked", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "19", "quote": "Every sampled trial runs five calculations:" }
+          ]
+        },
+        {
+          "id": "c3-three-agree-on-circuit",
+          "claim": "The reference evaluator, the compiled execution path (still JavaScript, not a GPU backend), and the FP32 source interpreter must agree on the circuit's outputs.",
+          "caption": 1,
+          "sources": [
+            { "label": "trace-compiler README, what is checked", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "22-27", "quote": "The first three must agree on the circuit outputs." }
+          ]
+        },
+        {
+          "id": "c3-float64-agrees-with-native",
+          "claim": "The float64 interpreter runs separately and must agree with native JavaScript, which runs the selected source directly.",
+          "caption": 2,
+          "sources": [
+            { "label": "trace-compiler README, what is checked", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "29", "quote": "The float64 interpreter must separately agree with native JS." }
+          ]
+        },
+        {
+          "id": "c3-native-lane-after-review",
+          "claim": "The native lane was added after a September review found that the compiler and its interpreter both dropped a return, so a wrong answer looked verified.",
+          "caption": 3,
+          "sources": [
+            { "label": "trace-compiler README, opening", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "5", "quote": "Those cases now have regressions." },
+            { "label": "reassessment, September 3, 2026", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/reassessment-2026-09-03.md", "lines": "70", "quote": "Both modes of the source interpreter share the compiler's mistake: a copied block context loses the return." }
+          ]
+        },
+        {
+          "id": "c3-circuit-outputs-checked",
+          "claim": "The complete report checks 1,174,491 circuit outputs with zero circuit mismatches.",
+          "caption": 4,
+          "sources": [
+            { "label": "trace-compiler README, September fixture results", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "82", "quote": "The complete report checks 1,174,491 circuit outputs" },
+            { "label": "trace-compiler README, September fixture results", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "82", "quote": "There were zero circuit mismatches." }
+          ]
+        },
+        {
+          "id": "c3-native-outputs-checked",
+          "claim": "Native JavaScript independently checks 1,193,491 float64 interpreter outputs with zero disagreements.",
+          "caption": 5,
+          "sources": [
+            { "label": "trace-compiler README, September fixture results", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "82", "quote": "Native JS independently checked 1,193,491 float64 interpreter outputs with zero disagreements." }
+          ]
+        },
+        {
+          "id": "c3-sampled-not-proof",
+          "claim": "The checks are sampled trials within declared input ranges, run on the frozen fixture with a fixed seed, and are not a proof for every supported program.",
+          "caption": 6,
+          "sources": [
+            { "label": "trace-compiler README, scope", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "35", "quote": "These checks are sampled evidence within declared input ranges, not a proof for every supported program." },
+            { "label": "real-slice runner seed", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/real-slice.ts", "lines": "791", "quote": "export function runRealSlices(seed = 20260706" }
+          ]
+        },
+        {
+          "id": "c3-precision-reported-not-error",
+          "claim": "Single and double precision may differ; the drift is reported rather than treated as a compiler error.",
+          "caption": 7,
+          "sources": [
+            { "label": "trace-compiler README, precision drift", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "31", "quote": "Drift is reported, not treated as a compiler error." }
+          ]
+        },
+        {
+          "id": "c3-six-widths-differ",
+          "claim": "Of 4,097 integer widths, FP32 and float64 differ at six: 512, 756, 1000, 1244, 1488 and 1732, where the single-precision reciprocal selects one fewer column.",
+          "caption": 8,
+          "sources": [
+            { "label": "trace-compiler README, column calculation", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "98", "quote": "at six of the 4,097 integer widths: 512, 756, 1000, 1244, 1488, and 1732" },
+            { "label": "trace-compiler README, column calculation", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "98", "quote": "Reciprocal rounding selects one fewer column there" }
+          ]
+        },
+        {
+          "id": "c3-column-width-240px",
+          "claim": "The per-column width can differ by about 240 pixels at those widths, and circuit and interpreter agreement does not hide that choice from users.",
+          "caption": 9,
+          "sources": [
+            { "label": "trace-compiler README, column calculation", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "98", "quote": "the per-column width can differ by about 240 pixels." }
+          ]
+        },
+        {
+          "id": "c3-precision-drift-example",
+          "claim": "In single precision, (100000000 + 1) - 100000000 is zero because of a rounding step after each operation, but native JavaScript gives one.",
+          "caption": 10,
+          "sources": [
+            { "label": "trace-compiler README, precision drift", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "31", "quote": "is zero with a rounding step after each FP32 operation, but one in native JS." }
+          ]
+        },
+        {
+          "id": "c3-regression-catches-native-error",
+          "claim": "A regression adds one to the float64 interpreter's output, and the native check catches it while the circuit and the FP32 interpreter still agree.",
+          "caption": 11,
+          "sources": [
+            { "label": "compile.test.ts regression", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.test.ts", "lines": "387-396", "quote": "outputs.set('return', outputs.get('return')! + 1)" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "How Much Is Covered",
+      "claims": [
+        {
+          "id": "c4-221-units",
+          "claim": "The frozen render path contains 221 statement units.",
+          "caption": 0,
+          "sources": [
+            { "label": "trace-compiler README, coverage", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "104", "quote": "The frozen render path contains 221 statement units." }
+          ]
+        },
+        {
+          "id": "c4-64-compiled-and-verified",
+          "claim": "The slices compile and verify 64 units: 29.0% of all units, or 37.0% of the 173 units classified as numeric.",
+          "caption": 1,
+          "sources": [
+            { "label": "trace-compiler README, coverage", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "104", "quote": "The slices actually compile and verify 64 units: 29.0% of all units, or 37.0% of the 173 units classified as numeric." }
+          ]
+        },
+        {
+          "id": "c4-49-candidates-not-compiled",
+          "claim": "A syntax-based classifier identifies 49 more numeric candidates, which have not been compiled and verified and do not count as coverage.",
+          "caption": 2,
+          "sources": [
+            { "label": "trace-compiler README, coverage", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "106", "quote": "A syntax-based classifier identifies another 49 numeric candidates." },
+            { "label": "trace-compiler README, coverage", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "106", "quote": "but those 49 have not been compiled and verified" }
+          ]
+        },
+        {
+          "id": "c4-historical-113",
+          "claim": "The historical figure of 113 of 173, or 65.3%, adds those 49 candidates in, and the lab calls it historical.",
+          "caption": 3,
+          "sources": [
+            { "label": "trace-compiler README, coverage", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "106", "quote": "Adding those candidates gives the historical 113/173, or 65.3%" }
+          ]
+        },
+        {
+          "id": "c4-cost-per-slice",
+          "claim": "Operation counts vary widely by slice: the spring snap needs zero operations, the occlusion bits take 25,416, and the 2D layout takes 24,894.",
+          "caption": 4,
+          "sources": [
+            { "label": "trace-compiler README, slice table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "89", "quote": "| spring snap | 0 | 0 | 0 | 0 | 2,000 |" },
+            { "label": "trace-compiler README, slice table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "91", "quote": "| 2D layout, seven column variants | 24,894 |" },
+            { "label": "trace-compiler README, slice table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "93", "quote": "| occlusion bits | 25,416 |" }
+          ]
+        },
+        {
+          "id": "c4-depth-1580-layers",
+          "claim": "The deepest slice has 1,580 layers, because it accumulates positions sequentially through 221 photos.",
+          "caption": 5,
+          "sources": [
+            { "label": "trace-compiler README, depth", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "110", "quote": "The deepest slice still has 1,580 layers because it accumulates positions sequentially through 221 photos." }
+          ]
+        },
+        {
+          "id": "c4-prefix-sum-changes-rounding",
+          "claim": "A parallel prefix sum would shorten the chain but would change rounding order, so under this exactness policy it is not automatically interchangeable.",
+          "caption": 6,
+          "sources": [
+            { "label": "trace-compiler README, depth", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "110", "quote": "A parallel prefix sum would change rounding order, so it is not automatically interchangeable under this exactness policy." }
+          ]
+        },
+        {
+          "id": "c4-two-rejection-probes",
+          "claim": "Two rejection probes remain on purpose: first-match hit testing returns under a runtime condition, and spring stepping has an unbounded runtime iteration count.",
+          "caption": 7,
+          "sources": [
+            { "label": "trace-compiler README, remaining work", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "108", "quote": "The two explicit rejection probes remain" },
+            { "label": "real-slice probe comment", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/real-slice.ts", "lines": "24-25", "quote": "hitTest2DMode (early return from a search loop) and stepSpring (data-dependent loop bound) are" }
+          ]
+        },
+        {
+          "id": "c4-named-rejections",
+          "claim": "The compiler rejects unsupported constructs under a named category rather than guessing; dynamic array access, runtime allocation, string encoding, nonfinite sentinels and browser I/O remain unsupported.",
+          "caption": 8,
+          "sources": [
+            { "label": "compile.ts rejection categories", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/compile.ts", "lines": "28-43", "quote": "export type RejectionCategory =" },
+            { "label": "trace-compiler README, remaining work", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "108", "quote": "Other remaining restrictions include dynamic array access, runtime allocation, string encoding, nonfinite sentinels, and browser I/O." }
+          ]
+        },
+        {
+          "id": "c4-not-whole-app",
+          "claim": "The 1D and 2D slices are not the entire application compiled unchanged, and neither measurement establishes GPU performance.",
+          "caption": 9,
+          "sources": [
+            { "label": "trace-compiler README, slice scope", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "100", "quote": "This is not the entire application compiled unchanged." },
+            { "label": "trace-compiler README, depth", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "110", "quote": "Neither measurement establishes GPU performance." }
+          ]
+        },
+        {
+          "id": "c4-next-steps-measure",
+          "claim": "The lab's next changes are bounded first-match selection and explicit gather declarations, and coverage should be measured, not inferred from syntax.",
+          "caption": 10,
+          "sources": [
+            { "label": "trace-compiler README, next changes", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "112", "quote": "Useful next changes are bounded first-match selection and explicit gather declarations" },
+            { "label": "trace-compiler README, next changes", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "112", "quote": "it should not be inferred from syntax alone." }
+          ]
+        },
+        {
+          "id": "c4-status-page-standing",
+          "claim": "The status page lists the trace compiler under runtime studies, with its source interpreter checked against native JavaScript, and gives it no verdict row, which is our reading of the table.",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/status.md runtime studies", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "289", "quote": "runtime studies (runtime-cost, trace-compiler), each with a README" },
+            { "label": "lab/status.md correctness note", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "220", "quote": "Its source interpreter is independently checked against native JavaScript" }
+          ]
+        },
+        {
+          "id": "c4-recap-64-of-221",
+          "claim": "Sixty-four of the 221 statement units go all the way through the route from source to checked answer.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "trace-compiler README, coverage", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/trace-compiler/README.md", "lines": "104", "quote": "The slices actually compile and verify 64 units" }
+          ]
+        }
+      ]
+    }
+  ]
+}

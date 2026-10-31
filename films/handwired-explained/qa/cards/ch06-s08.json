@@ -1,0 +1,136 @@
+{
+ "shot": "ch06-s08",
+ "at": "2026-10-28T17:39:56.893Z",
+ "step": 0.0833,
+ "sampled": 127,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch06-s08-plate0",
+  "ch06-s08-plate1",
+  "ch06-s08-res0-card",
+  "ch06-s08-res1-card",
+  "ch06-s08-gauge-face",
+  "ch06-s08-needle-1-card",
+  "ch06-s08-needle1-card",
+  "ch06-s08-label-card"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch06-s08-plate0",
+   "probed": true,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s08-plate1",
+   "probed": true,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@141,297",
+   "probed": false,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@141,387",
+   "probed": false,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@141,477",
+   "probed": false,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@141,567",
+   "probed": false,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1263,297",
+   "probed": false,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1263,387",
+   "probed": false,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1263,477",
+   "probed": false,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1263,567",
+   "probed": false,
+   "from": 0.05,
+   "to": 10.55,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s08-res0-card",
+   "probed": true,
+   "from": 1.883,
+   "to": 10.55,
+   "minInkWhilePaper": 0.13
+  },
+  {
+   "id": "ch06-s08-res1-card",
+   "probed": true,
+   "from": 1.883,
+   "to": 10.55,
+   "minInkWhilePaper": 0.13
+  },
+  {
+   "id": "ch06-s08-gauge-face",
+   "probed": true,
+   "from": 6.633,
+   "to": 10.55,
+   "minInkWhilePaper": 0.59
+  },
+  {
+   "id": "ch06-s08-needle-1-card",
+   "probed": true,
+   "from": 6.633,
+   "to": 10.55,
+   "minInkWhilePaper": 0.59
+  },
+  {
+   "id": "ch06-s08-needle1-card",
+   "probed": true,
+   "from": 6.633,
+   "to": 10.55,
+   "minInkWhilePaper": 0.59
+  },
+  {
+   "id": "ch06-s08-label-card",
+   "probed": true,
+   "from": 7.55,
+   "to": 10.55,
+   "minInkWhilePaper": 0.59
+  }
+ ]
+}

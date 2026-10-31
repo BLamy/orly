@@ -36,22 +36,59 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // wall is a legible stand-in; real counts go on the label chips.)
 const LAYERS = 6;
 const EXPERTS = 8;
-const WALL = { x: 447, y: 128, cw: 44, ch: 34, gx: 6, gy: 10 } as const;
+const WALL = { x: 475, y: 128, cw: 44, ch: 34, gx: 6, gy: 10 } as const;
 const wallX = (j: number): number => WALL.x + j * (WALL.cw + WALL.gx);
 const wallY = (i: number): number => WALL.y + i * (WALL.ch + WALL.gy);
 
-const GPU = { x: 60, y: 128, w: 230, h: 340 } as const;
-const RAM = { x: 1000, y: 128, w: 230, h: 340 } as const;
+// Both memory zones share one height so the split reads as two equal shelves.
+const GPU = { x: 120, y: 128, w: 230, h: 390 } as const;
+const RAM = { x: 930, y: 128, w: 230, h: 390 } as const;
 
-// Where blocks land after the split (slot grids inside each zone).
-const gpuSlot = (k: number): { x: number; y: number } => ({
-  x: GPU.x + 36 + (k % 4) * 42,
-  y: GPU.y + 66 + Math.floor(k / 4) * 40,
+// Where blocks land after the split (slot grids inside each zone). Each slot
+// is narrower than its pitch, so neighbouring blocks keep a gutter.
+type Box = { x: number; y: number; w: number; h: number };
+const gpuSlot = (k: number): Box => ({
+  x: GPU.x + 34 + (k % 4) * 42,
+  y: GPU.y + 66 + Math.floor(k / 4) * 38,
+  w: 36,
+  h: WALL.ch,
 });
-const ramSlot = (k: number): { x: number; y: number } => ({
-  x: RAM.x + 30 + (k % 5) * 36,
-  y: RAM.y + 66 + Math.floor(k / 5) * 34,
+const ramSlot = (k: number): Box => ({
+  x: RAM.x + 28 + (k % 5) * 36,
+  y: RAM.y + 66 + Math.floor(k / 5) * 38,
+  w: 30,
+  h: WALL.ch,
 });
+
+// The pour: the first blocks fill the card's memory from the floor up; the
+// rest overflow out of its right edge into a small heap. Order 0..5 are
+// attention rows, then the expert blocks row by row.
+const ORDERS = LAYERS + LAYERS * EXPERTS;
+const POUR_CAP = 12;
+const pourSlot = (order: number): Box =>
+  order < POUR_CAP
+    ? {
+        x: GPU.x + 43 + (order % 3) * 50,
+        y: GPU.y + GPU.h - 116 - Math.floor(order / 3) * 40,
+        w: WALL.cw,
+        h: WALL.ch,
+      }
+    : {
+        x: GPU.x + GPU.w + 14 + ((order - POUR_CAP) % 4) * 19,
+        y: GPU.y + GPU.h - 16 - Math.floor((order - POUR_CAP) / 4) * 16,
+        w: 14,
+        h: 11,
+      };
+const pourBox = (home: Box, order: number, pour: number): Box => {
+  if (pour <= 0) return home;
+  const to = pourSlot(order);
+  return {
+    x: home.x + (to.x - home.x) * pour,
+    y: home.y + (to.y - home.y) * pour,
+    w: home.w + (to.w - home.w) * pour,
+    h: home.h + (to.h - home.h) * pour,
+  };
+};
 
 // Which experts fire for the demo token (2 of 8 per layer, deterministic).
 const FIRED: ReadonlyArray<readonly [number, number]> = [
@@ -62,8 +99,9 @@ const isFired = (i: number, j: number): boolean => FIRED.some(([a, b]) => a === 
 // "Hot" experts (kept on GPU after the split): first 2 columns of each layer.
 const HOT_COLS = 2;
 
-const CAM_GPU: CameraState = { x: 240, y: 300, k: 1.5 };
-const CAM_WALL: CameraState = { x: 640, y: 300, k: 1.3 };
+// Camera targets keep the whole subject inside the 1280x720 stage (no cropping).
+const CAM_GPU: CameraState = { x: 330, y: 300, k: 1.15 };
+const CAM_WALL: CameraState = { x: 640, y: 300, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -214,7 +252,7 @@ function Block({ x, y, w, h, color, u, dim, lit }: { x: number; y: number; w: nu
       y={y}
       width={w}
       height={h}
-      rx={5}
+      rx={Math.min(5, w / 2, h / 2)}
       fill={color}
       opacity={u * (0.28 + 0.62 * lit) * (1 - dim * 0.82)}
       stroke={lit > 0.5 ? colors.WARM : 'none'}
@@ -238,7 +276,7 @@ export function Render({ s }: { s: SceneState }) {
   const perfU = s.get(scene.perfU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  const dimAll = 1 - closeU * 0.92;
   // token sweep: which layer row the token is currently crossing
   const sweepRow = tokenU * LAYERS;
 
@@ -261,25 +299,23 @@ export function Render({ s }: { s: SceneState }) {
               fill={spillU > 0.3 ? colors.NEGATIVE : colors.ACCENT}
               opacity={0.85}
             />
-            <text x={GPU.x + GPU.w / 2} y={GPU.y + GPU.h - 56} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={GPU.x + GPU.w / 2} y={GPU.y + GPU.h - 56} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               VRAM
             </text>
           </g>
-          {/* overflow flash */}
+          {/* overflow flash, just above the card so it never sits on the blocks */}
           <g opacity={spillU}>
-            <text x={GPU.x + GPU.w / 2} y={GPU.y + 40} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
-              out of memory
-            </text>
-            <text x={GPU.x + GPU.w / 2} y={GPU.y + 60} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11}>
-              ~671 GB into 24 GB
+            <text x={GPU.x + GPU.w / 2} y={GPU.y - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
+              out of memory · ~671 GB into 24 GB
             </text>
           </g>
 
           {/* ---- RAM shelf ---- */}
           <Zone x={RAM.x} y={RAM.y} w={RAM.w} h={RAM.h} label="system RAM · 512 GB+" kind="group" u={ramU} color={colors.POSITIVE} />
-          <g opacity={ramU * kernelU}>
-            <rect x={RAM.x + 34} y={RAM.y + RAM.h - 52} width={RAM.w - 68} height={26} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={RAM.x + RAM.w / 2} y={RAM.y + RAM.h - 35} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily="ui-monospace, monospace">
+          {/* kt-kernel sits under the shelf, clear of the cold-expert blocks */}
+          <g opacity={ramU * kernelU * (1 - closeU)}>
+            <rect x={RAM.x + 10} y={RAM.y + RAM.h + 12} width={RAM.w - 20} height={28} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
+            <text x={RAM.x + RAM.w / 2} y={RAM.y + RAM.h + 31} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace">
               kt-kernel · KTMoEWrapper
             </text>
           </g>
@@ -293,16 +329,22 @@ export function Render({ s }: { s: SceneState }) {
               <g key={i}>
                 {/* attention block (col -1) */}
                 {(() => {
-                  const home = { x: wallX(0) - 62, y: wallY(i) };
+                  const home = { x: wallX(0) - 62, y: wallY(i), w: WALL.cw, h: WALL.ch };
+                  const pour = splitU < 0.02 ? clamp01(pourU * 2 - i / ORDERS) : 0;
+                  const base = pourBox(home, i, pour);
                   const dest = gpuSlot(i);
-                  const x = home.x + (dest.x - home.x) * splitU;
-                  const y = home.y + (dest.y - home.y) * splitU;
+                  const b = {
+                    x: base.x + (dest.x - base.x) * splitU,
+                    y: base.y + (dest.y - base.y) * splitU,
+                    w: base.w + (dest.w - base.w) * splitU,
+                    h: base.h + (dest.h - base.h) * splitU,
+                  };
                   return (
                     <Block
-                      x={x}
-                      y={y}
-                      w={WALL.cw}
-                      h={WALL.ch}
+                      x={b.x}
+                      y={b.y}
+                      w={b.w}
+                      h={b.h}
                       color={colors.ACCENT}
                       u={rowU}
                       dim={0}
@@ -314,22 +356,27 @@ export function Render({ s }: { s: SceneState }) {
                 {Array.from({ length: EXPERTS }, (_, j) => {
                   const fired = isFired(i, j);
                   const hot = j < HOT_COLS;
-                  const home = { x: wallX(j), y: wallY(i) };
+                  const home = { x: wallX(j), y: wallY(i), w: WALL.cw, h: WALL.ch };
+                  const order = LAYERS + i * EXPERTS + j;
                   const dest = hot ? gpuSlot(LAYERS + i * HOT_COLS + j) : ramSlot(i * (EXPERTS - HOT_COLS) + (j - HOT_COLS));
-                  const x = home.x + (dest.x - home.x) * splitU;
-                  const y = home.y + (dest.y - home.y) * splitU;
-                  // pour phase: pre-split, blocks lean toward the vault and bounce
-                  const pour = splitU < 0.02 ? clamp01(pourU * 2 - (i * EXPERTS + j) / (LAYERS * EXPERTS)) : 0;
-                  const px = x - pour * 40 * (1 - spillU);
+                  // pour phase: pre-split, blocks flow into the vault and overflow
+                  const pour = splitU < 0.02 ? clamp01(pourU * 2 - order / ORDERS) : 0;
+                  const base = pourBox(home, order, pour);
+                  const b = {
+                    x: base.x + (dest.x - base.x) * splitU,
+                    y: base.y + (dest.y - base.y) * splitU,
+                    w: base.w + (dest.w - base.w) * splitU,
+                    h: base.h + (dest.h - base.h) * splitU,
+                  };
                   const lit = fired ? Math.max(rowGlow, fireU) : 0;
                   const dim = fireU * (fired ? 0 : 0.75) * (1 - splitU * 0.6);
                   return (
                     <Block
                       key={j}
-                      x={px}
-                      y={y}
-                      w={WALL.cw}
-                      h={WALL.ch}
+                      x={b.x}
+                      y={b.y}
+                      w={b.w}
+                      h={b.h}
                       color={hot ? colors.WARM : colors.SECONDARY}
                       u={rowU}
                       dim={dim}
@@ -342,15 +389,15 @@ export function Render({ s }: { s: SceneState }) {
           })}
 
           {/* wall caption chips */}
-          <g opacity={wallU * (1 - splitU)}>
-            <text x={wallX(0) - 62} y={WALL.y - 18} fill={colors.ACCENT} fontSize={11.5}>
+          <g opacity={wallU * (1 - splitU) * (1 - pourU)}>
+            <text x={wallX(0) - 62} y={WALL.y - 18} fill={colors.ACCENT} fontSize={14}>
               attention
             </text>
-            <text x={wallX(3)} y={WALL.y - 18} fill={colors.SECONDARY} fontSize={11.5}>
+            <text x={wallX(3)} y={WALL.y - 18} fill={colors.SECONDARY} fontSize={14}>
               routed experts · 256 per layer
             </text>
           </g>
-          <g opacity={sizeU * (1 - splitU)}>
+          <g opacity={sizeU * (1 - splitU) * (1 - pourU)}>
             <rect x={520} y={418} width={244} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
             <text x={642} y={438} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
               DeepSeek-V3 · 671B params
@@ -361,29 +408,42 @@ export function Render({ s }: { s: SceneState }) {
           {tokenU > 0.01 && tokenU < 1 && (
             <g>
               <circle cx={wallX(EXPERTS - 1) + 96} cy={wallY(0) + sweepRow * (WALL.ch + WALL.gy)} r={9} fill={colors.WARM} />
-              <text x={wallX(EXPERTS - 1) + 96} y={wallY(0) + sweepRow * (WALL.ch + WALL.gy) - 16} textAnchor="middle" fill={colors.WARM} fontSize={11}>
+              <text x={wallX(EXPERTS - 1) + 96} y={wallY(0) + sweepRow * (WALL.ch + WALL.gy) - 16} textAnchor="middle" fill={colors.WARM} fontSize={13}>
                 one token
               </text>
             </g>
           )}
 
+          {/* beat 6 labels: say where each side of the bet lives while the zones are still empty */}
+          <g opacity={ramU * (1 - splitU)}>
+            <text x={GPU.x + GPU.w / 2} y={GPU.y + 200} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
+              always-hot path
+            </text>
+            <text x={RAM.x + RAM.w / 2} y={RAM.y + 192} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
+              cheap memory,
+            </text>
+            <text x={RAM.x + RAM.w / 2} y={RAM.y + 212} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
+              beside the CPU
+            </text>
+          </g>
+
           {/* split-era labels */}
           <g opacity={splitU}>
-            <text x={GPU.x + GPU.w / 2} y={GPU.y + 40} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5} opacity={1 - spillU}>
+            <text x={GPU.x + GPU.w / 2} y={GPU.y + 40} textAnchor="middle" fill={colors.ACCENT} fontSize={12} opacity={1 - spillU}>
               attention · routers · hot experts
             </text>
-            <text x={RAM.x + RAM.w / 2} y={RAM.y + 40} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5}>
+            <text x={RAM.x + RAM.w / 2} y={RAM.y + 40} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>
               cold experts
             </text>
           </g>
 
           {/* reported perf chip */}
-          <g opacity={perfU}>
-            <rect x={472} y={498} width={336} height={54} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-            <text x={640} y={520} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
+          <g opacity={perfU * (1 - closeU)}>
+            <rect x={436} y={498} width={408} height={54} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+            <text x={640} y={520} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               418 tokens/s end-to-end · reported
             </text>
-            <text x={640} y={540} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={640} y={540} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
               DeepSeek-V3 · Xeon 4 CPU + RTX 4090 (doc/en/AMX.md)
             </text>
           </g>
@@ -406,13 +466,13 @@ export function Render({ s }: { s: SceneState }) {
                 {head}
               </text>
               {String(sub).split('\n').map((line, k) => (
-                <text key={k} x={440 + i * 200} y={344 + k * 15} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                <text key={k} x={440 + i * 200} y={344 + k * 16} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
                   {line}
                 </text>
               ))}
             </g>
           ))}
-          <text x={640} y={428} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={428} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
             kvcache-ai/ktransformers · kt-kernel
           </text>
         </g>

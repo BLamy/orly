@@ -1,0 +1,179 @@
+// m05 "The Winter" (neural-net-history), 364.75-450.06 s (85.31 s). D minor over a D pedal; F major for the
+// RE-BASED 2026-10-13 to the current clock (narration/timeline.json, 2159.9583 s): the window moved bodily -0.25 s with
+// its first shot (no line inside it changed length), so every absolute time in this file, code and comments, was moved
+// -0.25 s and checked against its word; S = the current window start. Older clock notes below are history.
+// ROUND-2 VOICE-BAND PASS (2026-10-13): the window glints under L0412 are ghosts (-6 dB).
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): the re-narrated L0415 ('Sussex, 1976...') lands its words ~0.2 s
+// later, so the cello's A2 -> D3 ('place' 437.77), the held A-E and the 'light' overtone (444.56) move +0.227 s / +0.177 s;
+// the window (364.75-450.06) is unchanged.
+// Masking pass (score round 2): the Lighthill lament (L0410) and the four blows (L0411) trimmed ~1.7 dB.
+// lamplighters. Review round 1 re-fit: every hit is placed on the NEW clock (narration/timeline.json, film
+// 2121.42 s). Rubato: setcps(1), one cycle = one second; events at ABSOLUTE film seconds (line() subtracts S).
+// The film's emptiest music. Solo cello (low, sul tasto: low velocity, lpf), bowed glass, single high
+// harmonics as the snow. NOTE: gm_pad_bowed sounds two octaves above the written note (written d3 = D5).
+//
+//  364.75-376.45  IN (join gap 364.63-367.18): from silence, a slow-attack cello D2 under m04's decaying D-A
+//               fifth, alone from 365.45; solo cello, low and slow (D2 ... A2 ... F2 E2 D2) under L0406;
+//               bowed glass (D5 A5) entering on "snow" (371.37); a few harmonics fall like the first flakes.
+//  376.5-386.95 PITTS'S LAMP (scored silence): one sustained harmonic (A5, a sine), barely there. Nothing else.
+//  387-394.65 ROSENBLATT: silence through the line (388-393.49).
+//  394.69-398.75   the dedication: M1 once on solo cello, very soft, D minor: A2 -> D3 (lit, 394.69/395.13),
+//               held while A-E enters beneath (doubted, 395.83), D -> C# over A (gone, 397.33).
+//  399.45-411.65  LIGHTHILL: a formal lament bass, cello + contrabass in octaves, D C Bb A G F E | A, one step
+//               per 1.4 s from the start of L0410, all below D3; it arrives on A on "fell" (409.29) and leaves
+//               Papert's card in near silence.
+//  411.72-416.25 "One book's fault?": the open cello (D-A) again; four soft pizz plucks for the four blows
+//               (from "Historians" 413.19, the last on "blows" 415.7).
+//  416.75-433.55    THE LAMPLIGHTERS: M4's FIRST FULL STATEMENT, cello in F major, heard in the open (critic r1).
+//               Antecedent (C3 F3 - G3 | A3 - Bb3 A3) in the gap after "blows" (416.28-421.68), the rising
+//               fourth alone out of the decaying D-A, over F | Bbmaj7. Under L0412 (421.68-429.49) only the
+//               low F - Bb - C and a celesta glint per lit window, the first three M3's opening notes F A C (a
+//               plant), the warmest on "Helsinki" (424.53). Consequent (G3 E3 | F3) over C -> F in the gap
+//               after the line (429.49-433.6), so the theme completes in the clear.
+//  433.55-450.05  THE TALL YOUNG MAN: the winter's D pedal returns under "Sussex, 1976"; the cello's A2 -> D3 as
+//               he sits ("sits" 437.767); the D held over A-E (the suspension: doubt at the rim), unresolved
+//               under "much of the next thirty-six years near the edge of the light"; a faint high E (bowed
+//               glass) on "light" (444.557), left hanging: the last onset. Faded 447.31-450.06; m06 (F major)
+//               enters at 448.06 and hears D-A-E as vi-iii of F.
+setcps(1)
+
+const S = 364.75
+const N = 87
+const G = 3.1
+
+function line(evs, defs) {
+  defs = defs || {}
+  evs = evs.map((e) => [e[0] - S, e[1], e[2], e[3], e[4]])
+  const sorted = [...evs].sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const DEF = { attack: .01, release: .3, decay: 0, sustain: 1, lpf: 18000, pan: .5 }
+  const keys = [...new Set([...Object.keys(defs), ...evs.flatMap((e) => Object.keys(e[4] || {}))])]
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + (e[0] - pos).toFixed(4))
+      out.push(val(e) + '@' + e[1].toFixed(4))
+      pos = e[0] + e[1]
+    }
+    if (N - pos > 1e-6) out.push('~@' + (N - pos).toFixed(4))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => e[3]))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DEF[k])))
+    return p.slow(N)
+  }))
+}
+
+// ------------------------------------------------------------------ solo cello (the voice of the winter)
+const L = 1.4           // the lament's step
+const L0 = 409.29 - 7 * L   // the lament's first step, so the A lands on "fell"
+$: line([
+  // the snow begins
+  [364.8, 5.45, 'd2', .15, { attack: 2 }],
+  [370.24, 3.2, 'a2', .14, { attack: 1.2 }],
+  [373.44, 1.1, 'f2', .13, { attack: .6 }],
+  [374.54, 1.0, 'e2', .12, { attack: .5 }],
+  [375.54, 1.6, 'd2', .11, { attack: .6, release: 2.5 }],
+  // the dedication: M1 in D minor, very soft: lit, held, gone
+  [394.69, .44, 'a2', .13, { attack: .12, release: .3 }],
+  [395.13, 2.2, 'd3', .14, { attack: .2, release: .2 }],
+  [397.33, 1.6, 'c#3', .12, { attack: .15, release: 1.6 }],
+  // the open cello again: "One book's fault?"
+  [411.72, 4.3, '[d2,a2]', .11, { attack: 1, release: 1.4 }],
+  // THE LAMPLIGHTERS: M4 in F major, its first full statement, in the open (critic r1: it had been buried
+  // under L0412). The antecedent in the 5.4-s gap after "blows" (416.28-421.68): the rising fourth alone out
+  // of the decaying D-A (D minor turning to its relative major), then A - Bb - A; finished by 421.55.
+  [416.75, .3, 'c3', .2, { attack: .1 }],
+  [417.05, 1.6, 'f3', .25, { attack: .14 }],
+  [418.65, .6, 'g3', .22],
+  [419.25, .8, 'a3', .24],
+  [420.05, .6, 'bb3', .23],
+  [420.65, .85, 'a3', .19, { release: .45 }],
+  // ... the line (421.68-429.49) gets only the low F-Bb-C and the window glints; the consequent answers in
+  // the gap after it (429.49-433.6): G - E over C, home to F (431.1), decayed before "Sussex".
+  [429.6, .7, 'g3', .22, { attack: .12 }],
+  [430.3, .8, 'e3', .21],
+  [431.1, 1.5, 'f3', .21, { release: 1.2 }],
+  // THE TALL YOUNG MAN: A -> D as he sits; the D held (the suspension); re-bowed under the turn
+  [437.307, .46, 'a2', .14, { attack: .12, release: .2 }],
+  [437.767, 5.0, 'd3', .15, { attack: .25, release: .5 }],
+  [442.477, 4.6, 'd3', .12, { attack: 1.2, release: 3 }],
+], { attack: .25, release: .9 })
+  .s('gm_cello').gain(G).lpf(1000).room(.55).rsize(5).orbit(1)
+
+// cello (second desk) + contrabass: the harmony under the solo line
+$: line([
+  // the dedication's doubt: A-E under the held D; A under the fall
+  [395.83, 3.0, '[a1,e2]', .11, { attack: .7, release: 1.6 }],
+  // LIGHTHILL: the lament bass, all below D3
+  ...['d3', 'c3', 'bb2', 'a2', 'g2', 'f2', 'e2'].map((n, k) => [L0 + k * L, L * .95, n, .115 + k * .005, { attack: .2 }]),
+  [409.29, 2.4, 'a2', .13, { attack: .2, release: 1.4 }],               // A on "fell"
+  // the tall young man: A-E under the held D (Asus4: doubt at the rim)
+  [438.277, 5.0, '[a1,e2]', .1, { attack: 1.6, release: .5 }],
+  [442.877, 4.4, '[a1,e2]', .09, { attack: 1.2, release: 3 }],
+], { attack: .3, release: .8 })
+  .s('gm_cello').gain(G).lpf(800).room(.55).rsize(5).orbit(2)
+$: line([
+  [364.8, 11.0, 'd2', .1, { attack: 3, release: 2.5 }],                // the pedal under the first snow
+  ...['d2', 'c2', 'bb1', 'a1', 'g1', 'f1', 'e1'].map((n, k) => [L0 + k * L, L * .95, n, .13, { attack: .25 }]),
+  [409.29, 2.4, 'a1', .15, { attack: .25, release: 1.4 }],
+  [417.05, 2.2, 'f1', .1, { attack: 1 }],                                // the lamplighters: F | Bb under the antecedent
+  [419.25, 2.25, 'bb1', .1, { attack: .7 }],
+  [421.5, 3.0, 'f1', .085, { attack: .8 }],                            // under the line: low F - Bb - C only
+  [424.5, 2.65, 'bb1', .085, { attack: .7 }],
+  [427.15, 3.95, 'c2', .085, { attack: .7 }],                            // C under "rounding errors", and the G - E
+  [431.1, 2.0, 'f1', .09, { attack: .4, release: 1.4 }],               // home: F
+  [433.95, 8.4, 'd2', .08, { attack: 2.5, release: 2 }],                 // Sussex: the winter's pedal returns
+], { attack: 1, release: 1 })
+  .s('gm_contrabass').gain(G).lpf(380).room(.45).rsize(4).orbit(2)
+
+// soft low strings: the lamplighters' warmth, then the thin pad under "rounding errors"
+$: line([
+  // only in the gaps (none under L0412): F under the rising fourth, Bbmaj7 under A - Bb - A
+  [417.05, 2.2, '[f2,c3]', .075, { attack: 1.1 }],
+  [419.25, 2.0, '[bb1,d3,f3]', .075, { attack: .8, release: .9 }],
+  // the consequent: C under G - E, then F, released before "Sussex"
+  [429.6, 1.5, '[c2,g2,e3]', .07, { attack: .6, release: .8 }],
+  [431.1, 1.4, '[f2,c3,a3]', .075, { attack: .5, release: 1.1 }],
+], { attack: 1, release: 1.2 })
+  .s('gm_string_ensemble_1').gain(G).lpf(1100).room(.6).rsize(5).orbit(3)
+
+// ------------------------------------------------------------------ bowed glass (written two octaves low)
+$: line([
+  [371.37, 5.0, '[d3,a3]', .06, { attack: 2.5, release: 2.5 }],         // the snow begins (D5 A5)
+  [399.85, 9.0, 'a3', .035, { attack: 3, release: 2.5 }],                // thin, high, under the lecture
+  [444.557, 3.8, 'e3', .06, { attack: 1.4, release: 2.5 }],              // "light": the warm overtone, hanging (E5)
+], { attack: 2, release: 2 })
+  .s('gm_pad_bowed').gain(G).lpf(5000).room(.7).rsize(6).orbit(4)
+
+// the snow: single high harmonics (sines), and Pitts's lamp, barely there
+$: line([
+  [372.04, 2.5, 'a5', .5], [373.74, 2.5, 'd6', .4], [375.24, 2.8, 'e6', .35],
+  [376.84, 9.4, 'a5', .55, { attack: 3, release: 2.5 }],               // Pitts's lamp
+  [402.04, 2.4, 'd6', .35], [404.84, 2.4, 'a5', .35], [407.44, 2.4, 'e6', .3], [410.84, 2.4, 'd6', .3],
+  [417.04, 2.4, 'a5', .3], [418.84, 1.4, 'd6', .24],
+], { attack: .4, release: 2.2 })
+  .s('sine').gain(G * .025).vib(4.5).vibmod(.06).room(.7).rsize(6).orbit(5)
+
+// the four blows: soft pizzicato plucks
+$: line([
+  [413.19, .8, 'd2', .21], [414.13, .8, 'a1', .2], [415.13, .8, 'f2', .2], [415.7, 1.2, 'd2', .22],
+], { release: .6 })
+  .s('gm_pizzicato_strings').gain(G * .85).lpf(1300).room(.4).rsize(3).orbit(6)
+
+// celesta glints: one per lit window (heard an octave up); the first three are M3's F A C
+$: line([
+  // under L0412 (421.68-429.49) they are ghosts (round-2 voice-band pass: the line's 1-4k margin was 5.4 dB;
+  // velocities halved, -6 dB, as the house rule asks for a high voice under a line)
+  [421.5, 1.2, 'f4', .05], [422.35, 1.2, 'a4', .048], [423.25, 1.2, 'c5', .05],
+  [424.53, 1.8, '[bb4,d5]', .062],                                     // Helsinki: still the warmest (over the Bb)
+])
+  .s('gm_celesta').gain(G * .7).room(.7).rsize(6).orbit(5)

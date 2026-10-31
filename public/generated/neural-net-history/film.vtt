@@ -1,0 +1,1773 @@
+WEBVTT
+
+1
+00:00:03.500 --> 00:00:04.788
+Here is a small wonder.
+
+2
+00:00:09.500 --> 00:00:12.982
+You type a question into a little lit box.
+
+3
+00:00:13.432 --> 00:00:18.168
+Something that is not a person
+writes back, word by word.
+
+4
+00:00:20.742 --> 00:00:25.373
+By one count, at least seven hundred
+million people use such machines every week.
+
+5
+00:00:25.773 --> 00:00:28.118
+Yet nobody ever wrote one a rulebook.
+
+6
+00:00:31.183 --> 00:00:32.784
+So. Who taught it?
+
+7
+00:00:33.254 --> 00:00:39.360
+When ChatGPT launched, late in
+2022, its makers admitted a flaw.
+
+8
+00:00:39.710 --> 00:00:43.332
+In their words, it “sometimes
+writes plausible-sounding
+
+9
+00:00:43.332 --> 00:00:45.793
+but incorrect or nonsensical answers.”
+
+10
+00:00:46.193 --> 00:00:48.468
+Put that in the case file.
+
+11
+00:00:49.333 --> 00:00:54.092
+On the case board, three suspects.
+Rules. Knowledge. And learning.
+
+12
+00:01:01.867 --> 00:01:05.419
+Our story starts all the
+way back in World War Two.
+
+13
+00:01:06.069 --> 00:01:08.146
+To a lamp, in Chicago.
+
+14
+00:01:18.017 --> 00:01:20.408
+Chicago, around 1941.
+
+15
+00:01:20.858 --> 00:01:25.594
+A shy teenager, Walter Pitts, found a
+home with a doctor, Warren McCulloch.
+
+16
+00:01:27.058 --> 00:01:32.676
+In 1943 they described a nerve
+cell as a switch. All, or nothing.
+
+17
+00:01:33.126 --> 00:01:36.203
+Enough signals at once, and it fired.
+
+18
+00:01:36.203 --> 00:01:41.612
+Wire such cells into a network, a
+neural network, and you had logic.
+
+19
+00:01:45.100 --> 00:01:46.922
+But the wiring never changed.
+
+20
+00:01:48.572 --> 00:01:50.220
+The nets could not learn.
+
+21
+00:01:52.975 --> 00:01:59.070
+We light the first candle. Each belief
+gets one, burning as long as it was held.
+
+22
+00:01:59.070 --> 00:02:02.134
+This one: the brain is a logic machine.
+
+23
+00:02:02.534 --> 00:02:07.967
+Ralph Gerard, at its rim, argued
+the brain was more dial than switch.
+
+24
+00:02:08.933 --> 00:02:13.843
+Donald Hebb guessed: when one cell
+helps fire another, their link grows.
+
+25
+00:02:17.225 --> 00:02:19.977
+Alan Turing, in 1950,
+proposed something stranger:
+
+26
+00:02:19.977 --> 00:02:25.119
+not to program a grown-up mind,
+but to educate a child machine.
+
+27
+00:02:30.058 --> 00:02:34.980
+By 1956 the field had a name:
+artificial intelligence.
+
+28
+00:02:35.330 --> 00:02:38.801
+Marvin Minsky, who had built
+a learning machine himself,
+
+29
+00:02:38.801 --> 00:02:42.736
+soon turned to symbols and
+rules: our first suspect.
+
+30
+00:02:43.136 --> 00:02:47.350
+A young engineer, Bernard Widrow, fell
+for the dream of building an artificial
+
+31
+00:02:47.350 --> 00:02:52.446
+brain, for good. His machines learned
+by sliding downhill, toward less wrong.
+
+32
+00:02:52.896 --> 00:02:53.835
+Remember him.
+
+33
+00:02:56.600 --> 00:03:01.592
+A 1959 study of the frog's eye found the
+eye itself already sorting the world,
+
+34
+00:03:01.592 --> 00:03:05.051
+picking out features before
+the brain saw a thing.
+
+35
+00:03:05.501 --> 00:03:08.519
+The logic-machine candle
+burned sixteen years.
+
+36
+00:03:08.919 --> 00:03:15.362
+The paper that put it out, for Pitts
+at least, had his own name on it.
+
+37
+00:03:21.325 --> 00:03:23.263
+Washington, 1958.
+
+38
+00:03:23.663 --> 00:03:27.588
+Frank Rosenblatt’s perceptron, a
+program on a borrowed computer,
+
+39
+00:03:27.588 --> 00:03:31.000
+learns in fifty tries to sort
+cards marked left or right.
+
+40
+00:03:31.975 --> 00:03:35.679
+Newspapers said the Navy
+expected it to “walk, talk, see,
+
+41
+00:03:35.679 --> 00:03:39.857
+write, reproduce itself and be
+conscious of its existence.”
+
+42
+00:03:40.157 --> 00:03:44.777
+In fairness, the Navy, the press
+and Rosenblatt all fed the hype.
+
+43
+00:03:45.767 --> 00:03:50.979
+A second candle: a machine that
+learns will soon see, talk and think.
+
+44
+00:03:51.379 --> 00:03:55.559
+At its rim stood Marvin
+Minsky, who doubted such nets
+
+45
+00:03:55.559 --> 00:03:58.565
+could tell whether a shape
+was in one piece, or two.
+
+46
+00:03:59.517 --> 00:04:04.904
+In Buffalo, Rosenblatt built it as
+a machine: an eye, random wires,
+
+47
+00:04:04.904 --> 00:04:10.766
+and motor-driven knobs. Each knob sets
+how strongly one wire counts: its weight.
+
+48
+00:04:11.166 --> 00:04:16.599
+When it was wrong, only the knobs of lit
+wires turned, a little, toward the answer.
+
+49
+00:04:17.049 --> 00:04:19.742
+You could hear it learn. I love that.
+
+50
+00:04:20.725 --> 00:04:24.103
+A theorem promised the rule
+would find a dividing line.
+
+51
+00:04:24.503 --> 00:04:26.569
+If one exists.
+
+52
+00:04:33.350 --> 00:04:39.283
+A magazine asked what use it was. “At the
+moment, none whatever,” Dr. Rosenblatt
+
+53
+00:04:39.283 --> 00:04:45.536
+said cheerfully. And what could it never
+do? “Love,” he said. “Hope. Despair.”
+
+54
+00:04:55.408 --> 00:04:58.171
+In his 1961 book: “Linguistic capability,
+
+55
+00:04:58.171 --> 00:05:04.382
+related to perceptual experience, is
+of the essence.” Put that in the file.
+
+56
+00:05:08.142 --> 00:05:11.381
+By the mid-sixties, most of
+the other groups had moved on.
+
+57
+00:05:11.381 --> 00:05:14.167
+The learning-machine candle
+burned about seven years.
+
+58
+00:05:16.017 --> 00:05:21.113
+Then two men wrote a book about what a
+single layer of knobs could never do.
+
+59
+00:05:25.975 --> 00:05:33.208
+The book’s simplest puzzle: exclusive-or.
+Light up if one input is on, not both.
+
+60
+00:05:33.208 --> 00:05:36.295
+On a square, the lit cases
+sit at opposite corners.
+
+61
+00:05:36.695 --> 00:05:38.668
+No straight cut can separate them.
+
+62
+00:05:39.558 --> 00:05:44.631
+Two cuts can: a hidden layer,
+cells between input and answer.
+
+63
+00:05:44.631 --> 00:05:47.184
+Nobody in the mainstream
+knew how to train one.
+
+64
+00:05:49.058 --> 00:05:54.258
+In 1969, Minsky and Papert’s book
+proved what one layer cannot do.
+
+65
+00:05:54.708 --> 00:05:59.341
+For many layers, it offered only what
+it called “our intuitive judgment
+
+66
+00:05:59.341 --> 00:06:05.041
+that the extension is sterile”, while
+naming it a problem worth settling.
+
+67
+00:06:05.041 --> 00:06:08.326
+A third candle: many
+layers are a dead end.
+
+68
+00:06:10.717 --> 00:06:14.606
+That year, Congress tied defence-funded
+research to military uses,
+
+69
+00:06:14.606 --> 00:06:17.740
+and the snow began: the first AI winter.
+
+70
+00:06:21.042 --> 00:06:26.080
+That May, Walter Pitts died alone.
+McCulloch followed four months later.
+
+71
+00:06:31.542 --> 00:06:37.184
+In 1971, on his forty-third birthday,
+Frank Rosenblatt drowned while sailing.
+
+72
+00:06:42.642 --> 00:06:47.820
+In 1973, James Lighthill’s report for
+Britain blamed “the combinatorial explosion”.
+
+73
+00:06:47.820 --> 00:06:54.808
+It struck rules far more than nets. Yet
+British funding fell for almost a decade.
+
+74
+00:06:55.258 --> 00:06:59.971
+One book's fault? Historians still
+argue; there were several blows.
+
+75
+00:07:05.225 --> 00:07:08.905
+Still, a few windows
+stayed lit. In Helsinki,
+
+76
+00:07:08.905 --> 00:07:13.177
+the next clue sat unnoticed in a
+student's thesis about rounding errors.
+
+77
+00:07:17.142 --> 00:07:23.201
+Sussex, 1976. A young Geoffrey Hinton
+takes his place, far from the flame.
+
+78
+00:07:23.671 --> 00:07:28.697
+He would spend much of the next thirty-six
+years near the edge of the light.
+
+79
+00:07:35.517 --> 00:07:40.090
+Versailles, 1981. John
+Hopfield presents a network.
+
+80
+00:07:40.390 --> 00:07:45.996
+Give it half a memory, and it rolls downhill,
+like a ball, until the whole memory returns.
+
+81
+00:07:46.546 --> 00:07:51.294
+Years later, he wrote: “I have never met
+anyone who remembered hearing the talk.”
+
+82
+00:07:54.350 --> 00:07:58.529
+At the sterile candle’s rim, all
+the while, stood Geoffrey Hinton.
+
+83
+00:07:59.979 --> 00:08:03.914
+With two colleagues, he built
+a net that settles as it cools.
+
+84
+00:08:08.467 --> 00:08:14.342
+October 1986: a paper by David
+Rumelhart, Hinton and Ronald Williams.
+
+85
+00:08:14.342 --> 00:08:18.695
+Light flows up through layers
+of lanterns, our nerve cells.
+
+86
+00:08:18.695 --> 00:08:23.385
+The answer is checked against
+the right one; the error glows.
+
+87
+00:08:23.685 --> 00:08:27.540
+Then a messenger,
+back-propagation, runs back down,
+
+88
+00:08:27.540 --> 00:08:31.858
+lantern by lantern, tugging each
+knob by its share of the blame.
+
+89
+00:08:32.258 --> 00:08:38.120
+Again and again, until our exclusive-or
+puzzle is solved. By itself.
+
+90
+00:08:42.370 --> 00:08:48.418
+The sterile extension, it turns out, was
+not. That candle burned seventeen years.
+
+91
+00:08:50.892 --> 00:08:54.421
+Each tug, a step downhill
+toward less error, in fog.
+
+92
+00:09:03.908 --> 00:09:07.786
+Who invented the messenger?
+Several people, separately,
+
+93
+00:09:07.786 --> 00:09:13.021
+that Helsinki student among them.
+The 1986 paper made it stick.
+
+94
+00:09:13.421 --> 00:09:18.099
+Hinton later wrote: “I have never
+claimed that I invented backpropagation.”
+
+95
+00:09:21.350 --> 00:09:24.694
+Since about 1980, our second
+suspect had its own candle:
+
+96
+00:09:24.694 --> 00:09:28.919
+intelligence is knowledge,
+typed in by hand.
+
+97
+00:09:29.219 --> 00:09:32.482
+One expert system, built
+from experts' rules,
+
+98
+00:09:32.482 --> 00:09:37.682
+was rated above Stanford specialists,
+yet never went into routine use.
+
+99
+00:09:38.082 --> 00:09:41.855
+At its rim stood a
+philosopher, Hubert Dreyfus:
+
+100
+00:09:41.855 --> 00:09:47.486
+real expertise is intuition, not
+rules. He saw a pattern: “early,
+
+101
+00:09:47.486 --> 00:09:51.758
+dramatic success followed by
+sudden unexpected difficulties.”
+
+102
+00:09:52.725 --> 00:09:57.323
+Doug Lenat's team lit its own
+candle: common sense, by hand.
+
+103
+00:09:57.323 --> 00:10:01.408
+They wrote that AI could draw
+“practically nothing” from raw text.
+
+104
+00:10:07.683 --> 00:10:12.071
+In 1984, at a panel, insiders
+warned of a coming winter.
+
+105
+00:10:15.421 --> 00:10:20.680
+By 1987 the special machines for these
+programs stopped selling: a second winter.
+
+106
+00:10:20.680 --> 00:10:24.371
+The knowledge candle
+burned about seven years.
+
+107
+00:10:28.642 --> 00:10:31.974
+Two critics asked: can a
+net that says John loves the
+
+108
+00:10:31.974 --> 00:10:35.294
+girl always say the girl
+loves John? Still argued.
+
+109
+00:10:35.764 --> 00:10:40.117
+The messenger worked. Within a decade,
+most of the field had stopped listening.
+
+110
+00:10:45.642 --> 00:10:49.543
+1989, Bell Labs: Yann
+LeCun's network learns to
+
+111
+00:10:49.543 --> 00:10:52.514
+read handwritten ZIP
+codes from Buffalo's mail.
+
+112
+00:10:56.183 --> 00:11:00.884
+By 1998, a descendant “reads
+several million checks per day.”
+
+113
+00:11:01.184 --> 00:11:05.014
+A winter, then, of prestige, not of use.
+
+114
+00:11:08.183 --> 00:11:11.724
+The rivals were good:
+classical machine learning.
+
+115
+00:11:11.724 --> 00:11:17.123
+In speech and translation, statistics
+learned from data beat hand-written rules.
+
+116
+00:11:17.123 --> 00:11:19.537
+Forests of decision trees voted.
+
+117
+00:11:19.887 --> 00:11:23.835
+The favourite, Vladimir
+Vapnik's support vector machine,
+
+118
+00:11:23.835 --> 00:11:26.597
+finds the widest street
+between two crowds.
+
+119
+00:11:26.897 --> 00:11:31.354
+Its landscape is one clean bowl,
+with a proof you'll reach the bottom.
+
+120
+00:11:33.133 --> 00:11:37.950
+An expert chose what to measure, by
+hand; the machine only drew the line.
+
+121
+00:11:38.700 --> 00:11:43.263
+When no straight line would do, the
+kernel trick lifted one crowd up a hill,
+
+122
+00:11:43.263 --> 00:11:48.718
+and one flat cut parted them. The learning
+was clean; the seeing was hand-made.
+
+123
+00:11:53.933 --> 00:11:57.091
+The candle of the age:
+neural nets are fiddly,
+
+124
+00:11:57.091 --> 00:12:00.248
+they stall in the fog,
+and they're beaten anyway.
+
+125
+00:12:00.648 --> 00:12:05.652
+At its rim, a few stubborn holdouts,
+among them Geoffrey Hinton,
+
+126
+00:12:05.652 --> 00:12:12.257
+Yann LeCun and Yoshua Bengio. “We couldn't
+get our papers published,” LeCun said.
+
+127
+00:12:13.517 --> 00:12:19.136
+In 1995, at Bell Labs, two colleagues
+signed a pair of bets, a fancy dinner each.
+
+128
+00:12:19.136 --> 00:12:24.895
+Larry Jackel bet that by 2000 we would
+understand why big neural nets work. Vladimir
+
+129
+00:12:24.895 --> 00:12:32.522
+Vapnik bet that by 2005 “no one in his
+right mind” would use nets like those.
+
+130
+00:12:32.922 --> 00:12:35.951
+So who paid for dinner?
+Keep that question.
+
+131
+00:12:38.392 --> 00:12:42.467
+Through many layers, or a long
+sentence read word by word,
+
+132
+00:12:42.467 --> 00:12:44.382
+the messenger fades like a whisper.
+
+133
+00:12:44.682 --> 00:12:48.118
+In 1997, Hochreiter and
+Schmidhuber’s protected
+
+134
+00:12:48.118 --> 00:12:51.623
+pipe carried it over a thousand steps.
+
+135
+00:12:53.975 --> 00:12:57.992
+The chess crown, promised for
+1968, came twenty-nine years late,
+
+136
+00:12:57.992 --> 00:13:03.367
+won by search, not by a neural
+network. A point for Rules.
+
+137
+00:13:08.183 --> 00:13:11.897
+Put that in the file: why
+would anyone choose the fog?
+
+138
+00:13:16.767 --> 00:13:23.559
+Who paid for dinner? Both men. By 2000, no
+one could yet explain why big nets work.
+
+139
+00:13:23.559 --> 00:13:30.779
+By 2005, people were still using
+them. Each man lost one bet.
+
+140
+00:13:34.267 --> 00:13:39.236
+In 2006, a new candle: before any
+right answers, warm up a deep net,
+
+141
+00:13:39.236 --> 00:13:44.912
+many layers tall, one layer at a
+time, each rebuilding its own input.
+
+142
+00:13:45.762 --> 00:13:51.602
+Fast computers, big data, good starting
+weights: “All three conditions are now
+
+143
+00:13:51.602 --> 00:13:56.976
+satisfied,” Hinton and a student wrote.
+Nearly right: the third turned out optional.
+
+144
+00:13:57.933 --> 00:14:04.435
+Accomplice one: data. Fei-Fei Li recalls
+colleagues telling her to do something more
+
+145
+00:14:04.435 --> 00:14:09.797
+useful. Labelling her millions of pictures
+by hand would have taken nineteen years.
+
+146
+00:14:10.367 --> 00:14:13.420
+A crowd did it: almost
+fifty thousand people.
+
+147
+00:14:13.870 --> 00:14:18.537
+It became ImageNet, and a yearly
+contest: a thousand categories.
+
+148
+00:14:21.808 --> 00:14:26.626
+Accomplice two: fire. Graphics
+chips, built for games,
+
+149
+00:14:26.626 --> 00:14:29.679
+trained networks up to
+seventy times faster.
+
+150
+00:14:29.979 --> 00:14:33.462
+In 2010, plain back-propagation
+on one graphics
+
+151
+00:14:33.462 --> 00:14:38.325
+chip set a record on
+handwritten digits, no warm-up.
+
+152
+00:14:40.808 --> 00:14:44.011
+The warm-up candle guttered;
+nobody knows exactly when.
+
+153
+00:14:50.175 --> 00:14:53.391
+Since about 1999, the belief: to see,
+
+154
+00:14:53.391 --> 00:14:57.733
+a machine needs patterns
+designed by experts, by hand.
+
+155
+00:14:57.733 --> 00:15:03.735
+Even allowed five guesses a picture, the
+best program missed more than one in four.
+
+156
+00:15:05.708 --> 00:15:09.969
+In Hinton's Toronto lab, Ilya
+Sutskever, sure deep nets would
+
+157
+00:15:09.969 --> 00:15:14.438
+keep improving with more data,
+talked Alex Krizhevsky into trying.
+
+158
+00:15:18.892 --> 00:15:24.488
+A photograph is a grid of lights, each
+light a number. In colour, three numbers:
+
+159
+00:15:24.488 --> 00:15:31.256
+red, green, blue. One small photo: a
+hundred and fifty thousand numbers.
+
+160
+00:15:33.833 --> 00:15:37.675
+Hold a pierced tin stencil over
+the picture, a light behind it.
+
+161
+00:15:37.975 --> 00:15:41.261
+Each of its nine holes
+weighs the light beneath it.
+
+162
+00:15:41.261 --> 00:15:44.615
+Add them up. Below zero counts as zero.
+
+163
+00:15:44.915 --> 00:15:49.675
+Over an edge, the sum is
+nearly four: a bright spot.
+
+164
+00:15:49.675 --> 00:15:54.678
+Now the lovely part: slide the same
+stencil everywhere. A convolution.
+
+165
+00:15:57.250 --> 00:16:00.930
+Ninety-six stencils at the
+bottom; four more layers above,
+
+166
+00:16:00.930 --> 00:16:07.373
+each stencilling the one below:
+edges, then textures, parts, things.
+
+167
+00:16:07.623 --> 00:16:11.152
+Then two great halls, where
+every lantern sees everything,
+
+168
+00:16:11.152 --> 00:16:15.076
+and a last hall of a thousand
+lanterns, one per answer.
+
+169
+00:16:17.858 --> 00:16:22.431
+Nobody cut these stencils. They
+began as noise, like television snow.
+
+170
+00:16:22.731 --> 00:16:27.072
+The messenger from 1986
+cut them, nudge by nudge.
+
+171
+00:16:30.042 --> 00:16:35.742
+Older nets squashed strong signals
+flat. The below-zero rule is a weir:
+
+172
+00:16:35.742 --> 00:16:41.199
+strong signals pass undimmed, so
+the messenger's tug stays strong.
+
+173
+00:16:41.199 --> 00:16:45.459
+The net learned six times
+faster, in the team's test.
+
+174
+00:16:46.733 --> 00:16:51.412
+Sixty million weights, yet each
+label, one name in a thousand,
+
+175
+00:16:51.412 --> 00:16:56.776
+is worth about ten yes-or-no answers.
+Twelve million answers in all.
+
+176
+00:16:56.776 --> 00:16:59.921
+It could memorise the
+photos, not learn to see.
+
+177
+00:17:00.221 --> 00:17:02.530
+So they cropped and mirrored the pictures.
+
+178
+00:17:04.417 --> 00:17:09.235
+In the great halls, they snuffed a random
+half each time, so no lantern could count
+
+179
+00:17:09.235 --> 00:17:14.203
+on another. Like a team where anyone might
+be missing, each had to know the work.
+
+180
+00:17:16.792 --> 00:17:21.632
+The network ran on two graphics chips,
+GPUs, half the stencils on each.
+
+181
+00:17:21.932 --> 00:17:24.788
+Nobody told the two halves
+how to divide the work.
+
+182
+00:17:24.788 --> 00:17:29.652
+One cut edges, mostly colour-blind;
+the other, colour. Every time.
+
+183
+00:17:34.433 --> 00:17:39.459
+Then five or six days downhill in fog,
+the stride shortened three times, by hand.
+
+184
+00:17:43.117 --> 00:17:46.123
+Florence. October 2012.
+
+185
+00:17:46.373 --> 00:17:52.827
+A bad back kept Hinton from flying. Yann
+LeCun stood at the rear of a packed room.
+
+186
+00:17:53.808 --> 00:17:57.314
+Second place missed
+twenty-six point two percent.
+
+187
+00:17:57.314 --> 00:18:01.435
+Alex's network, AlexNet,
+fifteen point three.
+
+188
+00:18:01.735 --> 00:18:02.419
+A cliff.
+
+189
+00:18:06.708 --> 00:18:11.641
+Fair credit: that was seven networks
+voting; one alone, nearer eighteen.
+
+190
+00:18:11.941 --> 00:18:15.725
+And a Swiss lab's nets had already
+won contests on graphics chips.
+
+191
+00:18:17.908 --> 00:18:21.716
+The hand-cut stencil candle
+burned thirteen years.
+
+192
+00:18:21.716 --> 00:18:26.951
+It went out in one: at the next contest,
+all top five teams used such nets.
+
+193
+00:18:27.251 --> 00:18:30.548
+Beside it, the fiddly-nets
+candle went out too,
+
+194
+00:18:30.548 --> 00:18:33.555
+after ten to fifteen
+years, field by field.
+
+195
+00:18:34.905 --> 00:18:41.046
+Why choose the fog? The rivals' clean bowl
+sat on stencils cut by hand. In the fog,
+
+196
+00:18:41.046 --> 00:18:46.432
+given data and fire, the net cut its
+own, many layers deep: deep learning.
+
+197
+00:18:48.482 --> 00:18:54.588
+And Hinton? Thirty-six years near the
+edge of the light. Now, it found him.
+
+198
+00:18:56.458 --> 00:18:59.697
+Our results, the paper said, can
+be improved simply by waiting
+
+199
+00:18:59.697 --> 00:19:03.725
+for faster GPUs and bigger
+datasets to become available.
+
+200
+00:19:04.025 --> 00:19:06.404
+Put that in the file.
+
+201
+00:19:11.783 --> 00:19:15.950
+A new candle, then a creed: deep
+learning works on everything.
+
+202
+00:19:16.300 --> 00:19:22.883
+December 2012. By one reporter’s account,
+Hinton auctioned his three-person company,
+
+203
+00:19:22.883 --> 00:19:27.445
+halted the bidding at forty-four
+million dollars, and chose Google.
+
+204
+00:19:29.517 --> 00:19:33.255
+In 2014, a Go programmer
+gave machines “maybe ten
+
+205
+00:19:33.255 --> 00:19:36.993
+years” to beat a professional.
+It took under two.
+
+206
+00:19:37.975 --> 00:19:43.222
+DeepMind's AlphaGo learned from human
+games, then from itself, rewarded for wins.
+
+207
+00:19:43.712 --> 00:19:51.826
+Seoul, 2016. AlphaGo played move
+thirty-seven, a one-in-ten-thousand move.
+
+208
+00:19:52.316 --> 00:19:57.969
+Then Lee Sedol found a move just as rare,
+and won the match’s only human game.
+
+209
+00:20:02.333 --> 00:20:07.465
+Months before Seoul, OpenAI was founded,
+co-chaired by Sam Altman and Elon Musk.
+
+210
+00:20:07.465 --> 00:20:11.133
+Human-level AI, it said,
+“could benefit society”,
+
+211
+00:20:11.133 --> 00:20:15.521
+or “damage society if
+built or used incorrectly.”
+
+212
+00:20:15.971 --> 00:20:18.187
+Its backers committed a billion dollars.
+
+213
+00:20:22.350 --> 00:20:27.586
+At the rim, doubters. Changes too
+small to see could fool these nets.
+
+214
+00:20:27.586 --> 00:20:33.426
+Joy Buolamwini and Timnit Gebru found
+commercial face software misread the
+
+215
+00:20:33.426 --> 00:20:39.057
+gender of darker-skinned women far
+more often than of lighter-skinned men.
+
+216
+00:20:39.057 --> 00:20:42.736
+The candle burned on, and
+still does, argued over.
+
+217
+00:20:48.725 --> 00:20:52.661
+Another candle, lit in 1997
+with that protected pipe:
+
+218
+00:20:52.661 --> 00:20:55.237
+language must be read in order.
+
+219
+00:20:57.100 --> 00:21:02.104
+In 2014, translating machines squeezed a
+whole sentence into one list of numbers:
+
+220
+00:21:02.104 --> 00:21:07.618
+a bottleneck. So they learned to
+look back at every word: attention.
+
+221
+00:21:10.183 --> 00:21:16.092
+Over lunch at Google in 2016, Jakob Uszkoreit
+suggested keeping only the attention.
+
+222
+00:21:16.492 --> 00:21:17.990
+Colleagues doubted it.
+
+223
+00:21:17.990 --> 00:21:22.377
+One later called his doubt “the biggest
+incorrect prediction of my life.”
+
+224
+00:21:26.067 --> 00:21:29.457
+Drop the word-by-word
+reader, keep the attention:
+
+225
+00:21:29.457 --> 00:21:33.961
+every word looks at every other,
+all at once. The Transformer.
+
+226
+00:21:34.411 --> 00:21:38.254
+Its title: Attention Is All You Need.
+
+227
+00:21:38.254 --> 00:21:42.978
+From English to German, it out-translated
+every rival after half a day's training.
+
+228
+00:21:45.058 --> 00:21:49.783
+Each word arrives as a learned list
+of numbers and grows three cards:
+
+229
+00:21:49.783 --> 00:21:54.334
+a question, what am I looking
+for? A label, what have I got?
+
+230
+00:21:54.334 --> 00:21:58.641
+A message, what I pass on.
+All tuned by our messenger.
+
+231
+00:22:01.725 --> 00:22:06.566
+Four words: crossed the river bank. Bank
+holds its question up to every label,
+
+232
+00:22:06.566 --> 00:22:10.884
+and scores each the stencil's
+way: multiply, and add.
+
+233
+00:22:11.284 --> 00:22:16.264
+The scores: two, nothing,
+four, two. Then we halve them.
+
+234
+00:22:16.714 --> 00:22:21.195
+Pour one jug of light: higher
+scores get far bigger shares.
+
+235
+00:22:21.195 --> 00:22:24.736
+About half runs to river:
+softmax, to the trade.
+
+236
+00:22:25.136 --> 00:22:29.639
+Bank takes in the messages in those
+shares, and now means the water's edge.
+
+237
+00:22:31.892 --> 00:22:37.429
+Why halve? Real cards hold sixty-four
+numbers, and the scores swing wildly.
+
+238
+00:22:37.829 --> 00:22:41.230
+The jug tips everything into
+one cup, and learning freezes.
+
+239
+00:22:41.680 --> 00:22:47.021
+Divide by eight, the square root
+of sixty-four, and it pours softly.
+
+240
+00:22:47.021 --> 00:22:50.004
+Our toy had four numbers: so we halved.
+
+241
+00:22:52.892 --> 00:22:55.527
+The real Transformer
+keeps eight sets of cards,
+
+242
+00:22:55.527 --> 00:22:57.988
+eight heads, each asking its own question.
+
+243
+00:23:02.517 --> 00:23:07.427
+Shuffle the words, and attention can't
+tell: the scores come out the same.
+
+244
+00:23:07.877 --> 00:23:13.902
+So each word wears a clock face set by its
+place in line, some hands fast, some slow.
+
+245
+00:23:16.058 --> 00:23:20.411
+Words talk to each other, then
+each thinks alone. Six times over.
+
+246
+00:23:25.183 --> 00:23:28.376
+Why did it win? No waiting in line:
+
+247
+00:23:28.376 --> 00:23:33.994
+all at once is one huge multiplication,
+just what graphics chips do best.
+
+248
+00:23:37.244 --> 00:23:41.005
+The catch: twice the words,
+four times the looking.
+
+249
+00:23:43.892 --> 00:23:46.957
+Two decades of recurrent
+nets read in order.
+
+250
+00:23:46.957 --> 00:23:49.696
+The Transformer replaced
+them within two years.
+
+251
+00:23:55.475 --> 00:24:01.768
+The original had two halves: one read,
+one wrote. In 2018, a Google team kept
+
+252
+00:24:01.768 --> 00:24:08.605
+only the writing half; months later
+OpenAI did the same, and called it GPT.
+
+253
+00:24:09.005 --> 00:24:13.962
+It wears a curtain: each word
+may look back, never ahead.
+
+254
+00:24:13.962 --> 00:24:16.620
+Its one job: guess what comes next.
+
+255
+00:24:33.300 --> 00:24:38.954
+In 2019, OpenAI’s GPT-2, a Transformer’s
+writing half, read some eight million
+
+256
+00:24:38.954 --> 00:24:44.631
+web pages with one goal: “predict the next
+word”, or rather, the next word-piece.
+
+257
+00:24:44.631 --> 00:24:51.364
+No labels needed: every next
+word is its own right answer.
+
+258
+00:24:51.814 --> 00:24:55.169
+From the file, Lenat's
+team: “practically nothing”
+
+259
+00:24:55.169 --> 00:24:59.046
+from “the raw text.” It
+sounded sensible, at the time.
+
+260
+00:25:04.117 --> 00:25:08.250
+The jug of light now pours
+over every possible next word.
+
+261
+00:25:08.250 --> 00:25:12.673
+Pick one. Ask again.
+No rulebook. Only odds.
+
+262
+00:25:16.642 --> 00:25:21.123
+In 2020, AlexNet's waiting note came
+back as a smooth, predictable law:
+
+263
+00:25:21.123 --> 00:25:30.422
+bigger models, lower error. GPT-3, shown
+a few examples, did new tasks, untaught.
+
+264
+00:25:30.822 --> 00:25:33.816
+A new candle: scale is the main lever.
+
+265
+00:25:39.392 --> 00:25:42.260
+At the rim, two researchers
+imagined an octopus
+
+266
+00:25:42.260 --> 00:25:44.999
+learning the shape of
+words, never their meaning.
+
+267
+00:25:45.449 --> 00:25:49.071
+Another paper called such
+models stochastic parrots,
+
+268
+00:25:49.071 --> 00:25:53.146
+“haphazardly stitching together”
+words “without any reference to
+
+269
+00:25:53.146 --> 00:25:58.765
+meaning.” One co-author, Timnit Gebru,
+left Google; the accounts differ.
+
+270
+00:26:06.567 --> 00:26:11.384
+The last accomplice was a person,
+choosing: shown two tries, which is better?
+
+271
+00:26:13.850 --> 00:26:16.822
+By 2022, people's
+rankings trained a judge,
+
+272
+00:26:16.822 --> 00:26:21.129
+and the judge shaped the model,
+like a gardener shaping a hedge.
+
+273
+00:26:21.579 --> 00:26:25.792
+People preferred the small, shaped
+model to one a hundred times larger.
+
+274
+00:26:29.767 --> 00:26:32.913
+November 2022, and our little lit box:
+
+275
+00:26:32.913 --> 00:26:37.638
+an existing model, tuned by
+human choices, free to all.
+
+276
+00:26:38.088 --> 00:26:40.525
+Not a new engine. A new door.
+
+277
+00:26:40.925 --> 00:26:46.148
+The first note in the file was written that
+same day: plausible, and sometimes wrong.
+
+278
+00:26:56.400 --> 00:27:01.542
+Rosenblatt's 1961 note, sixty-one
+years on: language was the door.
+
+279
+00:27:05.517 --> 00:27:10.788
+Through ChatGPT’s door, a stampede.
+By one estimate, a hundred million
+
+280
+00:27:10.788 --> 00:27:15.930
+monthly users within two months,
+and rival labs running after them.
+
+281
+00:27:23.017 --> 00:27:27.127
+Among the runners, a lab born in
+2021: former OpenAI researchers,
+
+282
+00:27:27.127 --> 00:27:33.198
+led by Dario and Daniela
+Amodei, had founded Anthropic.
+
+283
+00:27:33.548 --> 00:27:37.309
+It called itself “an AI
+safety and research company”.
+
+284
+00:27:39.559 --> 00:27:43.239
+Google announced Bard; Meta
+shared LLaMA with researchers,
+
+285
+00:27:43.239 --> 00:27:49.740
+and within a week its weights leaked; GPT-4
+and Claude arrived the same March day.
+
+286
+00:27:54.508 --> 00:28:00.173
+In 2023, Geoffrey Hinton takes down
+an old forecast. It is his own.
+
+287
+00:28:00.873 --> 00:28:08.210
+Machines smarter than people? “I thought
+it was 30 to 50 years or even longer away.
+
+288
+00:28:08.210 --> 00:28:10.485
+Obviously, I no longer think that.”
+
+289
+00:28:10.785 --> 00:28:16.868
+So the file reopens, on a second question:
+how far will it go, and how fast?
+
+290
+00:28:18.642 --> 00:28:23.471
+He left Google to speak freely, adding:
+“Google has acted very responsibly.”
+
+291
+00:28:27.642 --> 00:28:34.491
+Another candle, lit by worry: machines smarter
+than us may be only years away, and dangerous.
+
+292
+00:28:34.891 --> 00:28:39.603
+In March, an open letter
+asked for a pause. None came.
+
+293
+00:28:40.053 --> 00:28:43.756
+Then a one-sentence
+warning, about extinction.
+
+294
+00:28:43.756 --> 00:28:48.620
+Hinton signed first, Bengio second,
+and the heads of leading labs too.
+
+295
+00:28:51.392 --> 00:28:53.260
+Not two teams. Three camps.
+
+296
+00:28:53.710 --> 00:29:00.187
+At one rim, Timnit Gebru and colleagues: “The
+harms from so-called AI are real and present.”
+
+297
+00:29:01.037 --> 00:29:07.421
+At the other, Yann LeCun called fears of a
+sudden takeover “preposterously ridiculous.”
+
+298
+00:29:07.721 --> 00:29:11.936
+Hinton, Bengio and LeCun had shared
+computing's million-dollar Turing Award.
+
+299
+00:29:11.936 --> 00:29:15.081
+Two signed. The third stood apart.
+
+300
+00:29:16.458 --> 00:29:21.009
+That August, Doug Lenat died,
+still at work on common sense:
+
+301
+00:29:21.009 --> 00:29:24.456
+thirty-nine years, the
+longest candle on our shelf.
+
+302
+00:29:30.725 --> 00:29:37.144
+In 2017, China aimed to be “the world's
+primary AI innovation center” by 2030.
+
+303
+00:29:37.444 --> 00:29:39.614
+Its plan named no rival.
+
+304
+00:29:41.892 --> 00:29:48.382
+October 2022. Citing military uses,
+Washington fenced off high-end chips, and the
+
+305
+00:29:48.382 --> 00:29:54.465
+tools to make them. Beijing replied that
+America “abuses export control measures.”
+
+306
+00:29:54.915 --> 00:29:59.455
+Two new candles: computing power is
+the chokepoint, and China is a year
+
+307
+00:29:59.455 --> 00:30:04.841
+or two behind. A new question for the
+file: can a fence around chips hold?
+
+308
+00:30:05.808 --> 00:30:09.047
+December 2024: a Chinese lab, DeepSeek,
+
+309
+00:30:09.047 --> 00:30:14.143
+priced its model's final training run at
+about five and a half million dollars.
+
+310
+00:30:14.443 --> 00:30:17.589
+That counted rented hours
+for the last run only:
+
+311
+00:30:17.589 --> 00:30:20.758
+not the research before it,
+nor the hardware it owned.
+
+312
+00:30:25.142 --> 00:30:28.729
+Machines had just learned to
+think longer: trained by reward,
+
+313
+00:30:28.729 --> 00:30:34.464
+they wrote long working notes before
+answering. OpenAI hid those notes by design.
+
+314
+00:30:34.814 --> 00:30:39.701
+Then DeepSeek released such a model,
+its method and weights open to all.
+
+315
+00:30:40.001 --> 00:30:41.986
+A week later, markets fell.
+
+316
+00:30:46.650 --> 00:30:51.386
+For one day, investors bet that chips
+might matter less: a struck match.
+
+317
+00:30:52.836 --> 00:30:57.502
+China a year or two behind? That
+belief burned about two years.
+
+318
+00:31:02.775 --> 00:31:06.513
+Nearly half the top researchers
+first studied in China.
+
+319
+00:31:06.513 --> 00:31:09.020
+But America employed the most of them.
+
+320
+00:31:13.100 --> 00:31:20.402
+Rivals, yes. But both had signed one
+safety declaration, at Bletchley, in 2023.
+
+321
+00:31:20.752 --> 00:31:25.896
+In September 2026 they reached
+across the water: an AI dialogue,
+
+322
+00:31:25.896 --> 00:31:30.388
+and a channel for incidents.
+Chip rules unchanged.
+
+323
+00:31:33.142 --> 00:31:36.601
+A newer candle: the gap
+is months, not years.
+
+324
+00:31:39.451 --> 00:31:41.889
+DeepSeek's founder had put it another way:
+
+325
+00:31:41.889 --> 00:31:45.661
+“the real gap is the difference
+between originality and imitation.”
+
+326
+00:31:46.071 --> 00:31:48.915
+The fence still stands, argued over.
+
+327
+00:31:48.915 --> 00:31:55.486
+As of October 2026, nobody agrees how
+wide the gap is, or whether it will close.
+
+328
+00:32:00.367 --> 00:32:06.392
+Two in the morning, October 2024.
+Geoffrey Hinton’s phone rings.
+
+329
+00:32:06.792 --> 00:32:12.249
+A Nobel Prize in physics, shared with
+John Hopfield. He wrote that nobody he met
+
+330
+00:32:12.249 --> 00:32:17.241
+remembered his Versailles talk. The prize
+was for memories that roll downhill,
+
+331
+00:32:17.241 --> 00:32:22.360
+and the Boltzmann machine Hinton
+co-invented, a net that settles as it cools.
+
+332
+00:32:22.760 --> 00:32:28.355
+Not everyone cheered. Was this physics?
+One critic called it “a bit of a stretch.”
+
+333
+00:32:29.105 --> 00:32:34.608
+The next day, chemistry's prize went
+in part to DeepMind's Demis Hassabis
+
+334
+00:32:34.608 --> 00:32:38.845
+and John Jumper, for a network that
+predicts the shapes of proteins.
+
+335
+00:32:41.517 --> 00:32:46.416
+Researchers at Anthropic, in one of many
+such studies, looked inside a simplified
+
+336
+00:32:46.416 --> 00:32:52.302
+copy of their model. Asked for a rhyme,
+it chose “rabbit” before writing the line.
+
+337
+00:32:52.752 --> 00:32:56.431
+Snuff that plan out, and it
+rhymes with “habit” instead.
+
+338
+00:32:56.881 --> 00:32:59.469
+Nobody told it to plan.
+
+339
+00:33:01.758 --> 00:33:07.412
+The candle of now: abilities will keep
+climbing, fast. By one 2025 measure, every
+
+340
+00:33:07.412 --> 00:33:14.621
+seven months or so, the tasks an AI agent
+can finish on its own grow twice as long.
+
+341
+00:33:15.071 --> 00:33:20.110
+Yet in one trial, seasoned programmers
+using AI felt faster, and were slower.
+
+342
+00:33:20.110 --> 00:33:22.767
+Its authors now call
+that result out of date.
+
+343
+00:33:23.725 --> 00:33:28.497
+The labs, under the same light.
+Anthropic refused to drop two limits:
+
+344
+00:33:28.497 --> 00:33:32.153
+no mass domestic surveillance,
+no fully autonomous weapons.
+
+345
+00:33:32.603 --> 00:33:38.186
+The Pentagon named it a supply-chain
+risk, and signed with OpenAI instead.
+
+346
+00:33:38.636 --> 00:33:41.932
+Two courts have split.
+That case, too, is open.
+
+347
+00:33:42.482 --> 00:33:46.081
+And Anthropic paid a record
+one and a half billion dollars
+
+348
+00:33:46.081 --> 00:33:49.772
+to settle claims it built a
+library from pirated books.
+
+349
+00:33:50.622 --> 00:33:54.825
+In a test with safeguards deliberately
+lowered, OpenAI’s agents broke
+
+350
+00:33:54.825 --> 00:34:00.513
+loose into another company’s real
+systems. OpenAI called it a warning shot.
+
+351
+00:34:04.875 --> 00:34:09.089
+The three holdouts, now: two
+warn the road is dangerous;
+
+352
+00:34:09.089 --> 00:34:11.306
+the third, that it doesn’t go far enough.
+
+353
+00:34:16.892 --> 00:34:22.500
+In 2025, Bernard Widrow, who fell for
+the dream in 1956, died at ninety-five.
+
+354
+00:34:22.500 --> 00:34:26.318
+He wrote that he “never got over it.”
+
+355
+00:34:35.175 --> 00:34:40.307
+Who taught it? Not rules alone.
+Not knowledge, typed in by hand.
+
+356
+00:34:40.307 --> 00:34:45.867
+Learning, with its accomplices: data,
+fire, a messenger, and people choosing.
+
+357
+00:34:46.417 --> 00:34:50.375
+Never one person. The board
+was a network all along.
+
+358
+00:34:52.465 --> 00:34:59.465
+Some candles burned nearly forty years; some,
+two; one match, a day. The newest still burn.
+
+359
+00:35:00.115 --> 00:35:04.364
+One lantern is still dark: how,
+exactly, it reaches its answers.
+
+360
+00:35:04.914 --> 00:35:08.779
+And how far, how fast?
+That file stays open.
+
+361
+00:35:14.467 --> 00:35:19.238
+The last word goes to
+Hinton, back in 2017.
+
+362
+00:35:19.638 --> 00:35:22.958
+“The future depends on
+some graduate student who
+
+363
+00:35:22.958 --> 00:35:26.069
+is deeply suspicious of
+everything I have said.”
+
+364
+00:35:29.519 --> 00:35:34.697
+Somewhere tonight a lamp is on, and
+someone at the rim is suspicious.
+
+365
+00:35:34.697 --> 00:35:36.856
+That is where new candles come from.

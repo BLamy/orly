@@ -92,12 +92,13 @@ export const DIST_Y0 = 560;
 export const DIST_BAR_W = 66;
 export const distScale: ScaleLinear<number, number> = scaleLinear().domain([0, 0.65]).range([0, 220]);
 
-/** The bits meter on the right. */
-export const meterY: ScaleLinear<number, number> = scaleLinear().domain([0, UNIFORM_TOTAL]).range([600, 180]);
+/** The bits meter on the right. Its baseline shares the distribution's floor; its top stays clear of the tape. */
+export const meterY: ScaleLinear<number, number> = scaleLinear().domain([0, UNIFORM_TOTAL]).range([DIST_Y0, 250]);
 export const METER_X = 1120;
 
-export const CAM_TAPE: CameraState = { x: 500, y: 300, k: 1.12 };
-export const CAM_DIST: CameraState = { x: 430, y: 420, k: 1.3 };
+/* The tape is 25 chips wide (about 1140 units), so both framings centre it and fit the 1280 stage. */
+export const CAM_TAPE: CameraState = { x: 690, y: 180, k: 1.05 };
+export const CAM_DIST: CameraState = { x: 690, y: 437, k: 1.05 };
 
 // ---------------------------------------------------------------------------
 // The timeline

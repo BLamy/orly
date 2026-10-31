@@ -177,7 +177,8 @@ const CHART_LEN_MAX = 100;
 export const chartY = (len: number): number =>
   CHART_Y0 + ((CHART_Y1 - CHART_Y0) * Math.min(len, CHART_LEN_MAX)) / CHART_LEN_MAX;
 
-export const CAM_GRID: CameraState = { x: 372, y: 318, k: 1.28 };
+// framed so the whole grid sits between the equation band (top) and the caption pill (bottom)
+export const CAM_GRID: CameraState = { x: 372, y: 335, k: 1.1 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------

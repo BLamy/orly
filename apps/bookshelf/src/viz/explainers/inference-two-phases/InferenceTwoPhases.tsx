@@ -10,7 +10,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -57,13 +56,18 @@ const WEIGHTS_Y = 180;
 const WEIGHTS_W = 240;
 const WEIGHTS_H = 300;
 
-const BAR_X = scaleLinear().domain([0, 15]).range([180, 1120]);
-const BAR_Y = 560;
+// 22 s spans the 14.3 s decode bar and leaves room for its label on stage.
+const BAR_X = scaleLinear().domain([0, 22]).range([180, 1000]);
+const BAR_Y = 590;
 
 const ROOF_X = scaleLinear().domain([0, 24000]).range([700, 1180]);
 
+const HEADER_H = 76;
+
+// Each camera frames its subject with the weights label, the bars and the
+// caption pill (y > 630) all clear of one another.
 const CAM_WEIGHTS: CameraState = { x: 420, y: 330, k: 1.3 };
-const CAM_BARS: CameraState = { x: 640, y: 500, k: 1.2 };
+const CAM_BARS: CameraState = { x: 670, y: 392, k: 1.0 };
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -197,7 +201,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the diagram gives way fully to the closing panel, so no faded labels sit behind it
+  const mainOp = 1 - dimU;
   // streaming sweep: 3 passes of a read head over the weight block
   const sweep = (streamU * 3) % 1;
   const tokDone = Math.floor(streamU * 3);
@@ -210,127 +215,127 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
-        <Camera {...cam}>
-          {/* the weight block */}
-          <g opacity={weightsU}>
-            <text x={WEIGHTS_X} y={WEIGHTS_Y - 30} fill={colors.TEXT} fontSize={18}>
-              the weights
-            </text>
-            <text x={WEIGHTS_X} y={WEIGHTS_Y - 8} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
-              7B params · fp16 · 14 GB
-            </text>
-            <rect x={WEIGHTS_X} y={WEIGHTS_Y} width={WEIGHTS_W} height={WEIGHTS_H} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
-            {Array.from({ length: 12 }, (_, i) => (
-              <rect
-                key={i}
-                x={WEIGHTS_X + 14}
-                y={WEIGHTS_Y + 14 + i * 23}
-                width={WEIGHTS_W - 28}
-                height={16}
-                rx={3}
-                fill={colors.SECONDARY}
-                opacity={0.18 + 0.03 * (i % 3)}
-              />
-            ))}
-            {/* the read head sweeping all weights per token */}
-            {streamU > 0 && streamU < 1 && (
-              <rect
-                x={WEIGHTS_X + 6}
-                y={WEIGHTS_Y + 6 + sweep * (WEIGHTS_H - 30)}
-                width={WEIGHTS_W - 12}
-                height={18}
-                rx={4}
-                fill={colors.ACCENT}
-                opacity={0.75}
-              />
-            )}
-            <text x={WEIGHTS_X + WEIGHTS_W / 2} y={WEIGHTS_Y + WEIGHTS_H + 28} textAnchor="middle" fill={colors.ACCENT} fontSize={14} opacity={streamU > 0 ? 1 : 0}>
-              one full sweep = one token{tokDone > 0 ? ` · tokens out: ${Math.min(3, tokDone)}` : ''}
-            </text>
-          </g>
-
-          {/* the per-token cost */}
-          {costU > 0 && (
-            <g opacity={costU}>
-              <text x={520} y={210} fill={colors.TEXT} fontSize={16}>
-                the decode budget
+      {mainOp > 0 && (
+        <g opacity={mainOp}>
+          <Camera {...cam}>
+            {/* the weight block */}
+            <g opacity={weightsU}>
+              <text x={WEIGHTS_X} y={WEIGHTS_Y - 30} fill={colors.TEXT} fontSize={18}>
+                the weights
               </text>
-              <text x={520} y={244} fill={colors.WARM} fontSize={22} fontFamily="monospace" fontWeight={700}>
-                14 GB ÷ 2 TB/s = {DECODE_MS.toFixed(0)} ms
+              <text x={WEIGHTS_X} y={WEIGHTS_Y - 8} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+                7B params · fp16 · 14 GB
               </text>
-              <text x={520} y={276} fill={colors.MUTED} fontSize={14}>
-                → {DECODE_TPS.toFixed(0)} tokens per second, per stream
-              </text>
-            </g>
-          )}
-
-          {/* the compute roof comparison */}
-          {roofU > 0 && (
-            <g opacity={roofU}>
-              <text x={700} y={330} fill={colors.TEXT} fontSize={15}>
-                what the silicon could do vs what one stream gets
-              </text>
-              <Axes x={ROOF_X} y={scaleLinear().domain([0, 1]).range([420, 420])} reveal={0} xTicks={0} yTicks={0} fontSize={10} />
-              <rect x={ROOF_X(0)} y={352} width={(ROOF_X(COMPUTE_TPS) - ROOF_X(0)) * roofU} height={22} rx={4} fill={colors.POSITIVE} opacity={0.5} />
-              <text x={ROOF_X(COMPUTE_TPS)} y={347} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
-                compute roof ≈ {Math.round(COMPUTE_TPS).toLocaleString()} tok/s
-              </text>
-              <rect x={ROOF_X(0)} y={392} width={Math.max(2, ROOF_X(DECODE_TPS) - ROOF_X(0))} height={22} rx={4} fill={colors.NEGATIVE} />
-              <text x={ROOF_X(DECODE_TPS) + 10} y={408} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
-                decode, one stream: {DECODE_TPS.toFixed(0)} tok/s
-              </text>
-              {utilU > 0 && (
-                <text x={700} y={452} fill={colors.WARM} fontSize={16} fontWeight={600} opacity={utilU}>
-                  utilization: {(UTIL * 100).toFixed(1)} percent — the memory wall
-                </text>
+              <rect x={WEIGHTS_X} y={WEIGHTS_Y} width={WEIGHTS_W} height={WEIGHTS_H} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
+              {Array.from({ length: 12 }, (_, i) => (
+                <rect
+                  key={i}
+                  x={WEIGHTS_X + 14}
+                  y={WEIGHTS_Y + 14 + i * 23}
+                  width={WEIGHTS_W - 28}
+                  height={16}
+                  rx={3}
+                  fill={colors.SECONDARY}
+                  opacity={0.18 + 0.03 * (i % 3)}
+                />
+              ))}
+              {/* the read head sweeping all weights per token */}
+              {streamU > 0 && streamU < 1 && (
+                <rect
+                  x={WEIGHTS_X + 6}
+                  y={WEIGHTS_Y + 6 + sweep * (WEIGHTS_H - 30)}
+                  width={WEIGHTS_W - 12}
+                  height={18}
+                  rx={4}
+                  fill={colors.ACCENT}
+                  opacity={0.75}
+                />
               )}
-            </g>
-          )}
-
-          {/* the two-phase bars */}
-          {phaseU > 0 && (
-            <g opacity={phaseU}>
-              <text x={180} y={BAR_Y - 44} fill={colors.TEXT} fontSize={16}>
-                the same 2048 tokens, in and out
-              </text>
-              <rect x={BAR_X(0)} y={BAR_Y - 20} width={Math.max(3, prefillW)} height={20} rx={3} fill={colors.POSITIVE} />
-              <text x={BAR_X(0) + 12} y={BAR_Y - 5} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
-                prefill {PREFILL_S.toFixed(2)} s (parallel)
-              </text>
-              <rect x={BAR_X(0)} y={BAR_Y + 12} width={Math.max(3, decodeW)} height={20} rx={3} fill={colors.NEGATIVE} opacity={0.85} />
-              <text x={BAR_X(0) + Math.max(3, decodeW) + 10} y={BAR_Y + 27} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
-                decode {(DECODE_2048_S * barU).toFixed(1)} s (one at a time)
+              <text x={WEIGHTS_X + WEIGHTS_W / 2} y={WEIGHTS_Y + WEIGHTS_H + 28} textAnchor="middle" fill={colors.ACCENT} fontSize={14} opacity={streamU > 0 ? 1 : 0}>
+                one full sweep = one token{tokDone > 0 ? ` · tokens out: ${Math.min(3, tokDone)}` : ''}
               </text>
             </g>
-          )}
-        </Camera>
-      </g>
 
+            {/* the per-token cost */}
+            {costU > 0 && (
+              <g opacity={costU}>
+                <text x={520} y={210} fill={colors.TEXT} fontSize={16}>
+                  the decode budget
+                </text>
+                <text x={520} y={244} fill={colors.WARM} fontSize={22} fontFamily="monospace" fontWeight={700}>
+                  14 GB ÷ 2 TB/s = {DECODE_MS.toFixed(0)} ms
+                </text>
+                <text x={520} y={276} fill={colors.MUTED} fontSize={14}>
+                  → {DECODE_TPS.toFixed(0)} tokens per second, per stream
+                </text>
+              </g>
+            )}
+
+            {/* the compute roof comparison */}
+            {roofU > 0 && (
+              <g opacity={roofU}>
+                <text x={700} y={312} fill={colors.TEXT} fontSize={15}>
+                  what the silicon could do vs what one stream gets
+                </text>
+                <Axes x={ROOF_X} y={scaleLinear().domain([0, 1]).range([420, 420])} reveal={0} xTicks={0} yTicks={0} fontSize={10} />
+                <rect x={ROOF_X(0)} y={352} width={(ROOF_X(COMPUTE_TPS) - ROOF_X(0)) * roofU} height={22} rx={4} fill={colors.POSITIVE} opacity={0.5} />
+                <text x={ROOF_X(COMPUTE_TPS)} y={346} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
+                  compute roof ≈ {Math.round(COMPUTE_TPS).toLocaleString()} tok/s
+                </text>
+                <rect x={ROOF_X(0)} y={392} width={Math.max(2, ROOF_X(DECODE_TPS) - ROOF_X(0))} height={22} rx={4} fill={colors.NEGATIVE} />
+                <text x={ROOF_X(DECODE_TPS) + 10} y={408} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+                  decode, one stream: {DECODE_TPS.toFixed(0)} tok/s
+                </text>
+                {utilU > 0 && (
+                  <text x={700} y={452} fill={colors.WARM} fontSize={16} fontWeight={600} opacity={utilU}>
+                    utilization: {(UTIL * 100).toFixed(1)} percent — the memory wall
+                  </text>
+                )}
+              </g>
+            )}
+
+            {/* the two-phase bars */}
+            {phaseU > 0 && (
+              <g opacity={phaseU}>
+                <text x={180} y={BAR_Y - 44} fill={colors.TEXT} fontSize={16}>
+                  the same 2048 tokens, in and out
+                </text>
+                <rect x={BAR_X(0)} y={BAR_Y - 20} width={Math.max(3, prefillW)} height={20} rx={3} fill={colors.POSITIVE} />
+                <text x={BAR_X(0) + 12} y={BAR_Y - 5} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
+                  prefill {PREFILL_S.toFixed(2)} s (parallel)
+                </text>
+                <rect x={BAR_X(0)} y={BAR_Y + 12} width={Math.max(3, decodeW)} height={20} rx={3} fill={colors.NEGATIVE} opacity={0.85} />
+                <text x={BAR_X(0) + Math.max(3, decodeW) + 10} y={BAR_Y + 27} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+                  decode {(DECODE_2048_S * barU).toFixed(1)} s (one at a time)
+                </text>
+              </g>
+            )}
+          </Camera>
+        </g>
+      )}
+
+      {/* the header band sits above the camera so moving content slides under it */}
+      <rect x={0} y={0} width={STAGE_W} height={HEADER_H} fill={colors.BG} />
+      <line x1={40} x2={STAGE_W - 40} y1={HEADER_H} y2={HEADER_H} stroke={colors.GRID} strokeWidth={1} opacity={titleU * mainOp} />
       <g opacity={titleU * mainOp}>
-        <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+        <text x={40} y={46} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           What serving actually costs
         </text>
       </g>
-      <MathLabel
-        tex="t_{\text{decode}} \approx \frac{\text{weight bytes}}{\text{bandwidth}}"
-        x={880}
-        y={54}
-        fontSize={20}
-        color={colors.SECONDARY}
-        opacity={costU * mainOp}
-      />
+      <text x={STAGE_W - 40} y={46} textAnchor="end" fill={colors.SECONDARY} fontSize={18} fontFamily="monospace" opacity={costU * mainOp}>
+        decode time per token ≈ weight bytes ÷ bandwidth
+      </text>
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Serving is a bandwidth bill.
           </text>
-          <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={336} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             7 ms per token, 0.6% compute used, prefill 150× faster
           </text>
-          <text x={640} y={360} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={362} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             than decode. Every trick ahead attacks those 7 ms.
           </text>
         </g>

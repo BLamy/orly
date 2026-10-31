@@ -1,0 +1,33 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-07T09:18:09.037Z",
+ "summary": {
+  "pass": 3,
+  "warn": 0,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "pass",
+   "detail": "1 cues rendered at exact length",
+   "problems": [],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "pass",
+   "detail": "summary current: 1 cue(s) on the 67.75 s clock",
+   "problems": []
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "1.1 min of music over 1.1 min (100%)"
+  }
+ ]
+}

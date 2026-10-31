@@ -1,0 +1,1156 @@
+{
+  "version": 1,
+  "slug": "handwired-learned-gallery",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Photos from a sketch",
+      "claims": [
+        {
+          "id": "c1-sketch-and-presets",
+          "claim": "A visitor sketches target rectangles on a stage, and training steps the network's coefficients with Adam until the photos match them.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: the page and its training",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "training steps the coefficients with Adam until the rectangles match the target rectangles, which a visitor sketches on the page",
+              "lines": "5"
+            },
+            {
+              "label": "lab README: presets",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The sketch starts from one of three presets, Story (10 rectangles)",
+              "lines": "9"
+            }
+          ]
+        },
+        {
+          "id": "c1-learned-not-coded",
+          "claim": "The author wanted the layout learned rather than coded, and the program is built from weighted sums and a relu, which keeps positive numbers and zeroes the rest.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "lab README: Cheng's verdict",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "the spirit of the gallery is to learn something",
+              "lines": "13"
+            },
+            {
+              "label": "README: ReLU",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "quote": "Math.max(0, x) is ReLU",
+              "lines": "18"
+            }
+          ]
+        },
+        {
+          "id": "c1-twenty-slots",
+          "claim": "The network has 20 output slots, of which the page uses up to 12, and each slot's position runs from minus one to plus one.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "learned gallery README: slots",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "The network has 20 output slots, of which the page uses up to 12",
+              "lines": "3"
+            },
+            {
+              "label": "trainable geometry: slot position",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "const position = slotCount === 1 ? 0 : item / (slotCount - 1) * 2 - 1",
+              "lines": "218"
+            }
+          ]
+        },
+        {
+          "id": "c1-ten-features",
+          "claim": "Each slot's position becomes ten features, computed once when the program is built: a constant, the position, and a sine and a cosine at four frequencies.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "trainable geometry: feature vector",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "const features = [1, position]",
+              "lines": "219"
+            },
+            {
+              "label": "learned gallery README: features fixed while building",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "features of the slot's position that are fixed while building",
+              "lines": "3"
+            }
+          ]
+        },
+        {
+          "id": "c1-reglu-layers",
+          "claim": "Two layers of six gated units follow, and a gated unit is one weighted sum times the ReLU of another.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "learned gallery README: ReGLU",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "A ReGLU unit is one weighted sum times the ReLU of another",
+              "lines": "3"
+            },
+            {
+              "label": "lab README: two layers of six units",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "go through two ReGLU layers of 6 units to the slot's left, top, width and height",
+              "lines": "5"
+            }
+          ]
+        },
+        {
+          "id": "c1-four-outputs",
+          "claim": "Four weighted sums read the second layer and give each slot's left, top, width and height, so twenty slots give twenty rectangles.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "lab README: left, top, width and height",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "go through two ReGLU layers of 6 units to the slot's left, top, width and height",
+              "lines": "5"
+            },
+            {
+              "label": "learned gallery README: 20 slots",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "The network has 20 output slots",
+              "lines": "3"
+            }
+          ]
+        },
+        {
+          "id": "c1-weight-count",
+          "claim": "The 244 weights are 132 in the first layer, 84 in the second and 28 at the output, and each one is a source cell. The per-layer split is inferred: it is arithmetic on the layer sizes, 2 × (6 × 10 + 6), 2 × (6 × 6 + 6) and 4 × (6 + 1).",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "learned gallery README: 244 source cells",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "Its 244 source cells are the trained coefficients",
+              "lines": "3"
+            },
+            {
+              "label": "trainable geometry: parameter layout",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "function createParameterLayout(",
+              "lines": "158"
+            }
+          ]
+        },
+        {
+          "id": "c1-operations",
+          "claim": "Unrolled, the whole program is 6,320 operations in eight layers, and only its 244 weights move during training.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "learned gallery README: program size",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "The program is 6,320 operations in 8 layers",
+              "lines": "3"
+            },
+            {
+              "label": "lab README: 244 weights",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "the program is 6,320 operations in 8 layers with 244 weights",
+              "lines": "9"
+            }
+          ]
+        },
+        {
+          "id": "c1-seeded-pile-and-adam",
+          "claim": "From the seeded starting weights the photos sit in a pile, and training steps every weight with Adam to shrink the gap between photo edges and sketch edges.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: seeded pile",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The seeded weights put the photos in a pile",
+              "lines": "20"
+            },
+            {
+              "label": "trainable geometry: seed",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "const seed = options.seed ?? 0x51_7a_9e",
+              "lines": "471"
+            },
+            {
+              "label": "learned gallery README: Adam",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "Training steps the coefficients with Adam",
+              "lines": "3"
+            }
+          ]
+        },
+        {
+          "id": "c1-matching-and-huber",
+          "claim": "Each sketch rectangle is paired with a photo by minimum-cost assignment, and each edge error counts quadratically up to a threshold and linearly beyond it.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "trainable geometry: matching",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "return minimumCostAssignment(costs).map(index => outputItems[index]!)",
+              "lines": "586"
+            },
+            {
+              "label": "trainable geometry: linear beyond threshold",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "geometryLossThreshold * (magnitude - 0.5 * geometryLossThreshold)",
+              "lines": "455"
+            }
+          ]
+        },
+        {
+          "id": "c1-first-fit-steps",
+          "claim": "In one run the first fit stopped after 679 steps for Story, 1,389 for Cinema and 879 for Contact sheet, about 1.1, 2.3 and 1.5 seconds.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: step counts, one run",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "679, 1,389 and 879, i.e. 1.1, 2.3 and 1.5 s",
+              "lines": "39"
+            }
+          ]
+        },
+        {
+          "id": "c1-edit-and-retrain",
+          "claim": "An edit continues training from the current weights, so a photo follows its rectangle, while a preset or the Retrain button starts over from the seeded weights.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: edits continue training",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "An edit continues training from the current weights",
+              "lines": "9"
+            },
+            {
+              "label": "lab README: presets and Retrain restart",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "A preset and the Retrain button start over from the seeded weights",
+              "lines": "9"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Lining up without snapping",
+      "claims": [
+        {
+          "id": "c2-cheng-request",
+          "claim": "Cheng asked for a bigger or adjustable penalty for a grid that was unaligned.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: Cheng's request",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "a bigger penalty or adjustable one for learned gallery for grid being unaligned",
+              "lines": "13"
+            }
+          ]
+        },
+        {
+          "id": "c2-straightening-first",
+          "claim": "The first answer straightened a copy of the sketch with ordinary code before training, and Cheng said snapping to alignment is only a simple thought.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: the first answer",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The first answer, on October 13, 2026, straightened a copy of the sketch with ordinary code before training",
+              "lines": "13"
+            },
+            {
+              "label": "lab README: Cheng's verdict",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "Snapping to some alignemtn is just a simple thought.",
+              "lines": "13"
+            },
+            {
+              "label": "lab README: ordinary code decided the lines",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "ordinary code decided where every line is, and training only copied the result",
+              "lines": "60"
+            }
+          ]
+        },
+        {
+          "id": "c2-no-straightening",
+          "claim": "Since October 14 nothing straightens the sketch; the photos line up only because training lowers a misalignment penalty.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: since October 14",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "Since October 14 nothing straightens the sketch",
+              "lines": "13"
+            }
+          ]
+        },
+        {
+          "id": "c2-penalty-reads-photos",
+          "claim": "The penalty reads only the photos, never the sketch, and charges every two photo edges of one kind for the gap between them.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: the penalty",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "every two photo edges of one kind, e.g. two tops, are charged for the gap between them",
+              "lines": "15"
+            },
+            {
+              "label": "lab README: reads only the photos",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "reads only the photos and never the sketch",
+              "lines": "15"
+            }
+          ]
+        },
+        {
+          "id": "c2-pull-five-times-gap",
+          "claim": "The pull on a pair is five times the gap, capped at the reach minus the gap, so it is zero from a gap of one reach on.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: the pull",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "A pair's pull, i.e. the slope of its charge, is 5 times the gap and at most the reach minus the gap",
+              "lines": "15"
+            },
+            {
+              "label": "trainable geometry: stiffness",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "const penaltyStiffness = 5",
+              "lines": "90"
+            },
+            {
+              "label": "trainable geometry: pairPull",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "return Math.max(-limit, Math.min(limit, multiplier + penaltyStiffness * gap))",
+              "lines": "140"
+            }
+          ]
+        },
+        {
+          "id": "c2-slider-reach",
+          "claim": "The slider runs from off to 8% and starts at 4%; the reach is half the slider's number, so 2% is about 10.8 px on a 538 px stage.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: slider range",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "goes from off to 8% and starts at 4%",
+              "lines": "17"
+            },
+            {
+              "label": "lab README: reach is half",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "the penalty's reach is half of it",
+              "lines": "17"
+            },
+            {
+              "label": "learned gallery README: 10.8 px",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "the penalty's reach is 10.8 px",
+              "lines": "21"
+            },
+            {
+              "label": "page: slider markup",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "assets/learned-gallery.html",
+              "quote": "max=\"8\" step=\"0.5\" value=\"4\"",
+              "lines": "68"
+            }
+          ]
+        },
+        {
+          "id": "c2-line-count",
+          "claim": "A pair's charge is divided by the number of edges on its line, so a row of four holds a photo about as firmly as a row of two. Ordinary code counts those lines at the start of each frame.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "lab README: divided by line edges",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "so a row of 4 holds a photo as far as a row of 2 does",
+              "lines": "15"
+            },
+            {
+              "label": "lab README: counted each frame",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "Ordinary code counts the lines from the photos' edges at the start of each frame.",
+              "lines": "15"
+            }
+          ]
+        },
+        {
+          "id": "c2-multipliers-grow",
+          "claim": "A held photo sits a sliver off its line, so each pair keeps a multiplier that grows by a tenth of the pair's gap each step until the gap closes.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: the slope alone stalls",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The slope of a cost alone leaves a held photo where its two pulls balance",
+              "lines": "16"
+            },
+            {
+              "label": "lab README: a tenth of the gap",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "grows it by a tenth of the pair's gap per training step",
+              "lines": "16"
+            },
+            {
+              "label": "trainable geometry: multiplier update",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "multiplierGrowth * steps * penaltyStiffness * gap",
+              "lines": "646"
+            }
+          ]
+        },
+        {
+          "id": "c2-penalty-waits-and-ramps",
+          "claim": "The multipliers are not part of the loss the page shows; the penalty waits while the seeded pile has every edge within reach of every other, then switches on near the sketch and rises over 200 steps.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: multipliers not in the loss",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The multipliers aren't part of the loss: the loss that the page shows is the cost without them.",
+              "lines": "16"
+            },
+            {
+              "label": "lab README: the pile and the wait",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The seeded weights put the photos in a pile, where every edge is within the reach of every other",
+              "lines": "20"
+            },
+            {
+              "label": "lab README: rise over 200 steps",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "and then it rises over 200 steps",
+              "lines": "20"
+            },
+            {
+              "label": "trainable geometry: rise steps",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "const penaltyRiseSteps = 200",
+              "lines": "116"
+            }
+          ]
+        },
+        {
+          "id": "c2-372-edits",
+          "claim": "After 372 small single edits at 4%, a line of photos ends 0.01 px apart at the median and 0.16 px at worst; straightening gave 0.04 px and 0.52 px.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: the measurement table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "372 single edits of 5 and 11 px",
+              "lines": "30"
+            },
+            {
+              "label": "lab README: penalty row values",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "0.01, 0.16 px",
+              "lines": "30"
+            }
+          ]
+        },
+        {
+          "id": "c2-meet-in-the-middle",
+          "claim": "When one rectangle of a row of four is dragged 12 px down, its photo stays in the row 9 px above the rectangle, and the other three photos move 3 px down.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: photos meet in the middle",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "when one rectangle of a row of 4 is dragged 12 px down, its photo stays in the row, 9 px above its rectangle, and the row's other photos move 3 px down",
+              "lines": "19"
+            }
+          ]
+        },
+        {
+          "id": "c2-join-and-leave",
+          "claim": "A photo joins a line at half the distance at which it leaves one, so a rectangle dragged 14 px out of its row keeps its photo in the row.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: joins at half the distance",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "A photo joins a line at half the distance at which it leaves one,",
+              "lines": "18"
+            },
+            {
+              "label": "lab README: 14 px drag",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "a rectangle dragged 14 px out of its row keeps its photo in the row",
+              "lines": "18"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Taking steps back",
+      "claims": [
+        {
+          "id": "c3-adam-jumps",
+          "claim": "Adam at a fixed learning rate does not come to rest once the loss is low, and before October 13 six small drags in a row made photos jump by up to 14 px.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: fixed-rate Adam",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "Adam at a fixed learning rate doesn't come to rest once the loss is low",
+              "lines": "22"
+            },
+            {
+              "label": "lab README: six drags, 14 px",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "six small drags in a row made the photos jump by up to 14 px",
+              "lines": "22"
+            }
+          ]
+        },
+        {
+          "id": "c3-frame-budget",
+          "claim": "Training runs at 600 steps a second: 10 steps a frame at 60 Hz and 5 at 120 Hz, at most 20 steps per frame and no more than fit in 6 ms.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: 600 steps a second",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "10 steps in a frame at 60 Hz and 5 at 120 Hz",
+              "lines": "9"
+            },
+            {
+              "label": "learned gallery: steps per second",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/learned-gallery.ts",
+              "quote": "export const msPerTrainingStep = 1000 / 600",
+              "lines": "271"
+            },
+            {
+              "label": "learned gallery: frame cap",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/learned-gallery.ts",
+              "quote": "export const maximumTrainingStepsPerFrame = 20",
+              "lines": "280"
+            }
+          ]
+        },
+        {
+          "id": "c3-frame-is-a-bet",
+          "claim": "Each frame measures one function before and after its steps, with the multipliers, line counts and penalty weight held constant for that frame.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: one function per frame",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "a frame holds the multipliers, the line counts and the penalty's weight constant, so it is one function per frame",
+              "lines": "22"
+            },
+            {
+              "label": "trainable geometry: trainOrUndo",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "const before = measure(valuesBefore)",
+              "lines": "868"
+            }
+          ]
+        },
+        {
+          "id": "c3-taken-back",
+          "claim": "If the function went up, the frame is taken back: the weights and Adam's moments return, and the learning rate halves, down to 1/64 of its value.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: taken back",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "the weights and Adam's moments go back, and the learning rate halves, down to 1/64 of its value",
+              "lines": "22"
+            },
+            {
+              "label": "trainable geometry: restore",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "source.set(savedSource)",
+              "lines": "878"
+            }
+          ]
+        },
+        {
+          "id": "c3-kept-rate-growth",
+          "claim": "If the function went down, the frame is kept and the rate grows by 15%, or doubles below 1/64. By arithmetic on that rule, climbing from 1/64 back to full takes about 30 kept frames (ln 64 over ln 1.15 is 29.75).",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "trainable geometry: rate update on kept frames",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "learningRateScale = Math.min(1, learningRateScale * (learningRateScale < 1 / 64 ? 2 : 1.15))",
+              "lines": "887"
+            }
+          ]
+        },
+        {
+          "id": "c3-low-rate-trap",
+          "claim": "After five frames in a row are taken back at the low rate, the rate keeps halving to 1/4096, and a kept frame doubles it, so a photo added far away cannot stand still 30 px off.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: five frames and 30 px",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "When 5 frames in a row at 1/64 were taken back, the rate goes on halving, down to 1/4096",
+              "lines": "22"
+            },
+            {
+              "label": "lab README: could stand still 30 px away",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "could stand still 30 px away",
+              "lines": "22"
+            },
+            {
+              "label": "trainable geometry: low-rate floor",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "framesTakenBackAtLowRate >= 5 ? 1 / 4096 : 1 / 64",
+              "lines": "883"
+            }
+          ]
+        },
+        {
+          "id": "c3-two-steps-or-none",
+          "claim": "A frame trains two steps or more, or none; a one-step frame that is taken back leaves momentum that can point uphill, so every frame is taken back until the multipliers change.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: two steps or none",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "A frame trains 2 steps or more, or none.",
+              "lines": "23"
+            },
+            {
+              "label": "lab README: momentum points uphill",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "Where the momentum itself points uphill, that step raises what it follows at any rate",
+              "lines": "23"
+            }
+          ]
+        },
+        {
+          "id": "c3-529-vs-874",
+          "claim": "At 5 ms a step, one-step frames stopped Contact sheet's first fit after 529 steps with a line of photos 0.47 px apart; two-step frames reached 874 steps and 0.03 px.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: 529 steps, 0.47 px",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "stopped after 529 steps with a line of photos 0.47 px apart on a stage of 500 px",
+              "lines": "23"
+            },
+            {
+              "label": "lab README: 874 steps, 0.03 px",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "With frames of two steps it is 874 steps and 0.03 px",
+              "lines": "23"
+            }
+          ]
+        },
+        {
+          "id": "c3-time-price",
+          "claim": "Where a step takes over 3 ms, a frame's training can take up to twice the 6 ms budget. The lab calls this the price of two-step frames, and the caption's acceptance of it is my reading.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "lab README: the price",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The price: where a step takes over 3 ms, a frame's training takes up to twice the 6 ms",
+              "lines": "23"
+            }
+          ]
+        },
+        {
+          "id": "c3-no-done-value",
+          "claim": "With the penalty on, the loss has no value that means done; it rests where its two parts balance, for example at 1e-5 with a photo held 9 px from its rectangle.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: no done value",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "it rests where its two parts balance, e.g. at 1e-5 with a photo held 9 px from its rectangle",
+              "lines": "24"
+            }
+          ]
+        },
+        {
+          "id": "c3-watch-photos",
+          "claim": "The page watches the photos: a change gets at least 500 more steps, training stops once no edge has moved more than 0.01% of the stage in 100 steps, and after 2,000 steps at the latest.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: at least 500 steps",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "a change gets at least 500 more steps",
+              "lines": "24"
+            },
+            {
+              "label": "learned gallery: rest distance",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/learned-gallery.ts",
+              "quote": "export const restDistance = 0.0001",
+              "lines": "259"
+            },
+            {
+              "label": "learned gallery: rest steps",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/learned-gallery.ts",
+              "quote": "export const restSteps = 100",
+              "lines": "257"
+            },
+            {
+              "label": "learned gallery: step limit",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/learned-gallery.ts",
+              "quote": "export const maximumTrainingStepsAfterChange = 2000",
+              "lines": "255"
+            }
+          ]
+        },
+        {
+          "id": "c3-frames-taken-back",
+          "claim": "Once the photos rest, most frames are taken back: 238 of the 300 after Story's first fit, and up to 171 identical frames in a row.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: 238 of 300",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "238 of the 300 frames after Story's first fit",
+              "lines": "56"
+            },
+            {
+              "label": "lab README: up to 171 in a row",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "up to 171 in a row",
+              "lines": "56"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "What held, what didn't",
+      "claims": [
+        {
+          "id": "c4-probe-design",
+          "claim": "A probe compared four forms of the penalty over 24 sessions of 40 small edits, counting edits that end with two photo edges 0.5 to 8 px apart.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: the probe",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "24 sessions of 40 small edits that end with two photo edges 0.5 to 8 px apart",
+              "lines": "61"
+            }
+          ]
+        },
+        {
+          "id": "c4-probe-shares",
+          "claim": "A fixed pull without multipliers left 78% of edits stuck; the same pull rounded less left 47%; multipliers with a limit full for the first 2 px left 21%.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: the four forms",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "a fixed pull that is rounded near a gap of 0, without multipliers, 78%",
+              "lines": "61"
+            },
+            {
+              "label": "lab README: rounded less",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The same rounded less, 47%",
+              "lines": "61"
+            },
+            {
+              "label": "lab README: limit full for 2 px",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "Multipliers with a limit that stays full for the first 2 px of a gap, 21%",
+              "lines": "61"
+            }
+          ]
+        },
+        {
+          "id": "c4-kept-form",
+          "claim": "The kept form, multipliers with a limit that falls from a gap of 0, got stuck edits to 1.8%, measured with a reach of 8 px on a 538 by 430 px stage, a little under the shipped reach of 2%.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: kept form 1.8%",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "Multipliers with a limit that falls from a gap of 0, the form that is kept, 1.8%",
+              "lines": "61"
+            },
+            {
+              "label": "trainable geometry: probe reach comment",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/trainable-geometry.ts",
+              "quote": "with a reach of 8 px on a stage of 538 by 430 px",
+              "lines": "89"
+            },
+            {
+              "label": "learned gallery README: shipped reach",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "the penalty's reach is 10.8 px",
+              "lines": "21"
+            }
+          ]
+        },
+        {
+          "id": "c4-shipped-setting",
+          "claim": "At the shipped setting, 96 sessions of 40 small edits ended with stuck edits 1.1% of the time, between 0.7% and 1.4% by batch, against about 2.5% for straightening.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: penalty 1.1%",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "1.1%, and 0.7% to 1.4% by batch of 24",
+              "lines": "35"
+            },
+            {
+              "label": "lab README: straightening 2.5%",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "2.5% and 2.7% in two batches of 24",
+              "lines": "35"
+            }
+          ]
+        },
+        {
+          "id": "c4-rare-not-zero",
+          "claim": "In 8 sessions of 200 random edits the lab saw none in 1,600; a reviewer's own generator saw 5 in 1,600, and 0.5% of 1,920 mixed edits ended stuck.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: none of 1,600",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "none of 1,600 edits",
+              "lines": "37"
+            },
+            {
+              "label": "lab README: reviewer's generator",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "after 5 of 1,600 edits",
+              "lines": "45"
+            },
+            {
+              "label": "lab README: 0.5% of 1,920",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "0.5% of 1,920 mixed edits in 48 sessions",
+              "lines": "45"
+            }
+          ]
+        },
+        {
+          "id": "c4-story-variants",
+          "claim": "Fitting 200 variants of Story's proportions, every line ended within 0.15 px when training stopped, and 26 variants used all 2,000 steps.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: 200 variants",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "the widest line at 0.15 px. 26 train all 2,000 steps",
+              "lines": "42"
+            }
+          ]
+        },
+        {
+          "id": "c4-edits-22px",
+          "claim": "Edits of 22 px pulled a photo off every line in 151 of 180 cases; those photos ended a median 0.12 px from their rectangles and 2.3 px at worst.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: 180 edits of 22 px",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "180 edits of 22 px",
+              "lines": "32"
+            },
+            {
+              "label": "lab README: 151 off every line",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "151. 22 more are off their line on one axis",
+              "lines": "32"
+            },
+            {
+              "label": "lab README: median and worst",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "0.12, 2.3 px, with 11 of the 151 over 1 px",
+              "lines": "33"
+            }
+          ]
+        },
+        {
+          "id": "c4-edge-on-no-line",
+          "claim": "An edge on no line is the open problem: 12 of the 200 variants end with such an edge 2 to 4 px off, 5 of them after all 2,000 steps, since the edges share the 244 weights.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab README: 12 of 200",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "Among the 200 variants of Story's proportions, 12 end with such an edge 2 to 4 px off, 5 of them after all 2,000 steps",
+              "lines": "49"
+            },
+            {
+              "label": "learned gallery README: shared weights",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "since the edges share the 244 weights, which rest where the slopes of all edges balance",
+              "lines": "34"
+            },
+            {
+              "label": "lab README: an edge on no line",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "An edge that is on no line can rest farther from where it is drawn than that.",
+              "lines": "49"
+            }
+          ]
+        },
+        {
+          "id": "c4-story-edge",
+          "claim": "One edge of Story rests 0.6 px from its rectangle; its own error gradient is 29 times the total, and the other edges' errors pull the shared weights the other way.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "learned gallery README: Story's edge",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "one edge of Story rests 0.6 px from its rectangle",
+              "lines": "34"
+            },
+            {
+              "label": "lab README: 29 times as much",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "the gradient of that one edge's error alone is 6.7e-5 long, 29 times as much",
+              "lines": "53"
+            },
+            {
+              "label": "lab README: the other edges pull the other way",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "the other edges' errors pull the shared weights the other way",
+              "lines": "53"
+            }
+          ]
+        },
+        {
+          "id": "c4-status",
+          "claim": "The status is current with that limit open: the README's test command runs 41 tests, the measurement scripts are not in the repo, and the numbers describe the page as it was on October 14, 2026.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "learned gallery README: test count",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "41 tests, about 20 s",
+              "lines": "10"
+            },
+            {
+              "label": "lab README: scratch scripts",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "The measurements were made with scratch scripts that aren't in the repo",
+              "lines": "3"
+            },
+            {
+              "label": "lab README: as it was on October 14",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/learned-gallery/README.md",
+              "quote": "it describes the page as it was on October 14, 2026",
+              "lines": "3"
+            }
+          ]
+        },
+        {
+          "id": "c4-no-held-out",
+          "claim": "There is no held-out test: the network is fitted to one sketch at a time, so the lab shows how well it fits a sketch, not how it handles one it never saw. The second half is my reading of the first.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "lab status: no held-out test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "quote": "No held-out test: the network is fitted to one sketch at a time.",
+              "lines": "203"
+            }
+          ]
+        },
+        {
+          "id": "c4-recap",
+          "claim": "Twenty slots feed 244 weights that output rectangles, a penalty with multipliers lines them up, and undoable frames keep training still; off-line edges and held-out tests remain open.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "learned gallery README: 244 source cells",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "Its 244 source cells are the trained coefficients",
+              "lines": "3"
+            },
+            {
+              "label": "learned gallery README: multipliers",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "quote": "The multipliers aren't part of the loss: the loss that the page shows is the cost without them.",
+              "lines": "24"
+            },
+            {
+              "label": "lab status: open limits",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "quote": "No held-out test: the network is fitted to one sketch at a time.",
+              "lines": "203"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+ "shot": "ch02-s04",
+ "at": "2026-10-28T09:10:55.725Z",
+ "minCapPx": 22,
+ "sampled": 20,
+ "texts": 11,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "2020 · GIDON ET AL., SCIENCE",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "XOR-like: either input, not both",
+   "capWhileSubject": 29.4,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "The neuron",
+   "maxCap": 29.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "is a logic",
+   "maxCap": 29.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "gate",
+   "maxCap": 29.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "McCulloch & Pitts, 1943",
+   "maxCap": 14.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Kleene, 1951",
+   "maxCap": 14.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "an hour",
+   "maxCap": 42.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a day",
+   "maxCap": 42.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a year",
+   "maxCap": 42.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a lifetime",
+   "maxCap": 42.9,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 9
+}

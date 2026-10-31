@@ -142,13 +142,14 @@ const CHAIN_STEP = 62;
 const BOX_X = 330;
 const BOX_Y = 330;
 
-// Right: head-to-tail arrows.
+// Right: head-to-tail arrows. The panel sits below the formula row.
 const ARR_CX = 890;
-const ARR_CY = 285;
+const ARR_CY = 310;
 const ARR_SCALE = 22;
 
-// Bottom-left plot: ‖Σ g_r‖ vs visits.
-const PLOT_X = scaleLinear().domain([0, R]).range([120, 560]);
+// Bottom-left plot: ‖Σ g_r‖ vs visits. Ends short of the arrow panel so the
+// end-of-curve labels stay clear of it.
+const PLOT_X = scaleLinear().domain([0, R]).range([120, 470]);
 const PLOT_Y = scaleLinear().domain([0, 22]).range([600, 430]);
 
 const CAM_CHAIN: CameraState = { x: 380, y: 300, k: 1.25 };
@@ -321,7 +322,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The old picture recedes to 0.12 behind the closing panel, never half-faded.
+  const mainOp = 1 - 0.88 * dimU;
   const deposits = Math.min(R, flowTok);
 
   // real curve points visible up to curveTok
@@ -356,7 +358,7 @@ function Frame({ s }: { s: SceneState }) {
                   y={CHAIN_Y + 27}
                   textAnchor="middle"
                   fill={colors.TEXT}
-                  fontSize={12}
+                  fontSize={14}
                   fontFamily="monospace"
                 >
                   r{r + 1}
@@ -379,10 +381,10 @@ function Frame({ s }: { s: SceneState }) {
           {/* the shared parameter box */}
           <g opacity={boxU}>
             <rect x={BOX_X} y={BOX_Y} width={120} height={62} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.4} />
-            <text x={BOX_X + 60} y={BOX_Y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+            <text x={BOX_X + 60} y={BOX_Y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
               shared W
             </text>
-            <text x={BOX_X + 60} y={BOX_Y + 47} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+            <text x={BOX_X + 60} y={BOX_Y + 47} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
               {deposits >= 1 ? `Σ of ${Math.floor(deposits)} visit${Math.floor(deposits) === 1 ? '' : 's'}` : 'one copy'}
             </text>
           </g>
@@ -401,23 +403,33 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* right: head-to-tail arrows, real vs control */}
       <g opacity={arrU * mainOp}>
-        <rect x={ARR_CX - 210} y={ARR_CY - 190} width={470} height={392} rx={12} fill={colors.PANEL} opacity={0.5} stroke={colors.GRID} />
+        <rect x={ARR_CX - 210} y={ARR_CY - 190} width={470} height={410} rx={12} fill={colors.PANEL} opacity={0.5} stroke={colors.GRID} />
         <text x={ARR_CX - 190} y={ARR_CY - 162} fill={colors.TEXT} fontSize={15}>
           per-visit gradients, head to tail (computed)
+        </text>
+        {/* where every visit's arrow starts */}
+        <circle cx={ARR_CX - 190} cy={ARR_CY + 60} r={4} fill={colors.TEXT} />
+        <text x={ARR_CX - 180} y={ARR_CY + 86} fill={colors.MUTED} fontSize={14}>
+          each visit adds one arrow to the chain
         </text>
         {/* control: scrambled signs */}
         <g opacity={ctrlU}>
           <path d={polyline(ARROWS_CTRL, ctrlU * R)} fill="none" stroke={colors.MUTED} strokeWidth={2} strokeDasharray="5 4" opacity={0.75} />
-          <text x={ARR_CX - 190} y={ARR_CY + 172} fill={colors.MUTED} fontSize={12}>
+          <text x={ARR_CX - 190} y={ARR_CY + 172} fill={colors.MUTED} fontSize={14}>
             random directions: mostly cancels
           </text>
         </g>
         {/* real: aligned */}
         <path d={polyline(ARROWS_REAL, arrTok)} fill="none" stroke={colors.POSITIVE} strokeWidth={2.6} />
         {arrTok >= R - 0.02 && (
-          <text x={ARR_CX - 190} y={ARR_CY + 150} fill={colors.POSITIVE} fontSize={12}>
-            the real visits: avg cosine {AVG_COS.toFixed(2)} — they compound
-          </text>
+          <>
+            <text x={ARR_CX - 190} y={ARR_CY + 150} fill={colors.POSITIVE} fontSize={14}>
+              the real visits: avg cosine {AVG_COS.toFixed(2)} — they compound
+            </text>
+            <text x={ARR_CX - 190} y={ARR_CY + 194} fill={colors.MUTED} fontSize={14}>
+              cosine: 1 = same way, 0 = unrelated, −1 = opposite
+            </text>
+          </>
         )}
       </g>
 
@@ -426,7 +438,7 @@ function Frame({ s }: { s: SceneState }) {
         <text x={120} y={412} fill={colors.TEXT} fontSize={15}>
           size of the summed update, as visits accumulate
         </text>
-        <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={3} xLabel="visits summed" fontSize={11} />
+        <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={3} xLabel="visits summed" fontSize={14} />
         {/* control curve */}
         <path
           d={SUM_CTRL.slice(0, kShown)
@@ -448,38 +460,55 @@ function Frame({ s }: { s: SceneState }) {
         />
         {kShown >= R && (
           <>
-            <text x={PLOT_X(R) + 6} y={PLOT_Y(SUM_REAL[R - 1]) + 4} fill={colors.POSITIVE} fontSize={12}>
+            <text x={PLOT_X(R) + 6} y={PLOT_Y(SUM_REAL[R - 1]) + 4} fill={colors.POSITIVE} fontSize={14}>
               aligned: {SUM_REAL[R - 1].toFixed(1)}
             </text>
-            <text x={PLOT_X(R) + 6} y={PLOT_Y(SUM_CTRL[R - 1]) + 4} fill={colors.MUTED} fontSize={12}>
+            <text x={PLOT_X(R) + 6} y={PLOT_Y(SUM_CTRL[R - 1]) + 4} fill={colors.MUTED} fontSize={14}>
               decorrelated: {SUM_CTRL[R - 1].toFixed(1)}
             </text>
           </>
         )}
       </g>
 
-      {/* κ_R and the bound */}
-      <MathLabel
-        tex="0 \le \kappa_R \le R"
-        x={760}
-        y={92}
-        fontSize={22}
-        color={colors.WARM}
-        opacity={kappaU * mainOp}
-      />
-      <MathLabel
-        tex="\|\Delta F\| \le C\, M\, \kappa_R \left(\tfrac{\beta}{\alpha}\right)^{2}"
-        x={985}
-        y={92}
-        fontSize={22}
-        color={colors.SECONDARY}
-        opacity={boundU * mainOp}
-      />
+      {/* κ_R: its formula and plain-words key sit in the header band */}
+      <g opacity={kappaU * mainOp}>
+        <MathLabel
+          tex="0 \le \kappa_R \le R"
+          x={700}
+          y={56}
+          fontSize={22}
+          color={colors.WARM}
+          anchor="start"
+          boxWidth={320}
+        />
+        <text x={700} y={84} fill={colors.TEXT} fontSize={15}>
+          visit-alignment coefficient κ_R: 0 = cancel, R = compound
+        </text>
+      </g>
+
+      {/* the bound and its terms sit below the arrow panel */}
+      <g opacity={boundU * mainOp}>
+        <MathLabel
+          tex="\|\Delta F\| \le C\, M\, \kappa_R \left(\tfrac{\beta}{\alpha}\right)^{2}"
+          x={700}
+          y={548}
+          fontSize={22}
+          color={colors.SECONDARY}
+          anchor="start"
+          boxWidth={420}
+        />
+        <text x={700} y={578} fill={colors.TEXT} fontSize={14}>
+          C: a constant · M: depth · β/α: update-to-residual ratio
+        </text>
+        <text x={700} y={600} fill={colors.TEXT} fontSize={14}>
+          perturbation bound: how far one small change can move the output
+        </text>
+      </g>
 
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Aligned visits compound.
           </text>
@@ -492,7 +521,7 @@ function Frame({ s }: { s: SceneState }) {
             opacity={1}
             anchor="middle"
           />
-          <text x={640} y={392} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={392} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             Stability means keeping this product order one — the fix lives in β/α.
           </text>
         </g>

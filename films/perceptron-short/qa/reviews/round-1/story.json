@@ -1,0 +1,80 @@
+{
+  "reviewer": "story",
+  "lens": "STORY & CURIOSITY: arc, stakes, emotion, pacing, memorable images, questions planted and paid off",
+  "round": 1,
+  "previousRounds": "none (qa/reviews/ did not exist before this round)",
+  "scores": {
+    "accuracy": 8,
+    "depth": 6,
+    "clarity": 7,
+    "story": 6,
+    "visual": 8,
+    "sync": 7,
+    "sound": 6.5,
+    "curiosity": 6
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "The camera push-in (K2) crops the retina out of frame at the payoff. At 41.4 s the p5 horizontal bar is half off the left edge, and at 42.8 s ('right') and 43.2 s only the dials, needle and lantern are visible. The film's whole point is that the SAME horizontal bar it called 'vertical' at 30.5 s is now called 'horizontal', and the viewer can't see that shape when the lantern flares.",
+      "fix": "Reframe K2 so the retina, with its lit horizontal bar, the needle and the lantern all stay in frame through 'right' and the hold. For example, push toward the midpoint between the retina and the response unit at about 1.35x instead of centring on the dial and lantern, or hold wide until about 0.3 s after 'right' and push in only during the tail. Also echo p1 visually: briefly ghost the p1 caption ('said vertical, wrong') under the new 'right' caption so the before and after read as one comparison."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "The payoff doesn't show that it learned to tell shapes apart, which is what the brief promises. There is only one correct answer, 'horizontal' on a horizontal bar. Every earlier vertical bar was also answered 'horizontal', so a machine stuck on 'horizontal' would look identical. A sharp viewer can read the triumph as luck.",
+      "fix": "After the p5 lantern flare, add one more presentation in the tail: a vertical bar answered VERTICAL, with the lantern flaring a second time. Two right answers on two different shapes prove discrimination. This needs the tail extension in the global issue below. It can stay wordless and carried by the music, so the claims guardrail is untouched. Drive it from the real training record (keep running the actual perceptron rule until both shapes are classified correctly, and show those presentations)."
+    },
+    {
+      "owner": "global",
+      "id": "tail",
+      "severity": "major",
+      "problem": "The ending is abrupt. The narration ends at 43.13 s and the film ends at 44.75 s, leaving 1.6 s for the emotional arrival. The m01 D-major bloom peaks at about 43.4 s, and the cue render is 50.75 s long with audible bloom and music-box decay out to about 48 s (see the spectrogram), but it is cut by the 0.5 s safety fade. The runtime check already warns 0.7 min vs a 1.0 min target (75%), so there is room.",
+      "fix": "Extend the end of the clock by 6-8 s of silence after L0107 (pad the tail of shot ch01-s03 in timeline.json to about 51-52 s). Use it for: (a) the second correct presentation above, (b) a hold on the lit lantern, and (c) a bookend (see the next issue). Then have m01 let the bloom ring out naturally and land its final D under the last image instead of being faded."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "No bookend or human resonance. The film opens on the dark lab window with the line 'Once, a machine learned to see', and Rosenblatt is given a name card and a presenting gesture in s02, but neither the lab nor the man returns. The film ends inside an abstract theatre, so 'learned to see' is never visually closed and the emotional beat belongs to a lamp rather than a person.",
+      "fix": "In the extended tail, iris out from the lit response lantern and match-dissolve back to the s02 lab framing at night. The real machine's eye now glows on its stand, the green tubes are low, and Rosenblatt's silhouette is beside the racks, turned toward the eye (the same stance as at 22.6 s, now still). The title 'The Machine That Learned to See' returns small and fades with the last note. This needs no new narration or claims."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The struggle (Act 2) has little visual weight. 'Wrong' is signalled only by a small italic caption ('presentation 2 · said \"horizontal\" — wrong') that is barely legible at 1080p, and by the lantern simply staying dark. Presentations 2-4 land about 1 s apart during 'Wrong, and wrong again, and then', so the setback the payoff depends on barely registers emotionally.",
+      "fix": "Give each wrong verdict a visible negative beat on the response unit, such as a cold blue-grey gutter of the lantern wick, a brief needle shudder, or a dimming of the footlights, and enlarge the verdict caption by about 1.6x or replace it with a single large word ('wrong') that fades. Keep the dial turns visible after each wrong so the viewer sees the effort accumulate before the lantern finally flares."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "The title shot shows the machine's eye, wire rack and dial racks already in full silhouette (frames 4.5 s and 5.5 s are almost identical to ch01-s02's first frame). L0101 plants 'a machine learned to see', but the reveal that s02 narrates one part at a time ('Its eye... Behind it... racks of dials') has already been given away.",
+      "fix": "Keep the machine in near-total darkness in s01: only the window light, the blinds' slatted shaft, and on 'see' the three rows of photocells catching light, so the eye is the only part of the machine the viewer meets. Let the match-dissolve into s02 bring up the tubes and reveal the rest. This sharpens the 'what is it?' question the first line plants."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s02",
+      "severity": "minor",
+      "problem": "The coined word 'perceptron' (24.2 s) is the film's key term and title subject, but it gets no visual moment, while the name card for Rosenblatt sits bottom-left, far from his silhouette on the right edge (24.1 s).",
+      "fix": "Place the 'Frank Rosenblatt · psychologist' card next to his silhouette (bottom-right, under his outstretched arm), and on 'perceptron' let a small engraved plate reading 'PERCEPTRON' catch the light on the machine he is presenting. This gives the film's one new word an image to hang on."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "minor",
+      "problem": "The low end (below about 200 Hz) stays at near-constant high energy for the whole cue on the spectrogram. The drone and pizzicato bed doesn't thin out for the 'wrong' section, so the dynamic contrast that should set up the D-major bloom is mostly in the upper harmonics.",
+      "fix": "Thin the bass bed during L0107 (36.7-42.6 s), for example by dropping the contrabass or lowering its lpf, so that the low D arriving on 'right' and the bloom feel like an opening out. Re-time the bloom to ring through the extended tail."
+    }
+  ],
+  "best_moments": [
+    "L0101 'Once, a machine learned to see.' over the dark lab, with three rows of the eye's photocells catching the window light on 'see': a fairy-tale hook paired with an image that literally shows the machine receiving light.",
+    "Setup and payoff of the dials: L0103 plants 'racks of dials that motors could turn' (the lit dial windows at 18.2 s), and L0106 pays it off with 'the motors nudge each dial' as the fired dials visibly turn and their threads thicken.",
+    "The iris from the green real-world lab into the amber 'theatre of the machine's mind', where the hardware becomes a labelled stage (RETINA · WEIGHTS · DIALS · RESPONSE UNIT) driven by the real perceptron rule on real presentations. This is the genuinely new way to learn here.",
+    "The response lantern flaring on 'right' after 'Wrong, and wrong again, and then, quite suddenly': a clean, memorable image of learning that the narrator's slow delivery and the first D-major chord in the score land together."
+  ]
+}

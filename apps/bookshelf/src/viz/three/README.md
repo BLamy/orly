@@ -3,8 +3,8 @@
 Storybook → **3D Library / Compositions** contains AlexNet, Convolution,
 Neural Network and Math Primitives. Each is a composition of the same geometry
 factories in `primitives/index.ts`, rendered by `ThreeLibrary.tsx` with the existing
-Player clock. Astra owns these Three.js models and integration; Fable 5.1 owns
-any new D3/SVG choreography. See `docs/authoring-models.md` at the repository root.
+Player clock. Opus 5.5 owns these Three.js models, their integration, and all
+D3/SVG choreography. See `docs/authoring-models.md` at the repository root.
 
 ## Available pieces
 

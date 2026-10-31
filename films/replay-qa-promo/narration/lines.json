@@ -1,0 +1,2051 @@
+{
+ "version": 1,
+ "lines": {
+  "L0101": {
+   "shot": "ch01-s01",
+   "chapter": "ch01",
+   "text": "Imagine end-to-end tests you never write. Or remember to run.",
+   "spoken": "Imagine end-to-end tests you never write. Or remember to run.",
+   "sig": "053a76394fa9",
+   "chunk": "bde84e762b7c9735",
+   "clip": "narration/clips/L0101.wav",
+   "clipSha": "ebef63b33b91",
+   "duration": 3.6245,
+   "speechStart": 0.12,
+   "speechEnd": 3.382,
+   "words": [
+    {
+     "w": "Imagine",
+     "start": 0.12,
+     "end": 0.631
+    },
+    {
+     "w": "end-to-end",
+     "start": 0.7,
+     "end": 1.281
+    },
+    {
+     "w": "tests",
+     "start": 1.339,
+     "end": 1.641
+    },
+    {
+     "w": "you",
+     "start": 1.676,
+     "end": 1.757
+    },
+    {
+     "w": "never",
+     "start": 1.827,
+     "end": 2.001
+    },
+    {
+     "w": "write",
+     "start": 2.047,
+     "end": 2.349
+    },
+    {
+     "w": "Or",
+     "start": 2.558,
+     "end": 2.697
+    },
+    {
+     "w": "remember",
+     "start": 2.744,
+     "end": 3.034
+    },
+    {
+     "w": "to",
+     "start": 3.069,
+     "end": 3.115
+    },
+    {
+     "w": "run",
+     "start": 3.173,
+     "end": 3.382
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 3.5045,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -70.6,
+     "tail": -71.8
+    },
+    "clean": true
+   }
+  },
+  "L0102": {
+   "shot": "ch01-s03",
+   "chapter": "ch01",
+   "text": "Introducing Replay QA.",
+   "spoken": "Introducing Replay Q A.",
+   "sig": "0137594f72e9",
+   "chunk": "0b2824cc92ebe0f0",
+   "clip": "narration/clips/L0102.wav",
+   "clipSha": "d3346daae143",
+   "duration": 1.999,
+   "speechStart": 0.12,
+   "speechEnd": 1.836,
+   "words": [
+    {
+     "w": "Introducing",
+     "start": 0.12,
+     "end": 0.677
+    },
+    {
+     "w": "Replay",
+     "start": 1.047,
+     "end": 1.349
+    },
+    {
+     "w": "QA",
+     "start": 1.407,
+     "end": 1.836
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 0.712,
+     "gap": 0.3
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 1.579,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -66,
+     "tail": -72.3
+    },
+    "clean": true
+   }
+  },
+  "L0201": {
+   "shot": "ch02-s01",
+   "chapter": "ch02",
+   "text": "Point it at your app.",
+   "spoken": "Point it at your app.",
+   "sig": "4f74a9e3aa2b",
+   "chunk": "933ef1f4fe344055",
+   "clip": "narration/clips/L0201.wav",
+   "clipSha": "1321623c061a",
+   "duration": 1.2985,
+   "speechStart": 0.12,
+   "speechEnd": 1.026,
+   "words": [
+    {
+     "w": "Point",
+     "start": 0.12,
+     "end": 0.387
+    },
+    {
+     "w": "it",
+     "start": 0.422,
+     "end": 0.492
+    },
+    {
+     "w": "at",
+     "start": 0.538,
+     "end": 0.619
+    },
+    {
+     "w": "your",
+     "start": 0.666,
+     "end": 0.782
+    },
+    {
+     "w": "app",
+     "start": 0.84,
+     "end": 1.026
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 1.1785,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -78.2,
+     "tail": -71.6
+    },
+    "clean": true
+   }
+  },
+  "L0202": {
+   "shot": "ch02-s02",
+   "chapter": "ch02",
+   "text": "No test suite needed. Just a quick chat.",
+   "spoken": "No test suite needed. Just a quick chat.",
+   "sig": "be9cc47e1e70",
+   "chunk": "b8d255278ef79b19",
+   "clip": "narration/clips/L0202.wav",
+   "clipSha": "00b0c6bc056a",
+   "duration": 2.7955,
+   "speechStart": 0.12,
+   "speechEnd": 2.563,
+   "words": [
+    {
+     "w": "No",
+     "start": 0.12,
+     "end": 0.306
+    },
+    {
+     "w": "test",
+     "start": 0.375,
+     "end": 0.608
+    },
+    {
+     "w": "suite",
+     "start": 0.631,
+     "end": 0.886
+    },
+    {
+     "w": "needed",
+     "start": 0.921,
+     "end": 1.223
+    },
+    {
+     "w": "Just",
+     "start": 1.797,
+     "end": 1.971
+    },
+    {
+     "w": "a",
+     "start": 2.006,
+     "end": 2.029
+    },
+    {
+     "w": "quick",
+     "start": 2.076,
+     "end": 2.238
+    },
+    {
+     "w": "chat",
+     "start": 2.285,
+     "end": 2.563
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 1.31,
+     "gap": 0.4
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 2.2755,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -74.1,
+     "tail": -75.9
+    },
+    "clean": true
+   }
+  },
+  "L0301": {
+   "shot": "ch03-s01",
+   "chapter": "ch03",
+   "text": "It explores your app in a real browser.",
+   "spoken": "It explores your app, in a real browser.",
+   "sig": "114226db03f5",
+   "speed": 0.98,
+   "chunk": "9715db961cec21e1",
+   "clip": "narration/clips/L0301.wav",
+   "clipSha": "195074db5659",
+   "duration": 2.7955,
+   "speechStart": 0.12,
+   "speechEnd": 2.538,
+   "words": [
+    {
+     "w": "It",
+     "start": 0.12,
+     "end": 0.271
+    },
+    {
+     "w": "explores",
+     "start": 0.317,
+     "end": 0.747
+    },
+    {
+     "w": "your",
+     "start": 0.782,
+     "end": 0.898
+    },
+    {
+     "w": "app",
+     "start": 0.968,
+     "end": 1.177
+    },
+    {
+     "w": "in",
+     "start": 1.667,
+     "end": 1.783
+    },
+    {
+     "w": "a",
+     "start": 1.818,
+     "end": 1.841
+    },
+    {
+     "w": "real",
+     "start": 1.899,
+     "end": 2.061
+    },
+    {
+     "w": "browser",
+     "start": 2.108,
+     "end": 2.538
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 1.322,
+     "gap": 0.2
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 2.4755,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -78.7,
+     "tail": -71.9
+    },
+    "clean": true
+   }
+  },
+  "L0302": {
+   "shot": "ch03-s01",
+   "chapter": "ch03",
+   "text": "Turns what it finds into user journeys, and runs them.",
+   "spoken": "Turns what it finds into user journeys, and runs them.",
+   "sig": "e255dc37e97c",
+   "chunk": "69a4184ba33126c7",
+   "clip": "narration/clips/L0302.wav",
+   "clipSha": "eca4562dfffe",
+   "duration": 3.4715,
+   "speechStart": 0.12,
+   "speechEnd": 3.204,
+   "words": [
+    {
+     "w": "Turns",
+     "start": 0.12,
+     "end": 0.422
+    },
+    {
+     "w": "what",
+     "start": 0.457,
+     "end": 0.585
+    },
+    {
+     "w": "it",
+     "start": 0.619,
+     "end": 0.677
+    },
+    {
+     "w": "finds",
+     "start": 0.736,
+     "end": 1.026
+    },
+    {
+     "w": "into",
+     "start": 1.061,
+     "end": 1.188
+    },
+    {
+     "w": "user",
+     "start": 1.27,
+     "end": 1.537
+    },
+    {
+     "w": "journeys",
+     "start": 1.595,
+     "end": 2.047
+    },
+    {
+     "w": "and",
+     "start": 2.473,
+     "end": 2.647
+    },
+    {
+     "w": "runs",
+     "start": 2.728,
+     "end": 2.995
+    },
+    {
+     "w": "them",
+     "start": 3.041,
+     "end": 3.204
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 2.21,
+     "gap": 0.1
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 2.467,
+    "to": 5.8055,
+    "pad": 0.033,
+    "head": "gap",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -78.1,
+     "tail": -77.9
+    },
+    "clean": true
+   }
+  },
+  "L0401": {
+   "shot": "ch04-s01",
+   "chapter": "ch04",
+   "text": "Then it runs on Replay's browsers. On a schedule, while you sleep.",
+   "spoken": "Then it runs on Replay's browsers. On a schedule, while you sleep.",
+   "sig": "c2d7c0d9f2dc",
+   "chunk": "d60bbd501d054048",
+   "clip": "narration/clips/L0401.wav",
+   "clipSha": "74a60abdae88",
+   "duration": 4.0645,
+   "speechStart": 0.12,
+   "speechEnd": 3.752,
+   "words": [
+    {
+     "w": "Then",
+     "start": 0.12,
+     "end": 0.329
+    },
+    {
+     "w": "it",
+     "start": 0.375,
+     "end": 0.445
+    },
+    {
+     "w": "runs",
+     "start": 0.492,
+     "end": 0.77
+    },
+    {
+     "w": "on",
+     "start": 0.817,
+     "end": 0.909
+    },
+    {
+     "w": "Replay's",
+     "start": 0.968,
+     "end": 1.339
+    },
+    {
+     "w": "browsers",
+     "start": 1.374,
+     "end": 1.885
+    },
+    {
+     "w": "On",
+     "start": 2.29,
+     "end": 2.429
+    },
+    {
+     "w": "a",
+     "start": 2.464,
+     "end": 2.488
+    },
+    {
+     "w": "schedule",
+     "start": 2.522,
+     "end": 2.964
+    },
+    {
+     "w": "while",
+     "start": 3.16,
+     "end": 3.334
+    },
+    {
+     "w": "you",
+     "start": 3.369,
+     "end": 3.439
+    },
+    {
+     "w": "sleep",
+     "start": 3.473,
+     "end": 3.752
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 2.0125,
+     "gap": 0.15
+    },
+    {
+     "at": 2.837,
+     "gap": 0.15
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 3.6445,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -78.2,
+     "tail": -81.5
+    },
+    "clean": true
+   }
+  },
+  "L0402": {
+   "shot": "ch04-s02",
+   "chapter": "ch04",
+   "text": "Against staging, a preview, even localhost.",
+   "spoken": "Against, staging, a preview, even local host.",
+   "sig": "09edaa9858a5",
+   "speed": 0.98,
+   "chunk": "52c4073a422df177",
+   "clip": "narration/clips/L0402.wav",
+   "clipSha": "513359570174",
+   "duration": 2.7671,
+   "speechStart": 0.12,
+   "speechEnd": 2.605,
+   "words": [
+    {
+     "w": "Against",
+     "start": 0.12,
+     "end": 0.619
+    },
+    {
+     "w": "staging",
+     "start": 0.805,
+     "end": 1.269
+    },
+    {
+     "w": "a",
+     "start": 1.327,
+     "end": 1.351
+    },
+    {
+     "w": "preview",
+     "start": 1.397,
+     "end": 1.769
+    },
+    {
+     "w": "even",
+     "start": 1.827,
+     "end": 1.989
+    },
+    {
+     "w": "localhost",
+     "start": 2.047,
+     "end": 2.605
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 2.6471,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -75.2,
+     "tail": -69.1
+    },
+    "clean": true
+   }
+  },
+  "L0403": {
+   "shot": "ch04-s03",
+   "chapter": "ch04",
+   "text": "And on every pull request.",
+   "spoken": "And on every pull request.",
+   "sig": "95f5f0e80fef",
+   "chunk": "587f9e350d7eecbb",
+   "clip": "narration/clips/L0403.wav",
+   "clipSha": "3ec457767c93",
+   "duration": 1.966,
+   "speechStart": 0.12,
+   "speechEnd": 1.676,
+   "words": [
+    {
+     "w": "And",
+     "start": 0.12,
+     "end": 0.317
+    },
+    {
+     "w": "on",
+     "start": 0.387,
+     "end": 0.48
+    },
+    {
+     "w": "every",
+     "start": 0.596,
+     "end": 0.898
+    },
+    {
+     "w": "pull",
+     "start": 0.944,
+     "end": 1.142
+    },
+    {
+     "w": "request",
+     "start": 1.211,
+     "end": 1.676
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 1.846,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "gap",
+    "edgeDb": {
+     "head": -49.8,
+     "tail": -71.3
+    },
+    "clean": true
+   }
+  },
+  "L0404": {
+   "shot": "ch04-s03",
+   "chapter": "ch04",
+   "text": "Each run is recorded, then reviewed. For what breaks, and what's slow.",
+   "spoken": "Each run is recorded, then reviewed. For what breaks, and what's slow.",
+   "sig": "db82ee365170",
+   "chunk": "587f9e350d7eecbb",
+   "clip": "narration/clips/L0404.wav",
+   "clipSha": "329d478eb01a",
+   "duration": 4.7605,
+   "speechStart": 0.1255,
+   "speechEnd": 4.4555,
+   "words": [
+    {
+     "w": "Each",
+     "start": 0.1255,
+     "end": 0.3345
+    },
+    {
+     "w": "run",
+     "start": 0.3805,
+     "end": 0.5085
+    },
+    {
+     "w": "is",
+     "start": 0.5545,
+     "end": 0.6245
+    },
+    {
+     "w": "recorded",
+     "start": 0.6945,
+     "end": 1.1705
+    },
+    {
+     "w": "then",
+     "start": 1.4605,
+     "end": 1.6225
+    },
+    {
+     "w": "reviewed",
+     "start": 1.7045,
+     "end": 2.0985
+    },
+    {
+     "w": "For",
+     "start": 2.6565,
+     "end": 2.8075
+    },
+    {
+     "w": "what",
+     "start": 2.8535,
+     "end": 2.9925
+    },
+    {
+     "w": "breaks",
+     "start": 3.0395,
+     "end": 3.4225
+    },
+    {
+     "w": "and",
+     "start": 3.7245,
+     "end": 3.8755
+    },
+    {
+     "w": "what's",
+     "start": 3.9215,
+     "end": 4.1305
+    },
+    {
+     "w": "slow",
+     "start": 4.1535,
+     "end": 4.4555
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 1.8485,
+    "to": 6.609,
+    "pad": 0,
+    "head": "gap",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -71.7,
+     "tail": -73.4
+    },
+    "clean": true
+   }
+  },
+  "L0501": {
+   "shot": "ch05-s01",
+   "chapter": "ch05",
+   "text": "Some bugs only exist in time.",
+   "spoken": "Some bugs only exist... in time.",
+   "sig": "3829659ee3e1",
+   "speed": 0.98,
+   "chunk": "fd495a2f20d5bf43",
+   "clip": "narration/clips/L0501.wav",
+   "clipSha": "5464998d9bae",
+   "duration": 2.2563,
+   "speechStart": 0.12,
+   "speechEnd": 2.082,
+   "words": [
+    {
+     "w": "Some",
+     "start": 0.12,
+     "end": 0.352
+    },
+    {
+     "w": "bugs",
+     "start": 0.375,
+     "end": 0.631
+    },
+    {
+     "w": "only",
+     "start": 0.689,
+     "end": 0.875
+    },
+    {
+     "w": "exist",
+     "start": 0.933,
+     "end": 1.351
+    },
+    {
+     "w": "in",
+     "start": 1.56,
+     "end": 1.699
+    },
+    {
+     "w": "time",
+     "start": 1.769,
+     "end": 2.082
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 2.1363,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -39.7,
+     "tail": -71.6
+    },
+    "clean": true
+   }
+  },
+  "L0502": {
+   "shot": "ch05-s02",
+   "chapter": "ch05",
+   "text": "Replay QA caught one in its own app.",
+   "spoken": "Replay Q.A. caught one... in its own app.",
+   "sig": "3edcabeb6faf",
+   "speed": 0.98,
+   "chunk": "7a9bdc1f5b667014",
+   "clip": "narration/clips/L0502.wav",
+   "clipSha": "cb367fafd4ff",
+   "duration": 3.1655,
+   "speechStart": 0.12,
+   "speechEnd": 2.883,
+   "words": [
+    {
+     "w": "Replay",
+     "start": 0.12,
+     "end": 0.55
+    },
+    {
+     "w": "QA",
+     "start": 0.631,
+     "end": 1.2
+    },
+    {
+     "w": "caught",
+     "start": 1.281,
+     "end": 1.525
+    },
+    {
+     "w": "one",
+     "start": 1.594,
+     "end": 1.873
+    },
+    {
+     "w": "in",
+     "start": 2.163,
+     "end": 2.291
+    },
+    {
+     "w": "its",
+     "start": 2.338,
+     "end": 2.454
+    },
+    {
+     "w": "own",
+     "start": 2.5,
+     "end": 2.639
+    },
+    {
+     "w": "app",
+     "start": 2.686,
+     "end": 2.883
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 3.0455,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -69.9,
+     "tail": -65.3
+    },
+    "clean": true
+   }
+  },
+  "L0503": {
+   "shot": "ch05-s02",
+   "chapter": "ch05",
+   "text": "One update. Sixty-seven milliseconds. Four dropped frames.",
+   "spoken": "One update. Sixty-seven milliseconds. Four dropped frames.",
+   "sig": "e2c262480286",
+   "chunk": "ad66090f88d69825",
+   "clip": "narration/clips/L0503.wav",
+   "clipSha": "f80ea0bf379a",
+   "duration": 4.0335,
+   "speechStart": 0.12,
+   "speechEnd": 3.731,
+   "words": [
+    {
+     "w": "One",
+     "start": 0.12,
+     "end": 0.306
+    },
+    {
+     "w": "update",
+     "start": 0.329,
+     "end": 0.747
+    },
+    {
+     "w": "Sixty-seven",
+     "start": 1.06,
+     "end": 1.664
+    },
+    {
+     "w": "milliseconds",
+     "start": 1.71,
+     "end": 2.326
+    },
+    {
+     "w": "Four",
+     "start": 2.686,
+     "end": 2.906
+    },
+    {
+     "w": "dropped",
+     "start": 2.964,
+     "end": 3.266
+    },
+    {
+     "w": "frames",
+     "start": 3.301,
+     "end": 3.731
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 2.57,
+    "to": 6.5955,
+    "pad": 0.008,
+    "head": "gap",
+    "tail": "gap",
+    "edgeDb": {
+     "head": -65.5,
+     "tail": -67
+    },
+    "clean": true
+   }
+  },
+  "L0504": {
+   "shot": "ch05-s02",
+   "chapter": "ch05",
+   "text": "No click. A background refresh re-rendered the project list.",
+   "spoken": "No click. A background refresh re-rendered the project list.",
+   "sig": "13f27bd4bda6",
+   "chunk": "ad66090f88d69825",
+   "clip": "narration/clips/L0504.wav",
+   "clipSha": "7aa1a89d606a",
+   "duration": 3.728,
+   "speechStart": 0.135,
+   "speechEnd": 3.478,
+   "words": [
+    {
+     "w": "No",
+     "start": 0.135,
+     "end": 0.285
+    },
+    {
+     "w": "click",
+     "start": 0.355,
+     "end": 0.645
+    },
+    {
+     "w": "A",
+     "start": 0.97,
+     "end": 1.052
+    },
+    {
+     "w": "background",
+     "start": 1.145,
+     "end": 1.574
+    },
+    {
+     "w": "refresh",
+     "start": 1.644,
+     "end": 2.097
+    },
+    {
+     "w": "re-rendered",
+     "start": 2.166,
+     "end": 2.642
+    },
+    {
+     "w": "the",
+     "start": 2.677,
+     "end": 2.747
+    },
+    {
+     "w": "project",
+     "start": 2.782,
+     "end": 3.153
+    },
+    {
+     "w": "list",
+     "start": 3.2,
+     "end": 3.478
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 6.518,
+    "to": 10.246,
+    "pad": 0,
+    "head": "gap",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -62.8,
+     "tail": -66
+    },
+    "clean": true
+   }
+  },
+  "L0505": {
+   "shot": "ch05-s03",
+   "chapter": "ch05",
+   "text": "Twenty-five of twenty-seven renders changed nothing on screen.",
+   "spoken": "Twenty-five of twenty-seven renders changed nothing on screen.",
+   "sig": "20b2c5d0fc2d",
+   "speed": 0.96,
+   "chunk": "59732eec188a82e9",
+   "clip": "narration/clips/L0505.wav",
+   "clipSha": "34d6e8d8f681",
+   "duration": 3.6266,
+   "speechStart": 0.12,
+   "speechEnd": 3.313,
+   "words": [
+    {
+     "w": "Twenty-five",
+     "start": 0.12,
+     "end": 0.909
+    },
+    {
+     "w": "of",
+     "start": 0.956,
+     "end": 1.014
+    },
+    {
+     "w": "twenty-seven",
+     "start": 1.084,
+     "end": 1.594
+    },
+    {
+     "w": "renders",
+     "start": 1.653,
+     "end": 2.001
+    },
+    {
+     "w": "changed",
+     "start": 2.059,
+     "end": 2.384
+    },
+    {
+     "w": "nothing",
+     "start": 2.512,
+     "end": 2.779
+    },
+    {
+     "w": "on",
+     "start": 2.837,
+     "end": 2.93
+    },
+    {
+     "w": "screen",
+     "start": 2.976,
+     "end": 3.313
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 2.413,
+     "gap": 0.07
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 3.4366,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -79.8,
+     "tail": -43
+    },
+    "clean": true
+   }
+  },
+  "L0506": {
+   "shot": "ch05-s03",
+   "chapter": "ch05",
+   "text": "A screen recording can't see that. A time-travel recording can.",
+   "spoken": "A screen recording can't see that. A time-travel recording can.",
+   "sig": "20c3e4c1e19d",
+   "chunk": "0c2ab0aae61d9949",
+   "clip": "narration/clips/L0506.wav",
+   "clipSha": "0b01d0855269",
+   "duration": 3.8645,
+   "speechStart": 0.12,
+   "speechEnd": 3.637,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.12,
+     "end": 0.189
+    },
+    {
+     "w": "screen",
+     "start": 0.259,
+     "end": 0.479
+    },
+    {
+     "w": "recording",
+     "start": 0.538,
+     "end": 0.886
+    },
+    {
+     "w": "can't",
+     "start": 0.932,
+     "end": 1.153
+    },
+    {
+     "w": "see",
+     "start": 1.199,
+     "end": 1.373
+    },
+    {
+     "w": "that",
+     "start": 1.408,
+     "end": 1.675
+    },
+    {
+     "w": "A",
+     "start": 2.116,
+     "end": 2.186
+    },
+    {
+     "w": "time-travel",
+     "start": 2.267,
+     "end": 2.778
+    },
+    {
+     "w": "recording",
+     "start": 2.86,
+     "end": 3.243
+    },
+    {
+     "w": "can",
+     "start": 3.301,
+     "end": 3.637
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 3.3355,
+    "to": 7.1815,
+    "pad": 0.0185,
+    "head": "gap",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -72.4,
+     "tail": -73.2
+    },
+    "clean": true
+   }
+  },
+  "L0507": {
+   "shot": "ch05-s04",
+   "chapter": "ch05",
+   "text": "Another bug: one list, fetched two hundred fifty-eight times in under three minutes.",
+   "spoken": "Another bug: one list, fetched two hundred fifty-eight times in under three minutes.",
+   "sig": "134439a78368",
+   "chunk": "faf0ea59f93141d1",
+   "clip": "narration/clips/L0507.wav",
+   "clipSha": "78997463a278",
+   "duration": 4.8875,
+   "speechStart": 0.12,
+   "speechEnd": 4.555,
+   "words": [
+    {
+     "w": "Another",
+     "start": 0.12,
+     "end": 0.515
+    },
+    {
+     "w": "bug",
+     "start": 0.573,
+     "end": 0.909
+    },
+    {
+     "w": "one",
+     "start": 1.165,
+     "end": 1.397
+    },
+    {
+     "w": "list",
+     "start": 1.455,
+     "end": 1.803
+    },
+    {
+     "w": "fetched",
+     "start": 1.966,
+     "end": 2.268
+    },
+    {
+     "w": "two",
+     "start": 2.314,
+     "end": 2.488
+    },
+    {
+     "w": "hundred",
+     "start": 2.535,
+     "end": 2.755
+    },
+    {
+     "w": "fifty-eight",
+     "start": 2.802,
+     "end": 3.243
+    },
+    {
+     "w": "times",
+     "start": 3.266,
+     "end": 3.626
+    },
+    {
+     "w": "in",
+     "start": 3.661,
+     "end": 3.719
+    },
+    {
+     "w": "under",
+     "start": 3.777,
+     "end": 3.94
+    },
+    {
+     "w": "three",
+     "start": 3.986,
+     "end": 4.183
+    },
+    {
+     "w": "minutes",
+     "start": 4.218,
+     "end": 4.555
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 4.7675,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "gap",
+    "edgeDb": {
+     "head": -60.7,
+     "tail": -66.2
+    },
+    "clean": true
+   }
+  },
+  "L0508": {
+   "shot": "ch05-s04",
+   "chapter": "ch05",
+   "text": "It never saved its place, so it kept starting over.",
+   "spoken": "It never saved its place... so it kept starting over.",
+   "sig": "805622121e4a",
+   "speed": 0.98,
+   "chunk": "6538e7b850be4c1e",
+   "clip": "narration/clips/L0508.wav",
+   "clipSha": "b9d9a54c7dde",
+   "duration": 3.4545,
+   "speechStart": 0.12,
+   "speechEnd": 3.162,
+   "words": [
+    {
+     "w": "It",
+     "start": 0.12,
+     "end": 0.271
+    },
+    {
+     "w": "never",
+     "start": 0.306,
+     "end": 0.48
+    },
+    {
+     "w": "saved",
+     "start": 0.526,
+     "end": 0.759
+    },
+    {
+     "w": "its",
+     "start": 0.793,
+     "end": 0.898
+    },
+    {
+     "w": "place",
+     "start": 0.933,
+     "end": 1.351
+    },
+    {
+     "w": "so",
+     "start": 1.827,
+     "end": 2.012
+    },
+    {
+     "w": "it",
+     "start": 2.094,
+     "end": 2.163
+    },
+    {
+     "w": "kept",
+     "start": 2.221,
+     "end": 2.419
+    },
+    {
+     "w": "starting",
+     "start": 2.465,
+     "end": 2.814
+    },
+    {
+     "w": "over",
+     "start": 2.883,
+     "end": 3.162
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 3.3345,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -78.5,
+     "tail": -74.9
+    },
+    "clean": true
+   }
+  },
+  "L0601": {
+   "shot": "ch06-s01",
+   "chapter": "ch06",
+   "text": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.",
+   "spoken": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.",
+   "sig": "fb1fb7837feb",
+   "speed": 0.94,
+   "chunk": "a06a72fcbc33bd5f",
+   "clip": "narration/clips/L0601.wav",
+   "clipSha": "8d27a2c4580d",
+   "duration": 5.2725,
+   "speechStart": 0.12,
+   "speechEnd": 5.02,
+   "words": [
+    {
+     "w": "Every",
+     "start": 0.12,
+     "end": 0.399
+    },
+    {
+     "w": "run",
+     "start": 0.468,
+     "end": 0.805
+    },
+    {
+     "w": "a",
+     "start": 0.991,
+     "end": 1.06
+    },
+    {
+     "w": "recording",
+     "start": 1.142,
+     "end": 1.606
+    },
+    {
+     "w": "Every",
+     "start": 1.961,
+     "end": 2.181
+    },
+    {
+     "w": "bug",
+     "start": 2.228,
+     "end": 2.483
+    },
+    {
+     "w": "a",
+     "start": 2.529,
+     "end": 2.553
+    },
+    {
+     "w": "root",
+     "start": 2.611,
+     "end": 2.773
+    },
+    {
+     "w": "cause",
+     "start": 2.82,
+     "end": 3.168
+    },
+    {
+     "w": "Every",
+     "start": 3.476,
+     "end": 3.697
+    },
+    {
+     "w": "fix",
+     "start": 3.766,
+     "end": 4.022
+    },
+    {
+     "w": "rerun",
+     "start": 4.091,
+     "end": 4.393
+    },
+    {
+     "w": "to",
+     "start": 4.44,
+     "end": 4.486
+    },
+    {
+     "w": "confirm",
+     "start": 4.533,
+     "end": 5.02
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 1.6585,
+     "gap": 0.25
+    },
+    {
+     "at": 2.947,
+     "gap": 0.25
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 4.6525,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -60.9,
+     "tail": -65.2
+    },
+    "clean": true
+   }
+  },
+  "L0602": {
+   "shot": "ch06-s02",
+   "chapter": "ch06",
+   "text": "Replay QA. End-to-end testing, fully managed. Catch bugs that only exist in time.",
+   "spoken": "Replay Q A. End-to-end testing, fully managed. Catch bugs that only exist in time.",
+   "sig": "b2821011b3ca",
+   "chunk": "d679cfb1c1a6c554",
+   "clip": "narration/clips/L0602.wav",
+   "clipSha": "21b18d18797b",
+   "duration": 5.4215,
+   "speechStart": 0.12,
+   "speechEnd": 5.194,
+   "words": [
+    {
+     "w": "Replay",
+     "start": 0.12,
+     "end": 0.573
+    },
+    {
+     "w": "QA",
+     "start": 0.654,
+     "end": 1.293
+    },
+    {
+     "w": "End-to-end",
+     "start": 1.385,
+     "end": 1.85
+    },
+    {
+     "w": "testing",
+     "start": 1.896,
+     "end": 2.303
+    },
+    {
+     "w": "fully",
+     "start": 2.372,
+     "end": 2.628
+    },
+    {
+     "w": "managed",
+     "start": 2.674,
+     "end": 3.057
+    },
+    {
+     "w": "Catch",
+     "start": 3.348,
+     "end": 3.626
+    },
+    {
+     "w": "bugs",
+     "start": 3.673,
+     "end": 3.916
+    },
+    {
+     "w": "that",
+     "start": 3.951,
+     "end": 4.079
+    },
+    {
+     "w": "only",
+     "start": 4.137,
+     "end": 4.358
+    },
+    {
+     "w": "exist",
+     "start": 4.404,
+     "end": 4.706
+    },
+    {
+     "w": "in",
+     "start": 4.752,
+     "end": 4.822
+    },
+    {
+     "w": "time",
+     "start": 4.88,
+     "end": 5.194
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 5.3015,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -76.4,
+     "tail": -66.4
+    },
+    "clean": true
+   }
+  }
+ },
+ "shots": {
+  "ch01-s01": {
+   "chunks": [
+    "bde84e762b7c9735"
+   ],
+   "lines": [
+    "L0101"
+   ]
+  },
+  "ch01-s03": {
+   "chunks": [
+    "0b2824cc92ebe0f0"
+   ],
+   "lines": [
+    "L0102"
+   ]
+  },
+  "ch02-s01": {
+   "chunks": [
+    "933ef1f4fe344055"
+   ],
+   "lines": [
+    "L0201"
+   ]
+  },
+  "ch02-s02": {
+   "chunks": [
+    "b8d255278ef79b19"
+   ],
+   "lines": [
+    "L0202"
+   ]
+  },
+  "ch03-s01": {
+   "chunks": [
+    "9715db961cec21e1",
+    "69a4184ba33126c7"
+   ],
+   "lines": [
+    "L0301",
+    "L0302"
+   ]
+  },
+  "ch04-s01": {
+   "chunks": [
+    "d60bbd501d054048"
+   ],
+   "lines": [
+    "L0401"
+   ]
+  },
+  "ch04-s02": {
+   "chunks": [
+    "52c4073a422df177"
+   ],
+   "lines": [
+    "L0402"
+   ]
+  },
+  "ch04-s03": {
+   "chunks": [
+    "587f9e350d7eecbb"
+   ],
+   "lines": [
+    "L0403",
+    "L0404"
+   ]
+  },
+  "ch05-s01": {
+   "chunks": [
+    "fd495a2f20d5bf43"
+   ],
+   "lines": [
+    "L0501"
+   ]
+  },
+  "ch05-s02": {
+   "chunks": [
+    "7a9bdc1f5b667014",
+    "ad66090f88d69825"
+   ],
+   "lines": [
+    "L0502",
+    "L0503",
+    "L0504"
+   ]
+  },
+  "ch05-s03": {
+   "chunks": [
+    "59732eec188a82e9",
+    "0c2ab0aae61d9949"
+   ],
+   "lines": [
+    "L0505",
+    "L0506"
+   ]
+  },
+  "ch05-s04": {
+   "chunks": [
+    "faf0ea59f93141d1",
+    "6538e7b850be4c1e"
+   ],
+   "lines": [
+    "L0507",
+    "L0508"
+   ]
+  },
+  "ch05-s05": {
+   "chunks": [],
+   "lines": []
+  },
+  "ch06-s01": {
+   "chunks": [
+    "a06a72fcbc33bd5f"
+   ],
+   "lines": [
+    "L0601"
+   ]
+  },
+  "ch06-s02": {
+   "chunks": [
+    "d679cfb1c1a6c554"
+   ],
+   "lines": [
+    "L0602"
+   ]
+  }
+ },
+ "chunks": {
+  "bde84e762b7c9735": {
+   "lines": [
+    {
+     "id": "L0101",
+     "spoken": "Imagine end-to-end tests you never write. Or remember to run."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "0b2824cc92ebe0f0": {
+   "lines": [
+    {
+     "id": "L0102",
+     "spoken": "Introducing Replay Q A."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "933ef1f4fe344055": {
+   "lines": [
+    {
+     "id": "L0201",
+     "spoken": "Point it at your app."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "b8d255278ef79b19": {
+   "lines": [
+    {
+     "id": "L0202",
+     "spoken": "No test suite needed. Just a quick chat."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "69a4184ba33126c7": {
+   "lines": [
+    {
+     "id": "L0301",
+     "spoken": "It explores your app in a real browser."
+    },
+    {
+     "id": "L0302",
+     "spoken": "Turns what it finds into user journeys, and runs them."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "d60bbd501d054048": {
+   "lines": [
+    {
+     "id": "L0401",
+     "spoken": "Then it runs on Replay's browsers. On a schedule, while you sleep."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "69b333c9ce37fa25": {
+   "lines": [
+    {
+     "id": "L0402",
+     "spoken": "Against staging, a preview, even local host."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "587f9e350d7eecbb": {
+   "lines": [
+    {
+     "id": "L0403",
+     "spoken": "And on every pull request."
+    },
+    {
+     "id": "L0404",
+     "spoken": "Each run is recorded, then reviewed. For what breaks, and what's slow."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "b885ca6fb8499440": {
+   "lines": [
+    {
+     "id": "L0501",
+     "spoken": "Some bugs only exist in time."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "ad66090f88d69825": {
+   "lines": [
+    {
+     "id": "L0502",
+     "spoken": "Replay Q A caught one in its own app."
+    },
+    {
+     "id": "L0503",
+     "spoken": "One update. Sixty-seven milliseconds. Four dropped frames."
+    },
+    {
+     "id": "L0504",
+     "spoken": "No click. A background refresh re-rendered the project list."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "0c2ab0aae61d9949": {
+   "lines": [
+    {
+     "id": "L0505",
+     "spoken": "Twenty-five of twenty-seven renders changed nothing on screen."
+    },
+    {
+     "id": "L0506",
+     "spoken": "A screen recording can't see that. A time-travel recording can."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "faf0ea59f93141d1": {
+   "lines": [
+    {
+     "id": "L0507",
+     "spoken": "Another bug: one list, fetched two hundred fifty-eight times in under three minutes."
+    },
+    {
+     "id": "L0508",
+     "spoken": "It never saved its place, so it kept starting over."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "28e9c59938cb349f": {
+   "lines": [
+    {
+     "id": "L0601",
+     "spoken": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "d679cfb1c1a6c554": {
+   "lines": [
+    {
+     "id": "L0602",
+     "spoken": "Replay Q A. End-to-end testing, fully managed. Catch bugs that only exist in time."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+   }
+  },
+  "9715db961cec21e1": {
+   "lines": [
+    {
+     "id": "L0301",
+     "spoken": "It explores your app, in a real browser."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "21766fdfa5ed46a9": {
+   "lines": [
+    {
+     "id": "L0402",
+     "spoken": "Against staging, a preview, even local host."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "fd495a2f20d5bf43": {
+   "lines": [
+    {
+     "id": "L0501",
+     "spoken": "Some bugs only exist... in time."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "90cc063b2beb6e2d": {
+   "lines": [
+    {
+     "id": "L0502",
+     "spoken": "Replay Q A caught one, in its own app."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "6538e7b850be4c1e": {
+   "lines": [
+    {
+     "id": "L0508",
+     "spoken": "It never saved its place... so it kept starting over."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "56e505f6da0380ad": {
+   "lines": [
+    {
+     "id": "L0502",
+     "spoken": "Replay Q A caught one. In its own app."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "6082ee0bb8380270": {
+   "lines": [
+    {
+     "id": "L0502",
+     "spoken": "Replay Q A caught one... in its own app."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "7a9bdc1f5b667014": {
+   "lines": [
+    {
+     "id": "L0502",
+     "spoken": "Replay Q.A. caught one... in its own app."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "52c4073a422df177": {
+   "lines": [
+    {
+     "id": "L0402",
+     "spoken": "Against, staging, a preview, even local host."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.98
+   }
+  },
+  "59732eec188a82e9": {
+   "lines": [
+    {
+     "id": "L0505",
+     "spoken": "Twenty-five of twenty-seven renders changed nothing on screen."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.96
+   }
+  },
+  "a06a72fcbc33bd5f": {
+   "lines": [
+    {
+     "id": "L0601",
+     "spoken": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.94
+   }
+  }
+ },
+ "voice": {
+  "voiceId": "cjVigY5qzO86Huf0OWal",
+  "name": "Eric (premade library voice cjVigY5qzO86Huf0OWal) - smooth, trustworthy, mid-life American; plain, friendly product-promo read",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+   "stability": 0.6,
+   "similarity_boost": 0.8,
+   "style": 0.05,
+   "use_speaker_boost": true,
+   "speed": 1
+  },
+  "seed": 1016863915,
+  "format": "mp3_44100_192"
+ },
+ "updatedAt": "2026-10-14T21:23:30.047Z"
+}

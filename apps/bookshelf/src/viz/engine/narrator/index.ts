@@ -40,6 +40,11 @@ export function speechify(text: string): string {
     text
       // Voice-only normalization; on-screen captions stay verbatim.
       .replace(/\brrweb\b/gi, 'r r web')
+      .replace(/\bREADME\b/g, 'read me')
+      .replace(/\bJavaScript\b/g, 'Javascript')
+      .replace(/\bTypeScript\b/g, 'Typescript')
+      .replace(/\bRegExp\b/g, 'reg ex')
+      .replace(/\bJSON\b/g, 'Jason')
       // markdown emphasis / code / links
       .replace(/\*\*([^*]+)\*\*/g, '$1')
       .replace(/\*([^*]+)\*/g, '$1')

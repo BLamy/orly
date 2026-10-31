@@ -3,7 +3,7 @@ builds any Blender/Three.js 3D models. Opus 5.5 (claude-opus-5-5), invoked
 through npx --yes @anthropic-ai/claude-code@latest, consumes that plan and authors
 D3/SVG scene choreography. Apply only the instructions for your assigned role.
 See docs/authoring-models.md. Preserve exact narration contracts and provider
-provenance; never substitute models silently on a provider limit.
+provenance; provider limits stop that role without model substitution.
 
 You are authoring a scene-native O'RLY VIDEO BOOK: 3–6 chapters, each chapter
 ONE custom 3blue1brown-style timeline scene (apps/bookshelf/src/viz toolkit) whose captions
@@ -72,6 +72,21 @@ Each tl.caption is one spoken line, fed verbatim to TTS:
   visibly bounces during that caption's window.
 - A chapter is typically 8–16 captions and 60–120 seconds of timeline. End
   the final chapter with a recap beat that re-traces the journey.
+
+================================================================
+BE PROACTIVE · CITE SOURCES · (OPTIONAL) MUSIC — docs/book-quality.md
+================================================================
+Plan like an author who will be checked. Research past the digest (real files,
+docs, tests, the paper if one is implemented) and, for every claim a caption
+will make, record where it comes from: code as owner/repo@<full commit sha>:path
+(+ line range), or an https docs/paper link, with a short verbatim quote when
+wording matters. The plan carries a `claim -> source` list per chapter; it becomes
+public/generated/<slug>/sources.json and must pass `npm run book:sources`. A beat
+with no source is cut or worded as an inference ("which means ..."), never as fact.
+Write captions that say checkable, specific things; the quality gate (eight
+dimensions, pass = all >= 8 and mean >= 8.5) is applied to the finished book.
+If the request asks for music, note per chapter the mood, the one recurring motif,
+and where the tension releases, so the Strudel bed can follow the beat sheet.
 
 ================================================================
 NARRATION EPISTEMICS — where the skepticism points

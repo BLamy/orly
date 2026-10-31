@@ -1,0 +1,36 @@
+{
+ "shot": "ch06-s01",
+ "at": "2026-10-28T17:39:30.743Z",
+ "step": 0.0833,
+ "sampled": 143,
+ "transition": {
+  "kind": "inkBleed",
+  "sampled": 17,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "HandwiredOS",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "drawImage@356,294",
+   "probed": false,
+   "from": 5.333,
+   "to": 12.583,
+   "minInkWhilePaper": 1
+  }
+ ]
+}

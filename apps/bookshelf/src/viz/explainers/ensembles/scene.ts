@@ -174,7 +174,8 @@ export const by = (y: number): number => BPLOT.y + BPLOT.h / 2 - (y / 2.2) * (BP
 export const RPANEL = { x: 740, y: 110, w: 440 };
 
 export const CAM_A: CameraState = CAMERA_HOME;
-export const CAM_B: CameraState = { x: 390, y: 330, k: 1.2 };
+// frames the scatter (x 110..670) and the round panel (x 740..1140) together on the stage
+export const CAM_B: CameraState = { x: 625, y: 330, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;

@@ -86,7 +86,8 @@ export const boundBoth = (c: number): number => -(W_BOTH[0] + W_BOTH[1] * c) / W
 /** causal-only boundary: vertical line at c = −w0/w1 */
 export const CAUSAL_CUT: number = -W_CAUSAL[0] / W_CAUSAL[1];
 
-export const CAM_CLOUD: CameraState = { x: 550, y: 360, k: 1.15 };
+/* frames the plot and the scoreboard column together on the 1280-wide stage */
+export const CAM_CLOUD: CameraState = { x: 665, y: 372, k: 1 };
 
 export interface Scene {
   tl: Timeline;

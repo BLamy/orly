@@ -11,9 +11,9 @@ import type { CameraState, SceneState } from '../../core';
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const METHODS = [
-  { name: 'Data-Construction-Skill', color: colors.ACCENT },
-  { name: 'agent baseline', color: colors.SECONDARY },
-  { name: 'DataFlow method', color: colors.WARM },
+  { name: 'Data-Construction-Skill', role: 'constructed by skill', color: colors.ACCENT },
+  { name: 'agent baseline', role: 'constructed by agent', color: colors.SECONDARY },
+  { name: 'DataFlow method', role: 'constructed by DataFlow', color: colors.WARM },
 ];
 const DOMAINS = ['math', 'general', 'science', 'business', 'medicine', 'law'];
 const DOMAIN_COLORS = [colors.ACCENT, colors.TEAL, colors.SECONDARY, colors.WARM, colors.POSITIVE, colors.NEGATIVE];
@@ -43,7 +43,7 @@ export function buildScene() {
 
   tl.caption({ at: 12.7, dur: 5.5, text: 'Each candidate output joins the same Dolly fifteen thousand anchor before fine-tuning. The shared base makes the data the variable.' });
   tl.tween(anchorU, 1, { at: 13.2, dur: 1.1, ease: ease.pop });
-  tl.tween(cam, { x: 650, y: 330, k: 1.1 }, { at: 13.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 330, k: 1.08 }, { at: 13.4, dur: 1.3, ease: ease.move });
   tl.hold(18.2, 0.5);
 
   tl.caption({ at: 18.7, dur: 5.8, text: 'The released construction recipe trains for three epochs with cosine scheduling and Deep Speed stage three partitioning.' });
@@ -83,14 +83,14 @@ function MethodCard({ i, u, scoreU }: { i: number; u: number; scoreU: number }) 
   const y = 190 + i * 118;
   const uu = clamp01(u * 5 - i * 0.7);
   return (
-    <g transform={`translate(${330 + scoreU * 300} ${y})`} opacity={uu}>
+    <g transform={`translate(${360 + scoreU * 270} ${y})`} opacity={uu}>
       <rect x={-128} y={-36} width={256} height={72} rx={12} fill={colors.PANEL} stroke={m.color} strokeWidth={1.5} />
-      <circle cx={-96} cy={0} r={11} fill={m.color} opacity={0.25} />
-      <text x={-72} y={5} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{m.name}</text>
+      <text x={-108} y={-4} fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={MONO}>{m.name}</text>
+      <text x={-108} y={18} fill={m.color} fontSize={14} fontFamily={MONO}>{m.role}</text>
       {scoreU > 0 && (
         <g opacity={scoreU}>
-          <rect x={-42} y={40} width={84} height={25} rx={12} fill={m.color} opacity={0.2} />
-          <text x={0} y={57} textAnchor="middle" fill={m.color} fontSize={10} fontWeight={800}>score</text>
+          <rect x={-46} y={40} width={92} height={26} rx={13} fill={m.color} opacity={0.2} />
+          <text x={0} y={58} textAnchor="middle" fill={m.color} fontSize={14} fontWeight={800}>score</text>
         </g>
       )}
     </g>
@@ -110,86 +110,96 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={62} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>Downstream training is the judge</text>
-          <text x={640} y={88} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>same sources · same anchor · same training protocol · same evaluations</text>
+          <text x={640} y={90} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>same sources · same anchor · same training protocol · same evaluations</text>
 
           <g opacity={s.get(scene.sourceU)}>
-            <rect x={82} y={196} width={142} height={286} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} />
-            <text x={153} y={228} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>raw sources</text>
-            {Array.from({ length: 14 }, (_, i) => <rect key={i} x={104} y={255 + i * 14} width={96 - (i % 3) * 9} height={5} rx={2} fill={colors.MUTED} opacity={0.45} />)}
-            {METHODS.map((m, i) => <line key={m.name} x1={224} y1={300 + i * 42} x2={286} y2={190 + i * 118} stroke={m.color} strokeWidth={1.5} opacity={s.get(scene.methodU)} />)}
+            <rect x={52} y={196} width={130} height={286} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} />
+            <text x={117} y={228} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>raw sources</text>
+            {Array.from({ length: 14 }, (_, i) => <rect key={i} x={74} y={255 + i * 14} width={96 - (i % 3) * 9} height={5} rx={2} fill={colors.MUTED} opacity={0.45} />)}
+            {METHODS.map((m, i) => <line key={m.name} x1={182} y1={240 + i * 80} x2={232} y2={190 + i * 118} stroke={m.color} strokeWidth={1.5} opacity={s.get(scene.methodU) * (1 - s.get(scene.scoreU))} />)}
           </g>
 
           {METHODS.map((_, i) => <MethodCard key={i} i={i} u={s.get(scene.methodU)} scoreU={s.get(scene.scoreU)} />)}
 
           {s.get(scene.anchorU) > 0 && (
-            <g opacity={s.get(scene.anchorU)} transform="translate(525 528)">
+            <g opacity={s.get(scene.anchorU)} transform="translate(360 530)">
               <rect x={-116} y={-28} width={232} height={56} rx={28} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={0} y={5} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>+ Dolly-15k anchor</text>
+              <text x={0} y={5} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>+ Dolly-15k anchor</text>
             </g>
           )}
 
           {s.get(scene.trainU) > 0 && (
             <g opacity={clamp01(s.get(scene.trainU) * 2) * (1 - s.get(scene.scoreU))} transform="translate(620 335)">
               <circle r={82} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
-              <circle r={58} fill="none" stroke={colors.SECONDARY} strokeDasharray={`${Math.min(1, s.get(scene.trainU) / 3.2) * 364} 364`} strokeWidth={8} transform="rotate(-90)" />
-              <text y={-8} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>fine-tune</text>
-              <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>3 epochs · cosine</text>
-              <text y={38} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>DeepSpeed ZeRO-3</text>
+              <circle r={60} fill="none" stroke={colors.GRID} strokeWidth={8} />
+              <circle r={60} fill="none" stroke={colors.SECONDARY} strokeDasharray={`${Math.min(1, s.get(scene.trainU) / 3.2) * 377} 377`} strokeWidth={8} transform="rotate(-90)" />
+              <text y={5} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>fine-tune</text>
+              <text y={106} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>3 epochs · cosine</text>
+              <text y={128} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>DeepSpeed ZeRO-3</text>
             </g>
           )}
 
           {wheelU > 0 && (
-            <g transform="translate(965 335)" opacity={wheelU}>
-              <circle r={118} fill={colors.PANEL} stroke={colors.GRID} />
-              <circle r={47} fill={colors.BG} stroke={colors.TEXT} opacity={0.95} />
-              <text y={-4} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={700}>downstream</text>
-              <text y={15} textAnchor="middle" fill={colors.MUTED} fontSize={10}>evaluation</text>
+            <g transform="translate(965 320)" opacity={wheelU}>
+              <circle r={140} fill={colors.PANEL} stroke={colors.GRID} />
+              <circle r={54} fill={colors.BG} stroke={colors.TEXT} opacity={0.95} />
+              <text y={-2} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>downstream</text>
+              <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>evaluation</text>
               {DOMAINS.map((d, i) => {
                 const a = -Math.PI / 2 + (i / DOMAINS.length) * Math.PI * 2;
-                const x = Math.cos(a) * 92;
-                const y = Math.sin(a) * 92;
+                const x = Math.cos(a) * 88;
+                const y = Math.sin(a) * 88;
                 return (
                   <g key={d} transform={`translate(${x} ${y})`} opacity={clamp01(wheelU * 8 - i)}>
-                    <circle r={29} fill={DOMAIN_COLORS[i]} opacity={0.16} stroke={DOMAIN_COLORS[i]} />
-                    <text y={4} textAnchor="middle" fill={DOMAIN_COLORS[i]} fontSize={9} fontWeight={700}>{d}</text>
+                    <circle r={40} fill={DOMAIN_COLORS[i]} opacity={0.22} stroke={DOMAIN_COLORS[i]} />
+                    <text y={5} textAnchor="middle" fill={DOMAIN_COLORS[i]} fontSize={14} fontWeight={700}>{d}</text>
                   </g>
                 );
               })}
-              {runU > 0 && phase < 4 && (
-                <g transform={`rotate(${phase * 90 + phaseU * 90 - 90}) translate(0 -145)`}>
-                  <circle r={11} fill={colors.WARM} />
-                  <text y={4} textAnchor="middle" fill={colors.BG} fontSize={8} fontWeight={800}>{phase + 1}</text>
-                </g>
-              )}
+              {runU > 0 && runU < 4 && (() => {
+                // Place the marker by angle instead of rotating the group, so its digit stays upright.
+                const a = (phase * 90 + phaseU * 90 - 90) * (Math.PI / 180);
+                return (
+                  <g transform={`translate(${Math.cos(a) * 158} ${Math.sin(a) * 158})`}>
+                    <circle r={12} fill={colors.WARM} />
+                    <text y={4} textAnchor="middle" fill={colors.BG} fontSize={12} fontWeight={800}>{phase + 1}</text>
+                  </g>
+                );
+              })()}
             </g>
           )}
 
           {runU > 0 && (
-            <g transform="translate(965 528)">
+            <g transform="translate(965 512)">
               {pipeline.map((p, i) => (
-                <g key={p} transform={`translate(${-150 + i * 100} 0)`} opacity={i <= phase ? 1 : 0.22}>
-                  <rect x={-40} y={-18} width={80} height={36} rx={8} fill={i <= phase ? colors.POSITIVE : colors.PANEL} opacity={i <= phase ? 0.18 : 1} stroke={i <= phase ? colors.POSITIVE : colors.GRID} />
-                  <text y={4} textAnchor="middle" fill={i <= phase ? colors.POSITIVE : colors.MUTED} fontSize={9} fontFamily={MONO}>{p}</text>
+                <g key={p} transform={`translate(${-156 + i * 104} 0)`} opacity={i <= phase ? 1 : 0.5}>
+                  <rect x={-46} y={-18} width={92} height={36} rx={8} fill={i <= phase ? colors.POSITIVE : colors.PANEL} opacity={i <= phase ? 0.18 : 1} stroke={i <= phase ? colors.POSITIVE : colors.GRID} />
+                  <text y={5} textAnchor="middle" fill={i <= phase ? colors.POSITIVE : colors.MUTED} fontSize={14} fontFamily={MONO}>{p}</text>
                 </g>
               ))}
             </g>
           )}
 
           {s.get(scene.resultU) > 0 && (
-            <g opacity={s.get(scene.resultU)} transform="translate(640 600)">
+            <g opacity={s.get(scene.resultU)} transform="translate(640 592)">
               <rect x={-275} y={-25} width={550} height={50} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} />
-              <text x={0} y={-2} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={750}>Data-Construction-Skill · Finance · Llama-3.1-8B</text>
-              <text x={0} y={17} textAnchor="middle" fill={colors.TEXT} fontSize={11}>nearly +20 points over Dolly-only baseline</text>
+              <text x={0} y={-2} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={750}>Data-Construction-Skill · Finance · Llama-3.1-8B</text>
+              <text x={0} y={17} textAnchor="middle" fill={colors.TEXT} fontSize={14}>nearly +20 points over Dolly-only baseline</text>
             </g>
           )}
         </g>
       </Camera>
       {s.get(scene.endU) > 0 && (
         <g opacity={s.get(scene.endU)}>
-          <rect x={235} y={242} width={810} height={174} rx={20} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
-          <text x={640} y={304} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={750}>Make the data prove it</text>
-          <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>prepare → fine-tune → evaluate → compare</text>
-          <text x={640} y={385} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>quality = downstream training utility</text>
+          <rect x={235} y={226} width={810} height={236} rx={20} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
+          <text x={640} y={290} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={750}>Make the data prove it</text>
+          <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={16}>prepare → fine-tune → evaluate → compare</text>
+          <rect x={300} y={362} width={250} height={44} rx={12} fill={colors.BG} stroke={colors.GRID} />
+          <text x={425} y={390} textAnchor="middle" fill={colors.MUTED} fontSize={16}>trained without it</text>
+          <text x={640} y={390} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={700}>→ does more</text>
+          <rect x={730} y={362} width={250} height={44} rx={12} fill={colors.POSITIVE} opacity={0.18} stroke={colors.POSITIVE} />
+          <text x={855} y={390} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>trained on it</text>
+          <text x={640} y={440} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>quality = downstream training utility</text>
         </g>
       )}
     </>

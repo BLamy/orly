@@ -1,0 +1,1095 @@
+{
+ "version": 1,
+ "slug": "perceptron-short",
+ "clock": {
+  "duration": 67.75,
+  "lines": 9
+ },
+ "lines": {
+  "L0101": {
+   "shot": "ch01-s01",
+   "chapter": "ch01",
+   "text": "Once, a machine learned to see.",
+   "spoken": "Once, a machine learned to see.",
+   "sig": "6e14c1a57ab9",
+   "chunk": "1b58b21ec374c0a1",
+   "clip": "narration/clips/L0101.wav",
+   "clipSha": "719675c0d4d1",
+   "duration": 2.355,
+   "speechStart": 0.12,
+   "speechEnd": 2.105,
+   "words": [
+    {
+     "w": "Once",
+     "start": 0.12,
+     "end": 0.503
+    },
+    {
+     "w": "a",
+     "start": 0.55,
+     "end": 0.596
+    },
+    {
+     "w": "machine",
+     "start": 0.689,
+     "end": 1.177
+    },
+    {
+     "w": "learned",
+     "start": 1.235,
+     "end": 1.548
+    },
+    {
+     "w": "to",
+     "start": 1.571,
+     "end": 1.641
+    },
+    {
+     "w": "see",
+     "start": 1.711,
+     "end": 2.105
+    }
+   ],
+   "wordsFrom": "display"
+  },
+  "L0102": {
+   "shot": "ch01-s02",
+   "chapter": "ch01",
+   "text": "Its eye: four hundred light cells, twenty by twenty.",
+   "spoken": "Its eye: four hundred light cells, twenty by twenty.",
+   "sig": "1dbb97a4c16f",
+   "chunk": "ca251bc15759fcc8",
+   "clip": "narration/clips/L0102.wav",
+   "clipSha": "5f9fdb4b8796",
+   "duration": 4.67,
+   "speechStart": 0.12,
+   "speechEnd": 4.42,
+   "words": [
+    {
+     "w": "Its",
+     "start": 0.12,
+     "end": 0.41
+    },
+    {
+     "w": "eye",
+     "start": 0.48,
+     "end": 0.898
+    },
+    {
+     "w": "four",
+     "start": 1.344,
+     "end": 1.622
+    },
+    {
+     "w": "hundred",
+     "start": 1.68,
+     "end": 1.994
+    },
+    {
+     "w": "light",
+     "start": 2.063,
+     "end": 2.33
+    },
+    {
+     "w": "cells",
+     "start": 2.377,
+     "end": 2.876
+    },
+    {
+     "w": "twenty",
+     "start": 3.201,
+     "end": 3.596
+    },
+    {
+     "w": "by",
+     "start": 3.654,
+     "end": 3.805
+    },
+    {
+     "w": "twenty",
+     "start": 3.898,
+     "end": 4.42
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 1.171,
+     "gap": -0.1
+    }
+   ],
+   "wordsFrom": "display"
+  },
+  "L0103": {
+   "shot": "ch01-s02",
+   "chapter": "ch01",
+   "text": "Behind it, wires, and racks of dials that motors turned.",
+   "spoken": "Behind it, wires, and racks of dials that motors turned.",
+   "sig": "421c62bf4880",
+   "chunk": "ca251bc15759fcc8",
+   "clip": "narration/clips/L0103.wav",
+   "clipSha": "1f29e0e7faa8",
+   "duration": 5.27,
+   "speechStart": 0.12,
+   "speechEnd": 5.02,
+   "words": [
+    {
+     "w": "Behind",
+     "start": 0.12,
+     "end": 0.596
+    },
+    {
+     "w": "it",
+     "start": 0.689,
+     "end": 0.875
+    },
+    {
+     "w": "wires",
+     "start": 1.235,
+     "end": 1.862
+    },
+    {
+     "w": "and",
+     "start": 1.908,
+     "end": 2.083
+    },
+    {
+     "w": "racks",
+     "start": 2.222,
+     "end": 2.663
+    },
+    {
+     "w": "of",
+     "start": 2.721,
+     "end": 2.814
+    },
+    {
+     "w": "dials",
+     "start": 2.918,
+     "end": 3.522
+    },
+    {
+     "w": "that",
+     "start": 3.592,
+     "end": 3.766
+    },
+    {
+     "w": "motors",
+     "start": 3.87,
+     "end": 4.37
+    },
+    {
+     "w": "turned",
+     "start": 4.439,
+     "end": 5.02
+    }
+   ],
+   "wordsFrom": "display"
+  },
+  "L0104": {
+   "shot": "ch01-s02",
+   "chapter": "ch01",
+   "text": "It was the Mark I Perceptron, the project of psychologist Frank Rosenblatt.",
+   "spoken": "It was the Mark One Perceptron, the project of psychologist Frank Rosenblatt.",
+   "sig": "d06a0e643ead",
+   "chunk": "ca251bc15759fcc8",
+   "clip": "narration/clips/L0104.wav",
+   "clipSha": "25c4b78dca9c",
+   "duration": 6.478,
+   "speechStart": 0.12,
+   "speechEnd": 6.228,
+   "words": [
+    {
+     "w": "It",
+     "start": 0.12,
+     "end": 0.283
+    },
+    {
+     "w": "was",
+     "start": 0.329,
+     "end": 0.48
+    },
+    {
+     "w": "the",
+     "start": 0.538,
+     "end": 0.608
+    },
+    {
+     "w": "Mark",
+     "start": 0.678,
+     "end": 1.525
+    },
+    {
+     "w": "I",
+     "start": 0.678,
+     "end": 1.525
+    },
+    {
+     "w": "Perceptron",
+     "start": 1.595,
+     "end": 2.477
+    },
+    {
+     "w": "the",
+     "start": 2.919,
+     "end": 3.059
+    },
+    {
+     "w": "project",
+     "start": 3.117,
+     "end": 3.627
+    },
+    {
+     "w": "of",
+     "start": 3.685,
+     "end": 3.755
+    },
+    {
+     "w": "psychologist",
+     "start": 3.802,
+     "end": 4.754
+    },
+    {
+     "w": "Frank",
+     "start": 4.893,
+     "end": 5.264
+    },
+    {
+     "w": "Rosenblatt",
+     "start": 5.369,
+     "end": 6.228
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 2.773,
+     "gap": -0.15
+    }
+   ],
+   "wordsFrom": "display"
+  },
+  "L0105": {
+   "shot": "ch01-s03",
+   "chapter": "ch01",
+   "text": "Nobody gave it the rule. Show it a shape; it guesses.",
+   "spoken": "Nobody gave it the rule. Show it a shape; it guesses.",
+   "sig": "eab049784b21",
+   "chunk": "a3b676cf5b37cb05",
+   "clip": "narration/clips/L0105.wav",
+   "clipSha": "c9f233d0a91d",
+   "duration": 4.983,
+   "speechStart": 0.12,
+   "speechEnd": 4.733,
+   "words": [
+    {
+     "w": "Nobody",
+     "start": 0.12,
+     "end": 0.561
+    },
+    {
+     "w": "gave",
+     "start": 0.619,
+     "end": 0.851
+    },
+    {
+     "w": "it",
+     "start": 0.898,
+     "end": 0.979
+    },
+    {
+     "w": "the",
+     "start": 1.014,
+     "end": 1.072
+    },
+    {
+     "w": "rule",
+     "start": 1.13,
+     "end": 1.548
+    },
+    {
+     "w": "Show",
+     "start": 2.656,
+     "end": 2.865
+    },
+    {
+     "w": "it",
+     "start": 2.923,
+     "end": 3.004
+    },
+    {
+     "w": "a",
+     "start": 3.051,
+     "end": 3.074
+    },
+    {
+     "w": "shape",
+     "start": 3.144,
+     "end": 3.596
+    },
+    {
+     "w": "it",
+     "start": 4.013,
+     "end": 4.153
+    },
+    {
+     "w": "guesses",
+     "start": 4.211,
+     "end": 4.733
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 1.757,
+     "gap": 0.69
+    },
+    {
+     "at": 3.0395,
+     "gap": 0.15
+    }
+   ],
+   "wordsFrom": "display"
+  },
+  "L0105b": {
+   "shot": "ch01-s03",
+   "chapter": "ch01",
+   "text": "Each lit cell tugs the needle through the dials it feeds; the total decides.",
+   "spoken": "Each lit cell tugs the needle through the dials it feeds; the total decides.",
+   "sig": "1ef600253bec",
+   "chunk": "a3b676cf5b37cb05",
+   "clip": "narration/clips/L0105b.wav",
+   "clipSha": "95f0af206659",
+   "duration": 6.032,
+   "speechStart": 0.12,
+   "speechEnd": 5.782,
+   "words": [
+    {
+     "w": "Each",
+     "start": 0.12,
+     "end": 0.48
+    },
+    {
+     "w": "lit",
+     "start": 0.6,
+     "end": 0.867
+    },
+    {
+     "w": "cell",
+     "start": 0.948,
+     "end": 1.378
+    },
+    {
+     "w": "tugs",
+     "start": 1.498,
+     "end": 1.916
+    },
+    {
+     "w": "the",
+     "start": 1.997,
+     "end": 2.055
+    },
+    {
+     "w": "needle",
+     "start": 2.136,
+     "end": 2.485
+    },
+    {
+     "w": "through",
+     "start": 2.531,
+     "end": 2.833
+    },
+    {
+     "w": "the",
+     "start": 2.868,
+     "end": 2.926
+    },
+    {
+     "w": "dials",
+     "start": 3.007,
+     "end": 3.448
+    },
+    {
+     "w": "it",
+     "start": 3.506,
+     "end": 3.599
+    },
+    {
+     "w": "feeds",
+     "start": 3.669,
+     "end": 4.168
+    },
+    {
+     "w": "the",
+     "start": 4.505,
+     "end": 4.621
+    },
+    {
+     "w": "total",
+     "start": 4.679,
+     "end": 5.016
+    },
+    {
+     "w": "decides",
+     "start": 5.074,
+     "end": 5.782
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 0.59,
+     "gap": -0.09999999999999976
+    },
+    {
+     "at": 1.571,
+     "gap": -0.06599999999999995
+    }
+   ],
+   "wordsFrom": "display"
+  },
+  "L0106": {
+   "shot": "ch01-s03",
+   "chapter": "ch01",
+   "text": "When it guesses wrong, motors nudge the dials that had a say, a little, toward the right answer.",
+   "spoken": "When it guesses wrong, motors nudge the dials that had a say, a little, toward the right answer.",
+   "sig": "a12657581967",
+   "chunk": "a3b676cf5b37cb05",
+   "clip": "narration/clips/L0106.wav",
+   "clipSha": "ca0e93775679",
+   "duration": 6.279,
+   "speechStart": 0.12,
+   "speechEnd": 6.029,
+   "words": [
+    {
+     "w": "When",
+     "start": 0.12,
+     "end": 0.305
+    },
+    {
+     "w": "it",
+     "start": 0.352,
+     "end": 0.41
+    },
+    {
+     "w": "guesses",
+     "start": 0.468,
+     "end": 0.839
+    },
+    {
+     "w": "wrong",
+     "start": 0.886,
+     "end": 1.246
+    },
+    {
+     "w": "motors",
+     "start": 1.617,
+     "end": 2.035
+    },
+    {
+     "w": "nudge",
+     "start": 2.128,
+     "end": 2.476
+    },
+    {
+     "w": "the",
+     "start": 2.534,
+     "end": 2.604
+    },
+    {
+     "w": "dials",
+     "start": 2.662,
+     "end": 3.092
+    },
+    {
+     "w": "that",
+     "start": 3.138,
+     "end": 3.278
+    },
+    {
+     "w": "had",
+     "start": 3.324,
+     "end": 3.452
+    },
+    {
+     "w": "a",
+     "start": 3.498,
+     "end": 3.521
+    },
+    {
+     "w": "say",
+     "start": 3.603,
+     "end": 3.962
+    },
+    {
+     "w": "a",
+     "start": 4.334,
+     "end": 4.415
+    },
+    {
+     "w": "little",
+     "start": 4.497,
+     "end": 4.775
+    },
+    {
+     "w": "toward",
+     "start": 4.822,
+     "end": 5.158
+    },
+    {
+     "w": "the",
+     "start": 5.205,
+     "end": 5.263
+    },
+    {
+     "w": "right",
+     "start": 5.309,
+     "end": 5.541
+    },
+    {
+     "w": "answer",
+     "start": 5.599,
+     "end": 6.029
+    }
+   ],
+   "wordsFrom": "display"
+  },
+  "L0107": {
+   "shot": "ch01-s03",
+   "chapter": "ch01",
+   "text": "Wrong, and wrong again, and then, quite suddenly... right.",
+   "spoken": "Wrong, and wrong again, and then, quite suddenly... right.",
+   "sig": "67fc65474a54",
+   "chunk": "a3b676cf5b37cb05",
+   "clip": "narration/clips/L0107.wav",
+   "clipSha": "b6c30a56d71d",
+   "duration": 5.525,
+   "speechStart": 0.12,
+   "speechEnd": 5.275,
+   "words": [
+    {
+     "w": "Wrong",
+     "start": 0.12,
+     "end": 0.503
+    },
+    {
+     "w": "and",
+     "start": 0.805,
+     "end": 0.968
+    },
+    {
+     "w": "wrong",
+     "start": 1.026,
+     "end": 1.188
+    },
+    {
+     "w": "again",
+     "start": 1.235,
+     "end": 1.676
+    },
+    {
+     "w": "and",
+     "start": 2.024,
+     "end": 2.187
+    },
+    {
+     "w": "then",
+     "start": 2.233,
+     "end": 2.489
+    },
+    {
+     "w": "quite",
+     "start": 2.941,
+     "end": 3.243
+    },
+    {
+     "w": "suddenly",
+     "start": 3.278,
+     "end": 3.812
+    },
+    {
+     "w": "right",
+     "start": 4.845,
+     "end": 5.275
+    }
+   ],
+   "wordsFrom": "display"
+  },
+  "L0108": {
+   "shot": "ch01-s03",
+   "chapter": "ch01",
+   "text": "It could learn only simple patterns. In 1969, Minsky and Papert showed just how simple; for years, interest faded. Its descendants, today's neural networks, still learn from mistakes.",
+   "spoken": "It could learn only simple patterns. In nineteen sixty-nine, Minsky and Pappert showed just how simple; for years, interest faded. Its descendants, today's neural networks, still learn from mistakes.",
+   "sig": "7a3ed6b7a265",
+   "chunk": "a3b676cf5b37cb05",
+   "clip": "narration/clips/L0108.wav",
+   "clipSha": "92a9e68a0017",
+   "duration": 16.52,
+   "speechStart": 0.12,
+   "speechEnd": 16.27,
+   "words": [
+    {
+     "w": "It",
+     "start": 0.12,
+     "end": 0.282
+    },
+    {
+     "w": "could",
+     "start": 0.329,
+     "end": 0.491
+    },
+    {
+     "w": "learn",
+     "start": 0.561,
+     "end": 0.898
+    },
+    {
+     "w": "only",
+     "start": 1.025,
+     "end": 1.49
+    },
+    {
+     "w": "simple",
+     "start": 1.676,
+     "end": 2.175
+    },
+    {
+     "w": "patterns",
+     "start": 2.256,
+     "end": 2.918
+    },
+    {
+     "w": "In",
+     "start": 3.516,
+     "end": 3.679
+    },
+    {
+     "w": "1969",
+     "start": 3.725,
+     "end": 4.921
+    },
+    {
+     "w": "Minsky",
+     "start": 5.188,
+     "end": 5.687
+    },
+    {
+     "w": "and",
+     "start": 5.769,
+     "end": 5.908
+    },
+    {
+     "w": "Papert",
+     "start": 6.013,
+     "end": 6.465
+    },
+    {
+     "w": "showed",
+     "start": 6.663,
+     "end": 7.139
+    },
+    {
+     "w": "just",
+     "start": 7.301,
+     "end": 7.568
+    },
+    {
+     "w": "how",
+     "start": 7.638,
+     "end": 7.777
+    },
+    {
+     "w": "simple",
+     "start": 7.882,
+     "end": 8.416
+    },
+    {
+     "w": "for",
+     "start": 8.861,
+     "end": 9.024
+    },
+    {
+     "w": "years",
+     "start": 9.094,
+     "end": 9.581
+    },
+    {
+     "w": "interest",
+     "start": 9.837,
+     "end": 10.348
+    },
+    {
+     "w": "faded",
+     "start": 10.44,
+     "end": 10.928
+    },
+    {
+     "w": "Its",
+     "start": 11.428,
+     "end": 11.684
+    },
+    {
+     "w": "descendants",
+     "start": 11.742,
+     "end": 12.427
+    },
+    {
+     "w": "today's",
+     "start": 12.624,
+     "end": 13.135
+    },
+    {
+     "w": "neural",
+     "start": 13.228,
+     "end": 13.564
+    },
+    {
+     "w": "networks",
+     "start": 13.622,
+     "end": 14.273
+    },
+    {
+     "w": "still",
+     "start": 14.691,
+     "end": 14.992
+    },
+    {
+     "w": "learn",
+     "start": 15.074,
+     "end": 15.341
+    },
+    {
+     "w": "from",
+     "start": 15.399,
+     "end": 15.561
+    },
+    {
+     "w": "mistakes",
+     "start": 15.619,
+     "end": 16.27
+    }
+   ],
+   "insertedGaps": [
+    {
+     "at": 3.417,
+     "gap": -0.4
+    },
+    {
+     "at": 9.0885,
+     "gap": -0.1
+    },
+    {
+     "at": 11.753,
+     "gap": -0.15
+    }
+   ],
+   "wordsFrom": "display"
+  }
+ },
+ "clips": [
+  {
+   "path": "narration/clips/L0101.wav",
+   "url": "audio/lines/L0101.m4a",
+   "duration": 2.355,
+   "lineId": "L0101"
+  },
+  {
+   "path": "narration/clips/L0102.wav",
+   "url": "audio/lines/L0102.m4a",
+   "duration": 4.67,
+   "lineId": "L0102"
+  },
+  {
+   "path": "narration/clips/L0103.wav",
+   "url": "audio/lines/L0103.m4a",
+   "duration": 5.27,
+   "lineId": "L0103"
+  },
+  {
+   "path": "narration/clips/L0104.wav",
+   "url": "audio/lines/L0104.m4a",
+   "duration": 6.478,
+   "lineId": "L0104"
+  },
+  {
+   "path": "narration/clips/L0105.wav",
+   "url": "audio/lines/L0105.m4a",
+   "duration": 4.983,
+   "lineId": "L0105"
+  },
+  {
+   "path": "narration/clips/L0105b.wav",
+   "url": "audio/lines/L0105b.m4a",
+   "duration": 6.032,
+   "lineId": "L0105b"
+  },
+  {
+   "path": "narration/clips/L0106.wav",
+   "url": "audio/lines/L0106.m4a",
+   "duration": 6.279,
+   "lineId": "L0106"
+  },
+  {
+   "path": "narration/clips/L0107.wav",
+   "url": "audio/lines/L0107.m4a",
+   "duration": 5.525,
+   "lineId": "L0107"
+  },
+  {
+   "path": "narration/clips/L0108.wav",
+   "url": "audio/lines/L0108.m4a",
+   "duration": 16.52,
+   "lineId": "L0108"
+  }
+ ],
+ "cues": [
+  {
+   "id": "m01",
+   "start": 0,
+   "end": 67.75,
+   "shots": [
+    "ch01-s01",
+    "ch01-s02",
+    "ch01-s03"
+   ],
+   "mood": "nocturnal wonder → curious machinery → the sum, trial and error → a quiet arrival → a warm, open coda",
+   "tempoBpm": 71.4,
+   "key": "D (open/modal, third withheld; Bb for wrong guesses; D major only on 'right'; Bm-G-A7sus4-D coda)",
+   "instrumentation": "gm_contrabass drone, gm_cello, gm_pizzicato_strings, gm_string_ensemble_1, gm_celesta, gm_music_box, piano (low octave)",
+   "intensity": 0.3,
+   "notes": "Revision 11 (2026-10-07): RE-FITTED to the re-locked clock (ch01-s03 re-narrated; narration/timeline.json 67.75 s) and rendered. Measured (analysis/m01.json, sourceHash 90f803f37d5fe5ba): I -25.8 LUFS, LRA 8.7 LU, TP -7.4 dBTP; 73.75 s = 67.75 body + 6 s tail, length error 0 ms, zero Strudel errors, 0 clipped; score/analysis/summary.json rewritten with it (timelineSeconds 67.75) and `qa.mjs --stage score` passes (renders, analysisSummary, coverage). Window, setcps(.2975), 20.156 body cycles, gain, fades and duck unchanged. Bars -1 to 6, the iris figure (cello 22.23/22.65/23.07) and the celesta A5 25.17 (in the widened 24.88-25.99 gap after 'rule') stay put. Every A(sec) anchor from 'Show it a shape' through 'right' is +0.37 s: E6 26.95 on 'shape'; the sum pizz D2 on 'tugs' 29.89, A2 30.73, D3 31.57, E3 32.41, A3 on 'total' 33.07; C/D on 'decides' 33.47; Bb + contrabass Bb1 on 'guesses' 34.97; celesta E6 on 'wrong' 35.39, F6 35.79; nudge plucks 36.63/37.47/38.31; L0107 M1 D5 40.62, A5 40.94, E6 41.25, F6 41.89 after 'Wrong', E6/F6 42.99/43.20, D5 43.87 / A5 44.08 with A7sus4 -> A7 at 44.08, E6 + cello B2 45.32, A2 45.77; 'right' 46.21: celesta F#6, contrabass D2 .36, cello D2. Every L0108 anchor is +0.17 s: Bm 49.58, G5 52.24, Bb/F 55.18, XOR quote E6 56.97 -> F6 57.18, cello A2 59.49 after 'faded', D on 'Its' 59.95 (D3 60.37), G/D 61.14, M3 8ths from 61.53, M1 completion D5 62.83 / A5 63.21 / E6 63.63, A7sus4 63.21 -> A7 63.92. Changes beyond the shift: the clear air after 'right' is 2.0 s (was 2.2), so the bloom [f#3,d4,f#4,a4,d5] now runs 46.64-47.20 with release .75 (was hold to 47.12 + .37, release .9), the fifth under it ends 47.65, and the contrabass re-strike is at 46.77 (1.87 s before 'It could learn', as in rev 9): music about -17.3 LUFS M raw at 47.4, -25.1 at 48.64; margins 'It' 16.8, 'could' 18.2 dB (two trial renders at hold 47.30/.85 and re-strike 46.85-46.97 gave 15.0-15.9 on 'It'). Try-5 echo D6 47.70 -> F#6 47.91 (dry celesta + dry music box). 'years' (optional note applied): on 'years' 57.61, where the light dims, the drone's F2 lets go and only Bb1 holds to 'Its' (one step thinner; margin on 'years' 17.7). ENDING: the last D chord strikes at 64.94 = lastStrike, 0.15 s after 'mistakes' ends (64.79); measured onset 64.94 (50 ms RMS at cue gain -31.5 at 64.94, -26.7 at 64.98, -25.1 at 65.02). Strings [d3,a3,d4,f#4,a4] .28 small room held 3 16ths (was 3.5) with release 1.5 (was 1.6) so it clears in the shorter window; celesta F#6, piano [d1,d2], contrabass [d2,a2], cello D2; music-box D6 answers at 65.72. fadeAfterStrike = 66.95 - 64.94 = 2.01 s (>= 1.9). Momentary music (raw) -23.3 at 65.1, -25.2 at 65.8, -34.7 at 66.4, -41.3 at 66.95 (fade start), -43.1 at 67.75. Margins (music at -3 dB, 3 dB duck, speech band 250-3500 Hz vs narration.wav per word): 'tugs' 19.8, 'total' 17.1, 'wrong' 16.3, 'nudge' 14.9, 'Wrong' 17.4, 'right' 13.7, 'mistakes' 11.2; line minima L0101 27.1, L0102 13.8, L0103 14.8, L0104 18.5, L0105b 14.8, L0106 12.4, L0107 10.2, L0108 11.2. The only words under 9 dB are the two unstressed 'it's of L0105 (24.23 5.8, 26.25 4.8; 80 ms, about 10 dB quieter than their neighbours), as in rev 9. PREVIOUS STATE: Revision 9 (2026-10-06): RE-FITTED to the re-locked 67.75 s clock and the round-3 notes applied; rendered and measured (sourceHash eccdaaf6d48db6b3, 73.75 s = 67.75 body + 6 s tail, length error 0 ms, zero Strudel errors, 0 clipped, -25.0 LUFS I, LRA 8, TP -7.4 dBTP). Clock: setcps(.2975), body 20.156 cycles. Bars -1 to 6 keep the revision-8 bar frame (P0 .4872): s01/s02 did not move, the cello A2 22.23 / B2 22.65 / D3 23.07 still lands on the iris. From bar 7 every onset is written against its word in absolute seconds (A(sec) in the score) rather than re-phasing one frame, because the s03 shift is not uniform; pulses are counted in beats from their anchor word so they keep 71.4 BPM. Anchors: celesta A5 25.17 (gap after 'rule'), E6 26.58 (as 'shape' ends); the sum pizz D2 on 'tugs' 29.52, A2 30.36, D3 31.20, E3 32.04, A3 on 'total' 32.70; C/D on 'decides' 33.10; Bb + contrabass Bb1 on 'guesses' 34.60; celesta E6 on 'wrong' 35.02, F6 35.42 (+ string F4); NUDGE (note 3): the three A2 plucks on 'nudge' 36.26, 37.10, 37.94 are on their own lane at lpf 1200, velocity .72/.67/.71 (was .46/.42/.46 at lpf 1400): A/B in isolation +4.4 dB RMS; full band they now sit about 9.5-10.5 dB under 'nudge' by our measure (rev 8 measured 13.8 by the same method). L0107 (note 4): M1 in the 0.95 s pre-gap D5 40.25, A5 40.57 (0.54 s before 'Wrong'), E6 40.88; F6 41.52 after 'Wrong'; E6/F6 42.62/42.83 after 'again'; D5 43.50 / A5 43.71 in the 'then'/'quite' gap with A7sus4 -> A7 at 43.71; E6 44.95 and cello B2 44.95 / A2 45.40 in the breath after 'suddenly'. 'right' 45.84: celesta F#6, contrabass D2 .36, cello D2. Bloom [f#3,d4,f#4,a4,d5] .6 lpf 3000 from 46.27 (as the word ends), hold to 47.12, release .9: about -16.2 LUFS M raw at 47.0, then -25.5 at 48.2 and -27.6 at 48.5, so the 2.2 s gap is one arc and 'It could learn' (48.47) is clear (margin 17.8 dB). Try-5 echo on its verdict (shot: right + 0.55 + 1.15 = 47.54): dry celesta + dry music box D6 47.33 -> F#6 47.54 (.25/.24), over the bloom as it recedes; the F#6 rises 7-10 dB in its bands. Contrabass re-struck .26 at 46.60. Closing walk re-anchored: Bm 49.41 ('only'), G5 52.07 ('1969'), Bb/F 55.01 ('showed'). XOR (note 2): under the XOR plate's flicker the 'wrong' cell is quoted once, celesta E6 56.80 -> F6 57.01 over the held Bb1/F2 (F6 +10.6 dB in band), and Bb is NOT resolved until 'Its descendants': cello A2 59.32 (after 'faded', a maj7 against Bb, not a resolution), Bb1/F2 held to 59.78 with a shorter release (1.4), D on 'Its' 59.78 (cello B2, strings [f#3,a3,d4], contrabass [d2,a2]), D3 60.20; M3 reborn 59.78 -> 'still' 63.04 (quarters, then 8ths 61.36-62.62); G/D 'today's' 60.97; M1 completed D5 62.66, A5 63.04, E6 63.46; A7sus4 63.04 -> A7 63.75. ENDING (note 1): the last chord strikes at 64.77 = lastStrike, 0.15 s after 'mistakes' ends (64.62): strings [d3,a3,d4,f#4,a4] .16 small room, celesta F#6, piano [d1,d2], contrabass D2 and cello D2; strings and contrabass release 2.2 s, cello 1.8. One music-box D6 answers at 65.67 (0.9 s later, +28 dB in its band). Momentary music level (raw, no cue gain): -24.7 at 64.9, -27.5 at 65.8, -35.7 at 66.4, -40.5 at 66.95, -43.5 at 67.75, so it is at about -40 before the 0.8 s fade starts (66.95, 2.18 s after the strike). Margins (music at -3 dB, 3 dB duck, speech band 250-3500 Hz vs narration.wav per word): every fully voiced word is at least 10.6 dB under (L0101 min 11.3 despite the line now being 5 dB lower; L0108 min 10.6 on 'mistakes', median 19.5). The only words under 9 dB are the two unstressed 'it's of L0105 (24.23, 25.88; 80 ms, about 10 dB quieter than their neighbours). To get there the wet celesta (orbit 5, now room .7) notes were shortened: bar-0 M1 D5/A5 release 1.2 (was 2), E6 held 3 16ths release 1.1 (was 5 / 1.2), so it still rings across the 5.21 cut but clears for 'Its eye' (margin 13.2, was 7-8); the iris D5 .25 release 1.4, A5 25.17 3 16ths release 1.2, E6 26.58 4 16ths release 1.4; and under 'mistakes' the celesta E6 63.46 is .19 for 3 16ths and the A7 strings .085. Revision 8 notes (old 65.8333 s clock, superseded where they disagree): Revision 8 (2026-10-06; critic round-1 notes on revision 7 applied, rendered and measured; everything not listed here is unchanged from revision 7). Clock: the film is 65.8333 s, setcps(.2975) (71.4 BPM, 4/4, one bar per cycle), body 19.585 cycles. The bar frame is phased by P=.4872 cycles so the bar-13 downbeat is 'right' (45.335). Anchors kept: cello A2 22.23 / B2 22.65 / D3 23.07 on the s03 iris; pizz D2 on 'tugs' 29.37, A3 on 'total' 32.52; celesta E6 34.83 on 'wrong', F6 35.25; pizz A2 on 'nudge' 36.09; L0107 F6s in the word gaps (41.13, 42.39); A5 43.23 in the 'then'/'quite' gap; F#6 + low D on 'right' 45.335; cello answer after 'faded' 59.20; last D chord 64.66. Harmonic plan kept: the withheld third; F over Bb for 'wrong'; F as b13 over A7sus4 in L0107; D major only on 'right'; Bm for the limit (49.54); G5 for Minsky and Papert (52.06); Bb/F for the winter (55.42); Bb opens to D on 'Its descendants' (59.62). Revision 8 changes: (1) the bloom [f#3,d4,f#4,a4,d5] goes from velocity .9 to .6, lpf 3000, attack .4, held to 47.12, release 1. It swells and holds at about -15.6 LUFS M (46.2-47.2), the film's loudest moment (the opening Dsus2 is about -18.7 to -19.5), then recedes: -19.3 at 47.6, -24.3 at 48.0, -28.5 at 48.4. (2) The try-5 echo of 'right', D6 46.81 and F#6 47.02, is dry celesta at .21 doubled by dry music box at .2 (orbit 8). The bloom's music-box spread is also dry. gm_celesta sounds an octave above the written note, so its F#6 is at about 2960 Hz. Measured at the sounding pitches, the echo rises 6-13 dB above the level just before each note (D6: 1175 Hz +5.6, 2350 Hz +12.9; F#6: 1480 Hz +13.6, 2960 Hz +15.2) and sits about 3-4 dB under the first F#6. (3) Handover: the [f#3,a3,d4] pad starts at 46.18 (attack .6) and moves to Bm at 49.54. The cello D2 on 'right' is held only to 47.02. The contrabass D2 is struck at .36 on 'right' and re-struck at .26 at 46.60. The bowed contrabass and cello samples swell about 1.1 s and 2.9 s after each onset, and this timing puts the swell in the clear air and the trough under 'It could learn'. The gap is now one arc: no hollow at 47.4 and no crescendo into 48.36. The bed under 'It could learn' is about -28 to -30 LUFS M, which matches the L0108 bed that follows (-28 to -32). (4) M3 reborn: low pizz D2/A2 (velocity .24-.28, lpf 1200) under 'Its descendants, today's neural networks'. It plays quarters from 59.62, 8ths from 61.30, and a last D2 on 'still' (62.98), all below the cello's D3. It costs at most about 1 dB of speech-band margin. (5) Last chord: the strings move to the small room (orbit 8) at .16, held 1 16th, release .5. Celesta F#6 .24, contrabass D2 .2, cello D2 .18 (release .4), and the A1/A2 before it release .6. It strikes at about -22.8 LUFS M and falls to -29.5 at 65.4, -34.1 at 65.6 and -37.1 at 65.8, so the 0.8 s fadeOut only smooths the tail. (6) The wet celesta lane (orbit 5) is low-passed at 1900 Hz, and the bar-1 E6 velocity goes from .38 to .34. The orbit reverb impulse is generated from noise on every render, and the wet tails under 'Its eye' and 'shape' varied by up to about 5 dB between renders. With this change those margins match revision 7 again. Measured (render sourceHash 1749141588f467f6; music at gain -3, 3 dB duck when voiced, speech band 250 Hz-3.5 kHz): margins are the same as revision 7 almost everywhere, at least about 12 dB under fully voiced words. The only dips below 9 dB are at word tails beside the deliberate gap figures. Render: -24.4 LUFS I, LRA 8.4, TP -6.3 dBTP, 71.8333 s (65.8333 body + 6 s tail, length error 0 ms), zero Strudel errors. motifs.md has the bar table and motif timings for this clock.",
+   "file": "score/cues/m01.strudel",
+   "render": "score/renders/m01.wav",
+   "gainDb": -3,
+   "fadeIn": 1.5,
+   "fadeOut": 0.8,
+   "duck": {
+    "ratio": 3,
+    "attack": 20,
+    "release": 150,
+    "depthDb": 3
+   },
+   "lastStrike": 64.94
+  }
+ ],
+ "renders": [
+  {
+   "path": "score/renders/m01.wav",
+   "url": "audio/cues/m01.m4a",
+   "duration": 73.75,
+   "cueId": "m01"
+  }
+ ],
+ "stem": {
+  "file": "films/perceptron-short/narration/narration.wav",
+  "duration": 67.75,
+  "lineLufs": -20,
+  "rides": {
+   "L0101": {
+    "lufs": -19.8,
+    "rideDb": -0.2,
+    "levelDb": -5,
+    "clipGainDb": -6.1,
+    "trimDb": -1.1
+   },
+   "L0102": {
+    "lufs": -18,
+    "rideDb": -2,
+    "clipGainDb": 0.08,
+    "trimDb": 0.08
+   },
+   "L0103": {
+    "lufs": -20,
+    "rideDb": 0,
+    "clipGainDb": 0.83,
+    "trimDb": 0.83
+   },
+   "L0104": {
+    "lufs": -19.1,
+    "rideDb": -0.9,
+    "clipGainDb": 0.43,
+    "trimDb": 0.43
+   },
+   "L0105": {
+    "lufs": -20.1,
+    "rideDb": 0.1,
+    "clipGainDb": 0,
+    "trimDb": 0
+   },
+   "L0105b": {
+    "lufs": -20.4,
+    "rideDb": 0.4,
+    "clipGainDb": -0.57,
+    "trimDb": -0.57
+   },
+   "L0106": {
+    "lufs": -19.7,
+    "rideDb": -0.3,
+    "clipGainDb": 0.03,
+    "trimDb": 0.03
+   },
+   "L0107": {
+    "lufs": -19.4,
+    "rideDb": -0.6,
+    "words": {
+     "right": 5
+    },
+    "clipGainDb": -0.87,
+    "trimDb": -0.87
+   },
+   "L0108": {
+    "lufs": -19.4,
+    "rideDb": -0.6,
+    "levelDb": -1.5,
+    "clipGainDb": -2.56,
+    "trimDb": -1.06
+   }
+  },
+  "integratedBefore": -20,
+  "compressor": {
+   "ratio": 2.5,
+   "attack": 10,
+   "release": 120,
+   "knee": 2.8,
+   "highpassHz": 70,
+   "thresholdDb": -18,
+   "grDb": 3.47,
+   "integratedAfter": -23.3
+  },
+  "peakStage": {
+   "ratio": 4,
+   "attack": 0.3,
+   "release": 40,
+   "thresholdDb": -13,
+   "peakCutDb": 2.83,
+   "crestBefore": 18.03,
+   "crestAfter": 15.2,
+   "crestTarget": 15.23,
+   "speechGrDb": 0.62
+  },
+  "chain": "highpass=f=70,acompressor=threshold=-18dB:ratio=2.5:attack=10:release=120:knee=2.8:makeup=1:detection=rms:link=maximum,acompressor=threshold=-13dB:ratio=4:attack=0.3:release=40:knee=2:makeup=1:detection=peak:link=maximum,[per-line clip gain]",
+  "gainDb": 6.7,
+  "peakBeforeDb": -7.87,
+  "limitedDb": 0.83,
+  "integrated": -18,
+  "truePeak": -2,
+  "lra": 6.3,
+  "target": -18,
+  "levels": {
+   "tolerance": 0.5,
+   "beforeClipGain": {
+    "L0101": {
+     "M": -20.04,
+     "offsetDb": 1.12,
+     "requestedDb": -5,
+     "errorDb": 6.12
+    },
+    "L0102": {
+     "M": -21.22,
+     "offsetDb": -0.36,
+     "requestedDb": 0,
+     "errorDb": -0.36
+    },
+    "L0103": {
+     "M": -21.97,
+     "offsetDb": -1.11,
+     "requestedDb": 0,
+     "errorDb": -1.11
+    },
+    "L0104": {
+     "M": -21.57,
+     "offsetDb": -0.71,
+     "requestedDb": 0,
+     "errorDb": -0.71
+    },
+    "L0105": {
+     "M": -21.14,
+     "offsetDb": -0.27,
+     "requestedDb": 0,
+     "errorDb": -0.27
+    },
+    "L0105b": {
+     "M": -20.57,
+     "offsetDb": 0.58,
+     "requestedDb": 0,
+     "errorDb": 0.58
+    },
+    "L0106": {
+     "M": -21.17,
+     "offsetDb": -0.31,
+     "requestedDb": 0,
+     "errorDb": -0.31
+    },
+    "L0107": {
+     "M": -20.27,
+     "offsetDb": 0.89,
+     "requestedDb": 0,
+     "errorDb": 0.89
+    },
+    "L0108": {
+     "M": -20.09,
+     "offsetDb": 1.07,
+     "requestedDb": -1.5,
+     "errorDb": 2.57
+    }
+   },
+   "lines": {
+    "L0101": {
+     "M": -19.44,
+     "offsetDb": -5,
+     "requestedDb": -5,
+     "errorDb": 0
+    },
+    "L0102": {
+     "M": -14.44,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0103": {
+     "M": -14.48,
+     "offsetDb": -0.04,
+     "requestedDb": 0,
+     "errorDb": -0.04
+    },
+    "L0104": {
+     "M": -14.44,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0105": {
+     "M": -14.44,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0105b": {
+     "M": -14.44,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0106": {
+     "M": -14.44,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0107": {
+     "M": -14.44,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0108": {
+     "M": -15.94,
+     "offsetDb": -1.5,
+     "requestedDb": -1.5,
+     "errorDb": 0
+    }
+   }
+  }
+ },
+ "loudness": {
+  "loudnorm": {
+   "gainDb": 2.57
+  }
+ }
+}

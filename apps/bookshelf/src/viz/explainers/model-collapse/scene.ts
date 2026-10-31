@@ -72,8 +72,14 @@ export const CH_H = 320;
 export const chX = (gen: number): number => CH_X0 + (gen / GENS) * (CH_X1 - CH_X0);
 export const chY = (sd: number): number => CH_Y0 - sd * CH_H;
 
+// The tallest density the stage draws. Narrower models are scaled down together
+// with the true curve, so a collapsing peak never climbs out of the frame.
+export const PEAK_CAP = 0.42;
+
 export const CAM_DIST: CameraState = { x: 420, y: 320, k: 1.2 };
-export const CAM_CHART: CameraState = { x: 950, y: 320, k: 1.2 };
+// Chart beat: frame the distribution AND the spread chart together, so the
+// subject the caption names is never cut off at the caption midpoint.
+export const CAM_CHART: CameraState = { x: 645, y: 335, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;
@@ -155,7 +161,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 36.7, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 37.3, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0.1, { at: 37.3, dur: 1.1, ease: ease.move });
   tl.tween(endU, 1, { at: 38.5, dur: 0.9, ease: ease.enter });
   tl.caption({
     at: 38.5,

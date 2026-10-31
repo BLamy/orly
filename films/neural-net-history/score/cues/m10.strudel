@@ -1,0 +1,242 @@
+// m10 — DEEP DIVE I: THE NIGHT IN FLORENCE, part 1: the machine.
+// The expert-features candle lit plainly (A -> D) -> the workshop -> the bedroom furnaces (a drone that
+// becomes the machine pulse on the LED match cut) -> the machine wakes (a piano phrase in the gaps) -> the
+// stencil (M5b ticks) -> the cathedral (the ostinato climbs; one M3 arc: the forward pass reaches the
+// question at the crown, the messenger runs back down, the trained pass lands on the third at the mosaic)
+// -> the weir (pizzicato) -> too many knobs -> dropout (half the notes snuffed, re-chosen each bar) -> two
+// towers (a hocket, L dry / R coloured, meeting on the bridge beats; "Every time": a lone high E) -> five
+// days downhill (cello steps D C Bb A, settling on the A that m11's Florence holds as A-D-E).
+// Window 869.68-1043.98 (174.30 s, clock 2139.54 s; re-fitted 2026-10-12: shifted +19.083 s bodily, no line inside it changed length, every cue-local hit re-checked against timeline.json). 92 BPM, one 4/4 bar per cycle
+// (2.609 s). Cue-local seconds (absolute - 869.68). Alone from 1.40 (m09's fade ends 871.08) to L0802
+// (3.12). Last onset 171.86 (1041.54, 'cut3'): the A is struck and decays by itself (critic r1: it used to
+// ring at full level into a 0.6-s fade while m11's A faded in over 1.5 s, so the shared pitch dipped
+// mid-join); it is under -27 LUFS momentary when the fade starts (1043.38) and m11's A swells out of it.
+// Notes kept from earlier revisions: gm_vibraphone hangs the offline export, so the mirror hall is
+// gm_fx_crystal and the coloured tower is gm_orchestral_harp; "@.32"-style weights parse as notes, so all
+// weights carry a leading 0.
+// Round-1 re-fit: every hit re-anchored to the new line timings. The grid's colour sentence is now one
+// line with the grid sentence, so the D dorian answer phrase moved to the gap after 'numbers' (44.05).
+// The crown swell (gap 957.55-960.48) peaks about 959.08 and is cut short so it has fallen at least 8 dB
+// by 960.38, before L0811 (review note).
+setcpm(92/4)
+const CPS = 92/240, DUR = 174.30
+// Times are quantized to 1/128 bar (integer step weights) so the pattern arithmetic stays exact and fast.
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const bars = s => qn(s) / Q
+const loop = (pat, d) => pat.fast(bars(d))        // a one-bar figure repeated at tempo through a slot
+const hall = x => x.room(.5).rsize(5)
+// ROUND-2 VOICE PASS (2026-10-13; verdict: the ch08 dive had the thinnest voice-to-music margins). The
+// narrator's lines in cue-local seconds (current clock): every note struck inside a line is scaled by
+// speech(vs) (all layers get .7 in the final all(); the pulse and the high colours get more), so the
+// machine breathes with the voice and opens fully in the gaps. Held notes keep the level they were struck at.
+const LINES = [[3.12, 16.53], [18.65, 27.23], [31.83, 44.05], [46.78, 50.47], [50.92, 57.41], [57.86, 67.47],
+  [70.19, 80.17], [80.57, 87.87], [90.80, 95.22], [95.67, 99.86], [102.98, 118.25], [119.68, 132.71],
+  [133.16, 135.32], [137.36, 147.00], [149.73, 154.42], [154.87, 162.44], [167.38, 172.25]]
+const speech = (vs, vg = 1) => { const segs = []; let cur = 0
+  for (const [a, b] of LINES) { const qa = qn(a), qb = qn(b); if (qa > cur) segs.push([qa - cur, pure(vg)]); segs.push([qb - qa, pure(vs)]); cur = qb }
+  const end = qn(DUR); if (end > cur) segs.push([end - cur, pure(vg)]); return stepcat(...segs).slow(end / Q) }
+const under = (x, vs) => x.mul(velocity(speech(vs)))
+
+// ---------------------------------------------------------------- harmony of the climb (midi numbers)
+// [start, dur, bass root, triad intervals]; the four courses ('edges' 75.82, 'textures' 77.25, 'parts'
+// 78.41, 'things' 79.66): Dm, F, G, A rising to the dominant (the harmony moves in the low voices only);
+// then the halls ('halls' 81.42) Bb, the last hall ('lastHall' 84.40) C, A, and the crown D MAJOR in the
+// gap after 957.55 (87.87-90.80).
+const MIN = [0, 3, 7], MAJ = [0, 4, 7]
+const CROWN = 87.90
+const CLIMB = [
+  [70.19, 2.04, 38, MIN], [72.23, 1.90, 38, MIN], [74.13, 1.69, 38, MIN],          // l1, l2, stack
+  [75.82, 1.43, 38, MIN], [77.25, 1.16, 41, MAJ], [78.41, 1.25, 43, MAJ], [79.66, 1.76, 45, MAJ],
+  [81.42, 2.98, 34, MAJ], [84.40, 2.42, 36, MAJ], [86.82, 1.08, 33, MAJ], [CROWN, 1.75, 38, MAJ]]
+const q = a => a.join(' ')
+const pulseOf = (r, iv) => q([r, r + 12, r + 7, r + 12, r, r + 12, r + 7, r + 12])
+const v1Of = (r, iv) => q([r + 12, r + 19, r + 24, r + 12 + iv[1], r + 12, r + 19, r + 24, r + 19])
+const v2Of = (r, iv) => q([r + 24 + iv[1], r + 31, r + 36, r + 31, r + 24 + iv[1], r + 31, r + 36 + iv[1], r + 31])
+// v3 (music box) stays at D5 and above: the hall roots below D2 are lifted an octave for it
+const v3Of = (r0, iv) => { const r = r0 < 38 ? r0 + 12 : r0
+  return q([r + 36, '~', r + 36 + iv[1], '~', r + 43, '~', r + 36 + iv[1], '~']) }
+const climb = (from, f, vel) => CLIMB.filter(c => c[0] >= from - 1e-6).map(([t, d, r, iv], i) =>
+  [t, d, loop(note(mini(f(r, iv))), d).velocity(typeof vel === 'function' ? vel(t) : vel)])
+
+// ================================================================ 1. THE BELIEF (hush in the study)
+// low D drone, the m09 A settling onto it; an open D chord and a breath of high glass so the new key is
+// heard on its own before L0802
+$: tl([0.6, 17.67, note("d2")], [18.27, 11.0, note("d2")]).s("gm_contrabass").velocity(.12).attack(1.5).release(2.5).lpf(360)
+$: tl([1.0, 4.0, note("[a5,d6]")]).s("gm_pad_bowed").velocity(.045).attack(1).release(2).room(.5).rsize(5)
+// M1 for the expert-features candle on 'belief' (874.97 = 5.29): A -> D, strings, plainly, with respect;
+// the D held over a plain D major, then G/D ('workshop' 9.48) and back
+$: hall(tl([4.67, 3.6, note("a4@0.62 d5@2.98")]).s("gm_string_ensemble_1").velocity("[.11 .09]").attack(.15).release(1.6).lpf(1200))
+$: hall(tl([0.8, 4.49, note("[d2,a2,d3]").velocity(.075)], [5.29, 4.19, note("[d2,a2,d3]").velocity(.1)], [9.48, 4.35, note("[d2,g2,b2]").velocity(.1)], [13.83, 4.3, note("[d2,a2,f#3]").velocity(.1)])
+  .s("gm_string_ensemble_1").attack(1).release(2).lpf(700))
+// the workshop ('workshop' 879.16 = 9.48): a patient muted piano and a soft tap on the snips
+// (2026-10-12: the held D and the muted piano sit about 1.5 dB lower under the 13-s L0802)
+$: tl([9.48, 7.0, loop(note("d3 ~ a2 ~ d3 ~ [a2 a2] ~"), 7.0)]).s("piano").velocity(.12).lpf(650).release(.15).room(.3).rsize(5)
+$: tl([9.48, 7.0, loop(note("~ ~ g5 ~ ~ ~ ~ g5"), 7.0)]).s("gm_woodblock").velocity(.045).lpf(4000)
+// the workshop's phrase closes in the breath after 'one in four' (gap 16.53-18.65): a3 b3 c#4 -> d4
+$: hall(tl([16.69, 1.95, note("a3@0.33 b3@0.33 c#4@0.33 d4@0.96")]).s("piano").velocity(.2).lpf(1800).release(.4))
+$: hall(tl([16.69, 1.95, note("[d2,a2]")]).s("piano").velocity(.12).lpf(900).release(.4))
+
+// ================================================================ 2. THE BEDROOM: the furnaces
+// a low synth drone rises with the fan whine ...
+$: tl([18.67, 3.5, note("[d1,d2]").gain(.025).lpf(180)], [22.17, 3.5, note("[d1,d2]").gain(.035).lpf(300)],
+      [25.67, 3.4, note("[d1,d2,a2]").gain(.045).lpf(480)])
+  .s("sawtooth").attack(1.2).release(1.4)
+$: tl([20.07, 9.0, s("pink")]).hpf(6000).lpf(11000).gain(.006).attack(4).release(1)
+// ... and becomes the first pulse of the machine on the LED match cut ('match' 898.75 = 29.07)
+$: tl([29.07, 2.17, loop(note("d2 ~ ~ ~ d2 ~ ~ ~"), 2.17)],
+      [31.24, 38.95, loop(note("38 50 45 50 38 50 45 50"), 38.95)],
+      ...climb(70.19, pulseOf, .9),
+      // after the crown: the machine exhales to the television snow ('noise' 93.33)
+      [89.65, 3.68, loop(note("38 50 45 50 38 50 45 50"), 3.68).velocity("[.7 .55 .4 .3 .2]")],
+      // too many knobs: the machine computes, low (ch08-s08 119.28)
+      [119.28, 19.41, loop(note("38 50 45 50 38 50 45 50"), 19.41)],
+      // dropout: half the notes snuffed at random, re-chosen every bar ('snuffed' 1008.37 = 138.69)
+      [138.69, 10.76, loop(note("38 50 45 50 38 50 45 50"), 10.76).degradeBy(.5)],
+      // two towers: a low anchor under the split, stops dead on 'Every' (1031.13 = 161.45)
+      [149.45, 12.0, loop(note("38 ~ 45 ~ 38 ~ 45 ~"), 12.0)])
+  .s("sawtooth").lpf(sine.range(480, 820).slow(8)).decay(.18).sustain(0).gain(.052).room(.3).rsize(5)
+  .mul(velocity(speech(.7))).mul(cutoff(speech(.6)))
+$: tl([29.07, 64.26, s("pink")], [119.28, 30.17, s("pink")]).hpf(7000).lpf(12000).gain(.005).attack(2).release(1.5)
+
+// ================================================================ 3. THE GRID: the machine wakes
+// a dry pluck on every grid subdivision (ch08-s03 31.24), above the voice; in colour ('colour' 35.78)
+// each light becomes three numbers: the plucks group in threes
+$: tl([31.24, 4.54, loop(note("[d5 a5]*8"), 4.54).velocity(perlin.range(.05, .1))],
+      [35.78, 10.49, loop(note("[d5 a5 e6]*4"), 10.49).velocity(perlin.range(.05, .09))])
+  .s("gm_pizzicato_strings").lpf(3500).room(.25).rsize(5)
+// A real phrase in the gaps, piano, mid-range only while the voice rests. M3's forward pass rises and
+// stops on the question E as the LED match cut lights the pulse (gap 27.23-31.83); after 'a hundred and
+// fifty thousand numbers' (gap 44.05-46.77) the line tries an answer in D dorian (f g f e c -> d over
+// G - C - Dm: IV bVII i) and settles just as the stencil is held up (46.77).
+$: hall(tl([27.52, 4.0, note("d3@0.33 f3@0.33 a3@0.33 d4@0.56 e4@2.45")],
+           [44.20, 2.5, note("f4@0.49 g4@0.33 f4@0.33 e4@0.49 c4@0.33 d4@1.53")])
+  .s("piano").velocity(.22).lpf(2600).release(.6))
+$: hall(tl([29.07, 2.6, note("[d2,a2]")], [44.20, .82, note("g2")], [45.02, .59, note("c3")], [45.61, 1.15, note("[d2,a2]")])
+  .s("piano").velocity(.13).lpf(1200).release(.6))
+// the stencil wall fills ('conv' 66.68): one shimmering run, above the voice
+$: tl([66.68, 2.14, note("d4 f4 a4 c5 d5 f5 a5 c6 d6 e6")]).s("gm_celesta").velocity(.16).room(.5).rsize(5)
+
+// ================================================================ 4. THE STENCIL
+// ('kernel' 916.87 = 47.19): one dry wooden tick per lantern step, on twos; on 'slide' (933.69 = 64.01)
+// the steps accelerate into a shimmering run as the wall fills ('conv' 66.68, 'full' 68.82)
+$: tl([47.19, 16.82, loop(note("d5 a4 d5 a4 d5 a4 e5 a4"), 16.82)],
+      [64.01, 2.67, loop(note("[d5 a4]*6"), 2.67)],
+      [66.68, 2.14, loop(note("[d5 a4]*12"), 2.14)])
+  .s("gm_woodblock").velocity(.08).lpf(5000).room(.2).rsize(5)
+// the D dorian bed of the stencil, kept low (Dm, Em/D on 'weighs', C/D on 'edge', Dm on 'slide')
+$: hall(tl([31.24, 15.95, note("[d2,a2]")], [47.19, 5.06, note("[d2,a2,f3]")], [52.25, 6.07, note("[d2,b2,e3]")],
+          [58.32, 5.69, note("[d2,g2,c3]")], [64.01, 5.68, note("[d2,a2,f3]")])
+  .s("gm_string_ensemble_1").velocity(.11).attack(1).release(2).lpf(750))
+// the worked sum: a single held tone that resolves upward when the spot comes out bright
+// ('edge' 928.00 = 58.32 -> 'bright' 930.44 = 60.76): C#6 -> D6, bowed glass above the voice
+$: tl([58.32, 5.4, note("c#6@2.44 d6@3")]).s("gm_pad_bowed").velocity(.06).attack(.5).release(2).lpf(3000).room(.5).rsize(5)
+
+// ================================================================ 5. THE CATHEDRAL: the ostinato climbs
+// each course of stone adds a voice (l1 70.19 pizz, l2 72.23 celesta, stack 74.13 music box); the four
+// courses move the harmony Dm F G A underneath; Bb - C - A under the halls; D MAJOR on the crown
+// (87.90). Under the lines the pizz holds back (.08, lpf 1200); it opens on the crown.
+$: hall(tl(...climb(70.19, v1Of, t => t < CROWN - .1 ? .07 : .16)).s("gm_pizzicato_strings").lpf(1200))
+$: hall(tl(...climb(72.23, v2Of, t => t < CROWN - .1 ? .035 : .14)).s("gm_celesta"))
+$: hall(tl(...climb(74.13, v3Of, t => t < 80.9 ? .045 : t < CROWN - .1 ? .045 : .13)).s("gm_music_box"))
+// the broad organ-like swell: under the halls it is a whisper (.05); it opens in the crown gap, peaks
+// about 89.4 (959.08) and is released at 89.65 so it has fallen 8 dB before L0811 (90.80)
+$: hall(tl([81.42, 2.98, note("[46,53,58,62,65]").velocity(.035).lpf(1000)], [84.40, 2.42, note("[48,55,60,64,67]").velocity(.035).lpf(1000)],
+          [86.82, 1.08, note("[45,52,57,61,64]").velocity(.035).lpf(1000)], [CROWN, 1.75, note("[38,50,57,62,66,69,74,78]").velocity(.085).lpf(2200)])
+  .s("gm_drawbar_organ").attack(.5).release(.8))
+// the hall roots only (no upper octave: its harmonics sat in the voice under 'two great halls'), dark;
+// the full D octave opens on the crown
+$: hall(tl([81.42, 6.48, note("34@2.98 36@2.42 33@1.08").velocity(.12).lpf(220)], [CROWN, 1.9, note("[26,38]").velocity(.15).lpf(400)])
+  .s("gm_contrabass").attack(.4).release(.9))
+$: hall(tl([CROWN - .05, 1.8, note("[50,57,62,66,69,74]")]).s("gm_string_ensemble_1").velocity(.11).attack(.25).release(.8).lpf(3000))
+$: hall(tl([CROWN - .05, 1.8, note("[62,66,69]")]).s("sawtooth").gain(.012).attack(.2).release(.8).lpf(1800))
+// THE M3 ARC, part 1, on the crown: the forward pass climbs the finished cathedral and stops on the
+// question (E over D major: built, but it knows nothing yet). Piano doubled by soft strings, in the gap.
+$: hall(tl([CROWN, 2.3, note("d4@0.33 f#4@0.33 a4@0.33 d5@0.33 e5@0.98")]).s("piano").velocity(.21).lpf(3000).release(.4))
+$: hall(tl([CROWN, 2.0, note("d4@0.33 f#4@0.33 a4@0.33 d5@0.33 e5@0.68")]).s("gm_string_ensemble_1").velocity(.11).attack(.05).release(.6).lpf(2400))
+
+// ================================================================ 6. NOBODY CUT THEM
+// near silence on 'noise' (963.01 = 93.33): a soft television-snow hiss
+$: tl([93.33, 7.4, s("white")]).hpf(3000).lpf(9000).gain(.012).attack(.4).release(1.2)
+// THE M3 ARC, part 2: the messenger ('messenger' 965.53 = 95.85) runs back down (E D A F# D), quicker
+// and quicker; celesta alone (written e5, sounding E6, above the voice). No doubling.
+const accel = (ns, total, d0, k) => { const out = []; let t = 0, d = d0, i = 0
+  while (t + d < total - 1e-6) { out.push(ns[i % ns.length] + '@' + d.toFixed(3)); t += d; d *= k; i++ }
+  out.push('~@' + (total - t).toFixed(3)); return out.join(' ') }
+$: hall(tl([95.85, 3.95, note(mini(accel(['e5', 'd5', 'a4', 'f#4', 'd4'], 3.95, .46, .9)))]).s("gm_celesta").velocity(.075))
+// THE M3 ARC, part 3: the trained pass, in the gap after 'nudge by nudge' (L0812 ends 99.86):
+// D F# A D -> F#, landing on the third as the mosaic resolves ('mosaic' 970.14 = 100.46) on warm D major
+$: hall(tl([99.88, 2.6, note("d4@0.15 f#4@0.15 a4@0.15 d5@0.13 f#5@2.02")]).s("piano").velocity(.26).lpf(3200).release(.5))
+$: hall(tl([100.46, 2.4, note("f#5")]).s("gm_celesta").velocity(.14))
+$: hall(tl([100.46, 1.9, note("[38,45,50,54,57,62,66,69]")]).s("gm_string_ensemble_1").velocity(.15).attack(.35).release(.7).lpf(2400))
+
+// ================================================================ 7. THE WEIR (lighter: pizzicato)
+// D - Bm ('weir' 107.92) - G ('undimmed' 110.17) - A ('tug' 112.19), a lift on 'six' (985.06 = 115.38),
+// home on 'test'; kept at or below D3 under the line
+$: hall(tl([102.48, 5.44, loop(note("38 45 50 45 38 45 50 45"), 5.44)], [107.92, 2.25, loop(note("35 42 47 42 35 42 47 42"), 2.25)],
+          [110.17, 2.02, loop(note("31 38 43 38 31 38 43 38"), 2.02)], [112.19, 3.19, loop(note("33 40 45 40 33 40 45 40"), 3.19)],
+          [115.38, 2.39, loop(note("31 38 43 38 31 38 43 38"), 2.39)], [117.77, 1.51, loop(note("38 45 50 45"), 1.51)])
+  .s("gm_pizzicato_strings").velocity(.15).lpf(1000))
+// the signal over the weir: a light high figure, every note at the same level (undimmed)
+$: hall(tl([102.48, 16.8, loop(note("~ d5 ~ a5 ~ d5 ~ f#5"), 16.8)]).s("gm_pizzicato_strings").velocity(.05).lpf(4000))
+// six times faster: a lift, high strings (above the voice)
+$: hall(tl([115.38, 3.6, note("[b5,d6,g6]@2 [a5,d6,f#6]@1.2")]).s("gm_string_ensemble_1").velocity(.07).attack(.6).release(1.8))
+
+// ================================================================ 8. TOO MANY KNOBS
+// a soft low thud on 'scale' (989.35 = 119.67)
+$: tl([119.67, 3.0, note("d2")]).s("gm_timpani").velocity(.36).room(.4).rsize(5)
+$: hall(tl([119.67, 15.5, note("[d2,a2,f3]@6 [d2,bb2,f3]@6 [d2,a2,e3]@3.5")]).s("gm_string_ensemble_1").velocity(.1).attack(1.2).release(2).lpf(700))
+// the mirror hall ('mirror' 1003.32 = 133.64): one glassy gesture, mirrored L/R
+$: hall(tl([133.64, 3.1, loop(note("d5 f#5 a5 d6 f#6 d6 a5 f#5"), 3.1)]).s("gm_fx_crystal").velocity(.06).pan(.12))
+$: hall(tl([133.64, 3.1, loop(note("f#6 d6 a5 f#5 d5 f#5 a5 d6"), 3.1)]).s("gm_fx_crystal").velocity(.06).pan(.88))
+
+// ================================================================ 9. DROPOUT
+// the ostinato, plain (celesta written d5-a5, sounding D6-A6), from the cut to the great halls (136.86);
+// on 'snuffed' (138.69) half its notes drop out at random, re-chosen every bar; it carries the hold
+// after the line (146.99-149.73). The low pizz stays below D3.
+$: hall(tl([136.86, 1.83, loop(note("d5 a4 f#5 a4 d5 a4 f#5 a5"), 1.83)], [138.69, 10.5, loop(note("d5 a4 f#5 a4 d5 a4 f#5 a5"), 10.5).degradeBy(.5)])
+  .s("gm_celesta").velocity(.16).mul(velocity(speech(.35))))
+$: hall(tl([136.86, 1.83, loop(note("d2 a1 d2 a1 d2 a1 d2 a1"), 1.83)], [138.69, 10.5, loop(note("d2 a1 d2 a1 d2 a1 d2 a1"), 10.5).degradeBy(.5)])
+  .s("gm_pizzicato_strings").velocity(.14).lpf(800))
+$: hall(tl([136.86, 12.3, note("[d2,a2]")]).s("gm_string_ensemble_1").velocity(.1).attack(1).release(2).lpf(600))
+
+// ================================================================ 10. TWO TOWERS: a hocket
+// 'split' (1021.17 = 151.49): L dry (woodblock + low pizz), R coloured (harp), interleaved so they never
+// sound together, then meeting on every downbeat from 'bridges' (1026.17 = 156.49). On 'Every'
+// (1031.13 = 161.45) both stop; a single high E holds over nothing.
+$: tl([151.49, 5.0, loop(note("d5 ~ a4 ~ d5 ~ a4 ~"), 5.0)], [156.49, 4.96, loop(note("d5 ~ a4 ~ d5 ~ a4 ~"), 4.96)])
+  .s("gm_woodblock").velocity(.06).pan(0).room(.2).rsize(5)
+$: tl([151.49, 5.0, loop(note("d3 ~ a2 ~ d3 ~ a2 ~"), 5.0)], [156.49, 4.96, loop(note("d3 ~ a2 ~ d3 ~ a2 ~"), 4.96)])
+  .s("gm_pizzicato_strings").velocity(.13).pan(0).lpf(1400)
+$: hall(tl([151.49, 5.0, loop(note("~ f#5 ~ a5 ~ d6 ~ a5"), 5.0)], [156.49, 4.96, loop(note("d5 f#5 ~ a5 ~ d6 ~ a5"), 4.96)])
+  .s("gm_orchestral_harp").velocity(.065).lpf(2200).pan(1))
+// the bridge beats: one shared note, dead centre, on each downbeat
+$: hall(tl([156.49, 4.96, loop(note("d5 ~ ~ ~ ~ ~ ~ ~"), 4.96)]).s("gm_celesta").velocity(.05).pan(.5))
+$: hall(tl([149.45, 12.0, note("[d2,a2,e3]")]).s("gm_string_ensemble_1").velocity(.09).attack(1.5).release(1).lpf(600))
+// "Every time": the plant. One high E, suspended over nothing (paid off in m19)
+$: hall(tl([161.45, 5.3, note("e6")]).s("gm_pad_bowed").velocity(.08).attack(.3).release(2.5).lpf(3000))
+$: hall(tl([161.45, 5.0, note("e5")]).s("gm_celesta").velocity(.11))
+
+// ================================================================ 11. FIVE DAYS DOWNHILL (winter colours)
+// the pulse slows to walking quarters (ch08-s10 166.77); the cello walks the lament tetrachord down, one
+// step per step cut ('walk' 168.64 D, 'cut1' 169.86 C, 'cut2' 170.72 Bb, 'cut3' 171.86 A); 'settle'
+// (172.35) adds nothing new: it is the A sustaining into m11
+$: tl([166.78, 3.08, loop(note("d2 a1 d2 a1"), 3.08)], [169.86, .86, note("c2")], [170.72, 1.14, note("bb1")], [171.86, 2.43, note("a1")])
+  .s("gm_pizzicato_strings").velocity(.11).lpf(800).room(.4).rsize(5)
+$: hall(tl([168.64, 1.22, note("d3")], [169.86, .86, note("c3")], [170.72, 1.14, note("bb2")])
+  .s("gm_cello").velocity(.13).attack(.15).release(.6).lpf(800))   // short release: the bowed loop's swell must not bloom after 'cut3'
+$: hall(tl([166.78, 3.08, note("[d2,a2]")], [169.86, .86, note("[c2,g2]")], [170.72, 1.14, note("[bb1,f2]")])
+  .s("gm_string_ensemble_1").velocity(.09).attack(.6).release(1.5).lpf(550))
+// the last step's A is a plain, still drone (no bowed sample: its loop swell 0.8 s after the onset would
+// read as a new strike in the clear gap before m11): A-E under the held D-A glass = the A-D-E m11 holds
+$: hall(tl([171.86, .55, note("[a1,a2,e3]")]).s("triangle").gain(.05).attack(.12).release(1.3).lpf(600))
+// the snow: bowed glass, high and thin, D-A held over the last step (the A-D-E that m11 holds)
+$: hall(tl([166.86, 4.8, note("[d6,a6]")]).s("gm_pad_bowed").velocity(.03).attack(1.5).release(2).lpf(3000))
+
+// under the lines .57 x 4.2 = the level of .7 x 3.4 (the voice pass); the gaps (the crown, the snow, the
+// mosaic, the dropout hold, the plant) are +1.8 dB, so the cue keeps its house loudness
+all(x => x.mul(velocity(speech(.57))).postgain(4.2))

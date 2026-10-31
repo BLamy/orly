@@ -79,18 +79,21 @@ const lerpArr = (arr: number[], u: number): number => {
 // Layout.
 // ---------------------------------------------------------------------------
 
+// Top row (input, kernel) sits at y 130-270, the output row below at y 400-610,
+// so the whole picture fits under the title band and above the caption pill.
 const IN_X = scaleLinear().domain([0, T - 1]).range([120, 700]);
-const IN_Y = scaleLinear().domain([-1.4, 2.6]).range([250, 110]);
+const IN_Y = scaleLinear().domain([-1.4, 2.6]).range([270, 130]);
 
-const KER_X = scaleLinear().domain([0, 14]).range([860, 1180]);
-const KER_Y = scaleLinear().domain([-0.6, 0.9]).range([250, 110]);
+const KER_X = scaleLinear().domain([0, T - 1]).range([860, 1180]);
+const KER_Y = scaleLinear().domain([-0.6, 0.9]).range([270, 130]);
 
 const OUT_X = scaleLinear().domain([0, T - 1]).range([120, 1180]);
-const OUT_Y = scaleLinear().domain([-0.7, 2.0]).range([600, 380]);
+const OUT_Y = scaleLinear().domain([-0.7, 2.0]).range([590, 380]);
 
+// The fit view keeps input, kernel and output on screen together, so no
+// subject is cropped by the title band or the caption pill.
 const CAM_IN: CameraState = { x: 420, y: 190, k: 1.3 };
-const CAM_KER: CameraState = { x: 1000, y: 190, k: 1.35 };
-const CAM_OUT: CameraState = { x: 640, y: 470, k: 1.15 };
+const CAM_FIT: CameraState = { x: 660, y: 343, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -144,7 +147,7 @@ export function buildScene(): Scene {
     dur: 5.8,
     text: 'Path one is the machine you already know: a tiny four-number state chews through the sequence one step at a time, and we read an output off it at every step.',
   });
-  tl.tween(cam, CAM_OUT, { at: 6.9, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_FIT, { at: 6.9, dur: 1.5, ease: ease.move });
   tl.tween(recEqU, 1, { at: 7.5, dur: 0.8, ease: ease.enter });
   tl.tween(recTok, T - 1, { at: 8.8, dur: 7.0, ease: ease.linear });
   tl.caption({
@@ -160,7 +163,7 @@ export function buildScene(): Scene {
     dur: 6.2,
     text: 'Now the trick. Because the update is linear, you can unroll it: the output is just each past input, weighted by how much survives the decay. Those weights form a fixed curve.',
   });
-  tl.tween(cam, CAM_KER, { at: 18.6, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_FIT, { at: 18.6, dur: 1.5, ease: ease.move });
   tl.tween(kerU, 1, { at: 19.6, dur: 1.4, ease: ease.draw });
   tl.tween(kerEqU, 1, { at: 21.4, dur: 0.8, ease: ease.enter });
   tl.caption({
@@ -168,7 +171,7 @@ export function buildScene(): Scene {
     dur: 5.4,
     text: 'That curve is a convolution kernel, computed once from the model itself. Slide it across the whole input in one shot — no state, no order, no waiting.',
   });
-  tl.tween(cam, CAM_OUT, { at: 26.2, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_FIT, { at: 26.2, dur: 1.5, ease: ease.move });
   tl.tween(convTok, T - 1, { at: 27.4, dur: 4.5, ease: ease.linear });
   tl.hold(30.8, 0.6);
 
@@ -178,7 +181,7 @@ export function buildScene(): Scene {
     dur: 6.0,
     text: 'Same model, two completely different computations — and the outputs land exactly on top of each other. We checked every one of the thirty two values.',
   });
-  tl.tween(cam, CAMERA_HOME, { at: 31.6, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_FIT, { at: 31.6, dur: 1.5, ease: ease.move });
   tl.tween(diffU, 1, { at: 33.0, dur: 0.8, ease: ease.pop });
   tl.caption({
     at: 37.8,
@@ -251,10 +254,10 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* input */}
           <g opacity={inU}>
-            <text x={120} y={84} fill={colors.TEXT} fontSize={17}>
+            <text x={120} y={104} fill={colors.TEXT} fontSize={17}>
               input x
             </text>
-            <Axes x={IN_X} y={IN_Y} reveal={inU} xTicks={6} yTicks={2} xLabel="step" fontSize={10} />
+            <Axes x={IN_X} y={IN_Y} reveal={inU} xTicks={6} yTicks={2} xLabel="step" fontSize={12} />
             <FunctionPlot
               x={IN_X}
               y={IN_Y}
@@ -269,16 +272,16 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* kernel */}
           <g opacity={kerU}>
-            <text x={860} y={84} fill={colors.TEXT} fontSize={17}>
+            <text x={860} y={104} fill={colors.TEXT} fontSize={17}>
               the unrolled kernel
             </text>
-            <Axes x={KER_X} y={KER_Y} reveal={kerU} xTicks={4} yTicks={2} xLabel="lag j" fontSize={10} />
+            <Axes x={KER_X} y={KER_Y} reveal={kerU} xTicks={4} yTicks={2} xLabel="lag j" fontSize={12} />
             <FunctionPlot
               x={KER_X}
               y={KER_Y}
               f={(u) => lerpArr(KERNEL, u)}
-              domain={[0, 14]}
-              samples={160}
+              domain={[0, T - 1]}
+              samples={240}
               reveal={kerU}
               color={colors.WARM}
               width={2.4}
@@ -291,7 +294,7 @@ function Frame({ s }: { s: SceneState }) {
               output y — two ways
             </text>
             {recTok > 0 && (
-              <Axes x={OUT_X} y={OUT_Y} reveal={1} xTicks={8} yTicks={3} xLabel="step" fontSize={10} />
+              <Axes x={OUT_X} y={OUT_Y} reveal={1} xTicks={8} yTicks={3} xLabel="step" fontSize={12} />
             )}
             {recTok > 0 && (
               <>
@@ -306,7 +309,7 @@ function Frame({ s }: { s: SceneState }) {
                   width={3}
                 />
                 <circle cx={OUT_X(rTok)} cy={OUT_Y(lerpArr(Y_REC, rTok))} r={5} fill={colors.ACCENT} />
-                <text x={130} y={392} fill={colors.ACCENT} fontSize={13}>
+                <text x={130} y={372} fill={colors.ACCENT} fontSize={14}>
                   recurrence, step by step
                 </text>
               </>
@@ -324,7 +327,7 @@ function Frame({ s }: { s: SceneState }) {
                   width={1.6}
                   dash
                 />
-                <text x={330} y={392} fill={colors.WARM} fontSize={13}>
+                <text x={130} y={392} fill={colors.WARM} fontSize={14}>
                   convolution, all at once
                 </text>
               </>
@@ -334,26 +337,25 @@ function Frame({ s }: { s: SceneState }) {
           {/* the measured difference */}
           {diffU > 0 && (
             <g opacity={diffU}>
-              <rect x={860} y={330} width={320} height={64} rx={10} fill={colors.PANEL} stroke={colors.GRID} opacity={0.95} />
-              <text x={1020} y={356} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              <rect x={860} y={290} width={320} height={64} rx={10} fill={colors.PANEL} stroke={colors.GRID} opacity={0.95} />
+              <text x={1020} y={316} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 max difference over 32 steps
               </text>
-              <text x={1020} y={382} textAnchor="middle" fill={colors.POSITIVE} fontSize={18} fontFamily="monospace" fontWeight={700}>
+              <text x={1020} y={342} textAnchor="middle" fill={colors.POSITIVE} fontSize={18} fontFamily="monospace" fontWeight={700}>
                 {MAX_DIFF.toExponential(1)}
               </text>
             </g>
           )}
 
-          {/* why it matters */}
-          {whyU > 0 && (
-            <g opacity={whyU}>
-              <text x={120} y={622} fill={colors.MUTED} fontSize={14}>
-                train as a convolution (parallel) · serve as a recurrence (tiny state) · selectivity trades the kernel for a parallel scan
-              </text>
-            </g>
-          )}
         </Camera>
       </g>
+
+      {/* why it matters: a fixed footer in screen space, clear of the caption pill */}
+      {whyU > 0 && (
+        <text x={640} y={618} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={whyU * mainOp}>
+          train as a convolution (parallel) · serve as a recurrence (tiny state) · selectivity trades the kernel for a parallel scan
+        </text>
+      )}
 
       <g opacity={titleU * mainOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
@@ -379,7 +381,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             One model, two faces.
           </text>

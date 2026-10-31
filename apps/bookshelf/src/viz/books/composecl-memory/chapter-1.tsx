@@ -57,7 +57,7 @@ export function buildScene() {
 
   tl.caption({ at: 42.4, dur: 5.5, text: 'The final row is the expensive claim. Its mean is final retention after the hundredth update.' });
   tl.tween(finalU, 1, { at: 42.9, dur: 1.3, ease: ease.pop });
-  tl.tween(cam, { x: 640, y: 360, k: 1.08 }, { at: 43.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 43.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 48.4, dur: 5.5, text: 'The same matrix yields forgetting by comparing each task at its best moment with that last row.' });
   tl.tween(metricU, 1, { at: 49.0, dur: 1.5, ease: ease.enter });
@@ -75,10 +75,10 @@ export function buildScene() {
 
 const scene = buildScene();
 
-function MemoryCard({ u, fade }: { u: number; fade: number }) {
-  return <g transform={`translate(118 112) scale(${0.86 + 0.14 * u})`} opacity={u}>
+function MemoryCard({ u, fade, x = 118, y = 112 }: { u: number; fade: number; x?: number; y?: number }) {
+  return <g transform={`translate(${x} ${y}) scale(${0.86 + 0.14 * u})`} opacity={u}>
     <rect width="262" height="92" rx="24" fill="#151f31" stroke={colors.WARM} strokeWidth="3" />
-    <text x="22" y="32" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>Question: oHBvRP</text>
+    <text x="22" y="32" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>Question: oHBvRP</text>
     <text x="22" y="65" fill={colors.WARM} fontSize="18" fontWeight="800" fontFamily={colors.font.mono} opacity={fade}>Answer: OIvG</text>
   </g>;
 }
@@ -91,7 +91,7 @@ export function Render({ s }: { s: SceneState }) {
   const matrix = s.get(scene.matrixU);
   const diagonal = s.get(scene.diagonalU);
   const final = s.get(scene.finalU);
-  const memoryFade = Math.max(0.08, 1 - 0.82 * clamp01(overwrite));
+  const memoryFade = Math.max(0.2, 1 - 0.8 * clamp01(overwrite));
   const tapeFade = 1 - fold;
 
   return <Camera {...s.get(scene.cam)}>
@@ -105,29 +105,29 @@ export function Render({ s }: { s: SceneState }) {
           const old = task.i === 0;
           return <g key={task.i} opacity={u}>
             <rect x={task.x} y={270} width="7" height={old ? 44 : 28} rx="3.5" fill={old ? colors.WARM : colors.ACCENT} opacity={old ? memoryFade : 0.25 + 0.55 * u} />
-            {(task.i === 0 || task.i === 9 || task.i === 49 || task.i === 99) && <text x={task.x + 3.5} y="335" textAnchor="middle" fill={old ? colors.WARM : colors.MUTED} fontSize="10">{task.i + 1}</text>}
+            {(task.i === 0 || task.i === 9 || task.i === 49 || task.i === 99) && <text x={task.x + 3.5} y="337" textAnchor="middle" fill={old ? colors.WARM : colors.MUTED} fontSize="14">{task.i + 1}</text>}
           </g>;
         })}
         <g opacity={s.get(scene.noIdU)}>
           <rect x="432" y="158" width="416" height="70" rx="22" fill="#251823" stroke={colors.NEGATIVE} strokeWidth="2.5" />
           <text x="640" y="187" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">NO TASK IDENTIFIER AT INFERENCE</text>
-          <text x="640" y="211" textAnchor="middle" fill={colors.MUTED} fontSize="12">one question must identify one answer globally</text>
+          <text x="640" y="211" textAnchor="middle" fill={colors.MUTED} fontSize="14">one question must identify one answer globally</text>
         </g>
         <g>
           {DATASETS.map((d, i) => {
             const u = clamp01(s.get(scene.datasetsU) - i);
-            return <g key={d.label} transform={`translate(${152 + i * 360} 430)`} opacity={u}>
+            return <g key={d.label} transform={`translate(${124 + i * 360} 430)`} opacity={u}>
               <rect width="312" height="106" rx="26" fill="#101827" stroke={d.color} strokeWidth="2.5" />
               <circle cx="38" cy="53" r="19" fill={d.color} opacity="0.28" />
               <text x="72" y="44" fill={d.color} fontSize="17" fontWeight="800">{d.label}</text>
-              <text x="72" y="70" fill={colors.MUTED} fontSize="12">{d.detail}</text>
+              <text x="72" y="70" fill={colors.MUTED} fontSize="14">{d.detail}</text>
             </g>;
           })}
         </g>
       </g>
 
       <g opacity={matrix} transform={`translate(${fold * 135} ${fold * 8})`}>
-        <text x="368" y="116" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>evaluate.py → accuracy_matrix</text>
+        <text x="368" y="116" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>evaluate.py → accuracy_matrix</text>
         {Array.from({ length: 10 }, (_, row) => Array.from({ length: 10 }, (_, col) => {
           if (col > row) return null;
           const idx = row * 10 + col;
@@ -136,18 +136,18 @@ export function Render({ s }: { s: SceneState }) {
           const isFinal = row === 9;
           const x = 338 + col * 48;
           const y = 142 + row * 42;
-          const dim = isDiag ? 0.48 + 0.52 * diagonal : isFinal ? 0.24 + 0.76 * final : 0.22;
+          const dim = isDiag ? 0.48 + 0.52 * diagonal : isFinal ? 0.24 + 0.76 * final : 0.3;
           const color = isDiag ? colors.ACCENT : isFinal ? colors.WARM : colors.MUTED;
           return <rect key={`${row}-${col}`} x={x} y={y} width="38" height="32" rx="7" fill={color} opacity={u * dim} stroke={color} strokeWidth={isFinal && final > 0 ? 2.5 : 0.5} />;
         }))}
-        <text x="590" y="590" textAnchor="middle" fill={colors.WARM} fontSize="13" opacity={final}>final row → mean final retention</text>
-        <text x="826" y="340" textAnchor="middle" fill={colors.ACCENT} fontSize="12" transform="rotate(-90 826 340)" opacity={diagonal}>diagonal → immediate acquisition</text>
+        <text x="590" y="590" textAnchor="middle" fill={colors.WARM} fontSize="14" opacity={final}>final row → mean final retention</text>
+        <text x="826" y="340" textAnchor="middle" fill={colors.ACCENT} fontSize="14" transform="rotate(-90 826 340)" opacity={diagonal}>diagonal → immediate acquisition</text>
         <g opacity={s.get(scene.metricU)}>
-          <rect x="865" y="190" width="282" height="226" rx="30" fill="#101827" stroke={colors.SECONDARY} strokeWidth="2.5" />
-          <text x="1006" y="232" textAnchor="middle" fill={colors.TEXT} fontSize="18" fontWeight="800">the matrix answers</text>
-          {['final retention', 'immediate acquisition', 'forgetting', 'forward transfer'].map((label, i) => <g key={label} transform={`translate(902 ${270 + i * 34})`}>
+          <rect x="865" y="190" width="230" height="226" rx="30" fill="#101827" stroke={colors.SECONDARY} strokeWidth="2.5" />
+          <text x="980" y="232" textAnchor="middle" fill={colors.TEXT} fontSize="18" fontWeight="800">the matrix answers</text>
+          {['final retention', 'immediate acquisition', 'forgetting', 'forward transfer'].map((label, i) => <g key={label} transform={`translate(887 ${270 + i * 34})`}>
             <circle r="6" fill={[colors.WARM, colors.ACCENT, colors.NEGATIVE, colors.POSITIVE][i]} />
-            <text x="18" y="5" fill={colors.MUTED} fontSize="13">{label}</text>
+            <text x="18" y="5" fill={colors.MUTED} fontSize="14">{label}</text>
           </g>)}
         </g>
       </g>
@@ -155,14 +155,14 @@ export function Render({ s }: { s: SceneState }) {
 
     <g opacity={close}>
       <rect x="180" y="122" width="920" height="444" rx="54" fill={colors.BG} stroke={colors.WARM} strokeWidth="4" />
-      <MemoryCard u={1} fade={0.16} />
-      <text x="640" y="252" textAnchor="middle" fill={colors.TEXT} fontSize="46" fontWeight="880">one memory · one hundred updates</text>
-      <path d="M286 360 H994" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
-      {['data', 'function', 'weight', 'allocation'].map((label, i) => <g key={label} transform={`translate(${330 + i * 205} 360)`}>
+      <MemoryCard u={1} fade={0.15} x={509} y={146} />
+      <text x="640" y="320" textAnchor="middle" fill={colors.TEXT} fontSize="46" fontWeight="880">one memory · one hundred updates</text>
+      <path d="M286 400 H994" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
+      {['data', 'function', 'weight', 'allocation'].map((label, i) => <g key={label} transform={`translate(${330 + i * 205} 400)`}>
         <circle r="42" fill="#101827" stroke={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE][i]} strokeWidth="4" />
-        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="12">{label}</text>
+        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{label}</text>
       </g>)}
-      <text x="640" y="474" textAnchor="middle" fill={colors.MUTED} fontSize="16">which protections compose?</text>
+      <text x="640" y="508" textAnchor="middle" fill={colors.MUTED} fontSize="16">which protections compose?</text>
     </g>
   </Camera>;
 }

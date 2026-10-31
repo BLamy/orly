@@ -39,16 +39,18 @@ const COORD_PARTS = [
 // relay latest-slot
 const SLOT = { x: 300, y: 320, w: 320, h: 130 };
 // the two versions
-const V1 = { id: 'a3f01c9e', at: '1699000000', body: 'their words' };
-const V2 = { id: 'e7b42d10', at: '1700860000', body: 'thier → their' };
+const V1 = { id: 'a3f01c9e', at: '1699000000', body: 'thier words' };
+const V2 = { id: 'e7b42d10', at: '1700860000', body: 'their words' };
 
 // two links
 const NADDR = { x: 830, y: 300 };
 const NEVENT = { x: 830, y: 470 };
+// empty spot beside the slot where the frozen link ends in a miss
+const NEVENT_MISS = { x: 668, y: 452 };
 
 const CAM_PLATE: CameraState = { x: 430, y: 200, k: 1.3 };
-const CAM_SLOT: CameraState = { x: 460, y: 380, k: 1.2 };
-const CAM_LINKS: CameraState = { x: 720, y: 380, k: 1.15 };
+const CAM_SLOT: CameraState = { x: 470, y: 380, k: 1.15 };
+const CAM_LINKS: CameraState = { x: 715, y: 400, k: 1.1 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -147,10 +149,10 @@ function VersionCard({ x, y, v, label, color, op }: { x: number; y: number; v: t
   return (
     <g opacity={op}>
       <rect x={x} y={y} width={SLOT.w} height={SLOT.h} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.6} />
-      <text x={x + 16} y={y + 28} fill={color} fontSize={13} fontWeight={600}>{label}</text>
-      <text x={x + 16} y={y + 56} fill={colors.MUTED} fontSize={12} fontFamily="monospace">id {v.id}…</text>
-      <text x={x + 16} y={y + 80} fill={colors.MUTED} fontSize={12} fontFamily="monospace">created_at {v.at}</text>
-      <text x={x + 16} y={y + 108} fill={colors.TEXT} fontSize={13}>“{v.body}”</text>
+      <text x={x + 16} y={y + 28} fill={color} fontSize={15} fontWeight={600}>{label}</text>
+      <text x={x + 16} y={y + 56} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={0.8}>id {v.id}…</text>
+      <text x={x + 16} y={y + 80} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={0.8}>created_at {v.at}</text>
+      <text x={x + 16} y={y + 108} fill={colors.TEXT} fontSize={15}>“{v.body}”</text>
     </g>
   );
 }
@@ -168,7 +170,8 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // fully clear the old content under the closing panel (no half-faded text peeking out)
+  const mainOp = 1 - dimU;
   const partW = (PLATE.w - 40) / 3;
 
   return (
@@ -187,10 +190,10 @@ export function Render({ s }: { s: SceneState }) {
                 const px = PLATE.x + 16 + i * (partW + 6);
                 return (
                   <g key={p.sub} opacity={u}>
-                    <text x={px + partW / 2} y={PLATE.y + 34} textAnchor="middle" fill={p.color} fontSize={15} fontWeight={600} fontFamily="monospace">
+                    <text x={px + partW / 2} y={PLATE.y + 34} textAnchor="middle" fill={p.color} fontSize={17} fontWeight={600} fontFamily="monospace">
                       {p.label}
                     </text>
-                    <text x={px + partW / 2} y={PLATE.y + 54} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                    <text x={px + partW / 2} y={PLATE.y + 56} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.75}>
                       {p.sub}
                     </text>
                     {i < 2 && <text x={px + partW + 3} y={PLATE.y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={18}>:</text>}
@@ -198,7 +201,7 @@ export function Render({ s }: { s: SceneState }) {
                 );
               })}
               {coordU >= 1 && (
-                <text x={PLATE.x + PLATE.w / 2} y={PLATE.y - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
+                <text x={PLATE.x + PLATE.w / 2} y={PLATE.y - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                   the address — kind:pubkey:d
                 </text>
               )}
@@ -208,16 +211,16 @@ export function Render({ s }: { s: SceneState }) {
           {/* relay latest slot */}
           {v1U > 0 && (
             <g>
-              <text x={SLOT.x} y={SLOT.y - 14} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={v1U}>
+              <text x={SLOT.x} y={SLOT.y - 14} fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={v1U * 0.75}>
                 relay · latest for this address
               </text>
-              {/* v1 slides up-out as v2 replaces */}
+              {/* v1 slides up and fades out completely as v2 replaces it */}
               <g transform={`translate(0, ${-editU * 26})`}>
-                <VersionCard x={SLOT.x} y={SLOT.y} v={V1} label="version 1" color={editU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} op={v1U * (1 - 0.82 * editU)} />
+                <VersionCard x={SLOT.x} y={SLOT.y} v={V1} label="version 1" color={editU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} op={v1U * (1 - editU)} />
               </g>
               <VersionCard x={SLOT.x} y={SLOT.y} v={V2} label="version 2 — current" color={colors.POSITIVE} op={clamp01(editU * 1.4 - 0.2)} />
               {editU > 0.5 && (
-                <text x={SLOT.x + SLOT.w + 16} y={SLOT.y + 10} fill={colors.NEGATIVE} fontSize={12} opacity={clamp01(editU * 2 - 1)}>
+                <text x={SLOT.x + SLOT.w} y={SLOT.y - 14} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontWeight={600} opacity={clamp01(editU * 2 - 1)}>
                   v1 evicted
                 </text>
               )}
@@ -228,8 +231,8 @@ export function Render({ s }: { s: SceneState }) {
           {naddrU > 0 && (
             <g opacity={naddrU}>
               <rect x={NADDR.x} y={NADDR.y} width={300} height={54} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={NADDR.x + 16} y={NADDR.y + 24} fill={colors.ACCENT} fontSize={13} fontWeight={600}>naddr… — the address</text>
-              <text x={NADDR.x + 16} y={NADDR.y + 44} fill={colors.MUTED} fontSize={11} fontFamily="monospace">resolves to whatever is current</text>
+              <text x={NADDR.x + 16} y={NADDR.y + 24} fill={colors.ACCENT} fontSize={14} fontWeight={600}>naddr… — the address</text>
+              <text x={NADDR.x + 16} y={NADDR.y + 44} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={0.8}>resolves to whatever is current</text>
               {naddrHitU > 0 && (
                 <path
                   d={`M${NADDR.x} ${NADDR.y + 27} Q ${SLOT.x + SLOT.w + 90} ${NADDR.y - 30} ${SLOT.x + SLOT.w + 4} ${SLOT.y + 40}`}
@@ -243,7 +246,7 @@ export function Render({ s }: { s: SceneState }) {
                 />
               )}
               {naddrHitU >= 1 && (
-                <text x={NADDR.x + 150} y={NADDR.y - 12} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>→ version 2 ✓</text>
+                <text x={NADDR.x + 150} y={NADDR.y - 12} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>→ version 2 ✓</text>
               )}
             </g>
           )}
@@ -252,12 +255,24 @@ export function Render({ s }: { s: SceneState }) {
           {neventU > 0 && (
             <g opacity={neventU}>
               <rect x={NEVENT.x} y={NEVENT.y} width={300} height={54} rx={10} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={NEVENT.x + 16} y={NEVENT.y + 24} fill={colors.WARM} fontSize={13} fontWeight={600}>nevent… — a fixed hash</text>
-              <text x={NEVENT.x + 16} y={NEVENT.y + 44} fill={colors.MUTED} fontSize={11} fontFamily="monospace">frozen on id {V1.id}…</text>
+              <text x={NEVENT.x + 16} y={NEVENT.y + 24} fill={colors.WARM} fontSize={14} fontWeight={600}>nevent… — a fixed hash</text>
+              <text x={NEVENT.x + 16} y={NEVENT.y + 44} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={0.8}>frozen on id {V1.id}…</text>
               {neventHitU > 0 && (
-                <text x={NEVENT.x + 150} y={NEVENT.y + 78} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} opacity={neventHitU}>
-                  version 1 — superseded, maybe gone
-                </text>
+                <g opacity={neventHitU}>
+                  {/* the frozen link reaches for version 1 and finds nothing in the slot */}
+                  <path
+                    d={`M${NEVENT.x} ${NEVENT.y + 27} Q ${NEVENT.x - 60} ${NEVENT.y + 10} ${NEVENT_MISS.x + 14} ${NEVENT_MISS.y + 6}`}
+                    fill="none"
+                    stroke={colors.NEGATIVE}
+                    strokeWidth={2}
+                    strokeDasharray="6 4"
+                    pathLength={1}
+                  />
+                  <path d={`M${NEVENT_MISS.x} ${NEVENT_MISS.y} l 14 14 M${NEVENT_MISS.x + 14} ${NEVENT_MISS.y} l -14 14`} stroke={colors.NEGATIVE} strokeWidth={2.4} strokeLinecap="round" />
+                  <text x={NEVENT.x + 150} y={NEVENT.y + 78} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
+                    version 1 — superseded, maybe gone
+                  </text>
+                </g>
               )}
             </g>
           )}
@@ -266,14 +281,14 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={308} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The address is a living pointer
           </text>
-          <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={350} textAnchor="middle" fill={colors.TEXT} fontSize={17} opacity={0.85}>
             kind:pubkey:d holds one current version · a fixed hash freezes one
           </text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-23 · addressable (kind 30000–39999) — newest replaces
           </text>
         </g>

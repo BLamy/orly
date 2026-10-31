@@ -34,7 +34,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Layout — code card, the instruction chain, the zero-meter, the fiber panel.
 // ---------------------------------------------------------------------------
 
-const CODE = { x: 56, y: 116, w: 330, h: 172 } as const;
+const CODE = { x: 72, y: 116, w: 350, h: 172 } as const;
 const CODE_LINES = [
   'const program = Effect.succeed(2).pipe(',
   '  Effect.flatMap((n) =>',
@@ -48,14 +48,19 @@ const CARD_W = 250;
 const CARD_A = { x: 470, y: 128, w: CARD_W, h: 96 } as const; // Success(2)
 const CARD_B = { x: 470, y: 268, w: CARD_W, h: 96 } as const; // OnSuccess(double)
 const CARD_C = { x: 470, y: 408, w: CARD_W, h: 96 } as const; // OnSuccess(format)
-const METER = { x: 1010, y: 108 } as const;
-const FIBER = { x: 930, y: 236, w: 292, h: 330 } as const;
-const SLOT = { x: FIBER.x + 26, y: FIBER.y + 92, w: FIBER.w - 52, h: 74 } as const;
+const METER = { x: 930, y: 108 } as const;
+// the fiber panel is wide enough for a full-size instruction card in its slot
+const FIBER = { x: 930, y: 214, w: 300, h: 320 } as const;
+const SLOT = { x: FIBER.x + 16, y: FIBER.y + 64, w: FIBER.w - 32, h: 112 } as const;
+const ROWS_Y = SLOT.y + SLOT.h + 24;
 
 const CAM_CODE: CameraState = { x: 400, y: 300, k: 1.28 };
-const CAM_CARD: CameraState = { x: CARD_A.x + CARD_A.w / 2 + 40, y: CARD_A.y + 100, k: 1.62 };
-const CAM_CHAIN: CameraState = { x: 620, y: 330, k: 1.12 };
-const CAM_FIBER: CameraState = { x: 860, y: 370, k: 1.16 };
+// Pushes stay wide enough that the code card (x 72..422) and the zero meter
+// are never cropped: the card beat frames the cards, the fiber beat frames
+// chain + fiber.
+const CAM_CARD: CameraState = { x: 600, y: 300, k: 1.2 };
+const CAM_CHAIN: CameraState = { x: 640, y: 330, k: 1.08 };
+const CAM_FIBER: CameraState = { x: 640, y: 340, k: 1.08 };
 
 /** Piecewise-linear travel along waypoints, u in 0..1. */
 function along(pts: { x: number; y: number }[], u: number): { x: number; y: number } {
@@ -85,7 +90,7 @@ export function buildScene() {
 
   const codeU = tl.channel('codeU', 0); // code lines stagger in
   const cardAU = tl.channel('cardAU', 0); // Success(2) card
-  const anatU = tl.channel('anatU', 0); // the three anatomy rows light up
+  const anatU = tl.channel('anatU', 0); // the evaluate row of the anatomy lights up
   const cardBU = tl.channel('cardBU', 0); // OnSuccess(double) card + pointer
   const cardCU = tl.channel('cardCU', 0); // OnSuccess(format) card + pointer
   const meterU = tl.channel('meterU', 0); // "instructions executed: 0"
@@ -225,14 +230,12 @@ function InstrCard({ spec, u, anat = 1 }: { spec: CardSpec; u: number; anat?: nu
       <text x={box.x + 16} y={box.y + 26} fill={spec.color} fontSize={14.5} fontFamily={MONO} fontWeight={700}>
         op: "{spec.op}"
       </text>
-      <g opacity={anat}>
-        <text x={box.x + 16} y={box.y + 50} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
-          {spec.argsLabel}
-        </text>
-        <text x={box.x + 16} y={box.y + 74} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
-          {spec.contLabel ?? 'evaluate(fiber)'}
-        </text>
-      </g>
+      <text x={box.x + 16} y={box.y + 50} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+        {spec.argsLabel}
+      </text>
+      <text x={box.x + 16} y={box.y + 74} fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={anat}>
+        {spec.contLabel ?? 'evaluate(fiber)'}
+      </text>
     </g>
   );
 }
@@ -277,7 +280,6 @@ export function Render({ s }: { s: SceneState }) {
   const leftOp = 1 - 0.86 * dimU;
   const pulse = 0.5 + 0.5 * Math.cos(Math.PI * 2 * meterPulse); // 3 soft pulses
   const rootPos = along(ROOT_PATH, rootU);
-  const rootScale = 1 - 0.2 * rootU;
 
   const fiberRows: Array<[string, string]> = [
     ['id: 1', ''],
@@ -292,13 +294,13 @@ export function Render({ s }: { s: SceneState }) {
         {/* your code */}
         <g opacity={leftOp}>
           <rect x={CODE.x} y={CODE.y} width={CODE.w} height={CODE.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={CODE.x + 20} y={CODE.y + 28} fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
+          <text x={CODE.x + 20} y={CODE.y + 28} fill={colors.MUTED} fontSize={13} fontStyle="italic">
             your code — not yet a computation
           </text>
           {CODE_LINES.map((line, i) => {
             const u = win(codeU, CODE_LINES.length, i, 1.6);
             return (
-              <text key={i} x={CODE.x + 20} y={CODE.y + 56 + i * 22} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO} opacity={u}>
+              <text key={i} x={CODE.x + 20} y={CODE.y + 56 + i * 22} fill={colors.TEXT} fontSize={13} fontFamily={MONO} opacity={u}>
                 {line}
               </text>
             );
@@ -333,35 +335,24 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
           {/* the file this machinery lives in */}
-          <text x={CARD_A.x + CARD_A.w + 16} y={CARD_A.y + 20} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO} opacity={anatU}>
+          <text x={CARD_A.x + CARD_A.w + 16} y={CARD_A.y + 20} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={anatU}>
             internal/core.ts
           </text>
-          <text x={CARD_A.x + CARD_A.w + 16} y={CARD_A.y + 38} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO} opacity={anatU}>
+          <text x={CARD_A.x + CARD_A.w + 16} y={CARD_A.y + 38} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={anatU}>
             makePrimitive
           </text>
         </g>
 
-        {/* card C — travels into the fiber slot at the end */}
-        <g
-          transform={`translate(${rootPos.x - (CARD_C.x + CARD_C.w / 2)} ${rootPos.y - (CARD_C.y + CARD_C.h / 2)}) `}
-        >
-          <g
-            transform={`translate(${CARD_C.x + CARD_C.w / 2} ${CARD_C.y + CARD_C.h / 2}) scale(${rootScale}) translate(${-(CARD_C.x + CARD_C.w / 2)} ${-(CARD_C.y + CARD_C.h / 2)})`}
-          >
-            <InstrCard spec={SPEC_C} u={cardCU} />
-          </g>
-        </g>
-
         {/* the zero meter */}
         <g opacity={meterU * leftOp}>
-          <text x={METER.x} y={METER.y} fill={colors.MUTED} fontSize={13}>
+          <text x={METER.x} y={METER.y} fill={colors.MUTED} fontSize={14}>
             instructions executed
           </text>
           <text x={METER.x} y={METER.y + 44} fill={meterPulse > 0 && meterPulse < 3 ? colors.WARM : colors.TEXT} fontSize={40} fontFamily={MONO} fontWeight={700}>
             0
           </text>
           {meterPulse > 0 && meterPulse < 3 && (
-            <circle cx={METER.x + 14} cy={METER.y + 30} r={30 + 14 * (1 - pulse)} fill="none" stroke={colors.WARM} strokeWidth={1.5} opacity={pulse * 0.8} />
+            <circle cx={METER.x + 12} cy={METER.y + 29} r={20 + 8 * (1 - pulse)} fill="none" stroke={colors.WARM} strokeWidth={1.5} opacity={pulse * 0.8} />
           )}
         </g>
 
@@ -379,16 +370,16 @@ export function Render({ s }: { s: SceneState }) {
           <text x={FIBER.x + 20} y={FIBER.y + 30} fill={colors.TEXT} fontSize={16} fontWeight={700}>
             FiberImpl
           </text>
-          <text x={FIBER.x + FIBER.w - 18} y={FIBER.y + 30} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={FIBER.x + FIBER.w - 18} y={FIBER.y + 30} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             internal/effect.ts
           </text>
           {/* the current slot */}
           <rect x={SLOT.x} y={SLOT.y} width={SLOT.w} height={SLOT.h} rx={10} fill={colors.BG} stroke={colors.MUTED} strokeDasharray="5 5" />
-          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 8} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 8} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             current
           </text>
           {rootU < 0.02 && (
-            <text x={SLOT.x + SLOT.w / 2} y={SLOT.y + SLOT.h / 2 + 5} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={0.6}>
+            <text x={SLOT.x + SLOT.w / 2} y={SLOT.y + SLOT.h / 2 + 5} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={0.6}>
               empty
             </text>
           )}
@@ -397,13 +388,18 @@ export function Render({ s }: { s: SceneState }) {
             const u = win(rowsU, fiberRows.length, i, 1.4);
             return (
               <g key={label} opacity={u}>
-                <rect x={FIBER.x + 26} y={FIBER.y + 190 + i * 42} width={FIBER.w - 52} height={32} rx={8} fill={colors.BG} stroke={colors.GRID} />
-                <text x={FIBER.x + 42} y={FIBER.y + 211 + i * 42} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+                <rect x={SLOT.x} y={ROWS_Y + i * 42} width={SLOT.w} height={32} rx={8} fill={colors.BG} stroke={colors.GRID} />
+                <text x={SLOT.x + 16} y={ROWS_Y + 21 + i * 42} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {label}
                 </text>
               </g>
             );
           })}
+        </g>
+
+        {/* card C — travels into the fiber slot at the end (drawn over the panel) */}
+        <g transform={`translate(${rootPos.x - (CARD_C.x + CARD_C.w / 2)} ${rootPos.y - (CARD_C.y + CARD_C.h / 2)})`}>
+          <InstrCard spec={SPEC_C} u={cardCU} />
         </g>
 
         <defs>

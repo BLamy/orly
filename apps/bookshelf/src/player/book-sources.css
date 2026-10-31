@@ -1,0 +1,93 @@
+.bs {
+  margin: 20px 0 8px;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.bs-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-bottom: 8px;
+}
+.bs-head span {
+  opacity: 0.65;
+}
+.bs-head input {
+  flex: 1 1 200px;
+  min-width: 0;
+  padding: 6px 10px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: 8px;
+  font: inherit;
+}
+.bs-ch {
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  padding: 6px 0;
+}
+.bs-ch summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px 0;
+}
+.bs-num {
+  opacity: 0.6;
+  font-weight: 500;
+  margin-right: 4px;
+}
+.bs-go {
+  margin-left: 8px;
+  padding: 0 8px;
+  color: var(--accent, currentColor);
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.bs-claims {
+  margin: 4px 0 4px 18px;
+  padding: 0;
+}
+.bs-claims > li {
+  margin: 8px 0;
+}
+.bs-claims p {
+  margin: 0 0 3px;
+}
+.bs-tag {
+  display: inline-block;
+  padding: 0 6px;
+  margin-bottom: 2px;
+  font-size: 11px;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 999px;
+  opacity: 0.75;
+}
+.bs-src {
+  margin: 2px 0 0;
+  padding-left: 16px;
+  list-style: square;
+}
+.bs-src li {
+  margin: 2px 0;
+}
+.bs-src a {
+  color: var(--accent, inherit);
+}
+.bs-src code {
+  margin-left: 6px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+.bs-src q {
+  display: block;
+  margin-top: 1px;
+  font-style: italic;
+  opacity: 0.8;
+}

@@ -1,0 +1,93 @@
+{
+  "reviewer": "historian",
+  "round": 6,
+  "lens": "accuracy and fairness: every narration line, spoken override and on-screen text item checked against research/claims.json and quotes.json, with the bible's era analyses, primers and contested-matters section as backup",
+  "wordCount": 3459,
+  "spokenWordCount": 3542,
+  "method": "I dumped all 15 chapters: every line, spoken override and onScreenText item, with each shot's cited claims. 224 distinct claim IDs are cited and all resolve. 26 are 'contested', and each of those is used with the hedge the claim requires. I machine-matched every quoted fragment, spoken and on screen, against quotes.json after normalising punctuation. Every fragment matches word for word. The only non-match is the mentioned word 'rabbit', which is a word being mentioned, not a quotation. I read the speaker, date and context fields for the 26 quote entries used. I read every line and label against the text of the claims its shot cites, and checked the arithmetic: 3.88, softmax ≈ 0.53, 150,528, 1943→2026 = 83, 1961→2022 = 61, and 12 October 2012 falling on a Friday. I grepped the bible for facts the claims do not carry: 'shy', McCulloch as a physician, McGill, Manchester, the Mark I's audible motors, the thesis about rounding errors, Salakhutdinov as a student, edges→textures→parts, 'one to three years', the Pentagon's stated position, the Huang context and the AlexNet results table. I also read the visuals of ch01-s05, ch01-s06, ch03-s08, ch04-s06, ch05-s04, ch08-s13, ch13-s06, ch14-s04b, ch14-s07 and ch15-s05. Round-5 status, 12 items. Ten are fixed as specified: classical ML is now spoken in L0605 with its claims attached; the speech label and e7-jellybean; 'one day's panic'; 'Back in 2024'; parallel affiliations on the export tags, with the inference marked; the Boltzmann label; the Anthropic founding stamp; Rosenblatt's 'asked what it could never do'; Minsky 'soon'; and L1503 'trained by reward'. One item regressed: the '(as widely reproduced)' marker on the Hinton tweet card is gone. One item is worse: runtime, which went from 3,412 to 3,459 written words.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 7.5
+  },
+  "critical": [
+    "BRIEF / RUNTIME, over target and growing. Narration is 3,459 written words (3,542 spoken, with years read out) against the target of about 3,040 for 32 minutes. That is 47 words MORE than round 5. At the house pace of about 95 words a minute it is about 37 minutes before music-only holds, outside the brief's 30–35 minute range. FIX: cut about 420 spoken words from lines that carry no unique claim. Keep the deep-dive mechanics, the attributions, the fairness clauses and the candle durations. Candidates: L0836, pooling (16; the label already carries it). L0510, fold into L0508 as '...by its share of the blame, a step downhill in fog' (about 12). L0416 (11). L1101 (7). L1105 plus L1107, keep only 'No rulebook. Only odds.' (about 15). L1116, keep 'That rule of thumb lasted two years.' (6). L1219–L1221 → 'Then, a stampede.' (4). L1301 (10; the slip is shown). L1502's tail, 'The talk nobody remembered, remembered.' (5). L0905b/c → 'DeepMind's AlphaGo learned from human games, then from playing itself.' (about 14). L0617 (7; ch08-s13b answers the card on screen). Then make up the rest from ch08 (482 words) and ch15 (373). Re-run the word count and the quote check afterwards.",
+    "ch08-s13 L0834 and its OST label: a factual error. The line says 'the best single one, nearer eighteen' and the label says 'best single network 18.2% (validation)'. Neither claims.json (e8-ensemble: 'a single CNN scored 18.2% on validation') nor the bible's results line ('one CNN 18.2% top-5 (validation)') says BEST. In the AlexNet paper's own table, a single network pre-trained on the extra Fall 2011 data reached 16.6%, so 18.2% is the plain single net, not the best one. FIX: L0834 → 'Fair credit: that was seven networks voting; one alone, nearer eighteen.' Label → '7 networks voting (2 pre-trained on extra data) · one network alone 18.2% (validation)'. The visual already stages 'one lantern alone hangs at 18.2%', so only the words change.",
+    "ch13-s02 OST: a quote-provenance regression. The card now reads '“Google has acted very responsibly.” — Hinton, May 2023'. quotes.json still marks q12-hinton-tweet as SECONDARY: Wikipedia wording, with variants, and the note 'Check the original tweet before on-screen text'. Round 5 accepted the card for lock only on condition that it kept '(as widely reproduced)'. The shot's own visual still says 'attributed as widely reproduced', but the onScreenText string has dropped the marker. FIX: restore it ('— Hinton, on leaving Google, May 2023 (tweet, as widely reproduced)'), or have research verify the tweet against an archive and upgrade the quote entry before the narration lock."
+  ],
+  "issues": [
+    {
+      "where": "ch14-s07 OST tags 'NANOSECONDS · HUANG' and 'UNDER 1 IN 5 · LIN'",
+      "problem": "These tags misstate what the people said. The three tags swing in as estimates of the US–China gap. Huang's 'nanoseconds behind' (e13-gap; the bible's quote context: 'speaking about China's chip development and manufacturing') was about CHIPS, not AI models, so placed beside Hassabis's model-gap estimate it says more than he said. Lin's figure is not a gap at all. It is the chance of a Chinese firm overtaking the US giants in 3–5 years, and the bible files it as chip-focused DISSENT to the months candle. 'UNDER 1 IN 5' alone reads as nothing, or as a gap size.",
+      "fix": "'IN CHIPS: “NANOSECONDS” · HUANG (NVIDIA)' and 'OVERTAKE IN 3–5 YRS? UNDER 1 IN 5 · LIN (QWEN)'. Optionally make the Hassabis tag '~6 MONTHS · HASSABIS (GOOGLE DEEPMIND)' so that all three carry affiliations, as in ch14-s04b. Each stays under 45 characters."
+    },
+    {
+      "where": "ch04-s06 OST quote '“…we saw it as a way to understand her.” — Papert, 1988'",
+      "problem": "This fragment is verbatim but unreadable out of context. 'Her' refers to Snow White, Papert's figure for neural-net research, and the clause before it ('We did not think of our work as killing Snow White') is what makes it a reply to the 'one book killed the field' charge. Shown alone for 6 silent seconds, the viewer cannot tell who 'her' is. Worse, the card can read as a sentimental aside. It is meant as the defendant's own testimony in the contested e3-killed-debate.",
+      "fix": "Show the whole sentence; it is short and fully verbatim in q-papert-understand: '“We did not think of our work as killing Snow White; we saw it as a way to understand her.” — Seymour Papert, 1988, on Perceptrons'. Or keep the fragment and add a context tag: '— Papert, 1988 · “her”: neural-net research, his Snow White'."
+    },
+    {
+      "where": "ch14-s04b OST tags (export-controls debate), brief requirement 'export controls'",
+      "problem": "The parallel affiliations are fixed, but the pro-controls side is now voiced ONLY by Anthropic's CEO. e13-export-debate names him alongside former NSC official Saif Khan, and this film is written with an Anthropic model. The Chinese government's own position on whether the controls work ('only hurt and isolate' the US, from the same claim) is also absent. Beijing appears only through an inference about its chip-buying rules. These three wordless tags are the film's whole treatment of 'do the controls work?', a debate the brief names.",
+      "fix": "Tag 1 → 'DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC)'. Optionally add a fourth tag of equal size: 'SELF-DEFEATING · CHINA'S FOREIGN MINISTRY'. If the TEXT RULE caps the shot at three tags, fold the third: 'SELF-DEFEATING (BEIJING) · SPURRED SELF-RELIANCE (INFERRED)'."
+    },
+    {
+      "where": "ch03-s06 OST '“Love,” he said. “Hope. Despair.” — Rosenblatt, asked what it could never do'",
+      "problem": "The round-5 context fix landed, but the card lost its source and date. q-rosenblatt-love is reported speech ('Frank Rosenblatt (as reported by The New Yorker)', 6 December 1958). Every other quote card in the film names its source and year.",
+      "fix": "'— Rosenblatt, asked what it could never do · The New Yorker, 1958'."
+    },
+    {
+      "where": "ch05-s08 OST '— Lenat, 1985' and ch11-s02 OST '— Cyc, 1985'",
+      "problem": "The same sentence is attributed two different ways, and neither is right. The authors in quotes.json are 'Douglas B. Lenat, Mary Prakash & Mary Shepherd'. 'Cyc' is a project, not a speaker, and crediting only Lenat drops two co-authors.",
+      "fix": "Use 'Lenat, Prakash & Shepherd, 1985' on both cards. The ch11 card can add '(the Cyc team)' if the callback needs it."
+    },
+    {
+      "where": "ch14-s04 OST 'NVIDIA −17% · LARGEST ONE-DAY LOSS IN US MARKET HISTORY'",
+      "problem": "This is accurate to e13-crash's wording, but on its own it can be read as the US market's largest crash. The record is one company's single-day loss of market value (about $589 billion), and the Nasdaq fell 3.1%. Under a line that says 'markets fell', that ambiguity overstates the panic.",
+      "fix": "'NVIDIA −17% · −$589B · BIGGEST ONE-DAY LOSS BY ANY US COMPANY'. Or keep the wording and add 'FOR ONE COMPANY'."
+    },
+    {
+      "where": "ch08-s09 L0818 ('One learned black and white, one colour. Every time.')",
+      "problem": "This is slightly overstated. The paper (q-alexnet-colour, e8-gpu-split) says the kernels were 'largely color-agnostic' and 'largely color-specific'. 'Black and white' is a stronger claim than 'colour-agnostic' (edge detectors indifferent to hue). The quote cards on screen carry 'largely', but the spoken line drops it.",
+      "fix": "'One half learned mostly without colour, the other mostly colour. Every time.' (+2). Or 'One learned shapes, blind to colour; one, colour.' (+1)."
+    },
+    {
+      "where": "ch12-s07 L1217 ('Rosenblatt's 1961 note, language is of the essence: sixty-one years early.')",
+      "problem": "This is a mild fairness stretch. In Neurodynamics the sentence is about what a brain model must eventually explain. It is not a forecast of language machines. e2-neurodynamics says nothing of prediction. 'Sixty-one years early' recasts him as a prophet of ChatGPT, the same kind of hype-reading the film is careful to share out in ch03-s02. The Wall of Forecasts staging makes this stronger still.",
+      "fix": "'Rosenblatt's 1961 note, language is of the essence: sixty-one years later, the breakthrough spoke.' (+1). Or keep the line and change the Wall slot's tag from a forecast to 'a hunch, 1961'."
+    },
+    {
+      "where": "ch14-s05 OST 'TOP NEURIPS AUTHORS · FIRST DEGREE: CHINA 47% · US 18%'",
+      "problem": "The label gives no year. e13-talent is a NeurIPS 2022 snapshot (up from 29% in 2019), and the narration's 'at one big conference' gives no date either. Without the year, a single conference's 2022 figure reads as a standing fact in 2026.",
+      "fix": "'NEURIPS 2022 TOP AUTHORS · FIRST DEGREE: CHINA 47% · US 18%'."
+    },
+    {
+      "where": "ch06-s02 OST '~1 US cheque in 10 from 1996 · LeCun's estimate'",
+      "problem": "This is minor. e6-checks gives two separate facts: fielded since June 1996, and about 10% of US cheques by LeCun's estimate. 'From 1996' merges them and implies a 10% share from the first year.",
+      "fix": "'fielded 1996 · ~1 US cheque in 10 at work (LeCun's estimate)'."
+    },
+    {
+      "where": "ch07-s03 L0704 ('Colleagues told Fei-Fei Li to do something more useful.')",
+      "problem": "This is minor. The only source is Li's own recollection in her 2015 TED talk (q-li-tenure, e7-imagenet-skeptics). The card marks it as 'recalling colleagues' advice', but the spoken line states it as fact, and the 'very friendly' framing in her own words is lost.",
+      "fix": "'Colleagues, she recalls, told Fei-Fei Li to do something more useful.' (+2)."
+    },
+    {
+      "where": "ch09-s05 L0910 ('Commercial face software misjudged darker-skinned women far more often...')",
+      "problem": "This is a minor precision point. Gender Shades (e9-gender-shades) tested gender classifiers, not face recognition in general. 'Misjudged' leaves open what was judged, and the general viewer will hear 'face recognition'.",
+      "fix": "'Commercial face software misread the gender of darker-skinned women far more often than of lighter-skinned men.' (+4; take the words from the runtime cuts)."
+    }
+  ],
+  "strengths": [
+    "Quote discipline is still exemplary. Every quoted fragment, spoken and on screen, matches quotes.json word for word, in about 45 distinct passages from 26 sources. That includes the split Hopfield line, the New Yorker 'cheerfully' sentence read with its own attribution, and the OpenAI founding sentence cut at clause boundaries. Provenance markers are correct where they matter most: 'AP translation', 'ChinaTalk translation', 'DigiChina translation', 'as quoted by Gary Marcus', 'as reported by Cade Metz', 'recalling colleagues' advice', 'writing in 2020' and 'replying to the March pause letter'. Paraphrases (Hassabis's odds, Huang, Lin, Fodor and Pylyshyn's John-loves-the-girl) carry no quotation marks.",
+    "The round-5 fixes landed cleanly and in the film's voice. Classical ML is now a spoken field rather than one method: 'statistics learned from data beat hand-written rules', with forests and 'teams of weak guessers', and e6-ibm-smt, e6-randomforest and e6-adaboost are attached. AlexNet is no longer the sole turning point: 'speech went first … July 2012'. The DeepSeek match is 'one day's panic', so 'one match, a day' is now earned. Liang's reply is dated 'Back in 2024'. The Anthropic stamp distinguishes founding from announcement. Rosenblatt's 'Love. Hope. Despair.' carries its question. Minsky turns 'soon'.",
+    "Contested matters carry the hedge their claims require, every time: bedroom or lab (CHM vs NVIDIA); Mark I 1958–60; eight names for back-propagation with 'credit still disputed' and Hinton's own disclaimer; 'Historians still argue; there were several blows', with four equal cards; systematicity 'still argued … not everyone agrees'; the warm-up candle 'nobody knows exactly when'; Gebru's departure, with both accounts at equal size; the auction 'by one reporter's account'; the seven-network ensemble and the IDSIA wins credited; DeepSeek's cost with the report's own caveat and an outside estimate; and 'Two courts, two rulings'. The Nobel has its 'a bit of a stretch' dissent.",
+    "Even-handedness across labs is built into the staging. OpenAI's and Anthropic's foundings share one pin-and-ledger grammar. FTX carries 'not implicated'. The Pentagon standoff states the government's position, sourced to the bible's contested-matters entry. Anthropic's $1.5 billion settlement sits beside OpenAI's sandbox escape under an explicit equal-lamp FAIRNESS RULE, with OpenAI's own 'warning shot' words. Anthropic's interpretability result is hedged twice: 'a simplified copy' and 'about a quarter of the prompts'. The closing card discloses that the film was written with an Anthropic model.",
+    "The geopolitics are factual and balanced. Washington's stated reason and Beijing's reply are both quoted verbatim and marked as translations. China's 2017 plan 'named no rival'. The talent plate pairs 47% with 'America employed the most'. Open-weight Qwen passing Llama is dated. Bletchley and the September 2026 dialogue sit beside 'Chip rules unchanged'. The gap chapter ends 'nobody agrees'. Both shores are lit with equal warmth by rule.",
+    "The deep-dive mechanics check out exactly. 224×224×3 = 150,528. The worked stencil sums to 3.88. 96 first-layer kernels, the 55·27·13·13·13 → 4096·4096·1000 stack, and about 60 million weights against about 12 million bits of labels (the paper's own 10-bits argument). ×2048 augmentation. Dropout on fc6/fc7 only. ReLU's 6× scoped to the CIFAR-10 test net. The step size cut ÷10 three times. 2,0,4,2 ÷ √4 → softmax ≈ 0.53 to 'river'. √64 = 8, 8 heads × 64, ×6 blocks. The base model's 12-hour English–German record (27.3 vs 26.36). The GNMT+RL 1/7 marked as derived. The XOR run is honestly labelled 'a demonstration' on the loom, because the 1986 paper's own demos were family trees and symmetry.",
+    "The candle clock still matches the bible's era durations: logic machine 1943–59 (16); learning machine about 7; sterile extension 1969–86 (17); knowledge c. 1980–87 (about 7); hand-cut stencils 1999–2012 (13); fiddly nets 10–15 'depending on the field'; read-in-order about 20; Kaplan's rule of thumb 2; one-to-three-years-behind about 2; the market match one day; Cyc 1984–2023 (39). Deaths are dated and handled with restraint: Pitts and McCulloch, Rosenblatt on his 43rd birthday, Widrow at 95."
+  ]
+}

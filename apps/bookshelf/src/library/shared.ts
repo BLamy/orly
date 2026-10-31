@@ -10,6 +10,8 @@ export const assetUrl = (p: string) => ASSET_BASE + String(p).replace(/^\//, '')
 // createdAt order the generator writes into library.json.
 export const PINNED_SLUG = 'the-orly-loop';
 export const RECENT_COUNT = 8;
+// The top board of the shelf: the newest books, ahead of the Video Library.
+export const RECENT_SHELF = 'Recently Added';
 export const LEAD_SERIES = 'The Explainers';
 // This series is the shelf's showcase: it always leads (its own top row) and
 // is excluded from the Recently Added strip.
@@ -48,8 +50,21 @@ export function sortSeriesBooks<T extends SeriesSortable>(series: string, books:
   });
 }
 
+// The shelf's navigation stack registers how to push a film (shell/nav.tsx, Library): a tape slides in as a screen
+// with a back button instead of a page load. Without one (a page with no stack) it falls back to the URL.
+let filmOpener: ((slug: string) => void) | null = null;
+export function setFilmOpener(fn: ((slug: string) => void) | null) {
+  filmOpener = fn;
+}
+
 export function openBook(b: BookMeta) {
-  window.location.href = ASSET_BASE + String(b.href).replace(/^\//, '');
+  if (b.kind === 'film' && filmOpener) {
+    filmOpener(b.slug);
+    return;
+  }
+  // films play in the film player (a tape goes in the VCR), whatever href an older entry carries
+  const href = b.kind === 'film' ? `?film=${encodeURIComponent(b.slug)}` : String(b.href);
+  window.location.href = ASSET_BASE + href.replace(/^\//, '');
 }
 
 // Some books (mostly the Nostr Implementation Possibilities and Buzz —
@@ -85,9 +100,12 @@ export interface Shelves {
   seriesRows: [string, BookMeta[]][]; // numbered series in order; chronological series newest first
   loops: BookMeta[];
   more: BookMeta[];
+  films: BookMeta[]; // VHS tapes: the video library case, newest first
 }
 
-export function buildShelves(books: BookMeta[]): Shelves {
+export function buildShelves(all: BookMeta[]): Shelves {
+  const films = all.filter((b) => b.kind === 'film').sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? ''));
+  const books = all.filter((b) => b.kind !== 'film');
   const byRecency = [...books]
     .filter((b) => !isDailyPapersSeries(b.series))
     .sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? ''));
@@ -125,7 +143,7 @@ export function buildShelves(books: BookMeta[]): Shelves {
     .sort((a, c) => (a.slug === PINNED_SLUG ? -1 : c.slug === PINNED_SLUG ? 1 : 0));
   const more = standalone.filter((b) => !/loop/.test(b.slug));
 
-  return { featured, recent, seriesRows: restRows, loops, more };
+  return { featured, recent, seriesRows: restRows, loops, more, films };
 }
 
 // One searchable haystack per book: title, subtitle, series, chapter titles.

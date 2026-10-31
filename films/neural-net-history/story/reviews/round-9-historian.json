@@ -1,0 +1,77 @@
+{
+  "reviewer": "historian",
+  "round": 9,
+  "lens": "accuracy and fairness: every narration line, spoken override and on-screen text item checked against research/claims.json and quotes.json, with the bible's era analyses, cast list and quote archive as backup; prop lettering in the visual directions spot-checked",
+  "runtimeCheck": "node generator/film/script.mjs assemble --slug neural-net-history --check: 15 chapters, 120 shots, 223 lines, 3,585 words, est. 34.7 min (2081.8 s at the locked 143.5 wpm), 0 errors, 1 warning (over the 32-minute target). That is inside the brief's 30–35 minute range, so runtime is not critical. Note: it is up 147 words and 1.4 min since round 8, which leaves only about 0.3 min of headroom.",
+  "method": "I dumped all 120 shots: every line, every spoken override, every onScreenText item, and each shot's cited claims. All 340 claim citations resolve to claims.json. I read every line and label against the text of the claims its shot cites. I machine-matched all 78 quoted fragments, spoken and on screen, against quotes.json after normalising punctuation and splitting at ellipses. All match word for word; the only non-match is the mentioned word 'rabbit'. I read the speaker, date and context of the quote entries used. I grepped the bible for facts the claims do not carry: Pitts 'small and shy'; McCulloch as neurophysiologist and psychiatrist; Hebb at McGill; Turing at Manchester; the motors that let you 'hear it learn'; 'John loves the girl'; SIFT 1999; edges → textures → parts → objects; era B 'one to three years behind'; the government's 'a contractor imposing use limits is a supply-chain risk'; Lee Sedol 9-dan; the market's belief 'held briefly'. I extracted the prop lettering from every visual direction and checked the staging candle table against the era durations in the bible. On the round-8 issues, these are fixed: the Vapnik qualifier (card and L0610); L1024 scoped to English→German; the match prop now reads COMPUTE MATTERS LESS?; the candle tag reads OCT 2022 – JAN 2025 · ≈ 2; NO MAJOR LAB PAUSED; the Love card's New Yorker provenance (and L0312 now opens 'A magazine asked'); Widrow's ch02-s07 card dated 2005; METR's 50% threshold on the label; APPROVED JULY 2026. Two are still open: the undated DAIR and LeCun cards, and L1407's 'and the chips'.",
+  "scores": {
+    "accuracy": 8.6,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 7.5
+  },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch08-s13b L0831 and the fiddly-nets candle tag ('– 2012 · 10–15 years, by field'), against staging.candleClock (lit 'c. mid-1990s', 'about 15–17'), staging.finaleChart ('fiddly-nets about 16') and the ch15-s08 SHELF ORDER ('(mid-1990s) about 16, frayed')",
+      "problem": "The candle disagrees with itself. The narration and the tag say ten to fifteen years, which matches the bible (LeCun's 'Neural Net Winter' runs late 1990s to early 2000s; speech fell 2009–12 and vision 2012, 'roughly 10–15 years depending on subfield'). The staging table and the finale bar chart light it in the mid-1990s and give it about 16 rings. The film teaches viewers to read sleeve length as years. In the finale's 'bar chart in wax' this candle would stand taller than the 13-year expert-stencil candle and level with the 16-year logic candle, which contradicts what the narrator says.",
+      "fix": "Set the candle's lit date to 'late 1990s' in staging.candleClock, in the ch06-s04 base tag and in the ch15-s08 SHELF ORDER. Give it a 10–15-ring sleeve that frays across that span (a frayed top, as for the warm-up candle), and change finaleChart to 'fiddly-nets 10–15 (frayed)'."
+    },
+    {
+      "where": "ch13-s04 quote cards '— Gebru, Bender & McMillan‑Major' and '— Yann LeCun' (carried over from round 8)",
+      "problem": "These are the only two dated statements still on undated cards. The placement makes it worse. The shot follows the 30 MAY 2023 extinction statement, so an undated DAIR card reads as a reply to that statement. In fact it answered the March pause letter (q12-dair-harms, 31 March 2023: 'Statement from the listed authors of Stochastic Parrots on the pause letter'). LeCun's line is from June 2023.",
+      "fix": "'— Gebru, Bender & McMillan‑Major, on the pause letter, March 2023' and '— Yann LeCun, June 2023'."
+    },
+    {
+      "where": "ch14-s03 L1407 ('It left out the research, and the chips.') (carried over from round 8)",
+      "problem": "Half of this is inaccurate. The report's own caveat (e13-deepseek-v3) excludes 'prior research and ablation experiments'. But the $5.576M is 2,788K H800 GPU-hours at a $2/hour rental price, so the chips' cost is in the figure as rent. What it leaves out is owning them; the ~50,000-chip number is SemiAnalysis's outside estimate (e13-cost-debate). The prop does say FINAL RUN ONLY · AT RENTAL PRICES on its back, but the spoken line still says the chips were left out.",
+      "fix": "'It left out the research, and the chips it owned.' (+2 words). Or: 'It counted rented chip-hours, not the research or the chips it owned.'"
+    },
+    {
+      "where": "ch13-s03 L1307b ('In March, an open letter asked for a pause. None came.')",
+      "problem": "Round 8 fixed the label to NO MAJOR LAB PAUSED, matching e12-fli ('no major lab paused'). The spoken line still makes the unscoped claim, and the hands lay the letter face down on 'None came'. The ear hears a stronger claim than the eye reads.",
+      "fix": "'In March, an open letter asked the labs to pause. No major lab did.' (+3 words). Or keep 'None came' and rely on the label; the change is low cost, so prefer it."
+    },
+    {
+      "where": "staging.candleClock candle table, entry 'match: COMPUTE DOESN'T MATTER'",
+      "problem": "The ch14-s04b shot lettering was corrected to COMPUTE MATTERS LESS?, but the canonical staging table still holds the unhedged wording. Shot authors and the film-shots critic read the staging table as the source of truth, so the old wording can come back at render time.",
+      "fix": "Change the staging entry to 'match: COMPUTE MATTERS LESS? (the market's one-day bet)'."
+    },
+    {
+      "where": "ch08-s14 L0827 ('Our results, the paper said, can be improved simply by waiting for faster GPUs and bigger datasets to become available.')",
+      "problem": "This is a minor loss of a hedge. The sentence in the paper opens 'All of our experiments suggest that our results can be improved…'. The narration attributes the words to the paper but drops 'suggest', which turns a hedged inference into a flat claim. The card is a lowercase fragment, so it is honest. Only the spoken framing is a touch stronger than the source.",
+      "fix": "'Our results, the paper suggested, can be improved simply by waiting…' (same word count)."
+    },
+    {
+      "where": "ch04-s03 L0406 ('That year, Congress tied defence-funded research to military uses, and the snow began: the first AI winter.')",
+      "problem": "There is a small internal tension. The film's own 'several blows' card two shots later lists TRANSLATION 1966 first, and the bible dates era 3 as 'Perceptrons, Lighthill and the First Winter (1966–1980)'. It also notes the winter 'was not uniform' (e3-symbolic-continued). Saying the snow 'began' in 1969 makes Mansfield the starting gun.",
+      "fix": "'…and the snow thickened: the first AI winter.' (same word count). Or '…and in America the snow set in.'"
+    },
+    {
+      "where": "ch09-s03a / ch09-s03 Go candle 'A GO MACHINE IS A DECADE AWAY' (tag 2014, 2 rings) and L1515 ('some, two')",
+      "problem": "This is a fairness-of-duration nuance. The candle is lit by Coulom's single May 2014 guess. But e9-go-decade quotes the AlphaGo paper calling the feat 'previously believed to be at least a decade away', a standing expectation that long predates 2014. As a 2-ring bar in the finale chart, it reads as a belief held for only two years. The 'about 2' China candle also stands behind 'some, two', so the line itself is safe.",
+      "fix": "Tag the Go candle 'one forecast · 2014' (prop lettering). Or change its base tag to 'long held · out 2016' and give it a frayed, unscored sleeve so it does not count as a 2-year bar."
+    },
+    {
+      "where": "Runtime (whole script)",
+      "problem": "The estimate rose from 33.3 to 34.7 min since round 8 (+147 words). It is inside the 30–35 range but only about 18 s below the ceiling, so one more round of additions would breach the brief.",
+      "fix": "Make the fixes above word-neutral (most are), and trim about 60–100 words wherever later rounds add any. Good candidates are the duplicated 'Who paid for dinner?' (L0612 and L0701) and the double 'Put that in the file' beats."
+    },
+    {
+      "where": "ch06-s03 (classical machine learning)",
+      "problem": "This is a depth note on a must-cover item, not an error. Classical ML gets one shot of three lines (statistical speech and translation, forests, the SVM), plus the bowl and the bet. Everything said is accurate and well sourced (e6-ibm-smt, e6-randomforest, e6-svm, e6-vapnik). But the brief names 'Classical ML' explicitly. The kernel trick (e6-svm: Boser, Guyon and Vapnik, 1992), the thing that let the 'widest street' bend, is on the name card but never explained.",
+      "fix": "Optional, only if runtime allows: one clause in L0606 or L0607, such as '…and, by a clever trick, can bend that street around the crowds.' (+10 words), with the existing name card."
+    }
+  ],
+  "strengths": [
+    "Quote discipline is airtight. All 78 quoted fragments, spoken and on screen, match quotes.json word for word, and the round-8 qualifier problem is gone. Vapnik's card now carries 'that are essentially like those used in 1995', and L0610 says 'nets like those'. Reported quotes keep their provenance on screen: 'New Yorker, 1958', 'as reported by Cade Metz', 'tweet, as widely reproduced', 'as quoted by Gary Marcus', the AP, DigiChina and ChinaTalk translations, and 'Fei‑Fei Li, TED 2015'. Paraphrases carry no quotation marks: Fodor and Pylyshyn's strips, HELPS HUAWEI, SELF-DEFEATING, Hassabis's odds, Lin's under-1-in-5.",
+    "Round-8 accuracy fixes landed cleanly. L1024 scopes the half-day win to English→German, which is exactly e10-results (27.3 vs 26.36). The METR label keeps the 50%-reliability threshold. The Anthropic settlement stamp reads APPROVED JULY 2026. The pause label says NO MAJOR LAB PAUSED. The match prop is a question (COMPUTE MATTERS LESS?). The China candle's tag subtracts cleanly (OCT 2022 – JAN 2025 · ≈ 2). Widrow's Dartmouth card is dated 2005. The Rosenblatt card names The New Yorker, and L0312 now opens 'A magazine asked', so the narrator no longer seems to be quoting Rosenblatt first-hand.",
+    "Contested matters carry the hedge their claims require. Bedroom or lab, with CHM and NVIDIA both shown. Eight names for back-propagation, 'credit still disputed', and Hinton's own disclaimer. 'Historians still argue; there were several blows', with four equal cards, and Lighthill scoped to 'rules far more than nets'. Amari's method in Japan. Systematicity 'still argued · a 2023 reply claims to meet it'. 'Nobody knows exactly when' for the warm-up candle. Gebru's departure gets both accounts at equal size. The auction is 'by one reporter's account'. Seven networks voting, and the IDSIA wins credited. Speech went first in July 2012. DeepSeek's 'final training run' carries the report's caveat and an outside estimate. The Nobel was 'a bit of a stretch'. The METR trial's authors now call it out of date.",
+    "Even-handedness across labs and nations holds line by line. Anthropic gets no promotional pass: its FTX money is labelled (not implicated), and its $1.5 billion pirated-books settlement and the Pentagon designation are set beside OpenAI's sandbox breakout under an explicit 'same light' rule. The government's position is spoken ('a supplier may not set such limits', which matches the bible's debate entry), and the court split is shown both ways. Its interpretability claim is hedged twice ('a simplified copy'; 'about a quarter of the prompts'). Its CEO's export-control view is tagged with his affiliation, like Huang's. On China: Washington's stated military rationale and Beijing's reply are both quoted verbatim; the 2017 plan 'named no rival'; the talent figure is paired with 'America employed the most'; Qwen's download lead is reported; Bletchley and the September 2026 dialogue sit beside 'Chip rules unchanged'. The closing card discloses that an Anthropic model wrote the film.",
+    "The two deep dives are exact. AlexNet: 224×224×3 = 150,528; the worked stencil gives 3.88 under the real ReLU; 96 stencils, 11×11×3, learned in colour; 55·27·13·13·13 → 4096·4096·1000; ≈60M weights against ≈12M bits of labels (the paper's own 10-bit argument); ×2048 augmentation; dropout on fc6/fc7 only; ReLU's 6× scoped to the CIFAR-10 test; colour-agnostic versus colour-specific 'every time'; step size ÷10 three times; 15.3 vs 26.2, then 'seven networks voting; one alone, nearer eighteen'. Transformer: scores 2,0,4,2 ÷ √4 → softmax gives ≈0.53 to 'river' ('about half'); √64 = 8; 8 heads × 64; sinusoidal clocks; ×6 blocks; n² cost; one-seventh compute marked as derived; decoder-only credited to the 2018 Google paper GPT-1 cites; all eight authors in the paper's order.",
+    "The candle clock delivers the brief's 'what people believed, who dissented, and how long'. Most durations match the bible's era analyses: logic 1943–59 (16); learning machine about 7; sterile 1969–86 (17); knowledge about 1980–87 (7); expert stencils 1999–2012 (13); read-in-order 1997–2017 (20); warm-up c. 2006 to c. 2010–12; China one-to-three years about 2; the match a day; Cyc 1984–2023 (39), the longest. The exception is the fiddly-nets candle (see issues). Each era names its dissenters at the rim: Gerard, Minsky, Michie, Fodor and Pylyshyn, the holdouts, Kelcey, Bender and Koller, Gebru, Marcus, LeCun, Hall."
+  ]
+}

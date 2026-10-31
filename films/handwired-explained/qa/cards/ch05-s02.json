@@ -1,0 +1,24 @@
+{
+ "shot": "ch05-s02",
+ "at": "2026-10-28T17:39:14.279Z",
+ "step": 0.0833,
+ "sampled": 263,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch05-s02-slip-card"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch05-s02-slip-card",
+   "probed": true,
+   "from": 0.05,
+   "to": 4.8,
+   "minInkWhilePaper": 0.6
+  }
+ ]
+}

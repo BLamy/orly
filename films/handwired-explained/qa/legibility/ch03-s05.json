@@ -1,0 +1,219 @@
+{
+ "shot": "ch03-s05",
+ "at": "2026-10-28T09:55:04.566Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 41,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "the whole instruction set: affine · reglu · boolean · index",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "f: round to FP32 · integers exact only to 2²⁴ = 16,777,216",
+   "capWhileSubject": 24.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0",
+   "maxCap": 19.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "5",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "6",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "8",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "9",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "10",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "11",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "12",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "13",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "14",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "15",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "16",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "17",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "18",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "19",
+   "maxCap": 15,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1280",
+   "maxCap": 16.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "800",
+   "maxCap": 16.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "x",
+   "maxCap": 19.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "y",
+   "maxCap": 19.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "window",
+   "maxCap": 20.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "pointer events",
+   "maxCap": 20.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "state",
+   "maxCap": 20.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "spring",
+   "maxCap": 20.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "affine: value = f(bias) + Σ f(f(weight",
+   "maxCap": 22.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "affine: value = f(bias) + Σ f(f(weight) × wire), term by term",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "reglu(left, gate) = f(lef",
+   "maxCap": 22.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "reglu(left, gate) = f(left × max(0, gate))",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "boolean(score",
+   "maxCap": 22.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "boolean(score) = f(f(f(score) + 8",
+   "maxCap": 22.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "boolean(score) = f(f(f(score) + 8,388,609) − 8,388,609)",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "index: values[can",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "index: values[candidate",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "index: values[candidates[floor(form)]]",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "f",
+   "maxCap": 28.3,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 39
+}

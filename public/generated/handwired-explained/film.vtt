@@ -1,0 +1,1239 @@
+WEBVTT
+
+1
+00:00:07.017 --> 00:00:11.486
+A small desktop: three windows,
+a dock, twelve photographs.
+
+2
+00:00:11.936 --> 00:00:14.884
+Drag a window. It glides, and settles.
+
+3
+00:00:16.350 --> 00:00:19.438
+Every move is worked out
+by one neural network,
+
+4
+00:00:19.438 --> 00:00:23.315
+built with a library called
+Handwired. This window shows it, live.
+
+5
+00:00:24.767 --> 00:00:29.562
+Even the wallpaper maps it: one arc for
+each weight, each number it multiplies by.
+
+6
+00:00:29.562 --> 00:00:31.976
+Nine thousand, nine hundred and nine.
+
+7
+00:00:34.142 --> 00:00:36.184
+Where did those weights come from?
+
+8
+00:00:36.534 --> 00:00:42.175
+Somebody trained it. A tool converted
+ordinary code. Or it isn’t really a network.
+
+9
+00:00:42.725 --> 00:00:47.705
+They hang on this copper line, as
+paper tags. We'll test every one.
+
+10
+00:00:48.155 --> 00:00:52.833
+And one more tag, blank for now:
+why would anyone build it this way?
+
+11
+00:00:54.308 --> 00:01:01.517
+A scrap of JavaScript a child could check.
+If a is more than four, ten. If not, twelve.
+
+12
+00:01:01.967 --> 00:01:07.992
+Build it from ramps, the stuff of neural
+networks. Five gives ten; three, twelve.
+
+13
+00:01:08.542 --> 00:01:10.527
+Give it four and a half.
+
+14
+00:01:12.177 --> 00:01:13.976
+Eleven. Neither ten nor twelve.
+
+15
+00:01:15.433 --> 00:01:21.028
+Nothing’s broken. It was built for whole
+numbers, and it took that on trust.
+
+16
+00:01:21.578 --> 00:01:25.595
+This film is about promises
+like that: who tied them on,
+
+17
+00:01:25.595 --> 00:01:28.206
+who doubted them, and how long they held.
+
+18
+00:01:43.392 --> 00:01:47.444
+In 1943, Warren McCulloch and
+Walter Pitts tied on the oldest tag.
+
+19
+00:01:47.444 --> 00:01:50.357
+Handwired never cites them.
+
+20
+00:01:50.907 --> 00:01:54.564
+The tag: a neuron is a logic gate.
+
+21
+00:01:54.564 --> 00:01:59.137
+Neural events, they wrote, "can be
+treated by means of propositional logic."
+
+22
+00:02:00.600 --> 00:02:05.382
+Nothing in their nets learned. Someone
+chose every connection, by hand.
+
+23
+00:02:07.142 --> 00:02:13.747
+In 1951, at RAND, Stephen Kleene
+showed such a net is a finite machine.
+
+24
+00:02:14.097 --> 00:02:17.591
+He called the patterns it
+can recognise regular events.
+
+25
+00:02:18.041 --> 00:02:22.674
+Our reading: a finite net
+remembers only so much;
+
+26
+00:02:22.674 --> 00:02:27.584
+anything unbounded comes from
+outside. Hang that on the line.
+
+27
+00:02:29.058 --> 00:02:33.981
+In 2020, one human neuron's branches
+answered either input but not both:
+
+28
+00:02:33.981 --> 00:02:37.718
+a job thought to need layers of gates.
+
+29
+00:02:38.168 --> 00:02:42.904
+As biology, the logic-gate tag frayed.
+As engineering, it never came down.
+
+30
+00:02:44.392 --> 00:02:48.594
+In 2019, a younger tag: learn
+the weights, don’t write them.
+
+31
+00:02:48.944 --> 00:02:51.800
+Rich Sutton tied it on
+in The Bitter Lesson.
+
+32
+00:02:51.800 --> 00:02:56.455
+Six days later, Rodney Brooks
+replied, "I think Sutton is wrong".
+
+33
+00:03:00.033 --> 00:03:03.434
+Some kept writing weights
+anyway, as proofs and test beds.
+
+34
+00:03:03.984 --> 00:03:06.398
+Eighty-three years after the oldest tag,
+
+35
+00:03:06.398 --> 00:03:10.148
+someone has written a network’s
+weights by hand, to run a desktop.
+
+36
+00:03:13.000 --> 00:03:17.238
+The third of June, twenty
+twenty-six: Cheng Lou,
+
+37
+00:03:17.238 --> 00:03:20.220
+Handwired's author,
+makes his first commit.
+
+38
+00:03:20.770 --> 00:03:23.997
+Four months and two
+renames later: Handwired.
+
+39
+00:03:27.850 --> 00:03:34.002
+Its tutorial: “A numeric program is a fixed
+list of operations over 32-bit floats”.
+
+40
+00:03:34.452 --> 00:03:39.594
+You don't write the list. Builder code,
+ordinary JavaScript run once, appends to it.
+
+41
+00:03:42.183 --> 00:03:45.445
+One guess falls at once,
+for the library itself.
+
+42
+00:03:45.445 --> 00:03:50.832
+The docs: “No tool converts existing
+JavaScript source into a program.”
+
+43
+00:03:52.600 --> 00:03:58.149
+Every number the program reads or keeps is
+a cell in one table. A toggle has twenty.
+
+44
+00:03:58.599 --> 00:04:01.478
+A wire is a position:
+where a number lives.
+
+45
+00:04:03.767 --> 00:04:08.481
+Four instructions: a weighted
+sum, a gated product,
+
+46
+00:04:08.481 --> 00:04:11.580
+a snap to a whole number,
+a read from a list.
+
+47
+00:04:12.030 --> 00:04:18.009
+Each step rounds to a thirty-two-bit float,
+a number that keeps about seven digits.
+
+48
+00:04:18.009 --> 00:04:21.573
+Even whole numbers stay exact
+only to about seventeen million.
+
+49
+00:04:23.058 --> 00:04:26.634
+Somebody trained it? The desktop’s README:
+
+50
+00:04:26.634 --> 00:04:30.151
+“Every weight of the program is written
+by builder code, and none is trained.”
+
+51
+00:04:30.701 --> 00:04:32.314
+That guess was ours.
+
+52
+00:04:32.864 --> 00:04:38.204
+And the Notes window? “The program
+holds no text.” Hang that on the line.
+
+53
+00:04:45.000 --> 00:04:49.213
+Back to four and a half. In
+JavaScript, only the chosen side runs.
+
+54
+00:04:49.663 --> 00:04:51.078
+A network has no if.
+
+55
+00:04:52.558 --> 00:04:58.175
+Bend a hinge: flat, then
+up. A ramp is all a ReLU is.
+
+56
+00:04:58.725 --> 00:05:07.327
+This one wakes at four. Three gives nought.
+Five gives one. A hundred gives ninety-six.
+
+57
+00:05:09.600 --> 00:05:13.134
+A second ramp wakes at five.
+Take it from the first.
+
+58
+00:05:13.684 --> 00:05:17.620
+Nought up to four, one from five: a bit.
+
+59
+00:05:17.620 --> 00:05:22.112
+Whole numbers sit on the corners: the
+whole trick, and the whole caveat.
+
+60
+00:05:23.600 --> 00:05:27.838
+Two belts carry both answers,
+every time: ten and twelve.
+
+61
+00:05:27.838 --> 00:05:30.333
+The bit opens one
+shutter, shuts the other.
+
+62
+00:05:32.683 --> 00:05:38.999
+Say the side you didn’t choose overflows,
+past the biggest float, to infinity.
+
+63
+00:05:38.999 --> 00:05:43.038
+Nought times infinity isn’t
+nought. It isn’t a number at all.
+
+64
+00:05:44.517 --> 00:05:50.275
+Now four and a half. The bit reads
+a half: half of ten, half of twelve.
+
+65
+00:05:50.825 --> 00:05:51.474
+Eleven.
+
+66
+00:05:52.924 --> 00:05:59.588
+Every if here is a dimmer switch. The
+program’s job: keep it fully on, or fully off.
+
+67
+00:06:01.058 --> 00:06:04.761
+Past nearly seventeen million,
+floats skip whole numbers.
+
+68
+00:06:05.311 --> 00:06:08.724
+Just past it, the second
+ramp’s input rounds down.
+
+69
+00:06:08.724 --> 00:06:13.228
+A bit meant for nought or
+one reads two. Answer: eight.
+
+70
+00:06:14.683 --> 00:06:17.330
+Another way to make a
+bit, in one instruction:
+
+71
+00:06:17.330 --> 00:06:21.416
+add a huge odd number to a
+score, then take it away.
+
+72
+00:06:21.966 --> 00:06:26.482
+Up there floats sit one apart,
+so the score snaps whole.
+
+73
+00:06:26.482 --> 00:06:30.986
+Ties go to the even side:
+a half snaps up, to one.
+
+74
+00:06:32.475 --> 00:06:36.167
+Each trick is exact. Against what?
+
+75
+00:06:36.167 --> 00:06:41.576
+The thirty-two-bit calculation, not
+JavaScript’s usual sixty-four-bit doubles.
+
+76
+00:06:42.126 --> 00:06:46.445
+Fit columns in a window seventeen
+hundred and thirty-two pixels wide.
+
+77
+00:06:46.445 --> 00:06:51.321
+Doubles fit seven; thirty-two-bit
+floats fall a hair short.
+
+78
+00:06:52.808 --> 00:06:57.069
+Why not doubles everywhere?
+A September study tried.
+
+79
+00:06:57.069 --> 00:07:01.364
+Of twenty thousand percent labels,
+nearly nineteen thousand went wrong.
+
+80
+00:07:01.914 --> 00:07:03.807
+More precision broke it.
+
+81
+00:07:03.807 --> 00:07:09.007
+Keep thirty-two-bit order at the rounding
+points alone, and every label came back.
+
+82
+00:07:11.267 --> 00:07:14.796
+The real library won’t compare
+until you promise a range.
+
+83
+00:07:15.346 --> 00:07:20.802
+Promise more, that a is a whole number,
+and the comparison takes two operations.
+
+84
+00:07:23.267 --> 00:07:28.595
+Now break the promise: four and
+a half, down a wire tagged whole.
+
+85
+00:07:29.145 --> 00:07:32.220
+Eleven again. A validator objects.
+
+86
+00:07:32.770 --> 00:07:37.970
+As the docs put it, “Declarations are
+promises from the caller, not proofs.”
+
+87
+00:07:38.520 --> 00:07:43.687
+Who tied it on? The caller.
+Who doubted it? The validator.
+
+88
+00:07:43.687 --> 00:07:46.960
+How long it held? While
+the input stayed honest.
+
+89
+00:07:48.433 --> 00:07:53.170
+Promise only a range, and it must
+tell the tiniest difference from none.
+
+90
+00:07:53.170 --> 00:07:56.222
+It magnifies by two to the
+hundred and forty-ninth.
+
+91
+00:07:56.772 --> 00:08:00.278
+The faintest difference
+becomes a full bar.
+
+92
+00:08:00.278 --> 00:08:05.037
+A sixteen-operation comparison, and
+four and a half gives ten. Correct.
+
+93
+00:08:06.517 --> 00:08:11.520
+Sixteen against two. One honest sentence
+about your input saves fourteen operations.
+
+94
+00:08:19.142 --> 00:08:24.308
+Now feed the program's operations into a
+loom, a hundred and thirty layers deep.
+
+95
+00:08:24.608 --> 00:08:29.518
+Each step drops into the first
+layer after the steps it needs.
+
+96
+00:08:29.868 --> 00:08:35.846
+Copper threads add. Indigo threads
+subtract. Most of it is empty air.
+
+97
+00:08:37.208 --> 00:08:43.013
+The README calls it "a giant
+matmul": a matrix multiplication,
+
+98
+00:08:43.013 --> 00:08:45.555
+the sums graphics cards are built for.
+
+99
+00:08:45.805 --> 00:08:50.043
+Sums of sums are still
+sums, so some fold together.
+
+100
+00:08:50.043 --> 00:08:53.885
+But a gate is a bend:
+nothing merges across one.
+
+101
+00:08:54.235 --> 00:08:57.775
+The longest chain of gates
+runs seventy-one deep.
+
+102
+00:08:59.167 --> 00:09:04.948
+So it is a network, in the plain sense:
+weighted sums, with ReLU gates between.
+
+103
+00:09:05.098 --> 00:09:06.653
+That guess was ours too.
+
+104
+00:09:08.142 --> 00:09:14.399
+Step back. The wallpaper draws these
+same threads: one arc per weight.
+
+105
+00:09:17.558 --> 00:09:23.560
+And the Notes window? On the thirteenth
+of October its text moved to the browser,
+
+106
+00:09:23.560 --> 00:09:25.777
+and the loom shed most of its threads.
+
+107
+00:09:29.542 --> 00:09:35.045
+The desktop runs as JavaScript on the
+main processor. On a graphics card, an
+
+108
+00:09:35.045 --> 00:09:40.304
+older build ran fifteen to twenty-seven
+times slower, its steps one after another.
+
+109
+00:09:40.854 --> 00:09:46.240
+So what is a graphics card, a
+GPU, for? Hang that on the line.
+
+110
+00:09:52.125 --> 00:09:57.570
+In the docs' words: "The program runs every
+operation on every frame and can't stop
+
+111
+00:09:57.570 --> 00:10:03.467
+early, so a loop becomes a count, a tree,
+a table, or the same work on every item."
+
+112
+00:10:04.933 --> 00:10:10.110
+The looping lives outside, in the
+host: the plain JavaScript around it.
+
+113
+00:10:10.410 --> 00:10:13.869
+Flick the toggle, and the
+event is queued with its time.
+
+114
+00:10:14.169 --> 00:10:22.372
+Inputs in. The loom runs once. Next
+state copied back. The page moves.
+
+115
+00:10:22.672 --> 00:10:27.501
+When nothing moves, the clock rests:
+between frames, never inside one.
+
+116
+00:10:28.975 --> 00:10:32.132
+The windows move on springs,
+and springs need time.
+
+117
+00:10:32.432 --> 00:10:36.228
+One step multiplies two
+numbers, the window's distance
+
+118
+00:10:36.228 --> 00:10:39.629
+from home and its speed: at
+rest, it comes out moving.
+
+119
+00:10:40.179 --> 00:10:45.148
+Three hundred steps is that
+multiplication, squared and squared again.
+
+120
+00:10:45.148 --> 00:10:48.782
+JavaScript works it out
+ahead, as four numbers;
+
+121
+00:10:48.782 --> 00:10:52.113
+the program applies them in
+fourteen operations, for any count.
+
+122
+00:10:55.475 --> 00:11:00.048
+Past three hundred steps in one frame,
+stepping stops, and every window snaps home.
+
+123
+00:11:03.308 --> 00:11:06.013
+Replay one session at two frame rates,
+
+124
+00:11:06.013 --> 00:11:10.261
+and the familiar loop drifts up to three
+hundred and fifty-nine pixels apart.
+
+125
+00:11:10.561 --> 00:11:15.135
+Handwired saves only at
+events and fixed checkpoints.
+
+126
+00:11:15.135 --> 00:11:21.068
+Other frames replay from the last
+save, are drawn, and thrown away.
+
+127
+00:11:21.068 --> 00:11:25.096
+In its tests, every frame
+rate then matches exactly.
+
+128
+00:11:27.250 --> 00:11:30.861
+One run per frame? That
+held until mid-September.
+
+129
+00:11:30.861 --> 00:11:33.402
+Now a busy drag frame
+runs about seventeen.
+
+130
+00:11:34.892 --> 00:11:40.790
+A count. Which row is under the pointer?
+A loop stops at the first match.
+
+131
+00:11:40.790 --> 00:11:45.257
+Here every row answers, and
+we count the yeses: three.
+
+132
+00:11:48.142 --> 00:11:54.632
+A tree. Running totals in a row: each
+waits for the last, seven steps deep.
+
+133
+00:11:54.632 --> 00:11:58.381
+In pairs, then pairs of
+pairs: three or four.
+
+134
+00:12:02.933 --> 00:12:07.443
+In thirty-two-bit floats,
+grouping changes the final digit.
+
+135
+00:12:07.443 --> 00:12:10.368
+The tree is slower here,
+but drifts far less.
+
+136
+00:12:13.558 --> 00:12:19.595
+A table. As arithmetic, you test all
+ten thousand rows, zero out all but one,
+
+137
+00:12:19.595 --> 00:12:24.066
+and add: thirty thousand
+operations. Or one index read.
+
+138
+00:12:26.517 --> 00:12:29.803
+To sort, do the same work on every item:
+
+139
+00:12:29.803 --> 00:12:32.994
+each card counts who comes
+before it. Nothing swaps.
+
+140
+00:12:34.683 --> 00:12:40.533
+Filtering too: each item counts its place,
+and a fixed rack takes the first three.
+
+141
+00:12:40.833 --> 00:12:46.045
+The desktop's Monitor window admits
+it: "Only 64 rows are drawn at a time."
+
+142
+00:12:47.517 --> 00:12:53.228
+Kleene's finite machine, with everything
+unbounded coming from outside? Here it is.
+
+143
+00:12:53.778 --> 00:12:59.664
+The guide to the project's lab of experiments
+says: “One frame is one evaluation
+
+144
+00:12:59.664 --> 00:13:06.026
+of a fixed-depth circuit”. The host
+turns the crank. It never stops early.
+
+145
+00:13:11.917 --> 00:13:16.908
+Every weight so far was written by
+hand. The README's first funny use-case:
+
+146
+00:13:17.158 --> 00:13:23.694
+“unfreezing the weights and train them
+(what does that even do? Let's find out!)”
+
+147
+00:13:25.183 --> 00:13:30.953
+Take one gated product: a valve.
+Along its channel flows an input,
+
+148
+00:13:30.953 --> 00:13:37.628
+three, times a weight, w. The opening
+is g plus b, never below nought.
+
+149
+00:13:38.078 --> 00:13:42.571
+With w a half, g a
+quarter, b minus a tenth:
+
+150
+00:13:42.571 --> 00:13:48.109
+it opens nought point one five, and
+out comes nought point two two five.
+
+151
+00:13:48.659 --> 00:13:52.850
+Learning needs each
+number's slope, or gradient:
+
+152
+00:13:52.850 --> 00:13:55.647
+nudge it, and how far
+does the output move?
+
+153
+00:13:56.197 --> 00:14:02.269
+Backwards, w's slope is three times
+the opening: nought point four five.
+
+154
+00:14:02.269 --> 00:14:05.647
+g's is the channel itself: one and a half.
+
+155
+00:14:07.100 --> 00:14:13.380
+Lower b to minus four tenths. The valve
+shuts, and every slope behind it goes dark.
+
+156
+00:14:14.830 --> 00:14:19.056
+A README in the project
+warns: “Without any decay,
+
+157
+00:14:19.056 --> 00:14:23.757
+a unit whose gate has closed
+gets no gradient and stays shut”.
+
+158
+00:14:24.307 --> 00:14:29.739
+The neurons of 1943 couldn't
+learn. These can, if you let them.
+
+159
+00:14:31.225 --> 00:14:34.824
+Almost every operation runs
+backwards by a rule like that:
+
+160
+00:14:34.824 --> 00:14:37.528
+on the real arithmetic, not the rounding.
+
+161
+00:14:40.600 --> 00:14:45.755
+The README calls it fully
+differentiable: a slope everywhere.
+
+162
+00:14:45.755 --> 00:14:47.600
+The project itself has doubts.
+
+163
+00:14:48.050 --> 00:14:53.483
+Ask the ramps which way to nudge the input.
+At almost every whole number: nowhere.
+
+164
+00:14:54.033 --> 00:14:59.350
+Differentiable as real arithmetic.
+But a decision has no slope to follow.
+
+165
+00:15:00.808 --> 00:15:04.349
+Only one demo learns: the learned gallery.
+
+166
+00:15:04.349 --> 00:15:08.667
+From random weights, it learns to place
+the photos on rectangles you sketch.
+
+167
+00:15:10.933 --> 00:15:16.007
+Before each step, plain JavaScript
+pairs each photo with a rectangle.
+
+168
+00:15:16.007 --> 00:15:19.999
+The network learns where.
+JavaScript decides who.
+
+169
+00:15:21.558 --> 00:15:26.073
+Each photo's edges pull toward its
+rectangle, but every pull is capped.
+
+170
+00:15:26.623 --> 00:15:29.014
+Far-off photos vote. They don't shout.
+
+171
+00:15:33.792 --> 00:15:38.168
+Six hundred steps a second, through
+the program's own backward pass.
+
+172
+00:15:41.892 --> 00:15:45.758
+An early fix snapped the sketch
+to a grid, in ordinary code.
+
+173
+00:15:45.758 --> 00:15:50.517
+Cheng turned it down: “the spirit of
+the gallery is to learn something.”
+
+174
+00:15:52.767 --> 00:15:58.548
+To be fair, that's a small generic network,
+not a hand-written program unfrozen.
+
+175
+00:15:58.898 --> 00:16:03.623
+The lab did unfreeze one app's five
+design numbers to follow a drag.
+
+176
+00:16:03.623 --> 00:16:08.010
+One gradient step solved nearly
+two in three moving frames.
+
+177
+00:16:08.560 --> 00:16:14.318
+A frozen program trained end to end inside
+a text-writing network, like nanoGPT?
+
+178
+00:16:14.318 --> 00:16:18.021
+Not attempted. It hangs as a question.
+
+179
+00:16:24.183 --> 00:16:26.713
+Six commits in July. In August, none.
+
+180
+00:16:27.263 --> 00:16:30.364
+The record doesn't say
+why. So we won't guess.
+
+181
+00:16:31.850 --> 00:16:36.366
+July’s lab briefs listed established
+conclusions, to take as given.
+
+182
+00:16:36.366 --> 00:16:39.175
+One: compiling ordinary
+code was a dead end.
+
+183
+00:16:39.725 --> 00:16:43.602
+Who tied it on? A conversation
+whose people go unnamed.
+
+184
+00:16:46.392 --> 00:16:52.325
+On the third of September, an AI agent’s
+review retired ten earlier claims, that
+
+185
+00:16:52.325 --> 00:16:59.301
+one among them. Its narrower replacement:
+a defined numeric subset can be compiled.
+
+186
+00:16:59.851 --> 00:17:01.278
+It held about eight weeks.
+
+187
+00:17:03.558 --> 00:17:07.970
+One test, learning two additions,
+scored nought out of twenty.
+
+188
+00:17:07.970 --> 00:17:15.214
+Multiply its error by a million, which
+should change nothing: twenty out of twenty.
+
+189
+00:17:15.214 --> 00:17:18.685
+A tiny safety constant
+was swamping the slopes.
+
+190
+00:17:22.142 --> 00:17:27.401
+In July, a checker for the lab's
+compiler reported zero mismatches.
+
+191
+00:17:27.401 --> 00:17:31.325
+The compiled code skipped an early
+return, and so did the checker.
+
+192
+00:17:31.875 --> 00:17:35.579
+As the docs warn, “That the two
+evaluators agree doesn't show
+
+193
+00:17:35.579 --> 00:17:39.049
+that a program does what the
+JavaScript it replaces did.”
+
+194
+00:17:50.308 --> 00:17:54.580
+Every commit is Cheng Lou’s; most also
+credit a coding agent, Claude Code.
+
+195
+00:17:55.030 --> 00:18:01.716
+The review also names an earlier OpenAI agent,
+Codex. This film was written with Claude.
+
+196
+00:18:02.266 --> 00:18:06.932
+Mistakes and catches alike came from
+one process, under his direction.
+
+197
+00:18:08.592 --> 00:18:10.867
+In mid-September, he
+settled three questions.
+
+198
+00:18:17.125 --> 00:18:20.595
+Then October: six hundred
+and eighty-nine commits.
+
+199
+00:18:21.145 --> 00:18:23.524
+Nearly all of them in four days.
+
+200
+00:18:26.475 --> 00:18:30.028
+Cheng asked whether search
+on the GPU was “clearly
+
+201
+00:18:30.028 --> 00:18:32.918
+more performant”, and if so, worth a demo.
+
+202
+00:18:35.183 --> 00:18:38.736
+A hundred thousand JSON
+documents, small text records,
+
+203
+00:18:38.736 --> 00:18:42.496
+one per GPU lane, all
+running one small step.
+
+204
+00:18:43.046 --> 00:18:48.537
+So what is a GPU for? The demo's
+answer: “It is for many documents”.
+
+205
+00:18:51.808 --> 00:18:57.148
+On the thirteenth, a hedged write-up
+tied on a tag: the GPU is faster.
+
+206
+00:19:00.100 --> 00:19:05.382
+Search patterns are what Kleene,
+back in 1951, called regular events.
+
+207
+00:19:05.932 --> 00:19:11.295
+As the code says, a new pattern
+“writes cells and changes no program.”
+
+208
+00:19:12.767 --> 00:19:17.259
+A program can't go back, so
+search walks each document twice.
+
+209
+00:19:17.609 --> 00:19:23.424
+From the end, then the start: a longest match
+is only known after reading past its end.
+
+210
+00:19:25.683 --> 00:19:30.095
+The browser's pattern-matcher,
+RegExp, on one core:
+
+211
+00:19:30.095 --> 00:19:35.388
+eight to twenty-eight milliseconds a
+keystroke. The search: eleven to fifteen.
+
+212
+00:19:35.938 --> 00:19:40.815
+One pattern makes it try every
+way back: over two seconds.
+
+213
+00:19:40.815 --> 00:19:44.181
+The program never goes
+back: eleven milliseconds.
+
+214
+00:19:46.433 --> 00:19:51.111
+The same day, a review found
+RegExp had one of eighteen cores.
+
+215
+00:19:51.461 --> 00:19:58.113
+With eight workers, RegExp keeps up, and wins
+after a pause, except on that one pattern.
+
+216
+00:19:58.663 --> 00:20:00.334
+That tag held for hours.
+
+217
+00:20:00.884 --> 00:20:05.074
+The lab, with good
+grace: “RegExp is fast.”
+
+218
+00:20:08.150 --> 00:20:12.398
+On the fourteenth, Cheng gave the
+go-ahead: “Do it quick plz, then publish.”
+
+219
+00:20:12.948 --> 00:20:18.508
+That evening it went public: “My dear friends,
+I’d like to show you my latest toy project”.
+
+220
+00:20:22.475 --> 00:20:27.653
+On Hacker News, one commenter said it’s
+really “write your logic in a DSL that
+
+221
+00:20:27.653 --> 00:20:34.003
+creates a neural-net-shaped circuit”.
+A DSL: a little language for one job.
+
+222
+00:20:34.453 --> 00:20:41.522
+Another saw a compiler. The docs side with
+the first: no tool converts your code.
+
+223
+00:20:42.975 --> 00:20:47.781
+Nine days after launch, a stranger
+tried four and a half: “you get 11.”
+
+224
+00:20:48.331 --> 00:20:53.660
+Turn our whole-number tag over: the landing
+page's hidden comment already said so.
+
+225
+00:20:53.660 --> 00:20:57.049
+A promise that states its limits is kept.
+
+226
+00:20:58.517 --> 00:21:01.535
+Another asked what the
+website never said: “why?”
+
+227
+00:21:02.085 --> 00:21:05.509
+That's our blank tag.
+We'll keep it for the end.
+
+228
+00:21:07.375 --> 00:21:12.715
+About the lab, we found no public word: the
+strangers' pencils were gentler than its own.
+
+229
+00:21:16.200 --> 00:21:22.457
+One last experiment. The search demo's JSON
+highlighter stops at the first mistake.
+
+230
+00:21:22.807 --> 00:21:27.265
+Its parser is a table, and valid
+input never reads most of it.
+
+231
+00:21:29.917 --> 00:21:37.293
+Train only the unread entries,
+to keep going after a mistake,
+
+232
+00:21:37.293 --> 00:21:40.415
+and valid JSON parses exactly as before.
+
+233
+00:21:42.892 --> 00:21:48.639
+Before testing, the lab tied on a
+tag: training can fill those entries.
+
+234
+00:21:48.639 --> 00:21:53.038
+Then it fixed its rule for failure,
+and committed the test sets first.
+
+235
+00:21:55.225 --> 00:21:57.604
+JSON: “a clear success.”
+
+236
+00:21:58.854 --> 00:22:00.874
+Though on new kinds of mistake,
+
+237
+00:22:00.874 --> 00:22:05.947
+and on whole payloads written by
+agents, hand-written rules still won.
+
+238
+00:22:08.225 --> 00:22:12.868
+For TOML, another format: “By the rule
+fixed beforehand the track failed”.
+
+239
+00:22:13.218 --> 00:22:16.398
+It lost to a one-line
+hand-written fallback, every run.
+
+240
+00:22:16.698 --> 00:22:22.560
+The README is careful: the failure “does
+not say that training cannot work there.”
+
+241
+00:22:23.210 --> 00:22:27.702
+This is how a belief should end:
+by a rule written before the test.
+
+242
+00:22:30.375 --> 00:22:35.773
+The third parser's final test hasn't
+run yet. That question stays open.
+
+243
+00:22:36.223 --> 00:22:38.289
+So does the lab's own list.
+
+244
+00:22:38.739 --> 00:22:42.919
+It says plainly: “a general
+JavaScript compiler”
+
+245
+00:22:42.919 --> 00:22:45.542
+is “not delivered by these experiments.”
+
+246
+00:22:50.100 --> 00:22:53.803
+Every belief in the film
+hangs over the time it held.
+
+247
+00:22:56.258 --> 00:23:01.702
+Now re-hang them the way the loom does:
+each belief one layer after those it needs.
+
+248
+00:23:02.252 --> 00:23:04.318
+The film's teaching order, not history.
+
+249
+00:23:09.058 --> 00:23:12.784
+Send one wave of light
+through it. Every tag lights.
+
+250
+00:23:13.834 --> 00:23:17.304
+The struck ones ran too.
+Multiplied by nought.
+
+251
+00:23:18.767 --> 00:23:24.154
+Three beliefs are still argued over.
+Learn the weights, don't write them.
+
+252
+00:23:24.154 --> 00:23:29.401
+Fully differentiable. And the README's
+claim to take “regular JavaScript”.
+
+253
+00:23:29.951 --> 00:23:36.742
+To the stranger's “why?”, the README's nearest
+answers: “for fun”, and “Let's find out!”
+
+254
+00:23:38.225 --> 00:23:41.452
+The notes window ends: “Wire
+one more neuron by hand”.
+
+255
+00:23:43.725 --> 00:23:48.356
+Who ties the next one on? Who
+doubts it? How long will it hold?
+
+256
+00:23:49.506 --> 00:23:52.106
+It's waiting for the next pair of hands.

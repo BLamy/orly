@@ -1,0 +1,40 @@
+{
+  "$doc": "Mechanical checks of the round-6 routed shot notes (written by the round-6 showrunner). generator/film/shot-ledger.mjs finalize/check looks each string up in the shot source with comments stripped (plus sets/<id>-*.ts and any listed files, relative to the film's app dir). Every 'present' string must appear and every 'absent' string must not. Quoted words like 'Versailles' are T.word anchors the note REQUIRES; they are never removed keys. ch15-s09, ch14-s07 and ch12-s08 are mostly visual, so their present lists only guard the anchors and text that must survive.",
+  "ch15-s04": {
+    "present": [
+      "METR estimates · frontier models"
+    ],
+    "absent": [
+      "textRole(c, 'texture', () => c.fillText('METR estimates"
+    ]
+  },
+  "ch15-s01": {
+    "present": [
+      "'Versailles'",
+      "'nobody'",
+      "'memories'",
+      "HOPFIELD NET · 1982",
+      "BOLTZMANN MACHINE · 1983–85"
+    ]
+  },
+  "ch15-s09": {
+    "present": [
+      "'suspicious'",
+      "'new'",
+      "'candles'",
+      "STATUS: OPEN"
+    ]
+  },
+  "ch14-s07": {
+    "present": [
+      "STATUS: OPEN",
+      "LIANG"
+    ]
+  },
+  "ch12-s08": {
+    "present": [
+      "23 JAN 2023",
+      "MULTIBILLION"
+    ]
+  }
+}

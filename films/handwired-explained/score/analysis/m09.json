@@ -1,0 +1,18 @@
+{
+ "id": "m09",
+ "start": 981.2,
+ "end": 1095.2,
+ "file": "films/handwired-explained/score/renders/m09.wav",
+ "duration": 120,
+ "I": -25.8,
+ "LRA": 8.4,
+ "TP": -6.4,
+ "expected": 120,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m09.png",
+ "cueSeconds": 114,
+ "cps": 0.21666666666666667,
+ "lastStrikeLocal": 111.54,
+ "lastStrike": 1092.74
+}

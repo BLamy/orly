@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -79,10 +79,10 @@ function Frame({ s }: { s: SceneState }) {
           <g opacity={dataU}>
             <line x1={sx(X_MIN)} y1={sy(0)} x2={sx(X_MAX)} y2={sy(0)} stroke={colors.GRID} />
             <line x1={sx(X_MIN)} y1={sy(1)} x2={sx(X_MAX)} y2={sy(1)} stroke={colors.GRID} strokeDasharray="4 6" />
-            <text x={sx(X_MIN) - 10} y={sy(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={sx(X_MIN) - 10} y={sy(1) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               p=1
             </text>
-            <text x={sx(X_MIN) - 10} y={sy(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={sx(X_MIN) - 10} y={sy(0) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               p=0
             </text>
           </g>
@@ -98,7 +98,7 @@ function Frame({ s }: { s: SceneState }) {
             />
           ))}
           {dataU > 0.9 && (
-            <text x={sx(0)} y={sy(1) - 14} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={dataU}>
+            <text x={sx(0)} y={sy(1) - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={dataU}>
               eight training points, trained to convergence
             </text>
           )}
@@ -117,7 +117,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* the sigmoid */}
           {curveU > 0 && <path d={sigPath(calW, curveU)} fill="none" stroke={colors.WARM} strokeWidth={3} />}
           {curveU > 0.9 && (
-            <text x={sx(1.6)} y={sy(0.82)} fill={colors.WARM} fontSize={13.5} opacity={clamp01((curveU - 0.9) * 10)}>
+            <text x={sx(1.6)} y={sy(calW > 0.5 ? 0.6 : 0.82)} fill={colors.WARM} fontSize={14} opacity={clamp01((curveU - 0.9) * 10)}>
               {calW > 0.5 ? `scores ÷ ${T_STAR.toFixed(1)}` : `weight ${W.toFixed(1)} — a cliff`}
             </text>
           )}
@@ -125,34 +125,40 @@ function Frame({ s }: { s: SceneState }) {
           {/* — reliability diagram — */}
           {relU > 0 && (
             <g opacity={relU}>
-              <rect x={rx(0.5)} y={ry(1)} width={REL_S} height={REL_S} fill="none" stroke={colors.GRID} />
-              <line x1={rx(0.5)} y1={ry(0.5)} x2={rx(1)} y2={ry(1)} stroke={colors.MUTED} strokeDasharray="6 6" opacity={0.7} />
-              <text x={rx(0.75)} y={ry(0.5) + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <rect x={rx(0.5)} y={ry(1)} width={REL_S} height={REL_S} fill="none" stroke={colors.MUTED} strokeOpacity={0.5} />
+              {/* one tick per confidence bin along the floor */}
+              {Array.from({ length: 11 }, (_, i) => (
+                <line key={i} x1={rx(0.5 + i * 0.05)} y1={REL_Y0} x2={rx(0.5 + i * 0.05)} y2={REL_Y0 + 6} stroke={colors.MUTED} opacity={0.6} />
+              ))}
+              <line x1={rx(0.5)} y1={ry(0.5)} x2={rx(1)} y2={ry(1)} stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="6 6" opacity={0.9} />
+              <text x={rx(0.75)} y={ry(0.5) + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 claimed confidence →
               </text>
-              <text x={rx(0.5) - 16} y={ry(0.75)} textAnchor="middle" fill={colors.MUTED} fontSize={13} transform={`rotate(-90 ${rx(0.5) - 16} ${ry(0.75)})`}>
+              <text x={rx(0.5) - 16} y={ry(0.75)} textAnchor="middle" fill={colors.MUTED} fontSize={14} transform={`rotate(-90 ${rx(0.5) - 16} ${ry(0.75)})`}>
                 actual accuracy →
               </text>
-              <text x={rx(0.97)} y={ry(0.99)} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              <text x={rx(1)} y={ry(1) - 8} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 honesty
               </text>
             </g>
           )}
           {relU > 0 &&
             bins.map((b, i) => {
-              const u = clamp01(barsU - i);
+              // fill from the near-certainty bin down, the one the caption names first
+              const u = clamp01(barsU - (9 - i));
               if (u <= 0 || b.n === 0) return null;
               const x0 = rx(0.5 + i * 0.05) + 2;
               const w = (REL_S / 10) - 4;
-              const h = (b.acc - 0.5) * 2 * REL_S * u;
+              // the square's floor is accuracy 0.5: a bin below it has no bar, only its tick
+              const h = Math.max(0, (b.acc - 0.5) * 2 * REL_S * u);
               const gap = b.conf - b.acc;
               return (
                 <g key={i}>
                   <rect
                     x={x0}
-                    y={REL_Y0 - Math.max(0, h)}
+                    y={REL_Y0 - h}
                     width={w}
-                    height={Math.max(1, Math.abs(h))}
+                    height={h}
                     rx={3}
                     fill={gap > 0.06 ? colors.NEGATIVE : colors.POSITIVE}
                     opacity={0.8 * u}
@@ -179,19 +185,14 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
+          <rect x={230} y={250} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={316} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Calibration
           </text>
-          <MathLabel
-            tex={'\\text{ECE}: 0.239 \\;\\to\\; 0.041 \\quad \\text{via } p = \\sigma(z/T^*)'}
-            x={640}
-            y={340}
-            fontSize={21}
-            color={colors.POSITIVE}
-            opacity={endU}
-          />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={372} textAnchor="middle" fill={colors.POSITIVE} fontSize={21}>
+            ECE 0.239 → 0.041 via p = σ(z / T*)
+          </text>
+          <text x={640} y={424} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             accurate and dangerous: its ninety-nine percent meant seventy-six
           </text>
         </g>

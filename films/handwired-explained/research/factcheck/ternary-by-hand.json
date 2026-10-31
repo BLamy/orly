@@ -1,0 +1,99 @@
+{
+  "id": "ternary-by-hand",
+  "checked": 20,
+  "confirmed": 15,
+  "corrected": 4,
+  "unverifiable": 1,
+  "notes": "Key claims 1-20: confirmed 1,2,3,4,5,7,10,11,12,13,14,15,16,18,20. Corrected 6 (both operands on grids), 8 (the 2^15 stage is the final ReGLU, not a clamp; the counts stand), 9 (round-up rule applies to >= only), 19 (precision: the title bar's right edge distance). Unverifiable 17 (the test pass/expect counts weren't re-run; 15 test blocks confirmed statically). The extra entries in corrections are other dossier fixes. Executing repo code was blocked, so run outputs were checked by tracing the source by hand plus standalone node arithmetic.",
+  "corrections": [
+    {
+      "original": "A non-FP32 threshold such as 5/24 must be pre-rounded up (claim 9; dossier 5.4 and misconception 6).",
+      "verdict": "corrected",
+      "fix": "Scope it to the relation. For x >= t, store the smallest FP32 value at or above t (docs/expressions.md L9). For x > t, the matching FP32 threshold is the largest FP32 below t, here f(5/24); rounding up gives a wrong bit at x = the rounded-up value (node check). execution-model.md L118 states the rule without naming a relation, so don't present it as general.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/expressions.md#L9",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/execution-model.md#L118",
+        "node -e arithmetic: f(5/24)=0.20833332836, next FP32 0.20833334326"
+      ]
+    },
+    {
+      "original": "Integer bits apply when the operand is declared on a grid (e.g. assumeGrid(a, 1)).",
+      "verdict": "corrected",
+      "fix": "Integer bits need both operands on grids, with every partial sum within 2^24 grid steps. A constant threshold such as 4 gets a grid automatically, so assumeGrid(a, 1) is enough for a > 4.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/execution-model.md#L123",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/numeric-ui-core.ts#L2083-L2091",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/numeric-ui-core.ts#L2109"
+      ]
+    },
+    {
+      "original": "Sign cascade: clamp stages scaling by 2^14, 2^24 five times, and 2^15; art note 'seven lenses, each followed by a stop at height 1 (the clamp)'.",
+      "verdict": "corrected",
+      "fix": "Six clamp stages (2^14, then 2^24 five times). The 2^15 scale is the final ReGLU relu(1 - 2^15*stage), with no clamp, then bit = relu(1 - that). The total of 2^149 and the 16 ops / 15 layers stand.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/numeric-ui-core.ts#L2230-L2245",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/numeric-ui-core.ts#L2337-L2352"
+      ]
+    },
+    {
+      "original": "GitHub's rendered page uses ```js fences per WebFetch (dossier 5.1).",
+      "verdict": "corrected",
+      "fix": "Removed. A WebFetch summary isn't evidence of a fence label. The pinned file uses ```ts, and the wording on main matches.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/README.md#L9-L22",
+        "https://github.com/chenglou/handwired"
+      ]
+    },
+    {
+      "original": "Widening the pointer range to ±65,536 px turns a title-bar edge into a sign cascade, 13 more operations per window.",
+      "verdict": "corrected",
+      "fix": "Precision fix: the docs say \"each title bar's right edge distance spans more than 2^24 steps of its 1/128 px grid, and that comparison becomes a sign cascade, 13 more operations per window\". The default clamp is ±32,768 px.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/execution-model.md#L147"
+      ]
+    },
+    {
+      "original": "UNVERIFIED: exact ReGLU equation wording in Shazeer (2020).",
+      "verdict": "corrected",
+      "fix": "Verified verbatim, Eq. 5: \"ReGLU(x,W,V,b,c) = max(0,xW+b) ⊗ (xV+c)\". Promoted to a quote (external, framing only). Noted that the repo doesn't cite the paper, so the name match is a parallel, not a documented lineage.",
+      "sources": [
+        "https://ar5iv.labs.arxiv.org/html/2002.05202",
+        "https://arxiv.org/abs/2002.05202"
+      ]
+    },
+    {
+      "original": "Belief of the age: 'a neural network's ReLUs approximate decisions softly, so exact logic needs real control flow' (common assumption).",
+      "verdict": "unverifiable",
+      "fix": "No source attributes this belief to anyone. Labeled as unsourced framing. The JS one-arm semantics are sourced to MDN.",
+      "sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator"
+      ]
+    },
+    {
+      "original": "tests/runtime/comparison.test.ts: 15 pass, 0 fail, 4402 expect() calls, 306 ms (claim 17).",
+      "verdict": "unverifiable",
+      "fix": "A static count confirms exactly 15 test() blocks, and the costs pinned at L404-L443 and L563 are confirmed. The pass/fail result, the 4402 expect() calls and the timing weren't re-run (code execution was blocked in this pass). Re-run before showing 4,402 on screen.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/tests/runtime/comparison.test.ts#L257-L635"
+      ]
+    },
+    {
+      "original": "arXiv 2604.24356 replaces threshold tests with a two-ReLU 'Gate', exact only on integers.",
+      "verdict": "corrected",
+      "fix": "Confirmed, with full citation added: Olivier Bournez, 'Primitive Recursion without Composition...', submitted 27 Apr 2026. \"Gate(t):=ReLU(t)−ReLU(t−1)\" is Section 6, Lemma 20, and exactness is stated for integer-valued arguments.",
+      "sources": [
+        "https://arxiv.org/html/2604.24356v1",
+        "https://arxiv.org/abs/2604.24356"
+      ]
+    },
+    {
+      "original": "Line references patterns.md#L77-L82, numeric-ui-core.ts#L2011-L2012, #L2093-L2097.",
+      "verdict": "corrected",
+      "fix": "Corrected to patterns.md#L80-L81, numeric-ui-core.ts#L2009-L2012, and #L2094-L2097 / #L2219-L2220 / #L2255-L2256.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/patterns.md#L80-L81",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/numeric-ui-core.ts#L2009-L2012"
+      ]
+    }
+  ]
+}

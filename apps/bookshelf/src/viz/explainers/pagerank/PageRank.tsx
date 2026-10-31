@@ -125,7 +125,8 @@ function renderFrame(s: SceneState) {
 
       {/* pages — scaled by their final rank once the verdict is in */}
       {NODES.map((n, i) => {
-        const scale = 1 + rankU * (FINAL[i] - 0.2) * 2.2;
+        // low-rank pages keep their full size so their labels stay readable
+        const scale = 1 + rankU * Math.max(0, FINAL[i] - 0.2) * 2.2;
         const isTop = i === ORDER[0];
         return (
           <g key={n.label} transform={`translate(${n.x} ${n.y}) scale(${scale}) translate(${-n.x} ${-n.y})`}>
@@ -144,17 +145,29 @@ function renderFrame(s: SceneState) {
       })}
 
       {/* the random surfer (beat 2) */}
-      {walkP > 0 && walkP < WALK.length - 1 && (
-        <Packet
-          from={NODES[WALK[hop]]}
-          to={NODES[WALK[hop + 1]]}
-          u={hopU}
-          r={9}
-          color={colors.TEXT}
-          label="surfer"
-          labelSize={12}
-        />
-      )}
+      {walkP > 0 && walkP < WALK.length - 1 && (() => {
+        // ride the trimmed link, so the dot never sits on a page's label
+        const leg = trimEdge(NODES[WALK[hop]], NODES[WALK[hop + 1]]);
+        const px = lerp(leg.from.x, leg.to.x, hopU);
+        const py = lerp(leg.from.y, leg.to.y, hopU);
+        return (
+          <g>
+            <Packet from={leg.from} to={leg.to} u={hopU} r={9} color={colors.TEXT} />
+            <text
+              x={px - 14}
+              y={py + 5}
+              textAnchor="end"
+              fill={colors.TEXT}
+              fontSize={14}
+              stroke="#0a0e1a"
+              strokeWidth={4}
+              paintOrder="stroke"
+            >
+              surfer
+            </text>
+          </g>
+        );
+      })()}
 
       {/* ------- the rank panel ------- */}
       {barsAxisU > 0.002 && (
@@ -167,7 +180,7 @@ function renderFrame(s: SceneState) {
             stroke={colors.GRID}
             strokeWidth={1.5}
           />
-          <text x={BARS.x0 - 14} y={220} fill={colors.MUTED} fontSize={14}>
+          <text x={BARS.x0 - 14} y={220} fill={colors.TEXT} fontSize={15}>
             {barMode < 0.5 ? 'share of visits' : `probability mass — pass ${pass}`}
           </text>
           {NODES.map((n, i) => {
@@ -187,7 +200,7 @@ function renderFrame(s: SceneState) {
                   fill={NODE_COLOR[i]}
                   opacity={0.8}
                 />
-                <text x={x} y={BARS.base + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                <text x={x} y={BARS.base + 22} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
                   {n.label}
                 </text>
                 {chipU > 0.002 && (
@@ -211,14 +224,15 @@ function renderFrame(s: SceneState) {
       )}
 
       {/* equations, as they earn their screen time */}
-      <MathLabel tex="v_{k+1}=M\,v_k" x={990} y={120} fontSize={26} opacity={s.get(ch.texMU)} />
+      <MathLabel tex="v_{k+1}=M\,v_k" x={975} y={96} fontSize={26} opacity={s.get(ch.texMU)} />
       <MathLabel
-        tex="PR_i=\tfrac{1-d}{N}+d\sum_{j\to i}\tfrac{PR_j}{L_j},\;\;\; d=0.85"
-        x={990}
-        y={172}
+        tex="PR_i=\tfrac{1-d}{N}+d\sum_{j\to i}\tfrac{PR_j}{L_j}"
+        x={975}
+        y={140}
         fontSize={20}
         opacity={s.get(ch.texPRU)}
       />
+      <MathLabel tex="d=0.85" x={975} y={172} fontSize={20} opacity={s.get(ch.texPRU)} />
     </g>
   );
 }

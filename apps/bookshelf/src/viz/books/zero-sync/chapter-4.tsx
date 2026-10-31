@@ -67,9 +67,10 @@ const PG = { x: 1092, y: 240 };
 const SOCKET_A = { x: DEV.x + DEV.w, y: DEV.y + 150 }; // device edge
 const SOCKET_B = { x: ZC.x - 62, y: ZC.y }; // zero-cache edge
 
-const CAM_SHELF: CameraState = { x: 340, y: 300, k: 1.45 };
-const CAM_LOOP: CameraState = { x: 800, y: 300, k: 1.15 };
-const CAM_TTL: CameraState = { x: 380, y: 420, k: 1.5 };
+// Each framing keeps its subject clear of the caption band (y ≳ 630 on stage).
+const CAM_SHELF: CameraState = { x: 482, y: 372, k: 1.1 }; // device + kv chips, whole
+const CAM_LOOP: CameraState = { x: 644, y: 350, k: 1.2 }; // device edge → socket → mutagen → Postgres, all in frame
+const CAM_TTL: CameraState = { x: 643, y: 350, k: 1.1 }; // whole vault and loop, so no label is clipped at the edge
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -288,11 +289,14 @@ export function Render({ s }: { s: SceneState }) {
             <text x={DEV_C.x} y={DEV.y + 30} textAnchor="middle" fill={colors.ACCENT} fontSize={13} letterSpacing={1.5}>
               the device
             </text>
-            <text x={DEV_C.x} y={DEV.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontStyle="italic" opacity={blink}>
+            <text x={DEV_C.x} y={DEV.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={blink}>
               your app, mid-session
             </text>
 
             {/* the cached shelf */}
+            <text x={SHELF.x + 4} y={SHELF.y - 12} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={blink}>
+              query: open issues · watched
+            </text>
             {SHELF_ROWS.map((r, i) => {
               const u = clamp01(shelfU * 2.5 - i * 0.35);
               const isFlip = r.id === 42;
@@ -312,16 +316,16 @@ export function Render({ s }: { s: SceneState }) {
                     strokeDasharray={ghost ? '5 4' : undefined}
                   />
                   <circle cx={SHELF.x + 15} cy={SHELF.y + i * SHELF.rowH + 13} r={4} fill={closed ? colors.MUTED : colors.POSITIVE} />
-                  <text x={SHELF.x + 30} y={SHELF.y + i * SHELF.rowH + 17} fill={closed ? colors.MUTED : colors.TEXT} fontSize={11.5} textDecoration={closed ? 'line-through' : undefined}>
+                  <text x={SHELF.x + 30} y={SHELF.y + i * SHELF.rowH + 17} fill={closed ? colors.MUTED : colors.TEXT} fontSize={12.5} textDecoration={closed ? 'line-through' : undefined}>
                     #{r.id} · {r.title}
                   </text>
                   {ghost && (
-                    <text x={SHELF.x + SHELF.w - 10} y={SHELF.y + i * SHELF.rowH + 17} textAnchor="end" fill={colors.WARM} fontSize={10} fontStyle="italic">
+                    <text x={SHELF.x + SHELF.w - 10} y={SHELF.y + i * SHELF.rowH + 17} textAnchor="end" fill={colors.WARM} fontSize={12} fontStyle="italic">
                       pending…
                     </text>
                   )}
                   {isFlip && confirmU > 0.5 && (
-                    <text x={SHELF.x + SHELF.w - 10} y={SHELF.y + i * SHELF.rowH + 17} textAnchor="end" fill={colors.POSITIVE} fontSize={10}>
+                    <text x={SHELF.x + SHELF.w - 10} y={SHELF.y + i * SHELF.rowH + 17} textAnchor="end" fill={colors.POSITIVE} fontSize={12}>
                       confirmed ✓
                     </text>
                   )}
@@ -331,13 +335,13 @@ export function Render({ s }: { s: SceneState }) {
 
             {/* the second query's rows — the ones that will expire */}
             <g opacity={q2U * (1 - evictU)}>
-              <text x={SHELF.x + 4} y={Q2_Y - 10} fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+              <text x={SHELF.x + 4} y={Q2_Y - 10} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                 query: archived issues — no longer watched
               </text>
               {Q2_ROWS.map((r, i) => (
                 <g key={r.id}>
                   <rect x={SHELF.x} y={Q2_Y + i * SHELF.rowH} width={SHELF.w} height={SHELF.rowH - 8} rx={6} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1} opacity={0.7} />
-                  <text x={SHELF.x + 30} y={Q2_Y + i * SHELF.rowH + 17} fill={colors.MUTED} fontSize={11.5}>
+                  <text x={SHELF.x + 30} y={Q2_Y + i * SHELF.rowH + 17} fill={colors.MUTED} fontSize={12.5}>
                     #{r.id} · {r.title}
                   </text>
                 </g>
@@ -346,25 +350,26 @@ export function Render({ s }: { s: SceneState }) {
               {ttlU > 0 && ttlU < 1 && (
                 <g>
                   <TimerArc cx={SHELF.x + SHELF.w - 22} cy={Q2_Y + 12} r={11} u={ttlU} color={colors.WARM} />
-                  <text x={SHELF.x + SHELF.w - 40} y={Q2_Y + 17} textAnchor="end" fill={colors.WARM} fontSize={10} fontFamily="ui-monospace, monospace">
+                  <text x={SHELF.x + SHELF.w - 40} y={Q2_Y + 17} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                     ttl: '5m'
                   </text>
                 </g>
               )}
-              {evictU > 0.02 && (
-                <text x={SHELF.x + SHELF.w / 2} y={Q2_Y + 30} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontStyle="italic" opacity={evictU}>
-                  evicted — ask again to bring them back
-                </text>
-              )}
             </g>
+            {/* the eviction note sits below the faded rows, so it stays readable as they go */}
+            {evictU > 0.02 && (
+              <text x={SHELF.x + 4} y={Q2_Y + 64} fill={colors.NEGATIVE} fontSize={12.5} fontStyle="italic" opacity={evictU}>
+                evicted — ask again to bring them back
+              </text>
+            )}
 
             {/* the storage layer */}
             <g opacity={storeU}>
               <rect x={DEV.x + 18} y={STORE_Y} width={DEV.w - 36} height={44} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-              <text x={DEV_C.x} y={STORE_Y + 19} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontWeight={700}>
+              <text x={DEV_C.x} y={STORE_Y + 19} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontWeight={700}>
                 Replicache persistence
               </text>
-              <text x={DEV_C.x} y={STORE_Y + 35} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+              <text x={DEV_C.x} y={STORE_Y + 35} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                 IndexedDB · zero-{'{userID}'}-…
               </text>
             </g>
@@ -372,7 +377,7 @@ export function Render({ s }: { s: SceneState }) {
             {/* the outbox */}
             <g opacity={devU}>
               <rect x={OUTBOX.x} y={OUTBOX.y} width={OUTBOX.w} height={OUTBOX.h} rx={8} fill="none" stroke={colors.WARM} strokeWidth={1.3} strokeDasharray="4 3" />
-              <text x={OUTBOX.x + OUTBOX.w / 2} y={OUTBOX.y - 8} textAnchor="middle" fill={colors.WARM} fontSize={10.5}>
+              <text x={OUTBOX.x + OUTBOX.w / 2} y={OUTBOX.y - 8} textAnchor="middle" fill={colors.WARM} fontSize={12}>
                 outbox
               </text>
               {Array.from({ length: Math.min(3, Math.round(outN)) }, (_, k) => (
@@ -388,10 +393,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={c.label} opacity={u * 0.95}>
                 <rect x={586} y={430 + i * 46} width={250} height={36} rx={9} fill={colors.PANEL} stroke={i === 0 ? colors.ACCENT : colors.GRID} strokeWidth={1.2} />
-                <text x={598} y={430 + i * 46 + 16} fill={i === 0 ? colors.ACCENT : colors.TEXT} fontSize={11} fontFamily="ui-monospace, monospace">
+                <text x={598} y={430 + i * 46 + 16} fill={i === 0 ? colors.ACCENT : colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
                   {c.label}
                 </text>
-                <text x={598} y={430 + i * 46 + 30} fill={colors.MUTED} fontSize={9.5}>
+                <text x={598} y={430 + i * 46 + 30} fill={colors.MUTED} fontSize={12}>
                   {c.note}
                 </text>
               </g>
@@ -402,8 +407,8 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={loopSideU}>
             <ServiceNode x={ZC.x} y={ZC.y} kind="server" label="zero-cache" sublabel="mutagen · view syncer" dim={cutU * 0.5} />
             <ServiceNode x={PG.x} y={PG.y} kind="db" label="your Postgres" sublabel="source of truth" glow={pgGlow} dim={cutU * 0.5} />
-            <Connection from={{ x: ZC.x + 62, y: ZC.y - 12 }} to={{ x: PG.x - 66, y: PG.y - 12 }} u={loopSideU} color={colors.GRID} arrow label="apply mutation" labelSize={10} />
-            <Connection from={{ x: PG.x - 66, y: PG.y + 16 }} to={{ x: ZC.x + 62, y: ZC.y + 16 }} u={loopSideU} color={colors.GRID} arrow dashed label="the tape · replica" labelSize={10} />
+            <Connection from={{ x: ZC.x + 62, y: ZC.y - 12 }} to={{ x: PG.x - 66, y: PG.y - 12 }} u={loopSideU} color={colors.GRID} arrow label="apply mutation" labelSize={12} />
+            <Connection from={{ x: PG.x - 66, y: PG.y + 16 }} to={{ x: ZC.x + 62, y: ZC.y + 16 }} u={loopSideU} color={colors.GRID} arrow dashed label="the tape · replica" labelSize={12} />
           </g>
           <Connection
             from={SOCKET_A}
@@ -412,12 +417,12 @@ export function Render({ s }: { s: SceneState }) {
             color={cutU > 0.5 ? colors.NEGATIVE : colors.GRID}
             dashed
             label={cutU > 0.5 ? 'offline' : 'socket'}
-            labelSize={10}
+            labelSize={12}
             dim={0.3}
           />
 
           {/* the push chip riding to mutagen */}
-          <Packet from={{ x: OUTBOX.x + OUTBOX.w / 2, y: OUTBOX.y }} to={SOCKET_B} u={pushU} r={6.5} color={colors.WARM} label={pushU > 0.1 && pushU < 0.95 ? 'push · closeIssue' : undefined} labelSize={10} />
+          <Packet from={{ x: OUTBOX.x + OUTBOX.w / 2, y: OUTBOX.y }} to={SOCKET_B} u={pushU} r={6.5} color={colors.WARM} label={pushU > 0.1 && pushU < 0.95 ? 'push · closeIssue' : undefined} labelSize={12} />
           {/* the drain after reconnect: three chips in order */}
           {drainU > 0 && drainU < 1 &&
             [0, 1, 2].map((k) => {
@@ -426,10 +431,11 @@ export function Render({ s }: { s: SceneState }) {
               return <Packet key={k} from={{ x: OUTBOX.x + OUTBOX.w / 2, y: OUTBOX.y }} to={SOCKET_B} u={u} r={5} color={colors.WARM} opacity={0.9} />;
             })}
           {/* the confirming poke coming back */}
-          <Packet from={SOCKET_B} to={SOCKET_A} u={backU} r={6} color={colors.POSITIVE} label={backU > 0.15 && backU < 0.9 ? 'poke · lastMutationIDChanges' : undefined} labelSize={9.5} />
+          <Packet from={SOCKET_B} to={SOCKET_A} u={backU} r={6} color={colors.POSITIVE} label={backU > 0.15 && backU < 0.9 ? 'poke · lastMutationIDChanges' : undefined} labelSize={12} />
         </g>
 
-        {/* closing panel */}
+        {/* closing panel: a solid backdrop hides the faded device so no ghost shapes show behind the text */}
+        <rect x={-400} y={-400} width={STAGE_W + 800} height={STAGE_H + 800} fill={colors.BG} opacity={closeU * 0.94} />
         <g opacity={closeU}>
           <rect x={330} y={215} width={620} height={200} rx={18} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
           <text x={640} y={278} textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={800} letterSpacing={1}>
@@ -438,7 +444,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={318} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
             persisted · instantly writable · self-pruning
           </text>
-          <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             IndexedDB → outbox → mutagen → Postgres → poke
           </text>
         </g>

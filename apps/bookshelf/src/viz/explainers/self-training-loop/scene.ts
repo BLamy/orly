@@ -56,7 +56,8 @@ export const dx = (x: number): number => DIST_X0 + ((x + 3.2) / 6.4) * (DIST_X1 
 export const dy = (p: number): number => DIST_Y0 - p * DIST_H * 1.9;
 
 export const CAM_LOOP: CameraState = { x: 350, y: 310, k: 1.25 };
-export const CAM_DIST: CameraState = { x: 860, y: 320, k: 1.15 };
+// Wide enough that the whole loop ring stays in frame beside the distribution.
+export const CAM_DIST: CameraState = { x: 624, y: 300, k: 1.0 };
 
 export interface Scene {
   tl: Timeline;
@@ -140,7 +141,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 42.2, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 42.8, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0.06, { at: 42.8, dur: 1.1, ease: ease.move });
   tl.tween(endU, 1, { at: 44.0, dur: 0.9, ease: ease.enter });
   tl.caption({
     at: 44.0,

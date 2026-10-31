@@ -116,16 +116,18 @@ export function frameAt(f: number): Frame {
 // Layout
 // ---------------------------------------------------------------------------
 
-export const barX = (i: number): number => 150 + i * 108;
+export const barX = (i: number): number => 170 + i * 90;
 export const BAR_BASE = 470;
-export const rewardScale: ScaleLinear<number, number> = scaleLinear().domain([-3, 3]).range([0, 150]);
+export const rewardScale: ScaleLinear<number, number> = scaleLinear().domain([-3, 3]).range([0, 120]);
 export const polScale: ScaleLinear<number, number> = scaleLinear().domain([0, 0.6]).range([0, 150]);
 
-export const accX: ScaleLinear<number, number> = scaleLinear().domain([0, N_PAIRS]).range([760, 1210]);
-export const accY: ScaleLinear<number, number> = scaleLinear().domain([0, 1]).range([600, 500]);
-export const qY: ScaleLinear<number, number> = scaleLinear().domain([UNIFORM_Q - 0.1, BEST_Q + 0.1]).range([490, 300]);
+// The judge charts sit to the right of the bars, clear of the last bar pair.
+export const accX: ScaleLinear<number, number> = scaleLinear().domain([0, N_PAIRS]).range([860, 1200]);
+export const accY: ScaleLinear<number, number> = scaleLinear().domain([0, 1]).range([560, 470]);
+export const qY: ScaleLinear<number, number> = scaleLinear().domain([UNIFORM_Q - 0.1, BEST_Q + 0.1]).range([440, 300]);
 
-export const CAM_BARS: CameraState = { x: 560, y: 340, k: 1.15 };
+// Frames every answer, bar, legend line and chart label with a margin.
+export const CAM_BARS: CameraState = { x: 665, y: 350, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // The timeline

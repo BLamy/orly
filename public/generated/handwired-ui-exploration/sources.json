@@ -1,0 +1,832 @@
+{
+  "version": 1,
+  "slug": "handwired-ui-exploration",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Count, Don't Search",
+      "claims": [
+        {
+          "id": "c1-scope",
+          "claim": "The lab is one night of exploration asking how far a fixed circuit of affine operations and ReLU products goes for writing UI, with JavaScript only recording inputs and projecting outputs onto the DOM.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md, line 5",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "5",
+              "quote": "This folder holds one night of exploration"
+            },
+            {
+              "label": "README.md, line 5",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "5",
+              "quote": "with JS only recording inputs and projecting outputs onto the DOM"
+            }
+          ]
+        },
+        {
+          "id": "c1-count-flip",
+          "claim": "When a yes-or-no test flips exactly once along a line, the circuit counts the ones instead of searching for the change.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md, line 51",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "51",
+              "quote": "Count instead of search when a predicate flips once."
+            }
+          ]
+        },
+        {
+          "id": "c1-first-row",
+          "claim": "The first visible row is floor(scrollTop / rowHeight), which is exact.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lists/list.ts, line 68",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/lists/list.ts",
+              "lines": "68",
+              "quote": "first = floor(scrollTop / rowHeight), exact"
+            }
+          ]
+        },
+        {
+          "id": "c1-slot",
+          "claim": "Each row lands in the slot given by its row number modulo the slot count, and JavaScript floors the scroll position to a quarter-pixel grid before writing it.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lists/list.ts, line 68",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/lists/list.ts",
+              "lines": "68",
+              "quote": "then offset = first mod slotCount."
+            },
+            {
+              "label": "lists/list.ts, line 21",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/lists/list.ts",
+              "lines": "21",
+              "quote": "scrollTop and row heights are multiples of 1/4 px."
+            },
+            {
+              "label": "lists/list.ts, line 21",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/lists/list.ts",
+              "lines": "21",
+              "quote": "JS floors scrollTop onto"
+            }
+          ]
+        },
+        {
+          "id": "c1-visible-bit",
+          "claim": "Each slot has a visibility bit, one integer comparison per row against the viewport.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lists/list.ts, line 91",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/lists/list.ts",
+              "lines": "91",
+              "quote": "const visible = integerAtLeastOne(circuit"
+            }
+          ]
+        },
+        {
+          "id": "c1-list-280",
+          "claim": "With uniform row heights and row data in JavaScript, the virtualized list is 280 operations in 19 layers at 1,000 rows and at 100,000 rows.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lists/README.md, line 82",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/lists/README.md",
+              "lines": "82",
+              "quote": "| uniform, row data in JS | 1,000 | 2 | 280 | 19"
+            },
+            {
+              "label": "lists/README.md, line 84",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/lists/README.md",
+              "lines": "84",
+              "quote": "| uniform, row data in JS | 100,000 | 2 | 280 | 19"
+            }
+          ]
+        },
+        {
+          "id": "c1-source-cells",
+          "claim": "With the row data in the circuit's own source cells, the 10,000-row list costs 20,305 operations.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md, line 72",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "72",
+              "quote": "(20,305 operations with row data in source cells)"
+            },
+            {
+              "label": "lists/README.md, line 86",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/lists/README.md",
+              "lines": "86",
+              "quote": "| uniform, row data through one-hot | 10,000 | 10,002 | 20,305"
+            }
+          ]
+        },
+        {
+          "id": "c1-fit-bits",
+          "claim": "For a line starting at segment s, the fit bits are monotone in the segment offset: one while the segments fit, then zero.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "text-walker/fast-walker.ts, line 19",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/text-walker/fast-walker.ts",
+              "lines": "19",
+              "quote": "is monotone in o"
+            }
+          ]
+        },
+        {
+          "id": "c1-next-line",
+          "claim": "The next line starts a count of segments along, with skip terms, and its painted width is a sum gated by the same fit bits.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "text-walker/fast-walker.ts, line 22",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/text-walker/fast-walker.ts",
+              "lines": "22",
+              "quote": "next(s)  = s + 1 + skip(s+1)"
+            },
+            {
+              "label": "text-walker/fast-walker.ts, line 23",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/text-walker/fast-walker.ts",
+              "lines": "23",
+              "quote": "width(s) = width[s] + sum_o fits(o) * (paintEnd(s+o+1) - paintEnd(s+o))"
+            }
+          ]
+        },
+        {
+          "id": "c1-words-14760",
+          "claim": "Forty-eight words in 95 segments flow around a window in 14,760 operations and 215 layers, with 96 word springs.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md, line 80",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "80",
+              "quote": "14,760 / 215 (95 segments, 96 word springs)"
+            },
+            {
+              "label": "text-walker/README.md, line 164",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/text-walker/README.md",
+              "lines": "164",
+              "quote": "| 48 | 95 | 18 | 96 | 14,760 | 215"
+            }
+          ]
+        },
+        {
+          "id": "c1-sequential",
+          "claim": "Walking lines is still a sequential scan, and the lab's rewrites shrink it without removing it.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md, line 94",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "94",
+              "quote": "Line walks and flex-wrap are still sequential scans"
+            }
+          ]
+        },
+        {
+          "id": "c1-count-recap",
+          "claim": "Counting when a predicate flips once turns a search into arithmetic that a fixed circuit can do.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md, line 51",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "51",
+              "quote": "Count instead of search when a predicate flips once."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "One Program, Many Photos",
+      "claims": [
+        {
+          "id": "c2-duplicated",
+          "claim": "Copying the whole gallery circuit once per photo costs 57,135 operations in 67 layers at 221 photos.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "instanced-items/README.md, line 180",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "180",
+              "quote": "duplicated circuit: live operations / layers | 57,135 / 67"
+            },
+            {
+              "label": "README.md, line 21",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "21",
+              "quote": "chenglou.github.io's 221-photo gallery"
+            }
+          ]
+        },
+        {
+          "id": "c2-instances",
+          "claim": "The per-photo program is written once and run as instances, with a small set of reductions across items between those programs.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "instanced-items/README.md, line 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "3",
+              "quote": "with a small set of reductions across items between those programs"
+            },
+            {
+              "label": "README.md, line 30",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "30",
+              "quote": "Written instead as per-photo programs plus a few reductions across photos"
+            }
+          ]
+        },
+        {
+          "id": "c2-shared",
+          "claim": "Four hundred one operations are shared, and each photo then costs 233 operations.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "instanced-items/README.md, line 110",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "110",
+              "quote": "shared stages, of which the clock and spring matrix are 248 | 401"
+            },
+            {
+              "label": "instanced-items/README.md, line 108",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "108",
+              "quote": "all map stages over photos, per photo | 233"
+            }
+          ]
+        },
+        {
+          "id": "c2-executor-221",
+          "claim": "At 221 photos the staged executor takes 65 microseconds against 546 for the duplicated circuit, and those timings are rough.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "instanced-items/README.md, line 179",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "179",
+              "quote": "staged executor | 65 µs | 310 µs | 4,106 µs"
+            },
+            {
+              "label": "instanced-items/README.md, line 183",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "183",
+              "quote": "duplicated circuit, executor | 546 µs | 2,569 µs | 43,027 µs"
+            },
+            {
+              "label": "instanced-items/README.md, line 78",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "78",
+              "quote": "so read them as rough"
+            }
+          ]
+        },
+        {
+          "id": "c2-staged-scales",
+          "claim": "The staged executor is cheaper than the duplicated circuit at every size, 4,106 against 43,027 microseconds at 10,000 photos.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "instanced-items/README.md, line 266",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "266",
+              "quote": "The staged executor is cheaper than the duplicated circuit at every size"
+            },
+            {
+              "label": "instanced-items/README.md, line 183",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/instanced-items/README.md",
+              "lines": "183",
+              "quote": "duplicated circuit, executor | 546 µs | 2,569 µs | 43,027 µs"
+            }
+          ]
+        },
+        {
+          "id": "c2-spring-lane",
+          "claim": "A spring lane is its displacement from the destination and its velocity, and one semi-implicit Euler step is a two-by-two matrix on that pair.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "event-time/spring-math.ts, line 4",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/event-time/spring-math.ts",
+              "lines": "4",
+              "quote": "A spring lane is (displacement from its destination, velocity)."
+            },
+            {
+              "label": "event-time/spring-math.ts, line 8",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/event-time/spring-math.ts",
+              "lines": "8",
+              "quote": "which is the 2x2 matrix below"
+            }
+          ]
+        },
+        {
+          "id": "c2-spring-power",
+          "claim": "N steps of a spring are that matrix to the power N, and spring-bank's copy of HandwiredOS cut the circuit from 5,253 operations to 3,580.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "event-time/spring-math.ts, line 8",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/event-time/spring-math.ts",
+              "lines": "8",
+              "quote": "N steps are that matrix to the power N."
+            },
+            {
+              "label": "README.md, line 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "53",
+              "quote": "in spring-bank's copy of HandwiredOS, the circuit went from 5,253 operations and 192 layers to 3,580 and 137"
+            }
+          ]
+        },
+        {
+          "id": "c2-index-read",
+          "claim": "Reading at an index used to need an integer one-hot over the table's positions, and the runtime's index read makes one read a single operation.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md, line 29",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "29",
+              "quote": "needs an integer one-hot over the table's positions"
+            },
+            {
+              "label": "README.md, line 29",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "29",
+              "quote": "becomes 1 operation, and filling 24 DOM slots"
+            },
+            {
+              "label": "src/runtime/numeric-ui-core.ts, line 467",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "467",
+              "quote": "indexRead(index: Wire, candidates: readonly Wire[], options"
+            }
+          ]
+        },
+        {
+          "id": "c2-landed",
+          "claim": "The index read changes the cost of lists, text and slot routing more than anything else measured, and it has landed in the runtime.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md, line 134",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "134",
+              "quote": "It changes the cost of lists, text, and slot routing more than anything else measured."
+            },
+            {
+              "label": "README.md, line 134",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "134",
+              "quote": "An integer index read, either as an instruction"
+            }
+          ]
+        },
+        {
+          "id": "c2-pointer-jumping",
+          "claim": "Pointer jumping gets the line count and widest line of a paragraph with 1,023 segments in 66 layers, and it does not give the line starts.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "text-walker/README.md, line 217",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/text-walker/README.md",
+              "lines": "217",
+              "quote": "gave lineCount and maxLineWidth in 35,914 operations beyond the table and 66 layers at 1,023 segments"
+            },
+            {
+              "label": "text-walker/README.md, line 68",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/text-walker/README.md",
+              "lines": "68",
+              "quote": "Pointer jumping outputs only lineCount and maxLineWidth"
+            }
+          ]
+        },
+        {
+          "id": "c2-band",
+          "claim": "Far down the gallery, pointers inside a 0.18 px band between index.ts's box edges and the circuit's box edges get a different hover and click.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md, line 23",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "23",
+              "quote": "pointers inside a 0.18 px band between index.ts's box edges and the circuit's box edges got a different hover and click"
+            }
+          ]
+        },
+        {
+          "id": "c2-exception",
+          "claim": "In six of seven UIs strict FP32 order mattered only at rounding points, and the gallery was the exception.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md, line 41",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "41",
+              "quote": "In six of seven UIs, strict FP32 order mattered only at rounding points"
+            },
+            {
+              "label": "README.md, line 41",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "41",
+              "quote": "The gallery was the exception"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "What Held, What Narrowed",
+      "claims": [
+        {
+          "id": "c3-drag",
+          "claim": "When a designer drags a card's edge, one backward pass asks which of five lifted design numbers should move, and the solver takes a gradient step.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "drag-knobs/README.md, line 7",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "7",
+              "quote": "When a designer drags a card's edge"
+            },
+            {
+              "label": "drag-knobs/README.md, line 7",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "7",
+              "quote": "It lifts five design numbers of layout-tree's app shell into source cells"
+            },
+            {
+              "label": "drag-knobs/README.md, line 26",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "26",
+              "quote": "runs up to 3 projected minimal-norm steps"
+            }
+          ]
+        },
+        {
+          "id": "c3-500-drags",
+          "claim": "The app shell test is 500 scripted drags of six frames each, with 2,999 moving frames.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "drag-knobs/report.ts, line 172",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/report.ts",
+              "lines": "172",
+              "quote": "App shell, 500 drags × 6 frames"
+            },
+            {
+              "label": "drag-knobs/README.md, line 80",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "80",
+              "quote": "| B | 2,999 | 63.6%"
+            }
+          ]
+        },
+        {
+          "id": "c3-app-shell-64",
+          "claim": "With booleans frozen, the first gradient step solved 63.6 percent of the moving app shell frames.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "drag-knobs/README.md, line 233",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "233",
+              "quote": "63.6% of moving frames were solved by the first step"
+            }
+          ]
+        },
+        {
+          "id": "c3-gallery-38",
+          "claim": "The same strategy solved 37.6 percent of 1,500 moving frames on the candidate gallery.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "drag-knobs/README.md, line 207",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "207",
+              "quote": "| B (frozen, line) | 1,500 | 37.6%"
+            }
+          ]
+        },
+        {
+          "id": "c3-decision-regions",
+          "claim": "Inside a decision region the gradient is the true slope, and across one it is zero or misleading; at the start, 24.6 percent of app shell frames had every unlocked knob at zero gradient.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "drag-knobs/README.md, line 233",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "233",
+              "quote": "Inside a decision region, the frozen-boolean gradient is the true slope."
+            },
+            {
+              "label": "drag-knobs/README.md, line 5",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "5",
+              "quote": "where the gradient is 0 or misleading"
+            },
+            {
+              "label": "drag-knobs/README.md, line 26",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "26",
+              "quote": "every unlocked knob has gradient 0"
+            },
+            {
+              "label": "drag-knobs/README.md, line 80",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "80",
+              "quote": "| B | 2,999 | 63.6% | 64.9% | 24.6%"
+            }
+          ]
+        },
+        {
+          "id": "c3-search",
+          "claim": "Search runs 256 knob candidates as instances of the same circuit, and the closest valid one wins.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "drag-knobs/README.md, line 7",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/drag-knobs/README.md",
+              "lines": "7",
+              "quote": "the host evaluates 256 knob candidates as instances of the same circuit and keeps the closest valid one"
+            }
+          ]
+        },
+        {
+          "id": "c3-circuit",
+          "claim": "Most of the UI logic the prototypes ported became a circuit: lists, springs, layout, the gallery and a comment thread.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md, line 21",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "21",
+              "quote": "Most of the UI logic the prototypes ported became a circuit"
+            }
+          ]
+        },
+        {
+          "id": "c3-combined",
+          "claim": "Combining the wins is richer, not cheaper: 19,854 operations with word springs, 18,027 without, against 5,253 before.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md, line 39",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "39",
+              "quote": "is 19,854 operations with a spring per word, and 18,027 since the word springs were removed on September 15, 2026, against 5,253 for the original"
+            },
+            {
+              "label": "README.md, line 39",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "39",
+              "quote": "Combining the wins makes UI richer but not cheaper."
+            }
+          ]
+        },
+        {
+          "id": "c3-learning",
+          "claim": "None of 48 runs learned a task exactly at base settings, and counting units learned one rung exactly only when trained on every case.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "status.md, line 204",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "204",
+              "quote": "0 of 48 runs learned a task exactly at base settings"
+            },
+            {
+              "label": "learned-bits/README.md, line 101",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/learned-bits/README.md",
+              "lines": "101",
+              "quote": "No base run learned any rung exactly, for either unit type."
+            },
+            {
+              "label": "learned-bits/README.md, line 129",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/learned-bits/README.md",
+              "lines": "129",
+              "quote": "Trained on every case, counting units learned first-active-8 exactly"
+            }
+          ]
+        },
+        {
+          "id": "c3-timing",
+          "claim": "In chenguini's demos a new spring destination mid-animation lands 157 pixels apart between 30 and 120 frames per second, and the runtime now steps springs to each event's time.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md, line 110",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "110",
+              "quote": "157 px apart between 30 fps and 120 fps"
+            },
+            {
+              "label": "README.md, line 135",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "135",
+              "quote": "steps springs to each event's timestamp before applying the event"
+            }
+          ]
+        },
+        {
+          "id": "c3-mismatches",
+          "claim": "Zero mismatches means zero over the traces named, not a proof; in lists at 100 cards, 7 of 20 runs flipped a settle decision and positions differed by up to 21 px.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md, line 220",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "220",
+              "quote": "always means over the traces and samples each README names, not a proof."
+            },
+            {
+              "label": "README.md, line 108",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "108",
+              "quote": "In lists, 7 of 20 runs at 100 cards had such a flip, and positions then differed by up to 21 px"
+            }
+          ]
+        },
+        {
+          "id": "c3-record",
+          "claim": "The status page calls this folder the record of the September 12-14, 2026 exploration, and its measurements describe the code as it was then.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "status.md, line 290",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "290",
+              "quote": "the record of the September 12-14, 2026 exploration"
+            },
+            {
+              "label": "status.md, line 290",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "290",
+              "quote": "Its measurements describe the code as it was then"
+            }
+          ]
+        },
+        {
+          "id": "c3-open-question",
+          "claim": "Index reads have landed in the runtime, while what agents build apps from is still an open question.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md, line 134",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "134",
+              "quote": "An integer index read, either as an instruction"
+            },
+            {
+              "label": "status.md, line 183",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "183",
+              "quote": "What agents build apps from"
+            }
+          ]
+        },
+        {
+          "id": "c3-synthesis",
+          "claim": "A fixed circuit can write much of a user interface by counting, instancing and matrix powers; it is richer, not cheaper, and learning it is still mostly open.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md, line 39",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/README.md",
+              "lines": "39",
+              "quote": "Combining the wins makes UI richer but not cheaper."
+            },
+            {
+              "label": "learned-bits/README.md, line 101",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/learned-bits/README.md",
+              "lines": "101",
+              "quote": "No base run learned any rung exactly, for either unit type."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

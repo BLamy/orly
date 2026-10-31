@@ -51,8 +51,8 @@ export const CHIP_GB = 80;
 
 export const TWR_X = 240;
 export const TWR_W = 150;
-export const TWR_Y0 = 560;
-export const GB_PX = 4.6;
+export const TWR_Y0 = 470;
+export const GB_PX = 3.6;
 export const twrH = (gb: number): number => gb * GB_PX;
 
 export const BAR_X0 = 660;
@@ -62,7 +62,7 @@ export const BAR_DX = 132;
 export const barH = (gb: number): number => gb * 3.6;
 
 export const CAM_TWR: CameraState = { x: 400, y: 320, k: 1.2 };
-export const CAM_BARS: CameraState = { x: 880, y: 330, k: 1.15 };
+export const CAM_BARS: CameraState = { x: 906, y: 356, k: 1 };
 
 export interface Scene {
   tl: Timeline;

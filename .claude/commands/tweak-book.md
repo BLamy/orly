@@ -4,8 +4,14 @@ description: Edit or fine-tune an existing book on the shelf (one targeted chang
 
 # /tweak-book — fine-tune an existing book
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Sol plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** A Opus worker consumes Sol's written plan; it does not replace the planner. Preserve provider provenance and stop that role on a provider limit without substitution.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Sol plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Sol's written plan; it does not replace the planner. If a provider reaches a limit, preserve progress and report the blocker; no model substitution is authorized.
 
+
+Read [docs/book-quality.md](../../docs/book-quality.md): the same habits apply to a tweak. Be proactive
+(verify the change really fixed what was asked, look at the new preview frames, run the checks), and keep
+the book's evidence in step with the edit: if a caption's meaning changes, update its claim in
+`public/generated/<slug>/sources.json` and re-run `npm run book:sources -- --slug <slug>`; if narration
+timing changes and the book has `music/`, re-run `npm run book:score -- --slug <slug>`.
 
 Make the change a follow-up issue asks for to a book that's already published,
 touching as little as possible. Use this when you don't like something and want

@@ -1,0 +1,84 @@
+{
+ "shot": "ch15-s03",
+ "at": "2026-10-14T01:33:25.373Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 14,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "MARCH 2025",
+   "capWhileSubject": 24.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Anthropic, on Claude 3.5 Haiku · via a simplified replacement model",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "rabbit",
+   "capWhileSubject": 30.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "habit",
+   "capWhileSubject": 31.5,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "He",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "saw",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "carrot",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "and",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "had",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "to",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "grab",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "it",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "rabbit → (suppressed) → habit",
+   "maxCap": 22.1,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 10
+}

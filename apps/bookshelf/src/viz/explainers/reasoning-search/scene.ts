@@ -133,8 +133,9 @@ export const CH_H = 150;
 export const chX = (nodes: number): number => CH_X0 + (nodes / 190) * (CH_X1 - CH_X0);
 export const chY = (v: number): number => CH_Y0 - v * CH_H;
 
-export const CAM_TREE: CameraState = { x: 600, y: 260, k: 1.15 };
-export const CAM_CHART: CameraState = { x: 900, y: 480, k: 1.25 };
+// framings: the tree is centred on its own span (x 150..1140), the chart on its box (x 700..1180)
+export const CAM_TREE: CameraState = { x: 645, y: 260, k: 1.15 };
+export const CAM_CHART: CameraState = { x: 940, y: 577, k: 1.5 };
 
 export interface Scene {
   tl: Timeline;
@@ -215,7 +216,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 42.5, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 43.1, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 43.1, dur: 1.1, ease: ease.move });
   tl.tween(endU, 1, { at: 44.3, dur: 0.9, ease: ease.enter });
   tl.caption({
     at: 44.3,

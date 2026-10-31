@@ -1,0 +1,276 @@
+// m18 — TWO SHORES (ch14 s01-s07). dawnGold → winterBlue.
+// ROUND-4 RE-FIT (2026-10-13, clock 2164.00 s): window 1767.4417–1917.935 s (150.493 s). Every absolute time in the
+//    code was re-mapped piecewise and checked against its word: s01–s04b up to the end of L1410 +1.7917 s; L1410b was
+//    re-narrated ('China a year or two behind? That belief burned about two years.') 0.34 s longer, so s05–s07 are
+//    +2.125 s. Re-composed inside ch14-s04b to the picture's beats: the year-or-two-behind candle's G → F# now falls on
+//    'behind' (beat 'out'); the three dissent tags pluck on tag1 and tag2 (the pause after L1410) and, for Beijing's
+//    tag that swings in on 'two', in the breath after 'years'; the chokepoint's suspension is re-bowed after 'years'
+//    and held into the cut. fx-stamp-fence ('stands' 1906.872): no struck onset within 1.1 s of it (nearest: the
+//    shores' sign-off E at 1905.774, the night chord's re-voicing at 1908.684).
+//    History (rounds 1-3, the 2139.54 / 2153.54 / 2159.96 s clocks) is in score/notes-history.json; the times quoted
+//    in the comments below are on the current clock unless marked.
+// Key: E aeolian, neither shore owns it. The melody is M4 (the rim's walk) on harp, B4 E5 – F#5 | G5 – A5 G5 |
+// F#5 D5 | E5, harmonised two ways AT ONCE: left (pan .2) E minor  Em – C – D – Em (harp), right (pan .8)
+// G – C – D – Em (pizzicato). Equal level, equal register, never hard-panned; no stingers, no threat, no
+// national colours, no pentatonic figures. 66 BPM (beat .909 s, bar 3.636 s). Every event is in ABSOLUTE film
+// seconds (line() subtracts T0).
+//
+// 1767.44–1781.29 strings and bass alone in the gap after L1316; the first statement, centred and soft under
+//                 L1401/L1402, its last E blooming after 'rival'
+// 1781.29–1805.21 phrase on the left on 'fence' (1786.80), the same phrase on the right on 'reply' (1790.56); M1's
+//                 rising fourth plucked twice, a third apart: B → E in the micro-gap after 'candles' (1795.90), D → G
+//                 in the breath after 'behind' (1800.43), over B-F# (the suspension), which hangs on, pp, under the
+//                 new question and clears before 'tag'
+// 1805.21–1824.54 THE RECEIPT: a few plucked notes, spaced as if counting from 'tag' (1805.41); one note only on
+//                 'research' (1817.94)
+// 1824.54–1846.25 a ticking celesta on the LEFT from 'shutter'; a quick rising run that never resolves on 'hid'
+//                 (1832.75); on 'Then' (1834.81) the ticking moves to the RIGHT and stops before 'open to all'; the
+//                 short low swell starts just before 'fell' (1841.46) and peaks after it, CUT; the hold to the match is
+//                 a near-silent floor (pink room tone and a ppp glass E), never digital zero
+// 1846.25–1861.88 THE STRUCK MATCH: M1 whole and fast on 'struck' / 'match' (1850.45): harp B on 'struck', the E and
+//                 the B-F# suspension soft under 'match', the fall E → D# (B major) in the breath after it; silence to
+//                 'steady' (1851.74), where the chokepoint's suspension returns pp; tags on tag1 (1851.84) and tag2
+//                 (1852.44); G → F# on 'behind' (1854.07); the third tag after 'years' (1857.45), the suspension
+//                 re-bowed there and held into the cut
+// 1861.88–1872.50 TALENT: the left opens on the plate (1862.18), the right answers after 'China'; the full answer in
+//                 the hold after 'them' (1868.95); 'America's lift in the breath after the line (1868.91)
+// 1872.50–1892.54 THE NIGHT: both shores meet in ONE centred chord, cooler: Esus4(add9) E2 B2 E3 A3 F#4, re-voiced in
+//                 the breaths (V1 ↔ V2, never a third); a soft inner cello walks the Two Shores contour in long notes;
+//                 a soft lift on 'reached across the water' (1883.47); level and unresolved on 'Chip rules unchanged'
+// 1892.54–1917.94 THE GAP: the night chord holds; only a soft E7 on 'candle' (1893.60); the gap candle lights whole
+//                 (celesta, sounding B6 → E7) in the breath after 'years' (1896.53) with the first of three tags
+//                 (1896.45 / 1897.45 / 1898.45); Liang over the chord alone; both shores sign off in the breath before
+//                 L1418 (M4's B → E, harp left + pizz right, 1905.53); the chord floats E – D – F# (inner cello, the
+//                 last onset on 'rise' 1911.40) and decays into 'close' (1914.72). m19 enters at 1916.43 in D.
+// VOICE RULES carried from rounds 1-3: lift() raises onsets in the music-only GAPS about +3 dB only if the note
+// (hold + release) clears the next line, shortening plucks that would ring into it; under() puts the harp melody
+// and its broken chords ~5 dB down under L1401-L1403 and L1416.
+const T0 = 1767.4417, DUR = 150.4933, BPM = 66
+const VEL = 4.35         // global velocity scale (critic r1: about -23.9 LUFS integrated; the under-voice layers thinned instead)
+// ---- seconds-based event compiler (shared by m13-m18; here events are absolute film seconds) ---
+// Events are [startSec, holdSec, notes, velocity, {per-event params}]. Each lane is compiled to one
+// mini-notation sequence that spans SPAN seconds, then slowed to SPAN·cps cycles, so every onset lands
+// exactly where the clock needs it, independent of the tempo grid.
+const CPS = BPM / 240
+setcps(CPS)
+const SPAN = Math.ceil(DUR) + 4
+const DFLT = { pan: .5, lpf: 18000, attack: .01, release: .3 }
+const r4 = (x) => (Math.round(x * 10000) / 10000).toFixed(4)
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = evs.filter(Boolean).map((e) => [e[0] - T0, ...e.slice(1)]).filter((e) => e[0] < DUR).sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const keys = new Set(Object.keys(defs))
+  for (const e of sorted) if (e[4]) for (const k of Object.keys(e[4])) keys.add(k)
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + r4(e[0] - pos))
+      out.push(val(e) + '@' + r4(e[1]))
+      pos = e[0] + e[1]
+    }
+    if (SPAN - pos > 1e-6) out.push('~@' + r4(SPAN - pos))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => r4(Math.min(1, e[3] * VEL))))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DFLT[k] != null ? DFLT[k] : 0)))
+    return p.slow(SPAN * CPS)
+  }))
+}
+// a run of notes on a grid: from t0 (inclusive) to t1 (exclusive), one onset every `step` seconds,
+// cycling through `notes`; vel may be a number or a function of (i, t); len = hold as a fraction of step
+function run(t0, t1, step, notes, vel, len, params) {
+  const out = []
+  for (let i = 0, t = t0; t < t1 - 1e-6; i++, t = t0 + i * step) {
+    const n = notes[i % notes.length]
+    if (n === '~') continue
+    const v = typeof vel === 'function' ? vel(i, t) : vel
+    if (v <= 0) continue
+    out.push([t, step * (len || 1), n, +v.toFixed(3), typeof params === 'function' ? params(i, t) : params])
+  }
+  return out
+}
+// ------------------------------------------------------------------------------------------------
+const B = 60 / BPM, BAR = 4 * B
+const L = .2, R = .8, C = .5
+// the melody (M4 in E aeolian), as [beatOffset, beats, note] from a bar-1 downbeat
+const THEME = [[0, 1, 'b4'], [1, 2, 'e5'], [3, 1, 'f#5'], [4, 2, 'g5'], [6, 1, 'a5'], [7, 1, 'g5'], [8, 1, 'f#5'], [9, 3, 'd5'], [12, 4, 'e5']]
+const mel = (t0, v, pan, from = 0, to = 99) => THEME.filter((n, i) => i >= from && i <= to)
+  .map(([b, d, n]) => [t0 + (b - THEME[from][0]) * B, d * B, n, v, { pan }])
+// broken chords (three notes, an eighth apart) for the two harmonisations
+const arp = (t, notes, v, pan) => notes.map((n, i) => [t + i * B / 2, 2 * B, n, v * (1 - i * .12), { pan }])
+const LEFT = [['e2', 'b2', 'g3'], ['c2', 'g2', 'e3'], ['d2', 'a2', 'f#3'], ['e2', 'b2', 'g3']]   // Em – C – D – Em
+const RIGHT = [['g2', 'd3', 'b3'], ['c2', 'g2', 'e3'], ['d2', 'a2', 'f#3'], ['e2', 'b2', 'g3']]  // G – C – D – Em
+const s1 = 1769.842
+const FENCE = 1786.802, REPLY = 1790.562, TAG = 1805.409
+const MATCH = 1850.446, TALENT = 1862.174, NIGHT = 1872.774, GAP = 1893.604
+const ANSWER = 1868.954                     // the breath after 'But America employed the most of them' (L1416 ends 1868.874)
+const EMPLOYED = 1867.364                   // 'employed': the threads re-route, the left shore's lanterns brighten
+// round 4: the three dissent tags swing in on the picture's beats tag1 / tag2 (the pause after L1410) and 'two'; the
+// third pluck waits for the breath after 'years' (house rule: a strike pinned to a word moves into the nearest breath),
+// so all three are equal plucks in clear air (review r2)
+const TAGS3 = [1851.836, 1852.436, 1857.45]
+const BEHIND = 1854.067, YEARS_END = 1857.352   // 'behind' (beat 'out': the year-or-two-behind candle blows out); L1410b ends
+const V1 = '[e2,b2,e3,a3,f#4]', V2 = '[e2,b2,d3,a3,f#4]'   // the night chord and its re-voicing (the inner E sinks to D)
+const DECAY = 1913.534, SIGN = 1905.534                        // round 2: the shores sign off in the breath before L1418; the chord decays into 'close'
+// critic r1: the music-only gaps lifted about 2 dB (onsets inside them)
+const GAPS = [[1767.442, 1770.534], [1779.494, 1781.744], [1794.344, 1794.844], [1804.711, 1805.771], [1820.661, 1825.061], [1851.70, 1852.80], [1857.394, 1862.734], [1868.904, 1873.064], [1890.274, 1893.074], [1896.474, 1899.374], [1905.534, 1906.034]]
+// the narrator's lines in this window (absolute), from narration/timeline.json
+const LINES = [[1747.721, 1754.931], [1756.458, 1764.306], [1770.725, 1776.994], [1777.444, 1779.464], [1781.892, 1794.315], [1794.915, 1804.691], [1805.808, 1813.993], [1814.443, 1820.608], [1825.142, 1834.314], [1834.814, 1839.551], [1840.001, 1841.836], [1846.650, 1851.236], [1852.836, 1857.352], [1862.775, 1868.870], [1873.100, 1880.252], [1880.752, 1890.238], [1893.142, 1896.451], [1899.451, 1905.511], [1906.071, 1915.336]]
+const nextLine = (t) => (LINES.find(([a]) => a > t + 1e-6) || [1e9])[0]
+// critic r1 (round 2): lift() looks at how long a note RINGS, not only where it starts. An event whose onset is in a
+// gap is lifted only if onset + hold + release clears the next line; a plucked event that would ring into the line is
+// shortened (it ends .15 s before the line, release .4) and then lifted; a sustained one is left at body level.
+function lift(evs, rel, pluck) {
+  return evs.map((e) => {
+    if (!e || !GAPS.some(([a, b]) => e[0] >= a && e[0] < b)) return e
+    const nx = nextLine(e[0]), r = e[4] && e[4].release != null ? e[4].release : rel
+    if (e[0] + e[1] + r <= nx + .05) return [e[0], e[1], e[2], +(e[3] * 1.4).toFixed(4), e[4]]
+    if (!pluck) return e
+    const hold = Math.max(.1, Math.min(e[1], nx - .15 - e[0]))
+    return [e[0], hold, e[2], +(e[3] * (nx - e[0] >= .35 ? 1.4 : 1)).toFixed(4), { ...(e[4] || {}), release: Math.min(r, .4) }]
+  })
+}
+// critic r1 (round 2): under L1401, L1403 and L1416 the harp melody (and its broken chords) about 4 dB down; the
+// full-level phrases stay in the gaps
+const QUIET = [[1770.724, 1779.464], [1781.894, 1794.314], [1862.774, 1868.874]]   // round 3: L1402 too ('Its plan named no rival')
+const under = (evs) => evs.map((e) => (e && QUIET.some(([a, b]) => e[0] >= a - .5 && e[0] < b) ? [e[0], e[1], e[2], +(e[3] * .57).toFixed(4), e[4]] : e))   // r3 composer: .63 -> .57
+
+// ═══ HARP: the melody (both shores), the left harmonisation, the candles, the tags, the lanterns ═══════════
+$: line(lift(under([
+  ...mel(s1, .095, C, 0, 5), ...mel(s1 + 8 * B, .075, C, 6, 7), ...mel(s1 + 12 * B, .14, C, 8, 8),               // the first statement, centred: soft under
+                                                                              // L1401/L1402, its last E blooming in the gap after 'rival'
+  ...LEFT.flatMap((ch, i) => arp(s1 + i * BAR, ch, i === 3 ? .085 : .052, L)),        // word pass: lighter under L1401/L1402
+  ...mel(FENCE, .14, L, 0, 3), ...arp(FENCE, LEFT[0], .08, L),                // Washington: phrase on the left
+  ...mel(REPLY, .14, R, 0, 3),                                                // Beijing: the same phrase on the right
+  // two candles, a third apart, each in the micro-gap just after its word, an octave up and soft (critic r1):
+  // (round 2: about 3.5 dB lighter and shorter, so they do not ring over 'computing' and 'to three years')
+  [1795.902, .16, 'b5', .062, { pan: C, release: .4 }], [1796.062, .4, 'e6', .068, { pan: C, release: .5 }],   // B → E after 'candles'
+  [1800.432, .14, 'd6', .055, { pan: C, release: .35 }], [1800.572, .26, 'g6', .062, { pan: C, release: .35 }],   // D → G in the breath after 'behind' (round 3)
+  // THE RECEIPT: counting
+  [TAG, .6, 'b4', .13, { pan: L }], [TAG + 1.45, .6, 'e5', .13, { pan: R }], [TAG + 2.9, .6, 'f#5', .13, { pan: L }],
+  [TAG + 4.35, .6, 'g5', .1, { pan: R }], [TAG + 5.11, .3, 'a5', .05, { pan: L, release: .5 }], [TAG + 5.4, .8, 'g5', .055, { pan: R }],   // round 3: the 'flip' pair halved (it fell on "model's"); round 4: a further -2.5 dB
+  [1817.939, 1.5, 'e4', .14, { pan: C }],                                     // one note only: 'the research'
+  [1819.499, 3.0, '[e3,b3]', .1, { pan: L }], [1819.499, 3.0, '[g3,d4]', .1, { pan: R }],
+  // the spooling run on 'hid': rising, never resolving (stops on D)
+  ...['b3', 'd4', 'e4', 'f#4', 'g4', 'a4', 'b4', 'd5'].map((n, i) => [1832.749 + i * .075, .15, n, .038 + i * .003, { pan: L, release: .35 }]),   // round 3: halved, quicker, short ring (on 'hid', clear of 'notes')
+  // the falling figure on 'fall', cut at 1841.35
+  ...['b4', 'a4', 'g4', 'f#4', 'e4', 'd4'].map((n, i) => [1841.469 + i * .17, .17, n, .1 - i * .008, { pan: C, release: .15 }]),
+  // THE MATCH: M1 whole, fast, under 'struck match' (B → E, held, E → D#)
+  [MATCH - .02, .2, 'b3', .075, { pan: C }], [MATCH + .18, .3, 'e4', .05, { pan: C, release: .2 }],  // round 3: soft under 'struck match' ...
+  [MATCH + .82, .35, 'd#4', .115, { pan: C, release: .5 }],                                              // ... and the fall in the breath after 'match': the shake-out
+  // 'behind' (round 4: the blow-out moved from the line's head to 'behind'): the second candle's G falls to F#, softly,
+  // the F# in the micro-breath after the word
+  [BEHIND, .5, 'g5', .065, { pan: C, release: .4 }], [BEHIND + .62, 1.0, 'f#5', .058, { pan: C, release: 1.0 }],
+  // the three tags: one pluck each, equal (tag1, tag2, and the breath after 'years')
+  ...TAGS3.map((t) => [t, .8, 'b4', .1, { pan: C }]),
+  // TALENT: the melody passed back and forth, phrase by phrase
+  // round 2 (L1416 is now two sentences, 1861.565-1867.665): the left opens on the plate (B, in the clear; E soft under
+  // 'Nearly'), the right answers with one F# in the breath after 'China'; the full answer (G A G | F# D, right then left)
+  // fills the hold after 'them', its last D clearing 'Rivals'
+  ...mel(TALENT, .17, L, 0, 1), [1866.194, .3, 'f#5', .1, { pan: R, release: .4 }],
+  [ANSWER, B, 'g5', .14, { pan: R }], [ANSWER + B, B / 2, 'a5', .13, { pan: R }], [ANSWER + 1.5 * B, B, 'g5', .13, { pan: R }],
+  [ANSWER + 2.5 * B, B / 2, 'f#5', .13, { pan: L }], [ANSWER + 3 * B, 1.0, 'd5', .12, { pan: L }],
+  // THE NIGHT: both shores meet, centred
+  [NIGHT, 3.0, '[e2,b2,e3,a3,f#4]', .07, { pan: C }],
+  // THE GAP: three tags, in the gap after L1417
+  [1896.454, .8, 'b4', .1, { pan: C }], [1897.454, .8, 'b4', .1, { pan: C }], [1898.454, .8, 'b4', .1, { pan: C }],
+  // both shores sign off: M4's opening fourth, harp on the left (pizz doubles it on the right)
+  [SIGN, .24, 'b4', .1, { pan: .35, release: 1.4 }], [SIGN + .24, 1.4, 'e5', .11, { pan: .35, release: 2.2 }],
+]), 2, true), { release: 2 }).s('gm_orchestral_harp').postgain(.8).room(.5).rsize(3).orbit(4)
+
+// ═══ PIZZ: the right harmonisation (G – C – D – Em), and its answer under Beijing's phrase ══════════════
+$: line(lift(under([
+  ...RIGHT.flatMap((ch, i) => arp(s1 + i * BAR, ch, i === 3 ? .1 : .06, R)),
+  ...arp(REPLY, RIGHT[0], .095, R),
+  ...arp(ANSWER, RIGHT[1], .085, R), ...arp(TALENT, LEFT[0], .09, L),
+  ...arp(EMPLOYED, LEFT[0], .05, L),                                         // 'employed': the left shore's lanterns brighten (soft, low)
+  [SIGN, .24, 'b4', .12, { pan: .65 }], [SIGN + .24, .6, 'e5', .13, { pan: .65 }],   // the right shore signs off with the left
+]), .6, true), { release: .6 }).s('gm_pizzicato_strings').postgain(.8).lpf(1800).room(.45).rsize(3).orbit(4)
+
+// ═══ STRINGS: split shores; the suspensions; the night chord, centred ══════════════════════════════════
+$: line(lift([
+  [1767.542, s1 + 2 * BAR - 1767.542, '[e2,b2]', .06, { pan: L, attack: 2 }], [1767.542, s1 + 2 * BAR - 1767.542, '[g2,d3]', .06, { pan: R, attack: 2 }],
+  [s1 + 2 * BAR, BAR, '[d2,a2]', .06, { pan: C, attack: 1 }],
+  [s1 + 3 * BAR, 4.5, '[e2,b2]', .06, { pan: C, attack: 1, release: 2 }],
+  [FENCE, 3.6, '[e2,b2]', .06, { pan: L, attack: 1 }], [REPLY, 3.6, '[g2,d3]', .06, { pan: R, attack: 1 }],
+  [1796.042, 5.3, 'e5', .045, { pan: C, attack: .8, release: 1, lpf: 1100 }],   // the chokepoint's flame (E), lit with the pluck
+  [1800.512, 1.3, '[b2,f#3]', .08, { pan: C, attack: .5, release: 1 }],         // held over B-F#: the suspension (round 3: under the D → G after 'behind')
+  // round 2: the suspension hangs on, pp, under the new question ('can a fence around chips hold?'), unresolved
+  [1801.742, 3.0, '[b2,f#3]', .05, { pan: C, attack: 1, release: .9 }], [1801.392, 3.3, 'e5', .028, { pan: C, attack: 1.2, release: .8, lpf: 1100 }],
+  [MATCH + .18, .6, '[b2,f#3]', .03, { pan: C, attack: .1, release: .25 }],     // the match: suspension (round 3: lighter under 'match') ...
+  [MATCH + .82, .45, '[b2,d#3,f#3]', .07, { pan: C, attack: .05, release: .35 }], // ... and gone (B major), after the word
+  [1851.736, YEARS_END + .1 - 1851.736, 'e5', .045, { pan: C, attack: 1.5, lpf: 1100 }],             // the chokepoint steadies ('steady'): pp
+  [1851.736, YEARS_END + .1 - 1851.736, '[b2,f#3]', .045, { pan: C, attack: 1.5 }],
+  [YEARS_END + .1, 4.4, 'e5', .045, { pan: C, attack: .8, lpf: 1100 }], [YEARS_END + .1, 4.4, '[b2,f#3]', .06, { pan: C, attack: .8, release: 1.4 }],   // re-bowed after 'years': held under the third tag, into the cut
+  [TALENT, 2.5, '[e2,b2]', .055, { pan: L, attack: 1, release: 1.2 }], [TALENT, 2.5, '[g2,d3]', .055, { pan: R, attack: 1, release: 1.2 }],   // let go before L1416
+  [1868.914, 1.8, '[c3,g3,e4]', .045, { pan: C, attack: .4, release: 1.5 }],   // 'America': a lift in the breath after the line, resolving nowhere
+  // THE NIGHT: Esus4(add9), centred, cooler, level and unresolved, but re-voiced in the breaths (V1 ↔ V2)
+  [NIGHT, 6.1, V1, .04, { pan: C, attack: 2 }],                               // 1872.774
+  [1878.574, 6.45, V2, .047, { pan: C, attack: 1.8 }],                          // after 'Bletchley': the E sinks to D
+  [1883.474, 1.8, '[a3,b3,f#4]', .032, { pan: C, attack: 1.0, release: 1.0 }],   // a lift on 'reached across the water' (r3 composer: softer, slower: it sits under the words)
+  [1884.724, 5.85, V1, .046, { pan: C, attack: 1.6 }],                          // after 'water': back
+  [1890.274, 3.6, V2, .05, { pan: C, attack: 1.0 }],                            // the gap after 'unchanged' (music only)
+  // the gap: B-F# low under the new candle's high E (an octave above the chokepoint's, and higher), held, unresolved
+  [GAP, 6.93, '[b1,f#2,b2]', .06, { pan: C, attack: 1.2 }], [1896.525, 2.5, 'e6', .014, { pan: C, attack: 1.0, lpf: 2000 }],   // round 3: the new candle's high E enters after 'years', not under L1417
+  [1900.274, 5.6, V1, .045, { pan: C, attack: 1.5 }],                           // Liang over the chord alone
+  [1905.534, 3.15, V2, .044, { pan: C, attack: 1.4 }],                          // the breath before L1418
+  [1908.684, DECAY - 1908.684, V1, .042, { pan: C, attack: 1.4, release: 2.0 }], // breath after 'over': back, then it decays
+], 1.5), { attack: 1, release: 1.5, lpf: 1200 }).s('gm_string_ensemble_1').postgain(1.25).room(.6).rsize(4).orbit(2)
+
+// cooler night colour: bowed glass, centred; and (review r1) the ppp glass E that keeps the hold before the match
+// from falling to digital zero
+$: line([
+  [1811.409, 6.7, 'e5', .022, { attack: 2, release: .8 }],                      // the receipt's air: no hole under L1407
+  [1842.609, 7.82, 'e5', .022, { attack: 2, release: .05 }],                    // near silence before the match
+  [NIGHT, 12.0, '[e5,a5]', .016, { attack: 3, release: 2 }],
+  [1884.724, 7.2, '[d5,a5]', .02, { attack: 3, release: 1.1 }],                   // the glass re-voices with the strings
+  [1896.525, DECAY - 1896.525, '[e5,b5]', .019, { attack: 1.6, release: 2 }],   // round 3: after 'years', not under L1417
+]).s('gm_pad_bowed').postgain(1.25).lpf(1700).room(.6).orbit(3)
+// room tone under the hold (a floor, not a sound)
+$: s(mini('[~@' + r4(1842.559 - T0) + ' pink@' + r4(MATCH - 1842.559) + ' ~@' + r4(SPAN - (MATCH - T0)) + ']')).slow(SPAN * CPS)
+  .lpf(1200).hpf(100).gain(.004).attack(.8).release(.3).orbit(6)
+
+// ═══ THE INNER LINE (critic r1): solo cello, C4-B4, very soft, walking the Two Shores contour in long notes that
+// start in the breaths (E F# G A G F# D → E as the gap candle lights); under L1418 it floats E – D – F# and stops on
+// the ninth, unresolved
+$: line(lift([
+  [1874.474, 4.2, 'e4', .035], [1878.624, 1.75, 'f#4', .04],                   // word pass: softer under L1414
+  [1880.294, 4.5, 'g4', .042], [1884.724, 3.3, 'a4', .042],                    // (round 2: restored; a previous edit had commented them out)
+  [1887.974, 2.3, 'g4', .048], [1890.274, 1.5, 'f#4', .06], [1891.794, 1.15, 'd4', .06, { release: .5 }],
+  [1896.525, 2.6, 'e4', .045],                                                   // r3 composer: with the gap candle's E, after 'years'
+  [1905.574, 3.1, 'e4', .045], [1908.684, 2.7, 'd4', .045], [1911.404, DECAY - 1911.404, 'f#4', .045, { release: 2.0 }],
+], 1.3), { attack: .9, release: 1.3 }).s('gm_cello').lpf(1100).hpf(80).room(.55).rsize(4).orbit(1)
+
+// ═══ CONTRABASS: the floor, the short low swell that peaks after 'fell' (cut at 1841.35) ═══════════════
+$: line([
+  [1767.542, 16.5, 'e2', .1, { attack: 2.5 }],
+  [1841.209, 1.35, 'e2', .12, { attack: .6, release: .08 }],                  // swell: from 'fell', peaking after it, cut
+  [NIGHT, 11.95, 'e2', .085, { attack: 2.5 }], [1884.724, 8.9, 'e2', .08, { attack: 2 }],   // re-bowed in the breath after 'water'
+  [GAP, 6.93, 'b1', .09, { attack: 1.2 }], [1900.274, DECAY - 1900.274, 'e2', .08, { attack: 1.5, release: 2 }],
+], { attack: 1, release: 1.5 }).s('gm_contrabass').lpf(380).hpf(40).room(.35).rsize(3).orbit(1)
+$: line([[1841.209, 1.35, '[e2,b2]', .08, { attack: .65, release: .08 }]]).s('gm_cello').lpf(900).hpf(40).orbit(8)  // dry: cut clean
+
+// ═══ CELESTA: the shutter's tick (left, then right), the match's spark, the gap candle (above D6) ═══════
+$: line([
+  ...run(1824.839, 1832.689, B / 2, ['e5', 'b4', 'd5', 'b4'], (i) => (i % 4 === 0 ? .025 : .016), .8, { pan: .15, release: .5 }),   // under L1408: soft (round 3: a further -2.5 dB)
+  ...run(1834.819, 1838.392, B / 2, ['e5', 'b4', 'd5', 'b4'], (i) => (i % 4 === 0 ? .03 : .019), .8, { pan: .85, release: .45 }),   // round 3: stops before 'open to all'
+  [MATCH - .02, .15, 'b4', .06, { release: .3 }], [MATCH + .18, .2, 'e5', .055, { release: .35 }], [MATCH + .82, .3, 'e5', .06, { release: .9 }],   // sounds B5 → E6: the spark, round 2 about 6 dB lighter
+  // round 4: on the second 'two' the dark two-ring sleeve catches the living flame's light, its two ring lines brightening
+  // .15 s apart: two ppp glints sounding E7 (above D7, so they clear the voice band), short
+  [1856.505, .1, 'e6', .011, { release: .25 }], [1856.655, .1, 'e6', .009, { release: .3 }],
+  [GAP, .1, 'e6', .012, { release: .2 }],                                                       // r3 composer: on 'candle' only a soft E7 (above D7)
+  [1896.585, .14, 'b5', .03, { release: .3 }], [1896.725, .5, 'e6', .034, { release: 1.0 }],      // the gap candle lit whole in the breath after 'years': sounds B6 → E7      // the gap candle: sounds B6 → E7, ppp, in the micro-gap after 'candle' (round 3: halved, short)
+], { release: 1.4 }).s('gm_celesta').room(.6).rsize(4).orbit(3)
+
+// the match's flare: a tiny breath of noise (very short)
+$: s(mini('[~@' + r4(MATCH - T0 - .02) + ' white@0.12 ~@' + r4(SPAN - (MATCH - T0) - .1) + ']')).slow(SPAN * CPS)
+  .hpf(5000).lpf(10000).attack(.005).release(.15).gain(.012).orbit(6)   // round 2: above the consonants

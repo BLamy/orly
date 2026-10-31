@@ -240,7 +240,7 @@ export function lossAtStep(hist: readonly number[], step: number): number {
 // The timeline
 // ---------------------------------------------------------------------------
 
-export const CAM_PROBE: CameraState = { x: 470, y: 255, k: 1.4 };
+export const CAM_PROBE: CameraState = { x: 470, y: 330, k: 1.4 };
 /** Parks the contour field in the left ~72% of the stage for the cost panel. */
 export const CAM_WIDE: CameraState = { x: 889, y: 360, k: 0.72 };
 

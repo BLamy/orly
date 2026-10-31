@@ -99,16 +99,19 @@ export const PITCH = CELL + GAP;
 export const IMG = { x: 92, y: 160 } as const; // 12·29−3 = 345 px square
 export const KCELL = 30;
 export const KPITCH = KCELL + GAP;
-export const KER_X = 560;
-export const MCELL = 16;
+export const KER_X = 590;
+export const MCELL = 12;
 export const MGAP = 2;
 export const MPITCH = MCELL + MGAP;
-export const MAP_X = 964; // 10·18−2 = 178 px square
-export const ROW_Y = [72, 258, 444] as const; // kernel+map rows (vert/horz/tex)
-export const KER_Y = ROW_Y.map((y) => y + 40);
+export const MAP_X = 1000; // 10·14−2 = 138 px square
+export const MAP_W = 10 * MPITCH - MGAP;
+export const ROW_Y = [60, 244, 428] as const; // label line of each kernel+map row
+export const MAP_OFF = 28; // map grid top, below its label and frame
+export const KER_Y = ROW_Y.map((y) => y + MAP_OFF + MAP_W / 2 - (3 * KPITCH - GAP) / 2); // kernel centred on its map
 
 export const CAM_IMG: CameraState = { x: 380, y: 340, k: 1.25 };
-export const CAM_BANK: CameraState = { x: 810, y: 330, k: 1.12 };
+// frames the image, the kernel and the first map together at the caption midpoint
+export const CAM_BANK: CameraState = { x: 615, y: 331, k: 1.12 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

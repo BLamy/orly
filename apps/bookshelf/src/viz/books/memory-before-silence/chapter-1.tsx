@@ -34,7 +34,7 @@ export function buildScene() {
   tl.tween(wordsP, 6, { at: 7.2, dur: 1.5, ease: ease.linear });
   tl.tween(thresholdU, 1, { at: 8.4, dur: 0.6, ease: ease.pop });
   tl.tween(specU, 1, { at: 9.2, dur: 1.3, ease: ease.move });
-  tl.tween(cam, { x: 560, y: 360, k: 1.05 }, { at: 10.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.04 }, { at: 10.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 13.2, dur: 6.4, text: 'If another word arrives, the stale task is canceled and a fresher search takes its place.' });
   tl.tween(wordsP, 7, { at: 13.7, dur: 0.8, ease: ease.linear });
@@ -49,7 +49,7 @@ export function buildScene() {
   tl.tween(silenceU, 1, { at: 26.5, dur: 2.0, ease: ease.linear });
   tl.tween(searchP, 1, { at: 26.4, dur: 1.6, ease: ease.linear });
   tl.tween(memoryP, 5, { at: 27.2, dur: 1.6, ease: ease.enter });
-  tl.tween(cam, { x: 700, y: 360, k: 1.05 }, { at: 28.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.04 }, { at: 28.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 32.5, dur: 6.4, text: 'If the speaker resumes, barge-in throws away the wager. Only a cheap local search was wasted.' });
   tl.tween(cancelU, 1, { at: 33.0, dur: 0.6, ease: ease.pop });
@@ -80,7 +80,9 @@ export function Render({ s }: { s: SceneState }) {
   const silence = s.get(scene.silenceU);
   const search = s.get(scene.searchP);
   const memoryP = s.get(scene.memoryP);
-  const cancel = s.get(scene.cancelU);
+  const cancelRaw = s.get(scene.cancelU);
+  // barge-in clears once the clean replay starts (replayU), so no extra cancel-off tween is needed
+  const cancel = cancelRaw * (1 - s.get(scene.replayU));
   const runnerX = 430 + 540 * search;
 
   return <Camera {...s.get(scene.cam)}>
@@ -97,26 +99,26 @@ export function Render({ s }: { s: SceneState }) {
       <g>
         {WORDS.map((word, i) => {
           const u = clamp01(wordsP - i);
-          return <g key={word} opacity={u} transform={`translate(${124 + i * 142} 286) translate(0 ${(1 - u) * 18})`}>
+          return <g key={word} opacity={u} transform={`translate(${150 + i * 128} 286) translate(0 ${(1 - u) * 18})`}>
             <rect x="-54" y="-24" width="108" height="48" rx="14" fill="#13243b" stroke={i >= 5 ? colors.WARM : colors.ACCENT} strokeWidth="2" />
             <text y="7" textAnchor="middle" fill={colors.TEXT} fontSize="17" fontWeight="720">{word}</text>
           </g>;
         })}
         <g opacity={s.get(scene.thresholdU)}>
-          <path d="M86 326 H928" stroke={colors.WARM} strokeWidth="4" strokeLinecap="round" />
-          <text x="507" y="350" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>spec_min_chars = 6</text>
+          <path d="M96 326 H880" stroke={colors.WARM} strokeWidth="4" strokeLinecap="round" />
+          <text x="488" y="352" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>spec_min_chars = 6</text>
         </g>
       </g>
 
       <g opacity={s.get(scene.specU)}>
         <rect x="94" y="398" width="312" height="82" rx="22" fill="#111d31" stroke={cancel ? colors.NEGATIVE : colors.SECONDARY} strokeWidth="3" />
         <text x="250" y="430" textAnchor="middle" fill={colors.SECONDARY} fontSize="15" fontFamily={colors.font.mono}>classify → search</text>
-        <text x="250" y="458" textAnchor="middle" fill={colors.MUTED} fontSize="13">local embedding · no network</text>
-        <circle cx={runnerX} cy="439" r="14" fill={cancel ? colors.NEGATIVE : colors.POSITIVE} opacity={1 - cancel * 0.7} />
-        <path d={`M406 439 H${runnerX}`} stroke={colors.POSITIVE} strokeWidth="5" strokeLinecap="round" opacity={0.45} />
-        <g opacity={s.get(scene.replaceU)} transform="translate(410 378)">
-          <rect x="-106" y="-17" width="212" height="34" rx="17" fill="#2a1d0c" stroke={colors.WARM} />
-          <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>cancel stale asyncio task</text>
+        <text x="250" y="458" textAnchor="middle" fill={colors.MUTED} fontSize="14">local embedding · no network</text>
+        <circle cx={runnerX} cy="439" r="14" fill={cancel ? colors.NEGATIVE : colors.POSITIVE} opacity={1 - cancel} />
+        <path d={`M406 439 H${runnerX}`} stroke={colors.POSITIVE} strokeWidth="5" strokeLinecap="round" opacity={0.45 * (1 - cancel)} />
+        <g opacity={s.get(scene.replaceU) * (1 - cancelRaw)} transform="translate(600 384)">
+          <rect x="-124" y="-17" width="248" height="34" rx="17" fill="#2a1d0c" stroke={colors.WARM} />
+          <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>cancel stale asyncio task</text>
         </g>
       </g>
 
@@ -125,9 +127,9 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="94" y="526" width={876 * silence} height="42" rx="21" fill={silence < 0.67 ? colors.ACCENT : colors.WARM} opacity="0.32" />
         <line x1="678" y1="516" x2="678" y2="580" stroke={colors.WARM} strokeWidth="3" />
         <line x1="970" y1="516" x2="970" y2="580" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text x="94" y="602" fill={colors.MUTED} fontSize="13">0 ms</text>
-        <text x="678" y="602" textAnchor="middle" fill={colors.WARM} fontSize="13">200 ms · gamble</text>
-        <text x="970" y="602" textAnchor="middle" fill={colors.POSITIVE} fontSize="13">300 ms · confirm</text>
+        <text x="94" y="602" fill={colors.MUTED} fontSize="14">0 ms</text>
+        <text x="678" y="602" textAnchor="middle" fill={colors.WARM} fontSize="14">200 ms · gamble</text>
+        <text x="970" y="602" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">300 ms · confirm</text>
       </g>
 
       <g transform="translate(1006 390)">
@@ -135,9 +137,9 @@ export function Render({ s }: { s: SceneState }) {
         <text y="-12" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>Turn.memory</text>
         {Array.from({ length: 5 }, (_, i) => {
           const u = clamp01(memoryP - i);
-          return <rect key={i} x={-82 + i * 34} y={18 + (1 - u) * 28} width="24" height="58" rx="7" fill={i % 2 ? colors.SECONDARY : colors.ACCENT} opacity={0.2 + u * 0.8} />;
+          return <rect key={i} x={-82 + i * 34} y={6 + (1 - u) * 20} width="24" height="50" rx="7" fill={i % 2 ? colors.SECONDARY : colors.ACCENT} opacity={0.2 + u * 0.8} />;
         })}
-        <text y="94" textAnchor="middle" fill={colors.MUTED} fontSize="12">top five ready</text>
+        <text y="94" textAnchor="middle" fill={colors.MUTED} fontSize="14">top five ready</text>
       </g>
 
       <g opacity={cancel} transform="translate(706 406)">

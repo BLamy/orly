@@ -1,0 +1,39 @@
+{
+ "shot": "ch01-s05",
+ "at": "2026-10-13T04:12:53.544Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 5,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "LEARNING",
+   "capWhileSubject": 34.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "capWhileSubject": 34.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "RULES",
+   "capWhileSubject": 34.6,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WHO",
+   "maxCap": 40.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TAUGHT IT?",
+   "maxCap": 40.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 2
+}

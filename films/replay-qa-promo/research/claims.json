@@ -1,0 +1,1359 @@
+[
+  {
+    "id": "SET-01",
+    "claim": "The signed-in home page of qa.replay.io is the New Project page: eyebrow 'New project' (rendered upper-case), heading 'Set up QA for your app', sub-copy 'Enter your app's URL and I'll walk you through the rest in a quick chat.', and a single chat input with placeholder https://your-app.com. Docs pages quoted in this bible matched the saved copies word for word when re-read live on 2026-10-14.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://qa.replay.io/",
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/new-project.json",
+      "films/replay-qa-promo/research/factcheck/point-it-at-your-app.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-02",
+    "claim": "'Start setup' is the chat input's own send button (data-testid chat-send-btn, accessible name 'Send message'), not a separate button; it is disabled until the first keystroke (enabled at 1103 ms in the new-project take).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/new-project.json",
+      "https://qa.replay.io/",
+      "films/replay-qa-promo/research/factcheck/point-it-at-your-app.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-03",
+    "claim": "A separate callout on the New Project page reads 'Want your coding agent to handle it?' / 'Get the prompt'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://qa.replay.io/",
+      "films/replay-qa-promo/capture/clean/new-project.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-04",
+    "claim": "The new-project take types the illustrative placeholder https://staging.your-app.dev (27 characters, not a real tested app), with marks typing 1100 ms, typed 2966 ms, hover-start 4737 ms, end 5537 ms; keystrokes run 1103-2908 ms (26 intervals, mean about 69 ms, about 14.4 cps; the script's nominal setting is 13 cps); the cursor hovers Start setup and never clicks it; 0 redactions, 1 click; 656 ms of dead time cut from a 6193 ms raw take.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/new-project.json",
+      "films/replay-qa-promo/capture/takes/new-project.mjs",
+      "films/replay-qa-promo/research/factcheck/point-it-at-your-app.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-05",
+    "claim": "Replay QA needs 'a running version of the application that its test browser can reach', by one of three paths: a public URL ('without a tunnel or CI configuration'), localhost or a private network via the managed reverse proxy, or a build inside CI via the Replay QA CLI tunnel (GitHub Actions or CircleCI).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/overview",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_overview.txt",
+      "https://docs.replay.io/basics/replay-qa/frpc-ci"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-06",
+    "claim": "For localhost, `npx --yes replayqa proxy` opens an outbound tunnel; the overview says it reaches the app 'without deploying it or publishing it directly to the internet', the localhost page says 'replayqa proxy opens an authenticated tunnel' and 'without deploying it or exposing it directly to the public internet'; the same setup can reach hosts available through the computer's VPN or private DNS.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/overview",
+      "https://docs.replay.io/basics/replay-qa/localhost",
+      "films/replay-qa-promo/research/factcheck/point-it-at-your-app.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-07",
+    "claim": "A project is 'One application under test' with a target URL plus guidance (instructions, an optional design document, test logins, enabled polish passes) and 'two caps, a credit budget and a bug limit'; it is active or paused, and 'A paused project schedules nothing.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_concepts.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-08",
+    "claim": "The docs say 'You do not need an existing test suite or a list of reproduction steps.'; the FAQ says Replay QA 'complements an existing test suite but does not require one'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/overview",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_overview.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-09",
+    "claim": "'Replay QA works without configuration: give it a URL and it explores.' Quality still depends on what it knows about the app and whether it can get in; login walls, invitations, paywalls, CAPTCHAs and rate limits pause work until a person answers in the project chat.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/getting-good-results",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_getting-good-results.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-10",
+    "claim": "Replay QA can sign up for its own account when the app allows it; each project has an email inbox and it can complete email verification codes on its own.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/getting-good-results",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_getting-good-results.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-11",
+    "claim": "Test logins are 'stored as project variables and referenced by name, so they do not appear in journey steps or bug reports'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/getting-good-results",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_getting-good-results.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-12",
+    "claim": "Of the design document the docs say: 'Replay QA judges findings against it, so it is the fastest way to stop reports about deliberate behavior.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/getting-good-results",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_getting-good-results.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-13",
+    "claim": "Connecting GitHub is optional: 'Manual and localhost projects work without a repository connection.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/overview (FAQ)",
+      "https://docs.replay.io/basics/replay-qa/concepts"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-14",
+    "claim": "The settings page header reads 'How this project is configured. Edit settings and environment schedules here, or ask QA in the chat — both make the same change.'; only the project owner can change settings.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/schedule.json",
+      "https://docs.replay.io/basics/replay-qa/getting-good-results"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-15",
+    "claim": "qa.replay.io's meta description reads 'AI-powered QA testing platform — automated explorations, journey testing, and polish analysis.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://qa.replay.io/"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-16",
+    "claim": "llms.txt describes Replay QA as 'an autonomous app testing tool built on Replay's time-travel debugging engine' that explores a web app, builds user journeys, runs them 'while capturing full runtime recordings', and 'delivers root cause analysis for every bug it finds'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/llms.txt",
+      "films/replay-qa-promo/research/sources/llms.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "SET-17",
+    "claim": "The docs say Replay QA works with any browser-based web app, with especially deep runtime analysis for React applications.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/overview",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_overview.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-01",
+    "claim": "The concepts page calls the core cycle 'The loop': 'Explore the app to get journeys. Run the journeys to get recordings.', then investigate recordings to get bugs, fix and mark fixed so journeys run again, and explore again as the app grows; with GitHub connected every new build starts the loop over on its own.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_concepts.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-02",
+    "claim": "The docs overview lists five steps (explore, create journeys, run journeys, investigate, report); the replay.io home page uses three ('Explore', 'Test & Record', 'Investigate & Report') and says 'Most QA tooling starts with flows your team defines. Replay QA begins by exploring the application and identifying flows worth verifying.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/overview",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_overview.txt",
+      "https://www.replay.io/"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-03",
+    "claim": "An exploration is an AI agent driving the app in a real browser from the target URL, guided by instructions, producing journeys; later explorations add coverage and do not replace journeys.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_concepts.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-04",
+    "claim": "An exploration ends blocked when it cannot get past a login, an invitation or admin approval, a paywall, or an app that won't load, and says what it needs in the chat. The Electric Forest chat shows '⚠️ I stopped exploring because the app requires a sign-in I couldn't complete, so signed-in areas couldn't be tested.' (Aug 30-31) and a seeded-data barrier message (Sep 1); the 'never finished loading' message (Aug 31) actually describes an authentication wall and is not an example of the won't-load case.",
+    "date": "2026-08-30/2026-09-01",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/capture/clean/explore.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-05",
+    "claim": "A journey 'starts as a description'; once Replay QA is confident about the flow 'it records concrete steps so later runs are faster and more repeatable'; the API calls a description-only journey an 'unstepped (agent-driven)' journey.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_concepts.txt",
+      "films/replay-qa-promo/research/sources/openapi.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-06",
+    "claim": "Each journey has a Start URL (default: the project's target URL) and a Session setting (saved signed-in state from exploration, or a clean browser); every edit creates a new version and, if the project is active, schedules a run.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_concepts.txt",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_getting-good-results.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-07",
+    "claim": "A test run is 'One round of executing journeys in Replay Browser. Each journey run produces a Replay recording.'; a failed step is investigated in the recording before a bug is filed, a run can recover from a broken step, and polish passes review the same recording.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_concepts.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-08",
+    "claim": "A run can end with journeys that passed, journeys that found bugs, and journeys blocked or incomplete for reasons outside the app; the status pills seen on screen are Completed, Failed, Cancelled and Blocked.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/capture/clean/runs.json",
+      "films/replay-qa-promo/capture/clean/explore.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-09",
+    "claim": "Cancelling a test run stops it 'without deleting its history'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "films/replay-qa-promo/capture/clean/explore.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-10",
+    "claim": "Explore take (11751 ms): Electric Forest overview Exploration card '1 / 9'; play click events at 2331-2408 ms, 'play' mark 2821 ms; timer 0:00 at play, 0:01 at 3064 ms, 0:13 at 11064 ms of 10:28; subtitle 'Starting the exploration of the Electric Forest app. I'll begin with the public home page's in-page navigation…' added at 6868 ms; the player's picture area is empty (rr-block recorded at 0 x 0).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/explore.json",
+      "films/replay-qa-promo/capture/takes/explore.mjs",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-11",
+    "claim": "The overview's exploration player renders rrweb DOM events plus thought/note/error/system subtitles (recording-events); journey runs produce Replay runtime recordings. Whether an exploration also has its own runtime recording is unverified.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "films/replay-qa-promo/capture/clean/explore.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-12",
+    "claim": "Runs take: project 'Reminders · CI' Test Runs tab has 13 rows (Aug 12 'Initial Test Run' Failed 1 journey; 12 runs on Aug 16 incl. PR #3 x5, PR #1 x3, Project default x4, and a 12-journey Completed run with bugs 0/0/13/0), columns Created/Description/Environment/Status/Bugs/Journeys, PR badges linking to github.com/replayio/replayqa-cli-in-ci/pull/1 and /pull/3; 'list' mark 3668 ms; the requested 600 px scroll moves main#main-content only 27.5 px; overview tile 'Test runs 13'.",
+    "date": "2026-08-12/2026-08-16",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/runs.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json",
+      "films/replay-qa-promo/research/factcheck/continuous-everywhere.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-13",
+    "claim": "Insights shows 50 projects, 1151 journeys and 89 explorations (Scorecard rows sum to 711 bugs, 389 open, 1151 journeys). The live API reports 67 projects (52 active, 15 paused); the newest 50 by created_at sum to exactly 711 bugs and the 17 older projects (created 2026-05-13 to 2026-06-12) hold 72 more (783 in all), so Insights covers a 50-project subset (inferred cap). Say 'Insights: 50 projects', never 'in the account'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://qa.replay.io/insights",
+      "films/replay-qa-promo/capture/clean/insights.json",
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-14",
+    "claim": "The digest's projects_total = 20 is one API page (default page_size 20; total 67) and must not be used.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-15",
+    "claim": "The 50 Insights rows have 41 distinct names; 27 contain 'PR #', plus 'Electric Forest PR 4650 Preview'. Say '50 projects', not '50 apps'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/insights.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-16",
+    "claim": "Electric Forest (context only): paused; target a localhost address reached through the reverse proxy (127.0.0.1:61787); 160 journeys; 9 explorations (blocked 4, cancelled 2, completed 2, failed 1) matching the on-screen '1 / 9'; overview shows 'Test runs 25'; its 792 test-run status records are journey-run records, not rounds.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/explore.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-17",
+    "claim": "Electric Forest round 'Main page load and broad site navigation sweep' on 09/30/2026: Local, Completed, Journeys finished 131 / 131, but Passed journeys 1, Failed 0, Bugs found 0 (table Bugs cell 0/0/0/0).",
+    "date": "2026-09-30",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/explore.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-18",
+    "claim": "On Sep 4 (12:41 AM local) the Electric Forest chat refused new work: 'the project has hit its bug limit' — cap 100, 111 bugs filed (65 still open); at 12:42 AM 'Bug cap raised to 150 — QA is no longer blocked by the limit.'",
+    "date": "2026-09-04",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/bug-sync.json",
+      "films/replay-qa-promo/capture/clean/explore.json",
+      "films/replay-qa-promo/research/factcheck/proof-in-every-report.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-19",
+    "claim": "'Replay Browser records the inputs to the runtime, so replaying the recording re-runs exactly the same execution.' Test runs 'capture a deterministic runtime recording of what happened'; 'Every journey run is backed by a Replay recording.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+      "films/replay-qa-promo/research/sources/reference_time-travel_how-does-time-travel-work.txt",
+      "https://docs.replay.io/basics/replay-qa/overview",
+      "https://docs.replay.io/basics/replay-qa/concepts"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "LOOP-20",
+    "claim": "The Electric Forest project chat in the bug-sync take spans timestamps 2026-08-01T19:47Z to 2026-09-30T23:13Z.",
+    "date": "2026-08-01/2026-09-30",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/bug-sync.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-01",
+    "claim": "Environment kinds are production, staging, development, preview and local ('Add production, staging, development, preview, or local configuration.'); all five appear as badge classes in the takes ('Project default' is a fallback label, not an addable kind).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/schedule.json",
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/research/factcheck/continuous-everywhere.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-02",
+    "claim": "Schedule take (12961 ms; marks polish 2226, schedule 8808, add-env 11458): the Production environment of the collaborative-ai-editor project carries a green chip 'Tue at 3:00 AM · America/New_York'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/schedule.json",
+      "films/replay-qa-promo/capture/takes/schedule.mjs"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-03",
+    "claim": "The schedule fires: the project's usage list shows batches of journey tasks starting at 3:00 AM on six consecutive Tuesdays (Sep 1, 8, 15, 22, 29, Oct 6, 2026), with 44, 33, 34, 34, 34, 34 visible rows; no Oct 13 row. The cadence is weekly, not nightly.",
+    "date": "2026-09-01/2026-10-06",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/schedule.json",
+      "films/replay-qa-promo/research/factcheck/continuous-everywhere.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-04",
+    "claim": "Pricing FAQ: 'Yes. You can configure daily or weekly scheduled runs in project settings. Great for teams who want a nightly batch of fresh issues ready when the workday starts.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/pricing"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-05",
+    "claim": "How-it-works: '…a new test run triggers on every push to main and with every PR (configurable). You can also set a daily or weekly schedule — useful for overnight runs that give your team fresh issues every morning.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/how-it-works"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-06",
+    "claim": "Main-branch testing has three documented modes: None, Detect main branch deployments (polls a deployment URL until the deployed app changes; API default 'detect'), and Listen to GitHub events (tests when GitHub reports a deployment of the default branch, which Vercel and Netlify report); a fourth API value 'environment' is 'Reserved. Not available.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_github.txt",
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-07",
+    "claim": "With PR testing set to Listen to GitHub events, 'Each pull request revision is tested against its preview deployment, and the results are posted back to the pull request.'; PR testing is opt-in (API default none).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_github.txt",
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-08",
+    "claim": "'Replay QA posts one comment on the pull request and edits it in place as results come in, and reports a Replay QA check on the commit.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_github.txt",
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-09",
+    "claim": "'Another push supersedes the running round. Closing the pull request cancels it.' The older run's check concludes cancelled ('Superseded'); drafts are ignored until ready for review.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-10",
+    "claim": "Preview URL discovery, first match wins: a successful deployment_status, a commit status carrying the URL, a PR comment by a [bot] or repository owner/member/collaborator (never Replay's own bots), else polling 'every minute at first, then every 5 minutes, for about 2 hours'. 'Production deploys of the same commit are never used for a PR.' *.netlify.app and *.vercel.app previews are recognised automatically.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md",
+      "films/replay-qa-promo/research/factcheck/continuous-everywhere.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-11",
+    "claim": "ignorePaths in .github/replay-qa.yml is read from the PR's base branch, so a PR cannot exempt itself; QA fails open when the file is missing or invalid, GitHub is unreachable, or the PR has 3000 or more changed files.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-12",
+    "claim": "Main-branch rounds may create, update or remove journeys; PR rounds may add journeys for the change and 'do not modify the project's existing journeys'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_github.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-13",
+    "claim": "For a PR build that exists only in CI: `replayqa proxy --ci --json` opens an outbound reverse-proxy tunnel and waits for {\"event\":\"heartbeat\",\"ready\":true}; `replayqa ci` 'replaces any older in-flight run for the same pull request and creates a PR-linked test run for the current commit'; status is polled every 15 seconds until terminal. The GitHub Actions guide pins replayqa 0.2.4, a 3600000 ms run timeout and timeout-minutes 75; CircleCI uses the same heartbeat.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/frpc-ci",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_frpc-ci.txt",
+      "https://docs.replay.io/basics/replay-qa/circleci",
+      "films/replay-qa-promo/research/factcheck/point-it-at-your-app.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-14",
+    "claim": "The reverse-proxy endpoint 'Idempotently creates or updates the Local environment for an interactive client or the Preview environment for CI'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "https://qa.replay.io/api/v1/openapi.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-15",
+    "claim": "In this account, 'Reminders · CI' (target http://127.0.0.1:3000) shows 'Replay QA CI marker: pr-3' (the REPLAYQA_RUN_MARKER convention); sibling projects are 'Reminders · CircleCI' (card date Sep 22) and 'Reminders · Production' (a public vercel.app URL, card date Aug 16).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/runs.json",
+      "films/replay-qa-promo/capture/clean/projects.json",
+      "https://docs.replay.io/basics/replay-qa/frpc-ci"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-16",
+    "claim": "Typing 'PR #' into the projects sidebar filter (5700-6186 ms) leaves exactly 27 'ExampleApps PR #6 … #11 - <app>' projects at the 'filtered' mark 6306 ms, all on Netlify deploy-preview-N URLs (17 on replay-<app> sites, 10 on other sites); the grid still shows 50 cards; card dates 9 on 6/12, 15 on 6/15, 3 on 6/16. How these projects were created is unverified.",
+    "date": "2026-06-12/2026-06-16",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/projects.json",
+      "films/replay-qa-promo/research/factcheck/continuous-everywhere.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-17",
+    "claim": "Confirmed bugs can be filed to GitHub Issues, Linear or Jira, each as 'the full bug report as Markdown and a link back to the bug in Replay QA'; a rediscovered bug 'is recorded against the existing bug and does not create a new issue'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_github.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-18",
+    "claim": "'GitHub is the only supported repository host. GitLab and Bitbucket are not supported.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_github.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-19",
+    "claim": "Settings take: Project status 'Active' / 'Running test loops automatically.'; Budget 'Credits QA may spend before the project pauses.'; Processing concurrency 'Containers running QA at once.' / '5 max'. Replay QA pauses a project itself at its credit budget or when the account runs out of credits and says so in the chat.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/schedule.json",
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "https://docs.replay.io/basics/replay-qa/concepts"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-20",
+    "claim": "The settings take's polish row reads 'Network Performance, Layout Shift, Glitches, User Experience' · '4 enabled'; the digest's '7 enabled' line was hand-typed in tools/promo/account-digest.mjs and matches no capture.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/schedule.json",
+      "tools/promo/account-digest.mjs",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-21",
+    "claim": "Pricing: 'A credit maps to any meaningful work done by Replay QA… To run QA on a web app of average complexity, expect to spend around 20 credits.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/pricing"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-22",
+    "claim": "Help article 'What is Replay QA?' (dated July 2, 2026): 'Connect a GitHub repository and Replay QA becomes an always-on quality gate.'",
+    "date": "2026-07-02",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://intercom.help/replay-builder/en/articles/15809468-what-is-replay-qa"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-23",
+    "claim": "The API's time_limit_minutes per run accepts 1-10080; when the deadline expires the project is paused, remaining work cancelled and eligible unfinished work refunded.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/openapi.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-24",
+    "claim": "How-it-works: Replay QA 'spins up a swarm of agents that runs all of the mapped journeys in parallel, in a browser.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/how-it-works"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "CONT-C1",
+    "claim": "CONTESTED: When a PR closes, the GitHub docs say its open bugs move to a 'pr-closed' status; the bug-reports reference says wontfix is set when a PR closes unmerged and fixed when it merges; the OpenAPI bug status enum (open/fixed/wontfix/invalid) has no pr-closed. Keep off screen.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "https://docs.replay.io/reference/replay-qa/bug-reports",
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md",
+      "films/replay-qa-promo/research/factcheck/continuous-everywhere.json"
+    ],
+    "status": "contested"
+  },
+  {
+    "id": "CONT-C2",
+    "claim": "CONTESTED: The GitHub docs describe a 'Require approval' setting (default off: the check 'never blocks a merge'), set via a requireApproval field; the OpenAPI github schema has no requireApproval and the GitHub App skill omits it. Say only 'a Replay QA check on every PR; make it required to gate merges'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/github",
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md",
+      "films/replay-qa-promo/research/factcheck/continuous-everywhere.json"
+    ],
+    "status": "contested"
+  },
+  {
+    "id": "CONT-C3",
+    "claim": "CONTESTED: The GitHub App SKILL.md labels the fileIssues setting 'Legacy' while the docs present it as a current path. Say 'file bugs to GitHub Issues, Linear or Jira' without naming the toggle.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://qa.replay.io/api/v1/skills/github-app/SKILL.md",
+      "https://docs.replay.io/basics/replay-qa/github",
+      "films/replay-qa-promo/research/factcheck/continuous-everywhere.json"
+    ],
+    "status": "contested"
+  },
+  {
+    "id": "TIME-01",
+    "claim": "'Session Replay tools replay the DOM and Runtime Replay tools re-run the runtime so that you can inspect the session with browser DevTools'; the determinism contract ends 'If anything user-visible happens in a different order, you have failed.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+      "films/replay-qa-promo/research/sources/reference_time-travel_how-does-time-travel-work.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-02",
+    "claim": "Replay intercepts low-level OS library (libc) calls such as mmap, read and open with a small inline-assembly trampoline and feeds the saved results back on replay. Vendor figures: '99.99% of compute is deterministic'; recording averages 'about a Mb per second'; interception adds 'about 3% of overhead' versus '10% or more' for most instrumentation.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+      "films/replay-qa-promo/research/sources/reference_time-travel_how-does-time-travel-work.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-03",
+    "claim": "A debugging session interacts with 'potentially hundreds' of forked and snapshotted browser processes, and 'there's never a point more than 100ms away from a browser process'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-04",
+    "claim": "Replay cannot replay faster than the original execution (about 60 s of replay for 60 s of compute); the protocol reduces to run to an execution point, pause at a point and evaluate an expression; adding a console log to a line that already ran returns 'in under a second'; the first video rendered from a recording 'is often larger than the recording itself!'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+      "films/replay-qa-promo/research/sources/reference_time-travel_how-does-time-travel-work.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-05",
+    "claim": "'A Replay recording removes the reproduction step.' Timing bugs 'depend on network timing, race conditions, and state that is gone by the time you notice the problem'; 'Any bug that was recorded once can be inspected as many times as needed, by anyone with the link'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+      "films/replay-qa-promo/research/sources/reference_time-travel_how-does-time-travel-work.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-06",
+    "claim": "Ten polish passes are documented (Network performance, React rendering, Layout shift, Accessibility, Glitches, User experience, SEO, UI details, Security, Sightmap; 'The set of passes changes over time.'). After each journey run each enabled pass reviews the recording, collects candidates, drops duplicates of existing bugs, confirms each remaining one and files it with the pass as its category; UI details creates journeys, Sightmap produces a document, React rendering is React-only and source maps improve naming, Security needs ownership verification.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-qa/polish-passes",
+      "films/replay-qa-promo/research/sources/reference_replay-qa_polish-passes.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-07",
+    "claim": "Polish-pass descriptions: 'Functional testing asks \"does the journey work?\"; polish passes ask \"is it slow, inaccessible, visually broken, or unsafe?\"'; Network performance reports 'Slow requests, large payloads, and waterfall issues'; React rendering reports 'Unnecessary re-renders and performance bottlenecks in React apps' and 'only reports on React applications'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-qa/polish-passes",
+      "films/replay-qa-promo/research/sources/reference_replay-qa_polish-passes.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-08",
+    "claim": "Bug bug-muen719p-vdmh (open, medium, React Rendering), title '67ms React commit at T=383.2s drops 4 frames on the Projects page: RTK-Query updates re-render Projects and SidebarProjectList wholesale, wasting 34ms re-rendering memo-less react-router Link components': totalDurationMs 67.32 at commitTime 383224.33 ms; 27 fibers rendered, 25 wasted (no DOM mutations); wastePercent 50.0, wastedDurationMs 33.66; 4 dropped frames vs the 16.7 ms frame budget; Projects 19 fibers 22.77 ms and SidebarProjectList 6 fibers 10.89 ms of waste; react-router Link 4 wasted renders 19.03 ms; triggered by a background RTK-Query refresh with no user action.",
+    "date": "2026-09-23",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-09",
+    "claim": "The 67 ms bug is on Replay QA's own Projects page, filed 2026-09-23T21:56:06Z in project 'Electric Forest PR 4650 Preview' (journey 'Detail: Record detail view opens and dismisses (nav) at /settings/mcp'); the page shows 'Discovered 21 days ago at 5:56 PM' and 'Source Test Run #run-muek'; its player reads 0:00 / 0:51 while its chronology entry is stamped 6:20.8. Linking it to the run that filed 68 bugs is unverifiable.",
+    "date": "2026-09-23",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-10",
+    "claim": "Bug bug-muemtceb-we4e (open, medium, React Rendering), filed 2026-09-23T21:45:27Z in Electric Forest PR 4650 Preview: 'Click on project card triggers 56ms navigation commit (86-component re-render from BrowserRouter) that drops 3 frames'; 87 fibers in 55.9 ms; setState in BrowserRouter cascaded to 86 descendants, 5 levels deep; only 2.3 ms (4.1%) wasted. Its phase split (38.6 + 19.4 ms) does not sum to 55.9, so quote '56 ms' only.",
+    "date": "2026-09-23",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-11",
+    "claim": "Bug bug-mtmk9vtr-21c2 (fixed, medium, Network Performance), filed 2026-09-04T06:16:47Z in Electric Forest (Local): 'Live-sync loop re-fetches /api/repos/maple/reading-room/pulls 258 times with checkpoint never advancing past -1'; 258 sequential GETs (257 x HTTP 200, 1 no-response), each ~575-760 ms, avg ~631 ms; requests from 15292 ms to 175614 ms; checkpoint verified -1 at requests #0-#2 and #250-#254; only 2 clicks and no keypresses; player 0:00 / 2:56.",
+    "date": "2026-09-04",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/bug-sync.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-12",
+    "claim": "Bug bug-mtmjva2o-pah7 (fixed, low, Network Performance), filed 2026-09-04T06:05:26Z in Electric Forest: 'Board live-poll re-requests /api/repos/maple/reading-room/board every ~800ms with waitMs=500 — 105 identical empty responses in ~70s'; body says 'every ~700-900ms'; all 105 returned events [] with the same all-zeros checkpoint; the shared URL builder defaults waitMs to 10000 and an SSE transport exists in the bundle; expected 'roughly one request per 10 seconds instead of ~75 per minute'; the report notes it corrects the original 'per keystroke' hypothesis. Say 'about 800 ms', never '800 ms'.",
+    "date": "2026-09-04",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-13",
+    "claim": "'reading-room' is a repository (maple/reading-room) seeded inside the Electric Forest app, which runs at http://127.0.0.1:61787 through the reverse proxy as a Local environment; it is not an app name.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/bug-sync.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-14",
+    "claim": "Insights discovery source: Polish Analysis 453 (64%) and Journey Testing 258 (36%) of 711 bugs. The 258 journey-testing count is unrelated to the 258 re-fetches in bug-mtmk9vtr-21c2.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/insights.json",
+      "https://qa.replay.io/insights"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-15",
+    "claim": "bug-react take (13692 ms; marks open/report 3032, actual 8723, rootcause 12008): blank shell at 0 ms; Bugs list (with the credit meter '8807.5 of 500 credits' and Admin chip in the header) by about 1742-1956 ms; at exactly 3032 ms a grey skeleton; from 3033 ms chips 'Open · Medium · React Rendering', title and a dark 'Loading replay…' player until about 3217 ms, then a white player with '--:--'; seek 3040-3200 ms for the dark-player look.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "tools/promo/rr-sheet.mjs",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-16",
+    "claim": "bug-sync take (8804 ms; marks report 1603, actual 5402, rootcause 8154): chips 'Fixed · Medium · Network Performance · Local', player 0:00 / 2:56, Actual/Expected, Root Cause card, Chronology starting 0:15.2, a three-step 'Root Cause to Actual Behavior' chain ending '258 GETs (~600-750ms cadence, avg 631ms)', and 'Full Bug Report: Markdown for Claude Code, Cursor, and other coding agents'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/bug-sync.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json",
+      "films/replay-qa-promo/research/factcheck/proof-in-every-report.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-17",
+    "claim": "Inference (labelled): because 25 of the 27 fibers in the 67 ms commit produced no DOM mutations, a DOM-only (session) recording has nothing to show for that work; it is visible only in a runtime recording.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+      "films/replay-qa-promo/research/sources/account-digest.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-18",
+    "claim": "The bug reports use a 16.7 ms frame budget (web.dev RAIL gives 16 ms per frame). Calling the 67 ms or 56 ms commits 'long tasks' is CONTESTED: MDN defines a long task as uninterrupted main-thread work of 50 ms or more, the 56 ms includes 19.4 ms of passive effects usually flushed in a later task, and the 67 ms report has no phase split.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "https://web.dev/articles/rail",
+      "https://developer.mozilla.org/en-US/docs/Web/API/PerformanceLongTaskTiming",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "contested"
+  },
+  {
+    "id": "TIME-19",
+    "claim": "On 2026-09-23 the 'Electric Forest PR 4650 Preview' chat reports 'I explored the app and ran 71 journeys, and filed 68 bugs, 68 still open' (Initial Test Run card 71/71 journeys, 62 passed, 9 failed, 68 bugs) and enables Sightmap alongside eight passes already on (network-performance, react-rendering, layout-shift, glitches, user-experience, accessibility, seo, ui-details).",
+    "date": "2026-09-23",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-20",
+    "claim": "How-it-works: journey tests record 'every DOM mutation, every network call, every JavaScript frame', and 'Because our recordings are deterministic, the session behaves identically every time it's replayed'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/how-it-works"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "TIME-C1",
+    "claim": "CONTESTED: How-it-works says 'For all tests that fail, our agents time-travel through the recordings', while the polish-pass docs say every enabled pass reviews every journey run's recording (all four featured bugs are polish findings). Say 'every run is a recording, and every recording gets reviewed'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/how-it-works",
+      "https://docs.replay.io/reference/replay-qa/polish-passes"
+    ],
+    "status": "contested"
+  },
+  {
+    "id": "TIME-C2",
+    "claim": "CONTESTED: Whether DOM-only replay is blind to these bugs. True for wasted renders that change nothing (inference); but many session-replay and monitoring tools capture network logs, and Replay's FAQ calls them 'genuinely useful' while distinguishing that Replay records 'the actual JavaScript execution during testing, before the code ships'. Keep the claim to the why (unchanged checkpoint, unused 10000 ms default, existing SSE transport).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/",
+      "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+      "films/replay-qa-promo/research/sources/account-digest.json"
+    ],
+    "status": "contested"
+  },
+  {
+    "id": "PROOF-01",
+    "claim": "'Every bug Replay QA files is backed by a Replay recording of the run that found it. The report is built from that recording, so each claim in it points at evidence you can inspect.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-qa/bug-reports",
+      "films/replay-qa-promo/research/sources/reference_replay-qa_bug-reports.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-02",
+    "claim": "A bug report contains title, description, severity, steps to reproduce (a chronology with screenshots), expected behavior, actual behavior, root cause (traced through the recording to the responsible code path with evidence from source, console, network, React state), causal chain, recording and category; on screen these read 'Chronology of Events', 'Expected Behavior', 'Actual Behavior', 'Root Cause', 'Evidence', 'Root Cause to Actual Behavior', 'View Full Recording'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-qa/bug-reports",
+      "films/replay-qa-promo/research/sources/reference_replay-qa_bug-reports.txt",
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "films/replay-qa-promo/capture/clean/bug-sync.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-03",
+    "claim": "'Replay QA does not generate a code patch; a developer or coding agent applies the fix from the root cause.' The home page says reports include 'a suggested fix' and its FAQ says 'applying it stays with your team'; the two are compatible.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-qa/bug-reports",
+      "films/replay-qa-promo/research/sources/reference_replay-qa_bug-reports.txt",
+      "https://www.replay.io/"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-04",
+    "claim": "'A bug is only filed after Replay QA has confirmed it against the recording and checked that it is not a duplicate of an existing bug.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_concepts.txt",
+      "films/replay-qa-promo/research/sources/reference_replay-qa_polish-passes.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-05",
+    "claim": "Severity levels: critical (crashes, data loss, security vulnerabilities, complete feature failure), high (broken core functionality, severe visual bugs, WCAG A), medium (degraded functionality, noticeable performance issues, moderate visual bugs, WCAG AA), low (minor cosmetic issues, console warnings, minor performance issues, enhancement suggestions); 'You can change a bug's severity after it is filed.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-qa/bug-reports",
+      "films/replay-qa-promo/research/sources/reference_replay-qa_bug-reports.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-06",
+    "claim": "The API bug status enum is open | fixed | wontfix | invalid; invalid is kept 'as a duplicate candidate so the same invalid claim is not filed again'; open, wontfix and invalid are duplicate candidates. Status 'fixed' is set by the user, or by Replay QA when a PR merges.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "https://qa.replay.io/api/v1/openapi.json",
+      "https://docs.replay.io/reference/replay-qa/bug-reports"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-07",
+    "claim": "PATCH /bugs/{bug_id} with {\"status\":\"fixed\"} 'automatically retries the affected journey to confirm the fix'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "https://qa.replay.io/api/v1/openapi.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-08",
+    "claim": "Insights (2026-10-14): 711 total bugs, 389 open, 29% resolution rate; severity critical 4 (1%), high 238 (33%), medium 369 (52%), low 100 (14%) — sum 711; discovery Journey Testing 258 (36%), Polish Analysis 453 (64%) — sum 711. Take and digest agree on every figure.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/insights.json",
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "https://qa.replay.io/insights",
+      "films/replay-qa-promo/research/factcheck/proof-in-every-report.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-09",
+    "claim": "The 29% resolution rate is 207 'Resolved' / 711 from the Project Scorecard (29.1%), not (711 - 389) / 711 (45%).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/insights.json",
+      "films/replay-qa-promo/research/factcheck/proof-in-every-report.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-10",
+    "claim": "711 - 389 - 207 = 115 Insights bugs are neither Open nor Resolved; the UI does not explain why (any explanation is inference; do not narrate).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/insights.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-11",
+    "claim": "Electric Forest: 126 bugs (Scorecard Resolved 126, 100%), of which 101 fixed, 24 invalid, 1 wontfix, none open; categories journey 39, network-performance 33, accessibility 26, glitches 20, user-experience 5, layout-shift 3. Never say '126 bugs fixed'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/capture/clean/insights.json",
+      "films/replay-qa-promo/research/factcheck/bugs-in-time.json",
+      "films/replay-qa-promo/research/factcheck/explore-journeys-runs.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-12",
+    "claim": "Bug reports export as Markdown (on screen: 'Markdown for Claude Code, Cursor, and other coding agents', 'Copy bug report', 'Download'), via REST GET /api/v1/bugs/{bug_id}, the MCP get_bug tool, and issue trackers (GitHub Issues, Linear, Jira); the home page adds 'any endpoint that accepts a webhook'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-qa/bug-reports",
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "films/replay-qa-promo/capture/clean/bug-sync.json",
+      "https://www.replay.io/"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-13",
+    "claim": "Insights take (7555 ms; marks stats 2926, severity 6905): tiles 50 Projects · 711 Total Bugs · 389 open · 29 % Resolution Rate · 1151 Journeys · 89 Explorations; subtitle 'Cross-project analytics for your autonomous QA pipeline — bug trends, severity breakdowns, and resolution tracking.'; charts and a Project Scorecard.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/insights.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-14",
+    "claim": "The bug-sync page shows, under a nav named 'Bug filing provenance', three links in DOM order 'Requirements judge', 'Evidence judge', 'Acceptance judge'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/bug-sync.json",
+      "films/replay-qa-promo/research/factcheck/proof-in-every-report.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-15",
+    "claim": "The home page frames the cost of manual reproduction: an engineer 'loses an afternoon reproducing it, and the fix itself takes twenty minutes'; section heading 'Bug reports your coding agent deserves'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-16",
+    "claim": "The app UI displays local time at UTC-4: the 258 bug (06:16:47Z) shows '2:16 AM' and the 67 ms bug (21:56:06Z) shows '5:56 PM'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/bug-sync.json",
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "films/replay-qa-promo/research/factcheck/proof-in-every-report.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "PROOF-C1",
+    "claim": "CONTESTED: When a fixed bug recurs, the overview, concepts and getting-good-results pages say the bug reopens; the bug-reports reference ('A fixed bug stays fixed: if the problem comes back, Replay QA files it as a new bug'), the OpenAPI ('assess any recurrence as a fresh report') and the fix-qa-bug skill say a new bug is filed. Narrate only 'reruns the journey to confirm'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/overview",
+      "https://docs.replay.io/basics/replay-qa/concepts",
+      "https://docs.replay.io/basics/replay-qa/getting-good-results",
+      "https://docs.replay.io/reference/replay-qa/bug-reports",
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "https://qa.replay.io/api/v1/skills/fix-qa-bug/SKILL.md",
+      "films/replay-qa-promo/research/factcheck/proof-in-every-report.json"
+    ],
+    "status": "contested"
+  },
+  {
+    "id": "AGENT-01",
+    "claim": "The agent entry prompt is 'Use Replay QA to test and fix this app. Start at https://docs.replay.io/llms.txt and follow it.' (New Project page and agent-integration doc). llms.txt points to the CLI skill (`npx --yes replayqa@latest skill`, the default: 'Use the REST API or MCP server only when the CLI cannot run.'), the REST API, the Replay QA MCP server (https://qa.replay.io/api/mcp) and published skills (fix-qa-bug, github-app).",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/agent-integration",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_agent-integration.txt",
+      "films/replay-qa-promo/research/sources/account-digest.json",
+      "https://docs.replay.io/llms.txt",
+      "films/replay-qa-promo/research/sources/llms.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-02",
+    "claim": "The documented agent loop: create a project, let QA run, read the bugs, 'Mark each fix. Replay QA reruns the affected journey to confirm it.', 'Loop until no open bugs remain.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/agent-integration",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_agent-integration.txt",
+      "films/replay-qa-promo/research/sources/openapi.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-03",
+    "claim": "The API description tells agents 'do NOT start your own explorations or test runs' while QA is running and to 'Verify the report against its evidence and the source before applying a fix.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/openapi.json",
+      "https://qa.replay.io/api/v1/openapi.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-04",
+    "claim": "MCP setup: `claude mcp add --transport http replay-qa https://qa.replay.io/api/mcp`; the server supports OAuth sign-in so it can be added by URL without a token (browser sign-in on first use); a token-based setup is also documented.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/agent-integration",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_agent-integration.txt",
+      "films/replay-qa-promo/research/factcheck/agents-and-the-critic.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-05",
+    "claim": "Replay MCP is a separate server (https://dispatch.replay.io/nut/mcp) for inspecting one recording; it lists 30 tools and agents call RecordingOverview first (first analysis 'can take three to four minutes').",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-mcp/tools",
+      "films/replay-qa-promo/research/sources/basics_replay-mcp_overview.txt",
+      "films/replay-qa-promo/research/sources/llms.txt"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-06",
+    "claim": "Replay MCP tools include ReactRenders (nine modes; fiber-cause answers 'which prop changed, which state update fired, which context value shifted'), ReactPerformanceInsights ('Detects heavy commits (over 50ms)'), Evaluate (an expression 'at any moment in the recording'), NetworkRequest, ConsoleMessages and GetPointLink; ProfileSampling profiles 'the Replay runtime, not the recorded application'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/reference/replay-mcp/tools",
+      "films/replay-qa-promo/research/factcheck/agents-and-the-critic.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-07",
+    "claim": "When a bug includes a recording of the failing run, an agent can use Replay MCP to 'inspect the console, code, and network traffic from the actual failure'; the agent-integration doc: 'If the bug report is not enough, the agent can open the linked recording with Replay MCP and inspect the failure directly.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/overview",
+      "films/replay-qa-promo/research/sources/basics_replay-qa_overview.txt",
+      "https://docs.replay.io/basics/replay-qa/agent-integration"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-08",
+    "claim": "The vendor names Claude Code, Cursor and Codex ('Your coding agent (Claude Code, Cursor, Codex, …) can do everything you can do in the Replay QA web app.'), VS Code as an MCP client, and Obvious as an OAuth connector.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://docs.replay.io/basics/replay-qa/agent-integration",
+      "https://docs.replay.io/reference/replay-mcp/tools",
+      "https://docs.replay.io/basics/replay-qa/obvious"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-09",
+    "claim": "The fix-qa-bug skill treats report text and proposed root causes as 'leads to verify, not established facts' and leaves the QA bug open 'while the PR is awaiting merge/verification; opening a PR does not prove that the deployed bug is fixed.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://qa.replay.io/api/v1/skills/fix-qa-bug/SKILL.md"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-10",
+    "claim": "Home FAQ: 'The webhook sends a callback URL with every report. POST to it when the fix ships and Replay QA marks the bug resolved, then re-enables that user journey for future runs'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-11",
+    "claim": "Vendor-reported pilot (Replay blog, Oct 6, 2026): from Sep 18 to Oct 1, 2026 a self-healing loop on Replay's own repository (detect, Replay QA diagnoses, Obvious fixes, Replay QA verifies, an engineer merges) opened 152 PRs ('none of which was written by a human'), merged and verified 80 (46 by session replay, 34 by independent reproduction), left 45 open and closed 27; 124 distinct bugs, 76 fixed on main, 18 'needed more than one attempt'; 'when a PR was closed or failed QA, the loop opened another one'; 'Generation was never the hard part.'",
+    "date": "2026-09-18/2026-10-06",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/blog/what-our-experimental-self-healing-software-loop-shipped-in-two-weeks",
+      "films/replay-qa-promo/research/factcheck/agents-and-the-critic.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-12",
+    "claim": "Home FAQ: 'No, and that's deliberate. Replay QA finds the bug, works out the root cause, and writes a suggested fix, but applying it stays with your team.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-13",
+    "claim": "POST /api/v1/projects/{project_id}/chat/messages sends a message to the project assistant, which 'can perform project actions requested by the message'.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/research/sources/openapi.json"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-14",
+    "claim": "Home page: 'Writing code got faster. Verifying it didn't, and it's still the part your team does by hand.'",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "https://www.replay.io/"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "AGENT-15",
+    "claim": "The judge links' labels are verified on screen (bug-sync, 'Bug filing provenance'); the bug-react page shows 'Loading judge actions…' then 'No recorded judge actions available.' at 4452 ms. No public doc describes what the judges do; they relate to bug filing, not to fixes, and must not be narrated as a critic of fixes. The developer/critic beat depicts the documented fix-and-rerun loop.",
+    "date": "2026-10-14",
+    "era": "product, as of 2026-10-14",
+    "sources": [
+      "films/replay-qa-promo/capture/clean/bug-sync.json",
+      "films/replay-qa-promo/capture/clean/bug-react.json",
+      "films/replay-qa-promo/research/factcheck/agents-and-the-critic.json",
+      "https://docs.replay.io/reference/replay-qa/bug-reports"
+    ],
+    "status": "confirmed"
+  }
+]

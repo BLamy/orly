@@ -1,0 +1,39 @@
+{
+ "shot": "ch14-s07",
+ "at": "2026-10-14T02:01:17.820Z",
+ "step": 0.0833,
+ "sampled": 273,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "washington-page",
+  "fenceQuestionCard"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "washington-page",
+   "probed": true,
+   "from": 0.05,
+   "to": 18.717,
+   "minInkWhilePaper": 0.71
+  },
+  {
+   "id": "fillRect@757,231",
+   "probed": false,
+   "from": 1.3,
+   "to": 3.717,
+   "minInkWhilePaper": 0.51
+  },
+  {
+   "id": "fenceQuestionCard",
+   "probed": true,
+   "from": 13.383,
+   "to": 22.717,
+   "minInkWhilePaper": 0.69
+  }
+ ]
+}

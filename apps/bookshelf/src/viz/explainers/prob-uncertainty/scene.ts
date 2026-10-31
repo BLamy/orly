@@ -107,8 +107,10 @@ export const FAN_X_MAX = 3.45;
 export const sx: ScaleLinear<number, number> = scaleLinear().domain([0, 4]).range([110, 1170]);
 export const sy: ScaleLinear<number, number> = scaleLinear().domain([-5.4, 2.4]).range([620, 100]);
 
-export const CAM_DATA: CameraState = { x: 450, y: 350, k: 1.25 };
-export const CAM_EDGE: CameraState = { x: 900, y: 400, k: 1.15 };
+// Both framings keep the whole x-domain (0 … 4) and the y-axis labels on stage,
+// so the crowded data, the fan and its spread bracket are never cut off.
+export const CAM_DATA: CameraState = { x: 640, y: 360, k: 1.04 };
+export const CAM_EDGE: CameraState = { x: 640, y: 400, k: 1.08 };
 
 export interface Scene {
   tl: Timeline;

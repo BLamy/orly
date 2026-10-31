@@ -1,0 +1,701 @@
+{
+  "id": "ch03",
+  "number": 3,
+  "title": "A Recipe Read Every Frame",
+  "blurb": "June to September 2026. One lit window on a June night becomes a project with three names (two renames) in four months, and a second hand rests at the keyboard, unexplained. What a Handwired program really is: a fixed list of thirty-two-bit operations, appended by builder code that runs once; a table of numbered cells; four instructions and nothing else. Two of our own suspects fall: no tool converted ordinary code, and nobody trained it. A silent odd number is left on the instruction plate, and the Notes window is planted: the program holds no text.",
+  "shots": [
+    {
+      "id": "ch03-s01",
+      "kind": "scene",
+      "setting": "the Window Calendar: a tall black paper building at night, one column of windows per month; inside the first lit pane a desk lamp, a logo-less laptop, two paper hands and a second hand beside them (3 June 2026, 20:24, evening)",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L0301",
+          "text": "The third of June, twenty twenty-six: Cheng Lou, Handwired's author, makes his first commit.",
+          "pauseAfter": 0.7,
+          "direction": "quiet, a storyteller's opening after the history; let 'One window lights' land as the pane does; plain on 'the first commit'",
+          "tts": {
+            "speed": 0.99
+          }
+        },
+        {
+          "id": "L0302",
+          "text": "Four months and two renames later: Handwired.",
+          "direction": "a small wry lift on 'two renames'; a beat before 'Handwired', said warmly, like introducing the hero at last"
+        }
+      ],
+      "leadIn": 1,
+      "holdAfter": 3.4,
+      "visual": "THIS SHOT: the project's first night, on the Window Calendar (Device 2). lampChange from ch02's parchment line to winterBlue night. A tall paper building cut from black card stands against a cold moonlit haze; its windows are a grid of small panes, one column per month (June at left; the columns to the right stay dark and unlabelled in this shot, so the later months are not revealed yet). Binding: one lit pane per commit, never rounded. GRID (fixed for every appearance of the building, ch03, ch08, ch09, ch12; same scale and placement each time): each month's column is 6 panes wide, one storey per 6 commits, filled bottom-up in commit order. June = 12 storeys (72), July = 1 storey (6), August = 0 (black glass), September = 9 full storeys plus 4 panes (58); the main block is exactly 12 storeys, June's height. October's six panes of 1 to 12 October fill one storey; its four days of 13 to 16 October are NOT part of the main block: in ch09 they rise above it as a tower annexe of four day-columns, 41 / 34 / 19 / 22 storeys (242 / 200 / 113 / 128 commits), so 'the building grows a tower in four days'. In this shot no tower exists yet. On 'lights' the first pane in the June column glows warm amber (beat pane1) and the date stamp sets in bottom-left; the commit message appears as a small typed label beside it. Through that pane, in a slow push (multiplane, 6% over the shot), we see a lamp, a laptop with no logo, and two paper hands typing (author-hands); beside them rests a SECOND paper hand at the same keyboard (agent-hand), faceless, still, glimpsed and never explained (paid in ch08). At the end of L0301 a second pane lights just beneath (beat pane2: fourteen minutes later). On 'two' the camera eases back and the June column fills pane by pane to exactly 72 lit windows in about two seconds, a soft relay clack under the run (beat june). A brass nameplate over the door re-letters in place: 'Numeric UI Atom Lab' is painted over and stays faintly legible as 'Indirect' is lettered beneath it, then 'Indirect' is painted over and 'Handwired' is lettered last, in copper (beats names, handwired); small date chips under each name (3 June · 6 June · 6 October). In the hold the camera settles back on the first pane: the second hand is still there, unmoving.",
+      "beats": [
+        {
+          "id": "pane1",
+          "at": {
+            "line": "L0301",
+            "word": "June"
+          },
+          "what": "the first June pane glows amber; date stamp and commit label set in"
+        },
+        {
+          "id": "name",
+          "at": {
+            "line": "L0301",
+            "word": "commit"
+          },
+          "what": "the author's hands at the laptop; name card for the hands; the second hand beside them, unexplained"
+        },
+        {
+          "id": "pane2",
+          "at": {
+            "line": "L0301",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "a second pane lights beneath the first (fourteen minutes later)"
+        },
+        {
+          "id": "june",
+          "at": {
+            "line": "L0302",
+            "word": "two"
+          },
+          "what": "camera eases back; the June column fills to exactly 72 lit panes, relay clacks"
+        },
+        {
+          "id": "names",
+          "at": {
+            "line": "L0302",
+            "word": "renames"
+          },
+          "what": "the nameplate re-letters: Numeric UI Atom Lab painted over, Indirect lettered"
+        },
+        {
+          "id": "handwired",
+          "at": {
+            "line": "L0302",
+            "word": "Handwired"
+          },
+          "what": "Indirect painted over; Handwired lettered in copper"
+        },
+        {
+          "id": "glimpse",
+          "at": {
+            "line": "L0302",
+            "edge": "end",
+            "offset": 0.5
+          },
+          "what": "camera settles on the first pane: the second hand still resting at the keyboard"
+        }
+      ],
+      "cast": [
+        "author-hands",
+        "agent-hand"
+      ],
+      "props": [
+        "the Window Calendar (black paper building, one pane per commit)",
+        "desk lamp",
+        "logo-less laptop",
+        "brass nameplate, re-lettered twice"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "3 June 2026 · 20:24",
+          "beat": "pane1"
+        },
+        {
+          "kind": "label",
+          "text": "Create numeric UI atom lab",
+          "beat": "pane1"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Cheng Lou · author",
+          "beat": "name"
+        },
+        {
+          "kind": "label",
+          "text": "Numeric UI Atom Lab → Indirect → Handwired",
+          "beat": "june"
+        }
+      ],
+      "music": {
+        "cue": "ch03-a-recipe",
+        "note": "cold and close after ch02's dusk: a single low sustained note and room tone; one soft relay clack per lit pane, then a quick dry patter of clacks as June fills; the both-branches motif's two lines enter very quietly, a whole tone apart, as the nameplate re-letters"
+      },
+      "transitionIn": "lampChange",
+      "claims": [
+        "PJ05",
+        "PJ07",
+        "PJ08",
+        "PJ09"
+      ]
+    },
+    {
+      "id": "ch03-s02",
+      "kind": "plate",
+      "setting": "parchment plate: the tutorial's definition, and the builder ribbon growing across the plate (timeless; the repo at 257856e)",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0303",
+          "text": "Its tutorial: “A numeric program is a fixed list of operations over 32-bit floats”.",
+          "spoken": "Its tutorial: “A numeric program is a fixed list of operations over thirty-two-bit floats”.",
+          "pauseAfter": 0.6,
+          "direction": "a teacher's question, then read the tutorial's words exactly, as a quotation; slight weight on 'fixed list'"
+        },
+        {
+          "id": "L0304",
+          "text": "You don't write the list. Builder code, ordinary JavaScript run once, appends to it.",
+          "direction": "plain and practical; a small turn on 'Builder code'; 'run once' unhurried, it matters later"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 2.1,
+      "visual": "THIS SHOT: what a program is (the builder ribbon, kit machine 9). paperWipe into a parchment plate, camera locked. Upper third: a short attribution fragment of the tutorial's definition (beat tutorial); the full sentence is spoken, not set (art-director rule b). Below it, a long ribbon of paper runs left to right across the plate, empty, with faint column rules (columns = dependency depth). On 'fixed' the ribbon's first tags appear: small ink operation tags, each stamped with its kind (sum, ReGLU, boolean), pinned one column to the right of the deepest tag it reads, with fine ink threads back to its inputs (beat ribbon). On 'list' a small paper card of builder code slides in at left: a few lines of ordinary JavaScript, drawn as unreadable ink strokes, no invented function names (beat card). From 'Builder' each pass of its pen appends one more tag to the ribbon's end (beat append). On 'appends' the card tries to append an expression that already exists: instead of a new tag, a copper thread loops back and touches the existing tag, which nods (beat dup): the same expression built twice is one operation. In the hold the ribbon keeps growing by three more tags, then stops: the list is fixed; the builder card folds away, its job done once.",
+      "beats": [
+        {
+          "id": "tutorial",
+          "at": {
+            "line": "L0303",
+            "word": "tutorial"
+          },
+          "what": "a short fragment of the tutorial's definition sets in at the top of the plate"
+        },
+        {
+          "id": "ribbon",
+          "at": {
+            "line": "L0303",
+            "word": "fixed"
+          },
+          "what": "the ribbon's first operation tags appear, each pinned one column right of its deepest input"
+        },
+        {
+          "id": "card",
+          "at": {
+            "line": "L0304",
+            "word": "list"
+          },
+          "what": "the builder-code card slides in at left"
+        },
+        {
+          "id": "append",
+          "at": {
+            "line": "L0304",
+            "word": "builder"
+          },
+          "what": "the builder card's pen appends one tag per stroke"
+        },
+        {
+          "id": "dup",
+          "at": {
+            "line": "L0304",
+            "word": "appends"
+          },
+          "what": "a duplicate expression returns the existing tag: a copper thread loops back to it"
+        },
+        {
+          "id": "fixedList",
+          "at": {
+            "line": "L0304",
+            "edge": "end",
+            "offset": 1.2
+          },
+          "what": "the ribbon stops growing; the builder card folds away"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "the builder ribbon with ink operation tags",
+        "a card of builder code (ink strokes, unreadable)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "“a fixed list of operations” — the tutorial",
+          "beat": "tutorial"
+        },
+        {
+          "kind": "label",
+          "text": "builder code: ordinary JS, run once · appends to a Circuit",
+          "beat": "card"
+        }
+      ],
+      "music": {
+        "cue": "ch03-a-recipe",
+        "note": "the plate's register: a light, even woodblock tick for every tag appended to the ribbon, over the two quiet lines of the both-branches motif; the tick stops dead when the list is fixed"
+      },
+      "transitionIn": "paperWipe",
+      "claims": [
+        "PR01",
+        "PJ02",
+        "CB05"
+      ]
+    },
+    {
+      "id": "ch03-s03",
+      "kind": "scene",
+      "setting": "the copper line strung across the dark in front of the desk; suspect tag 4 hanging on a slack thread over the empty Lifespan Rule",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0305",
+          "text": "One guess falls at once, for the library itself. The docs: “No tool converts existing JavaScript source into a program.”",
+          "pauseAfter": 0.6,
+          "direction": "brisk, amused at ourselves; 'for the library itself' a small precise qualifier, not a hedge; read the docs' sentence exactly and plainly, as a quotation, no irony"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.3,
+      "visual": "THIS SHOT: suspect tag 4 struck (Device 1). crossfade from the plate back to the copper line at 58% of frame height, warm rim light on the wire; the desk is a soft silhouette behind. The tag reads in ink 'Suspect: a tool turned ordinary JavaScript into it'; its knot carries a tiny typeset card, 'the README's tagline'. On 'suspect' the camera eases in on it (beat tag). On 'docs' the narrator's hands (lower left) flip the tag with a paper snap (detent figure: flip) and the red-pencil hand enters from frame right and writes a fragment of the docs' sentence on the back in red pencil, a neat hand, exactly the on-screen fragment (the full sentence is spoken, not set; this fragment is what ch10 later sees on the tag's back) (beat flip). On 'program' the narrator's hands turn the tag face-front again and the red pencil strikes the front through once, shot as a TIGHT INSERT (macro on the tag face, pencil tip entering from frame right, about 1.5 s) before the cut back to the line (beat strike; detent figure: strike, a dry pencil scratch resolving into a wooden drawer closing). The red pencil withdraws. After the line (beat hand) the copper line behind the tag catches a soft glint and, in the far background, the builder card from s02 passes along the line like a shuttle (beat hand). The struck tag hangs; its thread stays slack (it was a suspect, so there is no date to measure). Camera holds. TAG-LINE STAGING (meta staging.tagLine): WORKSHOP: the canonical workshop (window wall L2, bench L3, line L4 at 58%, pencil post L6); the desk on the bench is lit from inside now (the X-ray has begun). SCOPE: the strike is for the library itself (the docs' sentence); the lab's separate trace compiler, which compiles only a defined numeric subset, is shown later in ch08 and is not what is struck here.",
+      "beats": [
+        {
+          "id": "tagIn",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "suspect tag 4 hangs in frame, its front legible"
+        },
+        {
+          "id": "tag",
+          "at": {
+            "line": "L0305",
+            "word": "guess"
+          },
+          "what": "camera eases in on suspect tag 4 and its knot card"
+        },
+        {
+          "id": "flip",
+          "at": {
+            "line": "L0305",
+            "word": "docs"
+          },
+          "what": "the tag flips; the red pencil writes a fragment of the docs' sentence on its back"
+        },
+        {
+          "id": "strike",
+          "at": {
+            "line": "L0305",
+            "word": "program"
+          },
+          "what": "the tag turns face-front and is struck through once in red"
+        },
+        {
+          "id": "hand",
+          "at": {
+            "line": "L0305",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "the builder card passes along the line behind, like a shuttle"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand",
+        "narrator-hands"
+      ],
+      "props": [
+        "the copper line",
+        "Promise Tag 4 (suspect) with knot card 'the README's tagline'",
+        "red pencil",
+        "the empty Lifespan Rule along the bottom"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "Suspect: a tool turned ordinary JavaScript into it",
+          "beat": "tagIn"
+        },
+        {
+          "kind": "quote",
+          "text": "“No tool converts existing JavaScript” — the docs",
+          "beat": "flip"
+        }
+      ],
+      "music": {
+        "cue": "ch03-a-recipe",
+        "note": "the detent figure in full for the first time: tie already sounded in ch01, so here flip (paper-card snap) on the turn and strike (pencil scratch into a wooden drawer closing) on the red line; the motif's two lines dip under it, then resume"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "PJ02",
+        "PJ01",
+        "PJ03",
+        "LB09"
+      ]
+    },
+    {
+      "id": "ch03-s04",
+      "kind": "plate",
+      "setting": "parchment plate: the template toggle switch's source table, a strip of 20 numbered pigeonholes, with a small toggle switch drawn above it (timeless)",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0307",
+          "text": "Every number the program reads or keeps is a cell in one table. A toggle has twenty.",
+          "pauseAfter": 0.6,
+          "direction": "laying the table out like a drawer of index cards; 'twenty' small and specific"
+        },
+        {
+          "id": "L0308",
+          "text": "A wire is a position: where a number lives.",
+          "direction": "a definition said simply, almost an aside; 'where a number lives' warm"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "THIS SHOT: cells and wires (the source table, kit machine 8). paperWipe to a parchment plate. A strip of 20 numbered ink pigeonholes runs across the plate (0 to 19), with a small black paper toggle switch drawn above the strip (track and thumb). On 'Every' the plate settles (beat table); no quotation is set here, the narration carries the idea. On 'cell' the pigeonholes fill with paper cards (beat cells): slots 0 and 1 hold 1280 and 800 (the window); a group of event flags for the pointer press and release (each flag pops up to 1 and falls back to 0, a tiny detent click); a little rack of four cards for the spring matrix; and the state cards (on, armed, the thumb's displacement, velocity and destination), each group bracketed in ink with a small grouped label, no invented field names. On 'twenty' a ring of ink counts round the strip and stops at 20, and a small label sets in beneath it, the same form as the 234-cell label of s07 (beat twenty). On 'wire' fine copper wire tags are clipped to three of the holes and to one operation tag pulled in from the ribbon at the plate's edge (beat wire): a wire is just where a number sits, a cell or an operation's result. In the hold an event flag pops to 1 and falls back to 0 once more, and the toggle's thumb above twitches in sympathy.",
+      "beats": [
+        {
+          "id": "table",
+          "at": {
+            "line": "L0307",
+            "word": "Every"
+          },
+          "what": "the strip of 20 pigeonholes settles"
+        },
+        {
+          "id": "cells",
+          "at": {
+            "line": "L0307",
+            "word": "cell"
+          },
+          "what": "cards fill the holes: 1280 and 800, event flags popping 0 to 1 to 0, the four-card spring rack, state cards"
+        },
+        {
+          "id": "twenty",
+          "at": {
+            "line": "L0307",
+            "word": "twenty"
+          },
+          "what": "an ink ring counts round the strip and stops at 20; the 'source table · 20 cells' label sets in"
+        },
+        {
+          "id": "wire",
+          "at": {
+            "line": "L0308",
+            "word": "wire"
+          },
+          "what": "copper wire tags clip onto three holes and one operation tag"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "20 numbered pigeonholes",
+        "paper toggle switch (track and thumb)",
+        "event flags",
+        "four-card spring-matrix rack",
+        "copper wire tags"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "source table · 20 cells",
+          "beat": "twenty"
+        },
+        {
+          "kind": "label",
+          "text": "wire = the position of a number",
+          "beat": "wire"
+        }
+      ],
+      "music": {
+        "cue": "ch03-a-recipe",
+        "note": "small and orderly: a soft click for each card dropped into its hole, a tiny up-down detent for each event flag; the motif's lines continue underneath, unhurried"
+      },
+      "transitionIn": "paperWipe",
+      "claims": [
+        "CB01",
+        "CB03",
+        "CB09",
+        "HL02"
+      ]
+    },
+    {
+      "id": "ch03-s05",
+      "kind": "plate",
+      "setting": "parchment plate: the four instructions, each beside its paper object (a loom row, a valve, a detent wheel, a card drawer) (timeless)",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0309",
+          "text": "Four instructions: a weighted sum, a gated product, a snap to a whole number, a read from a list.",
+          "pauseAfter": 0.6,
+          "direction": "count them off evenly, one small pause per comma, as the four objects appear; satisfaction in 'no more'"
+        },
+        {
+          "id": "L0310",
+          "text": "Each step rounds to a thirty-two-bit float, a number that keeps about seven digits. Even whole numbers stay exact only to about seventeen million.",
+          "direction": "plain and practical; 'Each step rounds' unhurried, a fact the next chapter leans on; 'about seven digits' as a friendly gloss; 'about seventeen million' small and exact-sounding, no drama"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "THIS SHOT: the four instructions (the program's whole instruction set). Same parchment plate, the pigeonhole strip sliding up to the top margin. Four rows appear down the plate, one per instruction, each a formula ENGRAVED small into the parchment as part of the plate's drawing (plate lettering, read as texture at this distance, not as captions; only two captions are set, below), with its paper object beside it: on 'sum' a single loom row of threads converging on one knot, engraved 'affine: value = f(bias) + Σ f(f(weight) × wire), term by term' (the evaluated form, PR03, never the bare code line, which reads as the identity) (beat sum); on 'gated' a small paper valve, a value flowing through an opening of max(0, gate), engraved 'reglu(left, gate) = f(left × max(0, gate))' (beat gated); on 'snap' a toothed detent wheel, engraved 'boolean(score) = f(f(f(score) + 8,388,609) − 8,388,609)' (beat snap); on 'read' a card drawer with a pointer, engraved 'index: values[candidates[floor(form)]]' (beat read), and the caption naming the four sets in under the rows. The third row carries the odd number 8,388,609 in full, twice, at the same weight as every other glyph on the plate, and nothing draws attention to it: no highlight, no pause, no narration (a silent plant, paid in ch04-s12, which pushes into this row). On 'rounds' a faint 'f' stamp prints beside every operation in all four rows: every step is rounded (beat round); the small-print caption sets in at the foot of the plate. On 'whole' a short ink ruler of whole-number ticks runs out along the foot of the plate and, near its far end, the ticks begin to skip, two apart (beat exact): exact only so far. Hold: the plate rests; the detent wheel turns one tooth and stops.",
+      "beats": [
+        {
+          "id": "sum",
+          "at": {
+            "line": "L0309",
+            "word": "sum"
+          },
+          "what": "row 1: the evaluated weighted-sum formula engraved, and a loom row"
+        },
+        {
+          "id": "gated",
+          "at": {
+            "line": "L0309",
+            "word": "gated"
+          },
+          "what": "row 2: the ReGLU formula engraved, and a paper valve"
+        },
+        {
+          "id": "snap",
+          "at": {
+            "line": "L0309",
+            "word": "snap"
+          },
+          "what": "row 3: the boolean formula with 8,388,609 engraved, and a detent wheel; no emphasis"
+        },
+        {
+          "id": "read",
+          "at": {
+            "line": "L0309",
+            "word": "read"
+          },
+          "what": "row 4: the index read engraved, and a card drawer; the four names caption sets in"
+        },
+        {
+          "id": "round",
+          "at": {
+            "line": "L0310",
+            "word": "rounds"
+          },
+          "what": "an 'f' stamp beside every operation; the FP32 small print sets in"
+        },
+        {
+          "id": "exact",
+          "at": {
+            "line": "L0310",
+            "word": "whole"
+          },
+          "what": "a whole-number ruler runs along the foot of the plate; near its end the ticks skip, two apart"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "loom row",
+        "paper valve",
+        "detent wheel",
+        "card drawer with pointer"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "the whole instruction set: affine · reglu · boolean · index",
+          "beat": "read"
+        },
+        {
+          "kind": "label",
+          "text": "f: round to FP32 · integers exact only to 2^24 = 16,777,216",
+          "beat": "round"
+        }
+      ],
+      "music": {
+        "cue": "ch03-a-recipe",
+        "note": "four even clacks, one per instruction, each a different dry timbre (thread pluck, valve click, ratchet tooth, drawer); nothing marks the odd number; the motif holds under the small print"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "PR02",
+        "PR03",
+        "PR04",
+        "EX02"
+      ]
+    },
+    {
+      "id": "ch03-s06",
+      "kind": "scene",
+      "setting": "the copper line: suspect tag 3 with its empty knot; then a slow push past it to the Notes window on the paper desk behind, its to-do list in close-up",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0311",
+          "text": "Somebody trained it? The desktop’s README: “Every weight of the program is written by builder code, and none is trained.”",
+          "pauseAfter": 0.7,
+          "direction": "turning back to the line with a half-smile; read the README's sentence exactly, as a quotation, with quiet finality on 'none is trained'"
+        },
+        {
+          "id": "L0312",
+          "text": "That guess was ours.",
+          "pauseAfter": 0.7,
+          "direction": "wry and affectionate at our own expense, short and dry; let the pause after it do the work"
+        },
+        {
+          "id": "L0313",
+          "text": "And the Notes window? “The program holds no text.” Hang that on the line.",
+          "direction": "curious, leaning in; read the quotation plainly; 'Hang that on the line' as the light refrain, lower and conspiratorial"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.5,
+      "visual": "THIS SHOT: suspect tag 3 struck; the Notes plant (refrain 'Hang that on the line', third of four uses). Cut back to the copper line. Tag 3's front still reads 'Suspect: somebody trained it' in the film's hand, as inked in ch01 (prop lettering, already read; it is not re-captioned); its knot eyelet is visibly EMPTY (no card: the bible names no holder). On 'trained' the camera finds it (beat tag3). On 'README' the narrator's hands flip the tag (paper snap) and the red-pencil hand writes a fragment of the README's sentence on the back, exactly the on-screen fragment 'none is trained' (the full sentence is spoken, not set) (beat flip3); on 'trained' at the end of the line the front is struck through once in red (beat strike3; detent: strike). On 'ours' the camera tips down to the empty eyelet and holds it a moment: nobody tied this one on (beat ours). On 'notes' the camera pushes slowly past the line toward the paper desk behind, into the Notes window, a sheet of paper hanging by fine threads with a short handwritten-looking to-do list (its last line still out of focus, planted for ch12) (beat notes). On 'holds' a small typed card with a short fragment of the README slides in over the Notes window (beat holds). On 'Hang' the narrator's hands lift a fresh blank tag from below frame and tie it to the copper line in the foreground with the card's fragment inked on it, the detent's tie stroke (beat hang). Hold on the new tag swinging gently, slack thread. TAG-LINE STAGING (meta staging.tagLine): WORKSHOP: the canonical workshop (window wall L2, bench L3, line L4 at 58%, pencil post L6); the desk on the bench is lit from inside now (the X-ray has begun).",
+      "beats": [
+        {
+          "id": "tag3In",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "suspect tag 3 hangs in frame, its front legible, its eyelet empty"
+        },
+        {
+          "id": "tag3",
+          "at": {
+            "line": "L0311",
+            "word": "trained"
+          },
+          "what": "camera finds suspect tag 3 and its empty knot"
+        },
+        {
+          "id": "flip3",
+          "at": {
+            "line": "L0311",
+            "word": "README"
+          },
+          "what": "tag 3 flips; the red pencil writes the fragment 'none is trained' on the back"
+        },
+        {
+          "id": "strike3",
+          "at": {
+            "line": "L0311",
+            "edge": "end"
+          },
+          "what": "the front is struck through once in red"
+        },
+        {
+          "id": "ours",
+          "at": {
+            "line": "L0312",
+            "word": "ours"
+          },
+          "what": "the camera tips to the empty eyelet and holds"
+        },
+        {
+          "id": "notes",
+          "at": {
+            "line": "L0313",
+            "word": "notes"
+          },
+          "what": "slow push past the line into the Notes window and its to-do list"
+        },
+        {
+          "id": "holds",
+          "at": {
+            "line": "L0313",
+            "word": "holds"
+          },
+          "what": "a typed card with the README fragment slides in over the Notes window"
+        },
+        {
+          "id": "hang",
+          "at": {
+            "line": "L0313",
+            "word": "Hang"
+          },
+          "what": "the narrator's hands tie a new tag onto the line with the card's fragment"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand",
+        "narrator-hands"
+      ],
+      "props": [
+        "the copper line",
+        "Promise Tag 3 (suspect) with an empty knot",
+        "red pencil",
+        "the Notes window (paper sheet on threads, to-do list)",
+        "a new plant tag"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "“none is trained” — the HandwiredOS README",
+          "beat": "flip3",
+          "until": "notes"
+        },
+        {
+          "kind": "quote",
+          "text": "“holds no text” — the HandwiredOS README",
+          "beat": "holds"
+        }
+      ],
+      "music": {
+        "cue": "ch03-a-recipe",
+        "note": "flip and strike again for tag 3, lighter this time, almost a joke on ourselves; under the push into Notes the motif thins to one line, then the tie stroke (a soft detent click) as the new tag goes on, and the bar hangs"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "OS01",
+        "OS04"
+      ]
+    },
+    {
+      "id": "ch03-s07",
+      "kind": "scene",
+      "setting": "the HandwiredOS desk, slightly translucent like an X-ray plate; the 234-cell source table lit inside it (silent)",
+      "era": "2020s",
+      "mood": "parchment",
+      "lines": [],
+      "leadIn": 0.6,
+      "holdAfter": 0.8,
+      "minDuration": 4.4,
+      "visual": "THIS SHOT: X-ray desk beat 1 of 5 (Device 3), silent. crossfade from the Notes window out to the whole HandwiredOS desk as in ch01-s02 (three paper windows, the dock, the copper wire under it), now a little translucent, as if backlit through paper. At 0.8 s, inside the desk, a long strip of 234 tiny pigeonholes lights from left to right in warm amber, threading behind the windows and the dock (beat xray): the desk's whole source table, the same kind of strip as the toggle's 20, grown up. A small label sets in. One relay clack as the last hole lights. No narration; the camera holds still, haze drifting.",
+      "beats": [
+        {
+          "id": "xray",
+          "at": {
+            "shotTime": 0.8
+          },
+          "what": "inside the translucent desk the 234-cell source table lights, left to right"
+        },
+        {
+          "id": "clack",
+          "at": {
+            "shotTime": 3.2
+          },
+          "what": "the last pigeonhole lights; one relay clack"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "the HandwiredOS desk (translucent)",
+        "a strip of 234 pigeonholes"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "source table · 234 cells",
+          "beat": "xray"
+        }
+      ],
+      "music": {
+        "cue": "ch03-a-recipe",
+        "note": "music drops out; room tone and one relay clack as the strip completes; silence carries into the deep dive"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "OS02"
+      ]
+    }
+  ]
+}

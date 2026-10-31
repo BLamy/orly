@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -66,7 +66,7 @@ function Frame({ s }: { s: SceneState }) {
             />
           )}
           {truthU > 0.9 && (
-            <text x={px(0.03)} y={py(TRUTH[2]) - 18} fill={colors.MUTED} fontSize={13.5} opacity={clamp01((truthU - 0.9) * 10)}>
+            <text x={px(0.03)} y={py(TRUTH[2]) - 98} fill={colors.MUTED} fontSize={14} opacity={clamp01((truthU - 0.9) * 10)}>
               true quality (hidden from both methods)
             </text>
           )}
@@ -78,13 +78,6 @@ function Frame({ s }: { s: SceneState }) {
               <circle cx={px(XS[flash.pref === 1 ? flash.i : flash.j])} cy={py(TRUTH[flash.pref === 1 ? flash.i : flash.j])} r={7} fill="none" stroke={flash.flipped ? colors.NEGATIVE : colors.ACCENT} strokeWidth={2.5} />
             </g>
           )}
-          {pairU > 0 && (
-            <text x={px(0.02)} y={120} fill={colors.TEXT} fontSize={14}>
-              {`preferences collected: ${Math.min(N_PAIRS, Math.floor(pairU))} / ${N_PAIRS}`}
-              {flash?.flipped ? '  — this vote is flipped' : ''}
-            </text>
-          )}
-
           {/* learned scores */}
           {fitU > 0 &&
             XS.map((x, i) => {
@@ -112,7 +105,7 @@ function Frame({ s }: { s: SceneState }) {
             </text>
           )}
           {worstU > 0.5 && (
-            <text x={px(XS[WORST_ITEM]) + 14} y={py(LEARNED_N[WORST_ITEM]) - 12} fill={colors.NEGATIVE} fontSize={13} opacity={worstU}>
+            <text x={px(XS[WORST_ITEM])} y={py(LEARNED_N[WORST_ITEM]) - 22} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={worstU}>
               lucky votes
             </text>
           )}
@@ -122,16 +115,29 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={ruleU}>
               <rect x={px(RULE_X)} y={110} width={px(1) - px(RULE_X) + 30} height={470} fill={colors.NEGATIVE} opacity={0.08} />
               <line x1={px(RULE_X)} y1={110} x2={px(RULE_X)} y2={580} stroke={colors.NEGATIVE} strokeWidth={3} />
-              <text x={px(RULE_X) + 12} y={136} fill={colors.NEGATIVE} fontSize={14} fontWeight={650}>
+              <text x={px(RULE_X) - 12} y={136} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontWeight={650}>
                 the written rule: never past this line
               </text>
-              <text x={px(RULE_X) + 12} y={158} fill={colors.MUTED} fontSize={12.5}>
+              <text x={px(RULE_X) - 12} y={158} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 exact here — silent everywhere else
               </text>
             </g>
           )}
         </g>
       </Camera>
+
+      {/* header: the two routes named in the opening caption */}
+      <text x={640} y={64} textAnchor="middle" fill={colors.TEXT} fontSize={18} opacity={clamp01(truthU * 2) * dimU * (1 - endU)}>
+        write rules  or  show preferences
+      </text>
+
+      {/* the vote counter sits in screen space so it never runs off the camera's frame */}
+      {pairU > 0 && (
+        <text x={430} y={124} fill={colors.TEXT} fontSize={14} opacity={dimU}>
+          {`preferences collected: ${Math.min(N_PAIRS, Math.floor(pairU))} / ${N_PAIRS}`}
+          {flash?.flipped ? '  — this vote is flipped' : ''}
+        </text>
+      )}
 
       {/* stat panel */}
       {statU > 0 && (
@@ -146,21 +152,19 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       )}
 
-      {/* clean ending card */}
+      {/* clean ending card: solid panel so no faded content shows through */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Rules vs Preferences
           </text>
-          <MathLabel
-            tex={'\\text{rules: exact, partial} \\qquad \\text{preferences: total, noisy}'}
-            x={640}
-            y={340}
-            fontSize={20}
-            color={colors.ACCENT}
-            opacity={endU}
-          />
+          <text x={470} y={340} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20}>
+            rules: exact, partial
+          </text>
+          <text x={810} y={340} textAnchor="middle" fill={colors.SECONDARY} fontSize={20}>
+            preferences: total, noisy
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             constitutional training: written principles generate the preference data
           </text>

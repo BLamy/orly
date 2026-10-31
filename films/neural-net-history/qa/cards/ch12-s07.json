@@ -1,0 +1,98 @@
+{
+ "shot": "ch12-s07",
+ "at": "2026-10-13T20:04:09.971Z",
+ "step": 0.0833,
+ "sampled": 166,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@1440,-117",
+   "probed": false,
+   "from": 5.3,
+   "to": 12.133,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@1423,515",
+   "probed": false,
+   "from": 5.8,
+   "to": 10.55,
+   "minInkWhilePaper": 0.52
+  },
+  {
+   "id": "fillRect@-121,-81",
+   "probed": false,
+   "from": 6.633,
+   "to": 6.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@110,-80",
+   "probed": false,
+   "from": 9.8,
+   "to": 11.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-66,27",
+   "probed": false,
+   "from": 10.133,
+   "to": 11.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-67,239",
+   "probed": false,
+   "from": 10.133,
+   "to": 11.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-65,454",
+   "probed": false,
+   "from": 10.133,
+   "to": 11.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-75,684",
+   "probed": false,
+   "from": 10.133,
+   "to": 11.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@185,-52",
+   "probed": false,
+   "from": 10.633,
+   "to": 11.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-99,166",
+   "probed": false,
+   "from": 10.717,
+   "to": 12.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@465,330",
+   "probed": false,
+   "from": 10.967,
+   "to": 11.883,
+   "minInkWhilePaper": 1
+  }
+ ],
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "transAt": "2026-10-13T22:54:50.796Z"
+}

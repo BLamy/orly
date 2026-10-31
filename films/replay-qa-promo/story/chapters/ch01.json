@@ -1,0 +1,168 @@
+{
+  "id": "ch01",
+  "number": 1,
+  "title": "{ introducing }",
+  "blurb": "A dawn haze and a half-finished thought: end-to-end tests you never write, or remember to run. On the blur the braces part and dots slide in to frame { intro▢▢▢ducing }, which flickers three stamps of the product in its gap and closes into the Replay mark and Replay QA.",
+  "shots": [
+    {
+      "id": "ch01-s01",
+      "kind": "plate",
+      "setting": "an abstract studio haze, no place; 2026; dawn light (lilac → peach, a rose glow low in frame)",
+      "era": "product, as of 2026-10-14",
+      "mood": "dawnGold",
+      "lines": [
+        {
+          "id": "L0101",
+          "text": "Imagine end-to-end tests you never write. Or remember to run.",
+          "direction": "an invitation, warm and close; 'end-to-end' said plainly as one easy word, then a small lift and a breath on 'write', then let 'Or remember to run' land easy, almost a smile"
+        }
+      ],
+      "leadIn": 0.3,
+      "holdAfter": 1,
+      "visual": "The reference's opening frame without its figure. Kit haze preset 'dawn' fills the stage (lilac at the top falling to peach, a rose glow breathing upward from y0 ≈ 0.75, drift slow), four or five kit hairlines drifting horizontally across the frame at different speeds, light grain. Nothing else for the first half second: the haze breathes up and brightens (u 0.2 → 0.6). Then kit kinetic carries L0101 word by word, each word blurring in on the narrator's word time (0.1 s early), centred at x 640, y ≈ 288 (40 % height), Promo Sans light, size ≈ 40, white on the haze, slightly tight tracking, two lines at this size, breaking after 'write.' (line one 'Imagine end-to-end tests you never write.', line two 'Or remember to run.'; each line inside 1100 px). On 'remember' the kinetic grad sweep starts on the tail: 'Or remember to run.' runs white → peach → orange, the sweep finishing as 'run' lands. Hold the full line ≈ 1.0 s after the last word (it has been read as it was spoken), the hairlines still drifting and the rose glow cresting into the blur dissolve to ch01-s03. No product, no logo, no cursor.",
+      "beats": [
+        {
+          "id": "haze",
+          "at": {
+            "shotTime": 0
+          },
+          "what": "dawn haze already breathing; hairlines drifting; glow begins to rise"
+        },
+        {
+          "id": "line",
+          "at": {
+            "line": "L0101",
+            "word": "Imagine",
+            "offset": -0.1
+          },
+          "what": "kinetic line begins: 'Imagine' blurs in, then each word on its own word time"
+        },
+        {
+          "id": "write",
+          "at": {
+            "line": "L0101",
+            "word": "write"
+          },
+          "what": "'write.' lands; a hair of space before the tail"
+        },
+        {
+          "id": "sweep",
+          "at": {
+            "line": "L0101",
+            "word": "remember",
+            "offset": -0.1
+          },
+          "what": "colour sweep (white → peach → orange) starts over 'Or remember to run.'"
+        },
+        {
+          "id": "landed",
+          "at": {
+            "line": "L0101",
+            "edge": "end"
+          },
+          "what": "'run.' lands; sweep complete; the M1 swell crests toward the cut"
+        }
+      ],
+      "props": [
+        "kit haze 'dawn'",
+        "kit hairlines",
+        "kit kinetic (grad sweep)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "Imagine end-to-end tests you never write. Or remember to run.",
+          "beat": "line"
+        }
+      ],
+      "music": {
+        "cue": "M1 haze",
+        "note": "Pads only and a filtered arpeggio, no kick, low intensity (0.2): air and anticipation. The filter opens slowly with the colour sweep; a rising swell crests into the blur cut."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "SET-08",
+        "LOOP-03",
+        "CONT-19",
+        "SET-15",
+        "SET-16"
+      ]
+    },
+    {
+      "id": "ch01-s03",
+      "kind": "card",
+      "setting": "studio paper (#e9e8ea), no place; 2026; flat, shadowless light",
+      "era": "product, as of 2026-10-14",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0102",
+          "text": "Introducing Replay QA.",
+          "direction": "confident, unhurried; a short, real pause after 'Introducing', then the name said plainly with pride, not announced",
+          "insertGaps": {
+            "Introducing": 0.3
+          }
+        }
+      ],
+      "leadIn": 0.5,
+      "holdAfter": 0.7,
+      "visual": "The reference's '{ introducing }' card. A blur dissolve from ch01-s01's haze lands on kit paper (the brace device of the cut '{ on their own }' card folds in here). At 0 s four kit squareDots sit wide at the corners of an invisible box (≈ 620 × 170 px, centred) around a bare pair of braces '{   }'; at 0.05 s the braces part (kit bracket u 0 → 1 over 0.45 s, ease-out) and '{ introducing }' blurs in inside them, while the four dots slide inward (dots 'wide' → 'corners') and stop at the brace corners on the M1 swell's crest. The card is fully there ≈ 0.1 s before the voice (≈ 0.5 s of type and music before 'Introducing'; the voice then says the word the eye is reading). Centred at y ≈ 330, Promo Sans light ≈ 46 px: '{ intro' set solid, 'ducing }' (the braces are the kit bracket glyphs; the word to read is 'introducing'). DIRECTOR'S NOTE (2026-10-14): NO product stills, stamps or screenshots inside or around the word: type, braces and dots only. On 'Replay' the gap closes (the halves slide together), the braces close in on the word, and the type cross-dissolves (blur, 0.3 s) into the Replay mark (kit replayMark, h ≈ 56) with 'Replay QA' beside it in Promo Sans regular ≈ 44 px: the lock-up is legible from mid-dissolve, as the voice says 'Replay', and fully landed on 'QA'. The four corner dots hold around the lock-up. Hold ≈ 0.7 s on the lock-up (it has been legible since mid-dissolve on Replay), then the film's one whip out to ch02.",
+      "beats": [
+        {
+          "id": "word",
+          "at": {
+            "shotTime": 0
+          },
+          "what": "blur lands on bare braces with four wide dots; at 0.05 s the braces part, '{ intro   ducing }' blurs in with an empty gap and the dots slide in to the brace corners"
+        },
+        {
+          "id": "close",
+          "at": {
+            "line": "L0102",
+            "word": "Replay",
+            "offset": -0.1
+          },
+          "what": "the gap closes, the braces close in, the type cross-dissolves into the Replay mark and 'Replay QA' (legible mid-dissolve)"
+        },
+        {
+          "id": "mark",
+          "at": {
+            "line": "L0102",
+            "word": "QA"
+          },
+          "what": "Replay mark + 'Replay QA' fully landed; corner dots frame the lock-up; sub drop"
+        }
+      ],
+      "props": [
+        "kit paper",
+        "kit bracket",
+        "kit squareDots",
+        "kit replayMark",
+        "RrwebScreen stills (cursor off, ≈1.45:1 crops): runs @3668, schedule @11458, bug-react @3100"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "introducing",
+          "beat": "word",
+          "until": "mark"
+        },
+        {
+          "kind": "title",
+          "text": "Replay QA",
+          "beat": "close"
+        }
+      ],
+      "music": {
+        "cue": "M1 haze",
+        "note": "The M1 pad swell crests into the blur as the braces part (the arpeggio steps up one register, still no kick); a muted downbeat lands on 'Introducing' with a tight filtered tick per stamp (a clack, not a chime); a sub drop under 'Replay QA'; the pad holds through the whip, which the kick of M2 answers."
+      },
+      "transitionIn": "blur",
+      "claims": [
+        "SET-15",
+        "SET-16",
+        "CONT-19"
+      ]
+    }
+  ]
+}

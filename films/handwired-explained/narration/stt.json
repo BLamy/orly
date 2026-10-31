@@ -1,0 +1,2928 @@
+{
+ "version": 1,
+ "lines": {
+  "L0201": {
+   "lineId": "L0201",
+   "model": "scribe_v1",
+   "transcript": "In nineteen forty-three, Warren McCulloch and Walter Pitts tied on the oldest tag: hand-wired never cites them.",
+   "expectedTerms": [
+    {
+     "term": "McCulloch",
+     "accept": [
+      "McCulloch",
+      "McCullock"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Pitts",
+     "accept": [
+      "Pitts"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 2,
+   "sig": "d84598615f1e",
+   "lineSig": "6d2408528678",
+   "clip": "narration/clips/L0201.wav",
+   "wer": 0.188,
+   "requestId": null,
+   "at": "2026-10-28T07:05:30.365Z"
+  },
+  "L0204": {
+   "lineId": "L0204",
+   "model": "scribe_v1",
+   "transcript": "In 1951 at RAND, Stephen Kleene showed such a net is a finite machine.",
+   "expectedTerms": [
+    {
+     "term": "Kleene",
+     "accept": [
+      "Kleene",
+      "Clay-nee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "RAND",
+     "accept": [
+      "RAND",
+      "Rand"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "6e860f2cf1d3",
+   "lineSig": "89f5a2c650c6",
+   "clip": "narration/clips/L0204.wav",
+   "wer": 0.133,
+   "requestId": null,
+   "at": "2026-10-28T07:05:31.939Z"
+  },
+  "L0301": {
+   "lineId": "L0301",
+   "model": "scribe_v1",
+   "transcript": "The 3rd of June, 2026, Cheng Lu, Handwired's author, makes his first commit.",
+   "expectedTerms": [
+    {
+     "term": "Lou",
+     "accept": [
+      "Lou"
+     ],
+     "found": false,
+     "from": "cast"
+    }
+   ],
+   "pass": false,
+   "sig": "a2a863ddea29",
+   "lineSig": "3a7711023676",
+   "clip": "narration/clips/L0301.wav",
+   "wer": 0.154,
+   "requestId": null,
+   "at": "2026-10-28T07:11:52.051Z"
+  },
+  "L0311": {
+   "lineId": "L0311",
+   "model": "scribe_v1",
+   "transcript": "Somebody trained it? The desktop's readme. Every weight of the program is written by builder code and none is trained",
+   "expectedTerms": [
+    {
+     "term": "README",
+     "accept": [
+      "README",
+      "read-me"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "7464630388c6",
+   "lineSig": "12728326efdc",
+   "clip": "narration/clips/L0311.wav",
+   "wer": 0.095,
+   "requestId": null,
+   "at": "2026-10-28T07:05:34.168Z"
+  },
+  "L0403": {
+   "lineId": "L0403",
+   "model": "scribe_v1",
+   "transcript": "Bend a hinge, flat then up. A ramp is all a ray loo is.",
+   "expectedTerms": [
+    {
+     "term": "ReLU",
+     "accept": [
+      "ReLU",
+      "ray-loo"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "3a0ff7a30b5e",
+   "lineSig": "291622a08ae2",
+   "clip": "narration/clips/L0403.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-28T07:11:52.826Z"
+  },
+  "L0503": {
+   "lineId": "L0503",
+   "model": "scribe_v1",
+   "transcript": "The readme calls it a giant matmul, a matrix multiplication the sums graphics cards are built for",
+   "expectedTerms": [
+    {
+     "term": "README",
+     "accept": [
+      "README",
+      "read-me"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "matmul",
+     "accept": [
+      "matmul",
+      "mat-mul"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "929ea415fbb4",
+   "lineSig": "b2075cfa5350",
+   "clip": "narration/clips/L0503.wav",
+   "wer": 0.211,
+   "requestId": null,
+   "at": "2026-10-28T07:05:36.695Z"
+  },
+  "L0504": {
+   "lineId": "L0504",
+   "model": "scribe_v1",
+   "transcript": "So it is a network in the plain sense weighted sums with ReLU gates between.",
+   "expectedTerms": [
+    {
+     "term": "ReLU",
+     "accept": [
+      "ReLU",
+      "ray-loo"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "41d0a5922665",
+   "lineSig": "88ffdfe19e97",
+   "clip": "narration/clips/L0504.wav",
+   "wer": 0.125,
+   "requestId": null,
+   "at": "2026-10-28T07:05:37.742Z"
+  },
+  "L0510": {
+   "lineId": "L0510",
+   "model": "scribe_v1",
+   "transcript": "So what is a graphics card, a GPU for? Hang that on the line.",
+   "expectedTerms": [
+    {
+     "term": "GPU",
+     "accept": [
+      "GPU",
+      "G P U"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "0910e46d0db9",
+   "lineSig": "581e493f3a18",
+   "clip": "narration/clips/L0510.wav",
+   "wer": 0.188,
+   "requestId": null,
+   "at": "2026-10-28T07:05:38.566Z"
+  },
+  "L0624": {
+   "lineId": "L0624",
+   "model": "scribe_v1",
+   "transcript": "Clay Nee's finite machine with everything unbounded coming from outside. Here it is",
+   "expectedTerms": [
+    {
+     "term": "Kleene",
+     "accept": [
+      "Kleene",
+      "Clay-nee"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 1,
+   "sig": "33d23a1996b0",
+   "lineSig": "939adc5fa4cc",
+   "clip": "narration/clips/L0624.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-28T07:05:39.492Z"
+  },
+  "L0703": {
+   "lineId": "L0703",
+   "model": "scribe_v1",
+   "transcript": "Take one gated product, a valve. Along its channel flows an input, three times a weight, W. The opening is G plus B, never below nought",
+   "expectedTerms": [
+    {
+     "term": "w",
+     "accept": [
+      "w",
+      "double-you"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "g",
+     "accept": [
+      "g",
+      "gee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "b",
+     "accept": [
+      "b",
+      "bee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 3,
+   "sig": "e36dc932188b",
+   "lineSig": "27f908106470",
+   "clip": "narration/clips/L0703.wav",
+   "wer": 0.148,
+   "requestId": null,
+   "at": "2026-10-28T07:05:40.641Z"
+  },
+  "L0704": {
+   "lineId": "L0704",
+   "model": "scribe_v1",
+   "transcript": "With W a half, G a quarter, B minus a tenth. It opens naught point one five and out comes naught point two two five.",
+   "expectedTerms": [
+    {
+     "term": "w",
+     "accept": [
+      "w",
+      "double-you"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "g",
+     "accept": [
+      "g",
+      "gee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "b",
+     "accept": [
+      "b",
+      "bee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 3,
+   "sig": "da3529e172e0",
+   "lineSig": "7421e1ab6929",
+   "clip": "narration/clips/L0704.wav",
+   "wer": 0.231,
+   "requestId": null,
+   "at": "2026-10-28T07:05:41.727Z"
+  },
+  "L0706": {
+   "lineId": "L0706",
+   "model": "scribe_v1",
+   "transcript": "Lower B to minus four tenths. The valve shuts, and every slope behind it goes dark.",
+   "expectedTerms": [
+    {
+     "term": "b",
+     "accept": [
+      "b",
+      "bee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "7afb63901111",
+   "lineSig": "86dd4019ac3d",
+   "clip": "narration/clips/L0706.wav",
+   "wer": 0.063,
+   "requestId": null,
+   "at": "2026-10-28T07:05:42.953Z"
+  },
+  "L0707": {
+   "lineId": "L0707",
+   "model": "scribe_v1",
+   "transcript": "A readme in the project warns, \"Without any decay, a unit whose gate has closed gets no gradient and stays shut.\"",
+   "expectedTerms": [
+    {
+     "term": "README",
+     "accept": [
+      "README",
+      "read-me"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "7f4ed4b5d9ed",
+   "lineSig": "cd037deacd49",
+   "clip": "narration/clips/L0707.wav",
+   "wer": 0.091,
+   "requestId": null,
+   "at": "2026-10-28T07:05:44.525Z"
+  },
+  "L0711": {
+   "lineId": "L0711",
+   "model": "scribe_v1",
+   "transcript": "The README calls it fully differentiable, a slope everywhere. The project itself has doubts",
+   "expectedTerms": [
+    {
+     "term": "README",
+     "accept": [
+      "README",
+      "read-me"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "e631e128458c",
+   "lineSig": "2f153d806dc9",
+   "clip": "narration/clips/L0711.wav",
+   "wer": 0.133,
+   "requestId": null,
+   "at": "2026-10-28T07:05:45.816Z"
+  },
+  "L0721": {
+   "lineId": "L0721",
+   "model": "scribe_v1",
+   "transcript": "A frozen program trained end-to-end inside a text writing network like NanoGPT. Not attempted. It hangs as a question",
+   "expectedTerms": [
+    {
+     "term": "nanoGPT",
+     "accept": [
+      "nanoGPT",
+      "nano G P T"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "1a12ba05777e",
+   "lineSig": "c681b9f67e2a",
+   "clip": "narration/clips/L0721.wav",
+   "wer": 0.167,
+   "requestId": null,
+   "at": "2026-10-28T07:05:46.866Z"
+  },
+  "L0805": {
+   "lineId": "L0805",
+   "model": "scribe_v1",
+   "transcript": "On the 3rd of September, an AI agent's review retired ten earlier claims, that one among them. Its narrower replacement, a defined numeric subset can be compiled",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "45d0a6a67f2b",
+   "lineSig": "044d221c0420",
+   "clip": "narration/clips/L0805.wav",
+   "wer": 0.037,
+   "requestId": null,
+   "at": "2026-10-28T07:05:48.398Z"
+  },
+  "L0810": {
+   "lineId": "L0810",
+   "model": "scribe_v1",
+   "transcript": "Every commit is Cheng Lu's. Most also credit a coding agent, Claude Code.",
+   "expectedTerms": [
+    {
+     "term": "Lou",
+     "accept": [
+      "Lou"
+     ],
+     "found": false,
+     "from": "cast"
+    }
+   ],
+   "pass": false,
+   "sig": "6122ac27910a",
+   "lineSig": "76cb2b6fface",
+   "clip": "narration/clips/L0810.wav",
+   "wer": 0.077,
+   "requestId": null,
+   "at": "2026-10-28T07:11:53.624Z"
+  },
+  "L0811": {
+   "lineId": "L0811",
+   "model": "scribe_v1",
+   "transcript": "The review also names an earlier OpenAI agent, Codex. This film was written with Claude",
+   "expectedTerms": [
+    {
+     "term": "OpenAI",
+     "accept": [
+      "OpenAI",
+      "Open A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "a1ec431d7d2c",
+   "lineSig": "6e81bc880542",
+   "clip": "narration/clips/L0811.wav",
+   "wer": 0.125,
+   "requestId": null,
+   "at": "2026-10-28T07:05:50.290Z"
+  },
+  "L0903": {
+   "lineId": "L0903",
+   "model": "scribe_v1",
+   "transcript": "Cheng asked whether search on the GPU was clearly more performant and if so, worth a demo.",
+   "expectedTerms": [
+    {
+     "term": "GPU",
+     "accept": [
+      "GPU",
+      "G P U"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "a9252177cc07",
+   "lineSig": "0ba2a844ae99",
+   "clip": "narration/clips/L0903.wav",
+   "wer": 0.158,
+   "requestId": null,
+   "at": "2026-10-28T07:05:51.193Z"
+  },
+  "L0906": {
+   "lineId": "L0906",
+   "model": "scribe_v1",
+   "transcript": "A hundred thousand JSON documents, small text records, one per GPU lane, all running one small step",
+   "expectedTerms": [
+    {
+     "term": "GPU",
+     "accept": [
+      "GPU",
+      "G P U"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "JSON",
+     "accept": [
+      "JSON",
+      "Jason"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "6bc9a4045ac3",
+   "lineSig": "c13d2512ec7a",
+   "clip": "narration/clips/L0906.wav",
+   "wer": 0.211,
+   "requestId": null,
+   "at": "2026-10-28T07:05:52.220Z"
+  },
+  "L0907": {
+   "lineId": "L0907",
+   "model": "scribe_v1",
+   "transcript": "So what is a GPU for? The demos answer, it is for many documents.",
+   "expectedTerms": [
+    {
+     "term": "GPU",
+     "accept": [
+      "GPU",
+      "G P U"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "5433a44bcb68",
+   "lineSig": "69782e8d403c",
+   "clip": "narration/clips/L0907.wav",
+   "wer": 0.188,
+   "requestId": null,
+   "at": "2026-10-28T07:05:52.997Z"
+  },
+  "L0914": {
+   "lineId": "L0914",
+   "model": "scribe_v1",
+   "transcript": "On the thirteenth, a hedged write-up tied on a tag, \"The GPU is faster.\"",
+   "expectedTerms": [
+    {
+     "term": "GPU",
+     "accept": [
+      "GPU",
+      "G P U"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "77000de45f6e",
+   "lineSig": "6154000be41e",
+   "clip": "narration/clips/L0914.wav",
+   "wer": 0.176,
+   "requestId": null,
+   "at": "2026-10-28T07:05:54.048Z"
+  },
+  "L0908": {
+   "lineId": "L0908",
+   "model": "scribe_v1",
+   "transcript": "Search patterns are what Clay Nee, back in 1951, called regular events",
+   "expectedTerms": [
+    {
+     "term": "Kleene",
+     "accept": [
+      "Kleene",
+      "Clay-nee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "a72efb01f1b3",
+   "lineSig": "0d3bb7eaaf5b",
+   "clip": "narration/clips/L0908.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-28T07:05:54.750Z"
+  },
+  "L0912": {
+   "lineId": "L0912",
+   "model": "scribe_v1",
+   "transcript": "The browser's pattern matcher, RegExp, on one core, eight to twenty-eight milliseconds a keystroke. The search, eleven to fifteen",
+   "expectedTerms": [
+    {
+     "term": "RegExp",
+     "accept": [
+      "RegExp",
+      "Reg Exp"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "fced8b1725b5",
+   "lineSig": "87e3902f3184",
+   "clip": "narration/clips/L0912.wav",
+   "wer": 0.1,
+   "requestId": null,
+   "at": "2026-10-28T07:05:56.260Z"
+  },
+  "L0915": {
+   "lineId": "L0915",
+   "model": "scribe_v1",
+   "transcript": "The same day, a review found Reg Exp had one of 18 cores.",
+   "expectedTerms": [
+    {
+     "term": "RegExp",
+     "accept": [
+      "RegExp",
+      "Reg Exp"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "8c7a378c2f2b",
+   "lineSig": "3e6b8758ae41",
+   "clip": "narration/clips/L0915.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-28T07:05:57.156Z"
+  },
+  "L0920": {
+   "lineId": "L0920",
+   "model": "scribe_v1",
+   "transcript": "With eight workers, Reg Exp keeps up and wins after a pause, except on that one pattern",
+   "expectedTerms": [
+    {
+     "term": "RegExp",
+     "accept": [
+      "RegExp",
+      "Reg Exp"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "37a2a0a0dcb0",
+   "lineSig": "710ba658327f",
+   "clip": "narration/clips/L0920.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-28T07:17:21.141Z"
+  },
+  "L0917": {
+   "lineId": "L0917",
+   "model": "scribe_v1",
+   "transcript": "The lab, with good grace Reg Exp is fast",
+   "expectedTerms": [
+    {
+     "term": "RegExp",
+     "accept": [
+      "RegExp",
+      "Reg Exp"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "bbd5fc25d838",
+   "lineSig": "210657d0a299",
+   "clip": "narration/clips/L0917.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-28T07:05:58.845Z"
+  },
+  "L0918": {
+   "lineId": "L0918",
+   "model": "scribe_v1",
+   "transcript": "On the fourteenth, Chung gave the go-ahead. \"Do it quick please, then publish.\"",
+   "expectedTerms": [
+    {
+     "term": "plz",
+     "accept": [
+      "plz",
+      "please"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "7ce2c1c7ab6d",
+   "lineSig": "0cea099d1042",
+   "clip": "narration/clips/L0918.wav",
+   "wer": 0.071,
+   "requestId": null,
+   "at": "2026-10-28T07:06:00.652Z"
+  },
+  "L1001": {
+   "lineId": "L1001",
+   "model": "scribe_v1",
+   "transcript": "On Hacker News, one commenter said it's really write your logic in a DSL that creates a neural net-shaped circuit. A DSL, a little language for one job",
+   "expectedTerms": [
+    {
+     "term": "DSL",
+     "accept": [
+      "DSL",
+      "D-S-L"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "1587640e947c",
+   "lineSig": "cad0df066b99",
+   "clip": "narration/clips/L1001.wav",
+   "wer": 0.182,
+   "requestId": null,
+   "at": "2026-10-28T07:06:01.826Z"
+  },
+  "L1101": {
+   "lineId": "L1101",
+   "model": "scribe_v1",
+   "transcript": "One last experiment. The search demo's JSON highlighter stops at the first mistake",
+   "expectedTerms": [
+    {
+     "term": "JSON",
+     "accept": [
+      "JSON",
+      "Jason"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "b11a7e227b93",
+   "lineSig": "a164cc7bbf42",
+   "clip": "narration/clips/L1101.wav",
+   "wer": 0.077,
+   "requestId": null,
+   "at": "2026-10-28T07:06:02.507Z"
+  },
+  "L1103": {
+   "lineId": "L1103",
+   "model": "scribe_v1",
+   "transcript": "Train only the unread entries to keep going after a mistake and valid JSON passes exactly as before.",
+   "expectedTerms": [
+    {
+     "term": "JSON",
+     "accept": [
+      "JSON",
+      "Jason"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "bf8d703a0e78",
+   "lineSig": "47398200e267",
+   "clip": "narration/clips/L1103.wav",
+   "wer": 0.111,
+   "requestId": null,
+   "at": "2026-10-28T07:06:03.568Z"
+  },
+  "L1105": {
+   "lineId": "L1105",
+   "model": "scribe_v1",
+   "transcript": "Jason, a clear success",
+   "expectedTerms": [
+    {
+     "term": "JSON",
+     "accept": [
+      "JSON",
+      "Jason"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "58e9d3b2079c",
+   "lineSig": "f0f9f4f18013",
+   "clip": "narration/clips/L1105.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-28T07:06:04.469Z"
+  },
+  "L1107": {
+   "lineId": "L1107",
+   "model": "scribe_v1",
+   "transcript": "For Toml, another format, by the rule fixed beforehand, the track failed.",
+   "expectedTerms": [
+    {
+     "term": "TOML",
+     "accept": [
+      "TOML"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "ab0335b5cfe6",
+   "lineSig": "42f9f552311e",
+   "clip": "narration/clips/L1107.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-28T07:11:54.365Z"
+  },
+  "L1108a": {
+   "lineId": "L1108a",
+   "model": "scribe_v1",
+   "transcript": "The readme is careful. The failure does not say that training cannot work there",
+   "expectedTerms": [
+    {
+     "term": "README",
+     "accept": [
+      "README",
+      "read-me"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "d8e4cc7f804a",
+   "lineSig": "a60160db88cc",
+   "clip": "narration/clips/L1108a.wav",
+   "wer": 0.133,
+   "requestId": null,
+   "at": "2026-10-28T07:06:06.420Z"
+  },
+  "L0101": {
+   "lineId": "L0101",
+   "model": "scribe_v1",
+   "transcript": "A small desktop, three windows, a dock, twelve photographs",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "783608ccc332",
+   "lineSig": "be8a69ce6f4c",
+   "clip": "narration/clips/L0101.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:07.261Z"
+  },
+  "L0102": {
+   "lineId": "L0102",
+   "model": "scribe_v1",
+   "transcript": "Drag a window. It glides and settles.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e341316f9280",
+   "lineSig": "f5adc04f4c93",
+   "clip": "narration/clips/L0102.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:07.845Z"
+  },
+  "L0103": {
+   "lineId": "L0103",
+   "model": "scribe_v1",
+   "transcript": "Every move is worked out by one neural network built with a library called Handwired. This window shows it live.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "20444ee2554c",
+   "lineSig": "8e3a5196a787",
+   "clip": "narration/clips/L0103.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:08.943Z"
+  },
+  "L0104": {
+   "lineId": "L0104",
+   "model": "scribe_v1",
+   "transcript": "Even the wallpaper maps it. One arc for each weight, each number it multiplies by. Nine thousand nine hundred and nine.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "578dcbe1049b",
+   "lineSig": "9134615a5b6d",
+   "clip": "narration/clips/L0104.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:10.010Z"
+  },
+  "L0105": {
+   "lineId": "L0105",
+   "model": "scribe_v1",
+   "transcript": "Where did those weights come from?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d9046b130b9b",
+   "lineSig": "b70b7a821fb9",
+   "clip": "narration/clips/L0105.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:23:36.086Z"
+  },
+  "L0106": {
+   "lineId": "L0106",
+   "model": "scribe_v1",
+   "transcript": "Somebody trained it. A tool converted ordinary code. Or it isn't really a network.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "eb84238d7fd4",
+   "lineSig": "246a1ee5e0f6",
+   "clip": "narration/clips/L0106.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:12.836Z"
+  },
+  "L0107": {
+   "lineId": "L0107",
+   "model": "scribe_v1",
+   "transcript": "They hang on this copper line as paper tags. We'll test everyone",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c618c9495d4e",
+   "lineSig": "3b7ec6431b2a",
+   "clip": "narration/clips/L0107.wav",
+   "wer": 0.154,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:22.355Z"
+  },
+  "L0107a": {
+   "lineId": "L0107a",
+   "model": "scribe_v1",
+   "transcript": "And one more tag blank for now Why would anyone build it this way?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "69840db50990",
+   "lineSig": "6ac522e15ca6",
+   "clip": "narration/clips/L0107a.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:14.304Z"
+  },
+  "L0108": {
+   "lineId": "L0108",
+   "model": "scribe_v1",
+   "transcript": "A scrap of JavaScript a child could check. If A is more than four ten, if not, twelve.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "79fef77689c9",
+   "lineSig": "06893b90ed88",
+   "clip": "narration/clips/L0108.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:15.168Z"
+  },
+  "L0109": {
+   "lineId": "L0109",
+   "model": "scribe_v1",
+   "transcript": "Build it from ramps, the stuff of neural networks. Five gives ten, three twelve.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d2b57b81c5d3",
+   "lineSig": "9485ab3aee8b",
+   "clip": "narration/clips/L0109.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:16.052Z"
+  },
+  "L0110": {
+   "lineId": "L0110",
+   "model": "scribe_v1",
+   "transcript": "Give it four and a half",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "644c3e5771af",
+   "lineSig": "00e2dc45c7cb",
+   "clip": "narration/clips/L0110.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:23:36.906Z"
+  },
+  "L0111": {
+   "lineId": "L0111",
+   "model": "scribe_v1",
+   "transcript": "Eleven, neither ten nor twelve",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ca54bf0cc7dc",
+   "lineSig": "fd295fb81440",
+   "clip": "narration/clips/L0111.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:17.555Z"
+  },
+  "L0112": {
+   "lineId": "L0112",
+   "model": "scribe_v1",
+   "transcript": "Nothing's broken. It was built for whole numbers, and it took that on trust",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fdcdd8dbfc22",
+   "lineSig": "e52f8551ee46",
+   "clip": "narration/clips/L0112.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:18.195Z"
+  },
+  "L0113": {
+   "lineId": "L0113",
+   "model": "scribe_v1",
+   "transcript": "This film is about promises like that. Who tied them on? Who doubted them? And how long they held?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7ae81eac91ae",
+   "lineSig": "dde8c7854ec4",
+   "clip": "narration/clips/L0113.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:18.971Z"
+  },
+  "L0202": {
+   "lineId": "L0202",
+   "model": "scribe_v1",
+   "transcript": "The tag \"A neuron is a logic gate. Neural events,\" they wrote, \"can be treated by means of propositional logic.\"",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a7fa0ef04147",
+   "lineSig": "43d4c1ba9ff4",
+   "clip": "narration/clips/L0202.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:20.176Z"
+  },
+  "L0203": {
+   "lineId": "L0203",
+   "model": "scribe_v1",
+   "transcript": "Nothing in their nets learned. Someone chose every connection by hand.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "64b13812b1c5",
+   "lineSig": "7fbb324bb723",
+   "clip": "narration/clips/L0203.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:21.023Z"
+  },
+  "L0205": {
+   "lineId": "L0205",
+   "model": "scribe_v1",
+   "transcript": "He called the patterns it can recognize regular events.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b55d37d08105",
+   "lineSig": "f7caba6b2238",
+   "clip": "narration/clips/L0205.wav",
+   "wer": 0.111,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:21.901Z"
+  },
+  "L0206": {
+   "lineId": "L0206",
+   "model": "scribe_v1",
+   "transcript": "Our reading A finite net remembers only so much. Anything unbounded comes from outside. Hang that on the line.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "4fc79cf379d9",
+   "lineSig": "df08693529cd",
+   "clip": "narration/clips/L0206.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:22.943Z"
+  },
+  "L0208b": {
+   "lineId": "L0208b",
+   "model": "scribe_v1",
+   "transcript": "In 2020, one human neuron's branches answered either input but not both, a job thought to need layers of gates.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "439393156dc4",
+   "lineSig": "6a4104d64866",
+   "clip": "narration/clips/L0208b.wav",
+   "wer": 0.105,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:24.372Z"
+  },
+  "L0209": {
+   "lineId": "L0209",
+   "model": "scribe_v1",
+   "transcript": "As biology, the logic gate tag frayed. As engineering, it never came down.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a629e7740685",
+   "lineSig": "020b7f5d6ab5",
+   "clip": "narration/clips/L0209.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:25.164Z"
+  },
+  "L0210": {
+   "lineId": "L0210",
+   "model": "scribe_v1",
+   "transcript": "In 2019, a younger Tag learned the weights don't write them",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "6a8dafb3f521",
+   "lineSig": "82a10db0c0ed",
+   "clip": "narration/clips/L0210.wav",
+   "wer": 0.091,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:26.110Z"
+  },
+  "L0210b": {
+   "lineId": "L0210b",
+   "model": "scribe_v1",
+   "transcript": "Rich Sutton tied it on in The Bitter Lesson. Six days later, Rodney Brooks replied, \"I think Sutton is wrong.\"",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "18850776b053",
+   "lineSig": "2f4c2cb3b05e",
+   "clip": "narration/clips/L0210b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:27.267Z"
+  },
+  "L0211": {
+   "lineId": "L0211",
+   "model": "scribe_v1",
+   "transcript": "Some kept writing weights anyway as proofs and test beds",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0dab7db52153",
+   "lineSig": "e9dbbc473a60",
+   "clip": "narration/clips/L0211.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:27.822Z"
+  },
+  "L0212": {
+   "lineId": "L0212",
+   "model": "scribe_v1",
+   "transcript": "83 years after the oldest tag, someone has written a network's weights by hand to run a desktop.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "cd30336e6e86",
+   "lineSig": "cfe1feb245d6",
+   "clip": "narration/clips/L0212.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:29.091Z"
+  },
+  "L0302": {
+   "lineId": "L0302",
+   "model": "scribe_v1",
+   "transcript": "Four months and two renames later, Handwired",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fcaa65e95e79",
+   "lineSig": "7de939198b30",
+   "clip": "narration/clips/L0302.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:29.873Z"
+  },
+  "L0303": {
+   "lineId": "L0303",
+   "model": "scribe_v1",
+   "transcript": "It's tutorial. A numeric program is a fixed list of operations over 32-bit floats",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a3c400d3dab7",
+   "lineSig": "91037200d5ee",
+   "clip": "narration/clips/L0303.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:30.763Z"
+  },
+  "L0304": {
+   "lineId": "L0304",
+   "model": "scribe_v1",
+   "transcript": "You don't write the list. Builder code, ordinary JavaScript run once, appends to it",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b760e8a53bd0",
+   "lineSig": "a9f3deb2a7da",
+   "clip": "narration/clips/L0304.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:31.816Z"
+  },
+  "L0305": {
+   "lineId": "L0305",
+   "model": "scribe_v1",
+   "transcript": "One guess falls at once for the library itself. The docs. No tool converts existing JavaScript source into a program",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1e1a30476d40",
+   "lineSig": "ac66f84a8ff9",
+   "clip": "narration/clips/L0305.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:32.759Z"
+  },
+  "L0307": {
+   "lineId": "L0307",
+   "model": "scribe_v1",
+   "transcript": "Every number the program reads or keeps is a cell in one table. A toggle has 20",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d2b685dfac33",
+   "lineSig": "e95b4dc5d0a1",
+   "clip": "narration/clips/L0307.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:33.557Z"
+  },
+  "L0308": {
+   "lineId": "L0308",
+   "model": "scribe_v1",
+   "transcript": "A wire is a position where a number lives.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a25211586d88",
+   "lineSig": "30e1336a1a6f",
+   "clip": "narration/clips/L0308.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:34.424Z"
+  },
+  "L0309": {
+   "lineId": "L0309",
+   "model": "scribe_v1",
+   "transcript": "Four instructions: a weighted sum, a gated product, a snap to a whole number, a read from a list",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2a8273ed154d",
+   "lineSig": "cc00de50625e",
+   "clip": "narration/clips/L0309.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:35.445Z"
+  },
+  "L0310": {
+   "lineId": "L0310",
+   "model": "scribe_v1",
+   "transcript": "Each step rounds to a 32-bit float, a number that keeps about seven digits. Even whole numbers stay exact only to about 17 million.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "27386ae73487",
+   "lineSig": "c8d7f698fbc4",
+   "clip": "narration/clips/L0310.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:36.611Z"
+  },
+  "L0312": {
+   "lineId": "L0312",
+   "model": "scribe_v1",
+   "transcript": "That guess was ours.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "cd7a2777c7b8",
+   "lineSig": "f37e44b79dfb",
+   "clip": "narration/clips/L0312.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:37.129Z"
+  },
+  "L0313": {
+   "lineId": "L0313",
+   "model": "scribe_v1",
+   "transcript": "And the notes window? The program holds no text. Hang that on the line.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "026a0c27f7aa",
+   "lineSig": "319abf4ba8f3",
+   "clip": "narration/clips/L0313.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:38.147Z"
+  },
+  "L0401": {
+   "lineId": "L0401",
+   "model": "scribe_v1",
+   "transcript": "Back to four and a half. In JavaScript, only the chosen side runs",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ef4777b74a8e",
+   "lineSig": "1d7446fb306e",
+   "clip": "narration/clips/L0401.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:23.399Z"
+  },
+  "L0402": {
+   "lineId": "L0402",
+   "model": "scribe_v1",
+   "transcript": "A network has no if",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c2f24c2e9fca",
+   "lineSig": "bdf8268bdd98",
+   "clip": "narration/clips/L0402.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:39.575Z"
+  },
+  "L0404": {
+   "lineId": "L0404",
+   "model": "scribe_v1",
+   "transcript": "This one wakes at four. Three gives nought. Five gives one. A hundred gives ninety-six",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1892db4de514",
+   "lineSig": "fc093c0016c0",
+   "clip": "narration/clips/L0404.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:40.624Z"
+  },
+  "L0405": {
+   "lineId": "L0405",
+   "model": "scribe_v1",
+   "transcript": "A second ramp wakes at five. Take it from the first.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "acb3d8b3944c",
+   "lineSig": "f11b152bbc2e",
+   "clip": "narration/clips/L0405.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:23:38.268Z"
+  },
+  "L0406": {
+   "lineId": "L0406",
+   "model": "scribe_v1",
+   "transcript": "Nought up to four, one from five, a bit. Whole numbers sit on the corners, the whole trick and the whole caveat.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fe7d2eb6690e",
+   "lineSig": "cacb147d50dd",
+   "clip": "narration/clips/L0406.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:24.723Z"
+  },
+  "L0407": {
+   "lineId": "L0407",
+   "model": "scribe_v1",
+   "transcript": "Two belts carry both answers every time, ten and twelve. The bit opens one shutter, shuts the other",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "aba1f1397477",
+   "lineSig": "4fd31ffc2663",
+   "clip": "narration/clips/L0407.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:43.390Z"
+  },
+  "L0408": {
+   "lineId": "L0408",
+   "model": "scribe_v1",
+   "transcript": "Say the side you didn't choose overflows past the biggest float to infinity. Naught times infinity isn't naught. It isn't a number at all",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3d3a81d69a7c",
+   "lineSig": "1ad2ed6c6582",
+   "clip": "narration/clips/L0408.wav",
+   "wer": 0.083,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:44.371Z"
+  },
+  "L0409": {
+   "lineId": "L0409",
+   "model": "scribe_v1",
+   "transcript": "Now four and a half The bit reads a half Half of ten Half of twelve",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "aec7540739ba",
+   "lineSig": "49a321a9f9d6",
+   "clip": "narration/clips/L0409.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:45.165Z"
+  },
+  "L0410": {
+   "lineId": "L0410",
+   "model": "scribe_v1",
+   "transcript": "Eleven,",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5efa4813ab21",
+   "lineSig": "9e0fe267698f",
+   "clip": "narration/clips/L0410.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:45.897Z"
+  },
+  "L0411": {
+   "lineId": "L0411",
+   "model": "scribe_v1",
+   "transcript": "Every if here is a dimmer switch. The program's job, keep it fully on or fully off",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1aa8ce686144",
+   "lineSig": "5c9daffcbcd3",
+   "clip": "narration/clips/L0411.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:46.663Z"
+  },
+  "L0412": {
+   "lineId": "L0412",
+   "model": "scribe_v1",
+   "transcript": "Past nearly 17 million floats skip whole numbers.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "4278f12cdcc9",
+   "lineSig": "cb8a1f2d193d",
+   "clip": "narration/clips/L0412.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:47.524Z"
+  },
+  "L0413": {
+   "lineId": "L0413",
+   "model": "scribe_v1",
+   "transcript": "Just past it, the second ramp's input rounds down. A bit meant for naught or one reads two? Answer: eight.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "61a942697b70",
+   "lineSig": "721b4fed2dae",
+   "clip": "narration/clips/L0413.wav",
+   "wer": 0.05,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:48.489Z"
+  },
+  "L0423": {
+   "lineId": "L0423",
+   "model": "scribe_v1",
+   "transcript": "Another way to make a bit in one instruction add a huge odd number to a score, then take it away",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c5fc93504249",
+   "lineSig": "fdba86d123cb",
+   "clip": "narration/clips/L0423.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:25.499Z"
+  },
+  "L0424": {
+   "lineId": "L0424",
+   "model": "scribe_v1",
+   "transcript": "Up there floats sit one apart so the score snaps whole. Ties go to the even side. A half snaps up to one",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3644a7b01cfd",
+   "lineSig": "fce7415d2eba",
+   "clip": "narration/clips/L0424.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:50.059Z"
+  },
+  "L0425": {
+   "lineId": "L0425",
+   "model": "scribe_v1",
+   "transcript": "Each trick is exact. Against what? The 32-bit calculation, not JavaScript's usual 64-bit doubles",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "75c3d4ce6af7",
+   "lineSig": "3a0bf9c7c971",
+   "clip": "narration/clips/L0425.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:51.109Z"
+  },
+  "L0426": {
+   "lineId": "L0426",
+   "model": "scribe_v1",
+   "transcript": "Fit columns in a window seventeen hundred and thirty-two pixels wide. Doubles fit seven. Thirty-two-bit floats fall a hair short.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5e1ee797b154",
+   "lineSig": "a4576d70a34e",
+   "clip": "narration/clips/L0426.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:52.438Z"
+  },
+  "L0427": {
+   "lineId": "L0427",
+   "model": "scribe_v1",
+   "transcript": "Why not doubles everywhere? A September study tried. Of 20,000 percent labels, nearly 19,000 went wrong.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d5a41514218e",
+   "lineSig": "4abb189cea00",
+   "clip": "narration/clips/L0427.wav",
+   "wer": 0.222,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:53.269Z"
+  },
+  "L0428": {
+   "lineId": "L0428",
+   "model": "scribe_v1",
+   "transcript": "More precision broke it. Keep 32-bit order at the rounding points alone, and every label came back",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "10c7a540fb5b",
+   "lineSig": "46a07e074565",
+   "clip": "narration/clips/L0428.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:54.140Z"
+  },
+  "L0414": {
+   "lineId": "L0414",
+   "model": "scribe_v1",
+   "transcript": "The real library won't compare until you promise a range.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e6e65529569b",
+   "lineSig": "445fe09c88de",
+   "clip": "narration/clips/L0414.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:55.302Z"
+  },
+  "L0415": {
+   "lineId": "L0415",
+   "model": "scribe_v1",
+   "transcript": "Promise more that A is a whole number and the comparison takes two operations.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7e17fded3477",
+   "lineSig": "1c5d7aa92c0c",
+   "clip": "narration/clips/L0415.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:56.007Z"
+  },
+  "L0416": {
+   "lineId": "L0416",
+   "model": "scribe_v1",
+   "transcript": "Now break the promise. Four and a half down a wire tagged hole",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "514f95067181",
+   "lineSig": "d2e0215ab74a",
+   "clip": "narration/clips/L0416.wav",
+   "wer": 0.077,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:56.876Z"
+  },
+  "L0417": {
+   "lineId": "L0417",
+   "model": "scribe_v1",
+   "transcript": "Eleven again. A validator objects",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "aeb3e668c5e9",
+   "lineSig": "318397c3e759",
+   "clip": "narration/clips/L0417.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:57.485Z"
+  },
+  "L0418": {
+   "lineId": "L0418",
+   "model": "scribe_v1",
+   "transcript": "As the docs put it, declarations are promises from the caller, not proofs",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "f46b5fa9950b",
+   "lineSig": "8163937d71a0",
+   "clip": "narration/clips/L0418.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:58.336Z"
+  },
+  "L0419": {
+   "lineId": "L0419",
+   "model": "scribe_v1",
+   "transcript": "Who tied it on? The caller. Who doubted it? The validator. How long it held? While the input stayed honest.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "50d6c885ccaa",
+   "lineSig": "654f569c591d",
+   "clip": "narration/clips/L0419.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:06:59.363Z"
+  },
+  "L0420": {
+   "lineId": "L0420",
+   "model": "scribe_v1",
+   "transcript": "Promise only a range, and it must tell the tiniest difference from none. It magnifies by two to the hundred and forty-ninth.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b87fc276816e",
+   "lineSig": "64766be9b2c1",
+   "clip": "narration/clips/L0420.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:26.376Z"
+  },
+  "L0421": {
+   "lineId": "L0421",
+   "model": "scribe_v1",
+   "transcript": "The faintest difference becomes a full bar. A sixteen-operation comparison and four and a half gives ten. Correct.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "092eb0585449",
+   "lineSig": "7767c1b1caba",
+   "clip": "narration/clips/L0421.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:01.596Z"
+  },
+  "L0422": {
+   "lineId": "L0422",
+   "model": "scribe_v1",
+   "transcript": "Sixteen against two. One honest sentence about your input saves fourteen operations",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "078a2ca09628",
+   "lineSig": "676d54b512ef",
+   "clip": "narration/clips/L0422.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:02.535Z"
+  },
+  "L0501": {
+   "lineId": "L0501",
+   "model": "scribe_v1",
+   "transcript": "Now feed the program's operations into a loom one hundred and thirty layers deep",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e5c7e875f5a0",
+   "lineSig": "67321eb3cfa5",
+   "clip": "narration/clips/L0501.wav",
+   "wer": 0.071,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:03.693Z"
+  },
+  "L0501a": {
+   "lineId": "L0501a",
+   "model": "scribe_v1",
+   "transcript": "Each step drops into the first layer after the steps it needs.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d24350b274a1",
+   "lineSig": "5b19d4b445d5",
+   "clip": "narration/clips/L0501a.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:26.976Z"
+  },
+  "L0502": {
+   "lineId": "L0502",
+   "model": "scribe_v1",
+   "transcript": "Copper threads add, indigo threads subtract. Most of it is empty air",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "8a4b494b33db",
+   "lineSig": "988b95913cc9",
+   "clip": "narration/clips/L0502.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:05.263Z"
+  },
+  "L0503a": {
+   "lineId": "L0503a",
+   "model": "scribe_v1",
+   "transcript": "Sums of sums are still sums, so some fold together. But a gate is a bend. Nothing merges across one",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a1408d4c684f",
+   "lineSig": "000e8c066f15",
+   "clip": "narration/clips/L0503a.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:06.428Z"
+  },
+  "L0503b": {
+   "lineId": "L0503b",
+   "model": "scribe_v1",
+   "transcript": "The longest chain of gates runs 71 deep.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7f79dff5615c",
+   "lineSig": "4be4f9d7e6ee",
+   "clip": "narration/clips/L0503b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:07.121Z"
+  },
+  "L0505": {
+   "lineId": "L0505",
+   "model": "scribe_v1",
+   "transcript": "That guess was ours too.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "60f601af8d16",
+   "lineSig": "ac5569ebca76",
+   "clip": "narration/clips/L0505.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:08.025Z"
+  },
+  "L0506": {
+   "lineId": "L0506",
+   "model": "scribe_v1",
+   "transcript": "Step back. The wallpaper draws these same threads, one arc per weight",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a8ab3fe1ecac",
+   "lineSig": "be4dfc7f2ebe",
+   "clip": "narration/clips/L0506.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:09.197Z"
+  },
+  "L0507": {
+   "lineId": "L0507",
+   "model": "scribe_v1",
+   "transcript": "And the notes window? On the 13th of October, its text moved to the browser and the loom shed most of its threads.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "42d8252dae66",
+   "lineSig": "63232e711964",
+   "clip": "narration/clips/L0507.wav",
+   "wer": 0.043,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:10.115Z"
+  },
+  "L0508": {
+   "lineId": "L0508",
+   "model": "scribe_v1",
+   "transcript": "The desktop runs as JavaScript on the main processor. On a graphics card, an older build ran fifteen to twenty-seven times slower, its steps one after another",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "231429f8064e",
+   "lineSig": "b7bc9997c6a5",
+   "clip": "narration/clips/L0508.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:11.036Z"
+  },
+  "L0601": {
+   "lineId": "L0601",
+   "model": "scribe_v1",
+   "transcript": "In the doc's words, the program runs every operation on every frame and can't stop early. So a loop becomes a count, a tree, a table, or the same work on every item",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "093786fec347",
+   "lineSig": "3352bb6e1f3d",
+   "clip": "narration/clips/L0601.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:12.376Z"
+  },
+  "L0603": {
+   "lineId": "L0603",
+   "model": "scribe_v1",
+   "transcript": "The looping lives outside in the host, the plain JavaScript around it",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "42cae335fdcc",
+   "lineSig": "58ce5414eeb6",
+   "clip": "narration/clips/L0603.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:13.307Z"
+  },
+  "L0604": {
+   "lineId": "L0604",
+   "model": "scribe_v1",
+   "transcript": "Flick the toggle and the event is queued with its time.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c0b668f8ff6d",
+   "lineSig": "796d10d9c4d9",
+   "clip": "narration/clips/L0604.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:27.622Z"
+  },
+  "L0605": {
+   "lineId": "L0605",
+   "model": "scribe_v1",
+   "transcript": "Inputs in. The loom runs once. Next state copied back. The page moves",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c56d6e3ba35e",
+   "lineSig": "c20a4378aa49",
+   "clip": "narration/clips/L0605.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:15.129Z"
+  },
+  "L0606": {
+   "lineId": "L0606",
+   "model": "scribe_v1",
+   "transcript": "When nothing moves, the clock rests between frames, never inside one.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7110fdb8d099",
+   "lineSig": "0996aded9601",
+   "clip": "narration/clips/L0606.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:15.917Z"
+  },
+  "L0607": {
+   "lineId": "L0607",
+   "model": "scribe_v1",
+   "transcript": "The windows move on springs, and springs need time",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "07aac76f3f9a",
+   "lineSig": "0a8ea9e668a2",
+   "clip": "narration/clips/L0607.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:16.666Z"
+  },
+  "L0608": {
+   "lineId": "L0608",
+   "model": "scribe_v1",
+   "transcript": "One step multiplies two numbers: the window's distance from home and its speed. At rest, it comes out moving.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "f40a52c608a9",
+   "lineSig": "eafe40c4bef9",
+   "clip": "narration/clips/L0608.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:17.848Z"
+  },
+  "L0609": {
+   "lineId": "L0609",
+   "model": "scribe_v1",
+   "transcript": "300 steps is that multiplication squared and squared again. JavaScript works it out ahead as four numbers. The program applies them in 14 operations for any count",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ecb870570397",
+   "lineSig": "789c7587d8fc",
+   "clip": "narration/clips/L0609.wav",
+   "wer": 0.071,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:18.917Z"
+  },
+  "L0611": {
+   "lineId": "L0611",
+   "model": "scribe_v1",
+   "transcript": "Past 300 steps in one frame, stepping stops and every window snaps home.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3d20d484a3f7",
+   "lineSig": "71fa1c251f2d",
+   "clip": "narration/clips/L0611.wav",
+   "wer": 0.143,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:20.052Z"
+  },
+  "L0613": {
+   "lineId": "L0613",
+   "model": "scribe_v1",
+   "transcript": "Replay one session at two frame rates and the familiar loop drifts up to three hundred and fifty-nine pixels apart.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d425ffdffb93",
+   "lineSig": "4a28df49050d",
+   "clip": "narration/clips/L0613.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:21.174Z"
+  },
+  "L0614": {
+   "lineId": "L0614",
+   "model": "scribe_v1",
+   "transcript": "Hand wired saves only at events and fixed checkpoints. Other frames replay from the last save are drawn and thrown away. In its tests, every frame rate then matches exactly",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fb399e2e6b53",
+   "lineSig": "781713fbc88e",
+   "clip": "narration/clips/L0614.wav",
+   "wer": 0.069,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:22.167Z"
+  },
+  "L0615": {
+   "lineId": "L0615",
+   "model": "scribe_v1",
+   "transcript": "One run per frame. That held until mid-September. Now a busy drag frame runs about seventeen.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "57713d98fc3f",
+   "lineSig": "d766d6e0e836",
+   "clip": "narration/clips/L0615.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:22.964Z"
+  },
+  "L0616": {
+   "lineId": "L0616",
+   "model": "scribe_v1",
+   "transcript": "A count. Which row is under the pointer? A loop stops at the first match. Here, every row answers, and we count the yeses. Three",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3adba1c20d92",
+   "lineSig": "3eb37964464f",
+   "clip": "narration/clips/L0616.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:23.791Z"
+  },
+  "L0617": {
+   "lineId": "L0617",
+   "model": "scribe_v1",
+   "transcript": "A tree. Running totals in a row. Each waits for the last, seven steps deep. In pairs, then pairs of pairs. Three or four",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5ae728522a41",
+   "lineSig": "7db0b3a44aff",
+   "clip": "narration/clips/L0617.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:25.089Z"
+  },
+  "L0619": {
+   "lineId": "L0619",
+   "model": "scribe_v1",
+   "transcript": "In 32-bit floats, grouping changes the final digit. The tree is slower here, but drifts far less",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5af714a8cc9a",
+   "lineSig": "2e9cb62071cd",
+   "clip": "narration/clips/L0619.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:11:55.090Z"
+  },
+  "L0620": {
+   "lineId": "L0620",
+   "model": "scribe_v1",
+   "transcript": "A table. As arithmetic, you test all 10,000 rows, zero out all but one, and add 30,000 operations or one index read",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "39f8d59874ae",
+   "lineSig": "94c93c2263b2",
+   "clip": "narration/clips/L0620.wav",
+   "wer": 0.167,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:27.189Z"
+  },
+  "L0621": {
+   "lineId": "L0621",
+   "model": "scribe_v1",
+   "transcript": "To sort, do the same work on every item. Each card counts who comes before it. Nothing swaps",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "974c5eba99d1",
+   "lineSig": "3bdba8270a4f",
+   "clip": "narration/clips/L0621.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:27.960Z"
+  },
+  "L0622": {
+   "lineId": "L0622",
+   "model": "scribe_v1",
+   "transcript": "Filtering two. Each item counts its place, and a fixed rack takes the first three",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "dec6246e3d9d",
+   "lineSig": "fd48b0aee5fe",
+   "clip": "narration/clips/L0622.wav",
+   "wer": 0.067,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:28.740Z"
+  },
+  "L0623": {
+   "lineId": "L0623",
+   "model": "scribe_v1",
+   "transcript": "The desktop's monitor window admits it. Only sixty-four rows are drawn at a time.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ab2e79e08c07",
+   "lineSig": "03bb2cd07347",
+   "clip": "narration/clips/L0623.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:29.612Z"
+  },
+  "L0625": {
+   "lineId": "L0625",
+   "model": "scribe_v1",
+   "transcript": "The guide to the project's lab of experiments says one frame is one evaluation of a fixed depth circuit. The host turns the crank. It never stops early.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d2a4f85550f6",
+   "lineSig": "27304f3a8fb3",
+   "clip": "narration/clips/L0625.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:31.105Z"
+  },
+  "L0701": {
+   "lineId": "L0701",
+   "model": "scribe_v1",
+   "transcript": "Every weight so far was written by hand. The README's first funny use case",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "35a26b8fdaea",
+   "lineSig": "4c2b37698437",
+   "clip": "narration/clips/L0701.wav",
+   "wer": 0.133,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:31.697Z"
+  },
+  "L0702": {
+   "lineId": "L0702",
+   "model": "scribe_v1",
+   "transcript": "Unfreezing the weights and train them. What does that even do? Let's find out",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7ae13acc5b2b",
+   "lineSig": "a98cf99f2f6b",
+   "clip": "narration/clips/L0702.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:28.222Z"
+  },
+  "L0704a": {
+   "lineId": "L0704a",
+   "model": "scribe_v1",
+   "transcript": "Learning needs each number's slope or gradient. Nudge it, and how far does the output move?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c460108428aa",
+   "lineSig": "06fad86410b7",
+   "clip": "narration/clips/L0704a.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:33.053Z"
+  },
+  "L0705": {
+   "lineId": "L0705",
+   "model": "scribe_v1",
+   "transcript": "Backwards, W's slope is three times the opening, nought point four five. G's is the channel itself, one and a half.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d78eb9bcc389",
+   "lineSig": "24e9b72bb9d7",
+   "clip": "narration/clips/L0705.wav",
+   "wer": 0.136,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:34.103Z"
+  },
+  "L0708": {
+   "lineId": "L0708",
+   "model": "scribe_v1",
+   "transcript": "The neurons of 1943 couldn't learn. These can if you let them",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2e7d1b700891",
+   "lineSig": "90bd527ce89e",
+   "clip": "narration/clips/L0708.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:34.959Z"
+  },
+  "L0709": {
+   "lineId": "L0709",
+   "model": "scribe_v1",
+   "transcript": "Almost every operation runs backwards by a rule like that on the real arithmetic, not the rounding",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fa5ce4488025",
+   "lineSig": "b641bdc24c88",
+   "clip": "narration/clips/L0709.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:35.675Z"
+  },
+  "L0712": {
+   "lineId": "L0712",
+   "model": "scribe_v1",
+   "transcript": "Ask the ramps which way to nudge the input. At almost every whole number, nowhere.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "dd92b058f76d",
+   "lineSig": "a033f11395f0",
+   "clip": "narration/clips/L0712.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:37.251Z"
+  },
+  "L0713": {
+   "lineId": "L0713",
+   "model": "scribe_v1",
+   "transcript": "Differentiable as real arithmetic. But a decision has no slope to follow",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "19bdd83d55f4",
+   "lineSig": "2a6984ed7dce",
+   "clip": "narration/clips/L0713.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:38.305Z"
+  },
+  "L0714": {
+   "lineId": "L0714",
+   "model": "scribe_v1",
+   "transcript": "Only one demo learns the learned gallery. From random weights, it learns to place the photos on rectangles you sketch",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "92356ce78cb5",
+   "lineSig": "64af813e49d6",
+   "clip": "narration/clips/L0714.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:39.400Z"
+  },
+  "L0715": {
+   "lineId": "L0715",
+   "model": "scribe_v1",
+   "transcript": "Before each step, plain JavaScript pairs each photo with a rectangle. The network learns where JavaScript decides who",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e1c51559c7f9",
+   "lineSig": "d70d1d67ee0d",
+   "clip": "narration/clips/L0715.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:40.425Z"
+  },
+  "L0716": {
+   "lineId": "L0716",
+   "model": "scribe_v1",
+   "transcript": "Each photo's edges pull toward its rectangle, but every pull is capped",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c2cd923e64a9",
+   "lineSig": "b367885f5f99",
+   "clip": "narration/clips/L0716.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:40.979Z"
+  },
+  "L0717": {
+   "lineId": "L0717",
+   "model": "scribe_v1",
+   "transcript": "Far off photos vote, they don't shout.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d9325f0c2217",
+   "lineSig": "9f482874c77d",
+   "clip": "narration/clips/L0717.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:41.550Z"
+  },
+  "L0718": {
+   "lineId": "L0718",
+   "model": "scribe_v1",
+   "transcript": "600 steps a second through the program's own backward pass.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "be5b6cb3e8ed",
+   "lineSig": "57a5bc42be1d",
+   "clip": "narration/clips/L0718.wav",
+   "wer": 0.182,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:42.269Z"
+  },
+  "L0719": {
+   "lineId": "L0719",
+   "model": "scribe_v1",
+   "transcript": "An early fix snapped the sketch to a grid in ordinary code. Cheng turned it down. \"The spirit of the gallery is to learn something.\"",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "cf248bed75ab",
+   "lineSig": "c3c562fa3028",
+   "clip": "narration/clips/L0719.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:43.148Z"
+  },
+  "L0720": {
+   "lineId": "L0720",
+   "model": "scribe_v1",
+   "transcript": "To be fair, that's a small generic network, not a handwritten program unfrozen.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "f229d43ab799",
+   "lineSig": "79152ec8d875",
+   "clip": "narration/clips/L0720.wav",
+   "wer": 0.143,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:43.890Z"
+  },
+  "L0720a": {
+   "lineId": "L0720a",
+   "model": "scribe_v1",
+   "transcript": "The lab did unfreeze one app's five design numbers to follow a drag. One gradient step solved nearly two in three moving frames.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "975429b7d61a",
+   "lineSig": "56568a909bef",
+   "clip": "narration/clips/L0720a.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:45.110Z"
+  },
+  "L0801": {
+   "lineId": "L0801",
+   "model": "scribe_v1",
+   "transcript": "Six commits in July. In August, none",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9171d6fe10f6",
+   "lineSig": "d0c21d83a387",
+   "clip": "narration/clips/L0801.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:45.681Z"
+  },
+  "L0802": {
+   "lineId": "L0802",
+   "model": "scribe_v1",
+   "transcript": "The record doesn't say why, so we won't guess.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "07c9e86bbbe0",
+   "lineSig": "171cf3f7ce5b",
+   "clip": "narration/clips/L0802.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:23:39.022Z"
+  },
+  "L0803": {
+   "lineId": "L0803",
+   "model": "scribe_v1",
+   "transcript": "July's lab briefs listed established conclusions to take as given. One, compiling ordinary code was a dead end.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "87da75ebb246",
+   "lineSig": "a3549380870d",
+   "clip": "narration/clips/L0803.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:47.016Z"
+  },
+  "L0804": {
+   "lineId": "L0804",
+   "model": "scribe_v1",
+   "transcript": "Who tied it on? A conversation whose people go unnamed.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "498ef6c1b712",
+   "lineSig": "8ed41fb21ce6",
+   "clip": "narration/clips/L0804.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:47.836Z"
+  },
+  "L0806": {
+   "lineId": "L0806",
+   "model": "scribe_v1",
+   "transcript": "It held about eight weeks.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "991ddd64c5c9",
+   "lineSig": "87f010abd299",
+   "clip": "narration/clips/L0806.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:48.513Z"
+  },
+  "L0807": {
+   "lineId": "L0807",
+   "model": "scribe_v1",
+   "transcript": "One test, learning two additions scored nought out of twenty. Multiply its error by a million, which should change nothing. Twenty out of twenty. A tiny safety constant was swamping the slopes",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c847ccb836e7",
+   "lineSig": "618508468d07",
+   "clip": "narration/clips/L0807.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:49.922Z"
+  },
+  "L0808": {
+   "lineId": "L0808",
+   "model": "scribe_v1",
+   "transcript": "In July, a checker for the lab's compiler reported zero mismatches. The compiled code skipped an early return, and so did the checker",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0b744fbe0536",
+   "lineSig": "cf06a9676a86",
+   "clip": "narration/clips/L0808.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:50.766Z"
+  },
+  "L0808a": {
+   "lineId": "L0808a",
+   "model": "scribe_v1",
+   "transcript": "As the docs warn, that the two evaluators agree doesn't show that a program does what the JavaScript it replaces did",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "422c609fb889",
+   "lineSig": "74914d2a3b2e",
+   "clip": "narration/clips/L0808a.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:51.755Z"
+  },
+  "L0812": {
+   "lineId": "L0812",
+   "model": "scribe_v1",
+   "transcript": "Mistakes and catches alike came from one process under his direction.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "6a1de1031a28",
+   "lineSig": "59a1964f4f6b",
+   "clip": "narration/clips/L0812.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:52.975Z"
+  },
+  "L0813": {
+   "lineId": "L0813",
+   "model": "scribe_v1",
+   "transcript": "In mid-September, he settled three questions.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "dad6796b5838",
+   "lineSig": "95a860c496b6",
+   "clip": "narration/clips/L0813.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:53.541Z"
+  },
+  "L0901": {
+   "lineId": "L0901",
+   "model": "scribe_v1",
+   "transcript": "Then October, 689 commits",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1c119dcdf91a",
+   "lineSig": "0d122a91f01d",
+   "clip": "narration/clips/L0901.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:12:20.806Z"
+  },
+  "L0902": {
+   "lineId": "L0902",
+   "model": "scribe_v1",
+   "transcript": "Nearly all of them in four days",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "55b9a71169bd",
+   "lineSig": "265bc7fe7fab",
+   "clip": "narration/clips/L0902.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:20:35.889Z"
+  },
+  "L0909": {
+   "lineId": "L0909",
+   "model": "scribe_v1",
+   "transcript": "As the code says, a new pattern writes cells and changes no program",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0ea74620efcc",
+   "lineSig": "66f673555d2f",
+   "clip": "narration/clips/L0909.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:55.751Z"
+  },
+  "L0910": {
+   "lineId": "L0910",
+   "model": "scribe_v1",
+   "transcript": "A program can't go back, so search walks each document twice",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b94925dd22d1",
+   "lineSig": "18899db9db9c",
+   "clip": "narration/clips/L0910.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:56.353Z"
+  },
+  "L0911": {
+   "lineId": "L0911",
+   "model": "scribe_v1",
+   "transcript": "From the end, then the start. A longest match is only known after reading past its end.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "056445995311",
+   "lineSig": "5340db0437f4",
+   "clip": "narration/clips/L0911.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:57.195Z"
+  },
+  "L0913": {
+   "lineId": "L0913",
+   "model": "scribe_v1",
+   "transcript": "One pattern makes it try every way back over two seconds. The program never goes back eleven milliseconds.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "f469b9a34b66",
+   "lineSig": "1c958cfbde7a",
+   "clip": "narration/clips/L0913.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:57.896Z"
+  },
+  "L0916": {
+   "lineId": "L0916",
+   "model": "scribe_v1",
+   "transcript": "That tag held for hours.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "df7466d9adb8",
+   "lineSig": "7549549d1c54",
+   "clip": "narration/clips/L0916.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:07:58.392Z"
+  },
+  "L0919": {
+   "lineId": "L0919",
+   "model": "scribe_v1",
+   "transcript": "That evening, it went public. \"My dear friends, I'd like to show you my latest toy project.\"",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "00e05858baba",
+   "lineSig": "8120a599d36f",
+   "clip": "narration/clips/L0919.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:29.923Z"
+  },
+  "L1002": {
+   "lineId": "L1002",
+   "model": "scribe_v1",
+   "transcript": "Another saw a compiler. The docs side with the first. No tool converts your code.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fc14729be022",
+   "lineSig": "31c8b55472da",
+   "clip": "narration/clips/L1002.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:00.027Z"
+  },
+  "L1003": {
+   "lineId": "L1003",
+   "model": "scribe_v1",
+   "transcript": "Nine days after launch, a stranger tried four and a half. You get eleven.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5b05e71c9872",
+   "lineSig": "babfcc076793",
+   "clip": "narration/clips/L1003.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:00.840Z"
+  },
+  "L1004": {
+   "lineId": "L1004",
+   "model": "scribe_v1",
+   "transcript": "Turn our whole number tag over. The landing page's hidden comment already said so. A promise that states its limits is kept.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "831a7ac3926d",
+   "lineSig": "7cfee2504f79",
+   "clip": "narration/clips/L1004.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:01.720Z"
+  },
+  "L1005": {
+   "lineId": "L1005",
+   "model": "scribe_v1",
+   "transcript": "Another asked what the website never said Why?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "923540468557",
+   "lineSig": "6c3df56859fa",
+   "clip": "narration/clips/L1005.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:02.227Z"
+  },
+  "L1006": {
+   "lineId": "L1006",
+   "model": "scribe_v1",
+   "transcript": "That's our blank tag we'll keep it for the end",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "444cf6b558e0",
+   "lineSig": "4393d217cb86",
+   "clip": "narration/clips/L1006.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:30.559Z"
+  },
+  "L1007": {
+   "lineId": "L1007",
+   "model": "scribe_v1",
+   "transcript": "About the lab we found no public word. The stranger's pencils were gentler than its own.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "f6d2ebbe5ce0",
+   "lineSig": "8a0c83df1ad2",
+   "clip": "narration/clips/L1007.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:31.175Z"
+  },
+  "L1102": {
+   "lineId": "L1102",
+   "model": "scribe_v1",
+   "transcript": "Its parser is a table, and valid input never reads most of it.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "289161adb448",
+   "lineSig": "734006b71343",
+   "clip": "narration/clips/L1102.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:04.511Z"
+  },
+  "L1104": {
+   "lineId": "L1104",
+   "model": "scribe_v1",
+   "transcript": "Before testing, the lab tied on a tag: Training can fill those entries. Then it fixed its rule for failure and committed the test sets first",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c7ec14839e56",
+   "lineSig": "9d662d984b68",
+   "clip": "narration/clips/L1104.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:05.276Z"
+  },
+  "L1106": {
+   "lineId": "L1106",
+   "model": "scribe_v1",
+   "transcript": "Though on new kinds of mistake and on whole payloads written by agents handwritten rules still won.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5a1df5bece9c",
+   "lineSig": "0df3735853b5",
+   "clip": "narration/clips/L1106.wav",
+   "wer": 0.111,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:06.104Z"
+  },
+  "L1108": {
+   "lineId": "L1108",
+   "model": "scribe_v1",
+   "transcript": "It lost to a one-line handwritten fallback every run",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ed79b4985b03",
+   "lineSig": "2509ff0f541c",
+   "clip": "narration/clips/L1108.wav",
+   "wer": 0.182,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:06.843Z"
+  },
+  "L1109": {
+   "lineId": "L1109",
+   "model": "scribe_v1",
+   "transcript": "This is how a belief should end, by a rule written before the test",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "506770ed1a6f",
+   "lineSig": "5bccb23a9846",
+   "clip": "narration/clips/L1109.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:07.699Z"
+  },
+  "L1110": {
+   "lineId": "L1110",
+   "model": "scribe_v1",
+   "transcript": "The third pass's final test hasn't run yet. That question stays open.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d30f1691653e",
+   "lineSig": "533b1c11f2f7",
+   "clip": "narration/clips/L1110.wav",
+   "wer": 0.083,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:08.585Z"
+  },
+  "L1110a": {
+   "lineId": "L1110a",
+   "model": "scribe_v1",
+   "transcript": "So does the lab's own list.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "cd89d829bd4f",
+   "lineSig": "4636273b1a54",
+   "clip": "narration/clips/L1110a.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:20:36.340Z"
+  },
+  "L1110b": {
+   "lineId": "L1110b",
+   "model": "scribe_v1",
+   "transcript": "It says plainly, \"A general JavaScript compiler is not delivered by these experiments.\"",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "04715b7aa38d",
+   "lineSig": "f7d17687511e",
+   "clip": "narration/clips/L1110b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:09.839Z"
+  },
+  "L1201": {
+   "lineId": "L1201",
+   "model": "scribe_v1",
+   "transcript": "Every belief in the film hangs over the time it held.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "540b8ebfc480",
+   "lineSig": "75d47aeb8e1b",
+   "clip": "narration/clips/L1201.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:32.313Z"
+  },
+  "L1202": {
+   "lineId": "L1202",
+   "model": "scribe_v1",
+   "transcript": "Now rehang them the way the loom does. Each belief one layer after those it needs.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e36d4183e99b",
+   "lineSig": "1624a29217c3",
+   "clip": "narration/clips/L1202.wav",
+   "wer": 0.118,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:11.043Z"
+  },
+  "L1203": {
+   "lineId": "L1203",
+   "model": "scribe_v1",
+   "transcript": "The film's teaching order, not history",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "17bcd155a0ce",
+   "lineSig": "98fb71c6ae83",
+   "clip": "narration/clips/L1203.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:11.949Z"
+  },
+  "L1204": {
+   "lineId": "L1204",
+   "model": "scribe_v1",
+   "transcript": "Send one wave of light through it. Every tag lights.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "06f2e92347d2",
+   "lineSig": "622abdb05933",
+   "clip": "narration/clips/L1204.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:12.690Z"
+  },
+  "L1205": {
+   "lineId": "L1205",
+   "model": "scribe_v1",
+   "transcript": "The struck ones ran too, multiplied by naught.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7c3155801d49",
+   "lineSig": "29ed87cea61e",
+   "clip": "narration/clips/L1205.wav",
+   "wer": 0.125,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:13.482Z"
+  },
+  "L1206": {
+   "lineId": "L1206",
+   "model": "scribe_v1",
+   "transcript": "Three beliefs are still argued over. Learn the weights, don't write them. Fully differentiable, and the READMEs claim to take regular JavaScript",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9b88bf19e97d",
+   "lineSig": "b0c8b94017ae",
+   "clip": "narration/clips/L1206.wav",
+   "wer": 0.087,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:14.546Z"
+  },
+  "L1207": {
+   "lineId": "L1207",
+   "model": "scribe_v1",
+   "transcript": "To the stranger's \"Why?\" the README's nearest answers, \"For fun,\" and \"Let's find out.\"",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "25474e663aa6",
+   "lineSig": "02ef4b6c923c",
+   "clip": "narration/clips/L1207.wav",
+   "wer": 0.133,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:15.834Z"
+  },
+  "L1208": {
+   "lineId": "L1208",
+   "model": "scribe_v1",
+   "transcript": "The notes window ends. Wire one more neuron by hand",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e2eb153f6269",
+   "lineSig": "a6fda5b85551",
+   "clip": "narration/clips/L1208.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:08:16.469Z"
+  },
+  "L1209": {
+   "lineId": "L1209",
+   "model": "scribe_v1",
+   "transcript": "Who ties the next one on? Who doubts it? How long will it hold?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "77c24e7c1f43",
+   "lineSig": "283fb26ccb5b",
+   "clip": "narration/clips/L1209.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:28:20.728Z"
+  },
+  "L1210": {
+   "lineId": "L1210",
+   "model": "scribe_v1",
+   "transcript": "It's waiting for the next pair of hands.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c4c1fc9e9564",
+   "lineSig": "bd6fdd3ed4dd",
+   "clip": "narration/clips/L1210.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-28T07:17:33.362Z"
+  }
+ },
+ "updatedAt": "2026-10-28T07:28:20.730Z"
+}

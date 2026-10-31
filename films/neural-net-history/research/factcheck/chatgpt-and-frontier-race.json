@@ -1,0 +1,125 @@
+{
+  "id": "chatgpt-and-frontier-race",
+  "checked": 62,
+  "confirmed": 48,
+  "corrected": 8,
+  "unverifiable": 4,
+  "contested": 2,
+  "corrections": [
+    {
+      "original": "At its Paris demonstration on 8 February 2023, Bard gave a wrong fact about the James Webb Space Telescope (key claim 4: 'a Bard error ... at the 8 Feb Paris demo')",
+      "verdict": "corrected",
+      "fix": "The JWST error appeared in a promotional GIF video Google posted on Twitter (the same JWST example is in Pichai's 6 Feb blog post), not live at the Paris event. Reuters reported it on 8 Feb, the day of the Paris event: Alphabet 'lost $100 billion in market value ... after its new chatbot shared inaccurate information in a promotional video and a company event failed to dazzle'. Shares fell as much as 9% intraday, about 8% on the day.",
+      "sources": [
+        "https://web.archive.org/web/20230209000000id_/https://www.reuters.com/technology/google-ai-chatbot-bard-offers-inaccurate-information-company-ad-2023-02-08/",
+        "https://blog.google/technology/ai/bard-google-ai-search-updates/"
+      ]
+    },
+    {
+      "original": "GPT-4 exam table: GRE Verbal GPT-3.5 score '—'",
+      "verdict": "corrected",
+      "fix": "The GPT-4 Technical Report Table 1 gives GPT-3.5 a GRE Verbal score of 154/170 (~63rd percentile).",
+      "sources": [
+        "https://arxiv.org/pdf/2303.08774v1"
+      ]
+    },
+    {
+      "original": "Martínez (2024) bar-exam critique: UNVERIFIED, 'do not give a specific counter-number'",
+      "verdict": "corrected",
+      "fix": "Verified from the abstract: published 30 Mar 2024 in Artificial Intelligence and Law. GPT-4 was ~62nd percentile vs first-time takers (~42nd on essays), below the 69th vs a July exam, and ~48th among those who passed (~15th on essays). The 90th figure was skewed towards February repeat takers. Mark the bar-exam percentile as contested.",
+      "sources": [
+        "https://api.crossref.org/works/10.1007/s10506-024-09396-9",
+        "https://link.springer.com/article/10.1007/s10506-024-09396-9"
+      ]
+    },
+    {
+      "original": "DAIR statement of 31 Mar 2023 authored by Gebru, Bender, McMillan-Major and Mitchell",
+      "verdict": "corrected",
+      "fix": "The DAIR page byline names three: Timnit Gebru, Emily M. Bender and Angelina McMillan-Major. Margaret Mitchell (a co-author of the Stochastic Parrots paper) criticised the letter separately to Reuters.",
+      "sources": [
+        "https://www.dair-institute.org/blog/letter-statement-March2023/",
+        "https://www.theguardian.com/technology/2023/mar/31/ai-research-pause-elon-musk-chatgpt"
+      ]
+    },
+    {
+      "original": "Stochastic Parrots authors said the pause letter fed/fuelled 'fearmongering and AI hype' (key claim 8)",
+      "verdict": "corrected",
+      "fix": "The verbatim sentence is that the letter's worthwhile recommendations 'are overshadowed by fearmongering and AI hype, which steers the discourse to the risks of imagined \"powerful digital minds\"...'. The phrase is verbatim but 'fuelled' is a paraphrase. The longtermism sentence is verbatim.",
+      "sources": [
+        "https://www.dair-institute.org/blog/letter-statement-March2023/"
+      ]
+    },
+    {
+      "original": "Reuters (citing WSJ): Google agrees to invest up to $2bn in Anthropic",
+      "verdict": "corrected",
+      "fix": "Reuters (Krystal Hu, 27 Oct 2023) attributed the $500M upfront plus $1.5B over time to 'a spokesperson for the startup' (Anthropic), not to the WSJ.",
+      "sources": [
+        "https://web.archive.org/web/20231102122701id_/https://www.reuters.com/technology/google-agrees-invest-up-2-bln-openai-rival-anthropic-wsj-2023-10-27/"
+      ]
+    },
+    {
+      "original": "LeCun believed human-level AI was \"years if not decades\" away (presented in quotation marks as his words)",
+      "verdict": "corrected",
+      "fix": "'years if not decades' is BBC reported speech, not inside LeCun's quotation marks; 'no question' is quoted. Similarly, 'a huge mistake' is the BBC's phrasing; only 'under lock and key' is quoted.",
+      "sources": [
+        "https://www.bbc.com/news/technology-65886125"
+      ]
+    },
+    {
+      "original": "Anthropic founded 26 Jan 2021; founders Dario and Daniela Amodei, Kaplan, Clark, Olah, Mann, McCandlish, Brown",
+      "verdict": "corrected",
+      "fix": "Wikipedia's body says 'founded in January 2021 by seven former employees of OpenAI' while its infobox lists eight names. 26 Jan 2021 is a business-registry incorporation date. Say 'January 2021' and 'former OpenAI researchers', without a count.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Anthropic"
+      ]
+    },
+    {
+      "original": "Mira Murati: CTO, named interim CEO 17 Nov 2023 (no role in the removal stated)",
+      "verdict": "contested",
+      "fix": "Later reporting summarised on Wikipedia says the removal 'was predicated by employee concerns, led by co-founder Ilya Sutskever and chief technology officer Mira Murati'. This was not part of the public record in Nov 2023. Attribute it to later reporting; do not assert it.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Removal_of_Sam_Altman_from_OpenAI"
+      ]
+    },
+    {
+      "original": "GPT-4 passed a simulated Uniform Bar Exam at about the 90th percentile (key claim 6)",
+      "verdict": "contested",
+      "fix": "The 298/400 (~90th) figure is verbatim from OpenAI's report but is contested by Martínez (2024): ~62nd vs first-time takers and ~48th among those who passed. Present it as OpenAI's claim, with the critique.",
+      "sources": [
+        "https://arxiv.org/pdf/2303.08774v1",
+        "https://api.crossref.org/works/10.1007/s10506-024-09396-9"
+      ]
+    },
+    {
+      "original": "Sam Altman 5 Dec 2022 tweet: 'ChatGPT launched on wednesday. today it crossed 1 million users!'",
+      "verdict": "unverifiable",
+      "fix": "The fact (1M users in about five days) is secondary-verified; the tweet wording was not retrieved. Do not use it as a quote.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/ChatGPT"
+      ]
+    },
+    {
+      "original": "Ilya Sutskever 20 Nov 2023 apology wording ('I deeply regret my participation in the board's actions...')",
+      "verdict": "unverifiable",
+      "fix": "Wikipedia confirms he signed the staff letter and publicly apologised; the wording was not retrieved. Do not quote it.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Removal_of_Sam_Altman_from_OpenAI"
+      ]
+    },
+    {
+      "original": "LeCun quotes about AI being less intelligent than a cat",
+      "verdict": "unverifiable",
+      "fix": "Not retrieved. Do not use as a quote.",
+      "sources": []
+    },
+    {
+      "original": "EU AI Act phased application (bans Feb 2025; most rules Aug 2026; some high-risk obligations Aug 2027) presented as the current schedule as of 2026-10-05",
+      "verdict": "unverifiable",
+      "fix": "The 2024 schedule is verified as adopted. Whether later amendments (e.g. a late-2025 'digital omnibus' proposal reportedly delaying high-risk obligations) changed it was not verified in this pass. Check before stating post-2025 dates as current.",
+      "sources": [
+        "https://commission.europa.eu/news-and-media/news/ai-act-enters-force-2024-08-01_en",
+        "https://en.wikipedia.org/wiki/Artificial_Intelligence_Act"
+      ]
+    }
+  ]
+}

@@ -31,14 +31,14 @@ export function buildScene() {
 
   tl.caption({ at: 12.6, dur: 5.8, text: 'Within the selected tokens, the smallest entropy becomes rank zero and the largest becomes rank one.' });
   tl.tween(rankU, 1, { at: 13.2, dur: 1.6, ease: ease.move });
-  tl.tween(cam, { x: 520, y: 330, k: 1.08 }, { at: 15.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 650, y: 360, k: 1.06 }, { at: 15.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 18.7, dur: 5.8, text: 'That rank maps linearly from a negative half to negative one, so higher entropy receives the stronger negative advantage.' });
   tl.tween(advantageU, 1, { at: 19.3, dur: 1.6, ease: ease.draw });
   tl.tween(pressureU, 1, { at: 21.2, dur: 1.0, ease: ease.pop });
 
   tl.caption({ at: 24.8, dur: 6.1, text: 'A negative advantage suppresses the sampled tail token instead of rewarding it.' });
-  tl.tween(cam, { x: 720, y: 360, k: 1.08 }, { at: 25.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 660, y: 360, k: 1.06 }, { at: 25.4, dur: 1.2, ease: ease.move });
   tl.tween(massU, 1, { at: 26.8, dur: 2.2, ease: ease.move });
 
   tl.caption({ at: 30.9, dur: 5.8, text: 'As tail probability shrinks, the distribution renormalizes and probability returns to the head tokens.' });
@@ -67,53 +67,57 @@ export function Render({ s }: { s: SceneState }) {
   const mask = s.get(scene.maskU);
   return <><text x="640" y="76" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850" opacity={1 - close}>entropy sets the pressure</text><Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
-      <g transform="translate(92 128)" opacity={s.get(scene.selectedU)}>
-        <rect width="560" height="420" rx="30" fill="#101a2b" stroke={colors.ACCENT} strokeWidth="3" />
+      <g transform="translate(70 120)" opacity={s.get(scene.selectedU)}>
+        <rect width="560" height="380" rx="30" fill="#101a2b" stroke={colors.ACCENT} strokeWidth="3" />
         <text x="280" y="42" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontFamily={colors.font.mono}>selected lowest-logp tokens</text>
         {ENTROPY.map((h, i) => {
           const r = RANK[i] * rank;
           const adv = -0.5 + (-0.5 * r);
-          const y = 105 + i * 72;
+          const y = 84 + i * 68;
           return <g key={i} transform={`translate(28 ${y})`} opacity={1 - mask * (i === 1 ? 0.75 : 0)}>
             <rect width="504" height="52" rx="16" fill="#15243a" stroke={colors.SECONDARY} />
-            <text x="22" y="32" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>{`y${i + 1}`}</text>
-            <rect x="78" y="15" width={h * 130 * s.get(scene.entropyU)} height="20" rx="10" fill={colors.SECONDARY} />
-            <text x="316" y="32" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>{`H=${h.toFixed(1)} · r=${r.toFixed(2)}`}</text>
+            <text x="22" y="32" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{`y${i + 1}`}</text>
+            <rect x="78" y="15" width={h * 110 * s.get(scene.entropyU)} height="20" rx="10" fill={colors.SECONDARY} />
+            <text x="282" y="32" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono} opacity={0.85}>{`H=${h.toFixed(1)} · r=${r.toFixed(2)}`}</text>
             <rect x="414" y="10" width="74" height="32" rx="14" fill="#351923" stroke={colors.NEGATIVE} opacity={s.get(scene.advantageU)} />
-            <text x="451" y="31" textAnchor="middle" fill={colors.NEGATIVE} fontSize="11" fontFamily={colors.font.mono} opacity={s.get(scene.advantageU)}>{adv.toFixed(2)}</text>
+            <text x="451" y="31" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontFamily={colors.font.mono} opacity={s.get(scene.advantageU)}>{i === 1 && mask > 0.5 ? '0.00' : adv.toFixed(2)}</text>
             <path d="M458 50 V68" stroke={colors.NEGATIVE} strokeWidth={3 + Math.abs(ADV[i]) * 3} opacity={s.get(scene.pressureU)} />
           </g>;
         })}
-        <MathLabel tex={'A=A_{\\max}+(A_{\\min}-A_{\\max})r'} x={280} y={388} fontSize={26} opacity={s.get(scene.advantageU)} />
       </g>
-      <g transform="translate(700 130)" opacity={s.get(scene.entropyU)}>
-        <rect width="490" height="418" rx="30" fill="#111a2c" stroke={colors.WARM} strokeWidth="3" />
-        <text x="245" y="42" textAnchor="middle" fill={colors.WARM} fontSize="15" fontFamily={colors.font.mono}>illustrative policy slice</text>
-        <line x1="42" y1="342" x2="452" y2="342" stroke={colors.GRID} strokeWidth="3" />
+      <MathLabel tex={'A=A_{\\max}+(A_{\\min}-A_{\\max})r'} x={640} y={532} fontSize={24} boxWidth={640} opacity={s.get(scene.advantageU)} />
+      <g transform="translate(670 120)" opacity={s.get(scene.selectedU) * (1 - s.get(scene.entropyU))}>
+        <rect width="540" height="380" rx="30" fill="none" stroke={colors.MUTED} strokeWidth="2" strokeDasharray="10 8" />
+        <text x="270" y="190" textAnchor="middle" fill={colors.MUTED} fontSize="18">entropy of each position comes next</text>
+      </g>
+      <g transform="translate(670 120)" opacity={s.get(scene.entropyU)}>
+        <rect width="540" height="380" rx="30" fill="#111a2c" stroke={colors.WARM} strokeWidth="3" />
+        <text x="270" y="42" textAnchor="middle" fill={colors.WARM} fontSize="15" fontFamily={colors.font.mono}>illustrative policy slice</text>
+        <line x1="42" y1="300" x2="498" y2="300" stroke={colors.GRID} strokeWidth="3" />
         {P0.map((p, i) => {
           const value = p + (P1[i] - p) * mass;
-          const h = value * 920;
+          const h = value * 960;
           const tail = i >= 8;
           return <g key={i}>
-            <rect x={50 + i * 33} y={342 - h} width="22" height={h} rx="7" fill={tail ? colors.NEGATIVE : colors.POSITIVE} opacity={tail ? 0.75 : 0.85} />
-            <text x={61 + i * 33} y="365" textAnchor="middle" fill={tail ? colors.NEGATIVE : colors.MUTED} fontSize="9">{i + 1}</text>
+            <rect x={52 + i * 36} y={300 - h} width="24" height={h} rx="7" fill={tail ? colors.NEGATIVE : colors.POSITIVE} opacity={tail ? 0.75 : 0.85} />
+            <text x={64 + i * 36} y="320" textAnchor="middle" fill={tail ? colors.NEGATIVE : colors.MUTED} fontSize="14">{i + 1}</text>
           </g>;
         })}
-        <path d={`M372 ${184 + mass * 72} C340 ${170 + mass * 40} 310 ${160 + mass * 18} 270 ${158 + mass * 10}`} fill="none" stroke={colors.WARM} strokeWidth="5" opacity={mass} />
-        <polygon points="268,158 288,147 287,170" fill={colors.WARM} opacity={mass} />
-        <text x="245" y="398" textAnchor="middle" fill={colors.MUTED} fontSize="13">tail suppression → renormalized head</text>
+        <path d={`M400 ${142 + mass * 72} C370 ${128 + mass * 40} 330 ${118 + mass * 18} 290 ${116 + mass * 10}`} fill="none" stroke={colors.WARM} strokeWidth="5" opacity={mass} />
+        <polygon points="288,116 308,105 307,128" fill={colors.WARM} opacity={mass} />
+        <text x="270" y="352" textAnchor="middle" fill={colors.MUTED} fontSize="14">tail suppression → renormalized head</text>
       </g>
-      <g opacity={s.get(scene.equalU)} transform="translate(640 588)">
-        <rect x="-250" y="-28" width="500" height="56" rx="20" fill="#2d2117" stroke={colors.WARM} strokeWidth="2" />
-        <text y="7" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>equal entropy range → rank 1 → advantage -1.0</text>
+      <g opacity={s.get(scene.equalU)} transform="translate(640 592)">
+        <rect x="-250" y="-22" width="500" height="44" rx="20" fill="#2d2117" stroke={colors.WARM} strokeWidth="2" />
+        <text y="6" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>equal entropy range → rank 1 → advantage -1.0</text>
       </g>
     </g>
     <g opacity={close}>
       <rect x="174" y="118" width="932" height="442" rx="46" fill={colors.BG} stroke={colors.SECONDARY} strokeWidth="4" />
       <text x="640" y="194" textAnchor="middle" fill={colors.TEXT} fontSize="40" fontWeight="850">two actor measurements, one signal</text>
-      <g transform="translate(338 344)"><circle r="98" fill="#14243a" stroke={colors.ACCENT} strokeWidth="4" /><text y="-8" textAnchor="middle" fill={colors.ACCENT} fontSize="21">low log probability</text><text y="23" textAnchor="middle" fill={colors.MUTED} fontSize="15">selects the token</text></g>
+      <g transform="translate(338 344)"><circle r="98" fill="#14243a" stroke={colors.ACCENT} strokeWidth="4" /><text y="-8" textAnchor="middle" fill={colors.ACCENT} fontSize="18">low log probability</text><text y="23" textAnchor="middle" fill={colors.MUTED} fontSize="15">selects the token</text></g>
       <path d="M440 344 H560" stroke={colors.WARM} strokeWidth="7" /><polygon points="560,344 536,330 536,358" fill={colors.WARM} />
-      <g transform="translate(730 344)"><circle r="98" fill="#241d38" stroke={colors.SECONDARY} strokeWidth="4" /><text y="-8" textAnchor="middle" fill={colors.SECONDARY} fontSize="21">entropy rank</text><text y="23" textAnchor="middle" fill={colors.MUTED} fontSize="15">sets the pressure</text></g>
+      <g transform="translate(730 344)"><circle r="98" fill="#241d38" stroke={colors.SECONDARY} strokeWidth="4" /><text y="-8" textAnchor="middle" fill={colors.SECONDARY} fontSize="18">entropy rank</text><text y="23" textAnchor="middle" fill={colors.MUTED} fontSize="15">sets the pressure</text></g>
       <text x="640" y="510" textAnchor="middle" fill={colors.POSITIVE} fontSize="18" fontFamily={colors.font.mono}>no external supervision</text>
     </g>
   </Camera></>;

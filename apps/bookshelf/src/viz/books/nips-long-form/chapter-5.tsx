@@ -26,12 +26,13 @@ const COORD = `30023:${shortHex(PUBKEY, 6, 4)}:why-relays`;
 const HIGHLIGHT_TEXT = 'A relay is a dumb pipe; the durability lives in the words.';
 
 // article page (left)
-const PAGE = { x: 110, y: 130, w: 420, h: 440 };
+const PAGE = { x: 90, y: 120, w: 380, h: 440 };
 const BODY_ROWS = 11;
 const HL_ROW = 5; // the highlighted line
 
 // the 9802 event (right)
-const EV = { x: 660, y: 150, w: 470 };
+const EV = { x: 520, y: PAGE.y, w: 660 };
+const VALUE_CHARS = 62; // 14px monospace values that fit the card's value column
 const EV_FIELDS = [
   { k: 'kind', v: '9802', color: colors.WARM },
   { k: 'content', v: `"${HIGHLIGHT_TEXT}"`, color: colors.POSITIVE },
@@ -41,10 +42,12 @@ const EV_FIELDS = [
 ];
 
 // address plate (recalled from ch2) — the a-tag target
-const PLATE = { x: 660, y: 470, w: 470, h: 56 };
+const PLATE = { x: EV.x, y: 410, w: EV.w, h: 60 };
+const EV_H = EV_FIELDS.length * 34 + 20; // the card's height, from its field rows
 
-const CAM_PAGE: CameraState = { x: 330, y: 340, k: 1.2 };
-const CAM_EVENT: CameraState = { x: 830, y: 300, k: 1.12 };
+// Both frames keep every label inside the stage and above the caption band.
+const CAM_PAGE: CameraState = { x: 280, y: 360, k: 1.25 };
+const CAM_EVENT: CameraState = { x: 640, y: 310, k: 1 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -137,13 +140,14 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
   const hlY = PAGE.y + 64 + HL_ROW * 30;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0.01 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* article page */}
@@ -169,6 +173,13 @@ export function Render({ s }: { s: SceneState }) {
                         fill="none" stroke={colors.WARM} strokeWidth={1.4}
                         opacity={selectU}
                       />
+                      {/* the drag cursor: it travels the selection, then leaves */}
+                      <circle
+                        cx={PAGE.x + 20 + (PAGE.w - 40) * (1 - 0.06 * (i % 3)) * selectU}
+                        cy={PAGE.y + 52 + i * 30 + 9}
+                        r={6} fill={colors.WARM}
+                        opacity={selectU > 0 && selectU < 1 ? 0.9 : 0}
+                      />
                     </g>
                   );
                 }
@@ -186,7 +197,7 @@ export function Render({ s }: { s: SceneState }) {
               u={liftU}
               text={`"${HIGHLIGHT_TEXT.slice(0, 28)}…"`}
               fill={colors.WARM}
-              fontSize={12}
+              fontSize={14}
               lift={80}
             />
           )}
@@ -194,15 +205,15 @@ export function Render({ s }: { s: SceneState }) {
           {/* the 9802 event */}
           {evU > 0 && (
             <g opacity={evU}>
-              <rect x={EV.x} y={EV.y} width={EV.w} height={EV_FIELDS.length * 34 + 20} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+              <rect x={EV.x} y={EV.y} width={EV.w} height={EV_H} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
               {EV_FIELDS.map((f, i) => {
                 const u = clamp01(evU * EV_FIELDS.length - i) * (f.k === 'a' ? clamp01(aU * 2) : 1);
                 if (u <= 0) return null;
                 return (
                   <g key={f.k} opacity={u}>
-                    <text x={EV.x + 16} y={EV.y + 34 + i * 34} fill={f.color} fontSize={13} fontFamily="monospace" fontWeight={600}>{f.k}</text>
-                    <text x={EV.x + 96} y={EV.y + 34 + i * 34} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
-                      {f.v.length > 44 ? `${f.v.slice(0, 43)}…` : f.v}
+                    <text x={EV.x + 16} y={EV.y + 34 + i * 34} fill={f.color} fontSize={14} fontFamily="monospace" fontWeight={600}>{f.k}</text>
+                    <text x={EV.x + 96} y={EV.y + 34 + i * 34} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                      {f.v.length > VALUE_CHARS ? `${f.v.slice(0, VALUE_CHARS - 1)}…` : f.v}
                     </text>
                   </g>
                 );
@@ -214,13 +225,19 @@ export function Render({ s }: { s: SceneState }) {
           {plateU > 0 && (
             <g opacity={plateU}>
               <rect x={PLATE.x} y={PLATE.y} width={PLATE.w} height={PLATE.h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={PLATE.x + 16} y={PLATE.y + 24} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">{COORD}</text>
-              <text x={PLATE.x + 16} y={PLATE.y + 44} fill={colors.MUTED} fontSize={11}>the article's address — a living pointer</text>
+              <text x={PLATE.x + 16} y={PLATE.y + 24} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">{COORD}</text>
+              <text x={PLATE.x + 16} y={PLATE.y + 46} fill={colors.MUTED} fontSize={14}>the article's address — a living pointer</text>
               {aU > 0 && (
-                <path
-                  d={`M${EV.x + 40} ${EV.y + 34 + 2 * 34 + 6} L ${PLATE.x + 40} ${PLATE.y - 4}`}
-                  fill="none" stroke={colors.ACCENT} strokeWidth={1.8} strokeDasharray="5 4" opacity={aU}
-                />
+                <g opacity={aU}>
+                  <path
+                    d={`M${EV.x + EV.w - 40} ${EV.y + EV_H + 2} L ${PLATE.x + PLATE.w - 40} ${PLATE.y - 12}`}
+                    fill="none" stroke={colors.ACCENT} strokeWidth={1.8} strokeDasharray="5 4"
+                  />
+                  <path
+                    d={`M${PLATE.x + PLATE.w - 45} ${PLATE.y - 12} L ${PLATE.x + PLATE.w - 35} ${PLATE.y - 12} L ${PLATE.x + PLATE.w - 40} ${PLATE.y - 3} Z`}
+                    fill={colors.ACCENT}
+                  />
+                </g>
               )}
             </g>
           )}
@@ -231,14 +248,14 @@ export function Render({ s }: { s: SceneState }) {
               {['reply', 'react', 're-highlight'].map((lbl, i) => {
                 const u = clamp01(socialU * 3 - i);
                 if (u <= 0) return null;
-                const ang = -0.5 + i * 0.6;
-                const cx = EV.x + 230 + Math.cos(ang) * 250;
-                const cy = EV.y + 90 + Math.sin(ang) * 150;
+                // fan the reactions out above the card, so they never cross its rows
+                const cx = EV.x + 120 + i * 170;
+                const cy = EV.y - 50 - (i === 1 ? 16 : 0);
                 return (
                   <g key={lbl} opacity={u}>
-                    <line x1={EV.x + 230} y1={EV.y + 90} x2={cx} y2={cy} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />
+                    <line x1={EV.x + 290} y1={EV.y} x2={cx} y2={cy} stroke={colors.MUTED} strokeWidth={1} opacity={0.6} />
                     <circle cx={cx} cy={cy} r={7} fill={colors.SECONDARY} opacity={0.85} />
-                    <text x={cx} y={cy - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{lbl}</text>
+                    <text x={cx} y={cy - 14} textAnchor="middle" fill={colors.TEXT} fontSize={14}>{lbl}</text>
                   </g>
                 );
               })}
@@ -246,17 +263,18 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={230} width={880} height={200} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
+          <rect x={200} y={260} width={880} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={328} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Everything is the same small thing
           </text>
-          <text x={640} y={342} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             article · edits · files · inline media · highlights — all signed events
           </text>
-          <text x={640} y={382} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={412} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-84 · kind 9802 · content = the quote, a = the source address
           </text>
         </g>

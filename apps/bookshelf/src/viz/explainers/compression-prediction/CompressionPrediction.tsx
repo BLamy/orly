@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -85,7 +85,7 @@ function Frame({ s }: { s: SceneState }) {
           {barsU > 0 && (
             <g opacity={barsU}>
               <line x1={TAPE.x} y1={BAR_BASE} x2={TAPE.x + TAPE.w} y2={BAR_BASE} stroke={colors.GRID} strokeWidth={1.5} />
-              <text x={TAPE.x} y={BAR_BASE + 24} fill={colors.MUTED} fontSize={13.5}>
+              <text x={TAPE.x} y={BAR_BASE + 26} fill={colors.TEXT} opacity={0.8} fontSize={14}>
                 {`bits per character — model: ${modelName}`}
               </text>
             </g>
@@ -99,7 +99,8 @@ function Frame({ s }: { s: SceneState }) {
               </text>
               <rect x={METERS.x} y={METERS.y} width={TOTAL_UNIFORM * METERS.scale + 4} height={METERS.h} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
               <rect x={METERS.x + 2} y={METERS.y + 2} width={total * METERS.scale} height={METERS.h - 4} rx={6} fill={colors.WARM} opacity={0.85} />
-              <text x={METERS.x + TOTAL_UNIFORM * METERS.scale + 20} y={METERS.y + 19} fill={colors.TEXT} fontSize={16} fontFamily="ui-monospace, monospace">
+              {/* the value follows the bar's end */}
+              <text x={METERS.x + total * METERS.scale + 14} y={METERS.y + 19} fill={colors.TEXT} fontSize={16} fontFamily="ui-monospace, monospace">
                 {`${total.toFixed(0)} bits`}
               </text>
               {/* reference ticks */}
@@ -109,8 +110,8 @@ function Frame({ s }: { s: SceneState }) {
                 { v: TOTAL_BIGRAM, l: 'bigram 120' },
               ].map((m) => (
                 <g key={m.l}>
-                  <line x1={METERS.x + m.v * METERS.scale} y1={METERS.y - 4} x2={METERS.x + m.v * METERS.scale} y2={METERS.y + METERS.h + 4} stroke={colors.MUTED} strokeWidth={1.4} opacity={0.8} />
-                  <text x={METERS.x + m.v * METERS.scale} y={METERS.y + METERS.h + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                  <line x1={METERS.x + m.v * METERS.scale} y1={METERS.y - 4} x2={METERS.x + m.v * METERS.scale} y2={METERS.y + METERS.h + 4} stroke={colors.TEXT} strokeWidth={1.4} opacity={0.6} />
+                  <text x={METERS.x + m.v * METERS.scale} y={METERS.y + METERS.h + 22} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14}>
                     {m.l}
                   </text>
                 </g>
@@ -120,13 +121,20 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math */}
-      <MathLabel tex={'\\text{cost}(x_i) = -\\log_2\\, q(x_i \\mid x_{i-1})'} x={640} y={62} fontSize={18} opacity={texU * dimU} />
+      {/* screen-fixed math: plain SVG so it lays out the same everywhere */}
+      <g opacity={texU * dimU}>
+        <text x={640} y={62} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontFamily="ui-serif, Georgia, serif">
+          cost(x<tspan dy={5} fontSize={14}>i</tspan><tspan dy={-5}>) = −log</tspan><tspan dy={5} fontSize={14}>2</tspan><tspan dy={-5}> q(x</tspan><tspan dy={5} fontSize={14}>i</tspan><tspan dy={-5}> | x</tspan><tspan dy={5} fontSize={14}>i−1</tspan><tspan dy={-5}>)</tspan>
+        </text>
+        <text x={640} y={92} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={16}>
+          bigram model: each character is predicted from the one before it
+        </text>
+      </g>
 
-      {/* clean ending card */}
+      {/* clean ending card: solid, so the faded tape and bars never show through */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={225} width={820} height={200} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={215} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Compression is Prediction
           </text>

@@ -1,0 +1,33 @@
+{
+ "shot": "ch11-s01",
+ "at": "2026-10-28T16:09:36.207Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "15 → 16 OCTOBER 2026 · A SIDE BRANCH OF ABOUT 240 COMMITS",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "≈ 240",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "of ≈ 1,560 entries",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "read by valid JSON",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

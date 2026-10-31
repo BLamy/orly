@@ -44,15 +44,21 @@ const DOMAINS = [
   'general agentic',
 ];
 
-const T_Y = 200;
-const T_W = 178;
-const T_H = 58;
-const T_XS = DOMAINS.map((_, i) => 90 + i * 188);
+// Six cards span 40..1240, so the whole row fits the 1280-wide stage at k=1.
+const T_Y = 232;
+const T_W = 180;
+const T_H = 64;
+const T_XS = DOMAINS.map((_, i) => 40 + i * 204);
 
 const STUDENT = { x: 640, y: 470 };
 
-const CAM_STAGES: CameraState = { x: 640, y: 160, k: 1.25 };
-const CAM_STUDENT: CameraState = { x: 640, y: 420, k: 1.3 };
+// Trajectory rollouts the harness emits (stage 1), one row each; lengths are
+// fixed so the picture is deterministic.
+const TRAJECTORIES = [22, 15, 26, 18, 12];
+
+// Cameras only pan: at k=1 nothing is cropped by the stage edge or the title.
+const CAM_STAGES: CameraState = { x: 640, y: 360, k: 1 };
+const CAM_STUDENT: CameraState = { x: 640, y: 400, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -175,7 +181,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Closing fade goes to zero so no faded content sits behind the closing panel.
+  const mainOp = 1 - dimU;
 
   return (
     <>
@@ -185,10 +192,30 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* stage 1 banner */}
           {stage1U > 0 && (
-            <g opacity={stage1U * (1 - 0.5 * teachersU)}>
-              <rect x={340} y={92} width={600} height={40} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={640} y={118} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
+            <g opacity={stage1U * (1 - teachersU)}>
+              <rect x={340} y={112} width={600} height={36} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} />
+              <text x={640} y={135} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                 stage 1 · SFT on ~100K harness trajectories
+              </text>
+            </g>
+          )}
+
+          {/* stage 1 output: harness trajectories, which the teachers replace */}
+          {stage1U > 0 && teachersU < 1 && (
+            <g opacity={stage1U * (1 - teachersU)}>
+              <rect x={300} y={172} width={680} height={128} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+              {TRAJECTORIES.map((len, r) => {
+                const y = 196 + r * 22;
+                const pts = Array.from({ length: len }, (_, j) => `${336 + j * 24},${y}`).join(' ');
+                return (
+                  <g key={r}>
+                    <polyline points={pts} fill="none" stroke={colors.SECONDARY} strokeWidth={1.5} opacity={0.7} />
+                    <circle cx={336 + (len - 1) * 24} cy={y} r={4} fill={colors.POSITIVE} />
+                  </g>
+                );
+              })}
+              <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                harness trajectories · tree rollouts
               </text>
             </g>
           )}
@@ -204,17 +231,17 @@ function Frame({ s }: { s: SceneState }) {
                 <rect x={x} y={T_Y} width={T_W} height={T_H} rx={10}
                   fill={colors.PANEL} stroke={hot ? colors.WARM : colors.SECONDARY}
                   strokeWidth={hot ? 2 : 1} />
-                <text x={x + T_W / 2} y={T_Y + 24} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontWeight={600}>
+                <text x={x + T_W / 2} y={T_Y + 26} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
                   teacher {i + 1}
                 </text>
-                <text x={x + T_W / 2} y={T_Y + 43} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                <text x={x + T_W / 2} y={T_Y + 47} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14}>
                   {d}
                 </text>
               </g>
             );
           })}
           {grpoU > 0 && (
-            <text x={640} y={T_Y - 16} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO} opacity={grpoU}>
+            <text x={640} y={T_Y - 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO} opacity={grpoU}>
               stage 2 · per-domain SFT + GRPO reinforcement learning
             </text>
           )}
@@ -243,30 +270,31 @@ function Frame({ s }: { s: SceneState }) {
               <text x={STUDENT.x} y={STUDENT.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={600}>
                 Agents-A1
               </text>
-              <text x={STUDENT.x} y={STUDENT.y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={STUDENT.x} y={STUDENT.y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 35B MoE
               </text>
-              <text x={STUDENT.x} y={STUDENT.y + 84} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={STUDENT.x} y={STUDENT.y + 86} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 stage 3 · multi-teacher domain-routed distillation
               </text>
             </g>
           )}
 
-          {/* SVA math */}
+          {/* SVA math: a panel right of the student, inside the frame */}
           {svaU > 0 && (
             <g opacity={svaU}>
-              <rect x={900} y={400} width={330} height={130} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-              <text x={920} y={430} fill={colors.SECONDARY} fontSize={13} fontWeight={600} fontFamily={MONO}>
+              <rect x={836} y={384} width={404} height={128} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={856} y={412} fill={colors.SECONDARY} fontSize={14} fontWeight={600} fontFamily={MONO}>
                 salient vocabulary alignment
               </text>
               <MathLabel
-                tex={'\\mathcal{L}_{\\mathrm{SVA}} = \\mathrm{KL}_{\\mathrm{rev}}^{\\mathrm{trunc}}\\big(q_{\\theta}\\,\\|\\,p_{T}\\big)\\Big|_{\\mathrm{supp}(p_T)}'}
-                x={1060}
-                y={470}
-                fontSize={15}
+                tex={'\\mathrm{KL}_{\\mathrm{rev}}^{\\mathrm{trunc}}(q_{\\theta}\\|p_{T})\\big|_{\\mathrm{supp}(p_T)}'}
+                x={1038}
+                y={452}
+                fontSize={14}
                 color={colors.TEXT}
+                boxWidth={560}
               />
-              <text x={920} y={512} fill={colors.MUTED} fontSize={11}>
+              <text x={856} y={494} fill={colors.MUTED} fontSize={14}>
                 reverse KL, truncated to teacher-selected tokens
               </text>
             </g>
@@ -279,14 +307,14 @@ function Frame({ s }: { s: SceneState }) {
         <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Six teachers, one small student
         </text>
-        <text x={40} y={80} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
+        <text x={40} y={80} fill={colors.MUTED} fontSize={15} fontFamily={MONO}>
           arXiv:2606.30616 · training recipe
         </text>
       </g>
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Breadth lives in teachers, not in weights
           </text>

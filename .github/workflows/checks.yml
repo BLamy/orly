@@ -1,0 +1,37 @@
+name: Checks (tests + typecheck)
+
+# Cheap, generation-free checks on every PR and push to main: model-routing policy
+# tests (all authoring on claude-opus-5-5 at high effort), the film pipeline's and the
+# film editor's pure unit tests, the film script validator's self-test, and the app typecheck.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund
+      - name: Model routing policy (Opus 5.5 everywhere)
+        run: npm run test:authoring
+      - name: Film pipeline unit tests
+        run: npm run film:test
+      - name: Film editor unit tests
+        run: npm run editor:test
+      - name: Workflow scripts parse
+        run: npm run film:check-workflows
+      - name: Typecheck
+        run: npx tsc -p apps/bookshelf/tsconfig.json --noEmit
+      - name: Typecheck (Vite config + film editor dev server)
+        run: npx tsc -p apps/bookshelf/tsconfig.node.json
+      - name: YAML lint
+        run: npm run lint:yaml

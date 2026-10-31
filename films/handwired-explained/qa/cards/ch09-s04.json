@@ -1,0 +1,108 @@
+{
+ "shot": "ch09-s04",
+ "at": "2026-10-28T17:41:29.210Z",
+ "step": 0.0833,
+ "sampled": 143,
+ "transition": {
+  "kind": "inkBleed",
+  "sampled": 17,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "The GPU is",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "the faster",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "one",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "09:01",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "(for the",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.64
+   },
+   {
+    "side": "out",
+    "text": "highlighter half)",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.64
+   },
+   {
+    "side": "out",
+    "text": "13 OCTOBER 2026 · 09:01",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "in",
+    "text": "error",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch09-s04-page"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@735,296",
+   "probed": false,
+   "from": 0.75,
+   "to": 2.25,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch09-s04-page",
+   "probed": true,
+   "from": 1.333,
+   "to": 7.25,
+   "minInkWhilePaper": 0.02
+  },
+  {
+   "id": "fillRect@603,261",
+   "probed": false,
+   "from": 8,
+   "to": 12.583,
+   "minInkWhilePaper": 0
+  }
+ ]
+}

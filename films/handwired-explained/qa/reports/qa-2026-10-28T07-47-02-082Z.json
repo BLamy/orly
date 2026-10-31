@@ -1,0 +1,60 @@
+{
+ "slug": "handwired-explained",
+ "at": "2026-10-28T07:47:02.082Z",
+ "summary": {
+  "pass": 3,
+  "warn": 0,
+  "fail": 2,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "fail",
+   "detail": "m01: not rendered; m02: not rendered; m03: not rendered; m04: not rendered; m05: not rendered; m06: not rendered; m07: not rendered; m08: not rendered; m09: not rendered; m10: not rendered; m11: not rendered; m12: not rendered",
+   "problems": [
+    "m01: not rendered",
+    "m02: not rendered",
+    "m03: not rendered",
+    "m04: not rendered",
+    "m05: not rendered",
+    "m06: not rendered",
+    "m07: not rendered",
+    "m08: not rendered",
+    "m09: not rendered",
+    "m10: not rendered",
+    "m11: not rendered",
+    "m12: not rendered",
+    "m13: not rendered"
+   ],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "fail",
+   "detail": "missing films/handwired-explained/score/analysis/summary.json: run film:score analyze --slug handwired-explained"
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "pass",
+   "detail": "12 cue changes, each in the clear before the next line",
+   "under": [],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "notesClock",
+   "status": "pass",
+   "detail": "every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)"
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "24.2 min of music over 24.3 min (100%)"
+  }
+ ]
+}

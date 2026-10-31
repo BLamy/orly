@@ -1,0 +1,80 @@
+{
+  "format": 3,
+  "slug": "handwired-knuth-plass",
+  "title": "Knuth-Plass",
+  "subtitle": "Optimal line breaks as a tree of min-plus matrices: one paragraph loses, many can win.",
+  "animal": "animal.webp",
+  "accent": "#5b8bd6",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Cheapest Breaks",
+      "blurb": "A line costs its empty space squared, and a running minimum over earlier break points finds the cheapest breaks for the whole paragraph.",
+      "scene": "books/handwired-knuth-plass/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.136,
+        23.023,
+        35.225,
+        47.729,
+        63.147,
+        78.217,
+        90.709,
+        103.201,
+        114.451,
+        130.02,
+        138.879,
+        151.8
+      ],
+      "duration": 168.623
+    },
+    {
+      "number": 2,
+      "title": "Chain Or Tree",
+      "blurb": "Each step of the running minimum is a min-plus matrix, so the steps can be merged in a tree: far fewer layers, about ten times the work.",
+      "scene": "books/handwired-knuth-plass/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.993,
+        23.731,
+        34.888,
+        47.612,
+        57.597,
+        72.086,
+        82.256,
+        92.043,
+        103.619,
+        116.134,
+        130.415
+      ],
+      "duration": 144.381
+    },
+    {
+      "number": 3,
+      "title": "Many At Once",
+      "blurb": "One paragraph loses to the round trip; a thousand paragraphs win with the dense-rows kernel and uploaded positions, but only within a shifting range.",
+      "scene": "books/handwired-knuth-plass/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.716,
+        21.524,
+        32.926,
+        45.639,
+        58.444,
+        68.719,
+        82.871,
+        96.536,
+        106.533,
+        120.418,
+        133.282,
+        144.543
+      ],
+      "duration": 158.081
+    }
+  ],
+  "sources": "sources.json"
+}

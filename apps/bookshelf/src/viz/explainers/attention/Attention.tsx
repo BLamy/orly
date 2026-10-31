@@ -92,10 +92,12 @@ function Frame({ s }: { s: SceneState }) {
   const gp = s.get(scene.glideP);
   const fp = s.get(scene.fullP);
   const matUv = s.get(scene.matU);
-  const dim = 1 - 0.55 * s.get(scene.dimU);
+  const dim = 1 - 0.85 * s.get(scene.dimU);
   const fan = s.get(scene.fanU);
   const gather = s.get(scene.vGather);
   const qsatUv = s.get(scene.qsatU);
+  // beat 1's embedding plot: visible while the vectors show, gone once Q/K/V arrive
+  const embedU = clamp01(fan) * (1 - clamp01(s.get(scene.qRowU)));
 
   // ── matrix state, derived per frame from sampled channels ──
   // The derived-stagger pattern: all 36 cells cascade from ONE channel.
@@ -144,7 +146,7 @@ function Frame({ s }: { s: SceneState }) {
             <g key={`f${i}`}>
               {[0, 1, 2].map((k) => {
                 const a = Math.PI / 2 + (k - 1) * 0.55 + EMBED[i][k] * 0.25;
-                const len = 20 + 6 * Math.abs(EMBED[i][k + 1]);
+                const len = 26 + 12 * Math.abs(EMBED[i][k + 1]);
                 return (
                   <Vec
                     key={k}
@@ -160,6 +162,28 @@ function Frame({ s }: { s: SceneState }) {
                   />
                 );
               })}
+            </g>
+          );
+        })}
+      </g>
+
+      {/* ── the embedding plane those vectors live in: the first two dims of each EMBED row ── */}
+      <g opacity={embedU}>
+        <rect x={860} y={240} width={280} height={280} rx={12} fill={colors.PANEL} fillOpacity={0.5} stroke={colors.GRID} />
+        <text x={872} y={262} fill={colors.MUTED} fontSize={14}>
+          embedding space
+        </text>
+        {TOKENS.map((tok, i) => {
+          const px = 1000 + EMBED[i][0] * 110;
+          const py = 380 - EMBED[i][1] * 110;
+          // the two "the" points nearly coincide, so their labels sit on opposite sides
+          const lab = i === 0 ? { dx: -10, dy: 4, anchor: 'end' as const } : i === 4 ? { dx: 10, dy: 14, anchor: 'start' as const } : { dx: 10, dy: 4, anchor: 'start' as const };
+          return (
+            <g key={`p${i}`}>
+              <circle cx={px} cy={py} r={5} fill={colors.ACCENT} />
+              <text x={px + lab.dx} y={py + lab.dy} textAnchor={lab.anchor} fill={colors.TEXT} fontSize={14}>
+                {tok}
+              </text>
             </g>
           );
         })}
@@ -192,6 +216,7 @@ function Frame({ s }: { s: SceneState }) {
                 const tagU = isV ? clamp01(g * 5) * clamp01((0.82 - g) * 6) : 0;
                 return (
                   <g key={i}>
+                    {/* the focus query leaves its Q chip for the roaming one, so that chip hides */}
                     <Chip
                       x={x}
                       y={y}
@@ -203,10 +228,10 @@ function Frame({ s }: { s: SceneState }) {
                       scale={sc * (1 + 0.16 * pulse)}
                       stroke={row.color}
                       text={row.color}
-                      opacity={fade}
+                      opacity={fade * (row.letter === 'Q' && i === FOCUS ? 1 - qsatUv : 1)}
                     />
                     {tagU > 0 && (
-                      <text x={x} y={y + 32} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} opacity={tagU}>
+                      <text x={x} y={y + 32} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={tagU}>
                         ×{WEIGHTS[FOCUS][i].toFixed(2)}
                       </text>
                     )}
@@ -277,7 +302,7 @@ function Frame({ s }: { s: SceneState }) {
         u={qsatUv}
         w={58}
         h={32}
-        fontSize={13}
+        fontSize={14}
         fill={colors.ACCENT}
         stroke={colors.ACCENT}
         text="#08101f"
@@ -298,33 +323,37 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* ── math labels ── */}
       <MathLabel
-        tex="Q = XW_Q,\;\; K = XW_K,\;\; V = XW_V"
+        tex={String.raw`Q = XW_Q,\;\; K = XW_K,\;\; V = XW_V`}
         x={372}
         y={428}
         fontSize={24}
         opacity={s.get(scene.qkvTexU)}
       />
       <MathLabel
-        tex="\dfrac{q_{\text{sat}}\cdot k_j}{\sqrt{d_k}}"
+        tex={String.raw`\dfrac{q_{\text{sat}}\cdot k_j}{\sqrt{d_k}}`}
         x={MATRIX_X + MAT_W / 2}
         y={556}
         fontSize={24}
         opacity={s.get(scene.scoreTexU)}
       />
       <MathLabel
-        tex="\mathrm{softmax}\!\left(\dfrac{q\cdot k}{\sqrt{d_k}}\right)"
+        tex={String.raw`\mathrm{softmax}\!\left(\dfrac{q\cdot k}{\sqrt{d_k}}\right)`}
         x={MATRIX_X + MAT_W / 2}
         y={556}
         fontSize={24}
         opacity={s.get(scene.softTexU)}
       />
       <MathLabel
-        tex="\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\!\left(\dfrac{QK^\top}{\sqrt{d_k}}\right)V"
+        tex={String.raw`\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\!\left(\dfrac{QK^\top}{\sqrt{d_k}}\right)V`}
         x={372}
         y={448}
         fontSize={23}
         opacity={s.get(scene.formulaU)}
       />
+      {/* beat 6: the closer says "each row", so say the real model's other half too */}
+      <text x={372} y={500} textAnchor="middle" fill={colors.MUTED} fontSize={16} opacity={s.get(scene.dimU)}>
+        Real models run many heads in parallel.
+      </text>
     </Camera>
   );
 }

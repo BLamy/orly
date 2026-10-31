@@ -1,0 +1,74 @@
+{
+ "shot": "ch05-s08",
+ "at": "2026-10-13T04:13:27.659Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 12,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "AU",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AUSTIN · 198",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "douglas lenat",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AUSTIN · 1984",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Cyc: common sense, typed in by hand",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…practically nothing that current AI",
+   "capWhileSubject": 35.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "technology could draw from the raw text.",
+   "capWhileSubject": 35.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "— Lenat, Prakash & Shepherd, 1985",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "TOKYO 1982 · logic, not learning",
+   "capWhileSubject": 29.4,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "CYC",
+   "maxCap": 22.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CASE",
+   "maxCap": 25.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "FIFTH GENERATION",
+   "maxCap": 44.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 3
+}

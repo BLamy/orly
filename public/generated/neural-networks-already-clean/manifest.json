@@ -1,0 +1,126 @@
+{
+  "format": 3,
+  "slug": "neural-networks-already-clean",
+  "title": "Already Clean",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Refocus the Microscope",
+      "blurb": "Same neurons, sharper view: what the estimate does as tools, then training, then architecture change.",
+      "scene": "books/neural-networks-already-clean/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.868,
+        17.925,
+        25.681,
+        34.679,
+        41.343,
+        50.19,
+        59.78,
+        65.376,
+        71.054,
+        77.869,
+        83.767,
+        93.043
+      ],
+      "duration": 101.75
+    },
+    {
+      "number": 2,
+      "title": "Read the Gate",
+      "blurb": "A neuron as a gate between two patterns: what the famous cat-and-car neuron really separates, and a car circuit that was never hidden.",
+      "scene": "books/neural-networks-already-clean/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.649,
+        15.36,
+        23.045,
+        31.091,
+        42.841,
+        52.442,
+        61.313,
+        66.688,
+        74.165,
+        82.118,
+        89.107,
+        96.793,
+        104.815
+      ],
+      "duration": 114.754
+    },
+    {
+      "number": 3,
+      "title": "Follow the Branch",
+      "blurb": "A neuron's examples can look unrelated at the end and still be neighbours at every step.",
+      "scene": "books/neural-networks-already-clean/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.095,
+        14.501,
+        23.104,
+        32.81,
+        40.461,
+        48.832,
+        56.773,
+        65.074,
+        73.027,
+        82.222
+      ],
+      "duration": 89.815
+    },
+    {
+      "number": 4,
+      "title": "Squeeze the Layer",
+      "blurb": "Take capacity away and see what a neuron does: it broadens, rather than hiding the fine detectors in a mixture.",
+      "scene": "books/neural-networks-already-clean/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.769,
+        16.602,
+        25.704,
+        32.716,
+        41.25,
+        52.047,
+        61.58,
+        70.368,
+        79.517,
+        88.12,
+        99.346,
+        105.569,
+        114.265
+      ],
+      "duration": 121.208
+    },
+    {
+      "number": 5,
+      "title": "Scale the Investigation",
+      "blurb": "A preliminary audit of a language model, then an argument for inspecting neurons at scale, with its last step still unfinished.",
+      "scene": "books/neural-networks-already-clean/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.371,
+        16.892,
+        27.12,
+        37.163,
+        46.114,
+        55.054,
+        66.212,
+        72.876,
+        79.076,
+        86.622,
+        94.668,
+        102.795,
+        115.601
+      ],
+      "duration": 126.595
+    }
+  ],
+  "sources": "sources.json"
+}

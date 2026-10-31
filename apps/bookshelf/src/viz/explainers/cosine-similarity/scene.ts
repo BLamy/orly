@@ -44,8 +44,9 @@ export const SCALE = 175; // px per unit
 export const vx = (v: V2): number => OX + v.x * SCALE;
 export const vy = (v: V2): number => OY - v.y * SCALE;
 
-export const CAM_SPACE: CameraState = { x: 560, y: 330, k: 1.1 };
-export const CAM_CIRCLE: CameraState = { x: OX + 0.9 * SCALE, y: OY - 0.75 * SCALE, k: 1.5 };
+// Framings keep the subject above the caption pill (stage y ≈ 630).
+export const CAM_SPACE: CameraState = { x: 560, y: 374, k: 1.1 };
+export const CAM_CIRCLE: CameraState = { x: OX, y: 583, k: 1.3 };
 
 export interface Scene {
   tl: Timeline;
@@ -131,7 +132,7 @@ export function buildScene(): Scene {
   tl.hold(36.3, 0.6);
 
   // — Beat 4 · why it matters ——————————————————————————————————————————
-  tl.tween(cam, CAM_SPACE, { at: 36.9, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_CIRCLE, { at: 36.9, dur: 1.5, ease: ease.move });
   tl.caption({
     at: 37.3,
     dur: 5.6,
@@ -147,7 +148,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 48.5, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 49.1, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 49.1, dur: 1.1, ease: ease.move });
   tl.tween(dotU, 0, { at: 49.1, dur: 0.8, ease: ease.move });
   tl.tween(cosU, 0, { at: 49.1, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 50.3, dur: 0.9, ease: ease.enter });

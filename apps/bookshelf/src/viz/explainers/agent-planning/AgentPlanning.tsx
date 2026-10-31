@@ -100,11 +100,13 @@ const BOARD_Y = 190;
 const CELL = 62;
 
 const TREE_X0 = 620;
-const TREE_W = 540;
+const TREE_W = 600;
 const TREE_Y0 = 170;
 const TREE_DY = 110;
+const ROOT_Y = TREE_Y0 - 28;
 
-const CAM_BOARD: CameraState = { x: 350, y: 340, k: 1.2 };
+// Framed so the board and the whole tree are on stage together (the first tree caption plays while this view holds).
+const CAM_BOARD: CameraState = { x: 695, y: 340, k: 1.1 };
 const CAM_TREE: CameraState = { x: 665, y: 375, k: 1.05 };
 
 interface Scene {
@@ -236,7 +238,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
+  const mainOpen = mainOp > 0.02;
   const evIdx = Math.min(TRACE.length, Math.floor(step));
   const board = evIdx > 0 ? TRACE[evIdx - 1].stackAfter : [];
 
@@ -244,8 +247,54 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOpen && (
       <g opacity={mainOp}>
         <Camera {...cam}>
+          {/* beat 1: one lap through a single question, then a goal that splits into steps that constrain each other.
+              It hands over to the board as the board fades in. */}
+          <g opacity={titleU * (1 - boardU)}>
+            <text x={640} y={196} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+              one loop lap
+            </text>
+            <rect x={460} y={216} width={130} height={46} rx={23} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={525} y={244} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
+              question
+            </text>
+            <line x1={590} y1={239} x2={682} y2={239} stroke={colors.MUTED} strokeWidth={2} />
+            <polygon points="690,239 678,233 678,245" fill={colors.MUTED} />
+            <rect x={690} y={216} width={130} height={46} rx={23} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={755} y={244} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
+              answer
+            </text>
+            <text x={640} y={292} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+              one pass, start to finish
+            </text>
+            <text x={640} y={354} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+              a real goal
+            </text>
+            <rect x={570} y={372} width={140} height={46} rx={23} fill={colors.PANEL} stroke={colors.ACCENT} />
+            <text x={640} y={400} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
+              goal
+            </text>
+            {[480, 640, 800].map((cx) => (
+              <line key={cx} x1={640} y1={418} x2={cx} y2={468} stroke={colors.GRID} strokeWidth={2} />
+            ))}
+            {[415, 575, 735].map((x, i) => (
+              <g key={x}>
+                <rect x={x} y={468} width={130} height={46} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+                <text x={x + 65} y={496} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
+                  step {i + 1}
+                </text>
+              </g>
+            ))}
+            {[545, 705].map((x) => (
+              <line key={x} x1={x} y1={491} x2={x + 30} y2={491} stroke={colors.WARM} strokeWidth={2} strokeDasharray="4 4" />
+            ))}
+            <text x={640} y={556} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+              each step constrains the next
+            </text>
+          </g>
+
           {/* the board */}
           {boardU > 0 && (
             <g opacity={boardU}>
@@ -289,7 +338,7 @@ function Frame({ s }: { s: SceneState }) {
                   </text>
                 </g>
               ))}
-              <text x={BOARD_X} y={BOARD_Y + N * CELL + 30} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              <text x={BOARD_X} y={BOARD_Y + N * CELL + 30} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 row {board.length} of {N} placed
               </text>
             </g>
@@ -298,58 +347,70 @@ function Frame({ s }: { s: SceneState }) {
           {/* the explored tree — exactly the trace */}
           {treeU > 0 && (
             <g opacity={treeU}>
-              <text x={TREE_X0} y={TREE_Y0 - 36} fill={colors.TEXT} fontSize={16}>
+              <text x={TREE_X0} y={TREE_Y0 - 50} fill={colors.TEXT} fontSize={16}>
                 the plan tree, as actually explored
               </text>
+              {/* the root the first row hangs from */}
+              <circle cx={TREE_X0 + TREE_W / 2} cy={ROOT_Y} r={5} fill={colors.MUTED} />
+              <text x={TREE_X0 + TREE_W / 2 + 12} y={ROOT_Y + 5} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                goal
+              </text>
               {TRACE.slice(0, evIdx).map((ev, k) => {
+                const x = TREE_X0 + treeX(ev.path, ev.col) * TREE_W;
+                const y = TREE_Y0 + ev.row * TREE_DY;
+                // Below row 1 siblings are closer than a label is wide, so those nodes are bare dots.
+                const dense = ev.row >= 2;
+                // once the retreat has happened, its ↩ takes the abandoned node's label spot
+                const retreatAt = ev.backtrack
+                  ? TRACE.findIndex((o, j) => j > k && o.backtrack && o.row === ev.row && o.col === ev.col && o.path.join() === ev.path.join())
+                  : -1;
+                const retreated = retreatAt >= 0 && retreatAt < evIdx;
                 if (ev.backtrack && ev.ok) {
-                  // retreat event: draw a fading marker on the abandoned node
-                  const x = TREE_X0 + treeX(ev.path, ev.col) * TREE_W;
-                  const y = TREE_Y0 + ev.row * TREE_DY;
+                  // retreat event: a marker beside the abandoned node
                   return (
-                    <text key={k} x={x + 14} y={y - 10} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
+                    <text key={k} x={x + (dense ? 6 : 12)} y={y + 4} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
                       ↩
                     </text>
                   );
                 }
-                const x = TREE_X0 + treeX(ev.path, ev.col) * TREE_W;
-                const y = TREE_Y0 + ev.row * TREE_DY;
                 const px = ev.path.length
                   ? TREE_X0 + treeX(ev.path.slice(0, -1), ev.path[ev.path.length - 1]) * TREE_W
                   : TREE_X0 + TREE_W / 2;
-                const py = ev.path.length ? TREE_Y0 + (ev.row - 1) * TREE_DY : TREE_Y0 - 26;
+                const py = ev.path.length ? TREE_Y0 + (ev.row - 1) * TREE_DY : ROOT_Y;
                 const isOnSolution =
                   SOLUTION !== null &&
                   step >= TRACE.length &&
                   ev.ok &&
                   ev.path.every((c, i) => (SOLUTION as unknown as number[])[i] === c) &&
                   (SOLUTION as unknown as number[])[ev.row] === ev.col;
+                const r = dense ? (ev.ok ? 5 : 4) : ev.ok ? 9 : 7;
                 return (
                   <g key={k}>
                     <line x1={px} y1={py} x2={x} y2={y} stroke={colors.GRID} strokeWidth={1.5} opacity={0.7} />
                     <circle
                       cx={x}
                       cy={y}
-                      r={ev.ok ? 9 : 7}
+                      r={r}
                       fill={ev.ok ? (isOnSolution ? colors.POSITIVE : colors.ACCENT) : colors.BG}
                       stroke={ev.ok ? 'none' : colors.NEGATIVE}
-                      strokeWidth={2}
-                      opacity={ev.ok ? 0.9 : 0.9}
+                      strokeWidth={dense ? 1.5 : 2}
                     />
-                    {!ev.ok && (
-                      <text x={x} y={y + 4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10} fontWeight={700}>
+                    {!ev.ok && !dense && (
+                      <text x={x} y={y + 4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontWeight={700}>
                         ×
                       </text>
                     )}
-                    <text x={x} y={y + (ev.ok ? -14 : 20)} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="monospace">
-                      c{ev.col}
-                    </text>
+                    {!dense && !retreated && (
+                      <text x={x + 12} y={y + 4} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                        c{ev.col}
+                      </text>
+                    )}
                   </g>
                 );
               })}
               {/* depth labels */}
               {Array.from({ length: N }, (_, r) => (
-                <text key={r} x={TREE_X0 - 26} y={TREE_Y0 + r * TREE_DY + 4} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                <text key={r} x={TREE_X0 - 26} y={TREE_Y0 + r * TREE_DY + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                   row {r}
                 </text>
               ))}
@@ -371,13 +432,14 @@ function Frame({ s }: { s: SceneState }) {
               <text x={BOARD_X} y={520} fill={colors.TEXT} fontSize={15}>
                 the same tree, relabeled
               </text>
-              <text x={BOARD_X} y={548} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+              <text x={BOARD_X} y={548} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                 row → subtask · column → approach · × → failed observation · ↩ → revise the plan
               </text>
             </g>
           )}
         </Camera>
       </g>
+      )}
 
       <g opacity={titleU * mainOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>

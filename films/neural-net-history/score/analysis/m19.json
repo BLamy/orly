@@ -1,0 +1,18 @@
+{
+ "id": "m19",
+ "start": 1916.433,
+ "end": 2043.317,
+ "file": "films/neural-net-history/score/renders/m19.wav",
+ "duration": 132.884,
+ "I": -22.8,
+ "LRA": 16.5,
+ "TP": -6.2,
+ "expected": 132.884,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m19.png",
+ "cueSeconds": 126.884,
+ "cps": 1,
+ "lastStrikeLocal": 124.08,
+ "lastStrike": 2040.513
+}

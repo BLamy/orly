@@ -92,7 +92,8 @@ type Mode = 'SWA-only' | 'Full' | 'Reindex' | 'Reuse';
 export const MODES: Mode[] = Array.from({ length: N_LAYERS }, (_, i) =>
   i < 2 ? 'SWA-only' : [2, 8, 14, 20].includes(i) ? 'Full' : [24, 28, 32, 36].includes(i) ? 'Reindex' : 'Reuse',
 );
-const MODE_COLOR: Record<Mode, string> = { 'SWA-only': MUTED, Full: SECONDARY, Reindex: POSITIVE, Reuse: '#5c6478' };
+// Reuse shares the pink of its query colour (beat 4) so the ruler, card and query agree.
+const MODE_COLOR: Record<Mode, string> = { 'SWA-only': MUTED, Full: SECONDARY, Reindex: POSITIVE, Reuse: '#f0abfc' };
 
 const PUBLISHED_POOL = 2048 * 8; // 16384
 
@@ -108,7 +109,10 @@ const RULER = { x: 170, dx: 20, y: 486 };
 const layerX = (i: number) => RULER.x + RULER.dx * i;
 const Q_HOME = { x: cx(31), y: 205 };
 const Q_NEAR = { x: 640, y: 215 };
-const EMPTY_RING = { x: 420, y: 300, r: 70 };
+// Focus for the layer beats (2, 5, 8): keeps the whole 32-position comb (screen x ≈ 136–1206)
+// and the mode cards on the 1280×720 stage, unlike the old push that cropped the right end.
+const FOCUS = { x: 610, y: 330, k: 1.2 };
+const EMPTY_RING = { x: 640, y: 300, r: 86 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -160,7 +164,7 @@ export function buildScene() {
   tl.hold(B(1) + 6.8, 1.2);
 
   // 2 — Full: layer 20 stamps memory and selection
-  tl.tween(cam, { x: 450, y: 325, k: 1.25 }, { at: B(2), dur: 1.2, ease: ease.move });
+  tl.tween(cam, FOCUS, { at: B(2), dur: 1.2, ease: ease.move });
   to(queryNear, 1, B(2), 1.2, ease.move);
   to(rulerO, 1, B(2) + 0.8);
   to(modeFull, 1, B(2) + 1.6);
@@ -185,7 +189,7 @@ export function buildScene() {
   tl.hold(B(4) + 6.8, 1.2);
 
   // 5 — back to layer 20: first scores, four block maxima
-  tl.tween(cam, { x: 670, y: 335, k: 1.25 }, { at: B(5), dur: 1.2, ease: ease.move });
+  tl.tween(cam, FOCUS, { at: B(5), dur: 1.2, ease: ease.move });
   to(modeReuse, 0, B(5));
   to(layerPos, 20, B(5), 1.0, ease.move);
   tl.tween(qColor, ACCENT, { at: B(5), dur: 1.0, ease: ease.move });
@@ -205,13 +209,13 @@ export function buildScene() {
 
   // 7 — published sizes, kept apart from the toy stencil
   tl.tween(cam, CAMERA_HOME, { at: B(7), dur: 1.2, ease: ease.move });
-  to(handleO, 0.15, B(7));
+  to(handleO, 0, B(7));
   to(pubO, 1, B(7) + 1.4);
   to(chipPub, 1, B(7) + 1.4);
   tl.hold(B(7) + 6.8, 1.2);
 
   // 8 — same pool, second scores, different teeth
-  tl.tween(cam, { x: 670, y: 335, k: 1.2 }, { at: B(8), dur: 1.2, ease: ease.move });
+  tl.tween(cam, FOCUS, { at: B(8), dur: 1.2, ease: ease.move });
   to(pubO, 0, B(8));
   to(handleO, 0, B(8));
   to(layerPos, 24, B(8) + 0.4, 1.0, ease.move);
@@ -224,7 +228,7 @@ export function buildScene() {
 
   // 9 — work rulers: paper deployment algorithm vs the reference
   tl.tween(cam, CAMERA_HOME, { at: B(9), dur: 1.2, ease: ease.move });
-  to(combO, 0.15, B(9));
+  to(combO, 0, B(9));
   to(poolLbl, 0, B(9));
   to(queryO, 0, B(9));
   to(rulerO, 0, B(9));
@@ -238,6 +242,7 @@ export function buildScene() {
   to(chipPaper, 0, B(10));
   to(chipPub, 0, B(10));
   to(candU, 0, B(10));
+  to(handleU, 0, B(10));
   to(combO, 1, B(10) + 0.4);
   to(combU, 0, B(10) + 0.4, 1.2, ease.move);
   to(ringO, 1, B(10) + 1.8);
@@ -298,7 +303,7 @@ function ModeCard({ o, mode, lines }: { o: number; mode: Mode; lines: string[] }
   return (
     <g opacity={o}>
       <rect x={120} y={186} width={250} height={28 + 18 * lines.length} rx={8} fill={PANEL} stroke={MODE_COLOR[mode]} strokeOpacity={0.8} />
-      <text x={134} y={207} fill={mode === 'Reuse' ? TEXT : MODE_COLOR[mode]} fontFamily={font.ui} fontSize={15} fontWeight={700}>{mode}</text>
+      <text x={134} y={207} fill={MODE_COLOR[mode]} fontFamily={font.ui} fontSize={15} fontWeight={700}>{mode}</text>
       {lines.map((l, i) => (
         <text key={l} x={134} y={226 + 18 * i} fill={TEXT} fontFamily={font.mono} fontSize={12}>{l}</text>
       ))}
@@ -360,10 +365,15 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-            <Note x={COMB.x} y={COMB.y + 32} text={`${BASE}`} size={10} />
-            <Note x={cx(15)} y={COMB.y + 32} text={`${TOKEN}`} size={10} color={WARM} anchor="middle" />
-            <Note x={COMB.x + COMB.dx * N - 4} y={COMB.y + 32} text={`${BASE + N - 1}`} size={10} anchor="end" />
+            <Note x={COMB.x} y={COMB.y + 32} text={`${BASE}`} size={12} />
+            <Note x={cx(15)} y={COMB.y + 32} text={`${TOKEN}`} size={12} color={WARM} anchor="middle" />
+            <Note x={COMB.x + COMB.dx * N - 4} y={COMB.y + 32} text={`${BASE + N - 1}`} size={12} anchor="end" />
           </g>
+
+          {/* beat 1 label: the history the comb is searching */}
+          <Note x={COMB.x} y={COMB.y - 22} size={14} color={TEXT}
+            o={g(scene.railO) * (1 - g(scene.rulerO)) * (1 - g(scene.ringO))}
+            text="visible history: every token so far" />
 
           {/* selected reads — solid outlines + teeth to the query */}
           {selO > 0 &&
@@ -386,9 +396,9 @@ export function Render({ s }: { s: SceneState }) {
             )}
           {selO > 0.5 && (
             <g opacity={g(scene.railO)}>
-              <Code x={cx(17)} y={COMB.y + 32} size={11} color={POSITIVE} o={selO * (1 - selMix)}
+              <Code x={cx(17)} y={COMB.y + 32} size={13} color={POSITIVE} o={selO * (1 - selMix)}
                 text={`topk_idxs = [${TOPK_1.map((j) => BASE + j).join(', ')}]`} />
-              <Code x={cx(17)} y={COMB.y + 32} size={11} color={POSITIVE} o={selO * selMix}
+              <Code x={cx(17)} y={COMB.y + 32} size={13} color={POSITIVE} o={selO * selMix}
                 text={`topk_idxs = [${TOPK_2.map((j) => BASE + j).join(', ')}]`} />
             </g>
           )}
@@ -406,18 +416,18 @@ export function Render({ s }: { s: SceneState }) {
                     <path d={`M${blockX0(b)},${y + 8} v-8 h${BLOCK_W} v8`} fill="none" stroke={color} strokeWidth={2} />
                     {b === NEWEST ? (
                       <>
-                        <Code x={blockX0(b) + BLOCK_W / 2} y={y - 8} text={m.toFixed(2)} size={11} color={MUTED} anchor="middle" o={1 - pin} />
+                        <Code x={blockX0(b) + BLOCK_W / 2} y={y - 8} text={m.toFixed(2)} size={14} color={TEXT} anchor="middle" o={1 - pin} />
                         <MathLabel tex={'+\\infty'} x={blockX0(b) + BLOCK_W / 2} y={y - 14} fontSize={16} color={ACCENT} opacity={pin} />
                       </>
                     ) : (
-                      <Code x={blockX0(b) + BLOCK_W / 2} y={y - 8} text={m.toFixed(1)} size={11} color={color} anchor="middle" />
+                      <Code x={blockX0(b) + BLOCK_W / 2} y={y - 8} text={m.toFixed(1)} size={14} color={chosen ? color : TEXT} anchor="middle" />
                     )}
                   </g>
                 );
               })}
               <g opacity={g(scene.blockLbl)}>
                 <Code x={COMB.x} y={196} text="select_candidate_blocks" color={TEXT} />
-                <Code x={COMB.x} y={214} text="amax(dim=-1)" color={MUTED} size={12} />
+                <Code x={COMB.x} y={214} text="amax(dim=-1)" color={TEXT} size={13} />
               </g>
               <g opacity={pin}>
                 <Code x={COMB.x} y={196} text="scores.masked_fill(..., torch.inf)" color={ACCENT} />
@@ -435,10 +445,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* published sizes (beat 7) */}
         <g opacity={g(scene.pubO)}>
           <rect x={330} y={150} width={620} height={100} rx={10} fill={PANEL} stroke={MUTED} strokeOpacity={0.4} />
-          <MathLabel tex={`2048 \\times 8 = ${PUBLISHED_POOL}`} x={640} y={184} fontSize={24} />
+          <text x={640} y={186} fill={TEXT} fontFamily={font.mono} fontSize={24} textAnchor="middle">{`2048 × 8 = ${PUBLISHED_POOL}`}</text>
           <Code x={640} y={222} anchor="middle" size={12}
             text="candidate_topk_blocks = 2048 · candidate_block_size = 8 · index_topk = 512" />
-          <Note x={640} y={240} text="published configuration — the comb below is a toy" size={11} anchor="middle" />
+          <Note x={640} y={240} text="published configuration — the comb below is a toy" size={12} anchor="middle" />
         </g>
 
         {/* the query */}
@@ -446,10 +456,10 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={g(scene.queryO)}>
             <circle cx={q.x} cy={q.y} r={12} fill={PANEL} stroke={qColor} strokeWidth={2.5} />
             <text x={q.x} y={q.y + 4} fill={qColor} fontFamily={font.mono} fontSize={11} textAnchor="middle">q</text>
-            <Note x={q.x} y={q.y - 20} text={`query @ 159 · layer ${Math.round(layerPos)}`} size={11} color={qColor} anchor="middle" />
+            <Note x={q.x} y={q.y - 20} text={`query @ 159 · layer ${Math.round(layerPos)}`} size={12} color={qColor} anchor="middle" />
             <g opacity={g(scene.modeReuse)}>
               <circle cx={q.x + 58} cy={q.y} r={11} fill="none" stroke={qColor} strokeWidth={3} strokeDasharray="3 2" />
-              <Code x={q.x + 76} y={q.y + 4} text="window_kv_cache" size={11} color={qColor} />
+              <Code x={q.x + 76} y={q.y + 4} text="window_kv_cache" size={12} color={qColor} />
             </g>
           </g>
         )}
@@ -467,9 +477,9 @@ export function Render({ s }: { s: SceneState }) {
                 rx={2} fill={MODE_COLOR[m]} />
             ))}
             <path d={`M${layerX(layerPos) - 7},${RULER.y + 22} l7,-10 l7,10 z`} fill={TEXT} />
-            <Note x={layerX(layerPos)} y={RULER.y + 36} text={`layer ${Math.round(layerPos)}`} size={11} color={TEXT} anchor="middle" />
-            <Note x={layerX(0) - 6} y={RULER.y + 4} text="0" size={10} anchor="end" />
-            <Note x={layerX(39) + 8} y={RULER.y + 4} text="39" size={10} />
+            <Note x={layerX(layerPos)} y={RULER.y + 36} text={`layer ${Math.round(layerPos)}`} size={13} color={TEXT} anchor="middle" />
+            <Note x={layerX(0) - 6} y={RULER.y + 4} text="layer 0" size={12} anchor="end" />
+            <Note x={layerX(39) + 8} y={RULER.y + 4} text="layer 39" size={12} />
           </g>
         )}
 
@@ -483,9 +493,9 @@ export function Render({ s }: { s: SceneState }) {
             <rect x={300} y={280} width={w2} height={20} rx={4} fill={ACCENT} fillOpacity={0.35} stroke={ACCENT} />
             <line x1={630} y1={270} x2={630} y2={310} stroke={ACCENT} strokeDasharray="4 3" opacity={w1 > 330 ? 1 : 0.3} />
             <Note x={640} y={295} text="plateaus at the candidate-pool bound" size={12} />
-            <Note x={300} y={200} text="context length →" size={11} />
-            <Chip x={300} y={330} text="einsum → masked_fill" o={1} color={MUTED} />
-            <Note x={470} y={346} text="reference Indexer.forward: scores everything, then masks" size={12} />
+            <Note x={300} y={200} text="context length →" size={12} />
+            <Chip x={300} y={330} text="einsum → masked_fill" o={1} color={WARM} />
+            <Note x={470} y={346} text="reference Indexer.forward: scores everything, then masks" size={13} color={TEXT} />
           </g>
         )}
 
@@ -493,7 +503,7 @@ export function Render({ s }: { s: SceneState }) {
         {g(scene.ringO) > 0 && (
           <g opacity={g(scene.ringO)}>
             <circle cx={EMPTY_RING.x} cy={EMPTY_RING.y} r={EMPTY_RING.r} fill="none" stroke={ACCENT} strokeWidth={2} strokeDasharray="4 7" strokeOpacity={0.8} />
-            <Note x={EMPTY_RING.x} y={EMPTY_RING.y + 4} text="local window: empty" size={12} color={ACCENT} anchor="middle" />
+            <Note x={EMPTY_RING.x} y={EMPTY_RING.y + 4} text="local window: empty" size={14} color={ACCENT} anchor="middle" />
           </g>
         )}
       </Camera>
@@ -504,6 +514,16 @@ export function Render({ s }: { s: SceneState }) {
       <Chip x={500} text="2048 blocks × 8 = 16384 candidates; index_topk = 512" o={g(scene.chipPub)} />
       <Chip x={882} text="Paper deployment algorithm" o={g(scene.chipPaper)} color={SECONDARY} />
       <Takeaway text="Shared memory; refreshed or reused indices" o={g(scene.takeO)} />
+      {/* layer key for the 40-layer ruler (beats 2–9) */}
+      <g opacity={g(scene.rulerO)}>
+        <rect x={960} y={118} width={280} height={28} rx={8} fill={PANEL} stroke={MUTED} strokeOpacity={0.4} />
+        {(['Full', 'Reindex', 'Reuse'] as const).map((m, i) => (
+          <g key={m}>
+            <rect x={976 + 90 * i} y={127} width={8} height={12} rx={2} fill={MODE_COLOR[m]} />
+            <text x={990 + 90 * i} y={138} fill={TEXT} fontFamily={font.ui} fontSize={13}>{m}</text>
+          </g>
+        ))}
+      </g>
     </g>
   );
 }

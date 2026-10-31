@@ -28,8 +28,9 @@ export const POINTS: Pt[] = (() => {
   return pts;
 })();
 
-// data window and stage mapping (scatter lives on the left half)
-export const DATA = { x0: -3.1, x1: 3.1, y0: -2.5, y1: 2.5 };
+// data window and stage mapping. The window is wide enough to hold every
+// seeded point (one lies out to the right), and its aspect matches PLOT.
+export const DATA = { x0: -3.1, x1: 3.9, y0: -2.82, y1: 2.82 };
 export const PLOT = { x: 70, y: 78, w: 610, h: 492 };
 export const sx = (x: number): number => PLOT.x + ((x - DATA.x0) / (DATA.x1 - DATA.x0)) * PLOT.w;
 export const sy = (y: number): number => PLOT.y + PLOT.h - ((y - DATA.y0) / (DATA.y1 - DATA.y0)) * PLOT.h;
@@ -118,7 +119,8 @@ export function tourAt(u: number): { x: number; y: number } {
 export const CHART = { x: 760, y: 150, w: 420, h: 300 };
 export const BARS = { x: 760, y: 130, w: 420, h: 360 };
 
-export const CAM_PLOT: CameraState = { x: 375, y: 324, k: 1.32 };
+// zoomed on the plot, with its bottom edge clear of the caption pill
+export const CAM_PLOT: CameraState = { x: 375, y: 355, k: 1.12 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

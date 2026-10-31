@@ -126,7 +126,7 @@ const BOGUS_REJECTED = !BOGUS_VERDICTS[0].ok;
 
 // Display strings for the five lines.
 const LINES_TEX = [
-  { rule: 'assume', tex: 'A \\wedge B \\;\\vdash\\; A \\wedge B', from: 'assume' },
+  { rule: '\\text{assume}', tex: 'A \\wedge B \\;\\vdash\\; A \\wedge B', from: 'no premises' },
   { rule: '\\wedge\\text{-elim-R}', tex: 'A \\wedge B \\;\\vdash\\; B', from: 'from line 1' },
   { rule: '\\wedge\\text{-elim-L}', tex: 'A \\wedge B \\;\\vdash\\; A', from: 'from line 1' },
   { rule: '\\wedge\\text{-intro}', tex: 'A \\wedge B \\;\\vdash\\; B \\wedge A', from: 'from lines 2, 3' },
@@ -275,11 +275,13 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {/* fully faded once the closing panel takes over: unmount it */}
+      {dimU < 1 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the goal */}
           <g opacity={goalU * (1 - 0.6 * bogusU)}>
-            <MathLabel tex="\text{goal:}\quad A \wedge B \to B \wedge A" x={LINE_X} y={128} fontSize={21} color={colors.WARM} opacity={1} />
+            <MathLabel tex="\text{goal:}\quad A \wedge B \to B \wedge A" x={LINE_X} y={128} fontSize={21} color={colors.WARM} opacity={1} anchor="start" />
           </g>
 
           {/* the derivation lines */}
@@ -290,22 +292,22 @@ function Frame({ s }: { s: SceneState }) {
             const stamped = clamp01(checkU * LINES_TEX.length - i);
             const v = GOOD_VERDICTS[i];
             return (
-              <g key={i} opacity={u * (1 - 0.65 * bogusU)}>
+              <g key={i} opacity={u * (1 - 0.85 * bogusU)}>
                 <text x={LINE_X - 40} y={y + 20} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                   {i + 1}.
                 </text>
-                <MathLabel tex={L.tex} x={LINE_X} y={y} fontSize={18} color={colors.TEXT} opacity={1} />
-                <MathLabel tex={L.rule} x={LINE_X + 420} y={y + 2} fontSize={13} color={colors.ACCENT} opacity={0.9} />
-                <text x={LINE_X + 420} y={y + 34} fill={colors.MUTED} fontSize={11}>
+                <MathLabel tex={L.tex} x={LINE_X} y={y} fontSize={18} color={colors.TEXT} opacity={1} anchor="start" />
+                <MathLabel tex={L.rule} x={LINE_X + 420} y={y + 2} fontSize={14} color={colors.ACCENT} opacity={0.9} anchor="start" />
+                <text x={LINE_X + 420} y={y + 34} fill={colors.MUTED} fontSize={12}>
                   {L.from}
                 </text>
-                {stamped > 0 && (
-                  <g opacity={stamped}>
-                    <rect x={LINE_X + 590} y={y - 4} width={168} height={40} rx={7} fill={colors.PANEL} opacity={0.9} stroke={v.ok ? colors.POSITIVE : colors.NEGATIVE} />
-                    <text x={LINE_X + 604} y={y + 13} fill={v.ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={11} fontFamily="monospace" fontWeight={700}>
+                {stamped > 0 && bogusU < 1 && (
+                  <g opacity={stamped * (1 - bogusU)}>
+                    <rect x={LINE_X + 590} y={y - 4} width={180} height={42} rx={7} fill={colors.PANEL} opacity={0.95} stroke={v.ok ? colors.POSITIVE : colors.NEGATIVE} />
+                    <text x={LINE_X + 604} y={y + 13} fill={v.ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={12} fontFamily="monospace" fontWeight={700}>
                       kernel: {v.ok ? 'accept' : 'reject'}
                     </text>
-                    <text x={LINE_X + 604} y={y + 29} fill={colors.MUTED} fontSize={9.5} fontFamily="monospace">
+                    <text x={LINE_X + 604} y={y + 30} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                       {v.why}
                     </text>
                   </g>
@@ -316,7 +318,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* checked summary */}
           {checkU >= 1 && (
-            <text x={LINE_X} y={LINE_Y0 + 5 * LINE_DY + 14} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={1 - 0.65 * bogusU}>
+            <text x={LINE_X} y={LINE_Y0 + 5 * LINE_DY + 14} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={1 - 0.85 * bogusU}>
               {ALL_GOOD ? '✓ 5/5 lines recomputed and matched · hypotheses: none' : '✗ kernel bug'}
             </text>
           )}
@@ -324,53 +326,67 @@ function Frame({ s }: { s: SceneState }) {
           {/* the bogus proof */}
           {bogusU > 0 && (
             <g opacity={bogusU}>
-              <rect x={LINE_X - 20} y={300} width={820} height={150} rx={12} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} />
+              <rect x={LINE_X - 20} y={300} width={820} height={150} rx={12} fill={colors.PANEL} opacity={1} stroke={colors.NEGATIVE} />
               <text x={LINE_X} y={332} fill={colors.TEXT} fontSize={15} fontWeight={600}>
                 the one-line “proof”
               </text>
-              <text x={LINE_X - 6 + 30} y={366} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              <text x={LINE_X + 24} y={366} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 1.
               </text>
-              <MathLabel tex="\vdash\; A \wedge B \to B \wedge A \quad\text{(clearly true)}" x={LINE_X + 60} y={346} fontSize={17} color={colors.TEXT} opacity={1} />
-              <rect x={LINE_X + 560} y={340} width={230} height={44} rx={7} fill={colors.NEGATIVE} opacity={0.16} stroke={colors.NEGATIVE} />
-              <text x={LINE_X + 574} y={359} fill={colors.NEGATIVE} fontSize={11.5} fontFamily="monospace" fontWeight={700}>
+              <MathLabel tex="\vdash\; A \wedge B \to B \wedge A \quad\text{(clearly true)}" x={LINE_X + 60} y={346} fontSize={17} color={colors.TEXT} opacity={1} anchor="start" />
+              <rect x={LINE_X + 560} y={326} width={230} height={58} rx={7} fill={colors.NEGATIVE} opacity={0.16} stroke={colors.NEGATIVE} />
+              <text x={LINE_X + 574} y={347} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace" fontWeight={700}>
                 kernel: {BOGUS_REJECTED ? 'reject' : 'accept?!'}
               </text>
-              <text x={LINE_X + 574} y={375} fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+              <text x={LINE_X + 574} y={367} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 {BOGUS_VERDICTS[0].why}
               </text>
-              <text x={LINE_X} y={430} fill={colors.MUTED} fontSize={12.5}>
+              <text x={LINE_X} y={430} fill={colors.MUTED} fontSize={13}>
                 confidence is not a rule · “clearly” is not a premise
               </text>
             </g>
           )}
         </Camera>
       </g>
+      )}
 
       {/* the five rules — screen space, right */}
       {rulesU > 0 && (
-        <g opacity={rulesU * mainOp * (1 - 0.8 * clamp01(bogusU * 2)) * (1 - clamp01(checkU * 3))}>
-          <rect x={905} y={110} width={340} height={250} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
-          <text x={928} y={140} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+        <g opacity={rulesU * mainOp * (1 - 0.8 * clamp01(bogusU * 2)) * (1 - clamp01(linesU * 4)) * (1 - clamp01(checkU * 3))}>
+          <rect x={860} y={110} width={400} height={250} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <text x={880} y={140} fill={colors.TEXT} fontSize={14} fontWeight={600}>
             the whole logic — five rules
           </text>
-          <MathLabel tex="\text{assume } \varphi:\;\; \varphi \vdash \varphi" x={928} y={158} fontSize={13} color={colors.SECONDARY} opacity={1} />
-          <MathLabel tex="\Gamma \vdash \varphi \wedge \psi \;\Rightarrow\; \Gamma \vdash \varphi" x={928} y={196} fontSize={13} color={colors.SECONDARY} opacity={1} />
-          <MathLabel tex="\Gamma \vdash \varphi \wedge \psi \;\Rightarrow\; \Gamma \vdash \psi" x={928} y={234} fontSize={13} color={colors.SECONDARY} opacity={1} />
-          <MathLabel tex="\Gamma \vdash \varphi,\; \Delta \vdash \psi \;\Rightarrow\; \Gamma,\Delta \vdash \varphi \wedge \psi" x={928} y={272} fontSize={13} color={colors.SECONDARY} opacity={1} />
-          <MathLabel tex="\Gamma, \varphi \vdash \psi \;\Rightarrow\; \Gamma \vdash \varphi \to \psi" x={928} y={310} fontSize={13} color={colors.SECONDARY} opacity={1} />
+          <MathLabel tex="\text{assume } \varphi:\;\; \varphi \vdash \varphi" x={1060} y={158} fontSize={14} color={colors.SECONDARY} opacity={1} boxWidth={400} />
+          <MathLabel tex="\Gamma \vdash \varphi \wedge \psi \;\Rightarrow\; \Gamma \vdash \varphi" x={1060} y={196} fontSize={14} color={colors.SECONDARY} opacity={1} boxWidth={400} />
+          <MathLabel tex="\Gamma \vdash \varphi \wedge \psi \;\Rightarrow\; \Gamma \vdash \psi" x={1060} y={234} fontSize={14} color={colors.SECONDARY} opacity={1} boxWidth={400} />
+          <MathLabel tex="\Gamma \vdash \varphi,\; \Delta \vdash \psi \;\Rightarrow\; \Gamma,\Delta \vdash \varphi \wedge \psi" x={1060} y={272} fontSize={14} color={colors.SECONDARY} opacity={1} boxWidth={400} />
+          <MathLabel tex="\Gamma, \varphi \vdash \psi \;\Rightarrow\; \Gamma \vdash \varphi \to \psi" x={1060} y={310} fontSize={14} color={colors.SECONDARY} opacity={1} boxWidth={400} />
         </g>
       )}
 
       {/* trusted-base note */}
-      {trustU > 0 && (
+      {trustU > 0 && dimU < 1 && (
         <g opacity={trustU * mainOp}>
-          <text x={905} y={420} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
+          <rect x={905} y={500} width={340} height={96} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.WARM} />
+          <text x={925} y={528} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
             trusted base ≈ 30 lines
           </text>
-          <text x={905} y={444} fill={colors.MUTED} fontSize={12}>
+          <text x={925} y={552} fill={colors.TEXT} fontSize={13}>
             the proof can come from anywhere
           </text>
+          <text x={925} y={574} fill={colors.TEXT} fontSize={13}>
+            still trusted: the stated theorem
+          </text>
+        </g>
+      )}
+
+      {/* ghost of the proof data (the real five lines), before the goal arrives */}
+      {titleU > 0 && goalU < 1 && (
+        <g opacity={titleU * (1 - goalU) * 0.35}>
+          {GOOD_VERDICTS.map((_, i) => (
+            <MathLabel key={i} tex={LINES_TEX[i].tex} x={300} y={260 + i * 64} fontSize={18} color={colors.MUTED} opacity={1} anchor="start" />
+          ))}
         </g>
       )}
 
@@ -383,7 +399,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* close */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={200} width={880} height={290} rx={16} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
           <text x={640} y={268} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             A proof is data. Checking is rerunning rules.
           </text>
@@ -395,6 +411,9 @@ function Frame({ s }: { s: SceneState }) {
           </text>
           <text x={640} y={402} textAnchor="middle" fill={colors.WARM} fontSize={15.5}>
             authority lives in the kernel, never in the author
+          </text>
+          <text x={640} y={446} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            what the kernel trusts: its own rules, and the theorem you state
           </text>
         </g>
       )}

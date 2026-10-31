@@ -108,16 +108,20 @@ export const MAX_ABS = Math.max(...DW.flat().map(Math.abs));
 // Stage layout
 // ---------------------------------------------------------------------------
 
-export const CELL = 26;
+export const CELL = 20;
 export const GRID_X = 140;
 export const GRID_Y = 110;
 export const gx = (j: number): number => GRID_X + j * CELL;
 export const gy = (i: number): number => GRID_Y + i * CELL;
 
+// Singular-value bars sit under the matrix, one per column, clear of the caption band.
+export const BAR_BASE = gy(D) + 104; // baseline of the bars
+export const BAR_H = 88; // height of the largest bar
+
 export const AB_X = 660; // where B·A factors are drawn
 export const APPROX_X = 830; // reconstructed matrix
 
-export const CAM_GRID: CameraState = { x: 480, y: 330, k: 1.15 };
+export const CAM_GRID: CameraState = { x: 358, y: 330, k: 1.1 };
 export const CAM_WIDE: CameraState = { x: 660, y: 340, k: 1.02 };
 
 export interface Scene {

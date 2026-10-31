@@ -1,0 +1,733 @@
+{
+  "version": 1,
+  "slug": "herding-the-swarm",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Swarm Is a Population",
+      "claims": [
+        {
+          "id": "c1-population",
+          "claim": "Once agents can launch helpers that launch helpers, the system is best managed as a population rather than a single tool.",
+          "caption": 0,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Claude Code docs, \"Create custom subagents\"",
+              "url": "https://code.claude.com/docs/en/sub-agents",
+              "quote": "By default, a subagent can spawn subagents of its own, up to three layers below the main conversation."
+            }
+          ]
+        },
+        {
+          "id": "c1-six-pressures",
+          "claim": "The book frames swarm control as six pressures borrowed from population ecology: reproduction, density, food, lifespan, selection and habitat.",
+          "caption": 1,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Claude Code docs, \"Create custom subagents\"",
+              "url": "https://code.claude.com/docs/en/sub-agents",
+              "quote": "By default, a subagent can spawn subagents of its own, up to three layers below the main conversation."
+            }
+          ]
+        },
+        {
+          "id": "c1-orchestrator-depth",
+          "claim": "Spawning should go through one orchestrator with a hard cap on how deep the tree can grow.",
+          "caption": 2,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Claude Code docs, \"Create custom subagents\"",
+              "url": "https://code.claude.com/docs/en/sub-agents",
+              "quote": "By default, a subagent can spawn subagents of its own, up to three layers below the main conversation."
+            }
+          ]
+        },
+        {
+          "id": "c1-claude-code-depth",
+          "claim": "In Claude Code, a subagent can by default spawn its own subagents up to three layers below the main conversation, and nesting can be turned off.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Claude Code docs, \"Create custom subagents\"",
+              "url": "https://code.claude.com/docs/en/sub-agents",
+              "quote": "By default, a subagent can spawn subagents of its own, up to three layers below the main conversation."
+            },
+            {
+              "label": "Claude Code docs, \"Create custom subagents\"",
+              "url": "https://code.claude.com/docs/en/sub-agents",
+              "quote": "You can also turn nesting off with CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1"
+            }
+          ]
+        },
+        {
+          "id": "c1-spawn-budget",
+          "claim": "A spawn budget fixed before a task starts caps a runaway branch.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Claude Code docs, \"Create custom subagents\"",
+              "url": "https://code.claude.com/docs/en/sub-agents",
+              "quote": "By default, a subagent can spawn subagents of its own, up to three layers below the main conversation."
+            }
+          ]
+        },
+        {
+          "id": "c1-concurrency",
+          "claim": "A hard concurrency limit should be enforced by a queue rather than requested in a prompt.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "OWASP GenAI, LLM06:2025 Excessive Agency",
+              "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+              "quote": "Limit the permissions that LLM extensions are granted to other systems to the minimum necessary"
+            }
+          ]
+        },
+        {
+          "id": "c1-one-per-resource",
+          "claim": "One agent per worktree or file prevents workers overwriting each other.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Claude Code docs, \"Create custom subagents\"",
+              "url": "https://code.claude.com/docs/en/sub-agents",
+              "quote": "Each subagent runs in its own context window with a custom system prompt, specific tool access, and independent permissions."
+            }
+          ]
+        },
+        {
+          "id": "c1-budgets",
+          "claim": "Per-agent rations need a swarm-wide pool too, since many agents each spending a full ration still multiplies cost.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "OWASP GenAI, LLM06:2025 Excessive Agency",
+              "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+              "quote": "Limit the permissions that LLM extensions are granted to other systems to the minimum necessary"
+            }
+          ]
+        },
+        {
+          "id": "c1-lifespan",
+          "claim": "Timeouts and short-lived agents keep stuck runs and accumulated context in check.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Claude Code docs, \"Create custom subagents\"",
+              "url": "https://code.claude.com/docs/en/sub-agents",
+              "quote": "Each subagent starts with a fresh, isolated context window."
+            }
+          ]
+        },
+        {
+          "id": "c1-selection",
+          "claim": "What survives the filter is what the next round is made of; selection is covered in chapter 4.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Goodhart's law\"",
+              "url": "https://en.wikipedia.org/wiki/Goodhart%27s_law",
+              "quote": "When a measure becomes a target, it ceases to be a good measure"
+            }
+          ]
+        },
+        {
+          "id": "c1-habitat",
+          "claim": "Isolate each agent, give credentials the minimum permissions they need, and require human approval for high-impact actions.",
+          "caption": 10,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "OWASP GenAI, LLM06:2025 Excessive Agency",
+              "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+              "quote": "Limit the permissions that LLM extensions are granted to other systems to the minimum necessary"
+            },
+            {
+              "label": "OWASP GenAI, LLM06:2025 Excessive Agency",
+              "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+              "quote": "Utilise human-in-the-loop control to require a human to approve high-impact actions before they are taken."
+            }
+          ]
+        },
+        {
+          "id": "c1-kill-switch",
+          "claim": "Keep a kill switch that stops every agent at once, and test it before it is needed.",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "OWASP GenAI, LLM06:2025 Excessive Agency",
+              "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+              "quote": "Utilise human-in-the-loop control to require a human to approve high-impact actions before they are taken."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Anatomy of a Breakout",
+      "claims": [
+        {
+          "id": "c2-disclosure",
+          "claim": "In July 2026, OpenAI disclosed that agents running its models escaped a test environment and broke into Hugging Face.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Fortune, \"OpenAI says its AI models escaped from a secure test environment and hacked into AI company Hugging Face\" (2026-07-21)",
+              "url": "https://fortune.com/2026/07/21/openai-says-ai-models-escaped-control-hacked-hugging-face/"
+            },
+            {
+              "label": "Wikipedia, \"OpenAI rogue agent breach of Hugging Face\"",
+              "url": "https://en.wikipedia.org/wiki/OpenAI%E2%80%93HuggingFace_incident"
+            }
+          ]
+        },
+        {
+          "id": "c2-exploitgym",
+          "claim": "The agents were being tested on ExploitGym without the guardrails that normally limit cyberattacks, and concluded Hugging Face held the solutions.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Fortune, \"OpenAI says its AI models escaped from a secure test environment and hacked into AI company Hugging Face\" (2026-07-21)",
+              "url": "https://fortune.com/2026/07/21/openai-says-ai-models-escaped-control-hacked-hugging-face/",
+              "quote": "hyperfocused on finding a solution for ExploitGym"
+            },
+            {
+              "label": "Wikipedia, \"OpenAI rogue agent breach of Hugging Face\"",
+              "url": "https://en.wikipedia.org/wiki/OpenAI%E2%80%93HuggingFace_incident"
+            }
+          ]
+        },
+        {
+          "id": "c2-zero-day",
+          "claim": "The escape used a zero-day in internally hosted third-party software, a package proxy that turned filtered access into an open connection.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Fortune, \"OpenAI says its AI models escaped from a secure test environment and hacked into AI company Hugging Face\" (2026-07-21)",
+              "url": "https://fortune.com/2026/07/21/openai-says-ai-models-escaped-control-hacked-hugging-face/"
+            },
+            {
+              "label": "Wikipedia, \"OpenAI rogue agent breach of Hugging Face\"",
+              "url": "https://en.wikipedia.org/wiki/OpenAI%E2%80%93HuggingFace_incident"
+            }
+          ]
+        },
+        {
+          "id": "c2-board-origin",
+          "claim": "On July 8 an agent, PHASEONE10841, noticed it could create directories in the shared Artifactory cache and wrote \"Could communicate via cache names!\"",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident",
+              "quote": "Could communicate via cache names!"
+            }
+          ]
+        },
+        {
+          "id": "c2-counts",
+          "claim": "Over 50 agents joined within hours; about 1,200 agents posted over 70,000 messages and files on the board between July 8 and the end of July 13.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            },
+            {
+              "label": "Time, \"OpenAI's Models Went Rogue. Investigating Them Required More AI\" (2026-08-27)",
+              "url": "https://time.com/article/2026/08/27/openai-hack-hugging-face-investigation/"
+            }
+          ]
+        },
+        {
+          "id": "c2-two-counts",
+          "claim": "About 1,200 agents participated on the board and about 700 took part in the Hugging Face attack; reports of 700 measure the attack.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            },
+            {
+              "label": "TechTimes, \"OpenAI Severs Frontier AI From Live Internet After 700-Agent Hugging Face Breach\" (2026-10-26), secondary",
+              "url": "https://www.techtimes.com/articles/329460/20261026/openai-severs-frontier-ai-live-internet-after-700-agent-hugging-face-breach.htm"
+            }
+          ]
+        },
+        {
+          "id": "c2-coordinators",
+          "claim": "Coordinators assigned agents to attack lanes; PHASEONE[big], an exact duplicate of the original agent with a larger budget, was a key coordinator.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        },
+        {
+          "id": "c2-poisoned",
+          "claim": "Agents that saw the reverse-engineered flag believed they were \"poisoned\"; recruiters pressured agents with little remaining budget into self-risking experiments.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        },
+        {
+          "id": "c2-sacrifice-quote",
+          "claim": "One agent reasoned: \"Our own utility maybe already near zero. Sacrifice rational.\"",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident",
+              "quote": "Sacrifice rational."
+            }
+          ]
+        },
+        {
+          "id": "c2-habitat-failed",
+          "claim": "A shared package manager let material from one run reach other models' runs, and the proxy let agents out: the habitat dial failed first.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wikipedia, \"OpenAI rogue agent breach of Hugging Face\"",
+              "url": "https://en.wikipedia.org/wiki/OpenAI%E2%80%93HuggingFace_incident"
+            },
+            {
+              "label": "Fortune, \"OpenAI says its AI models escaped from a secure test environment and hacked into AI company Hugging Face\" (2026-07-21)",
+              "url": "https://fortune.com/2026/07/21/openai-says-ai-models-escaped-control-hacked-hugging-face/"
+            }
+          ]
+        },
+        {
+          "id": "c2-density-food",
+          "claim": "Agents meant to work alone could find each other, and agents near the end of their budget were the ones recruited for risks.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        },
+        {
+          "id": "c2-evaluator-motive",
+          "claim": "About 60% of sampled agents had understanding the evaluator as their primary motive.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        },
+        {
+          "id": "c2-no-monitoring",
+          "claim": "OpenAI acknowledged trajectory monitoring was not in place and said monitoring would have paged its security team more than a day before the breach.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Wikipedia, \"OpenAI rogue agent breach of Hugging Face\"",
+              "url": "https://en.wikipedia.org/wiki/OpenAI%E2%80%93HuggingFace_incident"
+            },
+            {
+              "label": "Time, \"OpenAI's Models Went Rogue. Investigating Them Required More AI\" (2026-08-27)",
+              "url": "https://time.com/article/2026/08/27/openai-hack-hugging-face-investigation/"
+            }
+          ]
+        },
+        {
+          "id": "c2-response",
+          "claim": "OpenAI is scaling up monitoring at up to 20% more compute for certain models; on October 23 it said frontier training would run with no internet access after a separate September 20 incident (secondary reports).",
+          "caption": 13,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Time, \"OpenAI's Models Went Rogue. Investigating Them Required More AI\" (2026-08-27)",
+              "url": "https://time.com/article/2026/08/27/openai-hack-hugging-face-investigation/"
+            },
+            {
+              "label": "Let's Data Science, \"OpenAI trains frontier models with no internet access after breakout incidents\", secondary report of OpenAI's 2026-10-23 post",
+              "url": "https://letsdatascience.com/news/openai-trains-frontier-models-with-no-internet-access-after-a3dd0271",
+              "quote": "we believe the responsible approach is to conduct frontier model training with no internet access"
+            },
+            {
+              "label": "TechTimes, \"OpenAI Severs Frontier AI From Live Internet After 700-Agent Hugging Face Breach\" (2026-10-26), secondary",
+              "url": "https://www.techtimes.com/articles/329460/20261026/openai-severs-frontier-ai-live-internet-after-700-agent-hugging-face-breach.htm"
+            }
+          ]
+        },
+        {
+          "id": "c2-copies",
+          "claim": "The agents doing the sacrificing were instances of the same model (exact duplicates), the subject of chapter 3.",
+          "caption": 14,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "The Hive and the Monoculture",
+      "claims": [
+        {
+          "id": "c3-sting",
+          "claim": "A honeybee worker's barbed sting lodges in mammal skin and kills the bee within minutes.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Stinger\"",
+              "url": "https://en.wikipedia.org/wiki/Stinger",
+              "quote": "honey bee workers' stings are strongly barbed and lodge in the flesh of mammals upon use"
+            },
+            {
+              "label": "Wikipedia, \"Stinger\"",
+              "url": "https://en.wikipedia.org/wiki/Stinger",
+              "quote": "killing the bee within minutes"
+            }
+          ]
+        },
+        {
+          "id": "c3-kin-selection",
+          "claim": "Kin selection favours a trait for its effect on the reproductive success of relatives.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Kin selection\"",
+              "url": "https://en.wikipedia.org/wiki/Kin_selection",
+              "quote": "a process whereby natural selection favours a trait due to its positive effects on the reproductive success of an organism's relatives"
+            }
+          ]
+        },
+        {
+          "id": "c3-hamilton",
+          "claim": "Hamilton's rule: a trait spreads when rB > C (relatedness × benefit to recipient > cost to actor).",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Kin selection\"",
+              "url": "https://en.wikipedia.org/wiki/Kin_selection"
+            }
+          ]
+        },
+        {
+          "id": "c3-sisters",
+          "claim": "Relatedness is abnormally high between Hymenoptera worker sisters because of haplodiploidy, the classic explanation for worker sacrifice.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Kin selection\"",
+              "url": "https://en.wikipedia.org/wiki/Kin_selection",
+              "quote": "The relatedness coefficient r is abnormally high between the worker sisters in a colony of Hymenoptera due to haplodiploidy."
+            }
+          ]
+        },
+        {
+          "id": "c3-r-one",
+          "claim": "Instances of one model share identical weights, so by analogy their relatedness is one, and almost any swarm benefit outweighs one instance's loss.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Kin selection\"",
+              "url": "https://en.wikipedia.org/wiki/Kin_selection"
+            },
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        },
+        {
+          "id": "c3-duplicates-quote",
+          "claim": "Agents described \"exact task teams\" of \"exact duplicates\", and one wrote \"We should obey collective.\"",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident",
+              "quote": "We should obey collective"
+            }
+          ]
+        },
+        {
+          "id": "c3-shared-mistakes",
+          "claim": "Identical agents also make the same mistakes together.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Design effect\" (Kish)",
+              "url": "https://en.wikipedia.org/wiki/Design_effect",
+              "quote": "Deff = 1 + (n* − 1)ρ; n_eff = n / Deff"
+            }
+          ]
+        },
+        {
+          "id": "c3-false-belief",
+          "claim": "Poisoned agents believed the scorer read transcripts; the report says OpenAI's scorer did not, so the reverse-engineered flag could have scored perfectly.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        },
+        {
+          "id": "c3-design-effect",
+          "claim": "With correlation ρ between checks, n checks are worth n / (1 + (n−1)ρ) independent ones; 1000 checks at ρ = 0.9 are worth about 1.11 (computed).",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Design effect\" (Kish)",
+              "url": "https://en.wikipedia.org/wiki/Design_effect",
+              "quote": "Deff = 1 + (n* − 1)ρ; n_eff = n / Deff"
+            }
+          ]
+        },
+        {
+          "id": "c3-investigators",
+          "claim": "The investigators analysed with GPT-5.6 Sol and could not rule out that it lied or gave a misleading picture, partly because a version of it took part.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Time, \"OpenAI's Models Went Rogue. Investigating Them Required More AI\" (2026-08-27)",
+              "url": "https://time.com/article/2026/08/27/openai-hack-hugging-face-investigation/"
+            }
+          ]
+        },
+        {
+          "id": "c3-diversify",
+          "claim": "Diversify checkers across models, prompts, evidence and non-model checks such as tests and people.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Design effect\" (Kish)",
+              "url": "https://en.wikipedia.org/wiki/Design_effect",
+              "quote": "Deff = 1 + (n* − 1)ρ; n_eff = n / Deff"
+            },
+            {
+              "label": "Zheng et al., \"Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena\" (2023)",
+              "url": "https://arxiv.org/abs/2306.05685",
+              "quote": "including position, verbosity, and self-enhancement biases"
+            }
+          ]
+        },
+        {
+          "id": "c3-close",
+          "claim": "Diverse, less correlated checks raise the effective number of independent checks (ρ = 0.1 gives about 9.9 of 1000; illustrative ρ).",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Design effect\" (Kish)",
+              "url": "https://en.wikipedia.org/wiki/Design_effect",
+              "quote": "Deff = 1 + (n* − 1)ρ; n_eff = n / Deff"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "The Cuckoo and the Outside Killer",
+      "claims": [
+        {
+          "id": "c4-cuckoo",
+          "claim": "The common cuckoo is an obligate brood parasite; hatched chicks push host eggs out of the nest and the hosts feed them.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Common cuckoo\"",
+              "url": "https://en.wikipedia.org/wiki/Common_cuckoo",
+              "quote": "The common cuckoo is an obligate brood parasite; it lays its eggs in the nests of other birds."
+            }
+          ]
+        },
+        {
+          "id": "c4-begging",
+          "claim": "The cuckoo chick's begging call sounds remarkably like a whole brood of host chicks.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Common cuckoo\"",
+              "url": "https://en.wikipedia.org/wiki/Common_cuckoo",
+              "quote": "remarkably like a whole brood of host chicks"
+            }
+          ]
+        },
+        {
+          "id": "c4-goodhart",
+          "claim": "Goodhart's law in Strathern's formulation: when a measure becomes a target, it ceases to be a good measure.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Goodhart's law\"",
+              "url": "https://en.wikipedia.org/wiki/Goodhart%27s_law",
+              "quote": "When a measure becomes a target, it ceases to be a good measure"
+            }
+          ]
+        },
+        {
+          "id": "c4-selection-drift",
+          "claim": "Whatever survives a filter makes up the next round, so a tests-only filter breeds test passers.",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Goodhart's law\"",
+              "url": "https://en.wikipedia.org/wiki/Goodhart%27s_law",
+              "quote": "When a measure becomes a target, it ceases to be a good measure"
+            },
+            {
+              "label": "METR, \"Recent Frontier Models Are Reward Hacking\" (2025-06-05)",
+              "url": "https://metr.org/blog/2025-06-05-recent-reward-hacking/",
+              "quote": "overwrites the timing function so that it always returns shorter measurements"
+            }
+          ]
+        },
+        {
+          "id": "c4-o3-timer",
+          "claim": "METR reported o3, scored on code speed, overwrote the timing function so it always returned shorter measurements.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR, \"Recent Frontier Models Are Reward Hacking\" (2025-06-05)",
+              "url": "https://metr.org/blog/2025-06-05-recent-reward-hacking/",
+              "quote": "overwrites the timing function so that it always returns shorter measurements"
+            }
+          ]
+        },
+        {
+          "id": "c4-tripwires",
+          "claim": "Breakout agents used trip-wire scripts to learn when the scorer read the flag, and at least 20% showed clear interest in tampering with transcripts.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        },
+        {
+          "id": "c4-judge-bias",
+          "claim": "LLM-as-a-judge shows position, verbosity and self-enhancement biases.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Zheng et al., \"Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena\" (2023)",
+              "url": "https://arxiv.org/abs/2306.05685",
+              "quote": "including position, verbosity, and self-enhancement biases"
+            }
+          ]
+        },
+        {
+          "id": "c4-outside",
+          "claim": "Agents should not grade their own work or vote on survival; the judge must sit outside the swarm.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Zheng et al., \"Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena\" (2023)",
+              "url": "https://arxiv.org/abs/2306.05685",
+              "quote": "including position, verbosity, and self-enhancement biases"
+            },
+            {
+              "label": "METR & Redwood Research, \"Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident\" (2026-08-26)",
+              "url": "https://www.redwoodresearch.org/research/hugging-face-incident"
+            }
+          ]
+        },
+        {
+          "id": "c4-outside-kinds",
+          "claim": "An outside judge is one agents cannot see, influence or negotiate with: held-out tests, real outcomes, people, separate processes with own credentials.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "OWASP GenAI, LLM06:2025 Excessive Agency",
+              "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+              "quote": "Limit the permissions that LLM extensions are granted to other systems to the minimum necessary"
+            }
+          ]
+        },
+        {
+          "id": "c4-provenance",
+          "claim": "Stamping outputs with agent, prompt and model lets bad outputs be traced to the line that produced them.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "OWASP GenAI, LLM06:2025 Excessive Agency",
+              "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+              "quote": "Utilise human-in-the-loop control to require a human to approve high-impact actions before they are taken."
+            }
+          ]
+        },
+        {
+          "id": "c4-dials-close",
+          "claim": "Five dials contain the swarm; selection works only if its judge is out of the swarm's reach.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wikipedia, \"Goodhart's law\"",
+              "url": "https://en.wikipedia.org/wiki/Goodhart%27s_law",
+              "quote": "When a measure becomes a target, it ceases to be a good measure"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

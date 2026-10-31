@@ -8,7 +8,9 @@
 // spine is a shallow→deep gradient: read only as far down as the task needs.
 //
 // We show the authors' REAL Fig. 1 as the artifact, then animate the same three
-// levels as a persistent spine the camera drills into, L1 → L2 → L3.
+// levels as a persistent spine the camera drills into, L1 → L2 → L3. Each level
+// card carries a crop of its own panel from that real Fig. 1, so the zoom never
+// loses the paper's picture.
 import {
   CAMERA_HOME,
   Camera,
@@ -24,6 +26,15 @@ import { Figure } from '../../primitives';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+// a level card stays fully visible while its edges sit inside the stage (with a
+// margin); as the camera drills in, the cards it crops fade out instead of hanging off the edge
+const focusOf = (cam: CameraState, x: number): number => {
+  const left = (x - CARD_W / 2 - cam.x) * cam.k + STAGE_W / 2;
+  const right = (x + CARD_W / 2 - cam.x) * cam.k + STAGE_W / 2;
+  const inset = Math.min(left - 40, STAGE_W - 40 - right);
+  return clamp01(1 + inset / 60);
+};
+
 const LEVELS = [
   {
     tag: 'L1',
@@ -34,24 +45,38 @@ const LEVELS = [
   {
     tag: 'L2',
     title: 'Component Overview',
-    x: 570,
+    x: 590,
     items: ['working units', 'roles & goals', 'inputs / outputs', 'dependencies'],
   },
   {
     tag: 'L3',
     title: 'Unit Deep Dive',
-    x: 930,
+    x: 970,
     items: ['internal logic', 'state transitions', 'edge cases', 'code anchors'],
   },
 ] as const;
-const CARD_W = 300;
+const CARD_W = 340;
+const CARD_H = 262;
 const CARD_TOP = 168;
+// the authors' real Fig. 1 (996×561 px) and, per level, the crop of its own panel
+// (the L1/L2/L3 column's diagram), shown in the card's right-hand inset
+const FIG_SRC = '/generated/dp-harness-handbook/figures/fig-01.png';
+const FIG_W = 996;
+const FIG_H = 561;
+const CROPS = [
+  { x: 483, y: 100, w: 169, h: 224 },
+  { x: 662, y: 100, w: 190, h: 251 },
+  { x: 850, y: 100, w: 135, h: 179 },
+] as const;
+const INSET = { dx: 196, dy: 74, w: 124, h: 164 };
+// the persistent spine sits in screen space, under the cards at every zoom
+const SPINE_Y = 540;
 
 const CAM_FIG: CameraState = { x: 640, y: 300, k: 1.0 };
 const CAM_SPINE: CameraState = { x: 640, y: 360, k: 1.02 };
-const CAM_L1: CameraState = { x: 260, y: 340, k: 1.5 };
-const CAM_L2: CameraState = { x: 620, y: 340, k: 1.5 };
-const CAM_L3: CameraState = { x: 980, y: 340, k: 1.5 };
+const CAM_L1: CameraState = { x: 240, y: 340, k: 1.5 };
+const CAM_L2: CameraState = { x: 590, y: 340, k: 1.3 };
+const CAM_L3: CameraState = { x: 970, y: 340, k: 1.3 };
 
 export interface Scene {
   tl: Timeline;
@@ -91,7 +116,7 @@ export function buildScene(): Scene {
     dur: 6.0,
     text: "The idea is progressive disclosure. The same system, described shallow to deep, so a reader travels only as far down as the question in front of them demands.",
   });
-  tl.tween(figU, 0.16, { at: 7.6, dur: 1.0, ease: ease.move });
+  tl.tween(figU, 0, { at: 7.6, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_SPINE, { at: 7.6, dur: 1.3, ease: ease.move });
   tl.tween(spineU, 1, { at: 8.2, dur: 1.4, ease: ease.draw });
   tl.tween(depthU, 1, { at: 8.6, dur: 3.6, ease: ease.linear });
@@ -156,7 +181,7 @@ function LevelCard({ i, u }: { i: number; u: number }) {
   const depthTint = [colors.ACCENT, colors.TEAL, colors.SECONDARY][i];
   return (
     <g opacity={u} transform={`translate(0 ${(1 - u) * 14})`}>
-      <rect x={L.x - CARD_W / 2} y={CARD_TOP} width={CARD_W} height={300} rx={14} fill={colors.PANEL} stroke={depthTint} strokeWidth={1.6} />
+      <rect x={L.x - CARD_W / 2} y={CARD_TOP} width={CARD_W} height={CARD_H} rx={14} fill={colors.PANEL} stroke={depthTint} strokeWidth={1.6} />
       <rect x={L.x - CARD_W / 2 + 18} y={CARD_TOP + 20} width={40} height={26} rx={6} fill={depthTint} />
       <text x={L.x - CARD_W / 2 + 38} y={CARD_TOP + 38} textAnchor="middle" fill={colors.BG} fontSize={15} fontWeight={700}>
         {L.tag}
@@ -164,6 +189,27 @@ function LevelCard({ i, u }: { i: number; u: number }) {
       <text x={L.x - CARD_W / 2 + 74} y={CARD_TOP + 39} fill={colors.TEXT} fontSize={18}>
         {L.title}
       </text>
+      <svg
+        x={L.x - CARD_W / 2 + INSET.dx}
+        y={CARD_TOP + INSET.dy}
+        width={INSET.w}
+        height={INSET.h}
+        viewBox={`${CROPS[i].x} ${CROPS[i].y} ${CROPS[i].w} ${CROPS[i].h}`}
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <image href={FIG_SRC} x={0} y={0} width={FIG_W} height={FIG_H} />
+      </svg>
+      <rect
+        x={L.x - CARD_W / 2 + INSET.dx}
+        y={CARD_TOP + INSET.dy}
+        width={INSET.w}
+        height={INSET.h}
+        rx={6}
+        fill="none"
+        stroke={depthTint}
+        strokeWidth={1}
+        opacity={0.7}
+      />
       {L.items.map((it, j) => {
         const iu = clamp01(u * 5 - 1 - j);
         return (
@@ -189,35 +235,41 @@ export function Render({ s }: { s: SceneState }) {
   const depthU = s.get(scene.depthU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.9;
+  const dimAll = 1 - closeU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
-      <Camera {...cam}>
-        {/* ---- the shallow → deep spine ---- */}
-        <g opacity={spineU * dimAll}>
-          <defs>
-            <linearGradient id="hh-depth" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor={colors.POSITIVE} />
-              <stop offset="50%" stopColor={colors.TEAL} />
-              <stop offset="100%" stopColor={colors.SECONDARY} />
-            </linearGradient>
-          </defs>
-          <rect x={110} y={506} width={1060 * clamp01(depthU)} height={8} rx={4} fill="url(#hh-depth)" opacity={0.9} />
-          <text x={116} y={540} fill={colors.MUTED} fontSize={13}>
-            shallow · high-level
-          </text>
-          <text x={1170} y={540} textAnchor="end" fill={colors.MUTED} fontSize={13}>
-            deep · implementation
-          </text>
-        </g>
+      {/* ---- the shallow → deep spine: screen-fixed, so zoom never pushes its labels off stage ---- */}
+      <g opacity={spineU * dimAll}>
+        <defs>
+          <linearGradient id="hh-depth" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor={colors.POSITIVE} />
+            <stop offset="50%" stopColor={colors.TEAL} />
+            <stop offset="100%" stopColor={colors.SECONDARY} />
+          </linearGradient>
+        </defs>
+        <rect x={110} y={SPINE_Y} width={1060 * clamp01(depthU)} height={8} rx={4} fill="url(#hh-depth)" opacity={0.9} />
+        <text x={110} y={SPINE_Y + 26} fill={colors.MUTED} fontSize={14}>
+          shallow · high-level
+        </text>
+        <text x={1170} y={SPINE_Y + 26} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+          deep · implementation
+        </text>
+      </g>
 
+      <Camera {...cam}>
         {/* ---- the three animated levels ---- */}
         <g opacity={dimAll}>
-          <LevelCard i={0} u={l1U} />
-          <LevelCard i={1} u={l2U} />
-          <LevelCard i={2} u={l3U} />
+          <g opacity={focusOf(cam, LEVELS[0].x)}>
+            <LevelCard i={0} u={l1U} />
+          </g>
+          <g opacity={focusOf(cam, LEVELS[1].x)}>
+            <LevelCard i={1} u={l2U} />
+          </g>
+          <g opacity={focusOf(cam, LEVELS[2].x)}>
+            <LevelCard i={2} u={l3U} />
+          </g>
         </g>
         {/* connectors between levels */}
         {[0, 1].map((i) => {
@@ -226,7 +278,7 @@ export function Render({ s }: { s: SceneState }) {
           const x1 = LEVELS[i].x + CARD_W / 2;
           const x2 = LEVELS[i + 1].x - CARD_W / 2;
           return (
-            <g key={i} opacity={u * dimAll}>
+            <g key={i} opacity={u * dimAll * Math.min(focusOf(cam, LEVELS[i].x), focusOf(cam, LEVELS[i + 1].x))}>
               <line x1={x1} y1={CARD_TOP + 34} x2={x2} y2={CARD_TOP + 34} stroke={colors.GRID} strokeWidth={1.4} />
               <path d={`M ${x2 - 12} ${CARD_TOP + 29} L ${x2} ${CARD_TOP + 34} L ${x2 - 12} ${CARD_TOP + 39} Z`} fill={colors.GRID} />
             </g>
@@ -236,10 +288,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the authors' real Fig. 1 ---- */}
         <Figure
           src="/generated/dp-harness-handbook/figures/fig-01.png"
-          x={330}
-          y={96}
-          w={620}
-          h={349}
+          x={230}
+          y={72}
+          w={820}
+          h={461}
           reveal={figU}
           opacity={figU}
           caption="Fig. 1 — the Harness Handbook: progressive disclosure, L1 → L3"
@@ -248,10 +300,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- close ---- */}
         <g opacity={closeU}>
-          <text x={640} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={24}>
+          <rect x={300} y={276} width={680} height={150} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
+          <text x={640} y={336} textAnchor="middle" fill={colors.TEXT} fontSize={24}>
             right information, right level, right amount
           </text>
-          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={378} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             but only if the map is true — how is it built?
           </text>
         </g>

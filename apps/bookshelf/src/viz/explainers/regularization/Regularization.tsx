@@ -43,6 +43,54 @@ const MOTION = { file: 'src/viz/explainers/regularization/overrides.json', slug:
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+/**
+ * Axes pinned to the panel's bottom-left corner. The shared Axes primitive
+ * crosses at the origin whenever 0 is in the domain, which would put the
+ * log λ axis through the middle of the U-curve.
+ */
+function PanelAxes({
+  x,
+  y,
+  reveal,
+  xLabel,
+}: {
+  x: typeof X_UCURVE;
+  y: typeof Y_UCURVE;
+  reveal: number;
+  xLabel: string;
+}) {
+  if (reveal <= 0) return null;
+  const [left, right] = x.range();
+  const [bottom, top] = y.range();
+  const xFmt = x.tickFormat(4);
+  const yFmt = y.tickFormat(3);
+  return (
+    <g opacity={reveal}>
+      {x.ticks(4).map((v) => (
+        <line key={`gx${v}`} x1={x(v)} y1={top} x2={x(v)} y2={bottom} stroke={colors.GRID} strokeWidth={1} />
+      ))}
+      {y.ticks(3).map((v) => (
+        <line key={`gy${v}`} x1={left} y1={y(v)} x2={right} y2={y(v)} stroke={colors.GRID} strokeWidth={1} />
+      ))}
+      <line x1={left} y1={bottom} x2={right} y2={bottom} stroke={colors.MUTED} strokeWidth={2} />
+      <line x1={left} y1={top} x2={left} y2={bottom} stroke={colors.MUTED} strokeWidth={2} />
+      {x.ticks(4).map((v) => (
+        <text key={`tx${v}`} x={x(v)} y={bottom + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+          {xFmt(v)}
+        </text>
+      ))}
+      {y.ticks(3).map((v) => (
+        <text key={`ty${v}`} x={left - 11} y={y(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+          {yFmt(v)}
+        </text>
+      ))}
+      <text x={right - 4} y={bottom - 10} textAnchor="end" fill={colors.MUTED} fontSize={16}>
+        {xLabel}
+      </text>
+    </g>
+  );
+}
+
 // the clip box for the main plot (the unpenalized fit spikes off the chart)
 const CLIP_X = X_MAIN.range()[0] - 4;
 const CLIP_W = X_MAIN.range()[1] - X_MAIN.range()[0] + 8;
@@ -108,7 +156,7 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         {/* — the main plot: data + the morphing ridge fit —————————————— */}
-        <Axes x={X_MAIN} y={Y_MAIN} reveal={axesU} xTicks={4} yTicks={4} fontSize={12} />
+        <Axes x={X_MAIN} y={Y_MAIN} reveal={axesU} xTicks={4} yTicks={4} fontSize={14} />
 
         <g clipPath="url(#reg-plot-clip)">
           {/* the true curve, revealed for the ensemble payoff */}
@@ -232,7 +280,7 @@ function Frame({ s }: { s: SceneState }) {
                     y={BAR_BASE + 18}
                     textAnchor="middle"
                     fill={colors.MUTED}
-                    fontSize={11}
+                    fontSize={14}
                   >
                     {`w${j}`}
                   </text>
@@ -248,15 +296,7 @@ function Frame({ s }: { s: SceneState }) {
             <text x={PANEL_X0 + 26} y={PANEL_Y0 + 36} fill={colors.TEXT} fontSize={16}>
               error on held-out data
             </text>
-            <Axes
-              x={X_UCURVE}
-              y={Y_UCURVE}
-              reveal={panelU}
-              xTicks={4}
-              yTicks={3}
-              xLabel="log λ"
-              fontSize={11}
-            />
+            <PanelAxes x={X_UCURVE} y={Y_UCURVE} reveal={panelU} xLabel="log λ" />
             <FunctionPlot
               x={X_UCURVE}
               y={Y_UCURVE}
@@ -287,20 +327,29 @@ function Frame({ s }: { s: SceneState }) {
                   strokeWidth={1.6}
                   strokeDasharray="4 4"
                 />
+                {/* labels sit in the open bowl above the minimum, with a leader down to it */}
+                <line
+                  x1={sweetX}
+                  y1={sweetY - 138}
+                  x2={sweetX}
+                  y2={sweetY - 12}
+                  stroke={colors.POSITIVE}
+                  strokeWidth={1.2}
+                />
                 <circle cx={sweetX} cy={sweetY} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2.4} />
                 <MathLabel
                   tex={`\\lambda^{*} \\approx ${LAMBDA_BEST_STR}`}
-                  x={sweetX + 8}
-                  y={sweetY - 44}
-                  fontSize={19}
+                  x={sweetX}
+                  y={sweetY - 180}
+                  fontSize={20}
                   color={colors.POSITIVE}
                   opacity={sweetU}
                 />
                 <MathLabel
                   tex={`\\mathrm{MSE}_{\\text{test}} \\approx ${BEST_MSE_STR}`}
-                  x={sweetX + 8}
-                  y={sweetY - 16}
-                  fontSize={15}
+                  x={sweetX}
+                  y={sweetY - 154}
+                  fontSize={16}
                   color={colors.MUTED}
                   opacity={sweetU}
                 />
@@ -309,6 +358,16 @@ function Frame({ s }: { s: SceneState }) {
           </g>
         )}
       </Camera>
+
+      {/* screen-fixed, in the empty panel slot: names the finale for what it is — an analogy to dropout */}
+      <g opacity={subU * clamp01((subOp - 0.1) / 0.2)}>
+        <text x={840} y={150} fill={colors.TEXT} fontSize={18}>
+          random-feature ensemble
+        </text>
+        <text x={840} y={178} fill={colors.MUTED} fontSize={16}>
+          an analogy to dropout
+        </text>
+      </g>
 
       {/* screen-fixed: the penalized loss, top-left over the plot */}
       <MathLabel

@@ -21,7 +21,7 @@ import type {
   SceneState,
   TimelineOverrides,
 } from '../../core';
-import { ContextBar, LoopRing, MessageCard } from '../../agent';
+import { ContextBar, LoopRing, MessageCard, messageCardHeight } from '../../agent';
 import overrides from './overrides.json';
 
 // ---------------------------------------------------------------------------
@@ -59,19 +59,26 @@ const tokens = (t: Turn) => Math.max(8, Math.round(t.text.length / 4) + 6);
 // Layout.
 // ---------------------------------------------------------------------------
 
-const RING = { cx: 300, cy: 350, r: 130 };
+// The ring sits left of the transcript column; its outer labels reach x≈42.
+const RING = { cx: 280, cy: 360, r: 120 };
 const STOPS = [
   { label: 'prompt', color: colors.ACCENT },
   { label: 'thought', color: colors.SECONDARY },
   { label: 'action', color: colors.WARM },
   { label: 'observation', color: colors.POSITIVE },
 ];
-const CARD_X = 560;
-const CARD_W = 560;
-const CARD_TOP = 120;
+// Wide enough that every transcript line fits on one row, so the nine cards
+// stack inside the stage above the caption pill.
+const CARD_X = 540;
+const CARD_W = 700;
+const CARD_TOP = 52;
+const CARD_GAP = 7;
 
-const CAM_RING: CameraState = { x: 380, y: 360, k: 1.25 };
-const CAM_CARDS: CameraState = { x: 780, y: 380, k: 1.12 };
+const CAM_RING: CameraState = { x: 280, y: 360, k: 1.25 };
+// At k=1 the camera is the stage itself: ring labels and cards are both in frame.
+const CAM_CARDS: CameraState = { x: 640, y: 360, k: 1 };
+// Context bar lives in screen space, top-left, clear of the cards.
+const CTX = { x: 40, y: 84, w: 440 };
 
 interface Scene {
   tl: Timeline;
@@ -207,14 +214,14 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the body dims to 0.15 for the close, then clears completely behind the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
 
-  // transcript layout: stack cards, older ones dim slightly
+  // transcript layout: stack cards at their real heights, older ones dim slightly
   let y = CARD_TOP;
   const cards = TRANSCRIPT.map((t, i) => {
     const u = clamp01(turns - i);
-    const textLen = Math.max(1, t.text.length);
-    const h = 34 + Math.ceil(textLen / 62) * 16 + 10;
+    const h = messageCardHeight(t.text, CARD_W);
     const node = u > 0 && (
       <MessageCard
         key={i}
@@ -230,7 +237,7 @@ function Frame({ s }: { s: SceneState }) {
         glow={i === TRANSCRIPT.length - 1 && turns > TRANSCRIPT.length - 1 ? 0.6 : 0}
       />
     );
-    if (u > 0) y += h * Math.min(1, u) + 6;
+    if (u > 0) y += h * Math.min(1, u) + CARD_GAP;
     return node;
   });
 
@@ -245,18 +252,18 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* the predictor-only guess */}
           {guessU > 0 && (
-            <g opacity={guessU * (1 - 0.8 * guessDim)}>
+            <g opacity={guessU * (1 - guessDim)}>
               <MessageCard
-                x={180}
-                y={140}
+                x={400}
+                y={170}
                 w={480}
                 role="assistant"
                 label="predictor · one shot"
                 text="Probably Opportunity? It drove quite far. Maybe forty-something kilometers."
                 enter={guessU}
               />
-              <text x={180} y={236} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
-                a claim with no trail behind it
+              <text x={896} y={206} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+                ← a claim with no trail behind it
               </text>
             </g>
           )}
@@ -272,7 +279,7 @@ function Frame({ s }: { s: SceneState }) {
             color={colors.ACCENT}
           />
           {ringU >= 1 && (
-            <text x={RING.cx} y={RING.cy + RING.r + 58} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+            <text x={RING.cx} y={RING.cy + RING.r + 58} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
               laps: {Math.floor(orbit)} · one verified fact per lap
             </text>
           )}
@@ -286,9 +293,9 @@ function Frame({ s }: { s: SceneState }) {
       {ctxU > 0 && (
         <g opacity={ctxU * mainOp}>
           <ContextBar
-            x={560}
-            y={70}
-            w={560}
+            x={CTX.x}
+            y={CTX.y}
+            w={CTX.w}
             capacity={400}
             reveal={ctxU}
             title="the growing context"
@@ -307,7 +314,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Thought, action, observation — repeat.
           </text>

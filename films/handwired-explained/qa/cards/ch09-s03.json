@@ -1,0 +1,36 @@
+{
+ "shot": "ch09-s03",
+ "at": "2026-10-28T17:41:23.004Z",
+ "step": 0.0833,
+ "sampled": 186,
+ "transition": {
+  "kind": "lampChange",
+  "sampled": 14,
+  "ghosts": [],
+  "carry": []
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch09-s03-hero"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch09-s03-hero",
+   "probed": true,
+   "from": 0.65,
+   "to": 8.483,
+   "minInkWhilePaper": 0.61
+  },
+  {
+   "id": "fillRect@949,177",
+   "probed": false,
+   "from": 11.317,
+   "to": 16.067,
+   "minInkWhilePaper": 0.61
+  }
+ ]
+}

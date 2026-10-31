@@ -17,14 +17,14 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 const RAIL = { x: 170, y: 200, w: 800 };
-const BOOM = { x: 1050, y: 200 };
+const BOOM = { x: 1060, y: 380 };
 const PAGE = { x: 330, y: 330, w: 460, h: 200, cols: 10, rows: 4 };
-const NOTE = { x: 290, y: 340, w: 700, h: 170 };
+const NOTE = { x: 310, y: 300, w: 620, h: 250 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_RAIL: CameraState = { x: 620, y: 230, k: 1.06 };
 const CAM_PAGE: CameraState = { x: 560, y: 400, k: 1.18 };
-const CAM_BOOM: CameraState = { x: 900, y: 240, k: 1.12 };
+const CAM_BOOM: CameraState = { x: 690, y: 300, k: 1.04 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 0.96 };
 
 const GATES: { label: string }[] = [
@@ -162,7 +162,9 @@ const scene = buildScene();
 function HeapPage({ u, decay, ptr, tag, dim }: { u: number; decay: number; ptr: number; tag: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.85 * clamp01(dim));
+  // the closing beat fades the page out fully, so no stale cells peek past the panel
+  const a = uu * (1 - clamp01(dim));
+  if (a <= 0.01) return null;
   const { x, y, w, h, cols, rows } = PAGE;
   const d = clamp01(decay);
   const p = clamp01(ptr);
@@ -174,7 +176,7 @@ function HeapPage({ u, decay, ptr, tag, dim }: { u: number; decay: number; ptr: 
   return (
     <g opacity={a}>
       <rect x={x - 10} y={y - 10} width={w + 20} height={h + 20} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
-      <text x={x - 10} y={y - 22} fill={colors.POSITIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
+      <text x={x - 10} y={y - 22} fill={colors.POSITIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
         heap page — still mapped ✓
       </text>
       {Array.from({ length: cols * rows }, (_, i) => {
@@ -203,7 +205,7 @@ function HeapPage({ u, decay, ptr, tag, dim }: { u: number; decay: number; ptr: 
         <g opacity={p}>
           <line x1={px} y1={y - 74} x2={px} y2={py - 12} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="5 4" />
           <path d={`M ${px - 5} ${py - 20} L ${px} ${py - 10} L ${px + 5} ${py - 20}`} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
-          <text x={px + 10} y={y - 56} fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
+          <text x={px + 10} y={y - 56} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
             ctx = 0x1018006fffd1 (dangling)
           </text>
         </g>
@@ -211,8 +213,8 @@ function HeapPage({ u, decay, ptr, tag, dim }: { u: number; decay: number; ptr: 
       {/* the stale map word — IsContext() reads this and believes it */}
       {tg > 0 && (
         <g transform={`translate(${px + 24}, ${py - 6 - 6 * tg})`} opacity={tg}>
-          <rect x={0} y={-16} width={218} height={26} rx={13} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
-          <text x={12} y={2} fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={mono}>
+          <rect x={0} y={-17} width={250} height={28} rx={14} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
+          <text x={12} y={2} fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily={mono}>
             map word: “Context” (stale)
           </text>
         </g>
@@ -234,10 +236,10 @@ function FieldRead({ u }: { u: number }) {
         <line x1={x - 4} y1={y - 4} x2={x + 4} y2={y + 4} />
         <line x1={x + 4} y1={y - 4} x2={x - 4} y2={y + 4} />
       </g>
-      <text x={x} y={y - 36} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontWeight={700} fontFamily={mono}>
+      <text x={x} y={y - 36} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
         mov 0x93(%r15), %ecx
       </text>
-      <text x={x} y={y + 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
+      <text x={x} y={y + 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
         SIGSEGV — after four green checks
       </text>
     </g>
@@ -252,13 +254,13 @@ function ClosingNote({ u }: { u: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu}>
       <rect width={w} height={h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={w / 2} y={56} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
+      <text x={w / 2} y={100} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
         Checks ask “is this plausible memory?”
       </text>
-      <text x={w / 2} y={94} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+      <text x={w / 2} y={142} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
         None can ask “is this context alive?”
       </text>
-      <text x={w / 2} y={134} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5} fontWeight={700} fontFamily={mono}>
+      <text x={w / 2} y={190} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5} fontWeight={700} fontFamily={mono}>
         missing weapon: identity
       </text>
     </g>
@@ -285,7 +287,7 @@ function renderFrame(s: SceneState) {
         dim={dim}
       />
       <HeapPage u={s.get(scene.pageU)} decay={s.get(scene.decayU)} ptr={s.get(scene.ptrU)} tag={s.get(scene.tagU)} dim={dim} />
-      <FieldRead u={s.get(scene.boomU) * (1 - 0.85 * dim)} />
+      <FieldRead u={s.get(scene.boomU) * (1 - dim)} />
       <ClosingNote u={s.get(scene.noteU)} />
     </>
   );

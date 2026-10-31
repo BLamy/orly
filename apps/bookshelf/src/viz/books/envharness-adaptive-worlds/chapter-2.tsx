@@ -58,7 +58,7 @@ export function buildScene() {
   tl.tween(blockU, 0, { at: 41.7, dur: 0.5, ease: ease.move });
   tl.tween(packet, 1, { at: 42.0, dur: 4.2, ease: ease.linear });
   tl.tween(postU, 1, { at: 43.5, dur: 1.8, ease: ease.move });
-  tl.tween(cam, { x: 760, y: 360, k: 1.1 }, { at: 43.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 690, y: 360, k: 1.06 }, { at: 43.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 48.2, dur: 6.4, text: 'Reward and terminal evaluation bypass all three gates. The trusted verifier keeps the final word.' });
   tl.tween(verifierStageU, 1, { at: 47.8, dur: 0.9, ease: ease.move });
@@ -96,26 +96,27 @@ export function Render({ s }: { s: SceneState }) {
   const px = 310 + packet * 760;
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
-      <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="700">One episode tape, four interface levers</text>
+      <text x="640" y="80" textAnchor="middle" fill={colors.TEXT} fontSize="30" fontWeight="700">One episode tape, four interface levers</text>
       <g opacity={1 - verifierStage}>
       <Tape reveal={s.get(scene.tapeU)} />
 
       <g opacity={s.get(scene.setupU)}>
         <circle cx="160" cy="245" r="62" fill="#111827" stroke={colors.SECONDARY} strokeWidth="4" />
-        <circle cx="160" cy="245" r="22" fill="none" stroke={colors.SECONDARY} strokeWidth="4" />
-        <text x="160" y="228" textAnchor="middle" fill={colors.TEXT} fontSize="19" fontWeight="700">Stage</text>
-        <text x="160" y="258" textAnchor="middle" fill={colors.SECONDARY} fontSize="17">Setup</text>
+        <text x="160" y="238" textAnchor="middle" fill={colors.TEXT} fontSize="19" fontWeight="700">Setup</text>
+        <text x="160" y="264" textAnchor="middle" fill={colors.SECONDARY} fontSize="14">paper: Stage</text>
         <path d="M160 307 V350" stroke={colors.SECONDARY} strokeWidth="4" />
       </g>
 
       {ACTIONS.map((a, i) => {
         const u = clamp01(replayP - i);
         const x = 248 + i * 72;
+        const [first, second] = a.split(' ');
         return <g key={a} opacity={u} transform={`translate(${x} 248) scale(${0.76 + 0.24 * u})`}>
           <circle r="25" fill="#221b38" stroke={colors.WARM} strokeWidth="2" />
-          <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="12">a{i + 1}</text>
-          <text y="45" textAnchor="middle" fill={colors.MUTED} fontSize="12">{a}</text>
-          <path d="M0 25 V70" stroke={colors.WARM} strokeWidth="2" strokeDasharray="5 5" />
+          <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="14">a{i + 1}</text>
+          <text y="-54" textAnchor="middle" fill={colors.TEXT} fontSize="14">{first}</text>
+          <text y="-34" textAnchor="middle" fill={colors.TEXT} fontSize="14">{second}</text>
+          <path d="M0 25 V80" stroke={colors.WARM} strokeWidth="2" strokeDasharray="5 5" />
         </g>;
       })}
 
@@ -130,20 +131,20 @@ export function Render({ s }: { s: SceneState }) {
         const u = clamp01(s.get(scene.gatesP) - i);
         const active = clamp01(packet * 3.2 - i);
         return <g key={g.key} opacity={u}>
-          <rect x={g.x - 58} y="282" width="116" height="136" rx="24" fill="#0f172a" stroke={i === 0 ? colors.WARM : i === 1 ? colors.SECONDARY : colors.TEAL} strokeWidth={3 + active * 2} />
+          <rect x={g.x - 80} y="282" width="160" height="136" rx="24" fill="#0f172a" stroke={i === 0 ? colors.WARM : i === 1 ? colors.SECONDARY : colors.TEAL} strokeWidth={3 + active * 2} />
           <text x={g.x} y="320" textAnchor="middle" fill={colors.TEXT} fontSize="30" fontWeight="800">{g.key}</text>
-          <text x={g.x} y="396" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{g.fn}</text>
+          <text x={g.x} y="406" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{g.fn}</text>
         </g>;
       })}
 
       <g opacity={s.get(scene.gatesP) > 0 ? 1 : 0}>
         <circle cx={px} cy="350" r="13" fill={colors.WARM} stroke={colors.TEXT} strokeWidth="2" />
-        <text x={px} y="326" textAnchor="middle" fill={colors.WARM} fontSize="13">step</text>
+        <text x={px} y="384" textAnchor="middle" fill={colors.WARM} fontSize="14">step</text>
       </g>
       <g opacity={s.get(scene.blockU)}>
-        <path d="M548 265 l84 84 M632 265 l-84 84" stroke={colors.NEGATIVE} strokeWidth="8" strokeLinecap="round" />
-        <rect x="474" y="175" width="232" height="58" rx="18" fill="#351421" stroke={colors.NEGATIVE} />
-        <text x="590" y="210" textAnchor="middle" fill={colors.NEGATIVE} fontSize="18" fontWeight="700">Blocked + current Observation</text>
+        <path d="M570 218 l40 40 M610 218 l-40 40" stroke={colors.NEGATIVE} strokeWidth="8" strokeLinecap="round" />
+        <rect x="430" y="150" width="320" height="50" rx="18" fill="#351421" stroke={colors.NEGATIVE} />
+        <text x="590" y="181" textAnchor="middle" fill={colors.NEGATIVE} fontSize="18" fontWeight="700">Blocked + current Observation</text>
       </g>
 
       <g opacity={s.get(scene.postU)}>
@@ -178,6 +179,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={gate.x} y="258" textAnchor="middle" fill={gate.color} fontSize="27" fontWeight="800">{gate.key}</text>
           <text x={gate.x} y="288" textAnchor="middle" fill={colors.MUTED} fontSize="14">{gate.label} gate</text>
         </g>)}
+        <text x="180" y="390" fill={colors.POSITIVE} fontSize="14">verifier path</text>
         <path d="M180 405 H820" stroke={colors.POSITIVE} strokeWidth="7" strokeLinecap="round" />
         <path d="M792 390 l28 15 -28 15" fill="none" stroke={colors.POSITIVE} strokeWidth="7" />
         <rect x="820" y="365" width="310" height="82" rx="22" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="3" />
@@ -197,9 +199,11 @@ export function Render({ s }: { s: SceneState }) {
 
     <g opacity={close}>
       <rect x="230" y="150" width="820" height="350" rx="34" fill={colors.BG} stroke={colors.ACCENT} strokeWidth="4" />
-      <text x="640" y="220" textAnchor="middle" fill={colors.MUTED} fontSize="22">paper → released code</text>
-      <text x="430" y="292" textAnchor="middle" fill={colors.SECONDARY} fontSize="30" fontWeight="700">Stage → Setup</text>
-      <text x="850" y="292" textAnchor="middle" fill={colors.WARM} fontSize="30" fontWeight="700">Contract → Rules</text>
+      <text x="640" y="200" textAnchor="middle" fill={colors.MUTED} fontSize="22">released code names first · paper names in brackets</text>
+      <text x="430" y="262" textAnchor="middle" fill={colors.SECONDARY} fontSize="30" fontWeight="700">Setup</text>
+      <text x="430" y="292" textAnchor="middle" fill={colors.MUTED} fontSize="18">(paper: Stage)</text>
+      <text x="850" y="262" textAnchor="middle" fill={colors.WARM} fontSize="30" fontWeight="700">Rules</text>
+      <text x="850" y="292" textAnchor="middle" fill={colors.MUTED} fontSize="18">(paper: Contract)</text>
       <path d="M350 350 H930" stroke={colors.ACCENT} strokeWidth="10" strokeLinecap="round" />
       {['S₀', 'A', 'T', 'O'].map((v, i) => <g key={v}><circle cx={400 + i * 160} cy="350" r="31" fill="#111827" stroke={i ? colors.WARM : colors.SECONDARY} strokeWidth="3" /><text x={400 + i * 160} y="359" textAnchor="middle" fill={colors.TEXT} fontSize="23" fontWeight="700">{v}</text></g>)}
       <text x="640" y="433" textAnchor="middle" fill={colors.TEXT} fontSize="24">one task · one verifier · a deliberately different lesson</text>

@@ -1,0 +1,84 @@
+{
+ "shot": "ch14-s06",
+ "at": "2026-10-13T09:35:11.756Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 14,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "WASHINGTON",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2026",
+   "capWhileSubject": 42.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "LIMA",
+   "capWhileSubject": 26.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2024",
+   "capWhileSubject": 43.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "BLETCHLEY",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2023",
+   "capWhileSubject": 44.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "WASHINGTON · 23–25 SEPTEMBER 2026",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "SUPER INTELLIGENCE DIALOGUE (US)",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AI DIALOGUE (CHINA)",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "COMPUTE IS THE CHOKEPOINT",
+   "maxCap": 7.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2022",
+   "maxCap": 8.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "CHINA IS ONE TO THREE YEARS BEHIND",
+   "maxCap": 7.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE GAP IS MONTHS, NOT YEARS",
+   "maxCap": 7.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LIT 2025 · CONTESTED",
+   "maxCap": 8.2,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 5
+}

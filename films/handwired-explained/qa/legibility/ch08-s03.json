@@ -1,0 +1,304 @@
+{
+ "shot": "ch08-s03",
+ "at": "2026-10-28T14:37:54.300Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 58,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Established",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "conclusions:",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "take these as",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "given",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8 July",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "tied on by: unnamed participants",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "not attributable to Cheng",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3 SEPTEMBER 2026",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "doubted by:",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the September reassessment,",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "an agent-run review",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the Septemb",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“passes yesterday's interpretation to tomorrow's agents as a constraint”",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— the reassessment",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the September",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "r",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "reassessmen",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "10 earlier claims retired",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "reassessment",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "dead end → a defined numeric subset",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8 July → 3 September",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "The neuron",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "is a logic",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "gate",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "McCulloch & Pitts, 1943",
+   "maxCap": 13.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Learn the",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "weights;",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "don't write",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "them",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Sutton, 2019",
+   "maxCap": 13.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1992–2026",
+   "maxCap": 22.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "suspect",
+   "maxCap": 18.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Somebody",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "trained it",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A tool",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "turned",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ordinary",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JavaScript",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "into it",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README",
+   "maxCap": 13.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "It isn't",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "really a",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "network",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "For an",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "integer a",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "maxCap": 22.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "One",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "evaluation",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "per frame",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "fully",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "differentiable!",
+   "maxCap": 28.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README's tagline",
+   "maxCap": 13.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "nanoGPT?",
+   "maxCap": 22.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HandwiredOS's own design",
+   "maxCap": 13.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "an hour",
+   "maxCap": 27,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a day",
+   "maxCap": 27,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a year",
+   "maxCap": 27,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a lifetime",
+   "maxCap": 27,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 37
+}

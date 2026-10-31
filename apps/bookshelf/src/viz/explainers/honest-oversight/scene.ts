@@ -83,7 +83,7 @@ export const FINAL = CURVE[CURVE.length - 1]; // passive 0.34, audited 0.42
 
 export const CH_X0 = 620;
 export const CH_X1 = 1170;
-export const CH_Y0 = 480;
+export const CH_Y0 = 440;
 export const CH_H = 340;
 export const chX = (idx: number): number => CH_X0 + (idx / (NS.length - 1)) * (CH_X1 - CH_X0);
 export const chY = (v: number): number => CH_Y0 - v * CH_H;

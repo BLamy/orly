@@ -1,0 +1,299 @@
+{
+ "shot": "ch09-s05",
+ "at": "2026-10-28T15:47:39.334Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 57,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "1",
+   "capWhileSubject": 45.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "e",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "t",
+   "capWhileSubject": 45,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "R",
+   "capWhileSubject": 42.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "l",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "p",
+   "capWhileSubject": 42.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "m",
+   "capWhileSubject": 42.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "s",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "pass 1: from the end",
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "n",
+   "capWhileSubject": 42.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "r",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "i",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "h",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "c",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "T",
+   "capWhileSubject": 45.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "6",
+   "capWhileSubject": 45.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2",
+   "capWhileSubject": 45.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0",
+   "capWhileSubject": 45,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 45.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "pass 2: from the start",
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Z",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "v",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "o",
+   "capWhileSubject": 46,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "error",
+   "capWhileSubject": 50.2,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "125",
+   "maxCap": 21.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "49",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "58",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "34",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "101",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "116",
+   "maxCap": 22.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "97",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "82",
+   "maxCap": 21.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "108",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "112",
+   "maxCap": 21.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "109",
+   "maxCap": 21.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "115",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "44",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "110",
+   "maxCap": 21.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "114",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "84",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "54",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "45",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "50",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "48",
+   "maxCap": 22.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "123",
+   "maxCap": 22.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "55",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "51",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "52",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "90",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "118",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "111",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "105",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "99",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "104",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 30
+}

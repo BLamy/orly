@@ -84,7 +84,8 @@ const CELL = MAP_S / G;
 const mapX = (a: number) => MAP_X + (a / 256) * MAP_S;
 const mapY = (b: number) => MAP_Y + (b / 256) * MAP_S;
 
-const CAM_MAP: CameraState = { x: 470, y: 380, k: 1.12 };
+// Framed so the square's right edge stays clear of the panels on the right.
+const CAM_MAP: CameraState = { x: 525, y: 405, k: 1.12 };
 const CAM_CE: CameraState = {
   x: mapX(CE.a),
   y: mapY(CE.b),
@@ -223,7 +224,11 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.92 * dimU;
+  // Once the camera zooms onto the counterexample, the side panels step aside.
+  const zoomFade = 1 - clamp01(ceU * 2);
+  // The test verdict hands over to the exhaustive count.
+  const countFade = clamp01(countU * 2);
 
   return (
     <>
@@ -231,7 +236,7 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* input-space square */}
+          {/* input-space square; axis labels sit at the bottom-left so the zoom keeps them on stage */}
           {mapU > 0 && (
             <g opacity={mapU}>
               <rect
@@ -243,21 +248,20 @@ function Frame({ s }: { s: SceneState }) {
                 opacity={0.55}
                 stroke={colors.GRID}
               />
-              <text x={MAP_X} y={MAP_Y - 12} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
-                a →  (0..255)
+              <text x={MAP_X} y={MAP_Y + MAP_S + 26} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+                a → (0..255)
               </text>
               <text
                 x={MAP_X - 12}
-                y={MAP_Y + 4}
+                y={MAP_Y + MAP_S}
                 fill={colors.MUTED}
-                fontSize={12}
+                fontSize={14}
                 fontFamily="monospace"
-                transform={`rotate(-90 ${MAP_X - 12} ${MAP_Y + 4})`}
-                textAnchor="end"
+                transform={`rotate(-90 ${MAP_X - 12} ${MAP_Y + MAP_S})`}
               >
-                b →  (0..255)
+                b → (0..255)
               </text>
-              <text x={MAP_X + MAP_S / 2} y={MAP_Y + MAP_S + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={MAP_X + 124} y={MAP_Y + MAP_S + 26} fill={colors.MUTED} fontSize={14}>
                 all 65,536 input pairs
               </text>
             </g>
@@ -313,15 +317,15 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={ceU}>
               <circle cx={mapX(CE.a)} cy={mapY(CE.b)} r={7} fill="none" stroke={colors.WARM} strokeWidth={2.4} />
               <circle cx={mapX(CE.a)} cy={mapY(CE.b)} r={2.6} fill={colors.WARM} />
-              <g transform={`translate(${mapX(CE.a) + 16}, ${mapY(CE.b) - 44})`}>
-                <rect width={230} height={64} rx={7} fill={colors.PANEL} opacity={0.95} stroke={colors.WARM} />
-                <text x={12} y={22} fill={colors.WARM} fontSize={11.5} fontFamily="monospace" fontWeight={700}>
+              <g transform={`translate(${mapX(CE.a) + 18}, ${mapY(CE.b) - 100})`}>
+                <rect width={250} height={74} rx={7} fill={colors.PANEL} opacity={0.97} stroke={colors.WARM} />
+                <text x={12} y={24} fill={colors.WARM} fontSize={13} fontFamily="monospace" fontWeight={700}>
                   counterexample: a={CE.a}, b={CE.b}
                 </text>
-                <text x={12} y={40} fill={colors.TEXT} fontSize={11} fontFamily="monospace">
+                <text x={12} y={44} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
                   avg8({CE.a},{CE.b}) = {CE_AVG}
                 </text>
-                <text x={12} y={55} fill={colors.MUTED} fontSize={10}>
+                <text x={12} y={63} fill={colors.MUTED} fontSize={12}>
                   outside [{Math.min(CE.a, CE.b)}, {Math.max(CE.a, CE.b)}] — wrap at 256
                 </text>
               </g>
@@ -331,8 +335,8 @@ function Frame({ s }: { s: SceneState }) {
       </g>
 
       {/* the function + claim panel — screen space, right side */}
-      {claimU > 0 && (
-        <g opacity={claimU * mainOp * (1 - 0.8 * clamp01(ceU * 2))}>
+      {claimU > 0 && zoomFade > 0.02 && (
+        <g opacity={claimU * mainOp * zoomFade}>
           <rect x={760} y={140} width={430} height={168} rx={12} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
           <text x={784} y={174} fill={colors.TEXT} fontSize={15} fontWeight={600}>
             the function under test
@@ -340,7 +344,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={784} y={202} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
             avg8(a, b) = ((a + b) &amp; 0xff) &gt;&gt; 1
           </text>
-          <text x={784} y={232} fill={colors.TEXT} fontSize={13.5}>
+          <text x={784} y={232} fill={colors.TEXT} fontSize={14}>
             the claimed property, for all pairs:
           </text>
           <MathLabel
@@ -350,28 +354,48 @@ function Frame({ s }: { s: SceneState }) {
             fontSize={16}
             color={colors.SECONDARY}
             opacity={1}
+            anchor="start"
+            boxWidth={390}
           />
         </g>
       )}
 
-      {/* test verdict / exhaustive count — screen space */}
-      {verdictU > 0 && (
-        <g opacity={verdictU * mainOp * (1 - 0.85 * clamp01(heatU * 2.5))}>
+      {/* the claim's badge, shown with the title while the caption names the green check */}
+      {titleU > 0 && claimU < 0.5 && (
+        <g opacity={titleU * mainOp * (1 - clamp01(claimU * 2))}>
+          <circle cx={640} cy={262} r={56} fill="none" stroke={colors.POSITIVE} strokeWidth={6} />
+          <path
+            d="M 616 264 L 634 282 L 666 246"
+            fill="none"
+            stroke={colors.POSITIVE}
+            strokeWidth={9}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <text x={640} y={370} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={600}>
+            a passing test suite
+          </text>
+        </g>
+      )}
+
+      {/* test verdict, then the exhaustive count — screen space */}
+      {verdictU > 0 && 1 - countFade > 0.02 && (
+        <g opacity={verdictU * mainOp * (1 - countFade)}>
           <text x={760} y={356} fill={colors.POSITIVE} fontSize={16} fontFamily="monospace" fontWeight={700}>
             test suite: {TESTS_PASSED}/{TESTS.length} passed ✓
           </text>
-          <text x={760} y={380} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+          <text x={760} y={380} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             60 seeded cases · typical values (a, b &lt; 128)
           </text>
         </g>
       )}
-      {countU > 0 && (
-        <g opacity={countU * mainOp}>
+      {countU > 0 && zoomFade > 0.02 && (
+        <g opacity={countU * mainOp * zoomFade}>
           <text x={760} y={356} fill={colors.NEGATIVE} fontSize={16} fontFamily="monospace" fontWeight={700}>
             exhaustive: {VIOLATIONS.toLocaleString()} / {TOTAL.toLocaleString()} pairs fail
           </text>
-          <text x={760} y={380} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
-            {((VIOLATIONS / TOTAL) * 100).toFixed(1)}% of the space · every one missed by the tests
+          <text x={760} y={380} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+            {((VIOLATIONS / TOTAL) * 100).toFixed(1)}% of the space · the tests missed all of them
           </text>
         </g>
       )}

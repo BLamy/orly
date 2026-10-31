@@ -55,7 +55,8 @@ const INVOICE_FIELDS = [
 ];
 
 const CAM_JSON: CameraState = { x: 400, y: 300, k: 1.2 };
-const CAM_INV: CameraState = { x: 880, y: 300, k: 1.15 };
+// Wide enough that the request, the digest and the invoice stay in frame together.
+const CAM_INV: CameraState = { x: 635, y: 330, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -168,7 +169,8 @@ export function Render({ s }: { s: SceneState }) {
 
   const mainOp = 1 - 0.85 * dimU;
   const hashHome = { x: GRID.x + GRID_W / 2, y: GRID.y + GRID_W + 30 };
-  const hashSlot = { x: INV.x + 208, y: INV.y + 148 };
+  // the desc_hash row: value baseline at y = INV.y + 92 + 2 * 34, value starts at INV.x + 130
+  const hashSlot = { x: INV.x + 210, y: INV.y + 160 };
 
   return (
     <>
@@ -176,11 +178,16 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          <JsonDoc layout={LAYOUT} reveal={jsonU} opacity={1 - 0.5 * clamp01(invU)} />
+          {jsonU > 0 && (
+            <text x={80} y={98} fill={colors.TEXT} fontSize={14} fontWeight={600} opacity={jsonU}>
+              signed zap request · kind 9734
+            </text>
+          )}
+          <JsonDoc layout={LAYOUT} reveal={jsonU} opacity={1 - 0.3 * clamp01(invU)} />
 
           {serU > 0 && (
             <g opacity={serU}>
-              <text x={80} y={555} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, Menlo, monospace">
+              <text x={80} y={555} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
                 JSON.stringify(request) → {REQUEST_JSON.length} bytes
               </text>
               <path d={`M420,320 Q490,300 ${GRID.x - 14},${GRID.y + GRID_W / 2}`} fill="none" stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="5 5" opacity={serU} />
@@ -189,12 +196,12 @@ export function Render({ s }: { s: SceneState }) {
 
           {gridU > 0 && (
             <g>
-              <text x={GRID.x} y={GRID.y - 16} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, Menlo, monospace" opacity={gridU}>
+              <text x={GRID.x} y={GRID.y - 16} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, Menlo, monospace" opacity={gridU}>
                 SHA-256 — real digest
               </text>
               <BitField bits={DESC_BITS} x={GRID.x} y={GRID.y} cell={GRID.cell} gap={GRID.gap} reveal={gridU} settle={settleU} seed={8} />
               {settleU >= 1 && hashFlyU < 1 && (
-                <text x={hashHome.x} y={hashHome.y} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily="ui-monospace, Menlo, monospace">
+                <text x={hashHome.x} y={hashHome.y} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                   {shortHex(DESC_HASH, 10, 6)}
                 </text>
               )}
@@ -208,27 +215,30 @@ export function Render({ s }: { s: SceneState }) {
               <text x={INV.x + 20} y={INV.y + 32} fill={colors.WARM} fontSize={15} fontWeight={600}>
                 bolt11 invoice
               </text>
-              <text x={INV.x + 20} y={INV.y + 54} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, Menlo, monospace">
+              <text x={INV.x + 20} y={INV.y + 54} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
                 lnbc210n1p…
               </text>
               {INVOICE_FIELDS.map((f, i) => {
                 const y = INV.y + 92 + i * 34;
                 return (
                   <g key={f.k}>
-                    <text x={INV.x + 20} y={y} fill={f.hot ? colors.ACCENT : colors.MUTED} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+                    <text x={INV.x + 20} y={y} fill={f.hot ? colors.ACCENT : colors.MUTED} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                       {f.k}
                     </text>
                     {(!f.hot || hashFlyU >= 1) && (
-                      <text x={INV.x + 130} y={y} fill={f.hot ? colors.ACCENT : colors.TEXT} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+                      <text x={INV.x + 130} y={y} fill={f.hot ? colors.ACCENT : colors.TEXT} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                         {f.v}
                       </text>
                     )}
                     {f.hot && hashFlyU < 1 && (
-                      <rect x={INV.x + 128} y={y - 14} width={160} height={20} rx={5} fill="none" stroke={colors.MUTED} strokeDasharray="4 4" opacity={0.5} />
+                      <rect x={INV.x + 128} y={y - 16} width={180} height={24} rx={5} fill="none" stroke={colors.MUTED} strokeDasharray="4 4" opacity={0.5} />
                     )}
                   </g>
                 );
               })}
+              {bindU > 0 && (
+                <rect x={INV.x + 124} y={INV.y + 142} width={188} height={30} rx={6} fill="none" stroke={colors.POSITIVE} strokeWidth={1.5} opacity={bindU} />
+              )}
             </g>
           )}
 
@@ -239,21 +249,24 @@ export function Render({ s }: { s: SceneState }) {
             u={hashFlyU}
             text={shortHex(DESC_HASH, 10, 6)}
             fill={colors.ACCENT}
-            fontSize={12.5}
+            fontSize={14}
             lift={90}
             holdAtEnd={false}
           />
 
           {bindU > 0 && (
-            <text x={GRID.x + GRID_W / 2} y={500} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} opacity={bindU}>
-              pay the invoice = provably pay THIS request
-            </text>
+            <g opacity={bindU}>
+              <rect x={GRID.x - 8} y={GRID.y - 8} width={GRID_W + 16} height={GRID_W + 16} rx={6} fill="none" stroke={colors.POSITIVE} strokeWidth={1.5} strokeDasharray="4 4" opacity={0.7} />
+              <text x={GRID.x + GRID_W / 2} y={500} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
+                pay the invoice = provably pay THIS request
+              </text>
+            </g>
           )}
 
           {payU > 0 && (
             <g opacity={payU}>
               <line x1={INV.x + 40} y1={430} x2={INV.x + INV.w - 40} y2={430} stroke={colors.WARM} strokeWidth={2} strokeDasharray="2 6" opacity={0.8} />
-              <text x={INV.x + INV.w / 2} y={456} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+              <text x={INV.x + INV.w / 2} y={456} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 ⚡ paid over lightning — outside nostr
               </text>
             </g>
@@ -263,14 +276,14 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             One digest, stated in two protocols
           </text>
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             SHA-256(zap request) becomes the invoice's description hash
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-57 appendix B — the binding
           </text>
         </g>

@@ -1,0 +1,104 @@
+{
+ "shot": "ch10-s02",
+ "at": "2026-10-13T04:13:59.892Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 18,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "…a fixed-length",
+   "capWhileSubject": 23.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "vector is a",
+   "capWhileSubject": 23.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "bottleneck…”",
+   "capWhileSubject": 23.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Bahdanau, Cho & Bengio",
+   "capWhileSubject": 23.2,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "the",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "agreement",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "on",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "European",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Economic",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Area",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2014",
+   "maxCap": 23.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "l'",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "accord",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "sur",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "la",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "zone",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "économique",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "européenne",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 14
+}

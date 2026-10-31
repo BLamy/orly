@@ -31,7 +31,7 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 /** Stage is 1280×720; the caption strip owns y ≳ 630 — nothing lives there. */
-const TAPE = { x: 120, y: 545, w: 1040, h: 46 };
+const TAPE = { x: 120, y: 510, w: 1040, h: 46 };
 const CARD = { x: 84, y: 84, w: 500 };
 const PAYLOAD = { x: 664, y: 92, w: 512 };
 const DEDUP = { x: 664, y: 300, w: 512, h: 200 };
@@ -42,8 +42,8 @@ const MOMENTS = [
   { u: 0.1, kind: 'nav', label: 'GET /products' },
   { u: 0.3, kind: 'click', label: 'click “Add to cart”' },
   { u: 0.52, kind: 'nav', label: 'GET /checkout' },
-  { u: 0.72, kind: 'net', label: 'POST /api/checkout → 500' },
-  { u: 0.84, kind: 'console', label: 'console.error: payment failed' },
+  { u: 0.72, kind: 'net', label: 'POST → 500' },
+  { u: 0.84, kind: 'console', label: 'console.error' },
 ] as const;
 
 /** Numbered repro steps, each anchored to a tape moment (by MOMENTS index). */
@@ -54,27 +54,31 @@ const STEPS = [
   { text: '4. Server responds 500; console logs the failure', anchor: 4 },
 ] as const;
 
+/** The fields the narration names, with real values from webhookPayload(). */
 const PAYLOAD_KEYS = [
-  '"title", "severity", "description"',
-  '"reproduction_steps", "expected_behavior"',
+  '"title": "Checkout fails with 500…"',
+  '"severity": "critical"',
+  '"reproduction_steps": [4 steps]',
   '"replay_recording_id": "rec-7f3a…"',
-  '"callback_url": "…/api/bug-fixed-webhook/bug-002"',
-  '"referrer": "loop-qa"',
+  '"callback_url": "…/bug-fixed-webhook/bug-002"',
 ] as const;
 
 /** Dedup candidates: the project's existing bugs, with a precomputed
  *  similarity for the sweep bars. Deterministic, module scope. */
 const CANDIDATES = [
-  { label: 'bug-001 · Product image 404 on search results', sim: 0.22 },
-  { label: 'bug-003 · Cart badge count lags one item behind', sim: 0.31 },
-  { label: 'bug-004 · Coupon field accepts expired codes', sim: 0.14 },
-  { label: 'bug-005 · Login form loses email on bad password', sim: 0.09 },
+  { label: 'bug-001 · Product image 404 on search', sim: 0.22 },
+  { label: 'bug-003 · Cart badge lags one item', sim: 0.31 },
+  { label: 'bug-004 · Coupon accepts expired codes', sim: 0.14 },
+  { label: 'bug-005 · Login loses email on bad password', sim: 0.09 },
 ] as const;
 
 /* ------------------------------------------------------------- cameras */
-const CAM_CARD: CameraState = { x: 560, y: 330, k: 1.1 };
+const CAM_CARD: CameraState = { x: 580, y: 330, k: 1.1 };
 const momentX = (u: number) => TAPE.x + u * TAPE.w;
-const CAM_MOMENT: CameraState = { x: momentX(MOMENTS[3].u), y: 468, k: 1.9 };
+/* Dive toward the 500 moment, but keep the card's steps on stage. */
+const CAM_MOMENT: CameraState = { x: 580, y: 350, k: 1.15 };
+const CARD_H = 276;
+const CARD_BOTTOM = CARD.y + CARD_H;
 const CAM_CLOSE: CameraState = { x: 590, y: 335, k: 1.16 };
 
 /* -------------------------------------------------------------- timeline */
@@ -197,7 +201,7 @@ export function buildScene() {
     dur: 6.6,
     text: 'So it is filed: open, critical, with the recording attached. Not a story about a bug — a claim that arrives holding the evidence a skeptic will ask for.',
   });
-  tl.tween(gDd, 0.1, { at: t - 6.2, dur: 0.8, ease: ease.move });
+  tl.tween(gDd, 0, { at: t - 6.2, dur: 0.8, ease: ease.move });
   tl.tween(gPay, 0, { at: t - 6.2, dur: 0.8, ease: ease.move });
   tl.tween(gTape, 0.15, { at: t - 6.0, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_CLOSE, { at: t - 5.8, dur: 1.6, ease: ease.move });
@@ -244,8 +248,8 @@ function TapeStrip({
           </g>
         );
       })}
-      <text x={x} y={y - 10} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
-        replay_recording_id: rec-7f3a…
+      <text x={x} y={y - 10} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+        rec-7f3a…
       </text>
       {MOMENTS.map((m, i) => {
         const mu = clamp01(moments - i);
@@ -260,6 +264,9 @@ function TapeStrip({
             )}
             <line x1={mx} y1={y + 12} x2={mx} y2={y + h - 12} stroke={c} strokeWidth={hot > 0 ? 3 : 2} />
             <circle cx={mx} cy={y + h / 2} r={3.4 + 1.6 * hot} fill={c} />
+            <text x={mx + 24} y={y + h / 2 + 5} fill={c} fontSize={14} fontWeight={600} fontFamily={mono}>
+              {m.label}
+            </text>
           </g>
         );
       })}
@@ -267,25 +274,40 @@ function TapeStrip({
   );
 }
 
+/** The claim before it is checked: a dashed slot where the finding will sit.
+ *  It shows with the tape and gives way to the card once the card is claimed. */
+function GhostFinding({ reveal, claimed }: { reveal: number; claimed: number }) {
+  const g = clamp01(reveal) * (1 - clamp01(claimed));
+  if (g <= 0.01) return null;
+  const { x, y, w } = CARD;
+  return (
+    <g opacity={0.8 * g}>
+      <rect x={x} y={y} width={w} height={CARD_H} rx={12} fill="none" stroke={colors.GRID} strokeWidth={1.6} strokeDasharray="6 6" />
+      <text x={x + w / 2} y={y + CARD_H / 2} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily={mono}>
+        a finding must survive the checking
+      </text>
+    </g>
+  );
+}
+
 /** The finding card — severity, title, and anchored repro steps. */
 function FindingCard({
-  u, sev, steps, open, glow, tapeFade,
-}: { u: number; sev: number; steps: number; open: number; glow: number; tapeFade: number }) {
+  u, sev, steps, open, glow, tapeFade, dim,
+}: { u: number; sev: number; steps: number; open: number; glow: number; tapeFade: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   const { x, y, w } = CARD;
-  const stepY = (i: number) => y + 112 + i * 34;
   return (
     <g opacity={uu}>
       <g transform={`translate(${x}, ${y + (1 - uu) * 12})`}>
-        <rect width={w} height={112 + STEPS.length * 34 + 16} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
-        <text x={20} y={30} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+        <rect width={w} height={CARD_H} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
+        <text x={20} y={30} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
           bug-002 · discovered by run-004
         </text>
         {clamp01(sev) > 0 && (
           <g opacity={clamp01(sev)} transform={`scale(${0.9 + 0.1 * clamp01(sev)})`}>
             <rect x={20} y={44} width={78} height={24} rx={12} fill={colors.NEGATIVE} opacity={0.2} />
-            <text x={59} y={61} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+            <text x={59} y={61} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={700} fontFamily={mono}>
               critical
             </text>
           </g>
@@ -293,7 +315,7 @@ function FindingCard({
         {clamp01(open) > 0 && (
           <g opacity={clamp01(open)}>
             <rect x={108} y={44} width={58} height={24} rx={12} fill={colors.POSITIVE} opacity={0.2} />
-            <text x={137} y={61} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+            <text x={137} y={61} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={700} fontFamily={mono}>
               open
             </text>
           </g>
@@ -301,42 +323,41 @@ function FindingCard({
         <text x={20} y={92} fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
           Checkout fails with 500 on payment submission
         </text>
-        <text x={20} y={112 + STEPS.length * 34 + 2} fill={clamp01(glow) > 0.5 ? colors.ACCENT : colors.MUTED} fontSize={11.5} fontFamily={mono} opacity={0.4 + 0.6 * clamp01(glow)}>
+        <text x={20} y={262} fill={clamp01(glow) > 0.5 ? colors.ACCENT : colors.MUTED} fontSize={13} fontFamily={mono} opacity={0.7 + 0.3 * clamp01(glow)}>
           ▶ open recording rec-7f3a…
         </text>
         {STEPS.map((st, i) => {
           const su = clamp01(steps - i);
           if (su <= 0) return null;
           return (
-            <text key={i} x={20} y={130 + i * 34} fill={colors.TEXT} fontSize={13} fontFamily={mono} opacity={su}>
-              {st.text}
-            </text>
+            <g key={i} opacity={su}>
+              <circle cx={11} cy={126 + i * 34} r={4} fill={MOMENT_COLOR[MOMENTS[st.anchor].kind]} />
+              <text x={24} y={130 + i * 34} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
+                {st.text}
+              </text>
+            </g>
           );
         })}
       </g>
-      {/* anchor lines: step → tape moment (drawn in stage space) */}
+      {/* anchor lines: drop from under the card to the tape moment. They run
+          below the card, so they never cross its text; the number marks the step. */}
       {STEPS.map((st, i) => {
         const su = clamp01(steps - i);
         if (su <= 0.3) return null;
         const au = clamp01((su - 0.3) / 0.7);
-        const sx = x + w + 2;
-        const sy = stepY(i) + (1 - clamp01(u)) * 12 + 12;
+        const top = CARD_BOTTOM + (1 - clamp01(u)) * 12;
         const mx = momentX(MOMENTS[st.anchor].u);
-        const my = TAPE.y + 6;
+        const my = TAPE.y - 2;
         const c = MOMENT_COLOR[MOMENTS[st.anchor].kind];
-        // simple elbow: out from the step, down to just above the moment
-        const midX = sx + (mx - sx) * au;
-        const dropY = sy + (my - sy) * au;
         return (
-          <g key={i} opacity={(0.25 + 0.55 * (i === 2 || i === 3 ? 1 : 0.5)) * clamp01(tapeFade)}>
-            <path
-              d={`M ${sx} ${sy} L ${midX} ${sy} L ${midX} ${dropY}`}
-              fill="none"
-              stroke={c}
-              strokeWidth={1.4}
-              strokeDasharray="5 4"
-            />
-            {au >= 1 && <circle cx={mx} cy={my - 2} r={3} fill={c} />}
+          <g key={i} opacity={(0.45 + 0.4 * (i === 2 || i === 3 ? 1 : 0.5)) * clamp01(tapeFade) * (1 - 0.85 * clamp01(dim))}>
+            <line x1={mx} y1={top} x2={mx} y2={top + (my - top) * au} stroke={c} strokeWidth={1.6} strokeDasharray="5 4" />
+            {au >= 1 && <circle cx={mx} cy={my} r={3} fill={c} />}
+            {au >= 1 && (
+              <text x={mx + 6} y={top + 16} fill={c} fontSize={14} fontWeight={700} fontFamily={mono}>
+                {i + 1}
+              </text>
+            )}
           </g>
         );
       })}
@@ -355,13 +376,13 @@ function MomentInset({ u }: { u: number }) {
       <line x1={0} y1={72} x2={0} y2={92} stroke={colors.NEGATIVE} strokeWidth={1.2} />
       <rect x={-158} y={-2} width={316} height={74} rx={8} fill={colors.BG} opacity={0.94} />
       <rect x={-158} y={-2} width={316} height={74} rx={8} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.3} />
-      <text x={-144} y={20} fill={colors.TEXT} fontSize={11} fontFamily={mono}>
+      <text x={-144} y={20} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
         POST /api/checkout
       </text>
-      <text x={-144} y={40} fill={colors.NEGATIVE} fontSize={11} fontWeight={700} fontFamily={mono}>
+      <text x={-144} y={40} fill={colors.NEGATIVE} fontSize={13} fontWeight={700} fontFamily={mono}>
         ← 500 Internal Server Error
       </text>
-      <text x={-144} y={60} fill={colors.WARM} fontSize={10.5} fontFamily={mono}>
+      <text x={-144} y={60} fill={colors.WARM} fontSize={13} fontFamily={mono}>
         console.error: payment failed
       </text>
     </g>
@@ -376,14 +397,14 @@ function PayloadPanel({ u, rows, fade }: { u: number; rows: number; fade: number
   return (
     <g transform={`translate(${x}, ${y + (1 - clamp01(u)) * 10})`} opacity={uu}>
       <rect width={w} height={40 + PAYLOAD_KEYS.length * 26 + 14} rx={10} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.4} />
-      <text x={16} y={26} fill={colors.TEAL} fontSize={12} fontWeight={700} fontFamily={mono}>
+      <text x={16} y={26} fill={colors.TEAL} fontSize={13} fontWeight={700} fontFamily={mono}>
         POST project.webhook_url · JSON
       </text>
       {PAYLOAD_KEYS.map((k, i) => {
         const ru = clamp01(rows - i);
         if (ru <= 0) return null;
         return (
-          <text key={i} x={26} y={52 + i * 26} fill={i >= 2 ? colors.ACCENT : colors.TEXT} fontSize={11.5} fontFamily={mono} opacity={ru}>
+          <text key={i} x={26} y={52 + i * 26} fill={i >= 2 ? colors.ACCENT : colors.TEXT} fontSize={14} fontFamily={mono} opacity={ru}>
             {k}
           </text>
         );
@@ -401,22 +422,29 @@ function DedupPanel({ u, scan, verdict, fade }: { u: number; scan: number; verdi
   return (
     <g transform={`translate(${x}, ${y + (1 - clamp01(u)) * 10})`} opacity={uu}>
       <rect width={w} height={h} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
-      <text x={16} y={24} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={16} y={24} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         findDuplicateBug() · answer “unique” or a bug id
       </text>
       {CANDIDATES.map((c, i) => {
         const cu = clamp01(scan - i);
         const yy = 48 + i * 28;
         return (
-          <g key={i} opacity={0.25 + 0.75 * cu}>
-            <text x={16} y={yy + 4} fill={colors.TEXT} fontSize={10.5} fontFamily={mono}>
+          <g key={i} opacity={0.4 + 0.6 * cu}>
+            <text x={16} y={yy + 4} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
               {c.label}
             </text>
-            <rect x={w - 130} y={yy - 6} width={110} height={10} rx={5} fill={colors.GRID} opacity={0.5} />
-            <rect x={w - 130} y={yy - 6} width={110 * c.sim * cu} height={10} rx={5} fill={colors.SECONDARY} opacity={0.9} />
+            <rect x={w - 120} y={yy - 6} width={100} height={10} rx={5} fill={colors.GRID} opacity={0.5} />
+            <rect x={w - 120} y={yy - 6} width={100 * c.sim * cu} height={10} rx={5} fill={colors.SECONDARY} opacity={0.9} />
           </g>
         );
       })}
+      {/* the one-word answer, empty until the sweep finishes */}
+      {v < 1 && clamp01(scan / CANDIDATES.length) > 0 && (
+        <g transform={`translate(${w / 2}, ${h - 26})`} opacity={clamp01(scan / CANDIDATES.length) * (1 - v)}>
+          <rect x={-78} y={-15} width={156} height={30} rx={8} fill="none" stroke={colors.GRID} strokeWidth={1.6} strokeDasharray="5 4" />
+          <text y={5} textAnchor="middle" fill={colors.MUTED} fontSize={14.5} fontFamily={mono}>…</text>
+        </g>
+      )}
       {v > 0 && (
         <g transform={`translate(${w / 2}, ${h - 26}) scale(${0.85 + 0.15 * v})`} opacity={v}>
           <rect x={-78} y={-15} width={156} height={30} rx={8} fill="none" stroke={colors.POSITIVE} strokeWidth={2.2} />
@@ -439,6 +467,7 @@ export function Render({ s }: { s: SceneState }) {
         focus={s.get(scene.focusM)}
         fade={s.get(scene.gTape)}
       />
+      <GhostFinding reveal={s.get(scene.tapeU)} claimed={s.get(scene.cardU)} />
       <FindingCard
         u={s.get(scene.cardU)}
         sev={s.get(scene.sevU)}
@@ -446,6 +475,7 @@ export function Render({ s }: { s: SceneState }) {
         open={s.get(scene.openU)}
         glow={s.get(scene.linkGlow)}
         tapeFade={s.get(scene.gTape)}
+        dim={s.get(scene.ddU)}
       />
       <MomentInset u={s.get(scene.insetU)} />
       <PayloadPanel u={s.get(scene.payU)} rows={s.get(scene.payRows)} fade={s.get(scene.gPay)} />

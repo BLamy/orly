@@ -1,0 +1,94 @@
+WEBVTT
+
+1
+00:00:00.300 --> 00:00:03.712
+Imagine end-to-end tests you
+never write. Or remember to run.
+
+2
+00:00:05.083 --> 00:00:06.949
+Introducing Replay QA.
+
+3
+00:00:08.000 --> 00:00:09.056
+Point it at your app.
+
+4
+00:00:10.867 --> 00:00:13.460
+No test suite needed. Just a quick chat.
+
+5
+00:00:14.217 --> 00:00:16.785
+It explores your app in a real browser.
+
+6
+00:00:16.885 --> 00:00:20.119
+Turns what it finds into
+user journeys, and runs them.
+
+7
+00:00:21.008 --> 00:00:24.790
+Then it runs on Replay's browsers.
+On a schedule, while you sleep.
+
+8
+00:00:25.842 --> 00:00:28.477
+Against staging, a
+preview, even localhost.
+
+9
+00:00:29.258 --> 00:00:30.964
+And on every pull request.
+
+10
+00:00:31.114 --> 00:00:35.594
+Each run is recorded, then reviewed.
+For what breaks, and what's slow.
+
+11
+00:00:36.675 --> 00:00:38.787
+Some bugs only exist in time.
+
+12
+00:00:39.467 --> 00:00:42.380
+Replay QA caught one in its own app.
+
+13
+00:00:42.530 --> 00:00:46.291
+One update. Sixty-seven
+milliseconds. Four dropped frames.
+
+14
+00:00:46.841 --> 00:00:50.334
+No click. A background refresh
+re-rendered the project list.
+
+15
+00:00:50.800 --> 00:00:54.143
+Twenty-five of twenty-seven
+renders changed nothing on screen.
+
+16
+00:00:54.293 --> 00:00:57.960
+A screen recording can't see
+that. A time-travel recording can.
+
+17
+00:00:58.533 --> 00:01:03.118
+Another bug: one list, fetched two hundred
+fifty-eight times in under three minutes.
+
+18
+00:01:03.218 --> 00:01:06.410
+It never saved its place,
+so it kept starting over.
+
+19
+00:01:07.383 --> 00:01:12.433
+Every run, a recording. Every bug, a
+root cause. Every fix, rerun to confirm.
+
+20
+00:01:14.317 --> 00:01:19.541
+Replay QA. End-to-end testing, fully
+managed. Catch bugs that only exist in time.

@@ -114,7 +114,8 @@ export const chX = (r: number): number => CH_X0 + (r / ROUNDS) * (CH_X1 - CH_X0)
 export const chY = (v: number): number => CH_Y0 - v * CH_H;
 
 export const CAM_GRID: CameraState = { x: 400, y: 320, k: 1.2 };
-export const CAM_CHART: CameraState = { x: 930, y: 320, k: 1.18 };
+// Centred so the problem grid and the curve both stay fully on the stage.
+export const CAM_CHART: CameraState = { x: 645, y: 320, k: 1.08 };
 
 export interface Scene {
   tl: Timeline;

@@ -1,0 +1,613 @@
+{
+  "id": "ch12",
+  "number": 12,
+  "title": "One More Neuron",
+  "blurb": "Dawn, 27 October 2026. Every belief in the film hangs on the copper line across misty hills, its thread dropping to the Lifespan Rule at the time it held. Re-hung by the compiler's own layering rule, applied to the film's teaching order, the line becomes a loom; one wave of light runs through it, and the struck tags run too, multiplied by zero, the wave coming to rest on an empty hook. Three beliefs are still argued over, the README offers its nearest answers to a stranger's 'why?', and the Notes window's last line becomes an invitation: the empty hook's profile bent into a copper hinge, a blank tag on it, placed in the viewer's hand, the refrain left for once as open questions.",
+  "shots": [
+    {
+      "id": "ch12-s01",
+      "kind": "scene",
+      "setting": "Misty hills at dawn, 27 October 2026, seen from the lab's window bay: the copper line strung across the valley",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 1.6,
+      "holdAfter": 1.8,
+      "lines": [
+        {
+          "id": "L1201",
+          "text": "Every belief in the film hangs over the time it held.",
+          "direction": "the widest, calmest line of the film; unhurried, warm, a little wonder; 'the time it held' slow (the date stamp already says dawn)",
+          "tts": {
+            "solo": true,
+            "speed": 0.85
+          }
+        }
+      ],
+      "visual": "Open on the Still open drawer from ch11-s05, still open in the window bay (it never closes). The camera rises past it and out through the bay window onto MISTY HILLS AT DAWN: four or five paper ridges receding in dawnGold haze, each paler than the last. Across the valley the copper line is strung from post to post like a washing line, and on it hang all eleven Promise Tags, each in the state the film left it, its thread dropping to the Lifespan Rule, a long paper ruler with copper log-scale ticks hung FRONT-ON below the line, parallel to the picture plane (no perspective) (an hour · a day · a year · a lifetime labelled; week, month and decade ticks unlabelled, as in ch01-s07). ONE ENCODING, the bound variable of the whole film (as staging.tagLine): a struck or ended thread drops to the rule at its MEASURED LIFESPAN and ends there, frayed or cut; a still-held thread drops to its AGE AS OF 27 OCTOBER 2026 and ends in a glowing open tip with a short copper arrow pointing right (still growing). Nothing runs off the rule's end except the one strand that is truly older than a lifetime. Left to right in film order, with each tip: tag 1 split at the knot, its biology strand frayed and ended at about seventy-seven years (1943 to 2020, between the decade tick and 'a lifetime'), its engineering strand the ONLY thread that runs past 'a lifetime' (1943 to now, about eighty-three years), open glowing tip and arrow just beyond the rule's end; tag 2, still held, open tip and arrow at about seven and a half years (March 2019), between 'a year' and 'a lifetime', just short of the unlabelled decade tick, the red pencil resting on its post (contested); tags 3, 4 and 5, the three suspects, struck through once on slack threads; tag 6 riveted, still held, open tip and arrow at thirteen days (the README's small print, 14 October), between the week and month ticks; tag 7 struck, ended at about three months, frayed start; tag 8 struck with ten short red strokes on its back, ended at about eight weeks; tag 9 struck, its thread barely a millimetre long (hours); tag 10, still held, open tip and arrow at thirteen days (14 October), between the week and month ticks, beside tag 6's, with the small nanoGPT question tag hanging slack beneath it; tag 11, the border tag (JSON half riveted, TOML half struck, the bison thread ending in its open loop), split as ch11-s04 left it: its JSON strand still held, open tip and arrow at about twelve days (15 October), between the week and month ticks; its TOML strand ended at one to two days (15 to 16 October), between 'a day' and the week tick; and the small 'why?' question tag on its slack thread (a question, not a belief: no tip on the rule). In the far distance, on a ridge, the Window Calendar stands as a tall paper building, its panes dark after 16 October: no new panes light. Staging for 1280x720: the line and the Rule both run front-on, parallel to the picture plane. Slow lateral drift along them, left to right, so every tag passes once, about four tags legible in frame at a time (each tag about 110 px wide), never all twelve at once. The drift ends on a WIDE in which the tags are too small to read as words and read instead as STATES: split, glowing, struck, riveted, frayed, slack, and the copper arrows of the four still-held tips (1's engineering strand, 2, 6, 10) clearly pointing right. No new text except the date stamp. The tag fronts are legible but not re-read. TAG-LINE STAGING (meta staging.tagLine): THE VALLEY AT DAWN: the finale's wide, the line laid across the valley and re-hung by dependency depth as the loom; the workshop window wall seen far back as one lit frame.",
+      "beats": [
+        {
+          "id": "rise",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "camera rises from the open drawer out through the window bay onto the hills"
+        },
+        {
+          "id": "date",
+          "at": {
+            "shotTime": 1.6
+          },
+          "what": "date stamp types in lower left"
+        },
+        {
+          "id": "line",
+          "at": {
+            "line": "L1201",
+            "word": "belief"
+          },
+          "what": "the whole line of tags resolves out of the haze; lateral drift begins"
+        },
+        {
+          "id": "ruler",
+          "at": {
+            "line": "L1201",
+            "word": "held"
+          },
+          "what": "the drift reaches the Lifespan Rule's long end and eases out to the wide where the tags read as states; the Window Calendar's dark panes on the far ridge"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "Still open drawer (still open)",
+        "copper line across the valley",
+        "all eleven Promise Tags and the 'why?' question tag",
+        "nanoGPT question tag",
+        "Lifespan Rule on the valley floor",
+        "Window Calendar, dark after 16 October"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "Dawn · 27 October 2026",
+          "beat": "date"
+        }
+      ],
+      "music": {
+        "cue": "m12-loom",
+        "note": "dawnGold, intensity 0.35: the low note held over from ch11's withheld stroke opens into the both-branches motif, its two lines a whole tone apart, very soft, the gate resting; a single relay clack as the drawer's frame passes. Spacious, no pulse."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "PJ09",
+        "PJ17",
+        "LB26"
+      ]
+    },
+    {
+      "id": "ch12-s02",
+      "kind": "scene",
+      "setting": "The copper line across the valley at dawn, being re-hung into columns; the threads re-tensioning into a loom",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.8,
+      "holdAfter": 2,
+      "lines": [
+        {
+          "id": "L1202",
+          "text": "Now re-hang them the way the loom does: each belief one layer after those it needs.",
+          "pauseAfter": 0.7,
+          "direction": "a teacher about to show a trick he loves; even and clear, 'needs' lightly marked"
+        },
+        {
+          "id": "L1203",
+          "text": "The film's teaching order, not history.",
+          "direction": "a plain, honest aside, said lightly"
+        }
+      ],
+      "visual": "THE RE-HANG BY DEPENDENCY DEPTH (the compiler's layering rule, Q039 [CM01], as planted in ch05's 'each operation drops into the first frame after everything it needs', applied to the film's teaching order; the layout is COMPUTED from the outline's finaleDepthMap, never placed by eye). The narrator's hands enter lower left and lift just TWO tags off the line by hand ('lift' action), tags 1 and 4, and hang them on the first vertical copper warp thread: frame 0 (they need nothing). The hands withdraw; the rest CASCADE on their own, one frame per beat of the score, left to right, each tag sliding off the washing line and dropping onto its warp: frame 1, tags 2, 5, 8 and the 'why?' tag (2 and 5 need 1; 8 and 'why?' need 4); frame 2, tags 3 and 6 (3 needs 2; 6 needs 4 and 5); frame 3, tags 7 and 10 (both need 6); frame 4, tags 9 and 11 (9 needs 5 and 7; 11 needs 8 and 10); frame 5, an empty copper hook, waiting (the blank's frame, needing 9 and 11); the hook is bent in the hinge profile, a short flat run then a turn up, the ReLU emblem of Deep Dive I, so it can be paid off in ch12-s06. As each frame's tags land, faint copper threads draw back from them, together, to the tags they need in earlier frames, so every thread runs left to right and none runs backward; each frame's back-threads hold a beat before the next frame drops, so they can be read. A short verbatim fragment of the docs' sentence (Q039) sets in at the top of frame on 'loom', a few words only so it never competes with the cascade, and holds to the shot's end. Just after 'history' (beat loom, the end of L1203) the vertical warp threads and the left-to-right dependency threads tension together with a soft creak of paper and copper, and the washing line has become a loom: the same paper-and-copper loom as ch05's matmul, its frames now the six columns. Camera: a slow pull back so all six frames fit, the misty ridges behind them. TAG-LINE STAGING (meta staging.tagLine): THE VALLEY AT DAWN: the finale's wide, the line laid across the valley and re-hung by dependency depth as the loom; the workshop window wall seen far back as one lit frame.",
+      "beats": [
+        {
+          "id": "lift",
+          "at": {
+            "line": "L1202",
+            "word": "re-hang"
+          },
+          "what": "the narrator's hands lift tags 1 and 4 off the line and hang them on frame 0, then withdraw"
+        },
+        {
+          "id": "rule",
+          "at": {
+            "line": "L1202",
+            "word": "loom"
+          },
+          "what": "Q039 sets in at the top of frame; the cascade begins on its own: frame 1 drops"
+        },
+        {
+          "id": "deep",
+          "at": {
+            "line": "L1202",
+            "word": "needs"
+          },
+          "what": "frames 2 and 3 drop, one per score beat; their dependency threads draw back to the earlier frames"
+        },
+        {
+          "id": "order",
+          "at": {
+            "line": "L1203",
+            "word": "teaching"
+          },
+          "what": "frame 4 drops; frame 5's empty hook (hinge profile: flat, then up) appears"
+        },
+        {
+          "id": "loom",
+          "at": {
+            "line": "L1203",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "warp and dependency threads tension into a loom; slow pull back"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "copper line",
+        "eleven Promise Tags and the 'why?' tag",
+        "vertical copper warp threads (six columns)",
+        "dependency threads",
+        "empty copper hook in column 5"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "“…same dependency depth share a layer.” — the docs",
+          "beat": "rule"
+        }
+      ],
+      "music": {
+        "cue": "m12-loom",
+        "note": "the both-branches motif settles into an even, patient pulse: two soft detent clicks for the two tags the hands re-hang, then one soft clack per frame as the cascade drops (six beats, one per frame); on 'loom' a low wooden creak and the two lines widen slightly. Intensity 0.4. Machines clack, never chime."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "CM01"
+      ],
+      "minDuration": 13
+    },
+    {
+      "id": "ch12-s03",
+      "kind": "scene",
+      "setting": "The tag-loom at dawn: a forward wave of copper light running column by column",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L1204",
+          "text": "Send one wave of light through it. Every tag lights.",
+          "pauseAfter": 1.2,
+          "direction": "simple, almost hushed; let the light travel before 'Every tag lights'"
+        },
+        {
+          "id": "L1205",
+          "text": "The struck ones ran too. Multiplied by nought.",
+          "direction": "the film's quiet punchline: fond and wry, a beat between the two sentences; 'zero' soft, a small smile"
+        }
+      ],
+      "visual": "THE FORWARD PASS THROUGH THE FILM. Hold the six-column loom against the misty ridges. On 'wave' a band of copper light enters at column 0 and runs left to right, one column per beat of the score, along the dependency threads (the same forward pass as a Handwired evaluation: every column, every instruction, every time). It reaches EVERY tag, struck ones included. On a kept or still-held tag (1's engineering half, 2, 6, 10, the JSON half of 11, 'why?') the light arrives and stays lit. On a struck tag (3, 4, 5, 7, 8, 9, the TOML half of 11) the light arrives just the same, glows fully for a moment, and then a small paper shutter slides closed behind the tag: the branch was computed and then multiplied by zero (both branches always run; the 0/1 selector picks). Small equation set in under column 2 on 'struck': the select itself, as the docs write it. On 'zero' the last shutters close in column 4; the wave reaches column 5's empty hook and rests there, a faint copper glow on bare wire. That hook has the hinge profile (a short flat run, then a turn up): it is the shape the narrator's hands will bend from the dock wire in ch12-s06, so the glowing bare hook here and the hinge there read as one object, the frame still waiting for its tag. Camera: a gentle push that follows the wave's leading edge, then settles back to the full loom. TAG-LINE STAGING (meta staging.tagLine): THE VALLEY AT DAWN: the finale's wide, the line laid across the valley and re-hung by dependency depth as the loom; the workshop window wall seen far back as one lit frame.",
+      "beats": [
+        {
+          "id": "wave",
+          "at": {
+            "line": "L1204",
+            "word": "wave"
+          },
+          "what": "the copper wave enters column 0 and starts running left to right"
+        },
+        {
+          "id": "lights",
+          "at": {
+            "line": "L1204",
+            "word": "lights"
+          },
+          "what": "columns 1 to 3 lit; every tag lit, struck ones included"
+        },
+        {
+          "id": "struck",
+          "at": {
+            "line": "L1205",
+            "word": "struck"
+          },
+          "what": "shutters slide closed behind the struck tags; the select equation sets in"
+        },
+        {
+          "id": "zero",
+          "at": {
+            "line": "L1205",
+            "word": "nought"
+          },
+          "what": "column 4's last shutters close; the wave rests on column 5's empty hook"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "six-column tag-loom",
+        "copper wave of light",
+        "small paper shutters behind struck tags",
+        "empty copper hook in column 5"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "gate × on + (1 − gate) × off",
+          "beat": "struck"
+        },
+        {
+          "kind": "label",
+          "text": "struck: computed, then × 0",
+          "beat": "struck"
+        }
+      ],
+      "music": {
+        "cue": "m12-loom",
+        "note": "the score becomes the select: the both-branches gate opens column by column in step with the wave; on each struck tag the gate closes to 0 while that line keeps playing underneath, inaudible but running (the struck branch ran too). Intensity rising to 0.5, the film's last swell, then easing on 'zero'."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "TE10",
+        "TE11",
+        "CM01"
+      ]
+    },
+    {
+      "id": "ch12-s04",
+      "kind": "scene",
+      "setting": "The tag-loom at dawn, the light settled: three beliefs still argued over, tag 6 riveted, the 'why?' tag turning",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L1206",
+          "text": "Three beliefs are still argued over. Learn the weights, don't write them. Fully differentiable. And the README's claim to take “regular JavaScript”.",
+          "pauseAfter": 0.7,
+          "direction": "even-handed, no side taken; 'three' clear, so the ear counts the README's claim as the third; each belief named as a short phrase of its own, with a breath between; the README's claim plain, a fact, not a jab"
+        },
+        {
+          "id": "L1207",
+          "text": "To the stranger's “why?”, the README's nearest answers: “for fun”, and “Let's find out!”",
+          "direction": "warm, amused; 'why?' read as the stranger's question; 'for fun' and 'Let's find out!' read as the README's own cheerful words, a small breath between them, not performed"
+        }
+      ],
+      "visual": "The wave has passed and the light settles on what still hangs unstruck. Slow push toward frames 1 and 3. Tag 2 (learn the weights; don't write them) and tag 10 (fully differentiable) glow at HALF brightness, steady, neither lit nor dark, the red pencil resting on the post beside each (contested: the bible's 'dominant, not consensus' for 2, 'contested inside the repo' for 10); each keeps the thread tip it had in ch12-s01, re-hung on its warp: tag 2's glowing open tip and short right-pointing copper arrow at about seven and a half years (between 'a year' and 'a lifetime'), tag 10's at thirteen days (between a week and a month); their own fronts carry the words, so no caption is added. On 'claim' the camera glances to frame 0: tag 4 stays struck (no tool converts existing JavaScript), but its knot, the README's tagline strip, still hangs unchanged on the copper, and a third red pencil rests against it (whether the phrase overclaims is still argued, PJ03); no new text, the strip is the tag's own. Tag 6 in frame 2 holds its copper rivet and its open tip at thirteen days; a glint runs across it. On 'why?' the camera finds the small 'why?' question tag in frame 1; it turns on its thread. As the narrator reaches 'nearest', the README's own words from Q010, Let's find out!, set in beside it on a parchment slip, in serif with its attribution (the narrator reads them; 'for fun', from the README's pitch line Q006, is spoken only). The film does not claim the README was replying to the stranger; these are the nearest answers the README gives. The camera settles on the 'why?' tag still slowly turning, column 5's bare hook glowing faintly at frame right, waiting. TAG-LINE STAGING (meta staging.tagLine): THE VALLEY AT DAWN: the finale's wide, the line laid across the valley and re-hung by dependency depth as the loom; the workshop window wall seen far back as one lit frame.",
+      "beats": [
+        {
+          "id": "half",
+          "at": {
+            "line": "L1206",
+            "word": "argued"
+          },
+          "what": "tags 2 and 10 glow at half brightness, open tips held; red pencils resting beside them"
+        },
+        {
+          "id": "tagline",
+          "at": {
+            "line": "L1206",
+            "word": "claim"
+          },
+          "what": "glance to frame 0: struck tag 4's tagline knot unchanged, a red pencil resting against it"
+        },
+        {
+          "id": "rivet",
+          "at": {
+            "line": "L1206",
+            "word": "JavaScript"
+          },
+          "what": "a glint runs across tag 6's rivet"
+        },
+        {
+          "id": "why",
+          "at": {
+            "line": "L1207",
+            "word": "why"
+          },
+          "what": "the 'why?' question tag turns on its thread"
+        },
+        {
+          "id": "answer",
+          "at": {
+            "line": "L1207",
+            "word": "nearest"
+          },
+          "what": "Q010 sets in on a parchment slip beside the turning tag; its last words catch the light"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "tag 2 and tag 10 at half glow",
+        "three resting red pencils",
+        "struck tag 4 with its tagline knot",
+        "tag 6 with its rivet",
+        "the 'why?' question tag",
+        "parchment slip"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "“Let's find out!” — the README",
+          "beat": "answer"
+        }
+      ],
+      "music": {
+        "cue": "m12-loom",
+        "note": "for the two contested tags the detent's missing third stroke is replaced by the both-branches gate held at 0.5: both lines at half level, a slightly unresolved whole tone, undecided (the musical eleven's interval, now patient rather than wrong). On 'Let's find out!' one line lifts a step, lightly. Intensity 0.35."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "FR20",
+        "DG03",
+        "PJ04",
+        "PJ27",
+        "PJ01",
+        "PJ03"
+      ]
+    },
+    {
+      "id": "ch12-s05",
+      "kind": "scene",
+      "setting": "The HandwiredOS desk, plain and warm, morning; no X-ray",
+      "era": "2020s",
+      "mood": "parchment",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "lines": [
+        {
+          "id": "L1208",
+          "text": "The notes window ends: “Wire one more neuron by hand”.",
+          "direction": "intimate, a little lower; the lamp change has already said 'back on the desktop'; read the quoted line exactly as the window says it, plainly, without a wink"
+        }
+      ],
+      "visual": "Lamp change from dawnGold to parchment: the HandwiredOS desk as a toy theatre once more, warm paper-beige desktop with its faint dot grid, the three paper windows (Monitor, Notes, Photos) hanging by fine threads, the dock of three white tiles, and the one copper wire under the dock catching the light. Plain again: no X-ray, nothing lit inside it, no ramps, loom or valve showing through; just the desk. Slow push toward the Notes window. Its short to-do list, out of focus since ch01-s02, racks into focus line by line from the top; on 'line' the rack reaches the bottom and the last line sharpens, in the window's own type (Q088), as part of the window itself; no caption repeats it, only a small attribution 'HandwiredOS · Notes'. Nothing else moves; Photos' twelve landscapes sit still.",
+      "beats": [
+        {
+          "id": "desk",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "lamp change to the plain warm desk; copper wire under the dock catches the light"
+        },
+        {
+          "id": "rack",
+          "at": {
+            "line": "L1208",
+            "word": "Notes"
+          },
+          "what": "Notes window racks into focus from the top of its list"
+        },
+        {
+          "id": "last",
+          "at": {
+            "line": "L1208",
+            "word": "Wire"
+          },
+          "what": "the last to-do line sharpens: Q088 in the window's own type"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "HandwiredOS desk (plain)",
+        "Monitor, Notes and Photos windows",
+        "dock of three tiles",
+        "copper wire under the dock"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "HandwiredOS · Notes",
+          "beat": "last"
+        }
+      ],
+      "music": {
+        "cue": "m12-loom",
+        "note": "the motif thins to a single line, close and warm, intensity 0.25; paper room tone; one soft relay clack under the rack focus."
+      },
+      "transitionIn": "lampChange",
+      "claims": [
+        "OS18"
+      ]
+    },
+    {
+      "id": "ch12-s06",
+      "kind": "scene",
+      "setting": "Close on the copper wire under the dock, warm morning light: a hinge, a blank tag and an open hand",
+      "era": "2020s",
+      "mood": "parchment",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "lines": [
+        {
+          "id": "L1209",
+          "text": "Who ties the next one on? Who doubts it? How long will it hold?",
+          "level": "soft",
+          "pauseAfter": 1.3,
+          "direction": "the refrain turned, the film's last thought, and the only time it is left unanswered: three open questions, soft, warm, unhurried, a real breath after each; no answer follows",
+          "tts": {
+            "solo": true,
+            "speed": 0.84
+          }
+        },
+        {
+          "id": "L1210",
+          "text": "It's waiting for the next pair of hands.",
+          "level": "soft",
+          "direction": "the invitation, almost a smile; let 'hands' rest; nothing after it",
+          "tts": {
+            "solo": true,
+            "speed": 0.8
+          }
+        }
+      ],
+      "visual": "Close on the copper wire under the dock. The narrator's hands enter lower left and BEND a short length of it into a hinge ('bend' action): flat, then up, a ReLU, the same emblem as the copper hinge in Deep Dive I and EXACTLY the profile of column 5's empty hook in ch12-s02 to s04, the frame the wave came to rest on; the bend is cut so the hinge's silhouette matches that glowing bare hook, and its bare end catches the same faint copper glow, so the waiting hook is paid. In the lead-in the hands tie the BLANK tag to the hinge (detent: tie), and flip it once (detent: flip) to show its back is blank too: no belief on the front, no name in the knot, no red pencil on the back. Each of the three questions is timed to the open hand: on 'ties' a plain, open hand (the viewer's: no sleeve, no ring, no age or gender signal) begins to rise into the lower third from below frame; on 'doubts' it is halfway up; on 'hold' it settles, palm up, still. On 'waiting' the narrator's hands place the hinge with its blank tag into that open palm ('place' action) and withdraw lower left. The open hand holds it, still. The red-pencil hand never appears. The third stroke of the detent never comes. Camera: locked off, then the slightest drift toward the palm as the last word lands.",
+      "beats": [
+        {
+          "id": "bend",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "the narrator's hands bend the copper into a hinge, flat then up: the column-5 hook's profile"
+        },
+        {
+          "id": "tie",
+          "at": {
+            "shotTime": 1.4
+          },
+          "what": "the blank tag is tied to the hinge (detent tie), then flipped once (detent flip): blank both sides"
+        },
+        {
+          "id": "hand",
+          "at": {
+            "line": "L1209",
+            "word": "ties"
+          },
+          "what": "the viewer's open hand begins to rise from below frame"
+        },
+        {
+          "id": "doubt",
+          "at": {
+            "line": "L1209",
+            "word": "doubts"
+          },
+          "what": "the open hand halfway up"
+        },
+        {
+          "id": "palm",
+          "at": {
+            "line": "L1209",
+            "word": "hold"
+          },
+          "what": "the open hand settles in the lower third, palm up"
+        },
+        {
+          "id": "place",
+          "at": {
+            "line": "L1210",
+            "word": "waiting"
+          },
+          "what": "the hinge and blank tag are placed in the open palm; the narrator's hands withdraw"
+        },
+        {
+          "id": "still",
+          "at": {
+            "line": "L1210",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "the open hand holds it; slight drift toward the palm; no strike"
+        }
+      ],
+      "cast": [
+        "narrator-hands",
+        "viewer-hand"
+      ],
+      "props": [
+        "copper wire under the dock",
+        "copper hinge (flat, then up)",
+        "the blank tag"
+      ],
+      "onScreenText": [],
+      "music": {
+        "cue": "m12-loom",
+        "note": "the detent figure for the last time: tie (soft detent click), flip (paper snap), and the third stroke never comes; the bar hangs on one warm low line, intensity 0.2, decaying into room tone under the held palm. No cadence."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "OS18"
+      ]
+    },
+    {
+      "id": "ch12-s07",
+      "kind": "card",
+      "setting": "The copper wire under the dock as the last light; black; the end card and credits on parchment",
+      "era": "2020s",
+      "mood": "parchment",
+      "leadIn": 0.8,
+      "holdAfter": 0.8,
+      "minDuration": 21.6,
+      "lines": [],
+      "visual": "The frame darkens to black around the copper wire under the dock until it is the last light in frame, a thin warm line; a single relay clack, and it goes out. Fade up on a parchment end card: the as-of line, set plain, with the commit hash in monospace. Crossfade to a credits card in the house serif, then to one static sources card (the commit hash is on the end card; the sources card carries the address of the full list). No logos; no publisher's name; only the parody imprint 'O'RLY?' if any imprint appears at all. Fade to black.",
+      "beats": [
+        {
+          "id": "out",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "black closes around the copper wire under the dock; it is the last light; a single relay clack and it goes out"
+        },
+        {
+          "id": "card",
+          "at": {
+            "shotTime": 0.5
+          },
+          "what": "parchment end card fades up: as of 27 October 2026, main is still at 257856e"
+        },
+        {
+          "id": "credits",
+          "at": {
+            "shotTime": 6.0
+          },
+          "what": "crossfade to the credits card"
+        },
+        {
+          "id": "sources",
+          "at": {
+            "shotTime": 13.5
+          },
+          "what": "crossfade to the static sources card"
+        },
+        {
+          "id": "black",
+          "at": {
+            "shotTime": 21.4
+          },
+          "what": "fade to black"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "copper wire under the dock",
+        "parchment end card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "As of 27 October 2026, main is still at 257856e.",
+          "beat": "card",
+          "until": "credits"
+        },
+        {
+          "kind": "label",
+          "text": "Written & coded by Claude Opus 5.5 · Voice: ElevenLabs · Music: Strudel",
+          "beat": "credits",
+          "until": "sources"
+        },
+        {
+          "kind": "title",
+          "text": "SOURCES · orly.brett-lamy.workers.dev/generated/handwired-explained/sources",
+          "beat": "sources",
+          "until": "black"
+        }
+      ],
+      "music": {
+        "cue": "m12-loom",
+        "note": "silence after the single relay clack; the end and credit cards are silent. No final chord anywhere: the film ends unresolved, as its subject does."
+      },
+      "transitionIn": "fadeBlack",
+      "claims": [
+        "PJ17"
+      ]
+    }
+  ]
+}

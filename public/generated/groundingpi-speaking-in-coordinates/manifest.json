@@ -1,0 +1,135 @@
+{
+  "format": 3,
+  "slug": "groundingpi-speaking-in-coordinates",
+  "title": "Speaking in Coordinates",
+  "subtitle": "How GroundingPI turns images and phrases into structured visual primitives",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The thousand-step ruler",
+      "blurb": "Turn an image location into atomic coordinate tokens shared by points, boxes, and semantic labels.",
+      "scene": "books/groundingpi-speaking-in-coordinates/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        3.738,
+        9.009,
+        15.07,
+        19.064,
+        23.87,
+        29.269,
+        34.156,
+        40.6,
+        47.52
+      ],
+      "duration": 52.802
+    },
+    {
+      "number": 2,
+      "title": "An image becomes a sentence",
+      "blurb": "Watch visual patches merge into language embeddings, then follow the learned decoder as it emits structured geometry.",
+      "scene": "books/groundingpi-speaking-in-coordinates/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        4.551,
+        8.603,
+        12.202,
+        17.787,
+        23.673,
+        31.255,
+        36.711,
+        43.608,
+        50.968
+      ],
+      "duration": 56.657
+    },
+    {
+      "number": 3,
+      "title": "A box must survive the parser",
+      "blurb": "Inspect strict response validation, reject incomplete answers, and map accepted grid coordinates back onto the image.",
+      "scene": "books/groundingpi-speaking-in-coordinates/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.782,
+        11.366,
+        17.659,
+        23.116,
+        28.085,
+        33.135,
+        37.744,
+        41.668,
+        48.193
+      ],
+      "duration": 54.613
+    }
+  ],
+  "paper": {
+    "title": "GroundingPI: A Grounding Foundation Model towards Physical Intelligence with Visual Primitives",
+    "authors": [
+      "Qize Yu",
+      "Lianrui Fan",
+      "Boyu Chen",
+      "Jiaqi Liang",
+      "Xini Ding",
+      "Yue Chen",
+      "Zetian Song",
+      "Yuran Wang",
+      "Yi Zou",
+      "Kaixuan Wang",
+      "Tianxing Chen",
+      "Wenxuan Song",
+      "Bohan Zhou",
+      "Mingleyang Li",
+      "Siqiao Huang",
+      "Yuqi Ye",
+      "Caigao Jiang",
+      "Wei Wei",
+      "Ruihai Wu",
+      "Hang Zhang",
+      "Yixiao Ge",
+      "Shuchang Zhou",
+      "Shilong Liu",
+      "Xianming Liu",
+      "Ping Luo",
+      "Shiyu Huang"
+    ],
+    "arxivId": "2609.39601",
+    "version": "2609.39601v1",
+    "doi": "10.48550/arXiv.2609.39601",
+    "huggingFaceUrl": "https://huggingface.co/papers/2609.39601",
+    "canonicalUrl": "https://arxiv.org/abs/2609.39601",
+    "pdfUrl": "https://arxiv.org/pdf/2609.39601",
+    "officialRepository": "https://github.com/groundingpi/GroundingPI",
+    "repositoryCommit": "0047d4510e201fecfd77126f6036088638aa85d2",
+    "rankingDate": "2026-10-13",
+    "ranking": 1,
+    "observedUpvotes": 259,
+    "rankingEvidenceUrl": "https://huggingface.co/papers/date/2026-10-13",
+    "selectedAt": "2026-10-14T10:04:51.591467+00:00"
+  },
+  "authoring": {
+    "planning": "gpt-6-astra",
+    "animation": "claude-fable-5-1",
+    "actualAnimationModels": [
+      "claude-fable-5-1"
+    ],
+    "actualRevisionModels": [
+      "claude-fable-5-1"
+    ],
+    "actualPolishModels": [
+      "claude-fable-5-1"
+    ],
+    "actualRulerPolishModels": [
+      "claude-fable-5-1"
+    ],
+    "actualBlogPolishModels": [
+      "claude-fable-5-1"
+    ],
+    "pipeline": "scene-native",
+    "illustrativeGeometry": true
+  }
+}

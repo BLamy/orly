@@ -1,0 +1,64 @@
+{
+  "format": 3,
+  "slug": "tab-into-the-future",
+  "title": "Tab Into the Future",
+  "subtitle": "A browser that meets you halfway",
+  "animal": "animal.webp",
+  "accent": "#2dd4bf",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Anticipation without taking over",
+      "blurb": "Predictive Tab is accepted focus assistance, with uncertainty and keyboard compatibility designed into the interaction.",
+      "scene": "books/tab-into-the-future/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.779,
+        17.147,
+        24.392,
+        34.156,
+        43.397,
+        53.695,
+        62.124
+      ],
+      "duration": 69.101
+    },
+    {
+      "number": 2,
+      "title": "Learn from the person, not the echo",
+      "blurb": "Do not train on extension-created focus as if it independently confirmed the prediction.",
+      "scene": "books/tab-into-the-future/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.172,
+        18.668,
+        27.945,
+        37.001,
+        46.092,
+        57.203,
+        66.85
+      ],
+      "duration": 75.465
+    },
+    {
+      "number": 3,
+      "title": "The first useful version",
+      "blurb": "Start with a narrow local ranking task, prove helpful focus, and expand toward faster completed browser tasks.",
+      "scene": "books/tab-into-the-future/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.916,
+        17.879,
+        27.922,
+        37.698,
+        47.764,
+        58.294,
+        68.198
+      ],
+      "duration": 76.905
+    }
+  ]
+}

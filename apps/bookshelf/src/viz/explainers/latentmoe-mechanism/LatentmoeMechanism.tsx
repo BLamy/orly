@@ -45,8 +45,9 @@ const LE_COLS = 6;
 const LE_ROWS = 4;
 const LE_S = 34;
 
-const CAM_FUNNEL: CameraState = { x: 620, y: 320, k: 1.25 };
-const CAM_EXPERTS: CameraState = { x: X_EXPERTS + 110, y: 310, k: 1.7 };
+// framings keep the token (x = X_IN) and the output bar (x = X_OUT + 44) on stage
+const CAM_FUNNEL: CameraState = { x: 630, y: 320, k: 1.15 };
+const CAM_EXPERTS: CameraState = { x: 490, y: 310, k: 1.4 };
 
 interface Scene {
   tl: Timeline;
@@ -174,7 +175,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the scene dims, then clears completely under the closing card
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const N_LE = LE_COLS * LE_ROWS;
   const routed = new Set([1, 4, 6, 9, 10, 13, 15, 18, 20, 22]); // "many small" actives
   const tokH = D_H - (D_H - L_H) * squeezeU;
@@ -189,8 +191,14 @@ function Frame({ s }: { s: SceneState }) {
           {tokInU > 0 && (
             <g opacity={tokInU}>
               <rect x={X_IN} y={TOK_Y - D_H / 2} width={44} height={D_H} rx={8} fill={colors.ACCENT} opacity={0.35} stroke={colors.ACCENT} />
-              <text x={X_IN + 22} y={TOK_Y - D_H / 2 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
-                d = 4096
+              {/* faint cell lines: the vector is a run of numbers */}
+              {Array.from({ length: 7 }, (_, i) => (
+                <line key={i} x1={X_IN + 6} x2={X_IN + 38}
+                  y1={TOK_Y - D_H / 2 + ((i + 1) * D_H) / 8} y2={TOK_Y - D_H / 2 + ((i + 1) * D_H) / 8}
+                  stroke={colors.ACCENT} opacity={0.6} />
+              ))}
+              <text x={X_IN + 22} y={TOK_Y - D_H / 2 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+                d = 4096 numbers
               </text>
             </g>
           )}
@@ -212,7 +220,8 @@ function Frame({ s }: { s: SceneState }) {
           {squeezeU > 0 && (
             <g opacity={squeezeU}>
               <rect x={X_DOWN + 110} y={TOK_Y - tokH / 2} width={36} height={tokH} rx={7} fill={colors.ACCENT} opacity={0.5} stroke={colors.ACCENT} />
-              <text x={X_DOWN + 128} y={TOK_Y + L_H / 2 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              {/* below the full-height token, clear of the shrinking bar */}
+              <text x={X_DOWN + 128} y={TOK_Y + D_H / 2 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 ℓ = 1024 · α = 4
               </text>
             </g>
@@ -236,11 +245,11 @@ function Frame({ s }: { s: SceneState }) {
           })}
           {expU > 0.9 && (
             <g opacity={expU}>
-              <text x={X_EXPERTS + (LE_COLS * LE_S) / 2 - 3} y={TOK_Y - (LE_ROWS * LE_S) / 2 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={X_EXPERTS + (LE_COLS * LE_S) / 2 - 3} y={TOK_Y - (LE_ROWS * LE_S) / 2 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 128 → 512 latent experts
               </text>
               {routeU > 0.5 && (
-                <text x={X_EXPERTS + (LE_COLS * LE_S) / 2 - 3} y={TOK_Y + (LE_ROWS * LE_S) / 2 + 22} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={routeU}>
+                <text x={X_EXPERTS + (LE_COLS * LE_S) / 2 - 3} y={TOK_Y + (LE_ROWS * LE_S) / 2 + 22} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={routeU}>
                   top-6 → top-24 per token
                 </text>
               )}
@@ -265,7 +274,7 @@ function Frame({ s }: { s: SceneState }) {
           {sharedU > 0 && (
             <g opacity={sharedU}>
               <rect x={X_DOWN} y={TOK_Y + D_H / 2 + 46} width={X_UP + 90 - X_DOWN} height={44} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={(X_DOWN + X_UP + 90) / 2} y={TOK_Y + D_H / 2 + 74} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+              <text x={(X_DOWN + X_UP + 90) / 2} y={TOK_Y + D_H / 2 + 74} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                 shared experts — stay at full width d
               </text>
             </g>
@@ -295,7 +304,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Same compute, a quarter of the traffic
           </text>

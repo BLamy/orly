@@ -1,0 +1,108 @@
+{
+ "shot": "ch06-s02",
+ "at": "2026-10-28T17:39:35.731Z",
+ "step": 0.0833,
+ "sampled": 282,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch06-s02-rail"
+ ],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "drawImage@999,43",
+   "probed": false,
+   "from": 0.55,
+   "to": 24.05,
+   "seconds": 23.5,
+   "rect": {
+    "x": 978,
+    "y": 17,
+    "w": 913,
+    "h": 408
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [
+  {
+   "a": "ch06-s02-toggle",
+   "b": "toggle · track 52 × 32 px",
+   "from": 6.88,
+   "to": 24.05,
+   "seconds": 17.17,
+   "minAlpha": 0.64,
+   "rect": {
+    "x": 950,
+    "y": 834,
+    "w": 320,
+    "h": 24
+   }
+  },
+  {
+   "a": "ch06-s02-rail-0",
+   "b": "write inputs",
+   "from": 9.97,
+   "to": 24.05,
+   "seconds": 14.08,
+   "minAlpha": 0.3,
+   "rect": {
+    "x": 364,
+    "y": 956,
+    "w": 186,
+    "h": 24
+   }
+  },
+  {
+   "a": "ch06-s02-rail-2",
+   "b": "copy next state back",
+   "from": 15.22,
+   "to": 24.05,
+   "seconds": 8.83,
+   "minAlpha": 0.3,
+   "rect": {
+    "x": 933,
+    "y": 953,
+    "w": 297,
+    "h": 27
+   }
+  },
+  {
+   "a": "ch06-s02-rail-3",
+   "b": "write the page",
+   "from": 17.13,
+   "to": 24.05,
+   "seconds": 6.92,
+   "minAlpha": 0.3,
+   "rect": {
+    "x": 1319,
+    "y": 953,
+    "w": 213,
+    "h": 27
+   }
+  }
+ ],
+ "cards": [
+  {
+   "id": "drawImage@999,43",
+   "probed": false,
+   "from": 0.55,
+   "to": 23.967,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s02-rail",
+   "probed": true,
+   "from": 9.633,
+   "to": 23.967,
+   "minInkWhilePaper": 0.26
+  }
+ ]
+}

@@ -1,0 +1,108 @@
+{
+  "format": 3,
+  "slug": "cross-tokenizer-sixteen-shared-words",
+  "title": "Sixteen Shared Words",
+  "subtitle": "Reliable supervision across different tokenizers",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Response, Two Rulers",
+      "blurb": "Strict byte-span matching preserves reliable positions.",
+      "scene": "books/cross-tokenizer-sixteen-shared-words/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.697,
+        14.037,
+        21.339,
+        28.201,
+        35.248,
+        41.599,
+        50.167,
+        56.158,
+        64.168
+      ],
+      "duration": 71.146
+    },
+    {
+      "number": 2,
+      "title": "The Student Chooses Sixteen",
+      "blurb": "Sixteen student-selected entries define one shared comparison.",
+      "scene": "books/cross-tokenizer-sixteen-shared-words/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.152,
+        15.697,
+        22.465,
+        28.433,
+        35.527,
+        42.888,
+        50.736,
+        60.942,
+        68.047
+      ],
+      "duration": 77.323
+    },
+    {
+      "number": 3,
+      "title": "More Coverage, Less Learning",
+      "blurb": "More structural coverage can lower measured learning.",
+      "scene": "books/cross-tokenizer-sixteen-shared-words/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.664,
+        14.606,
+        21.363,
+        29.444,
+        36.398,
+        42.517,
+        50.585,
+        59.432,
+        68.058
+      ],
+      "duration": 77.648
+    }
+  ],
+  "paper": {
+    "title": "Rethinking Cross-Tokenizer On-Policy Distillation: From Alignment Coverage to Supervision Reliability",
+    "authors": [
+      "Bingxi Hou",
+      "Guochao Jiang",
+      "Guofeng Quan",
+      "Weiqing Li",
+      "Wenfeng Feng",
+      "Guohua Liu",
+      "Yuewei Zhang"
+    ],
+    "arxivId": "2610.08448",
+    "version": "2610.08448v1",
+    "doi": "10.48550/arXiv.2610.08448",
+    "huggingFaceUrl": "https://huggingface.co/papers/2610.08448",
+    "url": "https://arxiv.org/abs/2610.08448",
+    "pdfUrl": "https://arxiv.org/pdf/2610.08448",
+    "repositoryUrl": "https://anonymous.4open.science/r/Cross-Tokenizer-OPD",
+    "dailyPapersDate": "2026-10-07",
+    "popularity": {
+      "visible_rank": 1,
+      "upvotes": 160,
+      "next_paper_upvotes": 87,
+      "observed_at": "2026-10-08T10:02Z"
+    }
+  },
+  "authoring": {
+    "planner": {
+      "requested": "gpt-6-astra",
+      "actual": "gpt-6-astra",
+      "provenance": "Codex explicit model dispatch"
+    },
+    "animation": {
+      "requested": "claude-fable-5-1",
+      "actual": "claude-fable-5-1",
+      "provider": "firstParty"
+    }
+  }
+}

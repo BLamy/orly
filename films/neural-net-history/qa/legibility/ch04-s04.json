@@ -1,0 +1,23 @@
+{
+ "shot": "ch04-s04",
+ "at": "2026-10-13T04:13:17.926Z",
+ "minCapPx": 22,
+ "sampled": 12,
+ "texts": 2,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Walter Pitts · 1923–1969",
+   "capWhileSubject": 25.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Warren McCulloch · 1898–1969",
+   "capWhileSubject": 25.9,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

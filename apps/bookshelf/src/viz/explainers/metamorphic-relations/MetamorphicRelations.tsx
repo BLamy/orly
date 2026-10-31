@@ -102,10 +102,14 @@ const RELATIONS = [
 // Layout.
 // ---------------------------------------------------------------------------
 
-const REL_Y0 = 200;
-const REL_DY = 130;
+const REL_Y0 = 190;
+const REL_DY = 106;
 const BAR_MAX = 460;
-const CAM_REL: CameraState = { x: 520, y: 380, k: 1.12 };
+const CAUSE_X = 800;
+// Pair box sits under the third row, clear of a three-line caption (y > ~600).
+const PAIR_Y = REL_Y0 + 2 * REL_DY + 80;
+// Frames the rows (x 170–1020, y 190–608) above the caption band.
+const CAM_REL: CameraState = { x: 595, y: 400, k: 1.2 };
 
 interface Scene {
   tl: Timeline;
@@ -230,6 +234,10 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const mainOp = 1 - 0.85 * dimU;
+  // The relation rows take over from the diagram, and step back for the
+  // real-systems panel so its card sits on clear background.
+  const relDim = (1 - 0.85 * clamp01(aiU)) * (1 - clamp01(closeU * 2));
+  const aiOp = aiU * (1 - clamp01(closeU * 2));
 
   return (
     <>
@@ -239,7 +247,7 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* the idea diagram */}
           {ideaU > 0 && (
-            <g opacity={ideaU * (1 - 0.85 * clamp01(relU * 3))}>
+            <g opacity={ideaU * (1 - clamp01(relU * 2))}>
               <rect x={280} y={200} width={180} height={56} rx={10} fill={colors.PANEL} opacity={0.95} stroke={colors.ACCENT} />
               <text x={370} y={234} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontFamily="monospace">
                 input x
@@ -248,7 +256,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={370} y={364} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontFamily="monospace">
                 T(x)
               </text>
-              <text x={244} y={302} fill={colors.MUTED} fontSize={12}>
+              <text x={244} y={302} fill={colors.MUTED} fontSize={13}>
                 transform
               </text>
               <rect x={620} y={200} width={200} height={56} rx={10} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
@@ -266,7 +274,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={995} y={289} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
                 must agree
               </text>
-              <text x={995} y={310} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={995} y={310} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 no oracle required
               </text>
               <line x1={820} y1={228} x2={905} y2={272} stroke={colors.GRID} strokeWidth={1.5} />
@@ -274,79 +282,81 @@ function Frame({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* relation rows + bars */}
-          {relU > 0 &&
-            RELATIONS.map((r, i) => {
-              const u = clamp01(relU * RELATIONS.length - i);
-              if (u <= 0) return null;
-              const y = REL_Y0 + i * REL_DY;
-              const pct = (r.flips / r.of) * 100;
-              const w = (pct / 12) * BAR_MAX * clamp01(barU * 1.2);
-              return (
-                <g key={r.name} opacity={u}>
-                  <text x={170} y={y} fill={colors.TEXT} fontSize={16} fontWeight={600}>
-                    {r.name}
-                  </text>
-                  <text x={170} y={y + 22} fill={colors.MUTED} fontSize={12}>
-                    {r.desc}
-                  </text>
-                  <rect x={170} y={y + 36} width={BAR_MAX} height={22} rx={5} fill={colors.PANEL} opacity={0.8} />
-                  <rect x={170} y={y + 36} width={Math.min(w, BAR_MAX)} height={22} rx={5} fill={colors.NEGATIVE} opacity={0.8} />
-                  {barU > 0.4 && (
-                    <text x={180 + Math.min(w, BAR_MAX)} y={y + 52} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace" fontWeight={700} opacity={clamp01(barU * 2 - 1)}>
-                      {r.flips}/{r.of} flip · {pct.toFixed(1)}%
+          <g opacity={relDim}>
+            {/* relation rows + bars */}
+            {relU > 0 &&
+              RELATIONS.map((r, i) => {
+                const u = clamp01(relU * RELATIONS.length - i);
+                if (u <= 0) return null;
+                const y = REL_Y0 + i * REL_DY;
+                const pct = (r.flips / r.of) * 100;
+                const w = (pct / 12) * BAR_MAX * clamp01(barU * 1.2);
+                return (
+                  <g key={r.name} opacity={u}>
+                    <text x={170} y={y} fill={colors.TEXT} fontSize={16} fontWeight={600}>
+                      {r.name}
                     </text>
-                  )}
-                  {causeU > 0 && (
-                    <text x={170 + BAR_MAX + 210} y={y + 52} fill={colors.WARM} fontSize={11.5} fontFamily="monospace" opacity={causeU}>
-                      ← {r.cause}
+                    <text x={170} y={y + 22} fill={colors.MUTED} fontSize={14}>
+                      {r.desc}
                     </text>
-                  )}
-                </g>
-              );
-            })}
+                    <rect x={170} y={y + 36} width={BAR_MAX} height={22} rx={5} fill={colors.PANEL} opacity={0.8} />
+                    <rect x={170} y={y + 36} width={Math.min(w, BAR_MAX)} height={22} rx={5} fill={colors.NEGATIVE} opacity={0.8} />
+                    {barU > 0.4 && (
+                      <text x={180 + Math.min(w, BAR_MAX)} y={y + 52} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace" fontWeight={700} opacity={clamp01(barU * 2 - 1)}>
+                        {r.flips}/{r.of} flip · {pct.toFixed(1)}%
+                      </text>
+                    )}
+                    {causeU > 0 && (
+                      <text x={CAUSE_X} y={y + 52} fill={colors.WARM} fontSize={13} fontFamily="monospace" opacity={causeU}>
+                        ← {r.cause}
+                      </text>
+                    )}
+                  </g>
+                );
+              })}
 
-          {/* the flipped pair */}
-          {exU > 0 && (
-            <g opacity={exU}>
-              <rect x={170} y={REL_Y0 + 3 * REL_DY - 20} width={780} height={110} rx={10} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} />
-              <text x={194} y={REL_Y0 + 3 * REL_DY + 8} fill={colors.TEXT} fontSize={13} fontWeight={600}>
-                one violated permutation pair, verbatim
-              </text>
-              <text x={194} y={REL_Y0 + 3 * REL_DY + 34} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
-                “{EX.ws.join(' ')}” → {EX.l0 === 'pos' ? 'positive' : 'negative'}
-              </text>
-              <text x={194} y={REL_Y0 + 3 * REL_DY + 58} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
-                “{EX.perm.join(' ')}” → {EX.l1 === 'pos' ? 'positive' : 'negative'}
-              </text>
-              <text x={194} y={REL_Y0 + 3 * REL_DY + 82} fill={colors.NEGATIVE} fontSize={11.5}>
-                same words · different order · different verdict — one of these is wrong, guaranteed
-              </text>
-            </g>
-          )}
+            {/* the flipped pair */}
+            {exU > 0 && (
+              <g opacity={exU}>
+                <rect x={170} y={PAIR_Y} width={780} height={116} rx={10} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} />
+                <text x={194} y={PAIR_Y + 26} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+                  one violated permutation pair, verbatim
+                </text>
+                <text x={194} y={PAIR_Y + 52} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                  “{EX.ws.join(' ')}” → {EX.l0 === 'pos' ? 'positive' : 'negative'}
+                </text>
+                <text x={194} y={PAIR_Y + 76} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                  “{EX.perm.join(' ')}” → {EX.l1 === 'pos' ? 'positive' : 'negative'}
+                </text>
+                <text x={194} y={PAIR_Y + 100} fill={colors.NEGATIVE} fontSize={12.5}>
+                  same words · different order · different verdict — one of these is wrong, guaranteed
+                </text>
+              </g>
+            )}
+          </g>
         </Camera>
       </g>
 
-      {/* real-systems panel — screen space */}
-      {aiU > 0 && (
-        <g opacity={aiU * mainOp}>
-          <rect x={840} y={110} width={400} height={190} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.SECONDARY} />
-          <text x={866} y={142} fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
+      {/* real-systems panel — screen space, centred on clear background */}
+      {aiOp > 0 && (
+        <g opacity={aiOp * mainOp}>
+          <rect x={340} y={150} width={600} height={270} rx={12} fill={colors.PANEL} opacity={0.97} stroke={colors.SECONDARY} />
+          <text x={372} y={188} fill={colors.SECONDARY} fontSize={16} fontWeight={700}>
             the same relations, at scale
           </text>
-          <text x={866} y={174} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+          <text x={372} y={228} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             classifier + paraphrase → same label
           </text>
-          <text x={866} y={200} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+          <text x={372} y={262} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             retrieval + doc order → same results
           </text>
-          <text x={866} y={226} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+          <text x={372} y={296} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             judge + formatting → same score
           </text>
-          <text x={866} y={258} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+          <text x={372} y={330} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             translation round-trip → same meaning
           </text>
-          <text x={866} y={286} fill={colors.POSITIVE} fontSize={12}>
+          <text x={372} y={376} fill={colors.POSITIVE} fontSize={14}>
             every violation: a bug found without a label
           </text>
         </g>
@@ -355,6 +365,9 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={titleU * mainOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Metamorphic relations
+        </text>
+        <text x={40} y={80} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+          toy model: score = Σ wᵢ (first word ×2) ÷ √n — label = sign(score)
         </text>
       </g>
 

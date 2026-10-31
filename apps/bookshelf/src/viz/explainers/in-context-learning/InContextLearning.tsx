@@ -13,6 +13,7 @@ import {
   errX,
   errY,
   fitAt,
+  planeSpan,
   promptX,
   xScale,
   yScale,
@@ -47,7 +48,11 @@ function Frame({ s }: { s: SceneState }) {
 
   const kShown = Math.max(1, Math.min(MAX_K, Math.round(kProg)));
   const fit = fitAt(kProg);
-  const lineY = (x: number) => fit.a * x + x * 0 + fit.b;
+  const lineY = (x: number) => fit.a * x + fit.b;
+  // the fitted line draws across the part of the plane it crosses (no spill into the caption)
+  const [fitX0, fitX1] = planeSpan(fit.a, fit.b);
+  const fitXEnd = fitX0 + (fitX1 - fitX0) * lineU;
+  const [truthX0, truthX1] = planeSpan(A_TRUE, B_TRUE);
 
   return (
     <>
@@ -94,10 +99,10 @@ function Frame({ s }: { s: SceneState }) {
           {/* the hidden true line, revealed at the end */}
           {truthU > 0 && (
             <line
-              x1={xScale(-3)}
-              y1={yScale(A_TRUE * -3 + B_TRUE)}
-              x2={xScale(3)}
-              y2={yScale(A_TRUE * 3 + B_TRUE)}
+              x1={xScale(truthX0)}
+              y1={yScale(A_TRUE * truthX0 + B_TRUE)}
+              x2={xScale(truthX1)}
+              y2={yScale(A_TRUE * truthX1 + B_TRUE)}
               stroke={colors.POSITIVE}
               strokeWidth={2}
               strokeDasharray="9 7"
@@ -108,20 +113,22 @@ function Frame({ s }: { s: SceneState }) {
           {/* the model's fitted line */}
           {lineU > 0 && (
             <line
-              x1={xScale(-3)}
-              y1={yScale(lineY(-3))}
-              x2={xScale(-3) + (xScale(3) - xScale(-3)) * lineU}
-              y2={yScale(lineY(-3 + 6 * lineU))}
+              x1={xScale(fitX0)}
+              y1={yScale(lineY(fitX0))}
+              x2={xScale(fitXEnd)}
+              y2={yScale(lineY(fitXEnd))}
               stroke={colors.WARM}
               strokeWidth={3}
               opacity={0.95}
             />
           )}
 
-          {/* the example points currently in context */}
-          {EXAMPLES.slice(0, kShown).map((e, i) => (
-            <circle key={i} cx={xScale(e.x)} cy={yScale(e.y)} r={6 * clamp01(kProg - i)} fill={colors.ACCENT} stroke={colors.BG} strokeWidth={1.5} />
-          ))}
+          {/* the example points currently in context (they belong to the plane, so they wait for it) */}
+          <g opacity={planeU}>
+            {EXAMPLES.slice(0, kShown).map((e, i) => (
+              <circle key={i} cx={xScale(e.x)} cy={yScale(e.y)} r={6 * clamp01(kProg - i)} fill={colors.ACCENT} stroke={colors.BG} strokeWidth={1.5} />
+            ))}
+          </g>
 
           {/* the query: true target (ring) and model prediction (dot) */}
           {queryU > 0 && (
@@ -139,10 +146,10 @@ function Frame({ s }: { s: SceneState }) {
         <g opacity={errU * dimU}>
           <line x1={errX(1)} y1={errY(0)} x2={errX(MAX_K)} y2={errY(0)} stroke={colors.GRID} strokeWidth={1.3} />
           <line x1={errX(1)} y1={errY(0)} x2={errX(1)} y2={errY(FITS[0].err)} stroke={colors.GRID} strokeWidth={1.3} />
-          <text x={errX(MAX_K / 2)} y={errY(0) + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={errX(MAX_K / 2)} y={errY(0) + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             examples in prompt
           </text>
-          <text x={errX(1) - 8} y={errY(FITS[0].err) - 10} fill={colors.MUTED} fontSize={13}>
+          <text x={errX(1) - 8} y={errY(FITS[0].err) - 10} fill={colors.MUTED} fontSize={14}>
             query error
           </text>
           {FITS.map((f, i) =>
@@ -152,17 +159,17 @@ function Frame({ s }: { s: SceneState }) {
       )}
 
       {/* screen-fixed math + frozen badge */}
-      <MathLabel tex={'\\text{fit } y = a\\,x + b \\text{ from the prompt — no weight updates}'} x={1000} y={120} fontSize={17} opacity={s.get(scene.texU) * dimU} />
+      <MathLabel tex={'\\text{fit } y = a\\,x + b \\text{ from the prompt — no weight updates}'} x={120} y={104} anchor="start" fontSize={16} opacity={s.get(scene.texU) * dimU} />
       {frozenU > 0 && (
         <g opacity={frozenU * dimU}>
-          <rect x={1020} y={30} width={196} height={40} rx={9} fill={colors.PANEL} opacity={0.9} stroke={colors.POSITIVE} />
-          <text x={1118} y={56} textAnchor="middle" fill={colors.POSITIVE} fontSize={15}>
+          <rect x={1020} y={10} width={196} height={36} rx={9} fill={colors.PANEL} opacity={0.9} stroke={colors.POSITIVE} />
+          <text x={1118} y={33} textAnchor="middle" fill={colors.POSITIVE} fontSize={15}>
             weights frozen ❄
           </text>
         </g>
       )}
       {errU > 0 && (
-        <text x={errX(MAX_K)} y={errY(0) - 8} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} opacity={errU * dimU}>
+        <text x={errX(MAX_K)} y={errY(FITS[0].err) - 10} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} opacity={errU * dimU}>
           {`error ${fit.err.toFixed(2)} · ${kShown} shown`}
         </text>
       )}
@@ -170,7 +177,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={250} y={220} width={780} height={210} rx={16} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+          <rect x={250} y={220} width={780} height={210} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             In-Context Learning
           </text>

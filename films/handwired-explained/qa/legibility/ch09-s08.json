@@ -1,0 +1,28 @@
+{
+ "shot": "ch09-s08",
+ "at": "2026-10-28T15:48:07.728Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Cheng Lou · commit 0237d40",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "14 OCTOBER 2026 · EVENING",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Cheng Lou · launch post",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

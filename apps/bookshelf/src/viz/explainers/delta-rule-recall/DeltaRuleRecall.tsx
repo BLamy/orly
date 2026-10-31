@@ -84,8 +84,8 @@ function run(delta: boolean): RunOut {
   return { errs, states };
 }
 
-// With this seed: Hebbian mean error plateaus around 0.9 (interference between
-// non-orthogonal keys never resolves); the delta rule drives it below 0.05.
+// With this seed: the Hebbian mean error dips, then climbs to about 4.5 (the
+// overlapping keys keep adding onto each other); the delta rule falls to about 0.1.
 const HEBB = run(false);
 const DELTA = run(true);
 
@@ -112,7 +112,7 @@ const CELL = 22;
 const HEAT_SCALE = 1.6;
 
 const PLOT_X = scaleLinear().domain([0, STEPS]).range([840, 1220]);
-const PLOT_Y = scaleLinear().domain([0, 1.5]).range([560, 200]);
+const PLOT_Y = scaleLinear().domain([0, 5]).range([560, 200]);
 
 const BAR_X0 = 120;
 const BAR_W = 20;
@@ -289,7 +289,7 @@ function StateGrid({
           />
         )),
       )}
-      <text x={x} y={y + D * CELL + 20} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+      <text x={x} y={y + D * CELL + 20} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
         step {i} / {STEPS}
       </text>
     </g>
@@ -312,7 +312,7 @@ function Bars({
   if (u <= 0) return null;
   return (
     <g opacity={u}>
-      <text x={x} y={BAR_Y - 66} fill={colors.MUTED} fontSize={12}>
+      <text x={x} y={BAR_Y - 66} fill={colors.MUTED} fontSize={14}>
         {label}
       </text>
       {vhat.map((v, j) => {
@@ -331,6 +331,54 @@ function Bars({
         );
       })}
       <line x1={x - 4} y1={BAR_Y} x2={x + D * (BAR_W + 4)} y2={BAR_Y} stroke={colors.GRID} />
+    </g>
+  );
+}
+
+// The opening task as data: six key -> value pairs, each row a strip of the
+// unit vector's ten components. Rows stagger in on taskU, then the grids replace it.
+function TaskPairs({ u }: { u: number }) {
+  if (u <= 0) return null;
+  const SQ = 12;
+  const STEP = 14;
+  const KEY_X = 860;
+  const VAL_X = 1040;
+  const strip = (vec: number[], x: number, y: number) =>
+    vec.map((v, j) => (
+      <rect
+        key={j}
+        x={x + j * STEP}
+        y={y - SQ / 2}
+        width={SQ}
+        height={SQ}
+        rx={2}
+        fill={colors.heat(clamp01(0.5 + v * 1.5))}
+      />
+    ));
+  return (
+    <g>
+      <text x={KEY_X} y={236} fill={colors.MUTED} fontSize={14}>
+        key
+      </text>
+      <text x={VAL_X} y={236} fill={colors.MUTED} fontSize={14}>
+        value
+      </text>
+      {KEYS.map((k, p) => {
+        const row = clamp01(u * (N + 1) - p);
+        const y = 258 + p * 30;
+        return (
+          <g key={p} opacity={row}>
+            <text x={780} y={y + 5} fill={colors.TEXT} fontSize={14}>
+              pair {p + 1}
+            </text>
+            {strip(k, KEY_X, y)}
+            <text x={1012} y={y + 6} fill={colors.MUTED} fontSize={18} textAnchor="middle">
+              →
+            </text>
+            {strip(VALS[p], VAL_X, y)}
+          </g>
+        );
+      })}
     </g>
   );
 }
@@ -380,15 +428,18 @@ function Frame({ s }: { s: SceneState }) {
               <text x={840} y={168} fill={colors.TEXT} fontSize={16}>
                 mean recall error over all six pairs
               </text>
-              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={3} xLabel="presentations" fontSize={11} />
+              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={3} fontSize={14} />
+              <text x={PLOT_X(STEPS)} y={PLOT_Y(0) + 44} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+                presentations
+              </text>
               <FunctionPlot x={PLOT_X} y={PLOT_Y} f={fHebb} domain={[0, curMax]} samples={200} color={colors.WARM} width={2.6} />
               <FunctionPlot x={PLOT_X} y={PLOT_Y} f={fDelta} domain={[0, curMax]} samples={200} color={colors.POSITIVE} width={2.6} />
               {curveStep >= STEPS - 0.5 && (
                 <>
-                  <text x={PLOT_X(STEPS) + 4} y={PLOT_Y(HEBB.errs[STEPS])} fill={colors.WARM} fontSize={12}>
+                  <text x={PLOT_X(STEPS) + 4} y={PLOT_Y(HEBB.errs[STEPS])} fill={colors.WARM} fontSize={14}>
                     {HEBB.errs[STEPS].toFixed(2)}
                   </text>
-                  <text x={PLOT_X(STEPS) + 4} y={PLOT_Y(DELTA.errs[STEPS])} fill={colors.POSITIVE} fontSize={12}>
+                  <text x={PLOT_X(STEPS) + 4} y={PLOT_Y(DELTA.errs[STEPS])} fill={colors.POSITIVE} fontSize={14}>
                     {DELTA.errs[STEPS].toFixed(2)}
                   </text>
                 </>
@@ -407,28 +458,29 @@ function Frame({ s }: { s: SceneState }) {
           write only the error
         </text>
       </g>
+      <TaskPairs u={taskU * clamp01(1 - 2 * gridsU)} />
       <MathLabel
         tex="S_t = S_{t-1} + \beta_t\, k_t\,(v_t - S_{t-1}^{\top} k_t)^{\top}"
-        x={790}
+        x={40}
         anchor="start"
-        y={70}
-        fontSize={22}
+        y={112}
+        fontSize={20}
         color={colors.POSITIVE}
         opacity={eqU * mainOp}
       />
       <MathLabel
         tex="= S_{t-1} - \beta_t \nabla_S\, \tfrac{1}{2}\| S^{\top} k_t - v_t \|^2"
-        x={810}
+        x={40}
         anchor="start"
-        y={110}
-        fontSize={20}
+        y={142}
+        fontSize={18}
         color={colors.TEAL}
         opacity={gradU * mainOp}
       />
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             One coefficient, two decisions.
           </text>

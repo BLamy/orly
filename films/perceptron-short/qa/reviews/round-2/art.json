@@ -1,0 +1,51 @@
+{
+  "reviewer": "art",
+  "lens": "visuals & motion",
+  "round": 2,
+  "scores": {"accuracy": 7.5, "depth": 6.5, "clarity": 8, "story": 7.5, "visual": 7.5, "sync": 8, "sound": 7, "curiosity": 7},
+  "roundOneFollowUp": {
+    "fixed": [
+      "ch01-s03 payoff framing: at 47.2 s the retina (vertical bar), the dials, the needle on VERTICAL and the flaring lantern are all in frame",
+      "ch01-s03 count: the screen now shows wrong, wrong, wrong, RIGHT (tries 1-4), matching L0107",
+      "ch01-s03 captions: about 30 px, cream on a dark band; flies lantern moved off the RETINA header",
+      "ch01-s03 retina clears between tries (blank at 48.4 s), so no '+' forms between tries 1-4",
+      "ch01-s02 dial sweep lands on 'dials' (15.4 s); PERCEPTRON plate catches the light on 'Perceptron' (19.9 s); name card now sits beside the figure",
+      "ch01-s01 true black open, title in small caps, place stamp typed and held to about 5.4 s",
+      "global fade to black (59.2 s dim, 59.8 s black); chapter track muxed"
+    ],
+    "partlyFixed": [
+      "ch01-s02 Rosenblatt: upright now and out of the lab coat, but he still enters from the right frame edge, faces away from the machine during his own name, and has no costume detail",
+      "global set craft: rack-top cable garlands, vent louvres, haze and a stool and chair have been added, but every shape still has the same thin outline and the foreground pieces share the midground value"
+    ]
+  },
+  "issues": [
+    {"owner": "shot", "id": "ch01-s03", "severity": "major",
+     "problem": "New retina glitch in the tail, under the closing line L0108 ('It could learn only simple patterns'). From about 50.0 to 51.3 s the try-5 horizontal bar shrinks from the right while a vertical column grows at about col 16, so the grid shows an L/T hybrid and then a short dash plus a vertical bar. Meanwhile the caption still reads 'try 5 · said horizontal · right' and the needle sits on HORIZONTAL. It looks like a sixth presentation (or the ghost of an earlier shape) starting during the curtain and push-out. It reintroduces the round-1 overlap problem and contradicts the caption at the moment the film states its limit.",
+     "fix": "Freeze the retina on the clean try-5 horizontal bar (as at 49.6 s) from the HORIZONTAL verdict until the iris has closed on the lantern (about 52.4 s). Start no new presentation and morph no shape after try 5. If a ghost of try 1 is wanted, draw it as a separate dim, offset outline on the same rows, never by animating lit cells."},
+    {"owner": "shot", "id": "ch01-s02", "severity": "major",
+     "problem": "The Rosenblatt acting still misses the name beat. He is absent at 18.0 s and mid-stride at 19.0 s, so he still comes in from the right frame edge. His one presenting gesture lands at 21.0 to 22.0 s on 'built', with the arm thrown back toward the racks while his face points right, toward the window. On 'Frank Rosenblatt's' (22.85 to 24.2 s) and through the name card he faces away from the machine. His arms hang stiff with splayed fingers, the rear arm is hyperextended, and the legs read as one fused column. He has no tie, cuffs or pencil, and a thin full-body outline is still visible. Next to the reference figures (period silhouettes with costume detail, poised and turned toward each other or an object) the puppet reads as a generic mannequin.",
+     "fix": "Block him already standing between the PERCEPTRON rack and the window before 18.9 s ('Mark'), or have him step out from behind the end rack. Keep him facing left toward the machine. On 'Frank' (22.85 s) have him lift and turn his near arm toward the plate, holding the gesture through 'project' (24.2 s) while the name card resolves beside him. Give the puppet two separated legs with a slight contrapposto, bent elbows, closed or relaxed hands, and a tie and shirt-cuff silhouette. Replace the full outline with a rim on the window side only."},
+    {"owner": "global", "severity": "minor",
+     "problem": "The lab set (sets/lab.ts, used by s01, s02 and the s03 bookend) is better than in round 1, with cable garlands, louvres, haze and a stool and chair. But it is still below the reference. Every rack, window and stand carries the same thin light outline. The dial racks are identical repeated grids. The foreground stool and chair (21.0 s) are the same value as the racks, so the planes do not separate. The reference gets its depth from near-black foreground furniture, ornamented mid-plane cut-outs and a hazed back wall.",
+     "fix": "Drop the outline on non-window-facing edges. Push the foreground plane (stool, chair, desk) to near-black with a slight blur and faster parallax. Vary the rack faces (one meter panel, one patch-panel end, different louvre counts). Add one or two hand-cut details per prop, such as a cable bundle draped over a rack corner, caster wheels or a clipboard hung on the eye stand."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "Some verdict captions arrive after their words. At 43.6 s the 'try 3 · said vertical · wrong' caption is barely visible while 'wrong again' is spoken (43.54 s), and it reaches full strength only around 44.2 s. At 47.0 s the 'try 4 · said vertical · right' caption is faint just before 'right' (47.06 s) and reaches full strength around 47.6 s. Try 1 (35.6 s) and try 2 (42.6 s) land on time.",
+     "fix": "Anchor each caption's fade-in to finish 0.1 s before its verdict word (wrong 43.54, right 47.06) with a 0.2 s ramp. Clear the previous caption at least 0.3 s earlier, so the outgoing try-2 caption (still fading at 43.0 s) never overlaps."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "The before/after comparison barely reads. The ghost line 'try 1 · said vertical · wrong' under the try-5 caption (49.6 s) is small (about 22 px), grey on amber, and close to illegible at 1080p. The retina gives no visual echo of try 1, so 'same shape, now right' rests on a line of faint text.",
+     "fix": "Set the ghost line at about 24-26 px in cream at 55-60% opacity, with a strike-through or a small 'then →' / 'now →' label pair. Also flash a faint ghost needle at VERTICAL for about 0.6 s as the real needle settles on HORIZONTAL, so the comparison works without reading."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "The bookend (53.4 to 59.2 s) is a well-composed frame: Rosenblatt facing the eye, the stimulus card and the eye both showing the bar, and the title back. But it is nearly static for about 5 s under 'Its descendants, today's neural networks, still learn from mistakes', so no visual beat lands on 'descendants' (52.77 s), 'neural networks' (54.57 s) or 'mistakes' (56.99 s). The title simply sits there.",
+     "fix": "Add a slow dolly back (about 3%) across the hold. On 'mistakes' (56.99 s), have the eye's lit bar flicker off and on, or Rosenblatt make a small nod or head turn, then let the title brighten and begin the fade from about 58.2 s."},
+    {"owner": "shot", "id": "ch01-s01", "severity": "minor",
+     "problem": "The s01-to-s02 crossfade (5.8 to 6.3 s) dissolves between two near-identical framings of the eye on its stand, with the same windows and a slightly tighter scale. It reads as a soft jump-cut rather than a change of view. The eye is also already lit with its bar from about 3.5 s, which spends the 'Its eye' reveal (6.92 s) early.",
+     "fix": "Either play s01 to s02 as one continuous push (match the s02 start camera to s01's end camera so the crossfade is invisible), or open s02 on a clearly different angle. Keep the eye's cells dark in s01 apart from a single glint on 'see' (2.79 s), and light the bar on 'eye' (6.92 s) in s02."}
+  ],
+  "best_moments": [
+    "ch01-s03 at 47.06-47.6 s: on 'right' the needle swings to VERTICAL and the lantern flares, with the retina's vertical bar, the dial threads and the meter all in one frame. The round-1 framing fix lands cleanly.",
+    "ch01-s03 at 35.5-38.4 s: on 'wrong' the lantern gutters cold blue-grey; on 'nudge' (36.93 s) arc arrows turn only the dials fed by lit cells, and they swell on 'dials' (37.53 s). The rule is enacted on the word.",
+    "ch01-s03 at 51.0-53.4 s: the theatre curtain sweeps in from the right, the iris closes to the lantern alone, and the lantern's glow match-dissolves into the eye's lit photocell grid back in the lab. This is the film's best transition.",
+    "ch01-s03 bookend at about 56.5 s: Rosenblatt faces the eye, the stimulus card and the eye both carry the bar, blind-striped light falls on the floor, the desk sits as a dark foreground plane, and the title returns. A balanced, three-plane composition that echoes the opening.",
+    "ch01-s02 at 15.4 and 19.9 s: a light sweep crosses the racks on 'dials', and the engraved PERCEPTRON plate catches the light on 'Perceptron'."
+  ]
+}

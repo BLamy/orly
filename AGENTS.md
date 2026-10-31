@@ -12,8 +12,10 @@ Use **GPT-6.1 Sol (`gpt-6.1-sol`) for planning and Blender 3D modeling** and
 [the authoring model workflow](docs/authoring-models.md) for handoffs, provider
 provenance and hybrid scene verification. Always launch Claude with
 `npx --yes @anthropic-ai/claude-code@latest`, never the installed global CLI.
-Keep the exact requested model; save progress on a provider limit rather than
-silently substituting. Sol may continue independent 3D/integration work.
+Book planning and 3D modeling use Sol; D3/SVG and Strudel authoring use Opus 5.5.
+If a provider reaches a limit, preserve progress and report the blocker without
+substitution. The user's persistent model override forbids Astra and Fable launches.
+The separate film pipeline retains its all-Opus routing and strict launcher.
 
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
@@ -21,6 +23,11 @@ silently substituting. Sol may continue independent 3D/integration work.
 then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (Codex
 built-in ImageGen when available; API fallback otherwise), adds Noun Project
 icons, and you commit + push to redeploy.
+
+**Book quality doctrine:** every book is proactive (researches past the digest, verifies before
+narrating, self-grades on the eight-dimension rubric, runs its own checks), cites its sources in
+`public/generated/<slug>/sources.json` (`npm run book:sources`), and can carry a Strudel music bed
+(`npm run book:score`). See [docs/book-quality.md](docs/book-quality.md).
 
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):

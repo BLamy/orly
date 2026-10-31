@@ -3,13 +3,13 @@ import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
   BAR_BASE,
-  BAR_HMAX,
   ENTROPY,
   EXP_LEN,
   MERGES,
   METERS,
   NODES,
   SYMS,
+  barHeight,
   buildScene,
   nodeById,
 } from './scene';
@@ -49,27 +49,28 @@ function Frame({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimU}>
           {/* frequency bars under the leaves */}
+          {/* bars recede once the tree grows out of them, so edges read cleanly */}
           {LEAVES.map((n, i) => {
             const u = clamp01(barsU * 1.6 - i / 12);
-            const h = (n.p / 0.3) * BAR_HMAX * 0.55 * u;
+            const h = barHeight(n.p) * u;
             return (
               <g key={n.id}>
-                <rect x={n.x - 20} y={BAR_BASE - h} width={40} height={h} rx={6} fill={colors.ACCENT} opacity={0.35 + 0.4 * (n.p / 0.27)} />
-                <text x={n.x} y={BAR_BASE + 22} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={650}>
+                <rect x={n.x - 20} y={BAR_BASE - h} width={40} height={h} rx={6} fill={colors.ACCENT} opacity={(0.55 + 0.35 * (n.p / 0.27)) * (1 - 0.65 * clamp01(mergeF))} />
+                <text x={n.x} y={BAR_BASE + 22} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={650}>
                   {n.s}
                 </text>
-                <text x={n.x} y={BAR_BASE + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                <text x={n.x} y={BAR_BASE + 42} textAnchor="middle" fill={colors.TEXT} opacity={0.75} fontSize={14}>
                   {`${(n.p * 100).toFixed(0)}%`}
                 </text>
                 {/* fixed-width code (opening) */}
                 {fixedU > 0 && (
-                  <text x={n.x} y={BAR_BASE + 62} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, monospace" opacity={fixedU}>
+                  <text x={n.x} y={BAR_BASE + 62} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="ui-monospace, monospace" opacity={fixedU}>
                     {FIXED[n.s]}
                   </text>
                 )}
                 {/* Huffman code (after codesU) */}
                 {codesU > 0 && (
-                  <text x={n.x} y={BAR_BASE + 62} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontFamily="ui-monospace, monospace" opacity={codesU}>
+                  <text x={n.x} y={BAR_BASE + 62} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="ui-monospace, monospace" opacity={codesU}>
                     {n.code}
                   </text>
                 )}
@@ -84,26 +85,27 @@ function Frame({ s }: { s: SceneState }) {
             const M = nodeById(mg.m);
             const A = nodeById(mg.a);
             const B = nodeById(mg.b);
-            const leafShift = (n: typeof M) => (n.leaf ? BAR_BASE - 74 : n.y);
-            const ay = leafShift(A);
-            const by = leafShift(B);
+            // a leaf's edge ends on top of its bar; an internal node's edge ends at its node
+            const leafTop = (n: typeof M) => BAR_BASE - barHeight(n.p) - 8;
+            const ay = A.leaf ? leafTop(A) : A.y;
+            const by = B.leaf ? leafTop(B) : B.y;
             return (
               <g key={mg.m} opacity={u}>
                 <line x1={M.x} y1={M.y} x2={A.x} y2={ay} stroke={colors.GRID} strokeWidth={2} />
                 <line x1={M.x} y1={M.y} x2={B.x} y2={by} stroke={colors.GRID} strokeWidth={2} />
-                {/* 0/1 edge bits */}
+                {/* 0/1 edge bits, set beside each line */}
                 {codesU > 0 && (
                   <g opacity={codesU}>
-                    <text x={(M.x + A.x) / 2 - 10} y={(M.y + ay) / 2} fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
+                    <text x={(M.x + A.x) / 2 - 12} y={(M.y + ay) / 2 + 5} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
                       {A.code.slice(-1)}
                     </text>
-                    <text x={(M.x + B.x) / 2 + 6} y={(M.y + by) / 2} fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
+                    <text x={(M.x + B.x) / 2 + 10} y={(M.y + by) / 2 + 5} fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
                       {B.code.slice(-1)}
                     </text>
                   </g>
                 )}
-                <circle cx={M.x} cy={M.y} r={17} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
-                <text x={M.x} y={M.y + 4.5} textAnchor="middle" fill={colors.TEXT} fontSize={11.5}>
+                <circle cx={M.x} cy={M.y} r={18} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
+                <text x={M.x} y={M.y + 4.5} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
                   {mg.p.toFixed(2).replace(/^0/, '')}
                 </text>
               </g>
@@ -138,13 +140,18 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed entropy formula */}
-      <MathLabel tex={'H = -\\textstyle\\sum_i p_i \\log_2 p_i = 2.771'} x={1000} y={560} fontSize={17} opacity={hLineU * dimU} />
+      {/* screen-fixed row label for the bars, gone once merging takes over */}
+      <text x={40} y={64} fill={colors.MUTED} fontSize={16} opacity={barsU * (1 - clamp01(mergeF))}>
+        how often each letter arrives
+      </text>
+
+      {/* entropy formula, in the meter column so it never sits on the bars */}
+      <MathLabel tex={'H = -\\textstyle\\sum_i p_i \\log_2 p_i = 2.771'} x={METERS.x + METERS.w / 2} y={440} fontSize={17} boxWidth={440} opacity={hLineU * dimU} />
 
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Huffman Codes
           </text>

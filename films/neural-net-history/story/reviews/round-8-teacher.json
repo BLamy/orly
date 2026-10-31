@@ -1,0 +1,75 @@
+{
+  "reviewer": "teacher",
+  "round": 8,
+  "lens": "clarity and depth for a curious 15-year-old and an expert at once",
+  "runtimeCheck": "script.mjs assemble --check: 33.3 min (1998.5 s at 143.5 wpm) against a 32.0 min target, 3,438 words, 0 errors, 1 warning. This is inside the brief's 30-35 min range, so it is not critical. The fixes below come to about +29 net words (about +12 s, which keeps the film near 33.5 min), and they include their own cuts.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8.5,
+    "clarity": 8,
+    "story": 8,
+    "curiosity": 8.5,
+    "visual": 8,
+    "voice": 8
+  },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch08-s08 L0815 (the cleverest idea in the AlexNet dive is still a non sequitur to the ear; this was flagged in round 7 and is unchanged)",
+      "problem": "'Sixty million weights, but the labels held only about twelve million yes-or-no answers.' A teenager cannot get from 1.2 million labelled photos to 'twelve million yes-or-no answers' without the missing step: one name out of a thousand is worth about ten yes-or-no questions (log2 1000, about 10 bits; bible Primer F 'Why augmentation', and the paper's own '10 bits of constraint', line 1557). The visual already draws each token as '≈ 10 bits' with ten tiny toggles, so the eye has the step and only the ear is missing it. Without it, L0816's crops and mirrors lose their 'why'.",
+      "fix": "L0815 → 'Sixty million weights, yet each label, one name in a thousand, is worth about ten yes-or-no answers. Twelve million in all. It could memorise the photos, not learn to see.' (+9; claims e8-ingredients, e8-architecture). The ear now matches the OST '1.2 million labels × ≈ 10 bits ≈ 12 million' exactly."
+    },
+    {
+      "where": "ch11-s01 / ch11-s02 L1103 (the 'Read Everything' chapter never says what was read, or why next-word prediction needs no labels)",
+      "problem": "The chapter title and the s01 OST 'PRE-TRAINING · READ EVERYTHING FIRST' carry the idea that defines the modern era, and no line speaks it. The ear hears only 'GPT-2, a language model, had one training goal: predict the next word.' Two depth payoffs are lost. (1) An expert expects the key insight of self-supervision: raw text is its own answer key, so no hand labels are needed, and that is why it could scale past ImageNet's crowd of 50,000 labellers. (2) The film set up a perfect callback and never cashes it: L0702's warm-up 'before any right answers' came back as pre-training (bible Era 7 'Irony': 'Pretraining returned a few years later in a new form'). There is also a bridge problem. L1032-L1033 end ch10 on 'a Google team kept only the writing half... guess what comes next', but L1103 never says that GPT-2 is that writing half, so a teenager does not connect the Transformer to the GPTs.",
+      "fix": "L1103 → 'In 2019, OpenAI's GPT-2, a Transformer's writing half, read some eight million web pages with one goal: “predict the next word.” No labels needed: every next word is its own right answer.' (+17; claims e10-gpt2, e10-liu-decoder, e10-gpt1; the quoted fragment is unchanged from quotes.json). Pay for it in the same act: cut L0601b 'Buffalo, again: the perceptron's city.' (−6; the OST 'BUFFALO · 1958–60' and the visual carry the rhyme), and trim L1104 to 'From the file: “practically nothing” from “the raw text.” Sensible, then.' (−4; Lenat's line was paid off at L0515 and is paid off again at L1316)."
+    },
+    {
+      "where": "ch06-s04 L0608 → ch06-s08 / ch08-s13b L0832 ('Why choose the fog?': the ear never hears what was feared about the fog)",
+      "problem": "The fog-versus-bowl contrast is the film's best conceptual spine. Fog at L0510, the clean bowl with its proof at L0607, 'Why would anyone choose the fog?' at ch06-s08, and the answer at L0832. But the 1990s belief that made the fog frightening, that nets get stuck in local minima (bible Era 6: 'fiddly, prone to local minima, without theory... beaten by SVMs anyway'), is never spoken. Only the ch05-s05 OST hints at it ('timid steps can stall · rare in the 1986 tests'). So a teenager hears 'fiddly' with no content, and the question at ch06-s08 has no stakes. The expert also notices that the era's central technical objection is missing from its own candle.",
+      "fix": "L0608 → 'The candle of the age: neural nets are fiddly, they stall in the fog, and they're beaten anyway.' (+5; claims e6-svm, e6-nn-winter; Era 6 belief). This puts the belief in the critics' mouths, where it belongs. The OST at ch05-s05 already records the 1986 rebuttal ('rare'), and L0832 then answers a real fear. Optionally change the candle label to 'NEURAL NETS ARE FIDDLY, STALL IN THE FOG, AND ARE BEATEN ANYWAY'."
+    },
+    {
+      "where": "ch10-s04 L1024 ('It out-translated every rival, after half a day's training': too broad for the expert)",
+      "problem": "The 12-hour figure belongs to the base model on English-to-German, which beat every earlier single model and ensemble (27.3 vs 26.36). The model that also topped English-to-French was the big one, and it trained for 3.5 days (e10-results). As spoken, the line merges the two, and an expert who knows the paper will catch it.",
+      "fix": "L1024 → 'Its title: Attention Is All You Need. English to German, it out-translated every rival, after half a day's training.' (+3; claims e10-results, e10-title). The OST '12 hours · one machine, 8 GPUs' at ch10-s12 stays true."
+    },
+    {
+      "where": "ch07-s02 L0702 ('a deep net' used before 'deep' is defined)",
+      "problem": "'Deep' is the film's central word. L0832 names 'deep learning' as a payoff ('many layers deep'), but 'a deep net' arrives unglossed at L0702 and is used again at L0803 ('sure deep nets would keep improving'). The teenager has heard 'many layers' (L0405, L0613), but nobody has said that 'deep' means 'many layers'.",
+      "fix": "L0702 → 'In 2006, a new candle: before any right answers, warm up a deep net, many layers tall, one layer at a time, each rebuilding its own input.' (+2; claims e7-dbn, e7-autoencoder). L0832's 'many layers deep: deep learning' then lands as a naming, not a first definition."
+    },
+    {
+      "where": "ch09-s01 L0902 (the auction ends with no buyer)",
+      "problem": "'...auctioned his three-person company and stopped at forty-four million dollars.' 'Stopped at' sounds as if the bidding fizzled, and the ear never learns who won. L1304 ('He left Google to speak freely') then assumes a fact the narration never gave. The gold-rush point, that a big company bought three researchers for that sum, is lost. Round 7 suggested cutting 'and chose Google' to save words, but the cut costs more clarity than its three words are worth.",
+      "fix": "L0902 → '...auctioned his three-person company, halted the bidding at forty-four million dollars, and chose Google.' (+3; claim e8-auction, 'as reported by Cade Metz' stays on screen)."
+    },
+    {
+      "where": "ch13-s01 L1302 ('takes down a forecast slip': the ear never learned the Wall of Forecasts)",
+      "problem": "The forecast slips (Turing 2000, chess 1968, Coulom's ten years) live on the Wall of Forecasts, but that is a visual device. The narration has never called them 'slips', and 'forecast slip' can sound like a mistake ('a slip'). L1517 'The last slip is Hinton's, too' leans on the same word.",
+      "fix": "L1302 → 'In 2023, Geoffrey Hinton takes down an old forecast. It is his own.' (−1). L1517 → 'The last forecast on the wall is Hinton's, too.' (+3). Alternatively, keep both lines and name the device once, early, at L0615: 'The chess crown, promised for 1968, came twenty-nine years late...' plus a slip pinned on 'promised'. That case needs no word change, only a visual beat."
+    },
+    {
+      "where": "ch07-s02 L0703 ('Nearly right.')",
+      "problem": "This is still open from rounds 6 and 7, though less pressing now that L0707 says 'no warm-up' and L0710 has the candle gutter. The ear still has to work out which of the three conditions failed.",
+      "fix": "Low priority: L0703 end → '...Nearly right: the third turned out optional.' (+4; claim e7-pretraining-belief). Skip it if the words are needed elsewhere."
+    },
+    {
+      "where": "ch12-s03 → ch12-s08 L1219 ('Through that door' after the 2021 Anthropic flashback)",
+      "problem": "'That door' refers back to L1215/L1217 (ChatGPT, 'language was the door'), but three lines of the 2021 founding story now sit between them. The ear has to jump back over a flashback to find the referent.",
+      "fix": "Either move ch12-s03 (Anthropic, 2021) before ch12-s06 so the chapter runs in order (2021 founding, then 30 Nov 2022, then the stampede), or make L1219 'Through ChatGPT's door, a stampede.' (+1). The reorder is cleaner and costs no words. Check the transitions with the art director."
+    },
+    {
+      "where": "ch02-s07 L0217 → ch15-s07 L1511 (Widrow: 'Remember him' still pays off with feeling, not with anything he did)",
+      "problem": "This is a story choice, flagged in rounds 6 and 7. The payoff is emotional (he never got over the dream), which works. But a curious teenager still asks 'remember him for what?', and the bible's LMS/ADALINE rule ('measure how wrong, slide downhill') would pre-plant the downhill landscape that L0510, L0607 and L0819 all depend on.",
+      "fix": "Optional and low priority. If words allow, L0216 → 'A young engineer, Bernard Widrow, fell for the dream of building an artificial brain, for good. His machines learned by sliding downhill, toward less wrong.' (+10; claims e2-lms, e2-adaline). Otherwise leave it as is."
+    }
+  ],
+  "strengths": [
+    "Round 7's clarity fixes landed almost across the board. 'Hidden layer' is glossed ('cells between input and answer'). 'Expert system' is defined by its rules. 'Before any right answers' sets up the warm-up. The Transformer's result is now spoken. Parallelism is tied to 'just what graphics chips do best'. Boltzmann is 'a net that settles as it cools' (correct). The fiddly-nets candle has its 'ten to fifteen years, field by field'. 'The candle of now' states its belief. Agents are glossed ('finish alone on a computer'). GPT-4 and Claude are named in parallel. The sandbox line is replaced with 'another company's real systems'.",
+    "The AlexNet deep dive is genuinely deep and correct, and it carries both audiences. It moves through pixels as numbers; a worked 3×3 stencil whose arithmetic checks (3.88, 'nearly four'); the same stencil slid everywhere, named as convolution; 96 stencils and four more courses climbing edges → textures → parts → things (bible Primer F); two great halls and a thousand-lantern output; stencils born as television snow and cut by the 1986 messenger; ReLU as a weir, with the six-fold test; crops and mirrors; dropout with its reason; the unprompted colour/edge split across two GPUs ('every time', per e8-gpu-split); five to six days with the step cut three times; top-5 explained before 15.3 vs 26.2; fair credit (seven voting, one alone near 18; IDSIA); and the one-year flip. The visual now shows max-pooling wordlessly, which closes round 7's 55 → 27 → 13 gap.",
+    "The Transformer sequence is the film's best teaching. Motive comes first (the 2014 bottleneck, then attention). The question/label/message cards are tuned by 'our messenger'. The dot product is a callback to the stencil. The toy scores 2·0·4·2 are halved, and the softmax gives river 0.534, so 'about half' is exact. √dₖ is explained by its failure mode ('the jug tips everything into one cup, and learning freezes'), with 64 → 8 mirrored by the toy's 4 → 2. Then come eight heads, clock-face positions, 'talk, then think alone, six times over', the n² catch, the encoder/decoder split, and the causal curtain. Each piece reuses an existing metaphor rather than adding a new one, which is why a 15-year-old can hold it.",
+    "The brief's 'what people believed, who dissented, how long' is answered era by era, aloud, with a consistency few documentaries manage. Logic machine: Gerard, 16 years. Learning machine: Minsky, about 7. Sterile extension: Hinton at the rim, 17. Knowledge by hand: AAAI-84 insiders, about 7. Fiddly nets: the three holdouts, 10 to 15. Warm-up: IDSIA, 'nobody knows exactly when' (honest about e7-pretraining-belief being interpretive). Hand-cut stencils: Sutskever, 13. Read in order: Uszkoreit, 20. Scale: the octopus and the parrots, still burning. Worry: three camps. Chokepoint and gap: about two, and still argued. The candle of now: METR's trial. Cyc: 39. Every span checks against the bible's 'How long it lasted' entries.",
+    "The metaphor system is built once and reused, not replaced. Switch, then knob = weight, lanterns, the messenger = back-propagation, fog vs the clean bowl, stencil → dot product, jug of light = softmax (reused at L1107 for next-word odds, which is lovely), judge = reward model, curtain = causal mask, and 'weights open to all' at L1408b cashing in the knob from 1958. Contested matters stay attributed and even-handed: backprop priority with Hinton's disclaimer, Gebru ('the accounts differ'), the Nobel-as-physics question, DeepSeek's cost caveat, the gap estimates, and Anthropic's Pentagon dispute and settlement beside OpenAI's warning shot. All 32 quoted fragments in the narration match quotes.json verbatim (checked programmatically)."
+  ]
+}

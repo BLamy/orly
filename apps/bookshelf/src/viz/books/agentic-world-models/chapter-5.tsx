@@ -32,13 +32,15 @@
 // which node the training loop's packet visits (real fades, twin fades in,
 // the loop keeps moving) versus a failed swap into a generic model (the loop
 // stalls into jitter). Closes on a quiet recap of the book's five chapters.
-import { CAMERA_HOME, Camera, MathLabel, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease, mulberry32 } from '../../core';
+import { CAMERA_HOME, Camera, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease, mulberry32 } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { ParticleCloud } from '../../primitives';
 import type { ParticlePoint } from '../../primitives';
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const TAU = Math.PI * 2;
+// dark halo behind labels that sit over the particle clouds
+const HALO = { stroke: colors.BG, strokeWidth: 4, paintOrder: 'stroke' } as const;
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 
@@ -129,7 +131,7 @@ function loopPoint(t: number): { x: number; y: number } {
   return { x, y };
 }
 
-const CAM_RING: CameraState = { x: 430, y: 300, k: 1.32 };
+const CAM_RING: CameraState = { x: 430, y: 340, k: 1.12 }; // lower frame edge stays above the caption pill
 const CAM_LOOP: CameraState = { x: 940, y: 460, k: 1.4 };
 const CAM_RECAP: CameraState = CAMERA_HOME;
 
@@ -388,11 +390,11 @@ function Chip({
   u: number;
 }) {
   if (u <= 0.01) return null;
-  const w = text.length * 6.7 + 22;
+  const w = text.length * 7.8 + 24;
   return (
     <g opacity={u}>
       <rect x={x - w / 2} y={y - 14} width={w} height={27} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.7} />
-      <text x={x} y={y + 5} textAnchor="middle" fill={color} fontSize={11.5} fontFamily={MONO}>
+      <text x={x} y={y + 5} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -407,7 +409,7 @@ function RecapLine({ y, text, u }: { y: number; text: string; u: number }) {
       y={y}
       textAnchor="middle"
       fill={colors.TEXT}
-      fontSize={19}
+      fontSize={20}
       opacity={u}
       transform={`translate(0 ${10 * (1 - u)})`}
     >
@@ -448,22 +450,22 @@ export function Render({ s }: { s: SceneState }) {
   const r5U = s.get(scene.r5U);
 
   const ringDim = 1 - recapU; // ring/rail dims for both loop-scene and recap
-  const ringOpacity = ringDim * (1 - 0.85 * ringToLoopU);
+  const ringOpacity = ringDim * (1 - ringToLoopU); // fully hand off to the loop scene
   const loopOpacity = ringToLoopU * ringDim;
 
   // donut geometry for the 9:1 blend
-  const donutC = { x: 700, y: 300, r: 46 };
+  const donutC = { x: 700, y: 300, r: 58 };
   const CIRC = TAU * donutC.r;
   const rubricFrac = 0.9;
   const p = loopPoint(loopT);
-  const failNode = { x: 1080, y: 610 };
+  const failNode = { x: 1080, y: 590 };
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---------------- ring scene ---------------- */}
-        <g opacity={ringOpacity}>
+        {ringOpacity > 0.01 && <g opacity={ringOpacity}>
           {/* three-phase rail */}
           {railU > 0.01 && (
             <g opacity={railU}>
@@ -485,7 +487,7 @@ export function Render({ s }: { s: SceneState }) {
                       stroke={i === 0 ? colors.ACCENT : i === 1 ? colors.SECONDARY : colors.WARM}
                       strokeOpacity={0.3 + 0.7 * lit}
                     />
-                    <text x={x + 95} y={103} textAnchor="middle" fill={colors.TEXT} fontSize={12} opacity={0.5 + 0.5 * lit}>
+                    <text x={x + 95} y={103} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={0.65 + 0.35 * lit}>
                       {label}
                     </text>
                   </g>
@@ -501,10 +503,10 @@ export function Render({ s }: { s: SceneState }) {
 
           {twinLabelU > 0.01 && (
             <g opacity={twinLabelU}>
-              <text x={RING.x} y={RING.y - RING.r - 30} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={RING.x} y={RING.y - 10} textAnchor="middle" fill={colors.TEXT} fontSize={14} {...HALO}>
                 the real environment
               </text>
-              <text x={RING.x} y={RING.y + RING.r + 46} textAnchor="middle" fill={colors.ACCENT} fontSize={13}>
+              <text x={RING.x} y={RING.y + RING.r + 50} textAnchor="middle" fill={colors.ACCENT} fontSize={14} {...HALO}>
                 the twin world model
               </text>
             </g>
@@ -521,16 +523,17 @@ export function Render({ s }: { s: SceneState }) {
                   y={c.y - 40}
                   textAnchor="middle"
                   fill={colors.TEXT}
-                  fontSize={11.5}
+                  fontSize={14}
                   fontFamily={MONO}
                   opacity={domainLabelU}
+                  {...HALO}
                 >
                   {lab}
                 </text>
               );
             })}
           {domainLabelU > 0.01 && (
-            <text x={RING.x} y={RING.y} textAnchor="middle" fill={colors.MUTED} fontSize={11} opacity={domainLabelU * 0.85}>
+            <text x={RING.x} y={RING.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={domainLabelU} {...HALO}>
               + four more domains
             </text>
           )}
@@ -563,13 +566,14 @@ export function Render({ s }: { s: SceneState }) {
               <text y={-6} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
                 9 : 1
               </text>
-              <text y={14} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+              <text y={donutC.r + 24} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={0.8}>
                 rubric : executable
               </text>
             </g>
           )}
-          <Chip x={donutC.x} y={donutC.y + 90} text="exact match (deterministic) vs structural match (run-varying)" color={colors.WARM} u={matchChipU} />
-          <Chip x={donutC.x} y={donutC.y + 122} text="+ injected errors, pagination" color={colors.NEGATIVE} u={perturbU} />
+          <Chip x={donutC.x} y={donutC.y + 100} text="exact match · deterministic" color={colors.WARM} u={matchChipU} />
+          <Chip x={donutC.x} y={donutC.y + 132} text="structural match · run-varying" color={colors.WARM} u={matchChipU} />
+          <Chip x={donutC.x} y={donutC.y + 164} text="+ injected errors, pagination" color={colors.NEGATIVE} u={perturbU} />
 
           {benchU > 0.01 && (
             <g opacity={benchU}>
@@ -577,12 +581,12 @@ export function Render({ s }: { s: SceneState }) {
               <text x={RING.x} y={RING.y + RING.r + 94} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontWeight={600}>
                 AgentWorldBench
               </text>
-              <text x={RING.x} y={RING.y + RING.r + 112} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={RING.x} y={RING.y + RING.r + 112} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO} opacity={0.8}>
                 2,170 trajectories · 7 domains
               </text>
             </g>
           )}
-        </g>
+        </g>}
 
         {/* ---------------- SimRL loop scene ---------------- */}
         <g opacity={loopOpacity}>
@@ -596,7 +600,7 @@ export function Render({ s }: { s: SceneState }) {
             stroke={colors.SECONDARY}
             strokeWidth={1.8}
           />
-          <text x={LOOP_POLICY.x} y={LOOP_POLICY.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+          <text x={LOOP_POLICY.x} y={LOOP_POLICY.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             policy
           </text>
 
@@ -612,7 +616,7 @@ export function Render({ s }: { s: SceneState }) {
             strokeWidth={1.8}
             opacity={1 - envSwapU}
           />
-          <text x={LOOP_ENV.x} y={LOOP_ENV.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={1 - envSwapU}>
+          <text x={LOOP_ENV.x} y={LOOP_ENV.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={1 - envSwapU}>
             real environment
           </text>
           <rect
@@ -626,10 +630,10 @@ export function Render({ s }: { s: SceneState }) {
             strokeWidth={1.8}
             opacity={envSwapU}
           />
-          <text x={LOOP_ENV.x} y={LOOP_ENV.y - 4} textAnchor="middle" fill={colors.ACCENT} fontSize={13} opacity={envSwapU}>
+          <text x={LOOP_ENV.x} y={LOOP_ENV.y - 4} textAnchor="middle" fill={colors.ACCENT} fontSize={14} opacity={envSwapU}>
             twin world model
           </text>
-          <text x={LOOP_ENV.x} y={LOOP_ENV.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+          <text x={LOOP_ENV.x} y={LOOP_ENV.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
             {envSwapU > 0.5 ? 'simulated' : 'real, slow, costly'}
           </text>
 
@@ -652,9 +656,9 @@ export function Render({ s }: { s: SceneState }) {
           {failU > 0.01 && (
             <g opacity={failU}>
               <rect
-                x={failNode.x - 80}
+                x={failNode.x - 100}
                 y={failNode.y - 26}
-                width={160}
+                width={200}
                 height={52}
                 rx={10}
                 fill={colors.PANEL}
@@ -662,28 +666,28 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={1.6}
                 strokeDasharray="5 5"
               />
-              <text x={failNode.x} y={failNode.y - 2} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5}>
+              <text x={failNode.x} y={failNode.y - 2} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
                 generic model
               </text>
-              <text x={failNode.x} y={failNode.y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+              <text x={failNode.x} y={failNode.y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={12} opacity={0.8}>
                 never trained on the domain
               </text>
-              {/* stalled loop: jittering static, no clean orbit */}
+              {/* stalled loop: jittering static beside the node, no clean orbit */}
               {[0, 1, 2, 3, 4, 5].map((i) => {
                 const a = (i / 6) * TAU + wobbleT * TAU * 5;
-                const jr = 40 + 6 * Math.sin(a * 3);
+                const jr = 30 + 5 * Math.sin(a * 3);
                 return (
                   <circle
                     key={i}
-                    cx={failNode.x + Math.cos(a) * jr}
-                    cy={failNode.y - 70 + Math.sin(a) * jr * 0.4}
-                    r={2}
+                    cx={900 + Math.cos(a) * jr}
+                    cy={failNode.y + Math.sin(a) * jr * 0.4}
+                    r={2.4}
                     fill={colors.NEGATIVE}
-                    opacity={0.7}
+                    opacity={0.8}
                   />
                 );
               })}
-              <text x={failNode.x} y={failNode.y - 100} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontStyle="italic">
+              <text x={failNode.x} y={failNode.y - 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontStyle="italic">
                 no gain — the loop stalls
               </text>
             </g>
@@ -704,12 +708,14 @@ export function Render({ s }: { s: SceneState }) {
         {recapU > 0.01 && (
           <g>
             <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={recapU * 0.94} />
-            <MathLabel tex={'\\text{sparse reward} \\to \\text{mask} \\to \\text{ECHO} \\to \\text{PaW} \\to \\text{twin}'} x={STAGE_W / 2} y={200} fontSize={22} opacity={recapU * 0.55} color={colors.MUTED} />
+            <text x={STAGE_W / 2} y={200} textAnchor="middle" fill={colors.MUTED} fontSize={22} fontFamily={MONO} opacity={recapU * 0.85}>
+              sparse reward → mask → ECHO → PaW → twin
+            </text>
             <RecapLine y={300} text="Sparse reward made looking ahead too costly to learn." u={r1U * recapU} />
-            <RecapLine y={340} text="A mask folded that foresight into the policy's own loss." u={r2U * recapU} />
-            <RecapLine y={380} text="Echo showed the gain was real — if you watched for overfitting." u={r3U * recapU} />
-            <RecapLine y={420} text="PaW tuned three dials to keep that gain honest." u={r4U * recapU} />
-            <RecapLine y={470} text="And this chapter trained a whole second brain to dream the world." u={r5U * recapU} />
+            <RecapLine y={344} text="A mask folded that foresight into the policy's own loss." u={r2U * recapU} />
+            <RecapLine y={388} text="Echo showed the gain was real — if you watched for overfitting." u={r3U * recapU} />
+            <RecapLine y={432} text="PaW tuned three dials to keep that gain honest." u={r4U * recapU} />
+            <RecapLine y={476} text="And this chapter trained a whole second brain to dream the world." u={r5U * recapU} />
           </g>
         )}
       </Camera>

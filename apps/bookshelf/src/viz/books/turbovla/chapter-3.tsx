@@ -136,11 +136,11 @@ export function Render({ s }: { s: SceneState }) {
           <text x={135} y={34} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={700}>action horizon sweep</text>
           <line x1={40} y1={240} x2={235} y2={240} stroke={colors.GRID} />
           <line x1={40} y1={70} x2={40} y2={240} stroke={colors.GRID} />
-          <polyline points={HORIZON.map((p, i) => `${64 + i * 54},${222 - (p.score - 95) * 62}`).join(' ')} fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
+          <polyline points={HORIZON.map((p, i) => `${64 + i * 54},${220 - (p.score - 95) * 50}`).join(' ')} fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
           {HORIZON.map((p, i) => <g key={p.h}>
-            <circle cx={64 + i * 54} cy={222 - (p.score - 95) * 62} r={p.h === 12 ? 9 : 6} fill={p.h === 12 ? colors.WARM : colors.POSITIVE} />
+            <circle cx={64 + i * 54} cy={220 - (p.score - 95) * 50} r={p.h === 12 ? 9 : 6} fill={p.h === 12 ? colors.WARM : colors.POSITIVE} />
             <text x={64 + i * 54} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>H={p.h}</text>
-            <text x={64 + i * 54} y={210 - (p.score - 95) * 62} textAnchor="middle" fill={p.h === 12 ? colors.WARM : colors.TEXT} fontSize={11}>{p.score}</text>
+            <text x={64 + i * 54} y={200 - (p.score - 95) * 50} textAnchor="middle" fill={p.h === 12 ? colors.WARM : colors.TEXT} fontSize={13} fontWeight={p.h === 12 ? 760 : 500}>{p.score}</text>
           </g>)}
         </g>}
       </g>

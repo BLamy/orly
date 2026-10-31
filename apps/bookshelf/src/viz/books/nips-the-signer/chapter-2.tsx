@@ -19,7 +19,7 @@ const ID = sha256Hex(SERIAL);
 
 // The app-side draft: no id, no pubkey, no sig.
 const DRAFT = { created_at: 1700000000, kind: 1, tags: [] as string[][], content: CONTENT };
-const DRAFT_LAYOUT = layoutJson(DRAFT, { x: 70, y: 200, fontSize: 13.5 });
+const DRAFT_LAYOUT = layoutJson(DRAFT, { x: 110, y: 270, fontSize: 13.5 });
 
 // The extension-side result: filled in.
 const SIGNED = {
@@ -31,7 +31,7 @@ const SIGNED = {
   content: CONTENT,
   sig: 'c1d7f0a2…9f3a',
 };
-const SIGNED_LAYOUT = layoutJson(SIGNED, { x: 720, y: 150, fontSize: 13, abbrev: (_p, raw) => (raw.length > 22 ? shortHex(raw) : raw) });
+const SIGNED_LAYOUT = layoutJson(SIGNED, { x: 760, y: 250, fontSize: 13, abbrev: (_p, raw) => (raw.length > 22 ? shortHex(raw) : raw) });
 
 const BOUNDARY_X = 640;
 const APP = { x: 300, y: 110 };
@@ -134,12 +134,13 @@ export function buildScene(): Scene {
 
 const scene = buildScene();
 
-function Panel({ x, y, w, h, label, color, u }: { x: number; y: number; w: number; h: number; label: string; color: string; u: number }) {
+function Panel({ x, y, w, h, label, note, color, u }: { x: number; y: number; w: number; h: number; label: string; note: string; color: string; u: number }) {
   if (u <= 0) return null;
   return (
     <g opacity={u}>
       <rect x={x} y={y} width={w} height={h} rx={12} fill={colors.PANEL} opacity={0.5} stroke={color} strokeWidth={1.6} />
       <text x={x + 16} y={y + 26} fill={color} fontSize={14} fontWeight={600}>{label}</text>
+      <text x={x + 16} y={y + 52} fill={colors.MUTED} fontSize={14} fontFamily="monospace">{note}</text>
     </g>
   );
 }
@@ -157,9 +158,12 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // dim the diagram, then clear it fully behind the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   // draft crosses left→right on crossU, signed copy returns right→left on backU
   const draftGone = crossU > 0.05;
+  // the risk note rides the getPublicKey probe window and clears as the draft arrives
+  const riskU = probeU * (1 - draftU);
 
   return (
     <>
@@ -167,22 +171,37 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the wall */}
-          <line x1={BOUNDARY_X} y1={80} x2={BOUNDARY_X} y2={560} stroke={colors.GRID} strokeWidth={2} strokeDasharray="6 6" opacity={Math.max(appU, extU) * 0.8} />
-          <text x={BOUNDARY_X} y={72} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="monospace" opacity={Math.max(appU, extU)}>
+          <line x1={BOUNDARY_X} y1={80} x2={BOUNDARY_X} y2={560} stroke={colors.MUTED} strokeWidth={2} strokeDasharray="6 6" opacity={Math.max(appU, extU) * 0.6} />
+          <text x={BOUNDARY_X} y={72} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={Math.max(appU, extU)}>
             trust boundary — nsec never crosses →|
           </text>
 
-          <Panel x={APP.x - 220} y={APP.y} w={440} h={70} label="web app  ·  window.nostr" color={colors.ACCENT} u={appU} />
-          <Panel x={EXT.x - 220} y={EXT.y} w={440} h={70} label="browser extension  ·  holds nsec" color={colors.NEGATIVE} u={extU} />
+          <Panel x={APP.x - 220} y={APP.y} w={440} h={70} label="web app  ·  window.nostr" note="no key here — asks the extension" color={colors.ACCENT} u={appU} />
+          <Panel x={EXT.x - 220} y={EXT.y} w={440} h={70} label="browser extension  ·  holds nsec" note="nsec ··········· stays here" color={colors.NEGATIVE} u={extU} />
 
-          {/* getPublicKey probe */}
-          {probeU > 0 && (
+          {/* window.nostr risk note: any page script can reach the door */}
+          {riskU > 0 && (
+            <g opacity={riskU}>
+              <text x={110} y={204} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+                any page script can call window.nostr
+              </text>
+              <text x={110} y={221} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+                an extension is code that holds the key
+              </text>
+              <text x={110} y={238} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+                so it must check each request
+              </text>
+            </g>
+          )}
+
+          {/* getPublicKey probe, across the wall */}
+          {probeU > 0 && !draftGone && (
             <g opacity={probeU}>
-              <text x={BOUNDARY_X} y={150} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={BOUNDARY_X} y={236} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 getPublicKey()
               </text>
-              <TokenFlight from={{ x: APP.x + 40, y: 150 }} to={{ x: EXT.x - 60, y: 150 }} u={clamp01(probeU * 2)} text="?" fill={colors.ACCENT} fontSize={16} lift={26} />
-              <TokenFlight from={{ x: EXT.x - 60, y: 168 }} to={{ x: APP.x + 40, y: 168 }} u={clamp01(probeU * 2 - 1)} text={shortHex(PUBKEY, 8, 4)} fill={colors.POSITIVE} fontSize={12} lift={26} />
+              <TokenFlight from={{ x: APP.x + 240, y: 132 }} to={{ x: EXT.x - 240, y: 132 }} u={clamp01(probeU * 2)} text="?" fill={colors.ACCENT} fontSize={16} lift={26} />
+              <TokenFlight from={{ x: EXT.x - 250, y: 160 }} to={{ x: APP.x + 262, y: 200 }} u={clamp01(probeU * 2 - 1)} text={shortHex(PUBKEY, 8, 4)} fill={colors.POSITIVE} fontSize={12} lift={26} />
             </g>
           )}
 
@@ -190,17 +209,17 @@ export function Render({ s }: { s: SceneState }) {
           {draftU > 0 && !draftGone && (
             <g opacity={draftU * (1 - clamp01(crossU * 4))}>
               <JsonDoc layout={DRAFT_LAYOUT} reveal={draftU} />
-              <text x={70} y={188} fill={colors.WARM} fontSize={11.5} fontFamily="monospace">
+              <text x={110} y={256} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 unsigned draft — no id, no pubkey, no sig
               </text>
             </g>
           )}
 
-          {/* draft crossing as a packet */}
+          {/* draft crossing as a packet, landing just short of the signed copy */}
           {crossU > 0 && backU < 1 && (
             <TokenFlight
-              from={{ x: 260, y: 300 }}
-              to={{ x: 760, y: 260 }}
+              from={{ x: 360, y: 330 }}
+              to={{ x: 690, y: 300 }}
               u={crossU * (1 - clamp01(backU * 2))}
               text="signEvent(draft)"
               fill={colors.ACCENT}
@@ -209,28 +228,35 @@ export function Render({ s }: { s: SceneState }) {
             />
           )}
 
-          {/* extension fills it in */}
+          {/* extension fills it in, below its panel */}
           {fillU > 0 && (
             <g opacity={fillU}>
-              <JsonDoc layout={SIGNED_LAYOUT} reveal={fillU} focus={['id', 'pubkey', 'sig']} focusU={clamp01(fillU * 2 - 1)} />
-              <text x={720} y={138} fill={colors.POSITIVE} fontSize={11.5} fontFamily="monospace">
+                  <JsonDoc layout={SIGNED_LAYOUT} reveal={fillU} focus={['id', 'pubkey', 'sig']} focusU={clamp01(fillU * 2 - 1)} dim={0.5} />
+              <text x={760} y={236} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 extension adds id · pubkey · sig
               </text>
             </g>
           )}
 
-          {/* signed copy returns */}
+          {/* signed copy returns and lands on the app side */}
           {backU > 0 && (
-            <TokenFlight from={{ x: 760, y: 300 }} to={{ x: 300, y: 340 }} u={backU} text="signed event ✓" fill={colors.POSITIVE} fontSize={13} lift={60} />
+            <g opacity={backU}>
+              <rect x={110} y={318} width={320} height={66} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+              <text x={126} y={344} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">id ✓  pubkey ✓  sig ✓</text>
+              <text x={126} y={368} fill={colors.MUTED} fontSize={14}>a complete event, key still home</text>
+            </g>
+          )}
+          {backU > 0 && (
+            <TokenFlight from={{ x: 690, y: 350 }} to={{ x: 270, y: 296 }} u={backU} text="signed event ✓" fill={colors.POSITIVE} fontSize={14} lift={60} />
           )}
 
           {/* encryption behind the same door */}
           {encU > 0 && (
             <g opacity={encU}>
-              <text x={EXT.x} y={470} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily="monospace">
+              <text x={EXT.x} y={470} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                 nip44.encrypt / decrypt
               </text>
-              <text x={EXT.x} y={492} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+              <text x={EXT.x} y={492} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 ciphertext out, key stays in
               </text>
             </g>
@@ -240,14 +266,14 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The app asks; the extension answers
           </text>
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             window.nostr: getPublicKey and signEvent — the key never enters the page
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-07 · browser extension signer
           </text>
         </g>

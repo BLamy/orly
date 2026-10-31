@@ -94,8 +94,10 @@ const CIRC_R = 170;
 const NORM_X = scaleLinear().domain([0, T]).range([760, 1190]);
 const NORM_Y = scaleLinear().domain([0, 1.1]).range([560, 260]);
 
-const CAM_CIRC: CameraState = { x: 420, y: 350, k: 1.3 };
-const CAM_NORM: CameraState = { x: 960, y: 400, k: 1.25 };
+// Both framings keep the phase circle and the norm plot on stage together, so
+// the decode in beat 3 is always visible next to the norm it is decoded from.
+const CAM_CIRC: CameraState = { x: 380, y: 375, k: 1.2 };
+const CAM_NORM: CameraState = { x: 687, y: 360, k: 1.12 };
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -231,16 +233,93 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Old content dims in beat 5, then clears entirely under the closing panel.
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const ang = angleAt(spinTok);
   const px = CIRC_X + CIRC_R * Math.cos(-ang);
   const py = CIRC_Y + CIRC_R * Math.sin(-ang);
   const nTok = Math.max(0.5, normTok);
   const stepShown = Math.round(Math.min(T, spinTok));
+  // Opening picture (screen space): the count and the two kinds of channel.
+  // It rests on titleU and fades out as the circle arrives.
+  const setupOp = titleU * (1 - circU);
+  const chipXs = [158, 256, 354, 452, 550];
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
+
+      {setupOp > 0 && (
+        <g opacity={setupOp}>
+          <text x={120} y={196} fill={colors.TEXT} fontSize={18}>
+            running count, modulo five
+          </text>
+          {[0, 5, 10, 15, 0].map((v, i) => {
+            const last = i === 4;
+            return (
+              <g key={i}>
+                <rect
+                  x={chipXs[i] - 38}
+                  y={226}
+                  width={76}
+                  height={56}
+                  rx={8}
+                  fill={colors.PANEL}
+                  stroke={last ? colors.ACCENT : colors.GRID}
+                  strokeWidth={last ? 2.5 : 1.5}
+                />
+                <text
+                  x={chipXs[i]}
+                  y={261}
+                  textAnchor="middle"
+                  fill={last ? colors.ACCENT : colors.TEXT}
+                  fontSize={22}
+                  fontFamily="monospace"
+                >
+                  {v}
+                </text>
+              </g>
+            );
+          })}
+          <text x={354} y={312} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+            +5, +5, +5 … then back to zero
+          </text>
+
+          <text x={690} y={196} fill={colors.TEXT} fontSize={18}>
+            a channel that can only shrink or stay
+          </text>
+          <text x={690} y={262} fill={colors.NEGATIVE} fontSize={16}>
+            × 0.5 each step
+          </text>
+          <line x1={890} x2={1180} y1={318} y2={318} stroke={colors.GRID} strokeWidth={1.5} />
+          {[1, 0.5, 0.25, 0.125, 0.0625].map((v, i) => (
+            <rect
+              key={i}
+              x={900 + i * 56}
+              y={318 - 96 * v}
+              width={36}
+              height={96 * v}
+              fill={colors.NEGATIVE}
+              opacity={0.85}
+            />
+          ))}
+          <text x={690} y={418} fill={colors.ACCENT} fontSize={16}>
+            × 1 each step
+          </text>
+          <line x1={890} x2={1180} y1={474} y2={474} stroke={colors.GRID} strokeWidth={1.5} />
+          {[1, 1, 1, 1, 1].map((v, i) => (
+            <rect
+              key={i}
+              x={900 + i * 56}
+              y={474 - 96 * v}
+              width={36}
+              height={96 * v}
+              fill={colors.ACCENT}
+              opacity={0.85}
+            />
+          ))}
+        </g>
+      )}
 
       <g opacity={mainOp}>
         <Camera {...cam}>
@@ -276,7 +355,7 @@ function Frame({ s }: { s: SceneState }) {
             {/* state vector */}
             <line x1={CIRC_X} y1={CIRC_Y} x2={px} y2={py} stroke={colors.ACCENT} strokeWidth={3} />
             <circle cx={px} cy={py} r={9} fill={colors.ACCENT} />
-            <text x={CIRC_X} y={CIRC_Y + CIRC_R + 44} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+            <text x={CIRC_X} y={CIRC_Y + CIRC_R + 44} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
               step {stepShown} · count so far {PREFIX[Math.min(T, Math.max(0, stepShown))] % M}
             </text>
           </g>
@@ -287,7 +366,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={760} y={236} fill={colors.TEXT} fontSize={16}>
                 state norm over 200 steps
               </text>
-              <Axes x={NORM_X} y={NORM_Y} reveal={normU} xTicks={4} yTicks={2} xLabel="step" fontSize={10} />
+              <Axes x={NORM_X} y={NORM_Y} reveal={normU} xTicks={4} yTicks={2} xLabel="step" fontSize={12} />
               <FunctionPlot
                 x={NORM_X}
                 y={NORM_Y}
@@ -308,16 +387,18 @@ function Frame({ s }: { s: SceneState }) {
                 color={colors.NEGATIVE}
                 width={2.2}
               />
-              <text x={NORM_X(60)} y={NORM_Y(1) - 12} fill={colors.ACCENT} fontSize={13}>
+              <text x={NORM_X(60)} y={NORM_Y(1) - 12} fill={colors.ACCENT} fontSize={14}>
                 rotation — norm 1, forever
               </text>
-              <text x={NORM_X(80)} y={NORM_Y(Math.pow(ALPHA_BASE, 80)) - 12} fill={colors.NEGATIVE} fontSize={13}>
-                real decay α = 0.97
-              </text>
+              {nTok > 40 && (
+                <text x={NORM_X(40)} y={NORM_Y(Math.pow(ALPHA_BASE, 40)) - 16} fill={colors.NEGATIVE} fontSize={14}>
+                  real decay α = 0.97
+                </text>
+              )}
               {verdictU > 0 && (
                 <g opacity={verdictU}>
-                  <rect x={780} y={580} width={400} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} opacity={0.95} />
-                  <text x={980} y={607} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                  <rect x={790} y={318} width={390} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+                  <text x={985} y={345} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                     decoded {DECODED} = true {TRUE_COUNT} · norm {FINAL_NORM.toFixed(2)} vs {DECAY_NORM_END.toExponential(1)}
                   </text>
                 </g>
@@ -343,11 +424,12 @@ function Frame({ s }: { s: SceneState }) {
         color={colors.SECONDARY}
         anchor="middle"
         opacity={eqU * mainOp}
+        boxWidth={1200}
       />
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Decay shrinks. Phase turns.
           </text>

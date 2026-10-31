@@ -1,0 +1,34 @@
+{
+ "shot": "ch05-s01",
+ "at": "2026-10-28T11:25:14.448Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "130 LAYERS",
+   "capWhileSubject": 38.3,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "sum",
+   "maxCap": 19.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ReGLU",
+   "maxCap": 19.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "boolean",
+   "maxCap": 19.7,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 3
+}

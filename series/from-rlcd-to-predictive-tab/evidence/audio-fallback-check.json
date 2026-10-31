@@ -1,0 +1,13 @@
+{
+  "base": "http://127.0.0.1:5220",
+  "rangeIgnoredByHost": "HTTP 200 full recording",
+  "fallbackSeekForwardAndBackward": "passed",
+  "chapterChangeAndUnmountRevokeUrls": "passed",
+  "actualDecodedOutput": {
+    "maxRms": 0.17471231626189462,
+    "muted": false,
+    "volume": 1,
+    "time": 10.281361
+  },
+  "pageErrors": []
+}

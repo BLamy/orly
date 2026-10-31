@@ -7,10 +7,11 @@
 // README.md ("pnpm record:replay"), and the emulate submodule (BLamy/emulate)
 // that keeps the whole loop on loopback — no real network services.
 //
-// Machine: the hermetic stage assembling itself. The command chip fires, the
-// emulator and app nodes rise inside a sealed boundary, env wires connect
-// them, a health probe round-trips until READY — and the centerpiece beat is
-// a packet aimed at the real internet hitting the wall and bouncing back.
+// Machine: the local stage assembling itself. The command chip fires, the
+// emulator and app nodes rise inside a loopback boundary (services bind
+// 127.0.0.1 and the env wires point at them), a health probe round-trips until
+// READY — and the centerpiece beat is a packet aimed at the real internet that
+// turns back to 127.0.0.1 instead of leaving.
 import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { Connection, RequestFlow, ServiceNode, Zone } from '../../primitives';
@@ -19,14 +20,15 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const WALL = { x: 120, y: 120, w: 760, h: 440 };
+const WALL = { x: 100, y: 120, w: 800, h: 440 };
 const CMD = { x: 150, y: 60 };
-const STREAMS = { x: 300, y: 250 };
-const AUTH = { x: 300, y: 430 };
-const APP = { x: 680, y: 340 };
-const SCRIPT = { x: 680, y: 170 };
+const NODE_W = 270; // wide enough that the sublabels stay inside their boxes
+const STREAMS = { x: 270, y: 250 };
+const AUTH = { x: 270, y: 430 };
+const APP = { x: 700, y: 340 };
+const SCRIPT = { x: 700, y: 170 };
 const OUTSIDE = { x: 1120, y: 340 };
-const READY = { x: 680, y: 480 };
+const READY = { x: 700, y: 480 };
 
 const CAM_CMD: CameraState = { x: 430, y: 220, k: 1.3 };
 const CAM_EMU: CameraState = { x: 420, y: 340, k: 1.25 };
@@ -160,36 +162,57 @@ function CommandChip({ u, dim }: { u: number; dim: number }) {
   );
 }
 
-/** The packet that tries to leave — out toward the internet, off the wall, back. */
+/** The packet that tries to leave — out toward the internet, then turns back to 127.0.0.1. */
 function EscapePacket({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0 || uu >= 1) return null;
-  const x0 = APP.x + 70;
+  const x0 = APP.x + NODE_W / 2 + 8;
   const y0 = APP.y;
   const xw = WALL.x + WALL.w; // the wall
   // out for the first half, reflected for the second
   const leg = uu < 0.5 ? uu / 0.5 : 1 - (uu - 0.5) / 0.5;
   const x = x0 + (xw - 6 - x0) * leg;
-  const col = uu < 0.5 ? colors.WARM : colors.NEGATIVE;
+  const out = uu < 0.5;
+  const col = out ? colors.WARM : colors.TEAL;
   return (
     <g>
       <circle cx={x} cy={y0} r={6} fill={col} />
-      <text x={x} y={y0 - 14} textAnchor="middle" fill={col} fontSize={11} fontFamily={MONO}>
-        {uu < 0.5 ? 'to the real internet?' : 'refused'}
+      <text x={xw - 12} y={y0 + 56} textAnchor="end" fill={col} fontSize={13} fontFamily={MONO}>
+        {out ? 'to the real internet?' : 'addressed to 127.0.0.1: back here'}
       </text>
     </g>
   );
 }
 
-/** The ghost of the outside world — present only to be unreachable. */
-function Outside({ dim }: { dim: number }) {
+/** What actually keeps the loop local: the bind address and the env wiring, nothing more. */
+function WallNote({ u, dim }: { u: number; dim: number }) {
+  const uu = clamp01(u);
+  if (uu <= 0) return null;
   return (
-    <g opacity={0.4 * (1 - 0.85 * dim)}>
+    <text
+      x={WALL.x + 16}
+      y={WALL.y + WALL.h - 14}
+      fill={colors.MUTED}
+      fontSize={12}
+      fontFamily={MONO}
+      opacity={uu * (1 - 0.85 * dim)}
+    >
+      services bind 127.0.0.1 · env vars point here
+    </text>
+  );
+}
+
+/** The ghost of the outside world — present only to be unreachable. */
+function Outside({ u, dim }: { u: number; dim: number }) {
+  const uu = clamp01(u);
+  if (uu <= 0) return null;
+  return (
+    <g opacity={0.4 * uu * (1 - 0.85 * dim)}>
       <circle cx={OUTSIDE.x} cy={OUTSIDE.y} r={46} fill="none" stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="5 6" />
-      <text x={OUTSIDE.x} y={OUTSIDE.y - 2} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+      <text x={OUTSIDE.x} y={OUTSIDE.y - 2} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
         the real
       </text>
-      <text x={OUTSIDE.x} y={OUTSIDE.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+      <text x={OUTSIDE.x} y={OUTSIDE.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
         internet
       </text>
     </g>
@@ -214,12 +237,12 @@ function ClosingCard({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(640, ${300 + (1 - uu) * 12})`} opacity={uu}>
-      <rect x={-330} y={-58} width={660} height={116} rx={14} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
-      <text y={-14} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={700}>
-        A sealed world holds still.
+    <g transform={`translate(640, ${596 + (1 - uu) * 12})`} opacity={uu}>
+      <rect x={-330} y={-28} width={660} height={60} rx={12} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
+      <text y={-4} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
+        A local world holds still.
       </text>
-      <text y={22} textAnchor="middle" fill={colors.MUTED} fontSize={14.5} fontFamily={MONO}>
+      <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
         emulate start --service durable-streams,auth0 · src/server.mjs · 127.0.0.1
       </text>
     </g>
@@ -237,38 +260,39 @@ function renderFrame(s: SceneState) {
   const wallFlash = clamp01(s.get(scene.wallFlash));
   return (
     <>
-      <Outside dim={dim} />
+      <Outside u={s.get(scene.wallU)} dim={dim} />
       <Zone
         x={WALL.x}
         y={WALL.y}
         w={WALL.w}
         h={WALL.h}
-        label="hermetic — everything on 127.0.0.1"
+        label="loopback — everything on 127.0.0.1"
         kind="group"
         u={s.get(scene.wallU)}
-        color={wallFlash > 0 ? colors.NEGATIVE : undefined}
+        color={wallFlash > 0 ? colors.TEAL : undefined}
         dim={0.7 * dim}
       />
+      <WallNote u={s.get(scene.wallU)} dim={dim} />
       <CommandChip u={s.get(scene.cmdU)} dim={dim} />
 
       {/* env wires, beneath the nodes */}
       <Connection
-        from={{ x: APP.x - 65, y: APP.y - 16 }}
-        to={{ x: STREAMS.x + 78, y: STREAMS.y }}
+        from={{ x: APP.x - NODE_W / 2, y: APP.y - 16 }}
+        to={{ x: STREAMS.x + NODE_W / 2, y: STREAMS.y }}
         u={wire}
         label="DURABLE_STREAMS_URL"
         color={colors.TEAL}
         dim={dim}
-        labelSize={10.5}
+        labelSize={12}
       />
       <Connection
-        from={{ x: APP.x - 65, y: APP.y + 16 }}
-        to={{ x: AUTH.x + 78, y: AUTH.y }}
+        from={{ x: APP.x - NODE_W / 2, y: APP.y + 16 }}
+        to={{ x: AUTH.x + NODE_W / 2, y: AUTH.y }}
         u={wire}
         label="AUTH0_EMULATOR_URL"
         color={colors.SECONDARY}
         dim={dim}
-        labelSize={10.5}
+        labelSize={12}
       />
       <Connection
         from={{ x: SCRIPT.x, y: SCRIPT.y + 32 }}
@@ -276,7 +300,7 @@ function renderFrame(s: SceneState) {
         u={clamp01(health * 3)}
         dashed
         dim={dim}
-        labelSize={10.5}
+        labelSize={12}
       />
 
       <ServiceNode
@@ -285,6 +309,8 @@ function renderFrame(s: SceneState) {
         kind="queue"
         label="durable-streams"
         sublabel=":4100"
+        w={NODE_W}
+        labelSize={16}
         u={clamp01(emu * 1.4)}
         dim={dim}
       />
@@ -294,6 +320,8 @@ function renderFrame(s: SceneState) {
         kind="gateway"
         label="auth0 emulator"
         sublabel=":4101 · seed emulate.config.yaml"
+        w={NODE_W}
+        labelSize={16}
         u={clamp01(emu * 1.4 - 0.3)}
         dim={dim}
       />
@@ -303,6 +331,8 @@ function renderFrame(s: SceneState) {
         kind="server"
         label="chat app"
         sublabel="src/server.mjs · PORT 5175"
+        w={NODE_W}
+        labelSize={16}
         u={app}
         glow={clamp01(s.get(scene.readyU))}
         status={s.get(scene.readyU) > 0.5 ? 'ok' : undefined}
@@ -314,6 +344,8 @@ function renderFrame(s: SceneState) {
         kind="fn"
         label="the loop script"
         sublabel="scripts/record-two-replays.mjs"
+        w={NODE_W}
+        labelSize={16}
         u={s.get(scene.cmdU)}
         dim={dim}
       />
@@ -322,15 +354,15 @@ function renderFrame(s: SceneState) {
       {healthFrac > 0 && (
         <RequestFlow
           path={[
-            { x: SCRIPT.x, y: SCRIPT.y + 34 },
-            { x: APP.x, y: APP.y - 38 },
+            { x: SCRIPT.x + 60, y: SCRIPT.y + 34 },
+            { x: APP.x + 60, y: APP.y - 38 },
           ]}
           u={healthFrac}
           roundTrip
           label="GET /api/health"
           color={colors.WARM}
           responseColor={health > 2 ? colors.POSITIVE : colors.MUTED}
-          labelSize={10.5}
+          labelSize={12}
           opacity={1 - 0.85 * dim}
         />
       )}

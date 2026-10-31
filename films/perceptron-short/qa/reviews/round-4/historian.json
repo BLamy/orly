@@ -1,0 +1,50 @@
+{
+  "reviewer": "historian",
+  "lens": "accuracy & fairness",
+  "round": 4,
+  "scores": { "accuracy": 9, "depth": 8, "clarity": 8, "story": 8, "visual": 8, "sync": 8, "sound": 8, "curiosity": 8 },
+  "issues": [
+    { "owner": "shot", "id": "ch01-s01", "severity": "minor",
+      "problem": "The place stamp's date is barely on screen. 'CORNELL AERONAUTICAL LABORATORY / BUFFALO, NEW YORK' is still typing at 2.58 s, '· c. 1960' completes around 3.4 s, and the stamp has faded by about 4.3 s. That leaves the only on-screen date for the Mark I readable for under a second. The date itself is fair (claim mk1-builder: 1957-1960; NMAH: built 1958; first shown in 1960).",
+      "fix": "Start the place type-on at the title beat (0.8 s) rather than at 'machine' (1.77 s), or hold the completed stamp until at least 4.6 s, so the full line including 'c. 1960' can be read for about 1.5 s or more. No text change." },
+    { "owner": "global", "severity": "minor",
+      "problem": "The machine-readable STT record now exists and passes (narration/stt.json: L0104 'Frank Rosenblatt' and 'Mark 1'; L0108 '1969' and 'Papert'; QA 32 pass, 0 skip). The only remaining QA warning is narration/listening: 'Rosenblatt pending; Papert pending'. The pronunciation of the two real people's names has been confirmed by a transcriber but not yet by a human listener.",
+      "fix": "A person (the user, not an agent) listens to L0104 and L0108 and runs 'film:voice signoff --slug perceptron-short --term Rosenblatt' and '--term Papert'. No re-narration is expected: scribe_v1 heard both names correctly." }
+  ],
+  "previousIssuesCheck": [
+    { "round": 3, "issue": "ch01-s03 era stamp read as a plural, book prop read as a lamp bar, stamp typed in late", "status": "fixed",
+      "evidence": "At 52.1 s '1969' is on screen as it is spoken (51.97 s). At 55.7-57.8 s the stamp reads '1969 · Minsky & Papert, Perceptrons' with the title in italic, beside a legible closed book (spine, page block, slight angle) on a lit shelf." },
+    { "round": 3, "issue": "ch01-s03 bookend: Rosenblatt's head collided with the eye's camera box", "status": "fixed",
+      "evidence": "At 61.0 s and 63.5 s his profile clears the box with a visible gap, his face is angled toward the lit retina and his hand is extended toward it. He reads as a man studying his machine. The gap at 63.5 s is tight (about 15-20 px at 1080p) but clean." },
+    { "round": 3, "issue": "global: STT check skipped for the Rosenblatt line; shelf copy stale", "status": "fixed",
+      "evidence": "narration/stt.json holds per-line records with transcript, expected terms and pass/fail, and the QA stt check passes. publish/current passes: public/generated/perceptron-short/manifest.json has duration 67.75, which matches the clock. The only remainder is the human listening sign-off (above)." }
+  ],
+  "factCheck": [
+    { "text": "L0101 'Once, a machine learned to see.'", "verdict": "fair framing", "claim": "mk1-trained" },
+    { "text": "Place stamp 'Cornell Aeronautical Laboratory · Buffalo, New York · c. 1960'", "verdict": "supported", "claim": "mk1-builder (1957-1960)" },
+    { "text": "L0102 'four hundred light cells, twenty by twenty' and the on-screen '400 light cells'", "verdict": "supported", "claim": "mk1-retina" },
+    { "text": "L0103 'wires, and racks of dials that motors turned' (the patch board with tangled cables, then the potentiometer racks and a meter panel)", "verdict": "supported", "claim": "mk1-weights, mk1-patchboard" },
+    { "text": "L0104 'the Mark I Perceptron, the project of psychologist Frank Rosenblatt' and the name card 'Frank Rosenblatt, psychologist'", "verdict": "supported", "claim": "mk1-builder" },
+    { "text": "L0105 'Nobody gave it the rule. Show it a shape; it guesses.'", "verdict": "supported; follows the claim's caveat wording ('nobody gave it the rule', not 'nobody told it the answer'). The 'correct answer: horizontal' card shows honestly that training was supervised.", "claim": "mk1-trained" },
+    { "text": "L0105b 'Each lit cell tugs the needle through the dials it feeds; the total decides' with the 'threshold' mark and the caption 'an illustration, simplified'", "verdict": "supported. The theatre leaves out the random association layer, and the caption discloses that.", "claim": "mk1-sum, mk1-patchboard" },
+    { "text": "L0106 'motors nudge the dials that had a say, a little, toward the right answer' (only the dials fed by lit cells move, with arrows)", "verdict": "supported", "claim": "mk1-rule, mk1-weights" },
+    { "text": "L0107 tries 1-5 ('said vertical · WRONG' x3, 'try 4 · said vertical · RIGHT', 'try 5 · a new horizontal bar · said horizontal · RIGHT')", "verdict": "internally consistent trial-and-error trace; try 5 shows a new bar, so it generalises rather than memorises", "claim": "mk1-trained, mk1-rule" },
+    { "text": "L0108 'It could learn only simple patterns' with 'what it could learn: simple patterns' (vertical and horizontal plates)", "verdict": "supported as plain English for linearly separable", "claim": "limit-linear" },
+    { "text": "'In 1969, Minsky and Papert showed just how simple' with '1969 · Minsky & Papert, Perceptrons' and the 'XOR · one lit, not both … never settles' mini machine", "verdict": "supported; the XOR unit is a two-input single-layer machine, which is exactly the claim's scope", "claim": "limit-linear" },
+    { "text": "'for years, interest faded'", "verdict": "fair, though less hedged than the source ('often thought to have contributed to a decline'). The line does not assert causation; see the fairness notes.", "claim": "limit-linear" },
+    { "text": "'Its descendants, today's neural networks, still learn from mistakes'", "verdict": "supported at the level stated (error-driven weight adjustment). It does not claim that the algorithm is the same.", "claim": "lineage-mlp" }
+  ],
+  "fairnessNotes": [
+    "Minsky and Papert are treated fairly. The film credits them with a demonstration ('showed just how simple'), not with an attack, and the limit is shown on a single-layer unit, as the limit-linear caveat requires. Nothing suggests they proved neural networks useless, and the 'descendants' line immediately reopens the lineage.",
+    "The causal link between the book and the decline is implied by juxtaposition (semicolon, then the dim), not stated. That is within the source's 'often thought to have contributed' and acceptable for a one-minute film. A longer cut would need the hedge said aloud.",
+    "Rosenblatt is depicted with dignity: a planted, attentive figure at the patch board and beside the eye, named once with his correct profession, and with no invented biography, quotes or dialogue. Quotes.json is empty, and the film has no quotes, as the brief requires.",
+    "No geopolitics, funding bodies or rival labs are mentioned, so there is no even-handedness exposure. The Cornell Aeronautical Laboratory and Buffalo are named correctly.",
+    "The on-screen teaching apparatus discloses that it is an illustration ('an illustration, simplified'), which keeps the vertical/horizontal bars from being taken as the Mark I's historical task (the cited demo was X versus E)."
+  ],
+  "best_moments": [
+    "52.1-57.8 s: '1969' appears as it is spoken, then 'Minsky & Papert, Perceptrons' (italic title) beside a legible closed book, while the XOR mini machine's check/cross row 'never settles'. It is an accurate, fair and visible statement of the single-layer limit.",
+    "45.9-47.3 s: try 4 is RIGHT and the lantern flares, then try 5 ('a new horizontal bar · said horizontal · RIGHT') shows generalisation, an honest trace of the perceptron rule rather than a staged success.",
+    "37.6 s: on 'nudge', only the dials fed by the lit cells turn, with arrows, under 'correct answer: horizontal'. That is the error-correction rule and its supervision shown truthfully at once.",
+    "61.0-63.5 s bookend: Rosenblatt, clear of the machine now, studies the lit retina in the green lab under the returning title, a respectful last image of a real person."
+  ]
+}

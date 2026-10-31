@@ -21,7 +21,7 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const RAIL = { x: 220, y: 300, w: 760 };
 const BANNER = { x: 240, y: 440, w: 760 };
-const BROWSER = { x: 460, y: 470, w: 360, h: 150 };
+const BROWSER = { x: 430, y: 430, w: 420, h: 176 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_RAIL: CameraState = { x: 600, y: 300, k: 1.1 };
@@ -188,15 +188,27 @@ function ReplayRequiredBanner({ u }: { u: number }) {
   );
 }
 
+/** Gate 3's platform rule, set under the rail so the Windows case is visible too. */
+function PlatformNote({ u }: { u: number }) {
+  const o = clamp01(u);
+  if (o <= 0) return null;
+  const gateX = RAIL.x + RAIL.w;
+  return (
+    <text x={gateX} y={RAIL.y + 78} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={mono} opacity={o}>
+      supported: macOS · Linux — Windows: agent-browser install
+    </text>
+  );
+}
+
 /** The launched browser — an env stamp and a recording light that never turns off. */
-function LaunchedBrowser({ enter, envU, rec, dim }: { enter: number; envU: number; rec: number; dim: number }) {
+function LaunchedBrowser({ enter, envU, rec }: { enter: number; envU: number; rec: number }) {
   const e = clamp01(enter);
   if (e <= 0) return null;
   const { x, y, w, h } = BROWSER;
   const ev = clamp01(envU);
   const r = clamp01(rec);
   return (
-    <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * clamp01(dim))}>
+    <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
       <rect x={14} y={12} width={w - 28} height={26} rx={13} fill={colors.BG} opacity={0.6} />
       {r > 0 && (
@@ -205,20 +217,20 @@ function LaunchedBrowser({ enter, envU, rec, dim }: { enter: number; envU: numbe
           <circle cx={30} cy={25} r={3.5} fill={colors.NEGATIVE} opacity={r} />
         </g>
       )}
-      <text x={44} y={30} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
+      <text x={44} y={30} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         chromium (Replay Chrome)
       </text>
       <g opacity={ev}>
-        <text x={20} y={70} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+        <text x={20} y={72} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
           launch env
         </text>
-        <rect x={18} y={80} width={w - 36} height={30} rx={7} fill={colors.ACCENT} opacity={0.14} />
-        <text x={28} y={100} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+        <rect x={18} y={82} width={w - 36} height={34} rx={7} fill={colors.ACCENT} opacity={0.14} />
+        <text x={28} y={105} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
           RECORD_REPLAY_VERBOSE: '1'
         </text>
       </g>
       {r > 0 && (
-        <text x={20} y={h - 16} fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700} fontFamily={mono} opacity={r}>
+        <text x={20} y={h - 18} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono} opacity={r}>
           ● recording
         </text>
       )}
@@ -236,19 +248,22 @@ function renderFrame(s: SceneState) {
   ];
   return (
     <>
-      <GauntletRail
-        x={RAIL.x}
-        y={RAIL.y}
-        w={RAIL.w}
-        gates={gates}
-        u={s.get(scene.tokenU)}
-        reveal={s.get(scene.railU)}
-        arcU={s.get(scene.arcU)}
-        arcFrom={2}
-        dim={dim}
-      />
+      {/* the gauntlet fades to a quiet background once the browser takes over */}
+      <g opacity={1 - 0.85 * dim}>
+        <GauntletRail
+          x={RAIL.x}
+          y={RAIL.y}
+          w={RAIL.w}
+          gates={gates}
+          u={s.get(scene.tokenU)}
+          reveal={s.get(scene.railU)}
+          arcU={s.get(scene.arcU)}
+          arcFrom={2}
+        />
+        <PlatformNote u={s.get(scene.railU)} />
+      </g>
       <ReplayRequiredBanner u={s.get(scene.bannerU)} />
-      <LaunchedBrowser enter={s.get(scene.browserU)} envU={s.get(scene.envU)} rec={s.get(scene.recDot)} dim={dim} />
+      <LaunchedBrowser enter={s.get(scene.browserU)} envU={s.get(scene.envU)} rec={s.get(scene.recDot)} />
     </>
   );
 }

@@ -1,0 +1,271 @@
+{
+  "id": "ch06",
+  "number": 6,
+  "title": "{ fully managed · always on }",
+  "blurb": "A collage of four real product tiles with the line to remember woven between them in three even rows, then the ember end card: Replay QA, end-to-end testing, fully managed; catch bugs that only exist in time.",
+  "shots": [
+    {
+      "id": "ch06-s01",
+      "kind": "montage",
+      "setting": "light-grey studio paper (#e9e8ea), an abstract studio, 2026, no time of day; frozen product tiles fanned at different depths",
+      "era": "product, as of 2026-10-14",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0601",
+          "text": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.",
+          "direction": "the line to remember: three even steps, each landing on a downbeat; warm, a touch brighter on 'confirm'. NARRATION (2026-10-14, round-1 review): the take ran 194 wpm with the steps running together; re-take solo at speed 0.94 with a clear breath (about 0.35 s in all) after 'recording' and after 'cause', aiming for about 165 wpm.",
+          "tts": {
+            "solo": true,
+            "speed": 0.94
+          },
+          "insertGaps": {
+            "recording": 0.25,
+            "cause": 0.25
+          }
+        }
+      ],
+      "leadIn": 0.3,
+      "holdAfter": 1.6,
+      "visual": "The reference's fanned photo collage, made of real product. A cut from ch05-s04's bug-sync strip: it becomes tile (D) as FOUR frozen RrwebScreen tiles (all cursor={false}) on paper at three depths (soft shadows, tilts between -12 and +12 deg about y, a slow 3 % push-in across the shot, the tiles drifting apart a few px), each cropped to one readable detail and never showing the chat column, the project tab strip, the owner's sidebar footer, the credit meter or the budget. READING PATH: the woven words sit on THREE ROWS in reading order, one step of the line per row: the 'every X' phrase in the LEFT lane (left edge ≈ x 90) and its answer in the RIGHT lane (left edge ≈ x 700) on the SAME baseline: row 1 baseline y ≈ 200, row 2 y ≈ 370, row 3 y ≈ 540, so the line reads as three parallel steps, top to bottom, left then right. The tiles sit only in the gaps between rows, never under or over a word (layout on the 1280 x 720 stage). TOP BAND (above row 1): (A) left ≈ x 70-590, y 85-145: take insights frozen at stats mark 2926, crop ≈ {x: 330, y: 160, w: 860, h: 100}, the Insights stat tiles exactly as recorded (50 Projects · 711 Total Bugs · 29% Resolution Rate · 1151 Journeys · 89 Explorations), with a small grey 'Insights' label on the card (unspoken; the Discovery Source card is never in crop; cursor={false}, since at 2926 the recorded cursor sits on 'TOTAL BUGS'); (B) right ≈ x 660-1100, y 36-167: take runs frozen at list mark 3668, crop {x: 500, y: 112, w: 940, h: 280} (as ch04-s03: it starts below the project tab strip, so no half-cut tabs or count badge along its top edge), the Test Runs table's Description / Environment / Status columns with the purple 'PR #3' badge. MIDDLE BAND (between rows 1 and 2, y ≈ 230-325): (C) left ≈ x 70-560: take bug-react frozen at 3150, chips row + title with the 'Open' chip (the crop holds only the chips and title; the player panel is never in crop), with a small grey 'Replay QA's own Projects page' label on the card's top-left corner; (D) right ≈ x 680-1170: take bug-sync frozen at report mark 1603, chips row + title with the 'Fixed' chip. The band between rows 2 and 3 and the strip below row 3 stay open paper with kit hairlines, so the fix row has no tile beside or above it and never reads as a caption on the bug-sync 'Fixed' tile (row 2 and a band of paper separate them). The kinetic words are drawn in the DOM/SVG overlay ABOVE the tiles (never on the canvas under them): Promo Sans regular 44 px, ink on paper, each blurring in on its spoken word with the white → peach → orange colour sweep on its tail: row 1 'every run' (left) · 'a recording' (right, under the runs tile); row 2 'every bug' (left, under the bug-react tile) · 'a root cause' (right, under the bug-sync tile); row 3 'every fix' (left) · 'rerun to confirm' (right, the largest, 52 px, ≈ x 700-1130). On 'Every' in rows 1 and 2 the two tiles just above that row lift a few px toward camera (transform on the tile's wrapper); on row 3 the runs tile lifts once more. In the last second a small '▶ recording' chip drifts out of the runs tile down through the open band toward frame centre (it will settle beside the Replay mark on the end card), and the whole collage begins to blur and sink: the DOM tiles blur and sink through their own style filter: blur() and transform, since the canvas blur transition does not reach DOM layers. THE SUBTLE BEAT (moved here on the director's note, 2026-10-14: the standalone ch05-s05 agent shot was cut): under the woven words, in the open paper strip BELOW row 3 (y ≈ 600-700, never touching a word or a tile), the developer ↔ critic agent pair (sets/ch05-s05-pair.ts, the existing local pair) plays small and quiet (scale ≈ 0.5, centred near x ≈ 640, about 40 % opacity rising to 70 %) while the narrator talks about other things: it is never named, never the headline. It eases in on 'Every' (w1); exchange 1 (a '▶ replay recording' chip slides developer → critic) on 'recording', the critic answers '✕ not yet'; exchange 2 on 'fix', the critic answers '✓ good' landing on or just before 'confirm', so the pair quietly illustrates 'rerun to confirm'. It fades with the collage at the end. No 'illustration' tag needed at this size; nothing implies the agents fixed a specific bug (the 'Fixed' tile D sits well above it).",
+      "beats": [
+        {
+          "id": "fan",
+          "at": {
+            "shotTime": 0.05
+          },
+          "what": "the four tiles finish fanning out and settle at their depths"
+        },
+        {
+          "id": "w1",
+          "at": {
+            "line": "L0601",
+            "word": 0
+          },
+          "what": "row 1, left: 'every run' blurs in under the Insights tile; the two top tiles lift"
+        },
+        {
+          "id": "w2",
+          "at": {
+            "line": "L0601",
+            "word": 2
+          },
+          "what": "row 1, right: 'a recording' lands on the same baseline, under the runs tile"
+        },
+        {
+          "id": "w3",
+          "at": {
+            "line": "L0601",
+            "word": 4
+          },
+          "what": "row 2, left: 'every bug' blurs in under the bug-react tile; the two bug tiles lift"
+        },
+        {
+          "id": "w4",
+          "at": {
+            "line": "L0601",
+            "word": 6
+          },
+          "what": "row 2, right: 'a root cause' lands on the same baseline, under the bug-sync tile"
+        },
+        {
+          "id": "w5",
+          "at": {
+            "line": "L0601",
+            "word": 9
+          },
+          "what": "row 3, left: 'every fix' blurs in on open paper, a full row below the bug tiles; the runs tile lifts once more"
+        },
+        {
+          "id": "w6",
+          "at": {
+            "line": "L0601",
+            "word": 11
+          },
+          "what": "row 3, right: 'rerun to confirm' lands on the same baseline, largest, with the colour sweep on 'confirm'"
+        },
+        {
+          "id": "chip",
+          "at": {
+            "line": "L0601",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "a ▶ recording chip drifts out of the runs tile down through the open band toward centre; the collage (DOM tiles included, via style filter and transform) starts to blur and sink"
+        },
+        {
+          "id": "pair",
+          "at": {
+            "line": "L0601",
+            "word": 0
+          },
+          "what": "the agent pair eases in, small, in the open strip below row 3"
+        }
+      ],
+      "props": [
+        "rrweb:insights",
+        "rrweb:runs",
+        "rrweb:bug-react",
+        "rrweb:bug-sync",
+        "collageTiles",
+        "recordingChip"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "Insights",
+          "beat": "fan"
+        },
+        {
+          "kind": "label",
+          "text": "Replay QA's own Projects page",
+          "beat": "fan"
+        },
+        {
+          "kind": "title",
+          "text": "every run",
+          "beat": "w1"
+        },
+        {
+          "kind": "title",
+          "text": "a recording",
+          "beat": "w2"
+        },
+        {
+          "kind": "title",
+          "text": "every bug",
+          "beat": "w3"
+        },
+        {
+          "kind": "title",
+          "text": "a root cause",
+          "beat": "w4"
+        },
+        {
+          "kind": "title",
+          "text": "every fix",
+          "beat": "w5"
+        },
+        {
+          "kind": "title",
+          "text": "rerun to confirm",
+          "beat": "w6"
+        }
+      ],
+      "music": {
+        "cue": "M5 lift",
+        "note": "full band, the brightest voicing of the film: round bass, four-on-the-floor kick, warm pads with the lydian lift; a filtered stab on the downbeat under each woven word, refit to the slower L0601 re-take (its two breaths after 'recording' and 'cause' move every later stab); a short riser through the hold into the end card; intensity 0.85"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "PROOF-01",
+        "PROOF-07",
+        "PROOF-08",
+        "PROOF-09",
+        "PROOF-13",
+        "LOOP-07",
+        "LOOP-12",
+        "LOOP-13",
+        "TIME-08",
+        "TIME-11",
+        "TIME-14"
+      ]
+    },
+    {
+      "id": "ch06-s02",
+      "kind": "card",
+      "setting": "the ember haze (grey paper over a coral, orange and pink glow rising from the bottom), an abstract studio, 2026: the end card",
+      "era": "product, as of 2026-10-14",
+      "mood": "emberRed",
+      "lines": [
+        {
+          "id": "L0602",
+          "text": "Replay QA. End-to-end testing, fully managed. Catch bugs that only exist in time.",
+          "direction": "the sign-off in three short beats, each landing on a cut of the type: the name, then a breath; the tagline, warm and sure; then the promise, unhurried, a small lift on 'Catch', 'in time' echoing the turn in chapter five, softer"
+        }
+      ],
+      "leadIn": 0.4,
+      "holdAfter": 3.3,
+      "visual": "Blur dissolve: the collage sinks into kit haze 'ember' (light-grey paper over a coral / orange / pink fire rising from the bottom edge), kit hairlines drifting. One tagline, as in the reference's end card. On 'Replay' (the first word) the Replay mark (kit replayMark, 56 px) and 'Replay QA' in Promo Sans medium 40 px rise into place at 58 % height from 8 px below, and the small dark '▶ recording' chip (the one that drifted out of the collage) settles to the right of the mark. On 'End-to-end' the tagline grows in above it, centred at 42 % height, kit bracket in Promo Sans light 54 px with kit squareDots at its four corners: '{ End-to-end testing }', the braces parting as the words arrive; on 'fully' the braces part wider and '· fully managed' arrives inside them, the corner dots sliding out to the new width, so the type reads in the voice's order: '{ End-to-end testing · fully managed }'. On 'Catch' 'qa.replay.io' types in under the lock-up in Promo Sans regular ≈ 34 px, ink at 80 % (above the 22 px floor), at the recorded rate (kit typed, ≈ 14 cps) with the caret from ch02-s01; the caret blinks twice and stops. Nothing else: no subline, no other company's logo, no credits, no prices. Everything holds still for the last 0.8 s.",
+      "beats": [
+        {
+          "id": "mark",
+          "at": {
+            "line": "L0602",
+            "word": 0
+          },
+          "what": "the Replay mark and 'Replay QA' rise into place; the ▶ recording chip settles beside the mark"
+        },
+        {
+          "id": "tag1",
+          "at": {
+            "line": "L0602",
+            "word": 2
+          },
+          "what": "'{ End-to-end testing }' grows in above the lock-up with corner dots"
+        },
+        {
+          "id": "grow",
+          "at": {
+            "line": "L0602",
+            "word": 4
+          },
+          "what": "the braces part wider and '· fully managed' arrives inside them; the corner dots slide out"
+        },
+        {
+          "id": "url",
+          "at": {
+            "line": "L0602",
+            "word": 6
+          },
+          "what": "on 'Catch', 'qa.replay.io' types in (Promo Sans regular ≈ 34 px, ink at 80 %) with the caret"
+        },
+        {
+          "id": "caret",
+          "at": {
+            "line": "L0602",
+            "edge": "end",
+            "offset": 0.4
+          },
+          "what": "the caret blinks twice and stops; the card holds"
+        }
+      ],
+      "props": [
+        "replayMark",
+        "recordingChip",
+        "caret",
+        "squareDots"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "Replay QA",
+          "beat": "mark"
+        },
+        {
+          "kind": "title",
+          "text": "{ End-to-end testing · fully managed }",
+          "beat": "tag1"
+        },
+        {
+          "kind": "label",
+          "text": "qa.replay.io",
+          "beat": "url"
+        }
+      ],
+      "music": {
+        "cue": "M5 lift",
+        "note": "the band resolves to the tonic as the tagline completes on 'managed'; the drums drop out after 'time' and a warm pad chord rings out for at least 1.0 s after the last word (and on under the fade); no chime"
+      },
+      "transitionIn": "blur",
+      "claims": [
+        "SET-15",
+        "SET-16",
+        "CONT-19",
+        "LOOP-07",
+        "TIME-08",
+        "TIME-11"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+ "shot": "ch02-s01",
+ "at": "2026-10-28T17:37:28.921Z",
+ "step": 0.0833,
+ "sampled": 203,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch02-s01-page",
+  "knot-McCulloch & Pitts, 1943",
+  "ch02-s01-slip"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch02-s01-page",
+   "probed": true,
+   "from": 0.55,
+   "to": 12.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "knot-McCulloch & Pitts, 1943",
+   "probed": true,
+   "from": 5.633,
+   "to": 17.383,
+   "minInkWhilePaper": 0.57
+  },
+  {
+   "id": "ch02-s01-slip",
+   "probed": true,
+   "from": 12.8,
+   "to": 17.383,
+   "minInkWhilePaper": 0.19
+  }
+ ]
+}

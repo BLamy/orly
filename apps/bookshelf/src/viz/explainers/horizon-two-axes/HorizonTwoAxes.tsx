@@ -177,23 +177,28 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the dimmed main layer fades out as the closing panel arrives, so no
+  // old text sits behind the panel's words
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
+  // the axes give way to the scoreboard once it starts to draw
+  const axesOp = axesU * clamp01(1 - 2 * boardU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the two axes */}
-          {axesU > 0 && (
-            <g opacity={axesU}>
+          {axesOp > 0 && (
+            <g opacity={axesOp}>
               <line x1={AX_X} y1={AX_Y} x2={AX_X} y2={AX_Y - AX_H * axesU} stroke={colors.GRID} strokeWidth={2} />
               <line x1={AX_X} y1={AX_Y} x2={AX_X + AX_W * axesU} y2={AX_Y} stroke={colors.GRID} strokeWidth={2} />
-              <text x={AX_X - 14} y={AX_Y - AX_H - 14} fill={colors.MUTED} fontSize={13}>
+              <text x={AX_X - 14} y={AX_Y - AX_H - 14} fill={colors.MUTED} fontSize={14}>
                 parameters
               </text>
-              <text x={AX_X + AX_W + 6} y={AX_Y + 20} fill={colors.MUTED} fontSize={13}>
+              <text x={AX_X + AX_W + 6} y={AX_Y + 20} fill={colors.MUTED} fontSize={14}>
                 horizon (tokens of acting)
               </text>
               {/* param axis arrow: the orthodoxy */}
@@ -201,10 +206,10 @@ function Frame({ s }: { s: SceneState }) {
                 <g opacity={paramU}>
                   <line x1={AX_X + 40} y1={AX_Y - 30} x2={AX_X + 40} y2={AX_Y - 30 - 240 * paramU} stroke={colors.NEGATIVE} strokeWidth={3} />
                   <path d={`M${AX_X + 40},${AX_Y - 30 - 240 * paramU - 10} l-7,14 l14,0 z`} fill={colors.NEGATIVE} />
-                  <text x={AX_X + 56} y={AX_Y - 250} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+                  <text x={AX_X + 56} y={AX_Y - 250} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
                     ~1T weights
                   </text>
-                  <text x={AX_X + 56} y={AX_Y - 60} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={AX_X + 56} y={AX_Y - 60} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                     35B
                   </text>
                 </g>
@@ -214,7 +219,7 @@ function Frame({ s }: { s: SceneState }) {
                 <g opacity={horizU}>
                   <line x1={AX_X + 70} y1={AX_Y - 40} x2={AX_X + 70 + 320 * horizU} y2={AX_Y - 40} stroke={colors.ACCENT} strokeWidth={3} />
                   <path d={`M${AX_X + 70 + 320 * horizU + 10},${AX_Y - 40} l-14,-7 l0,14 z`} fill={colors.ACCENT} />
-                  <text x={AX_X + 190} y={AX_Y - 52} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+                  <text x={AX_X + 190} y={AX_Y - 52} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                     45K-token trajectories
                   </text>
                 </g>
@@ -222,7 +227,7 @@ function Frame({ s }: { s: SceneState }) {
               {dotU > 0 && (
                 <g opacity={dotU}>
                   <circle cx={AX_X + 390} cy={AX_Y - 40} r={11} fill={colors.ACCENT} />
-                  <text x={AX_X + 390} y={AX_Y - 62} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
+                  <text x={AX_X + 412} y={AX_Y - 34} fill={colors.TEXT} fontSize={14} fontWeight={600}>
                     Agents-A1 · 35B MoE
                   </text>
                 </g>
@@ -243,26 +248,27 @@ function Frame({ s }: { s: SceneState }) {
                 const u = clamp01(boardU * BENCH.length - i);
                 if (u <= 0) return null;
                 const y = SB_Y + i * SB_ROW_H;
-                const wa = (b.a1 / 90) * SB_BAR_MAX * fillU;
-                const wb = (b.best / 90) * SB_BAR_MAX * fillU;
+                // bars grow with their row, so the scoreboard reads while it draws
+                const wa = (b.a1 / 90) * SB_BAR_MAX * u;
+                const wb = (b.best / 90) * SB_BAR_MAX * u;
                 const winHl = winsU * (b.wins ? 1 : 0.25);
                 return (
                   <g key={b.name} opacity={u}>
-                    <text x={SB_X + 130} y={y + 12} textAnchor="end" fill={colors.TEXT} fontSize={13}>
+                    <text x={SB_X + 130} y={y + 12} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                       {b.name}
                     </text>
                     <rect x={SB_X + 145} y={y} width={Math.max(wa, 2)} height={14} rx={3}
                       fill={colors.ACCENT} opacity={0.5 + 0.45 * winHl} />
                     <rect x={SB_X + 145} y={y + 18} width={Math.max(wb, 2)} height={14} rx={3}
                       fill={colors.MUTED} opacity={0.45} />
-                    <text x={SB_X + 152 + wa} y={y + 12} fill={colors.ACCENT} fontSize={11} fontFamily={MONO} opacity={fillU}>
+                    <text x={SB_X + 152 + wa} y={y + 12} fill={colors.ACCENT} fontSize={13} fontFamily={MONO} opacity={fillU}>
                       {b.a1.toFixed(1)}
                     </text>
-                    <text x={SB_X + 152 + wb} y={y + 30} fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={fillU}>
+                    <text x={SB_X + 152 + wb} y={y + 30} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={fillU}>
                       {b.best.toFixed(1)} · {b.bestOf}
                     </text>
                     {winsU > 0.4 && b.wins && (
-                      <text x={SB_X + 118} y={y + 30} textAnchor="end" fill={colors.POSITIVE} fontSize={11} opacity={winsU}>
+                      <text x={SB_X + 118} y={y + 30} textAnchor="end" fill={colors.POSITIVE} fontSize={12} opacity={winsU}>
                         wins
                       </text>
                     )}
@@ -273,20 +279,23 @@ function Frame({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {/* screen-fixed */}
-      <g opacity={titleU * mainOp}>
-        <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
-          Scaling the horizon, not the parameters
-        </text>
-        <text x={40} y={80} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
-          arXiv:2606.30616
-        </text>
-      </g>
+      {mainOp > 0 && (
+        <g opacity={titleU * mainOp}>
+          <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+            Scaling the horizon, not the parameters
+          </text>
+          <text x={40} y={80} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
+            arXiv:2606.30616
+          </text>
+        </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             A second axis: how long you act, not how big you are
           </text>
@@ -296,7 +305,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             and honestly trails on the other three
           </text>
-          <text x={640} y={400} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={400} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontFamily="monospace">
             Scaling the Horizon · arXiv:2606.30616
           </text>
         </g>

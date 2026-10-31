@@ -69,8 +69,11 @@ const BARS_Y = 430;
 const BAR_H = 18;
 const BAR_MAX = 320;
 
-const CAM_PROMPT: CameraState = { x: 640, y: 260, k: 1.3 };
-const CAM_DOTS: CameraState = { x: DOTS_X0 + 120, y: 250, k: 2.0 };
+const ANS_R = ANS_X + 110;
+// the whole prompt (question, dots, answer) spans Q_X..ANS_R: frame it in full
+const CAM_PROMPT: CameraState = { x: (Q_X + ANS_R) / 2, y: 260, k: 1.2 };
+// zoom into the dots, keeping 'silicon plus 62?' and the answer on stage
+const CAM_DOTS: CameraState = { x: (qXs[6] + ANS_R) / 2, y: 250, k: 1.8 };
 
 interface Scene {
   tl: Timeline;
@@ -186,7 +189,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel is drawn over fully faded content (no ghost text behind it)
+  const mainOp = 1 - 0.95 * dimU;
 
   return (
     <>
@@ -249,8 +253,9 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* the reported uplift */}
-          {barsU > 0 && (
-            <g opacity={barsU}>
+          {/* the bars give way to the dots once the glow starts (glowU is 0 until then) */}
+          {barsU * (1 - glowU) > 0 && (
+            <g opacity={barsU * (1 - glowU)}>
               <text x={Q_X} y={BARS_Y - 36} fill={colors.TEXT} fontSize={16}>
                 accuracy without fillers → with fillers
               </text>
@@ -263,15 +268,15 @@ function Frame({ s }: { s: SceneState }) {
                 const w1 = (r.with / 100) * BAR_MAX * fillU + w0 * (1 - fillU);
                 return (
                   <g key={r.task}>
-                    <text x={Q_X} y={y + 13} fill={colors.MUTED} fontSize={13}>
+                    <text x={Q_X} y={y + 13} fill={colors.TEXT} fontSize={14}>
                       {r.task}
                     </text>
                     <rect x={Q_X + 210} y={y} width={w0} height={BAR_H} rx={4} fill={colors.MUTED} opacity={0.45} />
                     <rect x={Q_X + 210} y={y} width={Math.max(0, w1 - w0)} height={BAR_H} rx={0} fill={colors.POSITIVE} opacity={0.85} transform={`translate(${w0},0)`} />
-                    <text x={Q_X + 210 + w0 - 6} y={y + 14} textAnchor="end" fill={colors.BG} fontSize={11} fontFamily="monospace">
+                    <text x={Q_X + 210 + 6} y={y + 14} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
                       {r.without}
                     </text>
-                    <text x={Q_X + 214 + w1} y={y + 14} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace" opacity={fillU}>
+                    <text x={Q_X + 214 + w1} y={y + 14} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" opacity={fillU}>
                       {r.with}%
                     </text>
                   </g>
@@ -294,7 +299,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             The dots do work. Can we read it?
           </text>
@@ -304,7 +309,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             the paper asks whether the internal trace still tells the truth.
           </text>
-          <text x={640} y={400} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={400} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             Reading Between the Dots · arXiv:2607.03502
           </text>
         </g>

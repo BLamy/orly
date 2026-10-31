@@ -1,0 +1,59 @@
+{
+ "shot": "ch03-s02",
+ "at": "2026-10-28T09:54:46.382Z",
+ "minCapPx": 22,
+ "sampled": 20,
+ "texts": 9,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "“a fixed list of o",
+   "capWhileSubject": 39.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“a fixed list of operations”",
+   "capWhileSubject": 39.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— the tutorial",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "sum",
+   "capWhileSubject": 23.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ReGLU",
+   "capWhileSubject": 22.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "boolean",
+   "capWhileSubject": 22.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "builder code: ordinary JS, run once",
+   "capWhileSubject": 26.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "· appends to a Circuit",
+   "capWhileSubject": 26.8,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "depth →",
+   "maxCap": 12.9,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

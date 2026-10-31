@@ -39,6 +39,20 @@ const CL = [colors.ACCENT, colors.SECONDARY, colors.WARM];
 const BROAD = colors.ACCENT;
 const TIGHT = colors.WARM;
 
+// Recap chips for the closing card, centred as one row with 12px gaps.
+const CHIP_SPECS = [
+  { label: 'nearest neighbors', w: 176 },
+  { label: 'trees', w: 96 },
+  { label: 'ensembles', w: 124 },
+  { label: 'margins', w: 112 },
+  { label: 'clusters', w: 120, hot: true },
+];
+const CHIP_TOTAL = CHIP_SPECS.reduce((s, c) => s + c.w, 0) + 12 * (CHIP_SPECS.length - 1);
+const CHIPS = CHIP_SPECS.reduce<{ label: string; w: number; x: number; hot?: boolean }[]>((row, c) => {
+  const x = row.length ? row[row.length - 1].x + row[row.length - 1].w + 12 : 640 - CHIP_TOTAL / 2;
+  return [...row, { ...c, x }];
+}, []);
+
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const ptsU = s.get(scene.ptsU);
@@ -142,19 +156,15 @@ function Frame({ s }: { s: SceneState }) {
                   <text x={sx(FKM_BOUNDARY_X) + 10} y={PLOT.y + 26} fill={colors.NEGATIVE} fontSize={14}>
                     k-means boundary
                   </text>
-                  {/* centroids */}
+                  {/* centroids, haloed so they read over the dots */}
                   {FKM.cents.map((c, k) => (
                     <g key={k} transform={`translate(${sx(c.x)},${sy(c.y)})`}>
+                      <line x1={-9} y1={-9} x2={9} y2={9} stroke={colors.BG} strokeWidth={8} />
+                      <line x1={-9} y1={9} x2={9} y2={-9} stroke={colors.BG} strokeWidth={8} />
                       <line x1={-8} y1={-8} x2={8} y2={8} stroke={colors.NEGATIVE} strokeWidth={3.5} />
                       <line x1={-8} y1={8} x2={8} y2={-8} stroke={colors.NEGATIVE} strokeWidth={3.5} />
                     </g>
                   ))}
-                  <g>
-                    <rect x={PLOT.x + 16} y={PLOT.y + PLOT.h - 52} width={230} height={34} rx={9} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
-                    <text x={PLOT.x + 32} y={PLOT.y + PLOT.h - 29} fill={colors.NEGATIVE} fontSize={14.5}>
-                      {`${N_STOLEN} points on the wrong side`}
-                    </text>
-                  </g>
                 </g>
               )}
 
@@ -165,7 +175,16 @@ function Frame({ s }: { s: SceneState }) {
                     <g key={k}>
                       <circle cx={sx(c.mx)} cy={sy(c.my)} r={(c.s / 4.6) * PLOT.w} fill="none" stroke={k === 0 ? BROAD : TIGHT} strokeWidth={2.4} opacity={0.9} />
                       <circle cx={sx(c.mx)} cy={sy(c.my)} r={(2 * c.s / 4.6) * PLOT.w} fill="none" stroke={k === 0 ? BROAD : TIGHT} strokeWidth={1.2} strokeDasharray="4 5" opacity={0.5} />
-                      <text x={sx(c.mx)} y={sy(c.my) - (c.s / 4.6) * PLOT.w - 10} textAnchor="middle" fill={k === 0 ? BROAD : TIGHT} fontSize={13.5}>
+                      <text
+                        x={sx(c.mx)}
+                        y={sy(c.my) - (2 * c.s / 4.6) * PLOT.w - 10}
+                        textAnchor="middle"
+                        fill={k === 0 ? BROAD : TIGHT}
+                        fontSize={14}
+                        stroke={colors.BG}
+                        strokeWidth={5}
+                        paintOrder="stroke"
+                      >
                         {`σ ${c.s.toFixed(2)} · π ${c.pi.toFixed(2)}`}
                       </text>
                     </g>
@@ -207,24 +226,55 @@ function Frame({ s }: { s: SceneState }) {
                   </g>
                 );
               })}
+
+              {/* count pill sits top-left, above the dots, and fades out as the mixture takes over */}
+              {fkmU > 0.01 && (
+                <g opacity={clamp01(1 - gmmU * 2)}>
+                  <rect x={PLOT.x + 16} y={PLOT.y + 16} width={230} height={34} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+                  <text x={PLOT.x + 32} y={PLOT.y + 39} fill={colors.NEGATIVE} fontSize={14.5}>
+                    {`${N_STOLEN} points on the wrong side`}
+                  </text>
+                </g>
+              )}
             </g>
           )}
         </g>
       </Camera>
 
-      {/* clean ending card */}
+      {/* clean ending card: a solid backdrop hides the faded plot behind it */}
       {endU > 0 && (
-        <g opacity={endU}>
-          <rect x={230} y={222} width={820} height={206} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
-            Clustering
-          </text>
-          <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            k-means: assign, average, repeat — inertia can only fall
-          </text>
-          <text x={640} y={370} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            a gaussian mixture is the same dance, made soft — and it fixed all 9 thefts
-          </text>
+        <g>
+          <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.96 * endU} />
+          <g opacity={endU}>
+            <rect x={230} y={176} width={820} height={288} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={640} y={240} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
+              Clustering
+            </text>
+            <text x={640} y={284} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+              k-means: assign, average, repeat — inertia can only fall
+            </text>
+            <text x={640} y={316} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+              a gaussian mixture is the same dance, made soft — and it fixed all 9 thefts
+            </text>
+            {/* the five machines from the recap, one chip each */}
+            {CHIPS.map((chip) => (
+              <g key={chip.label}>
+                <rect
+                  x={chip.x}
+                  y={364}
+                  width={chip.w}
+                  height={36}
+                  rx={18}
+                  fill={colors.BG}
+                  stroke={chip.hot ? colors.ACCENT : colors.GRID}
+                  strokeWidth={chip.hot ? 2 : 1.2}
+                />
+                <text x={chip.x + chip.w / 2} y={388} textAnchor="middle" fill={chip.hot ? colors.ACCENT : colors.TEXT} fontSize={15}>
+                  {chip.label}
+                </text>
+              </g>
+            ))}
+          </g>
         </g>
       )}
     </>

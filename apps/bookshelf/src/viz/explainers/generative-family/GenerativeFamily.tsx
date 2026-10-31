@@ -15,7 +15,13 @@ scene.tl.applyOverrides(overrides as TimelineOverrides);
 const MOTION = { file: 'src/viz/explainers/generative-family/overrides.json', slug: 'generative-family' };
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
+const mix = (a: number, b: number, u: number): number => a + (b - a) * u;
 const ROW_COLORS = [colors.ACCENT, colors.NEGATIVE, colors.SECONDARY, colors.WARM];
+
+/** Where the data settles once the family panel opens: a fixed thumbnail in the empty left column. */
+const THUMB = { x: 70, y: 150, w: 340, h: 308 };
+const [X_LO, X_HI] = xScale.range();
+const [Y_BOT, Y_TOP] = yScale.range();
 
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
@@ -32,23 +38,38 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      <g opacity={dimU}>
+        {/* the melting/condensing point cloud — the one persistent object. Drawn with the camera's own
+            transform, then blended into a fixed thumbnail so the family panel keeps the stage. */}
+        {Array.from({ length: N_PTS }, (_, i) => {
+          const p = noised(i, noiseT);
+          const wx = xScale(p[0]);
+          const wy = yScale(p[1]);
+          const camX = STAGE_W / 2 + cam.k * (wx - cam.x);
+          const camY = STAGE_H / 2 + cam.k * (wy - cam.y);
+          const thumbX = THUMB.x + ((wx - X_LO) / (X_HI - X_LO)) * THUMB.w;
+          const thumbY = THUMB.y + ((wy - Y_TOP) / (Y_BOT - Y_TOP)) * THUMB.h;
+          const reveal = clamp01(dotsU * 2 - i / N_PTS);
+          return (
+            <circle
+              key={i}
+              cx={mix(camX, thumbX, treeU)}
+              cy={mix(camY, thumbY, treeU)}
+              r={3.4 * reveal * mix(cam.k, 0.7, treeU)}
+              fill={colors.ACCENT}
+              opacity={0.8 - 0.25 * noiseT}
+            />
+          );
+        })}
+        {treeU > 0 && (
+          <text x={THUMB.x} y={THUMB.y - 14} fill={colors.MUTED} fontSize={14} opacity={treeU}>
+            the data, t = 0
+          </text>
+        )}
+      </g>
+
       <Camera {...cam}>
         <g opacity={dimU}>
-          {/* the melting/condensing point cloud — the one persistent object */}
-          {Array.from({ length: N_PTS }, (_, i) => {
-            const p = noised(i, noiseT);
-            return (
-              <circle
-                key={i}
-                cx={xScale(p[0])}
-                cy={yScale(p[1])}
-                r={3.4 * clamp01(dotsU * 2 - i / N_PTS)}
-                fill={colors.ACCENT}
-                opacity={0.8 - 0.25 * noiseT}
-              />
-            );
-          })}
-
           {/* the family panel */}
           {treeU > 0 && (
             <g opacity={treeU}>
@@ -57,7 +78,7 @@ function Frame({ s }: { s: SceneState }) {
               </text>
               {FAMILY.map((n, i) => {
                 const hot = hlIdx === i;
-                const dimRow = hlIdx >= 0 && !hot ? 0.25 : 1;
+                const dimRow = hlIdx >= 0 && !hot ? 0.4 : 1;
                 return (
                   <g key={i} opacity={dimRow}>
                     <rect
@@ -74,7 +95,7 @@ function Frame({ s }: { s: SceneState }) {
                     <text x={n.x} y={n.y - 6} textAnchor="middle" fill={ROW_COLORS[i]} fontSize={17} fontWeight={650}>
                       {n.label}
                     </text>
-                    <text x={n.x} y={n.y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    <text x={n.x} y={n.y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                       {n.sub}
                     </text>
                     {/* compute-per-sample bar (log scale, honest label) */}
@@ -89,7 +110,7 @@ function Frame({ s }: { s: SceneState }) {
                           fill={ROW_COLORS[i]}
                           opacity={0.8}
                         />
-                        <text x={n.x + 140} y={n.y - 16} fill={colors.MUTED} fontSize={11}>
+                        <text x={n.x + 140} y={n.y - 16} fill={colors.MUTED} fontSize={13}>
                           {`${n.steps} pass${n.steps > 1 ? 'es' : ''} / sample`}
                         </text>
                       </g>
@@ -122,18 +143,13 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={232} rx={16} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={232} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={282} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             One Game, Four Strategies
           </text>
-          <MathLabel
-            tex={'\\text{density} \\;\\cdot\\; \\text{latent space} \\;\\cdot\\; \\text{critic} \\;\\cdot\\; \\text{reverse decay}'}
-            x={640}
-            y={338}
-            fontSize={20}
-            color={colors.WARM}
-            opacity={endU}
-          />
+          <text x={640} y={338} textAnchor="middle" fill={colors.WARM} fontSize={20}>
+            density · latent space · critic · reverse decay
+          </text>
           <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             all of them: make the data likely under something you can sample
           </text>

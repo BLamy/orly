@@ -1,0 +1,125 @@
+{
+  "reviewer": "story-editor",
+  "round": 4,
+  "lens": "story, curiosity and voice",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8.5,
+    "visual": 8.5,
+    "voice": 8
+  },
+  "critical": [
+    "Runtime has gone the wrong way. Narration is now 3,557 words (whitespace count over 246 lines), up from 3,179 in round 3 and 17% over the 3,040 target. Fixes from the other lenses added about 380 words. Running the documented timing model (leadIn, line, pauseAfter, holdAfter, max with minDuration) gives 41.7 min at 120 wpm, 39.5 at 130, 37.6 at 140 and 36.0 at 150. Total air is 648 s. The brief allows 30 to 35 minutes and asks for a slow voice, so at any plausible reading speed the film runs past 35. Some air requests from round 3 went the other way: ch15-s04 leadIn grew from 4.8 to 5.5. Fix in three tiers. TIER 1, tested in a simulation (−74 words, about −40 s of air, which brings it to 36.6 min at 140 and 35.0 at 150): cut L0317 (the false-clue card stays on screen); cut L1507, or fold the METR result into a silent card (see its issue); apply the rewrites given in the issues below for L0401, L0511, L0515, L0522, L0523, L0609, L0815, L0829 (moved), L0909, L1002, L1010, L1116, L1410, L1415 and L1509. Air: ch12-s07 leadIn 10 → 7; ch15-s04 leadIn 5.5 → 2; ch15-s06 leadIn 7.5 → 4.5; ch15-s08 leadIn 7 → 5; ch01-s06 leadIn 6 → 4; ch15-s07 holdAfter 7.5 → 5.5; ch03-s06 and ch05-s03 holdAfter 6.5 → 5; L1219 pauseAfter 9 → 6.5; L0319 pauseAfter 5.4 → 3.5; L0206 pauseAfter 4.52 → 3.2; L1118 pauseAfter 4.22 → 2.8. TIER 2 (about −35 words): L0814 cut (pooling stays as the ch08-s07 label); L0902 → 'December 2012. By one reporter's account, the tall man auctioned the three of them from a laptop on a wastebasket, stopped at forty-four million dollars, and chose Google.'; L0809 → 'Ninety-six stencils at the bottom; four more layers above, each stencilling the one below: edges, then textures, parts, things.'; L1529 → 'The next day, a chemistry prize went to DeepMind's Demis Hassabis and John Jumper, for protein shapes.' TIER 3: the narrate stage must cast and pace the voice at 145 to 150 wpm, measured at audition, and the narration must stay at or below about 3,400 words. Protect these from all cuts: the deaths in ch04, the thirty-six-year thread, the stencil, cards and jug mechanics, and every fairness clause. Gate: total runtime of 35:00 or less, computed from the timeline before shots are animated.",
+    "The film's first suspect is never tried. The case rests on three suspects (L0110: 'Rules. Knowledge. And learning.'). Knowledge gets a candle aloud (L0513), evidence (L0514, L0515) and a winter (L0522). Learning gets the whole film. Rules is named once, at L0215 ('our first suspect, Rules'), and then never again until the verdict at L1527, 'Not rules alone.' The ear never hears Rules fail, or win. The two moments that could try it go unused: Lighthill's 'combinatorial explosion' (L0410) is framed as a general cause of the winter, and Deep Blue (L0615), the rule-and-search camp's great victory, is told only as 'twenty-nine years late, with no neural network.' As a result the verdict on the first suspect lands on nothing. Fix with two clauses, about +12 words; Tier 1 more than pays for them. (a) L0410 → 'In 1973, James Lighthill's report for Britain blamed “the combinatorial explosion”: choices that multiply faster than any search. He aimed at general-purpose programs, our first suspect, more than at nets. Funding fell for almost a decade.' (e3-lighthill, e3-lighthill-neural, e3-uk-cut; the second sentence is also a lovely, fair irony, since the report many blame for the nets' winter approved neural models). (b) L0615 → 'The chess crown, promised in 1958 within ten years, came in 1997: twenty-nine years late, won by search, with no neural network. A point for Rules.' (e6-deepblue, e1-chess-prediction). Rules then has a record of stalled and then a win at chess, so 'Not rules alone' is a verdict the ear can follow, and the 'alone' is earned."
+  ],
+  "issues": [
+    {
+      "where": "ch08-s13b → ch08-s14 (L0835, L0827–L0829)",
+      "problem": "The film's first emotional peak is 'Thirty-six years at the edge of the light.' Its direction says 'then let the music take the rest', and the shot holds for 7 s. But the chapter then carries on for three more lines. The last of them, L0829 ('Not every clue is part of the suspect. These stencils aren't in the chat box. The lesson is.'), is a technical aside, and its first sentence is muddled: clues are not parts of suspects. It deflates the climax. ch08-s14 has to stay last because of the green-LED match cut into ch09-s01, so swapping the shots isn't an option.",
+      "fix": "Keep L0827–L0828 in ch08-s14, so the chapter ends on 'Put that in the file' and the prophecy is pinned. Move the aside to open ch10, where it does real work (convolution isn't in the Transformer): ch10-s01 L1002 → 'These stencils aren't in the chat box; their lesson is. Another candle, lit long before: language must be read in order, one word at a time.' Delete L0829. Net −4 words."
+    },
+    {
+      "where": "ch10-s01 L1002 → ch10-s13b L1030",
+      "problem": "'For twenty years, language was read in order' gives the candle's lifetime away at the start of the chapter. L1030's 'The read-in-order candle burned twenty years' then only repeats it. Every other belief is lit first and its length revealed when it goes out, and that reveal is the device's small pleasure. This belief is also never actually lit as a candle aloud.",
+      "fix": "Use the L1002 rewrite above ('Another candle, lit long before: language must be read in order, one word at a time.') so the twenty years land only at L1030."
+    },
+    {
+      "where": "ch11-s07 L1116",
+      "problem": "'The old recipe lasted two years.' The ear has never heard of a recipe. The 2020 rule, grow the model faster than the data, exists only as a screen tag (ch11-s05), so 'old recipe' points at nothing. The direction ('name the recipe plainly') assumes a setup the narration lacks.",
+      "fix": "L1116 → 'Feed it more, not just grow it. The scale candle is merely trimmed.' (−0 words; the screen tag burning off carries the 2020 rule.) Update the direction to: 'the lesson plainly, a small turn on \"Feed it more\"; \"merely trimmed\" even and precise'."
+    },
+    {
+      "where": "ch15-s04 L1507",
+      "problem": "'Its makers now call that result out of date.' The nearest noun is 'early AI coding tools', so the ear hears the tool vendors dismissing an unflattering study, which is the opposite of what is meant (the researchers' own caveat). The shot also opens with a 5.5 s music-only lead-in, and its task-length-doubling ruler is never mentioned aloud, so it sags in the finale's run-up.",
+      "fix": "Either cut L1507 and play ch15-s04 as a short silent card under music (lead-in 2 s; the art director keeps the ruler), or, if it stays: 'In one 2025 trial, coders with early AI tools were slower, yet felt faster. The researchers now call that result out of date.' (−2) and leadIn 5.5 → 2.0."
+    },
+    {
+      "where": "ch06-s05 L0610 (open since round 3)",
+      "problem": "This is still 31 words with a semicolon, two deadlines and an elided verb ('Vapnik, that by 2005'). It sets up one of the film's best payoffs ('Each man lost one bet'), and a listener who loses the thread here loses the joke.",
+      "fix": "'In 1995, two colleagues bet a dinner. One said that by 2000, we'd know why big nets work. Vapnik said that by 2005, “no one in his right mind” would use them.' (+1; Jackel's name stays on screen)."
+    },
+    {
+      "where": "ch14-s07 L1415",
+      "problem": "'a hotline for when AI goes wrong' is breezy and goes beyond the bible. e13-summits-2026 says 'a channel for AI incidents'. A hotline implies a direct leader-to-leader line.",
+      "fix": "'This September they reached across the water: an AI dialogue, and a channel for incidents. Chip rules unchanged.' (−3)."
+    },
+    {
+      "where": "ch13-s06 L1315 → ch14-s01 L1401",
+      "problem": "Chapter 13 ends in mid-2023 ('And it had crossed the water.'), and chapter 14 opens 'In 2017…'. The ear hears time jump back six years with no signal, right after being told the case had just crossed over.",
+      "fix": "L1401 → 'Back in 2017, China aimed to be “the world's primary AI innovation center” by 2030.' (+1)."
+    },
+    {
+      "where": "ch03-s01 L0302",
+      "problem": "'to tell left marks from right': spoken, 'left marks' can be heard as marks left behind. The phrase is awkward in the film's first demonstration of learning.",
+      "fix": "'Frank Rosenblatt's perceptron learns, in fifty tries, to tell left from right.' (−1; 'marks on cards' is visible on screen)."
+    },
+    {
+      "where": "ch04-s07 L0412",
+      "problem": "This is only half fixed from round 3. 'our key clue sat' still puts three hard k-sounds together ('our key clue'), right at the line the direction wants warm and secret.",
+      "fix": "'Yet a few windows stayed lit. In Helsinki, the clue we need sat in a student's thesis about rounding errors, and nobody was looking.' (+1)."
+    },
+    {
+      "where": "ch02-s04 L0210 (Gerard), unpaid",
+      "problem": "Ralph Gerard's dissent, 'more dial than switch', is a strong plant in the film's own grammar (a doubter at the rim of the first candle). It is never paid off, although every network from 1986 onward is in fact a machine of dials (graded units, knobs). It is the cheapest curiosity payoff left.",
+      "fix": "Only if the bible supports graded units in 1986 (add a claim from the RHW dossier first): in L0507 → '…Light flows up through layers of lanterns, our nerve cells, glowing by degrees: more dial than switch.' (+6, a callback the direction can mark 'a small smile; the doubter was right'). If there is no claim, skip it."
+    },
+    {
+      "where": "ch05-s06 L0511",
+      "problem": "'that Helsinki thesis held the same trick, run backward': 'run backward' after 'held the same trick' is a garden path, since the ear can't tell whether the thesis or the trick runs backward.",
+      "fix": "'Who invented it? Several people, separately, that Helsinki student among them. The 1986 paper made it stick.' (−4; it also names a person, not a document, as the inventor)."
+    },
+    {
+      "where": "ch05-s07–s10 (L0515, L0522, L0523)",
+      "problem": "The knowledge suspect's boom and bust (L0513–L0522) and the Fodor–Pylyshyn challenge are both good but over-worded for the ear. L0522 runs three dated clauses in a row, and L0523 starts with a vague 'took aim'.",
+      "fix": "L0515 → 'In 1985, a team typing in common sense wrote that AI could draw “practically nothing” from raw text.' (−2). L0522 → 'In 1984, a panel warned of an AI winter; by 1987 the money had fled. The knowledge candle burned about seven years.' (−5). L0523 → 'Two critics of the nets asked: can a net that says John loves the girl always say the girl loves John? Still argued.' (−5)."
+    },
+    {
+      "where": "Tier 1 trims, film-wide",
+      "problem": "These lines are longer than the ear needs. Each trim keeps the image and the claim.",
+      "fix": "L0401 → 'The book's sharpest puzzle: exclusive-or. Light up if one input is on, not both. On a square, the two that light sit on opposite corners.' (−5). L0609 → 'At its rim, three stubborn holdouts: Hinton, LeCun and Yoshua Bengio. “We couldn't get our papers published,” LeCun said.' (−3; the first two are named by now). L0815 → 'Sixty million weights, and labels worth only about twelve million yes-or-no answers: it could simply memorise.' (−2). L0909 → 'Late in 2015 came OpenAI, co-chaired by Sam Altman and Elon Musk: human-level AI “could benefit society”, or “damage society if built or used incorrectly.”' (−3; both halves of the quote kept). L1010 → '…A message, what I pass on. All learned.' (−5, dropping 'All made by weights' and 'a list of'). L1410 → 'Markets bet compute didn't matter: a struck match, out within a day. And China trailing by years? That belief burned about two.' (−3). L1509 → 'Three who kept these networks alive through the winters lived to see them win. Two now warn the road is dangerous; the third, that it doesn't go far enough.' (−2)."
+    },
+    {
+      "where": "Candle refrain: L0702, L1112, L1307, L1417 (+ L1405 'Two new candles')",
+      "problem": "'A new candle:' is now the exact opening of four lines, and 'Two new candles' a fifth. The ritual is a strength, but by the fourth identical opening it sounds like a template, not a teacher.",
+      "fix": "Vary two of them without adding words. L1307 → 'Another candle, lit by worry: machines smarter than us may be years away, and dangerous.' L1417 → 'And a candle for this year: the gap is months, not years.'"
+    },
+    {
+      "where": "ch13-s03 L1308",
+      "problem": "'Hinton signed first, Yoshua Bengio second, lab heads too.' The clipped 'lab heads too' reads like a caption, not speech, and it buries the fact that the labs' own leaders signed, which is the striking part.",
+      "fix": "'Then a one-sentence warning, about extinction. Hinton signed first, Bengio second, and the heads of leading labs signed too.' (+3; drop 'Yoshua', since he is named in ch06)."
+    },
+    {
+      "where": "ch02-s06 L0213 (Minsky), optional",
+      "problem": "Minsky is the film's chief doubter: at the rim (L0306), co-author of the book (L0404), and never heard from after 1969. He gets no human moment, so he plays as a villain. quotes.json has a delightful, ear-friendly line that shows the doubter was once enchanted, which makes his later doubt earned rather than villainous.",
+      "fix": "If the budget allows (+12): after L0213, '“We sort of quit science for a while to watch the machine,” he recalled.' (q-minsky-snarc-watch). Otherwise skip."
+    },
+    {
+      "where": "ch07-s03 L0704 (Fei-Fei Li), optional",
+      "problem": "ImageNet's founder is a possessive ('Fei-Fei Li's pictures'), and the era's dissent against her (colleagues' tenure advice) is screen-only. The brief asks who dissented, and this is the film's clearest case of a person betting against a consensus and winning.",
+      "fix": "Word-neutral recast: 'Accomplice one: data. Colleagues told Fei-Fei Li to do something more useful. Labelling her pictures by hand would take nineteen years.' (e7-imagenet-skeptics; indirect speech, not a quotation)."
+    },
+    {
+      "where": "ch04-s08 L0415 vs ch08-s11 L0821",
+      "problem": "In 1976 the tall man 'sits down, far from the flame'. In 2012 he 'could not sit, and so could not fly'. A careful listener feels an unexplained contradiction, and nothing aloud explains the back problem (the wastebasket laptop in L0902 hints at it).",
+      "fix": "Low priority. L0415 → 'Sussex, 1976. A tall young man takes his place, far from the flame.' (word-neutral; the puppet can still sit, since a 1970s seated pose is allowed). Or leave it, and trust that L0902's wastebasket supplies the reason."
+    },
+    {
+      "where": "ch09-s03 L0907 (Lee Sedol), optional",
+      "problem": "Raised in round 3 and still open. Ch09 is the lightest chapter. 'Won humanity's only game' is lovely, but the human cost of the Go match is never voiced.",
+      "fix": "Only if Tier 1 and Tier 2 land and the budget allows: after L0907, 'He later retired, saying: “Even if I become the number one, there is an entity that cannot be defeated.”' (q-lee-entity, +17). If not, skip; runtime matters more."
+    }
+  ],
+  "strengths": [
+    "Both round-3 criticals landed cleanly. The tall man's thirty-six years are now a complete aural thread: he sits down at the rim in 1976 (L0415–L0416), is named (L0505), co-writes the 2006 paper (L0703), runs the lab in Toronto (L0803), cannot fly to Florence (L0821), and has the payoff spoken (L0835). The thread carries on through the wastebasket auction (L0902), the 2 a.m. phone call (L1501), the slip he takes down (L1302) and the last slip (L1517). The ear now has a protagonist. Back-propagation credit is given in full: Rumelhart is first author aloud (L0507), and Hinton's whole disclaimer is quoted (L0512).",
+    "The plant-and-payoff lattice is the film's spine and is now dense and satisfying. 'If one exists' (L0311) is paid by exclusive-or. 'Then two men wrote a book' (L0320) connects to 'The book's sharpest puzzle' (L0401). 'Who paid for dinner?' becomes 'Each man lost one bet'. Fog leads to the bowl, then to 'So why would anyone choose the fog?', then to 'Given data and fire, it led somewhere better'. Pre-training returns 'in a different coat'. 'Practically nothing' leads to 'Sensible, then.' Rulebook (L0105) returns as 'No rulebook. Only odds.' The child machine is 'at school'. The talk nobody remembered, remembered. Rosenblatt is 'Sixty-one years early.' 'Remember him' is paid with Widrow's own words (L1511). Each payoff rewards attention, and that is what makes viewers curious.",
+    "The 'Nobody told…' refrain is now consistent: 'Nobody told them to' (L0520), 'Nobody told the two halves' (L0818), 'Nobody cut these stencils' (L0811) and 'Nobody told it to plan' (L1505). It is the film's chord of wonder, and it states the thesis (learning without a teacher) without ever saying so.",
+    "The deep dives teach for the ear and keep their pleasure. The pierced tin stencil leads into 'Now here is the lovely part: slide the same stencil everywhere.' Then the stencils that 'began as noise, like television snow', the two halves that split colour from black-and-white 'Every time', and the cards, jug and cups with a worked toy whose halving is explained ('that, you see, is why we halved'). 'Words talk to each other, then each thinks alone. Six times over.' The curtain question 'what comes next?' hands chapter 10 to chapter 11 perfectly.",
+    "Act One's grief is handled with real restraint. Pitts dies alone, McCulloch four months later, and Rosenblatt drowns on his birthday, each in one plain sentence under falling snow. This is followed by the lit windows and the tall young man taking his place at the rim. That is how to put feeling into a film about ideas.",
+    "Fairness has become part of the narrator's character rather than a disclaimer. 'In fairness, the Navy, the press and Rosenblatt all fed the hype.' 'One book's fault? Historians still argue.' 'Fair credit: that was seven networks voting.' 'But people wrote the list.' 'Its plan named no rival.' 'The accounts differ.' Dame Wendy Hall on the Nobel. China now has a human voice: Liang Wenfeng's 'originality and imitation' (L1420) answers the gap debate from the other shore, which was round 3's open complaint.",
+    "There are memorable lines for a slow, wry voice: 'You could hear it learn. I love that.' '“At the moment, none whatever,” Dr. Rosenblatt said cheerfully.' 'A winter, then, of prestige, not of use.' 'Colleagues doubted it. So did his father.' 'A struck match, out within a day.' 'Not a new engine. A new door.' 'The paper that put it out had Pitts's own name on it.' Most of all, the ending: 'Somewhere tonight a lamp is on, and someone at the rim is suspicious. That is where new candles come from. Perhaps it's you.'",
+    "The finale's verdict (L1527) gathers every accomplice the ear has met (data, fire, a messenger running backward, people choosing) into one breath, and 'The board was a network all along' is a true reveal, because the board was planted aloud in L0110. L1515 now counts the market panic correctly as 'One match'."
+  ]
+}

@@ -1,0 +1,3 @@
+# Film sources are not Nx projects (the film editor saves films/<slug>/edit/project.json)
+films/
+.orly-work/

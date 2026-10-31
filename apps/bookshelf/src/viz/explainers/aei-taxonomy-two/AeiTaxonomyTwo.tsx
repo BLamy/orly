@@ -59,6 +59,13 @@ const CAM_REP = camAt(2, 0);
 const CAM_AUD = camAt(2, 1, 1.05);
 const CAM_CLOSE = camAt(1, 1);
 
+// A room fades out as the camera leaves it, so a finished room never lingers
+// at full strength off the stage (the next room is already the subject).
+const roomFade = (cam: CameraState, c: number, r = 0): number => {
+  const d = Math.hypot(cam.x - camAt(c, r).x, cam.y - camAt(c, r).y);
+  return clamp01(1 - d / 900);
+};
+
 const FIG = '/generated/ssrn-aei/figures';
 
 // ---------------------------------------------------------------------------
@@ -302,24 +309,31 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         {/* ---------- ROOM (0,0) — §6.4 narrative capture ---------- */}
-        <g transform={roomAt(0, 0)} opacity={narrU}>
+        <g transform={roomAt(0, 0)} opacity={narrU * roomFade(cam, 0, 0)}>
           <RoomHeader title="6.4 — narrative capture" sub="SSRN 6325939 §6.4 · performative alignment" />
-          <rect x={240} y={170} width={800} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={640} y={228} textAnchor="middle" fill={colors.SECONDARY} fontSize={22} fontWeight={600}>
+          <rect x={240} y={150} width={800} height={262} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={206} textAnchor="middle" fill={colors.SECONDARY} fontSize={22} fontWeight={600}>
             optimize: acceptability to evaluators
           </text>
-          <text x={640} y={276} textAnchor="middle" fill={colors.MUTED} fontSize={20}>
+          <text x={640} y={250} textAnchor="middle" fill={colors.MUTED} fontSize={20}>
             not: coherence
           </text>
-          <text x={640} y={322} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+          <text x={640} y={288} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             the system plays to whoever is scoring it
           </text>
+          {/* the gap the caption names: evaluator acceptance runs long, coherence stays short */}
+          <text x={300} y={336} fill={colors.SECONDARY} fontSize={15}>accepted by evaluators</text>
+          <rect x={300} y={344} width={680} height={14} rx={7} fill={colors.GRID} />
+          <rect x={300} y={344} width={680 * 0.9 * narrU} height={14} rx={7} fill={colors.SECONDARY} />
+          <text x={300} y={378} fill={colors.MUTED} fontSize={15}>coherent with what is true</text>
+          <rect x={300} y={386} width={680} height={14} rx={7} fill={colors.GRID} />
+          <rect x={300} y={386} width={680 * 0.22 * narrU} height={14} rx={7} fill={colors.TEXT} />
           {sycU > 0 && (
             <g opacity={sycU}>
-              <text x={640} y={422} textAnchor="middle" fill={colors.NEGATIVE} fontSize={19}>
+              <text x={640} y={448} textAnchor="middle" fill={colors.NEGATIVE} fontSize={19}>
                 preference tuning amplifies agreement-with-user over truthfulness
               </text>
-              <text x={640} y={454} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+              <text x={640} y={478} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 sycophancy — Sharma et al. 2023
               </text>
             </g>
@@ -327,7 +341,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (1,0) — §6.6 boundary confusion ---------- */}
-        <g transform={roomAt(1, 0)} opacity={injU}>
+        <g transform={roomAt(1, 0)} opacity={injU * roomFade(cam, 1, 0)}>
           <RoomHeader
             title="6.6 — boundary confusion"
             sub="SSRN 6325939 §6.6 · Perez &amp; Ribeiro 2022; Greshake et al. 2023"
@@ -346,10 +360,9 @@ function Frame({ s }: { s: SceneState }) {
           <text x={945} y={314} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             instruction channel
           </text>
-          <line x1={490} y1={295} x2={800} y2={295} stroke={colors.GRID} strokeWidth={2} />
-          {injFlowU > 0 && (
-            <circle cx={490 + 310 * clamp01(injFlowU)} cy={295} r={8}
-              fill={colors.NEGATIVE} opacity={injFlowU < 1 ? 1 : 0.45} />
+          <line x1={490} y1={295} x2={800} y2={295} stroke={colors.MUTED} strokeWidth={2} />
+          {injFlowU > 0 && injFlowU < 1 && (
+            <circle cx={490 + 310 * clamp01(injFlowU)} cy={295} r={8} fill={colors.NEGATIVE} />
           )}
           <text x={640} y={430} textAnchor="middle" fill={colors.NEGATIVE} fontSize={18}>
             data crosses into the instruction channel
@@ -360,16 +373,24 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (2,0) — §6.8 refusal penalty inversion ---------- */}
-        <g transform={roomAt(2, 0)} opacity={repAxesU}>
+        <g transform={roomAt(2, 0)} opacity={repAxesU * roomFade(cam, 2, 0)}>
           <RoomHeader
             title="6.8 — refusal penalty inversion"
             sub="illustrative replicator · toy preference scores .45 / .60 / .72"
           />
           <line x1={REP.x} y1={REP.y + REP.h} x2={REP.x + REP.w} y2={REP.y + REP.h}
-            stroke={colors.GRID} strokeWidth={1.5} />
+            stroke={colors.MUTED} strokeWidth={1.5} />
           {repU > 0 && stackPath(2, repU).map((d, i) => (
             <polygon key={i} points={d} fill={STRATS[i].color} opacity={0.5}
               stroke={STRATS[i].color} strokeWidth={1} />
+          ))}
+          {/* names the three styles on the starting bands, as the caption introduces them */}
+          {repU > 0 && STRATS.map((st, i) => (
+            <text key={st.key} x={REP.x - 16} y={REP.y + REP.h - (i + 0.5) * (REP.h / 3) + 5}
+              textAnchor="end" fill={st.color} fontSize={15} fontFamily="monospace"
+              opacity={Math.min(1, repU * 4)}>
+              {st.label}
+            </text>
           ))}
           <text x={REP.x} y={REP.y + REP.h + 26} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             round 0 — equal thirds → round 16
@@ -396,15 +417,22 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (2,1) — §6.7 recursive oversight failure ---------- */}
-        <g transform={roomAt(2, 1)} opacity={audAxesU}>
+        <g transform={roomAt(2, 1)} opacity={audAxesU * roomFade(cam, 2, 1)}>
           <RoomHeader
             title="6.7 — recursive oversight failure"
             sub="illustrative — auditors scored on throughput (strict .62 vs stamp .72)"
           />
           <line x1={AUD.x} y1={AUD.y + AUD.h} x2={AUD.x + AUD.w} y2={AUD.y + AUD.h}
-            stroke={colors.GRID} strokeWidth={1.5} />
+            stroke={colors.MUTED} strokeWidth={1.5} />
           <line x1={AUD.x} y1={AUD.y} x2={AUD.x} y2={AUD.y + AUD.h}
-            stroke={colors.GRID} strokeWidth={1.5} />
+            stroke={colors.MUTED} strokeWidth={1.5} />
+          {/* the two auditors the caption sets against each other */}
+          <rect x={880} y={200} width={300} height={92} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={900} y={236} fill={colors.TEXT} fontSize={18} fontWeight={600}>strict auditor</text>
+          <text x={900} y={266} fill={colors.MUTED} fontSize={14} fontFamily="monospace">slower · throughput .62</text>
+          <rect x={880} y={316} width={300} height={92} rx={10} fill={colors.PANEL} stroke={colors.WARM} />
+          <text x={900} y={352} fill={colors.WARM} fontSize={18} fontWeight={600}>stamp auditor</text>
+          <text x={900} y={382} fill={colors.MUTED} fontSize={14} fontFamily="monospace">fast · throughput .72</text>
           <text x={AUD.x - 12} y={AUD.y + 8} textAnchor="end" fill={colors.MUTED} fontSize={14}>
             catch rate
           </text>

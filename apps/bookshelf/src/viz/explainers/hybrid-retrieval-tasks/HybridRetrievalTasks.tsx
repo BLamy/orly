@@ -11,7 +11,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -292,7 +291,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the chart fades to a ghost for the closing beat, then clears under the panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - 0.97 * closeU);
   const maxLin = Math.max(...DEMO_LIN_ABS);
   const sweepU = 1 + accSweep * 5; // 1..6 across SIZES
 
@@ -304,27 +304,30 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* stored pairs as a row of key chips */}
           <g opacity={pairsU}>
-            <text x={130} y={96} fill={colors.TEXT} fontSize={18}>
+            <text x={130} y={80} fill={colors.TEXT} fontSize={18}>
               24 stored pairs, one matching query
+            </text>
+            <text x={40} y={102} fill={colors.WARM} fontSize={14} fontWeight={600}>
+              query key
             </text>
             {DEMO_KEYS.map((_, i) => (
               <rect
                 key={i}
                 x={W_X(i) - 7}
-                y={104}
+                y={90}
                 width={14}
                 height={14}
                 rx={3}
-                fill={i === 5 ? colors.WARM : colors.PANEL}
-                stroke={i === 5 ? colors.WARM : colors.GRID}
+                fill={i === 5 ? colors.WARM : colors.MUTED}
+                stroke={i === 5 ? colors.WARM : colors.MUTED}
                 strokeWidth={i === 5 ? 1.6 : 0.8}
-                opacity={i === 5 ? 1 : 0.8}
+                opacity={i === 5 ? 1 : 0.5}
               />
             ))}
           </g>
 
           {/* softmax weight profile — a whisper once the summary task takes the stage */}
-          <g opacity={softU * (1 - 0.85 * emaU)}>
+          <g opacity={softU * (1 - 0.93 * emaU)}>
             <text x={130} y={SOFT_Y(1) - 12} fill={colors.ACCENT} fontSize={15}>
               attention weights after softmax — a spotlight
             </text>
@@ -341,13 +344,13 @@ function Frame({ s }: { s: SceneState }) {
               />
             ))}
             <line x1={125} y1={SOFT_Y(0)} x2={566} y2={SOFT_Y(0)} stroke={colors.GRID} strokeWidth={1} />
-            <text x={W_X(5)} y={SOFT_Y(DEMO_SOFT[5]) - 8} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontWeight={600}>
+            <text x={W_X(5) + 12} y={SOFT_Y(DEMO_SOFT[5]) + 5} fill={colors.ACCENT} fontSize={14} fontWeight={600}>
               {(DEMO_SOFT[5] * 100).toFixed(0)}%
             </text>
           </g>
 
           {/* linear read profile — a whisper once the summary task takes the stage */}
-          <g opacity={linU * (1 - 0.85 * emaU)}>
+          <g opacity={linU * (1 - 0.93 * emaU)}>
             <text x={130} y={LIN_Y(1) - 12} fill={colors.WARM} fontSize={15}>
               linear memory read — every pair leaks in
             </text>
@@ -364,7 +367,9 @@ function Frame({ s }: { s: SceneState }) {
               />
             ))}
             <line x1={125} y1={LIN_Y(0)} x2={566} y2={LIN_Y(0)} stroke={colors.GRID} strokeWidth={1} />
-            <MathLabel tex="S=\textstyle\sum_i k_i v_i^{\top}" x={430} y={LIN_Y(1) - 34} fontSize={17} color={colors.WARM} opacity={linU} />
+            <text x={430} y={LIN_Y(1) - 34} textAnchor="middle" fill={colors.WARM} fontSize={17}>
+              S = Σᵢ kᵢ vᵢᵀ
+            </text>
           </g>
 
           {/* accuracy vs store size */}
@@ -376,13 +381,13 @@ function Frame({ s }: { s: SceneState }) {
               <text x={720} y={122} fill={colors.MUTED} fontSize={12}>
                 300 trials per point, 16 dimensions
               </text>
-              <Axes x={ACC_X} y={ACC_Y} reveal={accU} xTicks={0} yTicks={3} fontSize={11} />
+              <Axes x={ACC_X} y={ACC_Y} reveal={accU} xTicks={0} yTicks={3} fontSize={12} />
               {SIZES.map((P, i) => (
-                <text key={P} x={ACC_X(i + 1)} y={ACC_Y(0) + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                <text key={P} x={ACC_X(i + 1)} y={ACC_Y(0) + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   {P}
                 </text>
               ))}
-              <text x={ACC_X(3.5)} y={ACC_Y(0) + 40} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={ACC_X(3.5)} y={ACC_Y(0) + 40} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 pairs stored
               </text>
               <FunctionPlot
@@ -405,6 +410,13 @@ function Frame({ s }: { s: SceneState }) {
                 color={colors.WARM}
                 width={2.6}
               />
+              {/* the measured points: 300 trials each, drawn as dots on the curves */}
+              {SIZES.map((P, i) => (
+                <g key={`m${P}`}>
+                  <circle cx={ACC_X(i + 1)} cy={ACC_Y(1)} r={4.5} fill={colors.ACCENT} />
+                  <circle cx={ACC_X(i + 1)} cy={ACC_Y(ACC_LIN[i])} r={4.5} fill={colors.WARM} />
+                </g>
+              ))}
               {accSweep > 0.02 && (
                 <>
                   <circle cx={ACC_X(sweepU)} cy={ACC_Y(accLinAt(sweepU))} r={5} fill={colors.WARM} />
@@ -425,7 +437,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={130} y={EMA_Y(1.4) - 14} fill={colors.TEXT} fontSize={16}>
                 the other task: a running summary
               </text>
-              <Axes x={EMA_X} y={EMA_Y} reveal={emaU} xTicks={4} yTicks={2} fontSize={10} />
+              <Axes x={EMA_X} y={EMA_Y} reveal={emaU} xTicks={4} yTicks={2} fontSize={12} />
               <FunctionPlot
                 x={EMA_X}
                 y={EMA_Y}
@@ -447,7 +459,7 @@ function Frame({ s }: { s: SceneState }) {
                 width={2.6}
               />
               <circle cx={EMA_X(emaTok)} cy={EMA_Y(emaAt(emaTok))} r={5} fill={colors.POSITIVE} />
-              <text x={570} y={EMA_Y(emaAt(DEMO_P - 1)) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={12}>
+              <text x={570} y={EMA_Y(1.25)} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
                 one state slot tracks it exactly
               </text>
             </g>
@@ -457,23 +469,55 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* screen-fixed title */}
       <g opacity={titleU * mainOp}>
+        {/* solid backing so the title never sits on top of chart lines */}
+        <rect x={28} y={18} width={330} height={40} fill={colors.BG} />
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Spotlights and floodlights
         </text>
       </g>
 
-      {/* closing panel */}
+      {/* closing panel: solid, so nothing behind it shows through */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
+          <rect x={220} y={196} width={840} height={228} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={248} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Specialists, not rivals.
           </text>
-          <text x={640} y={330} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={290} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             Needles want a softmax spotlight — 100% at every store size.
           </text>
-          <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={316} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             Running context wants a fixed state — exact, in constant time.
+          </text>
+          {/* the hybrid stack: a few spotlight layers, the rest floodlights */}
+          {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
+            const spot = i === 2 || i === 6;
+            return (
+              <g key={`stack${i}`}>
+                <rect
+                  x={276 + i * 92}
+                  y={342}
+                  width={84}
+                  height={36}
+                  rx={6}
+                  fill={spot ? colors.ACCENT : colors.WARM}
+                  opacity={spot ? 0.95 : 0.35}
+                />
+                <text
+                  x={276 + i * 92 + 42}
+                  y={365}
+                  textAnchor="middle"
+                  fill={spot ? colors.BG : colors.TEXT}
+                  fontSize={13}
+                  fontWeight={600}
+                >
+                  {spot ? 'spotlight' : 'floodlight'}
+                </text>
+              </g>
+            );
+          })}
+          <text x={640} y={406} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            a hybrid stack, eight layers (schematic)
           </text>
         </g>
       )}

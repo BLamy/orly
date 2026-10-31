@@ -127,7 +127,8 @@ const MINIS = Array.from({ length: 8 }, (_, i) => ({
 }));
 
 const CAM_FORK: CameraState = { x: 420, y: 320, k: 1.5 };
-const CAM_SCOPE: CameraState = { x: 760, y: 440, k: 1.35 };
+// x is pulled left so the trunk label ("main fiber") stays on stage while the Scope is in view
+const CAM_SCOPE: CameraState = { x: 545, y: 410, k: 1.3 };
 const CAM_SET: CameraState = { x: 640, y: 368, k: 1.18 };
 
 // ---------------------------------------------------------------------------
@@ -232,7 +233,7 @@ export function buildScene() {
     text: 'There is an escape hatch: fork detached attaches the fiber to the global scope. It answers to nobody.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 38.7, dur: 1.4, ease: ease.move });
-  tl.tween(scopeU, 0.25, { at: 38.8, dur: 0.8, ease: ease.enter });
+  tl.tween(scopeU, 0, { at: 38.8, dur: 0.8, ease: ease.enter });
   tl.tween(detachU, 0.4, { at: 39.6, dur: 4.6, ease: ease.linear });
   tl.tween(trunkU, 0.72, { at: 38.6, dur: 5.8, ease: ease.linear });
 
@@ -317,6 +318,7 @@ function FiberLine({
   reap = 0,
   dim = 1,
   label,
+  labelAt = 'start',
   labelDx = 8,
   width = 3,
 }: {
@@ -326,6 +328,7 @@ function FiberLine({
   reap?: number; // 0..1: red pulse travels fork→tip, then ✕ + dim
   dim?: number;
   label?: string;
+  labelAt?: 'start' | 'end'; // 'end' sits above the tip, clear of sibling forks
   labelDx?: number;
   width?: number;
 }) {
@@ -333,31 +336,40 @@ function FiberLine({
   const head = alongPt(pts, u);
   const reaped = reap >= 0.999;
   const op = dim * (reaped ? 0.32 : 1);
+  // the label is drawn outside the reap dimming so it stays legible when the fiber is interrupted
+  const labelOp = dim * clamp01((u - 0.2) / 0.2) * (reaped ? 0.8 : 1);
   return (
-    <g opacity={op}>
-      <path d={partialD(pts, u)} fill="none" stroke={color} strokeWidth={width} strokeLinecap="round" />
-      {!reaped && reap <= 0.001 && <circle cx={head.x} cy={head.y} r={5} fill={color} />}
-      {label && (
-        <text x={pts[1].x + labelDx} y={pts[1].y - 10} fill={color} fontSize={13} fontFamily={MONO}>
+    <>
+      <g opacity={op}>
+        <path d={partialD(pts, u)} fill="none" stroke={color} strokeWidth={width} strokeLinecap="round" />
+        {!reaped && reap <= 0.001 && <circle cx={head.x} cy={head.y} r={5} fill={color} />}
+        {reap > 0.001 && reap < 0.999 && (
+          <circle
+            cx={alongPt(pts, u * reap).x}
+            cy={alongPt(pts, u * reap).y}
+            r={6}
+            fill={colors.NEGATIVE}
+            opacity={0.95}
+          />
+        )}
+        {reap > 0.6 && (
+          <g opacity={clamp01((reap - 0.6) / 0.4)} stroke={colors.NEGATIVE} strokeWidth={2.5} strokeLinecap="round">
+            <line x1={head.x - 7} y1={head.y - 7} x2={head.x + 7} y2={head.y + 7} />
+            <line x1={head.x - 7} y1={head.y + 7} x2={head.x + 7} y2={head.y - 7} />
+          </g>
+        )}
+      </g>
+      {label && labelAt === 'end' && (
+        <text x={pts[2].x - 4} y={pts[2].y - 10} textAnchor="end" fill={color} fontSize={14} fontFamily={MONO} opacity={labelOp}>
           {label}
         </text>
       )}
-      {reap > 0.001 && reap < 0.999 && (
-        <circle
-          cx={alongPt(pts, u * reap).x}
-          cy={alongPt(pts, u * reap).y}
-          r={6}
-          fill={colors.NEGATIVE}
-          opacity={0.95}
-        />
+      {label && labelAt === 'start' && (
+        <text x={pts[1].x + labelDx} y={pts[1].y - 10} fill={color} fontSize={14} fontFamily={MONO} opacity={labelOp}>
+          {label}
+        </text>
       )}
-      {reap > 0.6 && (
-        <g opacity={clamp01((reap - 0.6) / 0.4)} stroke={colors.NEGATIVE} strokeWidth={2.5} strokeLinecap="round">
-          <line x1={head.x - 7} y1={head.y - 7} x2={head.x + 7} y2={head.y + 7} />
-          <line x1={head.x - 7} y1={head.y + 7} x2={head.x + 7} y2={head.y - 7} />
-        </g>
-      )}
-    </g>
+    </>
   );
 }
 
@@ -384,24 +396,31 @@ export function Render({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
 
   const trunkHead = { x: X0 + trunkU * (XEND - X0), y: TRUNK_Y };
-  // the whole tree fades under the FiberSet panel, except the survivor stays dim
-  const treeOp = 1 - setU * 0.88;
+  // the whole tree fades out under the FiberSet panel so no ghost lines sit behind it
+  const treeOp = 1 - setU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
+      {/* time axis — a fixed ruler in stage space, so camera pushes never push its label off the stage */}
+      <g opacity={axisU * treeOp}>
+        <line x1={X0 - 20} y1={620} x2={XEND + 30} y2={620} stroke={colors.GRID} strokeWidth={1.5} />
+        <text x={X0 - 20} y={614} fill={colors.MUTED} fontSize={12}>
+          time →
+        </text>
+      </g>
       <Camera {...cam}>
-        {/* time axis */}
-        <g opacity={axisU * treeOp}>
-          <line x1={X0 - 20} y1={620} x2={XEND + 30} y2={620} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={X0 - 20} y={614} fill={colors.MUTED} fontSize={12}>
-            time →
-          </text>
-        </g>
-
         <g opacity={treeOp}>
           {/* children dim while the survivor beat plays */}
           <g opacity={1 - soloU * 0.75}>
+            {/* the request that spawns the work, shown at the trunk's root */}
+            <g opacity={axisU}>
+              <rect x={X0} y={TRUNK_Y - 62} width={150} height={32} rx={8} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
+              <text x={X0 + 75} y={TRUNK_Y - 41} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+                request
+              </text>
+              <line x1={X0 + 20} y1={TRUNK_Y - 30} x2={X0 + 20} y2={TRUNK_Y - 8} stroke={colors.GRID} strokeWidth={1.4} />
+            </g>
             {/* trunk — the main fiber */}
             <path
               d={partialD([{ x: X0, y: TRUNK_Y }, { x: XEND, y: TRUNK_Y }], trunkU)}
@@ -420,14 +439,15 @@ export function Render({ s }: { s: SceneState }) {
             {mainDoneU > 0.01 && (
               <g opacity={mainDoneU}>
                 <circle cx={trunkHead.x} cy={trunkHead.y} r={9} fill={colors.POSITIVE} />
-                <text x={trunkHead.x + 14} y={trunkHead.y + 5} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+                <text x={trunkHead.x + 14} y={trunkHead.y + 5} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
                   done
                 </text>
               </g>
             )}
 
             {/* forkChild children */}
-            <FiberLine pts={CHILD_A} u={aU} color={colors.SECONDARY} label="Effect.forkChild" reap={win(kidReapU, 3, 0, 2)} />
+            {/* label sits in the open band between lanes A and B, clear of the B and C diagonals */}
+            <FiberLine pts={CHILD_A} u={aU} color={colors.SECONDARY} label="Effect.forkChild" labelDx={214} reap={win(kidReapU, 3, 0, 2)} />
             <FiberLine pts={CHILD_B} u={bU} color={colors.SECONDARY} reap={win(kidReapU, 3, 1, 2)} />
             <FiberLine pts={CHILD_C} u={cU} color={colors.SECONDARY} reap={win(kidReapU, 3, 2, 2)} />
 
@@ -456,7 +476,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={SCOPE_BOX.x + 12} y={SCOPE_BOX.y + 24} fill={scopeReapU > 0.05 ? colors.NEGATIVE : colors.TEAL} fontSize={14} fontFamily={MONO}>
                   Scope {scopeReapU > 0.05 ? '· closing' : ''}
                 </text>
-                <FiberLine pts={SCOPED_1} u={s1U} color={colors.TEAL} label="Effect.forkScoped" reap={win(scopeReapU, 2, 0, 1.6)} />
+                <FiberLine pts={SCOPED_1} u={s1U} color={colors.TEAL} label="Effect.forkScoped" labelAt="end" reap={win(scopeReapU, 2, 0, 1.6)} />
                 <FiberLine pts={SCOPED_2} u={s2U} color={colors.TEAL} reap={win(scopeReapU, 2, 1, 1.6)} />
               </g>
             )}
@@ -495,7 +515,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={SET_BOX.x + 18} y={SET_BOX.y + 32} fill={colors.TEXT} fontSize={16} fontFamily={MONO}>
               FiberSet.make()
             </text>
-            <text x={SET_BOX.x + SET_BOX.w - 18} y={SET_BOX.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <text x={SET_BOX.x + SET_BOX.w - 18} y={SET_BOX.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               {(() => {
                 const started = MINIS.filter((_, i) => win(miniU, MINIS.length, i, 2.5) > 0).length;
                 const removed = MINIS.filter((m, i) => m.done && win(miniDoneU, 4, Math.floor(i / 2), 1.5) >= 1).length;
@@ -512,7 +532,7 @@ export function Render({ s }: { s: SceneState }) {
               const reap = m.done ? 0 : setReapU;
               return (
                 <g key={i} opacity={gone ? 0.12 : 1}>
-                  <text x={SET_BOX.x + 18} y={m.y + 4} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={SET_BOX.x + 18} y={m.y + 4} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     run
                   </text>
                   <FiberLine
@@ -529,7 +549,7 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
             {setReapU > 0.5 && (
-              <text x={SET_BOX.x + SET_BOX.w / 2} y={SET_BOX.y + SET_BOX.h - 16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={clamp01((setReapU - 0.5) * 2)}>
+              <text x={SET_BOX.x + SET_BOX.w / 2} y={SET_BOX.y + SET_BOX.h - 16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={clamp01((setReapU - 0.5) * 2)}>
                 scope closed → remaining fibers interrupted
               </text>
             )}
@@ -539,11 +559,14 @@ export function Render({ s }: { s: SceneState }) {
         {/* ------------- recap panel ------------- */}
         {recapU > 0.01 && (
           <g opacity={recapU}>
-            <rect x={0} y={0} width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.86} />
+            <rect x={0} y={0} width={STAGE_W} height={STAGE_H} fill={colors.BG} />
             <rect x={330} y={250} width={620} height={188} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={600}>
               the fiber tree
             </text>
+            <line x1={356} y1={331} x2={384} y2={331} stroke={colors.SECONDARY} strokeWidth={4} strokeLinecap="round" />
+            <line x1={356} y1={361} x2={384} y2={361} stroke={colors.TEAL} strokeWidth={4} strokeLinecap="round" />
+            <line x1={356} y1={391} x2={384} y2={391} stroke={colors.WARM} strokeWidth={4} strokeLinecap="round" />
             <text x={640} y={336} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontFamily={MONO}>
               Effect.forkChild — a child, owned by its parent
             </text>

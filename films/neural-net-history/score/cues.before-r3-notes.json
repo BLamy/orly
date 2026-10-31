@@ -1,0 +1,775 @@
+[
+ {
+  "id": "m01",
+  "start": 0,
+  "end": 74.1,
+  "shots": [
+   "ch01-s01",
+   "ch01-s02",
+   "ch01-s03",
+   "ch01-s04",
+   "ch01-s05",
+   "ch01-s06",
+   "ch01-s07"
+  ],
+  "mood": "serverCyan wonder → candleAmber inquiry → rewind → the title, held",
+  "tempoBpm": 60,
+  "key": "D (Dsus2/Dadd9; pizz walk in D dorian; title: M1 in D, stopping on Asus4)",
+  "instrumentation": "gm_contrabass drone D2, pink-noise tape hiss, piano (one tone E6), gm_pizzicato_strings, gm_woodblock (soft ticks), gm_string_ensemble_1, gm_celesta, gm_clarinet (low, the file seal), gm_pad_bowed, reversed swell (string chord built with a long attack and cut dead, plus speed(-1) noise if it works)",
+  "intensity": 0.3,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 0-74.1 (74.100 s), shots ch01-s01…ch01-s07 (0-75.25); lines under it L0101 (3.50) … L0114 (ends 65.81). IN: from black at 0 with a 0.5 s fade-in, inside the speech-free gap 0.00-3.50 (start -> L0101). OUT: fades 71.60-74.10, inside the speech-free gap 65.81-75.85 (L0114 -> L0201); last strike measured at 67.46 (analysis). Re-fit done 2026-10-13 on the round-2 clock (L0114 re-narrated, 61.87-65.81): the rewind's reversed swell is cut dead as the fifth image, the dying wick, appears (61.67), 0.2 s before 'We' (61.87); a sine D room tone 61.68-66.08 under the line; the title's rising fourth from the title card (A 67.35 -> D 67.95, 'title' 67.33), the strings, bass and harp drop to A-E under the held D on the subtitle (69.35, 'subtitle' 69.33), last onset 69.59 (harp E3); the suspension rings into the fade. MASKING (round 2): L0101 is kept thin: the contrabass under it is 1.7 dB softer and the one E6 now answers 'wonder' in the breath right after the word (5.38; the word ends 5.35, the screen brightens on 'type' 4.93), where it had sat on the word in the 1-4k band. Rendered 74.1 s + 6 s tail, -22.1 LUFS I, TP -7.9 dBTP; every line 10.3-30 dB clear in both voice bands over the whole line (L0101 18.6 / 30.3; L0114 in near silence). The times in the notes below were re-mapped from older clocks; where they disagree with this paragraph or narration/timeline.json, the timeline wins (place each hit by the word or beat it names).\n\nPROLOGUE, rubato (setcpm(15) = one 4-s bar per cycle, or place events by seconds). Sets up M2 (the lit box) and ends on M1's first statement. (1) 0-9: black, one low sustained D (contrabass D2, slow attack) under faint tape hiss (pink, gain <= .015). The single high piano E6 answers 'wonder' in the breath right after the word (5.38; it had sat on the word, masking the soft L0101) and rings out; nothing else. (2) 9-18.54: drone continues; a soft woody tick (woodblock / dry pizz, very low) per type-slug drop, almost a clock, no melody (lines 9.5-12.83, 13.43-18.02). (3) 18.54-29.58: as the camera rises (18.74) the drone opens into a slow, wide string chord (Dadd9: d2 a2 e3 + f#4/a4 high, lpf 1300, velocity <= .15 under the line 20.74-25.22); it thins to ONE held note on 'rulebook' (27.46) and sits in the silence after it. (4) 29.58: silence under the lamp click (30.13). Then M2's pizzicato walk, slow and inquisitive (D2 F2 G2 G#2 | A2 ~ C3 A2), low and dry under 'So. Who taught it?' (31.32) and the ChatGPT lines; it stops dead on 'file' (47.93) with the FILE SEAL (A→D falling fifth, pizz + soft low clarinet), the first of five. (5) 48.83-57.92: three plucks for the three suspects on the beats 'Rules' 51.63, 'Knowledge' 52.38, 'learning' 53.51 (rising, the third a little warmer); under the shelf (54.11-57.43) a faint celesta shimmer high (not yet M1). (6) 57.92-66.33 THE REWIND: a reversed swell (crescendo with a long attack, tape warble via slow vibrato/detune) under the five backward images 58.17-61.60, sucked back to silence exactly on the dying wick (61.55); the narration 'We go back to the war years, to a lamp in Chicago' (61.87-65.81) lands in near silence over only the low room tone (drone at -30 dB or less). (7) 66.33-75.25 TITLE: silence for the first beat (66.33-67.33, the title card). Then M1 on celesta, unhurried, in D: rising fourth A→D (sounding A4→D5) around 67.35-68.16, held; strings drop to A-E under the held D (the held suspension, Asus4) by about 69.35; the falling resolution is HELD BACK. The title beats are now 'title' 67.33 and 'subtitle' 69.33: place the rising fourth from the title card's first beat (about 67.35-68.16) and the strings' A-E under the held D by the subtitle (69.35); last onset by 70.25. The suspension rings into the fade (71.60-74.10). The wick now catches at 74.73 ('wickCatch'), AFTER this cue has faded: its tiny celesta glint is m02's first note (m02 enters at 72.10 in G major celesta: the held D becomes the fifth of G, so the overlap is consonant). Intensity never above 0.35 except the title (0.4). SCORE ROUND 2026-10-12 (composer): verified on the 2139.5417 s clock (every hit matches narration/timeline.json); the rewind's dead cut moved from 61.55 to 61.66, onto the wick's dying ember (the shot's shudder dies 61.63-61.87, 'We' 61.87); the title gained a slow harp roll blooming the lit D major (67.95) and voicing the Asus4 (69.35-69.59, last onset 69.59) and is now the prologue's peak (about -16 LUFS momentary against the rewind's -19); every line clears the music by at least 11.7 dB (cue gain, duck and music EQ applied).",
+  "file": "score/cues/m01.strudel",
+  "render": "score/renders/m01.wav",
+  "gainDb": -4,
+  "fadeIn": 0.5,
+  "fadeOut": 2.5,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 67.46,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": 0,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated inside the cue"
+  }
+ },
+ {
+  "id": "m02",
+  "start": 72.1,
+  "end": 195.78,
+  "shots": [
+   "ch02-s01",
+   "ch02-s02",
+   "ch02-s03",
+   "ch02-s04",
+   "ch02-s05",
+   "ch02-s05b",
+   "ch02-s07",
+   "ch02-s08"
+  ],
+  "mood": "candleAmber 1940s curiosity → the first candle → Dartmouth chorale → the first candle out",
+  "tempoBpm": 66,
+  "key": "G major (M1 in G: D→G; suspension G over D-A; falls G→F#); a brief C/D organ colour at Dartmouth",
+  "instrumentation": "gm_celesta (lead), gm_string_ensemble_1 (soft), gm_cello, gm_pizzicato_strings (the walk), gm_clarinet (file seal), gm_drawbar_organ (Dartmouth chorale, lpf 1400), low brown-noise train rumble",
+  "intensity": 0.3,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 72.1-195.78 (123.680 s), shots ch02-s01…ch02-s08 (75.25-195.08); lines under it L0201 (75.85) … L0220 (ends 191.66). IN: starts 72.1 with a 2 s fade-in, inside the speech-free gap 65.81-75.85 (L0114 -> L0201). OUT: fades 194.18-195.78, inside the speech-free gap 191.66-197.78 (L0220 -> L0301); last strike measured at 192.48 (analysis). Re-fit done 2026-10-13: the window moved bodily (-0.25 s) with its first shot and no line inside it changed length; the source (score/cues/m02.strudel) now writes every event on the CURRENT clock (S = the window start, every hit -0.25 s and checked against its word in narration/timeline.json) and was re-rendered at the window length. Rendered 123.68 s + 6 s tail, -23.6 LUFS I, TP -6.7 dBTP; voice-band pass still holds: every line 8.7-24 dB clear in both bands (lowest L0219). The times in the notes below were re-mapped from older clocks; where they disagree with this paragraph or narration/timeline.json, the timeline wins (place each hit by the word or beat it names).\n\nCLUE ONE: the 1940s in celesta and soft strings. 72.10-75.25 (NEW lead-in, inside ch01-s07's title hold, music only): enter softly under m01's held D; the first celesta note is the wick glint on 'wickCatch' 74.73 (a tiny high note, D6 or A5: the candle catching), alone before L0201 (75.85). 75.25-84.29: a gentle, curious celesta figure in G, intensity 0.3, a far-off train rumble (brown noise, lpf 149.75, very low) folded into the low end; keep the celesta in the gaps around 'Chicago, around 1941' (75.85-78.09) and the Pitts/McCulloch line (78.69-83.28). 84.29-102.33 THE LOGIC LANTERNS: the celesta becomes the machine: a soft single pluck when an input knot lights ('oneIn' 88.04), a brighter chime only when a wick catches ('fire' 89.00), a rest when the flame snaps dark ('dark' 89.99); the AND/OR demonstration at 'and' 99.90 and 'or' 101.14 gets audible logic (AND: chime only when both plucks sound; OR: chime on either). 102.33-110.21: the figure pauses; M2's pizzicato walk returns for the pinning (102.73); a single held low note (cello D2) under 'could not learn' (106.41-107.90); the FILE SEAL at 'file' 108.80, then silence. 110.21-126.17 THE FIRST CANDLE: M1 in G, first full use: the rising fourth D→G on celesta exactly as the candle catches ('light' 111.04 / 'intoFlame' 111.70), held by strings (lit); on 'Gerard' (120.73) a soft string suspension enters beneath it (bass to D-A under the held G = doubted); it does NOT resolve yet. 126.17-134.46 HEBB: a slow two-note figure (B4-D5, celesta) repeating three times on the passes ('pass1' 128.76, 'pass2' 129.48, 'pass3' 130.99), each a little fuller (the thread thickening), cycling softly through the reading hold. 134.46-147.29 TURING: a light, hopeful turn under 'child machine' (141.22-141.80), keep it high (celesta/music box at D5+), then the walk quietly for the slip pin (142.90) and a soft held G chord while the slip is read. 147.29-173.83 DARTMOUTH (1956): the valve organ (drawbar, soft) broadens into a short hopeful chorale in G → C → D for the naming ('name' 150.21, put the chord change in the gap after 'intelligence' 151.78); it thins on 'symbols' (157.35) to one organ note; under Widrow (160.97-170.13) a single solo celesta line: M1's rising fourth played tenderly, unresolved (plant: Widrow returns in m20); 'Remember him' (171.25) in near-silence. 173.83-195.08 THE CANDLE OUT: M1 completes for the first time: the held suspension under the frog's-eye line (174.43-182.73), then the FALLING RESOLUTION G→F# exactly on 'sixteen' (185.09) as the flame goes out (D major chord, then decay). Near silence for 'The paper that put it out had Pitts's own name on it' (186.75-191.66). Under the X-ray a faint high shimmer and the celesta rising fourth once, softly, as if something has been kept (D on 'xray' 191.96 → G on 'xrayBand1' 192.46). Last onset by 192.58 (that G); end on the open G chord ringing through the fade (194.18-195.78); m03 (C major organ) enters at 193.78, so the G is V of C. SCORE ROUND 2026-10-12 (composer): verified on the 2139.5417 s clock; the candle lighting under L0209 (celesta D -> G on 'light'/'intoFlame') trimmed about 1 dB so the line clears the music by about 11 dB; nothing else moved. COMPOSER VOICE-BAND PASS (critic r1, 2026-10-12; rendered 123.68 s + 6 s tail, -23.3 LUFS I, TP -6.9): per-line margins measured in the 250-2k and 1-4k voice bands over each whole line (render + gainDb, no duck: the m19 v9 / m21 v5 measure). Before: L0203 0.3, L0204 -1.7, L0209 3.1, L0211 -2.0, L0217 5.7. Now every line is 7.9-24 dB clear in both bands (median 11.8 / 12.3) and 11.7-28 dB within the words. THE LANTERNS: input plucks under L0203/L0204 are ghosts (vel .07-.08); the 'fire' chime that the picture pins to 'All' (89.00) is one soft short G; the 'fired' chime moves to the breath at 93.45, the network notes to its two breaths (96.20, 97.65), the 'logic' chord (and its strings) to 99.35; AND/OR 99.90/101.39 unchanged (slightly fuller, in the clear). THE CANDLE (L0209): celesta D -> G 4.5 dB down, the G struck and let go (1 s), the strings' held G5 -4 dB; the file seal (clarinet + pizz D) now ends before 'We' (110.81), as the note's 'then silence' asks. HEBB (L0211): the three passes ('cell', 'fire', 'grows') are ghost touches; the thread THICKENS in the reading hold after 'grows': B -> D three times, each fuller (celesta 131.61, + music box 132.67, + harp 133.73), decayed before 'Alan' (135.06). TURING: the music-box rise under 'child machine' -6 dB, its top D after 'machine' (142.25) at full level. The slip's held G chord ends into the organ (147.36) instead of ringing under 'By nineteen fifty-six'; the four chorale chords under L0215 softer and darker (lpf 1050), the bloom in the gap after 'intelligence' unchanged. WIDROW: the E after 'wrong' is struck and let go (170.17) so 'Remember him' (170.73) is in near silence (16.4 dB). The fall on 'sixteen' F#5 -2 dB. Timing, window, joins and last strike unchanged.",
+  "file": "score/cues/m02.strudel",
+  "render": "score/renders/m02.wav",
+  "gainDb": -4,
+  "fadeIn": 2,
+  "fadeOut": 1.6,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 192.48,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": -0.25,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m03",
+  "start": 193.78,
+  "end": 320.68,
+  "shots": [
+   "ch03-s01",
+   "ch03-s02",
+   "ch03-s03",
+   "ch03-s04",
+   "ch03-s05",
+   "ch03-s06",
+   "ch03-s08",
+   "ch03-s09"
+  ],
+  "mood": "labGreen 1958 exuberance → the Mark I learning → the \"if\" → the limit → the gutter",
+  "tempoBpm": 76,
+  "key": "C major → A minor for the limit and the gutter (M1 in C: G→C; suspension C over G-D; falls C→B)",
+  "instrumentation": "gm_drawbar_organ (valve organ, lpf 1200-1600), brown-noise motor whirr bursts, gm_pizzicato_strings, gm_celesta (grace notes), gm_clarinet (low, the sly detective figure + file seal), gm_cello (the winter foreshadow), soft gm_string_ensemble_1",
+  "intensity": 0.4,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 193.78-320.68 (126.900 s), shots ch03-s01…ch03-s09 (195.08-320.83); lines under it L0301 (197.78) … L0320 (ends 317.42). IN: starts 193.78 with a 2 s fade-in, inside the speech-free gap 191.66-197.78 (L0220 -> L0301). OUT: fades 317.68-320.68, inside the speech-free gap 317.42-322.43 (L0320 -> L0401); last strike measured at 304.88 (analysis). Re-fit done 2026-10-13: the window moved bodily (-0.25 s) with its first shot and no line inside it changed length; the source (score/cues/m03.strudel) now writes every event on the CURRENT clock (S = the window start, every hit -0.25 s and checked against its word in narration/timeline.json) and was re-rendered at the window length. The Mark I sonification block was regenerated with tools/film/sonify-perceptron.mjs on the current clock (identical to the re-based block) with the latch and first relay clack trimmed (they made the cue's true peak -1.5 dBTP). ROUND-2 VOICE-BAND PASS: the held C (the flame) under L0305/L0306 and the gutter's C -> B under L0319 struck softly (the B now blooms at full level in the E minor chord after the line, 310.98); the headline's oom-pah and the 'fifty' glint trimmed and shortened (L0303 1-4k 6.8 -> 12.1); the Fmaj7 is thin under 'Love. Hope. Despair.' and blooms on the silent card after the line (281.9), the 'cheerfully' celesta a ghost (L0312 4.9 -> 9.8). CRITIC ROUND 1 (L0308 voice band): the Mark I clatter no longer sits in L0308's micro-gaps. tools/film/sonify-perceptron.mjs now treats any pause under 0.45 s inside a line as speech, so every relay clack, motor ratchet and hum from 'wrong' to 'answer' (to 252.91) plays as the under-line layer: clacks about 8 dB down (gain .3 -> .12) and high-passed at 5 kHz, ratchets band-passed 5.2-7.6 kHz (were 2.6-4.2) and high-passed at 4.5 kHz, gain .7 -> .28, no low hum; the machine comes in at full level from the breath after 'answer' (relay clacks with their thumps at 253.04, 253.17, 253.30), then the knob detents in the gap after 'learn' as before. Re-rendered 126.9 s + 6 s tail (length exact), -23.0 LUFS I, TP -6.7 dBTP. L0308 measured (render at gainDb -3, no duck): 23.6 dB clear in 250-2k and 15.1 dB in 1-4k over the whole line (was 18.5 / 7.1); 'a little toward the answer' in 1-4k: 17.7 / 11.1 / 13.2 / 17.5 / 14.9 dB (was 9.1 / 1.9 / 3.1 / 7.0 / 5.5). L0307 12.0 / 12.6 and L0309 28.3 / 13.1 are unchanged. Every other line 7.8-24 dB clear in both bands, as before. The times in the notes below were re-mapped from older clocks; where they disagree with this paragraph or narration/timeline.json, the timeline wins (place each hit by the word or beat it names).\n\nCLUE TWO, the labs: M5a (valve organ + motor whirr). 195.08-207.83: new colour on the lamp change: valve organ and a soft motor-whirr pulse, bright and curious, intensity 0.3; a small lift as the tally reaches fifty ('learned' 207.31). 207.83-221.63 THE HEADLINE: the organ turns jaunty under the newsboy, a little brass-band bounce (organ + pizz oom-pah, intensity 0.4) but keep it below the voice (208.43-216.17); it thins to ONE held organ note under 'conscious of its existence' (214.63-216.19) so the phrase lands in near silence; three small even plucks as the cap, the card and the slip lift ('navy' 217.59, 'papers' 218.40, 'own' 218.97), none louder than the others. 221.63-235.37 THE SECOND CANDLE: M1 in C on valve organ: rising fourth G→C as the match catches ('lit' 222.77), held; under Minsky ('rim' 228.37) the bass moves to G-D under the held C (doubted), unresolved through the hold. 235.37-256.58 THE MARK I: M5a properly: an organ ostinato locked to the training steps; the motor whirr is a rhythmic element landing on each knob turn ('knobs' 242.27, 'wrong' 248.11, 'turn' 250.29); it DROPS OUT on 'hear it learn' (254.34) so three or four whirrs are heard alone (253.51-256.05); intensity 0.5 max. 256.58-269.21 THE IF: the ostinato simplifies to clean pizzicato for 'A theorem promised the rule would find a dividing line' (257.18-260.41); on 'If one exists' (262.06) everything stops except one sustained organ note (an open fifth with no third): the first technical cliffhanger; a soft resolving pluck as the old wiring card drops ('unpin' 264.18), the held note returning under the new card (265.08). 269.21-289.67 THE MAN: light and warm; a celesta grace note on 'cheerfully' (about 276.24); in the silent 'Love. Hope. Despair.' beat (276.26-277.36 and the hold) the organ drops to a single tender chord, the only sound; a little tick-tock figure (woodblock/pizz) as the chess forecast slip is pinned (284.75). 289.67-304.00 THE LIMIT: a minor turn in the organ (A minor) for the 26 letters ('letters' 289.87); a sly two-note detective figure on low clarinet under the false clue ('false' 291.57); the quoted sentence (291.87-300.69) over a soft held chord only; the FILE SEAL on 'file' (300.25), landing on a soft open chord as the file closes. 304.00-320.83 THE GUTTER: M1's falling resolution on solo organ (C→B, over a G chord turning to E minor) exactly as the flame gutters on 'seven' (309.64); a held, low cello note (A1/D2) enters under the book's shadow (313.64) foreshadowing the winter; intensity falls to 0.2. Last onset by 316.08 (the cello under 'shadow' 313.87 is the last strike); m04 enters at 318.68 in D minor, so leave the cello on D or A.",
+  "file": "score/cues/m03.strudel",
+  "render": "score/renders/m03.wav",
+  "gainDb": -3,
+  "fadeIn": 2,
+  "fadeOut": 3,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 304.88,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": -0.25,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m04",
+  "start": 318.68,
+  "end": 365.45,
+  "shots": [
+   "ch04-s01",
+   "ch04-s02"
+  ],
+  "mood": "labGreen → duskRose: the XOR puzzle, the sterile verdict, a dark candle",
+  "tempoBpm": 56,
+  "key": "D minor (M1 in D minor: A→D over Dm; held over A-E as the cold sets in)",
+  "instrumentation": "muted piano (piano, lpf 1100, short release), gm_cello, gm_clarinet (low, D3-A3), gm_contrabass, gm_woodblock (counter ticks), gm_pad_bowed (very low)",
+  "intensity": 0.3,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 318.68-365.45 (46.770 s), shots ch04-s01…ch04-s02 (320.83-365.88); lines under it L0401 (322.43) … L0405 (ends 364.63). IN: starts 318.68 with a 2 s fade-in, inside the speech-free gap 317.42-322.43 (L0320 -> L0401). OUT: fades 364.70-365.45, inside the speech-free gap 364.63-367.18 (L0405 -> L0406); last strike measured at 360.68 (analysis). Re-fit done 2026-10-13: the window moved bodily (-0.25 s) with its first shot and no line inside it changed length; the source (score/cues/m04.strudel) now writes every event on the CURRENT clock (S = the window start, every hit -0.25 s and checked against its word in narration/timeline.json) and was re-rendered at the window length. Rendered 46.77 s + 6 s tail, -23.8 LUFS I, TP -6.5 dBTP; every line 8.6-24 dB clear in both bands. The times in the notes below were re-mapped from older clocks; where they disagree with this paragraph or narration/timeline.json, the timeline wins (place each hit by the word or beat it names).\n\nTHE COLD CASE, part 1 (46.77 s). 320.83-344.92 XOR: a sparse, mechanical figure on muted piano that follows the scissor sweep (from 'sweep' 333.84), one note per wrong-side count; under 'No straight cut can separate them' (333.15-334.98) the figure is stuck on one repeated note; silence in the pause after it except the counter's ticks (soft woodblock); a brief consonant chord when the two cuts succeed ('two' 336.02 / 'hidden' 337.50: D minor → F major, piano + soft cello) which then HANGS unresolved on 'train one' (342.90-343.50). 344.92-365.87 THE VERDICT: under 'Minsky and Papert's book proved what one layer cannot do' (345.52-350.57) only a low cello pedal D2; the quoted 'intuitive judgment that the extension is sterile' (351.17-364.63) over near silence; then M1's rising fourth on a dark colour, LOW CLARINET (A3→D4) over a cello D2-A2 fifth, as the sterile candle is lit ('candle' 361.20, the line ends 'dead end' 364.09-364.63): a belief held. The held D passes to the cello as the texture thins toward the cold: last onset by 363.10 (so the clarinet A3→D4 sits about 361.20-362.05 and the cello D2-A2 fifth is struck with it, not after); then nothing new: the D-A fifth decays under the end of L0405 (364.63) and the short fade 364.70-365.70. JOIN NOTE: the hand-off asked for this join after the snow line (374.05-377.75), which would have put the winter's first line inside this cue; it is kept instead in the 2.54 s gap before the cut (364.63-367.18), with a short fade on a decaying held D, so the winter still starts with the snow (QA cueJoins: clear of narration, m05 alone 1.73 s before L0406). m05 enters at 364.75 on the same D; keep the overlap to a D-A open fifth. COMPOSER VOICE-BAND PASS (critic r1, 2026-10-12; rendered 46.77 s + 6 s tail, -23.0 LUFS I, TP -6.3): THE STERILE CANDLE is lit in the 1.34-s breath before 'A third candle' (360.17-361.50): low clarinet A3 at 360.60, D4 on the picture's lighting beat (361.20), released fast (0.14 s + 0.3 s) so it is gone by 'A' (361.50); the cello D2-A2 fifth bows in with the A (360.60) and the cello D3 (361.25, slow attack) takes the held D under 'many layers are a dead end'; nothing is struck on the word 'candle' any more. The stuck E under 'No straight cut can separate them' -5 dB (L0402 250-2k 5.7 -> 11.0); the cold bowed glass under the quote (it sounds D6/A6, 1.17/1.76 kHz) -7 dB (L0405 1-4k 3.8 -> 10.8). Every line now 7.8-24 dB clear in both voice bands over the whole line (median 11.7 / 13.8) and 11.6-28 dB within the words. Window, joins and the decaying D across the m05 join unchanged; last onset 361.5.",
+  "file": "score/cues/m04.strudel",
+  "render": "score/renders/m04.wav",
+  "gainDb": -4,
+  "fadeIn": 2,
+  "fadeOut": 0.75,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 360.68,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": -0.25,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m05",
+  "start": 364.75,
+  "end": 450.06,
+  "shots": [
+   "ch04-s03",
+   "ch04-s04",
+   "ch04-s05",
+   "ch04-s06",
+   "ch04-s07",
+   "ch04-s08"
+  ],
+  "mood": "winterBlue: the first AI winter, two deaths, Lighthill, the lamplighters, a tall young man at the rim",
+  "tempoBpm": 48,
+  "key": "D minor over a D pedal; F major for the lamplighters (M4); ends on a suspension (D held over A with a warm high E overtone)",
+  "instrumentation": "gm_cello (solo, sul tasto), gm_pad_bowed (bowed glass), cello harmonics (high sine-like D5/A5), gm_contrabass (low pedal), gm_pizzicato_strings, gm_celesta (window glints), soft low gm_string_ensemble_1",
+  "intensity": 0.2,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 364.75-450.06 (85.310 s), shots ch04-s03…ch04-s08 (365.88-450.38); lines under it L0406 (367.18) … L0416 (ends 445.00). IN: starts 364.75 with a 0.5 s fade-in, inside the speech-free gap 364.63-367.18 (L0405 -> L0406). OUT: fades 447.31-450.06, inside the speech-free gap 445.00-451.98 (L0416 -> L0501); last strike measured at 444.59 (analysis). Re-fit done 2026-10-13: the window moved bodily (-0.25 s) with its first shot and no line inside it changed length; the source (score/cues/m05.strudel) now writes every event on the CURRENT clock (S = the window start, every hit -0.25 s and checked against its word in narration/timeline.json) and was re-rendered at the window length. ROUND-2 VOICE-BAND PASS: the lamplighters' celesta window glints under L0412 are ghosts (-6 dB), the warmest still on 'Helsinki' (L0412 1-4k 5.4 -> 9.8). Rendered 85.31 s + 6 s tail, -22.4 LUFS I, TP -9.7 dBTP; every line 10.8-40 dB clear in both bands. The times in the notes below were re-mapped from older clocks; where they disagree with this paragraph or narration/timeline.json, the timeline wins (place each hit by the word or beat it names).\n\nTHE WINTER (rubato; events by seconds are fine). This is the film's emptiest music: lots of air, density following the snow. M4's home. 364.75-376.50: (enters at 364.75, before the cut to winterBlue at 365.87, from silence: a slow-attack cello D2, no fade needed) solo cello, low and slow (D2, A2), with bowed glass entering as the snow begins ('snow' 371.37) under 'and the snow began: the first AI winter' (367.18-374.05); intensity 0.2. 376.50-387.00 PITTS'S LAMP (scored silence): silence, or almost: a single sustained cello harmonic (sounding D5 or A5), barely there; nothing else; no melody (line 377.50-382.39). 387.00-398.50 ROSENBLATT: silence through the line (388.00-393.49). On the handwritten dedication ('dedication' 394.69) M1 once on solo cello, very softly, in D minor, ending on its falling resolution (gone): a short form, lit 394.73, suspension 395.83, fall 397.58. 398.50-421.08 LIGHTHILL: a measured, formal figure for the lecture: low strings (cello + contrabass) in a slow walking bass under 'combinatorial explosion' (399.10-411.12), staying under D3; giving way on the question ('One book's fault?' 411.72) to the open cello again; the four blows ('blows' 413.19 onward) land on soft pizzicato plucks; Papert's card ('papert' 410.16 is on screen) in near silence. 421.08-433.00 THE LAMPLIGHTERS: the cello finds its first warm melodic line of the chapter: M4's FIRST FULL STATEMENT, in F major (C3 F3 G3 | A3 Bb3 A3 | G3 E3 | F3), with a celesta glint on each lit window ('windows' 421.38, 'helsinki' 424.53) whose first three glints are M3's opening notes (a hidden plant); keep the cello in the gaps around 'Still, a few windows stayed lit' (421.68-...) and pull it back to a thin pad under 'rounding errors' (429.07). 433.00-450.38 THE TALL YOUNG MAN: M1's held suspension on cello as he sits ('sits' 437.65): the held D over A (doubt at the rim), sustained and unresolved under 'He would spend most of thirty-six years at the edge of the light' (440.12-445.00); a faint warm overtone (a high E from bowed glass or celesta at very low level) enters on 'light' (444.55) and is left hanging; last onset by 445.88 (the overtone on 'light' 444.55 is the last strike; nothing on 'chess' 445.90); the fade runs 447.48-450.23; m06 (F major, Versailles) enters at 448.23, so the hanging D-A-E reads as the vi-iii colour of F before the thaw.",
+  "file": "score/cues/m05.strudel",
+  "render": "score/renders/m05.wav",
+  "gainDb": -5,
+  "fadeIn": 0.5,
+  "fadeOut": 2.75,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 444.59,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": -0.25,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m06",
+  "start": 448.227,
+  "end": 555.4,
+  "shots": [
+   "ch05-s01",
+   "ch05-s03",
+   "ch05-s04",
+   "ch05-s05",
+   "ch05-s06"
+  ],
+  "mood": "dawnGold thaw: Versailles, wandering desks, the messenger is born, the misty hills, who invented it",
+  "tempoBpm": 63,
+  "key": "F major (dawnGold); the sterile candle's fall in its own D minor colour; the fog in Bb/G minor",
+  "instrumentation": "gm_celesta, gm_string_ensemble_1, gm_pizzicato_strings, soft 1980s rim tick (short hp-filtered noise or gm_woodblock), gm_pad_bowed, gm_cello, gm_clarinet (low), gm_orchestral_harp (the forward arpeggio, optional)",
+  "intensity": 0.4,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 448.227-555.4 (107.173 s), shots ch05-s01…ch05-s06 (450.38-557.21); lines under it L0501 (451.98) … L0512 (ends 554.41). IN: starts 448.227 with a 2 s fade-in, inside the speech-free gap 445.00-451.98 (L0416 -> L0501). OUT: fades 554.60-555.40, inside the speech-free gap 554.41-557.81 (L0512 -> L0513); last strike measured at 550.987 (analysis). Re-fit done 2026-10-13: the window moved bodily (-0.25 s) with its first shot and no line inside it changed length; the source (score/cues/m06.strudel) now writes every event on the CURRENT clock (S = the window start, every hit -0.25 s and checked against its word in narration/timeline.json) and was re-rendered at the window length. ROUND-2 VOICE-BAND PASS (the cue's lines had been 5.5 dB median in 1-4k, L0524 -2.9): the celesta is split into a CLEAR layer (statements in the breaths) and a dry GHOST layer (about -9 dB) for the word-locked gestures under the lines; the shapes under the long lines are doubled low on harp (the forward pass, the roll downhill, the run back down). Picture sync fixed: the roll follows the ball's four steps (459.12 459.65 460.17 460.69); the XOR check follows the picture's four cases, one note per slip tick (513.06 513.86 514.66 515.46: low high high low), and the trained pass lands on the THIRD (A over F) once the check is complete, in the clear (515.90; L0509 ends 514.43); the Boltzmann net's settled Ab chord blooms in the breath after 'cools' (480.26); the sterile candle's clarinet D -> C# on 'seventeen' (523.51) is soft and the cello's A-E carries the fall. Rendered 107.173 s + 6 s tail, -23.5 LUFS I, TP -6 dBTP; every line 9.0-24 dB clear in both bands. The times in the notes below were re-mapped from older clocks; where they disagree with this paragraph or narration/timeline.json, the timeline wins (place each hit by the word or beat it names).\n\nTHE MESSENGER: M3 is born. 450.38-470.21 VERSAILLES: the thaw begins; after the winter's solo cello, the first warm colour: a slow celesta-and-strings figure in F, quiet (0.2), long reverb like a large gilded room (room .8, rsize 8); under 'until the whole memory returns' (463.01-467.61) the texture thins to a single sustained note as the reflections fade; nothing resolves yet. 470.21-483.62 THE DESKS: a walking figure in pizzicato with a soft 1980s tick, one small modulation per desk (F → G → Ab → F across 'travel' 474.94, 'cambridge' 475.44, 'toronto' 480.92); at the Boltzmann flicker (476.44-480.22, 'hot' 477.91 → 'settle' 478.83) a brief shimmer of random high celesta notes that settle into a chord as the temperature falls; the winter's cello holds a low D pedal underneath (still the sterile candle's season). 483.62-526.75 THE MESSENGER (the chapter's heart): M3 tied to the machine. An upward arpeggio for the forward wave ('forward' 492.06), a single sustained dissonance for the glowing error ('error' 498.79: the [d4,eb4]-type glass rub, transposed to F: [f4,gb4] or the 9th), then the same arpeggio in reverse, descending, as the messenger runs down ('messenger' 500.46, one note per string-tug, pizz); during the training scrub ('train' 508.72-514.43) the ostinato accelerates and brightens; four clean answering notes for the XOR check ('xor' 512.64) and 'By itself' (513.94) lands on the THIRD (A over F: solved). Under the family-trees beat (517.24-517.74) a lighter, wondering figure. On 'seventeen' (523.51) M1's falling resolution = gone, in the sterile candle's own colour (low clarinet over cello, D→C# over A), resolving cleanly as the smoke rises; then a breath of near silence under the quote card. Intensity 0.3 → 0.6 → 0.3. Keep the arpeggio high (celesta, harp) or low (pizz under D3) while the long lines run (484.93-499.69, 500.14-508.17). 526.75-536.17 THE MISTY HILLS: the ostinato drops to a low, uncertain pad (fog: gm_pad_bowed, G minor colour); each footstep a soft muted pluck; the timid walk ends on an unresolved note in the hollow ('hollow' 530.40); the bold leap (about 532.54-534.54) is a rising fourth in the strings that lands warmly in the valley (a hint of M1's lit figure, without lighting a candle). 536.17-557.21 WHO INVENTED IT: as the question card burns out in the lead-in (536.14-537.54) M1's clean falling resolution once, very soft; study texture: low clarinet and the lamp's hum (a very low sine), intensity 0.3; a small plucked motif per thread lighting ('threads' 543.32), the Helsinki thread getting the warmest note on 'Helsinki' (543.75); Hinton's quote (549.88-554.41) over near silence: last onset by 553.00; the cue fades 554.60-555.40 in the gap after L0512. MOVED TO m07: the wry pizzicato walk (M2) for the false-clue card ('falseClue' 555.81, 'falseClueTurn' 556.81) now falls after this cue ends; m07 opens with it.",
+  "file": "score/cues/m06.strudel",
+  "render": "score/renders/m06.wav",
+  "gainDb": -3,
+  "fadeIn": 2,
+  "fadeOut": 0.8,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "clockShift": {
+   "by": -0.25,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  },
+  "lastStrike": 550.987,
+  "lastStrikeFrom": "analysis"
+ },
+ {
+  "id": "m07",
+  "start": 554.7,
+  "end": 640.355,
+  "shots": [
+   "ch05-s07",
+   "ch05-s08",
+   "ch05-s09b",
+   "ch05-s10"
+  ],
+  "mood": "candleAmber: the knowledge boom, brittle and bright → the second winter → the messenger nobody heard",
+  "tempoBpm": 76,
+  "key": "C major (synth brass) → C minor for the gutter → F major/D minor at the end, handing to the quiet years' piano",
+  "instrumentation": "gm_synth_brass_1 (M1 lighting), gm_woodblock + short dry pizz (typing rhythm), gm_orchestral_harp (rolling sea arpeggio), gm_cello, gm_clarinet (file seal), gm_celesta (X-ray shimmer, the Cyc taper's thin high note), piano (enters alone at the end)",
+  "intensity": 0.35,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 554.7-640.355 (85.655 s), shots ch05-s07…ch05-s10 (557.21-640.5); lines under it L0513 (557.81) … L0519 (ends 636.42), including the NEW L0514b (Hubert Dreyfus, 574.54-588.07). IN: starts 554.7 with a 0.6 s fade-in, inside the speech-free gap 554.41-557.81 (L0512 -> L0513). OUT: fades 638.855-640.355, inside the speech-free gap 636.42-642.10 (L0519 -> L0601), crossfading with m08 (in at 638.353). Last strike measured at 630.98 (analysis); the composed last onset is the piano's soft unresolved E at 637.18, 1.68 s before the fade. RE-FIT DONE 2026-10-13: the source is now written in absolute seconds. Everything up to 'never' (571.98) kept its place; THE DISSENTER AT THE RIM is new: under L0514b M4 (the holdouts' walk) on a lone low cello in C dorian (G2 on 'rim' 574.99, C3 on 'philosopher' 575.67, walking D-Eb-F-Eb-D-Bb to C on 'early' 583.40) over Cm-Ab-Bb-Cm strings at .085, the typing returns faintly around him under 'early, dramatic success' (583.40) and trips once on 'sudden' (586.30), and a Db rub sits under 'sudden unexpected difficulties' (586.08), clearing to C major for the sea; everything from the sea on moved +14.08 s (sea 588.78, file seal 598.11, Tokyo 599.11, panel 604.14, snow 607.98, Cyc taper 618.16, 'seven' fall 619.81, M3 lead-in 622.18, critics 624.88, 'worked' shimmer 632.84, 'stopped listening' 635.68, piano 636.48-637.18). Voice pass: the brass lighting is a short soft strike (.085, held 2.2 s), the typing under L0513/L0514 is softer, the bowed glass/celesta colours are 3-6 dB lower and low-passed, and the 'worked' shimmer is .05: every line clears 7.5 dB in both the 250-2k and 1-4k bands (lowest L0515 9.3, L0519 10.7 in 1-4k). -22.7 LUFS, TP -8.2 dBTP.\n\nTHE RIVAL SUSPECT. 554.70-557.21 (NEW opening, moved from m06; ch05-s06's tail, music only, the cue's first 2.4 s alone before L0513 at 557.81): a wry, slightly off-kilter pizzicato walk (M2, the detective) as the false-clue card turns over ('falseClue' 555.81, 'falseClueTurn' 556.81), in C, dry and low; it stops as the card lands, leaving the match strike to come. 557.21-579.78 THE KNOWLEDGE CANDLE: M1's rising fourth (G→C) on a bright, slightly brittle 1980s synth brass (confident, corporate optimism) on the match strike ('lit' 560.13); a busy, regular keyboard-typing rhythm (woodblock + very short pizz 16ths, low velocity) for the rule writers ('stage' 563.28), intensity 0.4, kept thin under 557.81-565.23 and 565.68-573.99; under 'never went into routine use' ('never' 571.98) the rhythm stops for one bar. 579.78-603.54 CYC: the typing continues softer, with a rolling, sea-like harp arpeggio under the cards ('sea' 582.92); everything drops to a single held chord under the quote 'practically nothing' (about 595.62-597.71); the FILE SEAL on 'file' (598.11), the same two notes as ever. The Tokyo aside ('tokyo' 599.11): the same harp arpeggio, unchanged, equally warm: no 'oriental' cliches of any kind. 603.54-624.50 THE SECOND WINTER: under the 1984 panel (604.14-608.38) the typing thins to a single repeated note, a warning heard from inside; it stops as Schank's card rises (605.87 → by 608.04); snow returns (607.98: bowed glass, high and thin); the screens go dark ('dark' 615.79); on 'seven' (619.81) M1's falling figure played by the cello, but left a step short of resolving (C held, falling only to D over a G bass, never to B: guttered, not gone); one high, thin sustained note (celesta/glass, about C6) stays for the Cyc taper ('cyc' 618.16, 'cabinet' 619.48) and does not resolve. 624.50-640.50 THE MESSENGER UNHEARD: lead-in: M3's arpeggio, slow and warm (in F), 624.54-625.04; under the critics (625.10-631.60, 'John loves the girl') a held suspension (doubt) that does not resolve on 'still argued' (631.08); on 'worked' (about 633.04) the X-ray's glassy shimmer; on 'stopped listening' (636.01-636.42) the harmony slips from F major to D minor and PIANO enters alone (a falling D minor figure), handing over to m08's quiet-years piano. End unresolved, intensity 0.2; last onset by 637.25 (keep the falling D minor piano figure short: two or three notes from 635.98, the last by 637.25), then let it ring through the fade 638.85-640.35; m08's piano enters at 624.52. Re-fitted 2026-10-12 (clock 2139.54 s): every cue-local hit re-checked against timeline.json (all unchanged after the +0.75 s bodily shift; the code comments now carry the new absolute times). Level pass: the brass lighting under L0513, the sea under L0515, the guttered fall under the end of L0522 and the F pedal under L0523/L0519 are 1.5-3 dB softer, and the gap 620.68-625.10 gains one warm F-major string breath under the M3 lead-in (released before L0523): under-speech medians now -21 to -26 LUFS momentary, gaps -16.5 to -19.",
+  "file": "score/cues/m07.strudel",
+  "render": "score/renders/m07.wav",
+  "gainDb": -3,
+  "fadeIn": 0.6,
+  "fadeOut": 1.5,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 630.98,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": -0.25,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m08",
+  "start": 638.353,
+  "end": 790.803,
+  "shots": [
+   "ch06-s01",
+   "ch06-s02",
+   "ch06-s03",
+   "ch06-s03b",
+   "ch06-s04",
+   "ch06-s05",
+   "ch06-s06",
+   "ch06-s07",
+   "ch06-s08"
+  ],
+  "mood": "duskRose: the quiet years on solo piano; the clean bowl and the fog; the holdouts; the bet; the whisper and the pipe",
+  "tempoBpm": 66,
+  "key": "D minor; F major for the SVM bowl (perfectly resolved); M1 in D minor; ends on a suspension (the fog)",
+  "instrumentation": "piano (solo, unhurried), gm_pad_bowed + a high harmonic (the snow at the window), gm_drawbar_organ (very soft pedal for the protected pipe), gm_clarinet (low, the study), gm_pizzicato_strings (sparingly)",
+  "intensity": 0.25,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 638.353-790.803 (152.450 s), shots ch06-s01…ch06-s08 (640.5-789.63); lines under it L0601 (642.10) … L0616 (ends 788.21). IN: starts 638.353 with a 2 s fade-in, inside the speech-free gap 636.42-642.10 (L0519 -> L0601). OUT: fades 788.403-790.803, inside the speech-free gap 788.21-793.23 (L0616 -> L0701); last strike measured at 786.193 (the fog's A on 'card'). RE-FIT DONE 2026-10-13: the window moved +13.833 s bodily, so every cue-local time is unchanged except THE KERNEL TRICK, now on the split L0607b (689.59-694.26) and L0607c (695.16-705.03): left-hand stencil steps F-G-A from 'expert' (689.79), a D minor shade on 'straight' (695.66), IV on 'kernel' (697.16) and the octave lift on 'lifted' (697.86), V on 'flat cut' (700.23) with one soft high piano chime (F6; the celesta was too bright under the line), V7 on 'learning' (702.21) -> I on 'hand-made' (704.24), the right hand's plain C on 'line' (693.78) ringing into the breath; the cello D gathers from 706.35 under the hold so the candle (710.60) is lit from below. Voice pass: the window's celesta glint (under L0604) was cut and the snow glass is .055 behind lpf 1800; the whisper starts at .16 (M3's halving kept); the bowl's second bar and cadence and the candle's A-D are a little softer: every line clears 7.4 dB in both bands (lowest L0607 8.9 in 250-2k). -22.5 LUFS, TP -6.2 dBTP.\n\nVOICE PASS r3 (2026-10-13, critic r1 of the round-2 film: per-word + low band; checker .orly-work/score-m08-12/wcheck.mjs): the first stencil step on 'learns' (646.00) and the grace on \"Buffalo's\" are half as loud and short; the bowl phrase is softer (.10/.075) and the Alberti, the cadence and the kernel's stencil steps sit behind lpf 200-350; the candle's D on 'candle' (710.60) is a soft pinned note (.055; the left hand and the gathered cello hold it); the rim's cello A-E became a pure sine A1 (the piano's struck fifth carries the E); the waltz is split into an oom behind lpf 250 and pahs an octave up (.045, lpf 1200; the pah on 'would' rests); the card's half-diminished chord is E1-Bb1 (lpf 200) under D4-G4; the pipe's organ, left hand and even figure enter on 'pipe' (764.92), after 'protected'; the chess slip's clarinet and E major chord softer; the fog's veiled fifth is a pure A1 + E4-A4 (the left hand's D-A under L0616 cut). Every line >= 9.3 dB in 1-4k, 9.7 in 250-2k and 7.5 in 80-250 (L0607 7.5, every other line 8.9 or more), render + gainDb, no duck; every word of 0.2 s or more >= 3 dB in both bands. -24.2 LUFS, TP -6.5 dBTP (the analysis's last strike is now the bowl's V-I, 783.45; the fog's A on 'card' 786.20 is softer and still the last onset).\n\nTHE QUIET YEARS: solo piano, duskRose, intensity 0.2-0.3. Piano is the voice of the holdouts' patience. Under speech keep the right hand above D5 or in the gaps; the left hand low. 640.50-652.04 BELL LABS: a small two-note figure on each stencil step (on twos: M5b, played by piano), a warm, slightly amused grace note on \"Buffalo's mail\" (about 647.81-648.83), a smaller grace note as the ghost stamp prints ('again' 648.92). 652.04-664.04: a steady, modest left-hand pulse like the sorter's rollers ('sorter' 654.36) under the cheque line (652.64-657.19); at the window ('window' 657.78) the texture cools (bowed glass and a high harmonic: the snow) under 'A winter, then, of prestige, not of use' (657.64-661.32); back inside the warm pulse resumes, unbothered. 664.04-688.79 THE RIVALS: two small, bright piano figures, one per panel ('rivals' 664.86, 'translation' 668.96, 'forest' 672.83), polite and competent; then the piano turns lucid and classical: a clean, balanced phrase in F MAJOR, perfectly resolved (V-I) for the bowl ('bowl' 685.35), its cadence landing on 'bottom' (687.25); when the misty hills appear beside it, a faint fogged echo of m06's unresolved hollow note sits underneath. 688.79-709.79 THE KERNEL TRICK (NEW shot ch06-s03b, L0607b 689.59-701.31: 'An expert cut the features by hand; the machine only drew the line. The kernel trick lifted the crowds, so one flat cut could part them. The learning was clean; the seeing was hand-made.'): the piano continues from the bowl under the recipe as a two-part figure: left hand the stencil's careful steps ('expert' 689.79), right hand the ruler's simple line ('line' 693.29); a soft lift in register on 'lifted' ('kernel' 694.59 / 'lift' 695.26); a single clear chime on 'flat cut' ('cut' 696.84); it resolves quietly on 'hand-made' ('handmade' 700.53), then rests through the hold (701.28-709.78) so the fiddly-nets candle is lit out of quiet; keep both hands out of the voice band while the line runs. 709.79-729.37 THE FIDDLY-NETS CANDLE: M1 on solo piano in D minor, plainly: rising fourth on the lighting ('lit' 710.60), then a held suspension under the rim figures ('rim' 717.59) with a soft rising step as each name is spoken ('hinton' 720.82, 'lecun' 722.11, 'bengio' 722.83); when the thread joins the three hand-lanterns ('thread' 725.06) three soft high notes answer each other (M4's opening fourth, passed between them): a small private chord inside the big room's silence. 729.37-754.25 THE BET: a small, slightly mischievous piano waltz in 3/4 (three signatures), intensity 0.3, kept light under the long line (729.97-749.93); it stops on an unresolved chord as the card is pinned on 'Who paid for dinner?' (750.76-752.27; 'card' 751.24). 754.25-769.83 THE WHISPER AND THE PIPE: M3's descending figure on piano, each note half as loud as the last (a real diminuendo), vanishing at 'gone' (760.69); silence for one beat; then the same figure returns 'inside the pipe' at steady, even volume, sustained by a soft organ pedal ('pipe' 764.81 → 'thousand' 766.95): the protected pipe; intensity 0.2 → 0.3. 769.83-782.04 THE CHESS SLIP: study texture (the lamp's hum, low clarinet with the piano); the chess slip's long-held suspension from m03 finally resolves, falling, as the slip comes down ('match' 773.21 / 'late' 774.45), but drily, in a slightly wrong key (a C→B fall over E major in a D minor context: right answer, wrong reason); for Turing's curling slip ('turing' 780.17) a single held high note that does not resolve. 782.04-789.62 MUSIC ONLY: piano alone, very quiet (0.15): the clean resolved bowl phrase once ('bowl' 783.44), then, as the question card is pinned ('card' 786.20 / 'fog' 785.64), the misty hills' unresolved note returns and is held under the silent card. End on that suspension: last onset by 786.80 (the misty hills' note on 'card' 786.20), held through the fade 788.40-790.80, leading into m09's Bb dawnGold (m09 enters at 789.30). Level pass 2026-10-12: the bowl V-I on bottom (687.25) and the candle D on candle (710.60) are struck about 2 dB softer (they were the loudest moments under the voice).",
+  "file": "score/cues/m08.strudel",
+  "render": "score/renders/m08.wav",
+  "gainDb": -4,
+  "fadeIn": 2,
+  "fadeOut": 2.4,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "clockShift": {
+   "by": 13.833,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  },
+  "lastStrike": 783.453,
+  "lastStrikeFrom": "analysis"
+ },
+ {
+  "id": "m09",
+  "start": 789.301,
+  "end": 884.916,
+  "shots": [
+   "ch07-s01",
+   "ch07-s02",
+   "ch07-s03",
+   "ch07-s04",
+   "ch07-s06"
+  ],
+  "mood": "candleAmber → dawnGold: the thaw: a dinner settled, the warm-up candle, a crowd of workers, gaming cards",
+  "tempoBpm": 72,
+  "key": "Bb major → D major when the fire arrives (M1 for the warm-up candle in Bb: F→Bb, held over F-C, falls Bb→A)",
+  "instrumentation": "piano (lighter), gm_pizzicato_strings, warm synth pad (triangle/sawtooth, lpf 900, slow attack), gm_string_ensemble_1, gm_celesta (window plucks), oscillator GPU pulse (sawtooth, lpf 700-1100) + a high fan-whine shimmer, gm_clarinet/flute-like woodwind lift",
+  "intensity": 0.4,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 789.301-884.916 (95.615 s), shots ch07-s01…ch07-s06 (789.63-884.83); lines under it L0701 (793.23) … L0710 (ends 880.32). IN: starts 789.301 with a 1.5 s fade-in, inside the speech-free gap 788.21-793.23 (L0616 -> L0701). OUT: fades 883.716-884.916, inside the speech-free gap 880.32-886.63 (L0710 -> L0802); last strike measured at 878.241. Insides unchanged by the round-2 clock move (shifted bodily; every hit checked against the current words). Voice pass 2026-10-13 (re-rendered at the window length): the celesta windows under L0705 are .02-.04 behind lpf 2600, the V7's F5-A5 left the chord under the end of L0705, and the 'record' lift (871.38) is .045 behind lpf 2600: L0705 6.5 / L0707 8.9 in 1-4k (were -0.9 / 2.6), every other line 7.1 dB or more in both bands. -22.9 LUFS, TP -8.1 dBTP.\n\nVOICE PASS r3 (2026-10-13, critic r1 of the round-2 film): L0705's windows are three ppp glints (written d6-f6) under 'fifty thousand', nothing on 'people', and the five-note run in the breath 849.75-850.30; the 'record' answer is a high D major swell ([a5,d6,f#6]) that starts at 874.29, peaks ~874.9 after 'warm-up' and is gone before L0710; the gutter: Bb on the cut to the candle (876.68, in the clear), A soft on the picture's gutter (877.86), left hand behind lpf 350; the cello A swells out of 'when' (880.03). LOW BAND: the warm-up candle pad is voiced Bb3-G4 above the narrator's fundamental (contrabass behind lpf 250); the GPU pulse runs an octave down (D1 D2 A1 D2, lpf 380-480) under L0706/L0707 and returns to D2-D3 in the clear 874.64-876.67, its pad D4-B4, contrabass D1-B1 behind lpf 250; the crowd's low strings behind lpf 250-600. Lines: 1-4k >= 10.4, 250-2k >= 9.9, 80-250 >= 8.2 dB (L0702 9.9, L0703 10.9, L0706 10.5, L0707 8.5; were 6.0/6.4/5.6/6.1); 'people' 12.3/7.6 (was -5.0 in 1-4k), 'warm-up' (874.13) 5.0/12.6 (was -1.4); every word >= 3 dB except 'something' 2.9 (perlin-varied). -24.1 LUFS, TP -7.3 dBTP, postgain 4.26 (+1 dB for the energy taken out of the low band).\n\nTWO ACCOMPLICES. 789.62-810.12: the quiet years' solo piano, a little lighter; a two-note pizzicato wink on 'lost' (about 797.38); the card's fall lands on a soft open fifth ('cardDown' 808.29). 810.12-833.79 THE WARM-UP CANDLE: M1's rising fourth (F→Bb) on a warm synth pad under the piano (the first hint of the GPU-era colour) as the candle is lit ('lit' 812.51), intensity 0.35; the suspension arrives on 'Nearly' ('nearly' 830.79) and is left hanging; the flame push rides a single soft swell (no cut). Keep the pad under the voice (810.72-821.21, 822.21-833.28) at velocity .12 behind lpf 1000. 833.79-857.66 ACCOMPLICE ONE, DATA: the piano picks up a light running figure; on 'crowd' (846.97) the strings open out and each lighting window is a soft celesta pluck ('windows' 848.44 onward), density rising as the windows multiply; a small settling cadence on 'ImageNet' (850.88), intensity 0.45. 857.66-876.66 ACCOMPLICE TWO, FIRE: M5c, the GPU pulse, ENTERS on 'fire' (859.73), never earlier: low and warm oscillator eighths in D (the key shifts Bb → D through the pivot F→F#), with a fan-whir texture in the rhythm; intensity 0.5; keep it under D3 and behind lpf 900 while he speaks (858.26-865.98, 866.43-874.63); a small lift on 'record' (871.38). 876.66-884.83: M1's falling resolution on solo piano as the warm-up candle gutters ('gutter' 877.85; Bb→A over F→D), a small woodwind lift on 'coat' (881.51, the 'pre-training' figure: two notes, F#4→A4, which m14 will rhyme with), a soft shimmer for the X-ray (882.11); end on a held A (the dominant of D) that hands into m10's Florence opening. Last onset by 882.11 (the X-ray shimmer on 'xray' 882.11; the held A struck with it or before); nothing on 'clue' 883.61; fade 883.71-871.08. CRITIC r1 REVISION: the crowd keeps only bb1-f2 under L0712 (the cadence upper voices F5-Bb5-D6 moved to the gap at 854.86 with the falling Bb phrase; the V7 short, in the breath; the celesta run ends ~850.21 and is softer); the clarinet lift (880.36) and the shimmer (881.11) come in about a second earlier with short releases, the cello A is let go at 881.91 (attack .8, release 1.5): 883.61 measures -36 LUFS momentary in the render, the hand-off is a decay.",
+  "file": "score/cues/m09.strudel",
+  "render": "score/renders/m09.wav",
+  "gainDb": -3,
+  "fadeIn": 1.5,
+  "fadeOut": 1.2,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "clockShift": {
+   "by": 13.833,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  },
+  "lastStrike": 880.401,
+  "lastStrikeFrom": "analysis"
+ },
+ {
+  "id": "m10",
+  "start": 883.516,
+  "end": 1057.816,
+  "shots": [
+   "ch08-s01",
+   "ch08-s02",
+   "ch08-s03",
+   "ch08-s04",
+   "ch08-s05",
+   "ch08-s06",
+   "ch08-s07",
+   "ch08-s08",
+   "ch08-s08b",
+   "ch08-s09",
+   "ch08-s10"
+  ],
+  "mood": "DEEP DIVE I: the workshop, the bedroom furnaces, the stencil, the cathedral, the tricks, the two towers, five days downhill",
+  "tempoBpm": 92,
+  "key": "D dorian ostinato → D major at the cathedral crown; the downhill walk steps down D → C → Bb → A (settling, quiet)",
+  "instrumentation": "muted piano + soft tap (workshop), low synth drone (fan whine) → M5 ostinato: gm_woodblock / dry pizz (stencil ticks on twos), gm_celesta (glints), oscillator pulse (sawtooth/triangle), gm_string_ensemble_1, broad organ-like synth swell (gm_drawbar_organ or sawtooth pad), gm_pad_bowed (noise/fog), gm_cello (winter walk), white-noise hiss (television snow, very low)",
+  "intensity": 0.5,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 883.516-1057.816 (174.300 s), shots ch08-s01…ch08-s10 (884.83-1058.38); lines under it L0802 (886.63) … L0819 (ends 1055.77). IN: starts 883.516 with a 1.4 s fade-in, inside the speech-free gap 880.32-886.63 (L0710 -> L0802). OUT: fades 1057.216-1057.816, inside the speech-free gap 1055.77-1059.58 (L0819 -> L0820); last strike measured at 1053.916 (the composed last onset is the A on 'cut3', 1055.37, which decays by itself). Insides unchanged by the round-2 clock move (shifted bodily; every hit checked against the current words). ROUND-2 VOICE PASS DONE 2026-10-13 (review: the thinnest margins in the film): the source now carries the narrator's line spans and every note struck inside a line is scaled (speech(): .57 for all layers, then .7 more and a darker cutoff for the machine pulse, .35 for the dropout celesta), while the gaps (the crown 971.4-973.7, the mosaic, the dropout hold, the plant on 'Every time', the downhill A) are 1.8 dB fuller; M1's held D under L0802 is now a short strike with the D held in the low strings below D3; the stencil ticks, the worked-sum glass, the climb's celesta and music box, the messenger's celesta run, the weir's figures, the mirror crystals, the towers' harp and woodblock and the downhill glass are 2-6 dB softer. Measured per line (render + gainDb, no duck): full-band margin rose by 1.6-9 dB on every line (lowest now L0802 7.5, was 5.9), median 1-4k 12.1 (was 8.4), median 250-2k 11.1 (was 8.7), every line at least 7.3 in both bands. -24.1 LUFS, TP -3.2 dBTP.\n\nTHE NIGHT IN FLORENCE, part 1: the machine. The mechanical ostinato (M5b/M5c) is locked to the teaching machines: stencil steps on twos, and it climbs in layers with the cathedral. Words are sparse here; the music carries the long music-only holds, but always duck out of the voice's band during lines. 884.83-901.66 THE BELIEF: a hush in the study; M1's rising fourth for the expert-features candle, played plainly, with respect ('candle' 888.80; A→D, strings), then a patient workshop rhythm (muted piano, a soft tap on the snips) from 'workshop' (892.99); intensity 0.3. 901.66-914.74 THE BEDROOM: the workshop rhythm drops out; a low synth drone rises with the fan whine and becomes the first pulse of the machine ostinato on the LED match cut ('match' 912.58); intensity 0.35. 914.74-929.79: the ostinato begins properly: a dry pluck on every grid subdivision, celesta glints on the pixel ('grid' 916.35, 'number' 918.22); 0.4. 929.79-953.20 THE STENCIL (worked number): the ostinato locks to the stencil: one dry wooden tick per lantern step, on twos; a single held tone under the worked sum ('worked' 941.83) resolving upward when the spot comes out bright (the sum 'nearly four', about 942.16-943.16); on 'slide the same stencil everywhere' ('slide' 947.52) the steps accelerate into a shimmering run as the wall fills ('conv' 950.19, 'full' 952.33); 0.5. 953.20-973.91 THE CATHEDRAL: the ostinato climbs: each course of stone adds an octave voice ('l1' 953.70, 'l2' 955.74, 'stack' 957.64); the four nouns land on four rising chords ('edges' 959.33, 'textures' 960.76, 'parts' 961.92, 'things' 963.17: Dm, F, G, A, i.e. upward to the dominant); the two great halls and the last hall ('halls' 964.93, 'lastHall' 948.83) get a broad organ-like synth swell into D MAJOR on the crown in the gap after 971.38 (about 971.46-973.66): the dive's first big music-only moment; 0.65. 973.91-985.99 NOBODY CUT THEM: the ostinato drops to near silence on 'noise' (976.84: a soft white-noise hiss texture, television snow); the messenger ('bead' 979.36) brings back M3's backward-running figure, quicker and quicker, until the mosaic resolves on a warm D major chord ('mosaic' 983.97); 0.55. 985.99-1002.79 THE WEIR: the ostinato lightens to pizzicato; a little running figure for the signal passing undimmed ('weir' 991.43, 'undimmed' 993.68); a lift on 'six times faster' ('six' 998.89); 0.45. 1002.79-1020.37 TOO MANY KNOBS: a low thud (timpani or contrabass, soft) on the scale ('scale' 1003.18); a dry, stuck note (repeated, no progression) on 'memorise' (1013.61); glassy arpeggios multiply in the mirror hall ('mirror' 1017.15, 'flip' 1017.73); 0.5. 1020.37-1032.74 DROPOUT: music-led: on 'snuffed' (about 1022.16, 'drop' 1022.20) alternate notes of the ostinato drop out at random, half of them, re-chosen every bar (Strudel: .degradeBy(.5) with a seeded rand, or .sometimesBy(.5, x => x.gain(0))): a musical dropout that carries the hold; 0.5. 1032.74-1050.29 TWO TOWERS: the ostinato splits into two voices panned hard left and right ('split' 1035.00), meeting only on the bridge beats ('bridges' 1040.00); one voice colourless (dry woodblock/pizz), the other coloured (celesta/vibraphone); on 'Every time' ('every' 1044.96, 'time' 1045.47) both voices stop and a single high suspended note holds (an E over nothing: the plant 'nobody told them', paid off in m19); 0.5. 1050.29-1058.37 FIVE DAYS DOWNHILL: the ostinato slows to a walking pace in winter colours: a solo cello line over the pulse, one soft step per step ('walk' 1052.15); each step cut is a small downward key shift ('cut1' 1053.37 D→C, 'cut2' 1054.23 C→Bb, 'cut3' 1055.37 Bb→A); the walk's last step on 'cut3' (1055.37) IS the held A: 'settle' (1055.86) adds no new onset, it is the A sustaining (the dominant of D, which m11's Florence suspension will hold as A-D-E); 0.35. Last onset by 1055.41; the A rings through the short fade 1057.01-1057.81 while m11 enters on the same A at 1042.48. CRITIC r1 REVISION (m10->m11 join): the final A (cut3, 1055.37) is struck and decays by itself (drone .55 s + 1.3 s release, glass released 1054.57, strings release 1.5): -37.6 LUFS momentary at the fade start 1057.21; m11 A swells out of it. Re-fitted 2026-10-12 (clock 2139.54 s): every cue-local hit re-checked against timeline.json (all unchanged after the +19.083 s bodily shift; the code comments now carry the new absolute times). Level pass: the M1 held D and the workshop piano under L0802 sit about 1.5 dB lower.",
+  "file": "score/cues/m10.strudel",
+  "render": "score/renders/m10.wav",
+  "gainDb": -2,
+  "fadeIn": 1.4,
+  "fadeOut": 0.6,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 1053.916,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": 13.833,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m11",
+  "start": 1056.316,
+  "end": 1146.214,
+  "shots": [
+   "ch08-s11",
+   "ch08-s12",
+   "ch08-s13",
+   "ch08-s13b",
+   "ch08-s14"
+  ],
+  "mood": "dawnGold → candleAmber: Florence, the number, the cliff, fair credit, two candles out, a new candle lit, the prophecy",
+  "tempoBpm": 60,
+  "key": "D major (the Florence suspension A-D-E; the new candle in D: A→D, full strings, left on Asus4)",
+  "instrumentation": "gm_string_ensemble_1 (full strings for the new candle), gm_cello, piano (the kind falls), M5 ostinato (soft pulse returning at the end), gm_tubular_bells (the file seal on a low bell), gm_celesta (shimmer), gm_contrabass",
+  "intensity": 0.45,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1056.316-1146.214 (89.898 s), shots ch08-s11…ch08-s14 (1058.38-1145.04); lines under it L0820 (1059.58) … L0828 (ends 1142.71). IN: starts 1056.316 with a 1.5 s fade-in, inside the speech-free gap 1055.77-1059.58 (L0819 -> L0820). OUT: fades 1145.414-1146.214, inside the speech-free gap 1142.71-1148.24 (L0828 -> L0901), crossfading with m12 (in at 1144.725); last strike measured at 1142.816 (the file bell, after 'file' ends 1142.71). RE-FIT DONE 2026-10-13: the Florence hold now stretches with the slower L0821 (1056.316-1076.433, the D and E joining just after 'Hinton' 1064.48) and is cut before 'fifteen' (1076.51); a base() map in the source moves every later event +15.33 s (silence 1076.43-1078.78 through 'A cliff' 1078.19-1078.73, the swell rising from 1078.78 and peaking about 1081.3, 'Fair credit' 1083.17, the Swiss line 1088.68, the empty bench 1092.33, the kind falls on 'thirteen' 1096.62 and 'fiddly-nets' 1104.74, the fog question 1111.36, LEARNED FEATURES lit on 'data' 1117.89, M4 -> M1 on 'light' 1128.56 / 'him' 1130.73 with the tall-man swell over the hold to 1132.6, the LED pulse 1135.81) and the refrain's bell (1142.81) and clue glint (1143.66) +16.32 s after the longer L0828. MASKING FIXED: L0823 ('A cliff.') now sits in true silence (render + gainDb: 49 dB over the music; it was 6.9 dB in the mix because the old render's swell started under it). Voice pass: the caveat's harp ostinato is .05-.03 behind lpf 2200 and the celesta leaves after 1.4 s, the new candle's strings drop their top octave (.10, lpf 1500), the held Asus4 is softer (cello .18, low strings .07) and its high D-E-A only covers the hold: lowest lines L0832 7.4 and L0827 7.6 in 1-4k, every other line 9 dB or more in both bands. -23.4 LUFS, TP -4.4 dBTP. (XH, the cliff-hold parameter, is still 0: the hold after 'A cliff.' is 4.44 s on this clock.)\n\nVOICE PASS r3 (2026-10-13, critic r1 of the round-2 film): Florence's held A is softer (cello .11, lpf 350), the high A-D .028 behind lpf 1800 (it sat on 'room' and 'point'), the suspension's E a pure E4 (was cello E3); the Swiss lab's bed behind lpf 280-450 (contrabass .12, cello line .08, workshop piano .10); the first kind fall (D6 lands on 'burned') .15/.13, its left hand behind lpf 350; LEARNED FEATURES: the lit fourth .068 behind lpf 850, the D major chord voiced A3-F#4 with the contrabass D1 alone below, the step down shorter (gone before 'And'); the tall man's held D re-bowed softer as L0827 begins (1132.73) over an A-E bed split into A1-E2 (lpf 300) and E4-A4; the LED pulse lpf 450, -3 dB. Every line >= 8.9 dB in 1-4k, 12.2 in 250-2k, 8.9 in 80-250; every word >= 3 dB. -25.3 LUFS, TP -4.7 dBTP; the cliff still peaks -13.1 LUFS momentary. XH IS STILL 0: the clock has not moved (L0823 ends 1078.73, 'Fair' 1083.17: 4.44 s); the cross-stage head-hold (about 2.5-3 s before L0834) is for film-narrate/film-story. The long form was re-tested WITH these edits at XH = 2.6 (score.mjs file, 92.498 s): -23.3 LUFS, TP -4.3, no errors (.orly-work/score-m08-12/m11-xh26.*). When the hold lands: set const XH = new hold - 4.44, end += XH, re-render.\n\nTHE NIGHT IN FLORENCE, part 2: the number. 1058.37-1069.65: near silence: room tone (very low pink noise, a couple of soft low thumps for coughs if they read as music, otherwise none), a single sustained string note under the narration (A3 under D3? keep it high or low: an A2 cello + a pp A5), M1's held suspension, waiting; intensity 0.2. 1069.65-1082.66 THE NUMBER: under 'Second place missed twenty-six point two percent' (1038.43-...) the held note only; SILENCE on the drop itself ('drop' 1076.51 / 'fifteen' 1076.51): a full two beats of nothing (1076.44-1078.74, through 'A cliff' 1078.19-1078.72); then M1 re-enters softly as a slow, swelling ostinato in D major (from about 1078.94, in the hold after 'A cliff', which runs to 1082.63): intensity 0.3 → 0.5, the swell peaks before the next line at 1067.83. 1082.66-1093.66 FAIR CREDIT: the M1 ostinato carries on gently under the caveat (no deflation; 1083.16-1087.95); a warm, generous string line under the Swiss lab ('swiss' 1088.68, 1088.40-1092.03); then the workshop rhythm from m10 returns once, slower, and stops on the empty bench ('ignore' 1092.33); 0.45. 1093.66-1131.91 TWO CANDLES OUT, ONE LIT: the expert-features candle's falling resolution played kindly on solo piano ('out' 1096.62 / 'thirteen' 1096.62: D→C# over A); a second, LOWER falling figure for the fiddly-nets candle (in D minor, an octave down, 'fiddly' 1104.74); a quiet held note under the fog question ('fogcard' 1111.65, 'Why choose the fog?' 1111.36); then the rising fourth on 'data' (about 1118.58-1119.59, the new candle 'newcandle' 1117.88) for LEARNED FEATURES, in full strings: lit and held, in D major; a small lift on 'deep learning' (1121.61-1122.73); then thinning to a single warm line through the flame push ('push' 1123.04) and the widen to the desk ('desk' 1124.24); under 'And the tall man? Thirty-six years at the edge of the light. Now, it found him.' (1124.94-1130.89) M4's opening fourth (cello, A2→D3) is played and, on 'him' (1130.71), it does not walk on: it becomes M1's held note (the dissenter reaches the centre). Settle on the held suspension (still burning: Asus4) as the desk lamp clicks on ('desklamp' 1129.44); intensity 0.55 at the lighting. 1131.91-1145.03 THE PROPHECY: a quiet pulse returns for the multiplying LEDs ('leds' 1135.80: a first hint of the scaling era, M5c very soft) under the AlexNet sentence (1132.91-1140.03); the FILE SEAL lands on a single low bell on 'file' (1141.85); the clue pin in the hold is a soft shimmer that does not resolve ('clue' 1143.71); hand off to m12 on the held suspension; last onset by 1143.71 (the shimmer on 'clue'); nothing new on 'handoff' 1144.91; fade 1145.31-1146.21 while m12 enters at 1144.71; intensity 0.4. REVIEW r1 APPLIED (rendered at 89.20 s): the cliff swell peaks ~1081.33 and is 9-14 dB down under 'Fair credit' (L0834 1083.16-1087.95), where the bed sits only below D3 (low strings, contrabass) and above D5 (harp/celesta ostinato moved up), intensity <=0.3; a soft string swell (A-D-E) covers the hold on the tall man after 'him' (1130.71) and is gone before L0827. The clue shimmer is the last onset (1143.66); fadeOut 0.8 (1145.41-1146.21). CRITIC r1 REVISION: the file bell answers the refrain at 1142.77 (after the word), velocity .26, 2-s note + 1.4-s release; the Asus4 hold (cello D3, low and high strings, contrabass) is released from 1142.91-1143.11 and gone by ~1126.33 so m12 A-E carries the suspension; the clue glint is celesta only (no crystal); 1145.41 measures -34 LUFS momentary. Under L0825 the cello line is B2 A2 F#2 | E2 F#2 D2 at velocity .10. The deep-learning celesta glint moved off the words to 1122.78; the opening cello A attack is 1.2 s so it swells out of m10 decaying A. CRITIC r1 (cross-stage, cliff hold): routed to story/narration for a 6-8 s music-only hold after 'A cliff.' (L0823, before L0834); the clock has NOT moved yet (hold still 1078.72-1083.16, 4.44 s), so the render is unchanged (re-rendered, identical: -23.1 LUFS, TP -4.8, cliff peak -13.7 LUFS momentary at ~1081.43, 9-12 dB down at 'Fair'). The source is now hold-parametric: set `const XH` in m11.strudel to (new hold - 4.44) and extend this cue's end by XH; every event from 1082.33 on moves by XH and the cliff takes its LONG form (harp/celesta M1 ostinato rises 2.5 s, then the peak is held XH+0.45 s with a plagal D - G/D - D glow in the upper strings, a low horn under the core D and one soft timpani D on arrival, released ~0.6 s before 'Fair'). Pre-tested at XH=2.6 (7.0-s hold): -21.9 LUFS, TP -3.6, peak -13.4 to -15 LUFS momentary held ~3 s (1081.33-1084.43), -24 LUFS at 'Fair' (.orly-work/m11-hold/).",
+  "file": "score/cues/m11.strudel",
+  "render": "score/renders/m11.wav",
+  "gainDb": -2,
+  "fadeIn": 1.5,
+  "fadeOut": 0.8,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "clockShift": {
+   "by": 13.833,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  },
+  "lastStrike": 1142.916,
+  "lastStrikeFrom": "analysis"
+ },
+ {
+  "id": "m12",
+  "start": 1144.725,
+  "end": 1240.104,
+  "shots": [
+   "ch09-s01",
+   "ch09-s03a",
+   "ch09-s03",
+   "ch09-s04",
+   "ch09-s05"
+  ],
+  "mood": "serverCyan/duskRose: the gold rush: a creed, an auction, the Go candle lit and out, a lab founded, doubt from inside",
+  "tempoBpm": 84,
+  "key": "D major pulse; E minor for the Go board; the slip motif exposed in D (A→D, held over A-E)",
+  "instrumentation": "M5c oscillator pulse (sawtooth/triangle, lpf 700-1100), gm_pizzicato_strings (muted plucks), gm_orchestral_harp or gm_vibraphone (Go stones, long ring), low drone (sine/contrabass), gm_celesta (the slip motif, solo), gm_string_ensemble_1 (soft, two voices)",
+  "intensity": 0.35,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1144.725-1240.104 (95.379 s), shots ch09-s01…ch09-s05 (1145.04-1243.08); lines under it L0901 (1148.24) … L0910 (ends 1239.04). IN: starts 1144.725 with a 1.5 s fade-in, inside the speech-free gap 1142.71-1148.24 (L0828 -> L0901). OUT: fades 1239.104-1240.104, inside the speech-free gap 1239.04-1245.18 (L0910 -> L1002), crossfading with m13 (in at 1239.34); last strike measured at 1233.065 (the composed last gesture is the very soft rising fourth on 'burnedOn' 1235.68 / 'on' 1236.43). RE-FIT DONE 2026-10-13: a base() map in the source moves every event +16.333 s up to 'wins' (1179.04) and +17.754 s from the move-78 answer on (L0906 is 1.42 s longer; move 78 on 'found' 1190.11, the lids 1194.48, the Go candle in full 1195.18-1196.78, the founding figure on 'founded' 1201.18, 'benefit' 1207.13, 'damage' 1208.99, the ledger 1212.12, 'fool' 1222.57, the face-stamp ticks 1230.52 / 1233.73, the burned-on fourth 1236.43); notes that span L0906 are 1.42 s longer. MOVE 37 MOVED OFF THE WORD: the Seoul stones now sit in L0906's micro-gaps (G 1182.10 after 'sixteen', A 1184.06 after 'move') and MOVE 37's strange Bb in the gap after the spoken 'thirty-seven' (1185.30, between 1185.28 and 'a' 1185.60), a short strike at .035 with its E-Bb strings below. Voice pass: the stand-reveal strings lost their lower octave (.065, lpf 2600), the envelope plucks .09, the Go-candle and Seoul harp 35-45% softer, the move-78 touch .045, the quotation's two voices .05, the ledger tick .07: 1-4k margins rose 3-8 dB on L0902-L0909b (lowest L0902 6.0, L0909b 6.7), 250-2k 9 dB or more on every line. -22.8 LUFS, TP -7.1 dBTP.\n\nVOICE PASS r3 (2026-10-13, critic r1 of the round-2 film): (1) the quotation's dyads are half as loud behind lpf 1500; 'benefit' lets go before 'or'; the cold minor second is only breathed under 'damage society...' (.018), BLOOMS in the breath after 'incorrectly' (1211.85, .06) and answers once more, alone, after 'dollars' (1214.62), gone before the Wall; move 78's F6 is struck in the gap after 'Sedol' (1189.96, .022) and gone before 'move'. (2) Under L0905-L0907 the Go drone is E1 (contrabass, lpf 120) with a pure-sine E1-B1; the cello's E2-B2 is kept only for the hold after the lids (1194.45-1197.3); the 'wins' harp is E1-B1; the move-37/78 string answers behind lpf 250; both pulses run an octave down (D1 D2 A1 D2, lpf 340-460); the creed and founding pads are voiced A3 and up. Per word: the stand-reveal fourth is struck in the gap after 'account' (1157.23, .03) and let go (the pad's D4 holds it), the envelope plucks and the freeze tone are halved, the 'years' and 'human games' harp halved, the burned-on fourth .035 with a short ring. Lines: 1-4k >= 9.0, 250-2k >= 10.4, 80-250 >= 9.0 dB (L0905 10.1, L0905b 10.6, L0906 9.7, L0907 10.7; were 5.4/4.8/4.5/5.5); 'or' 10.7, 'move' 18.2, 'Hinton' 5.6, 'halted' 14.6 dB in 1-4k; every word >= 3 dB in both bands. -25.0 LUFS, TP -5.8 dBTP, postgain 3.99.\n\nTHE GOLD RUSH: four held images and one plant. 1145.03-1165.37: under 'A new candle, then a creed' (1148.24-1152.25) M1's rising fourth once, softly, as the pool spreads ('creedSpread' 1151.75). Then the GPU-era pulse arrives (M5c) at low intensity (0.35), quickened from m11's resolution; the rising fourth again, bright, as the tall man is revealed standing ('standReveal' 1156.81: lit and held, a man at its centre); each dropped envelope a muted pluck ('dropOuts' 1159.11 onward); the pulse STOPS DEAD on 'halted' ('stop' 1160.81) and leaves one held tone under the freeze; a single soft low note as the chosen envelope is laid face up ('choseGoogle' 1163.84), unresolved. 1165.37-1173.83: the pulse thins to a hush (0.25) as the palette warms: a single low drone (E) and one plucked note on 'guessed'/'maybe ten years' (about 1167.97); M1's rising fourth, small (B→E), as the Go candle is lit ('goCandleLit' 1170.06); the drone carries straight through the push (1173.26) and the paper wipe into Seoul. 1173.83-1198.29 SEOUL: hush for the board (0.25), continuing the drone: a slow, sparse plucked line; under 'learned from human games, then from itself' (1174.43-1179.53) a riffle of soft tones for the human games, then a light two-voice exchange of the same plucked tone (the machine against itself), one warm low note on 'wins' (about 1179.12-1179.63); each move one struck note with a long ring (harp/vibraphone) matching the ring of light; MOVE 37 (1184.31) a strange, high note; MOVE 78 (1190.06) the same note a fifth higher: a small human answer; after Lee's move the line thins to the drone alone as the lids go on ('lids' 1194.47). In the music-only hold, M1 IN FULL as the Go candle goes out: rising fourth, held suspension, falling resolution, within about two seconds ('candleWipe' 1195.17 → 'goSnuff' 1196.77): a belief that lasted two years. 1198.29-1218.21 OPENAI: the pulse returns, low. The FOUNDING FIGURE: a plain plucked figure (pizz, four notes, D A B F#, even, no swell, no heroic lift) used for every lab's founding (m16's Anthropic founding must match it exactly); intensity 0.3. Under the quotation (1198.79-1211.83) the harmony splits into two voices moving together, one warm (a major sixth on 'benefit', 'warmLantern' 1207.13) and one cold (a minor second on 'damage', 'coldLantern' 1208.99); nothing resolves. A single dry pluck as the ledger entry is set ('ledger' 1212.12); then the two voices thin out under the hold so the cut to the Wall arrives on near silence. 1218.21-1243.08 DOUBT, AND THE SLIP: the pulse drops away entirely. Under the doubters' line (1218.81-1239.04) a thin low drone only, with one dry muted tick on 'fooled' (1222.57) and soft ticks under the falling face stamps ('darkerTicks' 1230.52, 'lighterTick' 1233.73); on 'The candle burned on' ('burnedOn' 1235.68) M1's rising fourth, very soft, unresolved (the creed still lit); nothing ominous. Then nothing: last onset by 1237.50 (the very soft rising fourth on 'burnedOn' 1235.68 is the cue's last gesture, rung out under the end of L0910); the cue fades 1239.10-1240.10 in the clear. MOVED TO m13: THE SLIP MOTIF ('slipPinned' 1241.44, 'draught' 1242.64) now opens m13, because a cue change after it could not finish before L1002 (1245.18) with the slip's last note ringing 1.6 s clear of a fade; the hand-off's join (m13 from 1239.34) puts the slip in m13's alone-time instead. RENDERED at the new length (93.50 s); every event placed in absolute seconds on the new clock (the source's tl() subtracts the cue start). CRITIC r1 REVISION: move 37 Bb5 is a 2-s note with .9 release (gone before L0907); move 78 F6 is a touch (velocity .07, .5 s + 1.5-s release, lpf 3 kHz) and its string answer sits low (b1-f2); the Go-candle hold (vibraphone .11, harp .10, strings .08) peaks about -17 LUFS momentary in the render, below the AlexNet cliff and the finale; the wins harp chord .08; the slip/lit/self-play harp plucks softer and low-passed (L0905 / L0905b now positive in 1-4 kHz; L0907 +5.4 dB in 1-4 kHz and +10.5 in 250-2k). postgain 3.55.",
+  "file": "score/cues/m12.strudel",
+  "render": "score/renders/m12.wav",
+  "gainDb": -3,
+  "fadeIn": 1.5,
+  "fadeOut": 1,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "clockShift": {
+   "by": 16.333,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  },
+  "lastStrike": 1233.565,
+  "lastStrikeFrom": "analysis"
+ },
+ {
+  "id": "m13",
+  "start": 1239.34,
+  "end": 1457.228,
+  "shots": [
+   "ch10-s01",
+   "ch10-s02",
+   "ch10-s03",
+   "ch10-s04",
+   "ch10-s05",
+   "ch10-s06",
+   "ch10-s07",
+   "ch10-s08",
+   "ch10-s09",
+   "ch10-s10",
+   "ch10-s12",
+   "ch10-s13b",
+   "ch10-s14"
+  ],
+  "mood": "the slip (solo celesta), then DEEP DIVE II: the slow scribe, attention, lunch, everything at once, three cards, the jug of light, divide by eight, eight heads, clocks, six blocks, the matrix, the candle out, the curtain",
+  "tempoBpm": 90,
+  "key": "A minor (the scribe) → A major on \"at once\"; the read-in-order candle in A (E→A, held over E-B, falls A→G#); ends on an unresolved upward step (C#6→D6 over nothing) that ch 11 picks up in D",
+  "instrumentation": "gm_cello (solo, the scribe), plucked metronomic step (gm_pizzicato_strings), piano (two notes per French word), light percussion like cutlery (gm_woodblock, very soft high ticks), oscillator pulse + gm_string_ensemble_1 (the \"at once\" chord), M5d eight-voice ostinato (gm_celesta, gm_vibraphone, gm_music_box, harp, panned), gm_contrabass/sine bass pulse, gm_celesta (bell-like cards, the curtain step)",
+  "intensity": 0.5,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted and re-rendered 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1239.34-1457.228 (217.888 s), shots ch10-s01…ch10-s14 (1243.08-1454.96); lines under it L1002 (1245.18) … L1033 (ends 1452.93). IN: starts 1239.34 with a 0.8 s fade-in, inside the speech-free gap 1239.04-1245.18 (L0910 -> L1002). OUT: fades 1454.73-1457.23, inside the speech-free gap 1452.93-1469.76 (L1033 -> L1103); last strike measured at 1452.98 (1.75 s before the fade). RE-FIT DONE (round 2; was RE-FIT PENDING). L1013 re-narrated ('About half runs to river: softmax, to the trade.', 1333.17-1341.04) and everything after 'river' is +2.13 s; the code's anchors are re-read from the timeline (cue-local = absolute - 1239.34). Placed now: the cup fills on 'river' (1338.81, under the line, soft); IV on 'edge' (1345.47), the I blooming in the clear after L1014 (1345.97); the jam on 'tips' (1354.73) and the frozen glass after L1016 (1357.56); 'soft' 1358.93; the bright 'so we halved' tag in the clear after L1017 (1366.36); 'eight' 1370.81, the hall's glow after L1019 (1374.33); shuffle 1378.97, clock 1385.59; talk 1392.95; the unison on 'multiplication' (1406.94); the ledger cadence IV-V-I after L1025 (1410.37 / 1411.71 / 'records' 1412.91); the crowd under L1027. THE CANDLE OUT (review r2): M1 lit in the clear after 'looking' (strings + cello E->A 1417.66/1417.96 over A major), the suspension (E-B under the held A) arriving on the cut to the candle (1419.75), the line riding over a thin low E-B and a pp A, the fall A->G# (E major) in the clear after 'two years' (1426.19); about -18.5 to -20 LUFS momentary at master gain. MASKING (review r2): L1014, L1019 and L1025 had slid under the old swells; they now measure 20.8 / 19.1 / 15.2 dB speech-to-music (narration vs this render at gainDb, 3 dB duck, gated; the mix's own metric reads 2-4 dB higher); every line in the cue >= 11.7 dB, and the 1-4 kHz layers are thinned under L1002, L1005 (the 'attention' F lift moved to the breath 1263.96), L1009, L1012, L1016, L1017 and L1025. The curtain: C# on 'next' (1452.50), the step to D just after the word (1452.98, the last strike), ringing alone into the fade while m14 enters at 1454.725.\n\nEVERYTHING LOOKS AT EVERYTHING (215.76 s, one composer, one ostinato). M5d (the attention ostinato) is the spine: it must lock to the picture's pours on downbeats. 1239.34-1243.08 THE SLIP (NEW opening, moved from m12; ch09-s05's closing hold, music only, the motif must be exposed and clear): SOLO CELESTA states THE SLIP MOTIF as the slip is pinned ('slipPinned' 1241.44; the slip is carried and its shadow falls first: 'slipCarried' 1239.04, 'shadowSlip' 1240.84): M1's first two gestures only, in D: A→D (written a3→d4, sounding A4→D5), the D landing on 'slipPinned', the D held while a soft A-E fifth slides in beneath it: it stops there, unresolved; after a breath it states the same two notes once more, softer, on the draught ('draught' 1242.64). It must be clear enough to be recognised in m21 (which resolves the plant by re-using the SAME pitches and instrument). Then the soft cello A of the scribe enters at the cut (1243.08), compatible with the A-E fifth. 1243.08-1252.96 THE SCRIBE: duskRose, solo cello with a slow, metronomic plucked step locked to the scribe's hand-offs (on twos), intensity 0.3; M1's rising fourth (E→A, cello) on the lit candle ('candleLit' 1245.58); each step a touch quieter, so the music itself fades down the line (m08's whisper, remembered). 1252.96-1266.04 ATTENTION: the cello holds; a soft piano figure enters, two notes per French word, the second always landing where the light lands; a tiny harmonic lift on the bend ('bend' 1263.26). Keep the piano above D5 or in gaps under 1253.56-1246.18. 1266.04-1281.12 LUNCH: a brighter, conversational texture (0.4): pizzicato and very light percussion like cutlery; M1's held suspension under 'Colleagues doubted it' (1273.73-1274.98): doubt, not dismissal, sustained through the reading hold to 1263.28. 1281.12-1300.92 ALL AT ONCE: SILENCE on 'Drop the word-by-word reader' (1264.78-~1284.05) for a breath (the scribe leaves, 'darkBeat' 1284.90 is the darkest point); then on 'at once' ('allLight' 1288.45) every voice of a full A MAJOR chord enters together (pulsing synth + strings), intensity rising to 0.6; the dive's mechanical ostinato begins and locks to downbeats, carrying 'The Transformer' and the title (1289.57 / 'titleBanner' 1291.14) and staying low under 1290.87-1281.54. 1300.92-1317.58 THREE CARDS: the ostinato thins to three bell-like notes, one per card, each held ('q' 1306.38 question, 'k' 1308.87 label, 'v' 1310.94 message: E5, C#5, A4 in celesta/vibraphone), intensity 0.4; a soft M3 forward arpeggio on 'tuned by our messenger' ('messengerTunes' 1315.25). 1317.58-1347.75 THE JUG OF LIGHT (worked number): intimate inside the cyan hall: celesta over a soft bass pulse (0.35). Four plucked notes for the four scores ('scores' 1327.90: 'two, nothing, four, two' = four pitches whose heights match, e.g. C#5 A4 E5 C#5); halved ('halve' 1332.06) the four notes repeat an octave lower and softer; a gentle POURING arpeggio for the jug that lands on the downbeat as the river cup fills ('pour' 1333.31, the line 'About half runs to river' ends 1340.86); a second, smaller pour for the messages ('messages' 1342.53); a warm cadence on 'water's edge' (1345.47-1345.95; 'tint' 1344.95). 1347.75-1367.74 DIVIDE BY EIGHT: left panel: the arpeggio jams on one note, cold and stuck, the bass dropping out (the music freezes, 'slam' 1354.72 / 'freeze' 1356.99); right panel ('soft' 1358.92): the arpeggio flows again across three notes, warmer; a small bright tag on 'so we halved' (about 1365.87-1366.32; 'callback' 1363.76). 1367.74-1378.38 EIGHT HEADS (the fifth unforgettable image): the ostinato returns, and on 'eight' (1370.82) it divides into eight overlapping voices, one per head, in close harmony, panned across the field (M5d), entering one by one ('heads' 1372.27, 'allWords' 1373.84); intensity building to 0.65; a full, bright chord as the whole hall glows in the gap after 1354.43. 1378.38-1391.91 CLOCKS: a light ticking figure in three layers (fast, medium, slow: second, minute and hour hands) over the held chord ('clock' 1385.59); 0.45. 1391.91-1401.05 SIX BLOCKS: six repetitions of a two-bar figure (talk / think) each a step higher, under the steady ostinato ('talk' 1392.94, 'think' 1394.42, 'sixBlocks' 1395.54), intensity 0.5 → 0.7 as the camera trucks through; a sustained pedal (the highway lane) in the hold. 1401.05-1419.74 THE MATRIX: all eight voices of the ostinato in UNISON on 'multiplication' (1406.93), the strongest moment of the dive (0.75), placed so the unison attack is on the word's onset and the voice is not masked (the line ends 1410.31); a confident cadence as the ledger inks its record ('records' 1412.90); then the bass thickens and crowds under 'The catch: twice the words, four times the looking' (1413.70-1417.32): a little claustrophobic (low cluster). 1419.74-1431.34 THE CANDLE OUT: strings carry M1 IN FULL as the read-in-order candle goes out ('candleOut' 1420.66; the re-recorded line L1030 'Two decades of recurrent nets read in order. The Transformer replaced them within two years.' runs 1420.35-1426.01, so keep the strings low and thin under it): E→A lit, A held over E-B (doubted), A→G# (gone); the honest card ('honest1' 1423.59, 'honest2' 1426.40, 'honest3' 1427.29, mostly after the line) gets near silence: one sustained note. 1431.34-1454.95 THE CURTAIN: the ostinato simplifies to a single repeating note, like a typesetter's tap (0.45), under the two lines (1431.93-1444.91, 1445.46-1452.92); on 'what comes next?' ('next' 1452.49) it STOPS on an unresolved upward step held by celesta (C#6 → D6, sounding an octave higher) over the hanging ghost slot ('ghostSlot' 1452.49); that D is the pivot into m14's D major. Last onset by 1453.12 (the D6); it rings on alone in the speech-free gap and through the fade 1454.72-1457.22 while m14 takes the same D at 1434.85.",
+  "file": "score/cues/m13.strudel",
+  "render": "score/renders/m13.wav",
+  "gainDb": -2,
+  "fadeIn": 0.8,
+  "fadeOut": 2.5,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 1452.98,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": 17.75,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m14",
+  "start": 1454.725,
+  "end": 1510.875,
+  "shots": [
+   "ch11-s01",
+   "ch11-s02",
+   "ch11-s03"
+  ],
+  "mood": "candleAmber → serverCyan: the coat comes back; the 1985 card; the jug pours over every next word",
+  "tempoBpm": 88,
+  "key": "D major (study); D mixolydian ostinato for the next-word machine",
+  "instrumentation": "gm_celesta (the held step), oscillator GPU pulse (lighter, quicker), piano (solo for the 2019 quote), gm_woodblock (one wooden tick per drawer), gm_celesta/vibraphone chime (the sort is set), soft gm_string_ensemble_1",
+  "intensity": 0.4,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted and re-rendered 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1454.725-1510.875 (56.150 s), shots ch11-s01…ch11-s03 (1454.96-1511.88); lines under it L1103 (1469.76) … L1107 (ends 1508.36). IN: starts 1454.725 with a 1.5 s fade-in, inside the speech-free gap 1452.93-1469.76 (L1033 -> L1103). OUT: fades 1510.22-1510.88, inside the speech-free gap 1508.36-1512.47 (L1107 -> L1110); last strike measured at 1508.585 (1.64 s before the fade). Shifted bodily (+19.875 s); no line inside it changed: every cue-local hit was re-checked against narration/timeline.json (pinC3d 1457.76, recut 1459.66, 'sensible' 1492.01, 'pour' 1500.15, 'xray' 1508.56) and still matches. Re-rendered 2026-10-13 with a current-clock header (music unchanged); speech-to-music (narration vs render at gainDb, 3 dB duck) >= 15.4 dB on every line.\n\nREAD EVERYTHING. 1454.95-1468.95 (no narration, 14 s, music carries it): under the index tab and the wordless X-ray ('xray5' 1455.36) m13's held celesta D hangs on and warms into the study (add a soft D major chord beneath, strings low); then the GPU-era pulse returns, lighter and quicker; a two-note pickup on the recut ('recut' 1459.65) rhymes with m09's 'pre-training' figure (F#4→A4), now an octave brighter; it swells a little and carries the walk through the library ('library' 1464.20, 'machines' 1465.06) to the end of the shot. Intensity 0.4. 1468.95-1498.74: thins to SOLO PIANO in candleAmber: one sustained note under the 2019 quotation ('predict the next word', within 1469.76-1485.73; keep the piano note high, D6, or low, D2); then a soft two-chord turn (IV-I, G→D) on 'Sensible, then' (about 1492.01-1492.98), kind, not ironic; intensity 0.25. 1498.74-1511.88 THE NEXT-WORD MACHINE: M5 returns, locked to the machine: one soft wooden tick per drawer as it slides ('pour' 1500.15, 'allWords' 1501.35), a small bright chime when the sort is set ('set' 1504.09), and again ('again' 1505.55); a lift on 'No rulebook' (about 1507.01); in the wordless temperature pause ('temperature' 1502.15) the ostinato loosens (more spread, softer) and tightens with the dial; the X-ray hold ('xray' 1508.56, 'xrayHold' 1510.15) gets a single shimmer. Intensity 0.45. Last onset by 1508.62 (the X-ray shimmer on 'xray' 1508.56 is the last strike; 'xrayHold' 1510.15 adds nothing); short fade 1510.22-1510.88; m15 enters at 1509.38 in D.",
+  "file": "score/cues/m14.strudel",
+  "render": "score/renders/m14.wav",
+  "gainDb": -3,
+  "fadeIn": 1.5,
+  "fadeOut": 0.65,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 1508.585,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": 19.875,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m15",
+  "start": 1509.375,
+  "end": 1583.825,
+  "shots": [
+   "ch11-s05",
+   "ch11-s08",
+   "ch12-s01",
+   "ch12-s02"
+  ],
+  "mood": "candleAmber/duskRose: scale is the main lever; the crowded rim; the last accomplice, choosing; the gardener",
+  "tempoBpm": 84,
+  "key": "D major (scale, M1 stops on Asus4) → B minor (the rim cello) → G major (the gardener: m02's child-machine key and figure)",
+  "instrumentation": "oscillator pulse building (density doubling), gm_string_ensemble_1, gm_celesta (glint; the child-machine figure), gm_cello (solo, the rim), piano (duskRose), gm_pizzicato_strings (robot hops, then the shears)",
+  "intensity": 0.45,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted and re-rendered 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1509.375-1583.825 (74.450 s), shots ch11-s05…ch12-s02 (1511.88-1585.00); lines under it L1110 (1512.47) … L1205 (ends 1581.48). IN: starts 1509.375 with a 1.5 s fade-in, inside the speech-free gap 1508.36-1512.47 (L1107 -> L1110). OUT: fades 1581.63-1583.83, inside the speech-free gap 1581.48-1585.60 (L1205 -> L1212); last strike measured at 1577.855 (3.77 s before the fade). Shifted bodily (+19.875 s); no line inside it changed: cue-local hits re-checked against narration/timeline.json (skyline 1520.87, candleLit 1527.03, 'lever' 1529.18, w4glint 1534.00, choose 1564.18, snip 1574.01, preferred 1577.75, caveat 1579.28) and unchanged. Re-rendered 2026-10-13 with a current-clock header (music unchanged); speech-to-music >= 12.1 dB on every line.\n\nSCALE, THE RIM, THE GARDENER. 1511.88-1534.62 SCALE: the pulse gathers into a steady build as the city rises ('skyline' 1520.87; the ostinato doubles in density with each power of ten: quarters → eighths → sixteenths across 1512.47-1526.11), held under D3 while the long line runs (1512.47-1526.11); M1 on the candle: rising fourth A→D on 'A new candle' ('candleLit' 1527.03) and on 'lever' (1529.18) it reaches the held suspension and STOPS THERE (this belief is still burning); a small celesta glint on the Wall's glint ('w4glint' 1533.99) recalls m11's 'waiting' slip; intensity 0.5 → 0.7 → 0.5. 1534.62-1560.01 THE RIM: crossfade inside the cue into duskRose: the synth recedes and a solo cello takes M1's held suspension, the colour of every rim in the film, then M4's walk in B minor (relative of D) in the gaps between the octopus and parrots lines (1535.22-1540.68, 1541.29-1554.44); sparse, 0.3; the cello carries the music-only hold for Marcus ('marcus' 1554.05 to about 1558.13), then half a beat of silence before the cut to the board, and a single low note under the pinned type sort ('clueCard' 1559.10) that does not resolve, handing over to the ink bleed. 1560.01-1569.09 THE LAST ACCOMPLICE: duskRose piano in G with a light pizzicato hop locked to the robot's hops; a small lift as the hand chooses ('choose' 1564.17); then, under the hold (1567.12-1569.03), m02's celesta figure for Turing's child machine (the 'child machine' turn, same notes, in G), unspoken: education, at last. Gentle, 0.35. 1569.09-1585.01 THE SHEARS: the pizzicato becomes the snip of the shears, on the beat of 'shaped' (about 1575.62-1576.12; 'snip' 1574.02); a warm G chord when the ribbons are pinned ('preferred' 1577.74); then a quiet held pad under the caveat caption ('caveat' 1579.29, line ends 1581.47); 0.35. Last onset by 1580.03 (the pad struck on 'caveat' 1579.29); the pad fades 1581.62-1583.83; m16 enters at 1582.83 with the prologue's low D drone (G pad → D is a soft plagal hand-off).",
+  "file": "score/cues/m15.strudel",
+  "render": "score/renders/m15.wav",
+  "gainDb": -3,
+  "fadeIn": 1.5,
+  "fadeOut": 2.2,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 1577.855,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": 19.875,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m16",
+  "start": 1582.825,
+  "end": 1668.418,
+  "shots": [
+   "ch12-s06",
+   "ch12-s07",
+   "ch12-s08",
+   "ch12-s03"
+  ],
+  "mood": "serverCyan → candleAmber: the return to the scene; the X-ray complete; the stampede and \"Not quite\"; a lab founded plainly; the same-day race",
+  "tempoBpm": 60,
+  "key": "D (the prologue's exact drone + E6 tone, answered by Dmaj9 on \"new door\"); the X-ray chord built in D; the founding figure as in m12; ends on Asus4 (celesta)",
+  "instrumentation": "gm_contrabass drone D2, pink-noise tape hiss, piano (the E6 tone, then the warm Dmaj9), one chime per era colour (gm_celesta, gm_drawbar_organ, gm_cello, piano, oscillator synth, gm_orchestral_harp, gm_pizzicato_strings), gm_drawbar_organ (Rosenblatt, alone), gm_pizzicato_strings (the founding figure), oscillator GPU pulse (double speed), gm_celesta (the closing suspension)",
+  "intensity": 0.45,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted and re-rendered 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1582.825-1668.418 (85.593 s), shots ch12-s06…ch12-s03 (1585.00-1667.38); lines under it L1212 (1585.60) … L1219b (ends 1665.75). IN: starts 1582.825 with a 1 s fade-in, inside the speech-free gap 1581.48-1585.60 (L1205 -> L1212). OUT: fades 1665.92-1668.42, inside the speech-free gap 1665.75-1670.67 (L1219b -> L1302); last strike measured at 1663.445 (2.47 s before the fade). RE-FIT DONE (round 2; was RE-FIT PENDING). s06-s08 moved bodily (+19.875 s; every absolute time in the code shifted): the lit box from 1582.93, the E6 in the gap after 'free to all' (1593.42), Dmaj9 just after 'door' (1596.25), the X-ray chimes from 'tilt' (1606.14) to 'shears' (1611.74), Rosenblatt's organ (1612.24), the stampede from the cut (1620.76) with one accent per window, 'sitBack' 1635.42, the 'Not quite' celesta D (1636.62). Voice pass: m01's tape hiss lifted above 4.2 kHz and no second E6 struck under L1216. ch12-s03 (L1208 cut; review r2): the founding figure on 'founded' (1648.10, identical to m12's), one dry tick on 'ledger' (1653.82), then NO settling: from 'bigTech' (1655.12) the carry pulse climbs back toward the stampede's weight, doubles to the stampede's sixteenths on LLAMA ('leaked' 1660.88), one equal pluck plus the stampede's timpani/string accent per chip (BARD 'Bard' 1656.52, LLAMA 1660.88), and GPT-4 and CLAUDE struck together on 'Claude' (1663.44: identical D4 plucks panned .3/.7, the last strike); short-term loudness climbs from about -31 to -25 LUFS across the race; the open D-A drone rings into the fade as m17 enters at 1666.108. Speech-to-music >= 12.9 dB on every line. NOTE: the routed ch12-s03 shot fix asks for LLAMA on 'shared' (1657.49) and GPT-4/CLAUDE on 'same March day' (1664.77); if the shot moves its chips, move BARD / LLAMA / SAMEDAY (constants in the code) to the new beats and re-render (a pair on 1664.77 would push the last strike to 1664.77, still 1.15 s before the fade).\n\nTHE RETURN TO THE SCENE: the payoff of M2's lit box. RE-ORDERED: the shots now run ch12-s06 (return) → ch12-s07 (X-ray complete) → ch12-s08 (the stampede) → ch12-s03 (Anthropic, plainly, then Bard / LLaMA / GPT-4 and Claude the same day), so the stampede now comes BEFORE the founding and the cue ends on the founding figure, not on the celesta suspension. 1582.83-1585.01 (lead-in in the gap after L1205, 1.0 s fade-in under m15's G pad): the prologue's low sustained D (contrabass D2) and faint tape hiss come back exactly as in m01 (same pitch, same level), alone before L1212 (1585.60). 1585.01-1605.84 THE RETURN: the D drone under 'November 2022, and our little lit box…' (L1212 1585.60-1593.33); then the single high piano E6 from 'wonder', heard in the gap after 'free to all' ('flood' 1593.01, line ends 1593.33), and now ANSWERED by a warm chord on 'door' ('door' 1595.86, in 'Not a new engine. A new door.' L1215 1593.92-1596.20): Dmaj9 (D2 A2 F#3 C#4 E4 with the E6 still ringing): the first time the opening's question gets harmony. Under 'The first note in the file was written that same day' (L1216 1596.76-1601.84; 'firstNote' 1597.74) the chord thins to the single E6 again, unresolved for a breath, then rises with the pull-back ('pullBack' 1602.23, 'cityLit' 1604.04). Intensity 0.3 → 0.5. 1605.84-1620.76 THE X-RAY COMPLETE: each of the seven bands lights on its own soft chime, evenly spaced (about 1606.12-1611.72, from 'tilt' 1606.13; music-only until L1217 at 1612.23), each a note of M1 re-orchestrated through the era colours in order (celesta, valve organ, cello, piano, synth, harp, pizz), building one chord (D A D F# A E D) that is complete when the shears light ('shears' 1611.73). Under Rosenblatt's sentence (L1217 1612.23-1617.22, 'rosenblatt' 1610.43) everything falls away to the 1950s valve organ alone, very soft; near silence for 'language was the door' (the second 'door', end of L1217); then one sustained organ note that opens out under the pull-back to the full wide ('clueCard' 1616.88, 'fullWide' 1618.33). Peak 0.6, then 0.2. 1620.76-1638.26 THE STAMPEDE (was the last section; now third): the organ note gives way on the cut and the GPU pulse returns at double speed, kept under D3 and thin while L1219 runs (1621.35-1631.62: 'Through ChatGPT's door, a stampede…'); one accent per window through the four images ('users' 1626.82, 'codeRed' 1629.82, 'investment' 1630.82, 'leak' 1632.02; 'scatter' 1632.82); the two equal lanterns on 'sameDay' (1633.82) get the SAME accent; CUT OFF DEAD once the fourth window and its stamp have held (about 1634.62, before 'sitBack'); then near silence in the study: the lamp's hum and a single held piano note as the hands sit back ('sitBack' 1635.41); as the camera trucks along the Wall ('notQuite' 1636.62) M1's held suspension on solo celesta (A→D, then held over A-E), unresolved: it now thins to nothing over the cut into ch12-s03 (1638.26) instead of handing over to m17. Intensity 0.6 → 0.15. 1638.26-1668.32 ANTHROPIC, PLAINLY (and the same-day race): from the cut, near silence; then the SAME plain plucked founding figure as OpenAI's in m12 (pizz, D A B F#, even, same tempo, same level, no swell, no heroic lift) from about 1638.83; keep it even and low under L1206 (1638.85-1649.20, 'pin' 1648.11, 'names' 1649.61), L1207 (1649.70-1653.32, 'selfDescription' 1651.68, 'largeSystems' 1652.36) and L1208 (1653.79-1660.32); a dry pluck on 'ledger' (1654.27) as in m12. Intensity 0.3. Fairness rule: nothing in this shot may be warmer, louder or more consonant than m12's OpenAI shot. Then, for the race (L1219b 1660.71-1666.58: 'Google announced Bard; Meta's LLaMA leaked within days; GPT-4 and Claude arrived the same March day'; 'bigTech' 1659.56, 'bard' 1661.39, 'llama' 1662.55): the same figure, one even pluck per lantern, no lab louder than another; on 'sameDayChips' (1664.87) two plucks of IDENTICAL pitch class, level and register (GPT-4 and Claude, the two equal lanterns): the cue's last strike, by 1665.56; it rings through the end of the line and the fade 1666.70-1668.49 on an open D-A (m17 enters at 1667.42 in D minor, its rising fourth on 'slip' 1669.18). REVIEW r1 APPLIED (supersedes the stampede/Anthropic paragraphs above where they differ): the stampede no longer cuts dead and restarts after silence. On 'sitBack' (1635.41) the double-speed pulse falls back to m12's own eighths (d2 d3 a2 d3), starting at the stampede's weight and easing to exactly m12's level by 1644.12; M1's suspension on solo celesta ('notQuite' 1636.62) rides over it across the cut into ch12-s03; the pulse and m12's pad carry under L1206 into the founding figure on 'founded' (1648.11, identical to m12's), the tick on 'ledger' (1654.27), then taper away as m12's did; the drone under the money line becomes the open D-A the race rings over. Race plucks: bard 1661.39 (A3), llama 1662.55 (B3), the two equal lanterns on 'sameDayChips' 1664.87 (D4 twice, struck together, panned .3/.7): the last strike. Founding-section level measured equal to m12's OpenAI shot (about -25 dB RMS on the figure). CRITIC r1 ROUND 2 (2026-10-12, M1 economy): the exact celesta A->D over A-E is reserved for the title, m13 and m21, so on 'notQuite' (1636.62) the celesta holds the candle's D alone (sounding D6) over the pulse, then leans to the founding figure's B (sounding B5), both gone by 1638.47 before L1206; the A-E strings are removed and the 'sitBack' piano note is F# (no A->D cell).",
+  "file": "score/cues/m16.strudel",
+  "render": "score/renders/m16.wav",
+  "gainDb": -3,
+  "fadeIn": 1,
+  "fadeOut": 2.5,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 1663.445,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": 19.875,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m17",
+  "start": 1666.108,
+  "end": 1765.108,
+  "shots": [
+   "ch13-s01",
+   "ch13-s02",
+   "ch13-s03",
+   "ch13-s04",
+   "ch13-s06"
+  ],
+  "mood": "duskRose with an emberRed edge: a man takes down his own forecast; the worry candle; three camps; the longest candle goes out",
+  "tempoBpm": 54,
+  "key": "D minor (the home key darkened); the worry candle in D minor: A→D lit over Dm(add9), the D then held over A-E as a sus4 in a darker, lower voicing; never resolved",
+  "instrumentation": "gm_string_ensemble_1 (low, sparse), gm_cello (solo), piano (single notes; the plain repeated \"present harms\" figure), gm_french_horn (low, the worry lighting), gm_contrabass (dry plucked sceptic bass via short release), gm_celesta (Cyc), gm_orchestral_harp (the neutral centre pluck)",
+  "intensity": 0.35,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted and re-rendered 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1666.108-1765.108 (99.000 s), shots ch13-s01…ch13-s06 (1667.38-1766.29); lines under it L1302 (1670.67) … L1316 (ends 1760.47). IN: starts 1666.108 with a 1.5 s fade-in, inside the speech-free gap 1665.75-1670.67 (L1219b -> L1302). OUT: fades 1763.61-1765.11, inside the speech-free gap 1760.47-1766.89 (L1316 -> L1401); last strike measured at 1762.568 (1.04 s before the fade). Shifted bodily (+12.958 s); no line inside it changed. The code keeps its absolute times on the 2139.54 s clock (T0 = 1653.15 was the cue start there), so every event is exact relative to the cue; re-checked against narration/timeline.json: 'slip' 1668.58, 'down' 1673.61 (the scored silence to 'Machines' 1677.04), 'strike' 1703.51, 'harms' 1729.88, 'lecun' 1737.56, 'out' 1754.29, 'water' 1762.47. Re-rendered 2026-10-13 with a current-clock header (music unchanged); speech-to-music >= 12.1 dB on every line.\n\nTHE CASE REOPENED (rubato allowed). 1668.32-1694.21: duskRose strings, low and sparse (D minor); M1's rising fourth begins as the camera finds the slip ('slip' 1669.18), the strings rising with the push ('through' 1669.61); his hand rises to the pin ('reach' 1672.85); then EVERYTHING STOPS DEAD on 'down' (1673.61). FULL SILENCE through 'It is his own' and the pause ('own' 1675.92) until the quote: a scored silence, one of the film's five; no reverb tail may leak past 1673.92 (use a hard release on every layer). Re-enter only under the quote (from 'Machines' 1677.04) with a single sustained cello note: the held suspension (D over A): doubt. It stays, pp, under the quote (L1303 1677.04-1686.51 and L1303b 1686.96-1692.89). 1694.21-1703.21 THE WALK BACK: the held suspension continues on solo cello under the fair line (1694.81-1699.49), very soft, no resolution; as he walks ('walk' 1700.29) the held D turns into M4's walk (D3 → E3 → F3), the dissenter going back to the rim; a single quiet piano note as he reaches it ('rim' 1701.33). 1703.21-1726.96 THE WORRY CANDLE: M1's rising fourth, lit: low horn and strings in a darker voicing than any earlier lighting (A2→D3 horn over a D minor chord with an added 9th), warm with an edge, on the strike ('strike' 1703.51 / 'lit' 1704.22); it climbs to the suspension on 'dangerous' (1709.93) and holds there under the reading window (open letter 1711.06-1715.62; one-sentence warning 1716.22-1724.64); this belief is still burning, so it never resolves. Keep the horn under D3 while he speaks. 1726.96-1751.63 THREE CAMPS: a three-voice texture, one line per lamp, none dominant: the worry candle's held suspension in the strings; a plain repeated piano figure (one note, D5, in a steady quarter pulse) for present harms ('harms' 1729.88); a dry plucked bass (short contrabass/pizz) for the sceptic ('lecun' 1737.57); they overlap and NEVER cadence together; the medals (1743.64) get nothing; 'split' (1750.63) ends the three voices apart. 1751.63-1766.29 CYC: M1 on solo celesta, very soft, under the Lenat line (1752.63-1760.47): the held suspension as the Cyc flame goes out ('out' 1754.29), and on 'shelf' (1764.37) the taper's note simply stops (no fall: thirty-nine years, and the case is open); a single neutral plucked string (harp, panned dead centre) enters on 'water' (1762.47) foreshadowing Two Shores; last onset by 1762.51 (that harp note on 'water'); the harp released by 1764.46; fade 1763.61-1765.11; m18 enters at 1763.61 with that same harp in E. REVIEW r1 APPLIED: from 1709.93 the horn and strings let go (clear before L1307b), and from 1710.63 to 1716.13 the only voice is a soft cello pedal A2 (below D3, no horn or string entries) under 'In March, an open letter asked for a pause. None came.' (L1307b 1711.06-1715.62), about 10 dB lower than before; the suspension creeps back with slow attacks under L1308. CRITIC r1 ROUND 2 (2026-10-12): the 'water' harp E (1762.47) is released by 1764.46 (hold 1.2, release .8) and fadeOut is now 1.5 (1763.61-1765.11, the full overlap with m18's fade-in), so the hand-off decays instead of chopping a ringing note.\n\nCRITIC r1 APPLIED (2026-10-13): the walk back to the rim (M1's held D turning into M4's D3-E3-F3, 'walk' 1700.29, piano A on 'rim' 1701.33) is brought forward in the music-only gap 1699.49-1703.81: its own cello lane, sul tasto (lpf 700), the held D swelling from 1699.60, the piano A at .17; every walk/piano note released by 1703.68, before L1307 (1703.81). Measured on the render: 1699.6-1703.5 at -20.3 dB RMS vs the fair-line bed -26.5 (was -25.3 vs -27.1: +1.8 dB, now +6.2 dB, i.e. about +4.4 dB relative); L1307's first second unchanged (-23.2 vs -23.3). Everything else in m17 untouched.",
+  "file": "score/cues/m17.strudel",
+  "render": "score/renders/m17.wav",
+  "gainDb": -4,
+  "fadeIn": 1.5,
+  "fadeOut": 1.5,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 1762.568,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": 12.958,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m18",
+  "start": 1763.608,
+  "end": 1914.602,
+  "shots": [
+   "ch14-s01",
+   "ch14-s02",
+   "ch14-s03",
+   "ch14-s04",
+   "ch14-s04b",
+   "ch14-s05",
+   "ch14-s06",
+   "ch14-s07"
+  ],
+  "mood": "dawnGold → winterBlue: two shores at equal height and warmth; chip rules; a receipt; the struck match; talent; a hotline; the gap",
+  "tempoBpm": 66,
+  "key": "E aeolian: the Two Shores melody (M4 on harp) harmonised two ways, L in E minor, R over G/C; they meet on one held Esus4(add9); M1 lightings in E (B→E)",
+  "instrumentation": "gm_orchestral_harp (the melody, both channels), gm_pizzicato_strings (the second harmonisation), gm_string_ensemble_1 (soft, split L/R; the meeting chord centred), gm_celesta (ticking left), gm_contrabass (the sudden low swell, short), white/pink noise (the match flare, very short, optional)",
+  "intensity": 0.35,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted and re-rendered 2026-10-13 by the composer to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1763.608-1914.602 (150.994 s), shots ch14-s01…ch14-s07 (1766.29-1912.83); lines under it L1401 (1766.89) … L1418 (ends 1912.00). IN: starts 1763.608 with a 1.5 s fade-in, inside the speech-free gap 1760.47-1766.89 (L1316 -> L1401). OUT: fades 1912.35-1914.60, inside the speech-free gap 1912.00-1917.03 (L1418 -> L1501); last strike measured at 1902.208 (10.14 s before the fade). RE-FIT DONE (round 2; was RE-FIT PENDING). Piecewise re-fit: s01-s02 +12.958 s (fence 1782.97, reply 1786.73, the two candles' plucks after 'candles' 1792.07 and after 'one' 1795.59, the suspension on 'behind' 1796.58), and the chokepoint's suspension now hangs on, pp, under the new question 'can a fence around chips hold?' (1797.5-1801.7), unresolved; s03-s04b +17.458 s (receipt from 'tag' 1802.41, the shutter ticks 1821.84, 'hid' run 1829.75, the low swell from 'fell' 1838.21 cut at 1839.56, the near-silent floor to the struck match 1847.45, G->F# on 'trailing' 1850.30); review r2: the three dissent tags are lit one at a time in s04b's silent tail, one equal harp pluck each in clear air (1854.15 / 1855.65 / 1857.15) over the held suspension, into the cut; s05 re-composed around the two-sentence L1416 (left B on the plate 1858.84, one right F# in the breath after 'China' 1862.86, a soft left pizz on 'employed' 1864.03, the 'America' lift after the line 1865.58, the full answer G A G | F# D in the hold 1865.62-1869.1); s06-s07 +19.09 s (the night chord on 1869.44, the gap candle 1890.74, tags 1893.12 / 1894.12 / 1895.12). L1418 is rewritten and ends 1912.00, so the shores' sign-off (M4's B->E, harp left and pizz right) moves to the breath before it (1902.20, the last strike) and the night chord decays under the line into 'close'. The struck match is about 1.5 dB lighter. Speech-to-music >= 10.0 dB on every line (the mix's own metric reads 2-4 dB higher).\n\nTWO SHORES. Staging rule in sound: equal level, equal warmth and equal register on both channels at all times; no national-instrument colours; no pentatonic figures; no stingers or threat. The melody is M4 on harp in E aeolian (B3 E4 - F#4 | G4 - A4 G4 | F#4 D4 | E4), harmonised two ways: left channel E minor (Em-C-D-Em), right channel the same melody over G-C-D-Em; pan .2/.8, never hard. 1766.29-1777.46: the theme's first statement: calm, wide, unhurried; dawn rather than threat; keep it light under 'China aimed to be the world's primary AI innovation center' (1766.89-1773.16) and 'Its plan named no rival' (1773.61-1775.63). 1777.46-1801.86: the melody answers itself: phrase on the left, the same phrase mirrored on the right ('fence' 1782.97, 'reply' 1786.73 get one phrase each: Washington then Beijing, identical phrase, identical level); on the two candles ('candle' 1792.09) M1's rising fourth in the plucked string, TWICE, a third apart (B→E, then D→G), then the held suspension through the hold ('behind' 1800.06). 1801.86-1821.54 THE RECEIPT: thin and quizzical: the plucked melody reduced to a few notes in the middle register, space between them, as if counting ('tag' 1802.17, 'flip' 1807.86); under 'It left out the research, and the chips' (1811.44-1817.61) one note only. 1821.54-1843.25: the melody split by channel: under the shuttered window a ticking celesta figure on the LEFT ('shutter' 1821.84), the scroll's spooling a quick rising run that never resolves ('hidden' 1829.75); on 'Then' (about 1831.82, 'hall' 1831.82) the same phrase, unchanged, moves to the RIGHT under the hall and the lantern ('lantern' 1834.37); then a sudden low swell (contrabass + low strings, short) and a falling figure under the ticker strip ('tear' 1837.14, 'fall' 1838.47), CUT OFF at the hold (about 1839.55) so the struck match arrives in near silence. 1843.25-1859.05 THE STRUCK MATCH: M1 played whole and fast on 'struck' (the match flare 'match' 1847.45): rising fourth, suspension, falling resolution within two seconds (1847.43-1848.41), then a scored silence as it is shaken out (to about 1848.75, 'steady' 1848.74); the chokepoint candle steadies: its held suspension returns, pp; on 'trailing' ('out' 1850.30) the one-to-three-years candle's motif resolves downward, softly: blown out, gone; on 'two' (1853.69) the chokepoint candle's suspension is held, unresolved, under three small plucked notes, one per tag (1849.07, 1849.52, 1853.74), into the cut. 1859.05-1869.09 TALENT: the melody passed back and forth between left and right, phrase by phrase, warm and even; a soft lift on 'America' (about 1863.85-1864.51) that resolves nowhere in particular; small plucked notes, one per drifting lantern, in the hold ('lanterns' 1863.39). 1869.09-1889.21: both channels meet in ONE held chord for the first time, centred, cooler in colour for the night (Esus4 add9: E2 B2 E3 A3 F#4 at low velocity); a soft lift on 'reached across the water' (about 1877.78-1879.78); level and unresolved on 'Chip rules unchanged' (about 1885.09-1886.89), carried into the next shot. 1889.21-1912.83 THE GAP: the held night chord continues; the gap candle's motif rises a fourth and stops on the suspension ('gapcandle' 1890.26; B→E, the E then held as the sus4 over B-F#), beside the chokepoint candle's held note; three small plucked notes, one per tag ('tags' 1893.11, 'tag2' 1894.11, 'tag3' 1895.11); Liang's quote (1896.11-1902.17) over the chord alone; the chord sustains under the high wide shot ('rise' 1908.10) into the cut on 'close' (1911.39), decaying. Last onset by 1910.82 (the chord sustains, no new strike on 'close' 1911.39); fade 1912.35-1914.60; m19 enters at 1913.10 in D (the shared A and E of the Esus4 lead into D's Asus4 world). REVIEW r1 APPLIED: the low swell on L1409 now starts on 'fell' (1838.21) and peaks after it (~1838.81) before the cut at 1839.56; the hold to the match is a near-silent floor (pink room tone + a ppp bowed-glass E, about -42 to -47 dB RMS), no digital zero; the struck match is re-fit to the split L1410/L1410b (M1 whole 1847.43-1848.41, tags on 1848.84 / 1849.44 / 'two' 1853.69, G->F# on 'trailing' 1850.30); the gap candle's rising fourth on 'candle' (1890.26) moved above D6 (celesta, sounding B6->E7, ppp) so it clears L1417, and the three harp tags sit in the gap after the line (1893.11 / 1894.11 / 1895.11). CRITIC r1 ROUND 2 (2026-10-12): lift() now checks onset + hold + release against the next line: plucks that would ring into speech are shortened (end .15 s before the line, release .4) and sustains are not lifted; the gap arpeggio and the theme's closing E after 'rival' (1776.92) are capped before 1764.95. The harp melody and its broken chords sit about 4 dB lower under L1401, L1403 and L1416 (full level stays in the gaps); the 'America' lift moved to the breath after L1416; the struck match on harp an octave lower (B3-E4-D#4) with a lighter celesta spark and the flare noise above 5 kHz; the candle plucks, tags and 'trailing' fall about 4 dB lighter and shorter; the gap candle's celesta in the micro-gap after 'candle'. Measured voice-to-music margins (250-2k / 1-4k, dB): L1401 5.5->8.8 / 7.2->10.4, L1403 3.5->8.9 / 7.7->13.1, L1416 6.3->13.7 / 5.7->12.7, L1410 7.2->10.4 / 5.5->10.1; lines under 10 dB in 1-4 kHz 11/17 -> 2/17.",
+  "file": "score/cues/m18.strudel",
+  "render": "score/renders/m18.wav",
+  "gainDb": -3,
+  "fadeIn": 1.5,
+  "fadeOut": 2.25,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 1902.208,
+  "lastStrikeFrom": "analysis",
+  "clockShift": {
+   "by": 12.958,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m19",
+  "start": 1913.1,
+  "end": 2032.711,
+  "shots": [
+   "ch15-s01",
+   "ch15-s03",
+   "ch15-s04",
+   "ch15-s05"
+  ],
+  "mood": "candleAmber: two in the morning; prizes shared, a critic; a model that plans; the candle of now; every lab under the same light",
+  "tempoBpm": 60,
+  "key": "D major (celesta over a low string D; the rising fourth A→D thrice at the same level)",
+  "instrumentation": "gm_celesta (solo), low gm_string_ensemble_1/cello pedal, a soft phone-buzz rhythm (two short low pulses: a sine or muted contrabass, part of the texture), gm_pad_bowed (bowed-glass shimmer for the Hall of Mirrors), light ticking celesta (the pulse thinned), gm_string_ensemble_1 (the unresolved chord), gm_pizzicato_strings (the clock-like doubling pluck)",
+  "intensity": 0.25,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the m19 composer (v17) to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1913.1-2032.711 (119.611 s), shots ch15-s01…ch15-s05 (1912.83-2032.5); lines under it L1501 (1917.03) … L1525 (ends 2028.07). IN: starts 1913.1 with a 1.5 s fade-in, inside the speech-free gap 1912.00-1917.03 (L1418 -> L1501), under m18's fade. OUT: fades 2031.411-2032.711, inside the speech-free gap 2028.07-2035.50 (L1525 -> L1509), crossfading with m20 (in at 2031.233); last struck chord 2028.12 (the warning-shot card's D; measured 2028.16), last onset 2029.02 (its F#), blooming in clear air and released (string D lets go at 2029.8, harp phrase on a drier orbit) so it has decayed well over 10 dB by the fade (2031.41). LEVEL (v18, critic round 1): under-voice scale VU .72 -> 1.05 and master trim +1 dB: -22.0 LUFS I (was -25.5; about -26 in the mix at gainDb -4, between m18 and m20), median line clearance 13.7 dB in both voice bands (was 17.1 on the same measure), worst 10.9 (L1522d consonant band). RE-FIT DONE (v17): code, render and window agree; every hit is placed by the word it names.\n\nCASE STATUS: OPEN, part 1. Wonder, not triumph; intensity 0.2-0.3; level and fair for the labs. THE CALL (ch15-s01, 1912.83-1952.79): solo celesta glints F#-A in the clear (1914.70, damped so nothing rings into 'Two', 1917.03: L1501 stays hushed, 15-19 dB clear in both voice bands) over a low string D; the phone is two pairs of low pulses on the picture's buzzes ('phone' 1922.20, the breath after 'rings' 1923.05). M1's rising fourth (celesta A->D, tight and damped, with high strings D-F# lit) three times at the SAME level, each whole in the breath after a laureate's words: after 'John Hopfield' (1926.39), after 'cools' (1934.11, the turn), after 'John Jumper' (1947.51); bowed glass for the Hall of Mirrors ('Hopfield' 1925.83), the turn and the hold after 'proteins' (1950.60); under the critic (L1528) the floor moves to A-E beneath the held D5 (doubted, not moved). THE MICROSCOPE (ch15-s03): three celesta ticks (the GPU pulse thinned) gone before 'Researchers' (1953.39); a hanging E struck in the breaths (1956.51, 1959.29); the rabbit chime D6-A5 just after 'rabbit' (1962.40); 'Nobody told it... to plan' (L1505, 1964.63-1967.06, re-narrated slow): a soft A-D floor, a thin high E arriving IN the ellipsis (1965.90), and the unresolved E-A swell in the clear after 'plan' (1967.10), gone before the wick. THE CANDLE OF NOW (ch15-s04): M1's fourth once more on the trimmed wick, in the clear before 'The candle' (1968.87); the doubling as an even low pizz tick-tock from b2 1974.17 (11 plucks, .75 s) with the celesta climbing D6-B6 and stopping short of D, the clock stopped mid-pattern before 'Yet' (1982.78); the stopwatches over Bm then G, a late small tick for the ghost hand (b6 1985.92), a soft D on 'date' (1989.89). THE LABS UNDER THE SAME LIGHT (ch15-s05): the founding figure D A B F# (harp, centred, D5 and up), identical at every lamp stop under the voice: the shelf (bridging from 'date' at 1990.39, its F# on b1 1991.23, D), the Anthropic lamp ('Anthropic' 1993.88, Bm; re-bowed Bm 2000.19 for the Pentagon and the courts), the same lamp's tag flipping to the settlement ('settle' 2013.98, G, under the new L1522d), the OpenAI lamp ('test' 2018.60, Em/D); one thin held D5 under each lab's lines, identical. ONE clear-air bloom per lab, identical (the figure's F# doubled at the octave, +3 dB): Anthropic's in the breath after 'pirated books' (2017.40), OpenAI's closing the warning-shot card's music-only hold (the phrase alone from 2028.12 over a soft D, the cue's last chord). No stingers; never louder or darker for either lab.\n\nCOMPOSER v17 (2026-10-13, round-2 re-fit; rendered 119.611 s + 6 s tail, -25.5 LUFS I, TP -9.3, no errors): the v16 code (on the 2121.79 clock) rewritten on the current clock: ch15-s01/s03 bodily (+17.75 s), ch15-s04 +18.84 s (L1505 re-narrated 1.09 s longer), ch15-s05 re-fitted to the rewritten L1522b and the new L1522d (the settlement stop moved from a silent tag flip onto 'settle', the Anthropic bloom into the breath after L1522d); master trim +1 dB (2.5 -> 2.8: the longer window measured -27.4 at 2.5). Per-line margins (render at gainDb -4, against narration.wav, whole line): 10.9-27.6 dB clear in 1-4 kHz (median 13.9) and 11.8-19.8 dB in 250 Hz-2 kHz (median 15.6); L1501 19.3/15.0. Earlier composer passes (v8-v16: voice-band pass, hits moved into breaths, lab balance) are archived in score/notes-history.json.",
+  "file": "score/cues/m19.strudel",
+  "render": "score/renders/m19.wav",
+  "gainDb": -4,
+  "fadeIn": 1.5,
+  "fadeOut": 1.3,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "clockShift": {
+   "by": 17.75,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  },
+  "lastStrike": 2028.16,
+  "lastStrikeFrom": "analysis"
+ },
+ {
+  "id": "m20",
+  "start": 2031.233,
+  "end": 2059.733,
+  "shots": [
+   "ch15-s06",
+   "ch15-s07"
+  ],
+  "mood": "candleAmber → winterBlue: the three holdouts now; the oldest witness leaves",
+  "tempoBpm": 60,
+  "key": "D (neutral, re-harmonised per lamp) → D minor for the holdouts (M1 held on the suspension) → D minor full motif with its fall for Widrow",
+  "instrumentation": "gm_orchestral_harp / gm_pizzicato_strings (the neutral phrase, centred), gm_cello (solo: the holdouts, Widrow), gm_celesta (one high note per dark window), low gm_string_ensemble_1 (very soft)",
+  "intensity": 0.3,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the m20 composer (v7) to narration/timeline.json; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 2031.233-2059.733 (28.500 s), shots ch15-s06…ch15-s07 (2032.5-2061); lines under it L1509 (2035.50) … L1511 (ends 2056.79). IN: starts 2031.233 with a 1.5 s fade-in, inside the speech-free gap 2028.07-2035.50 (L1525 -> L1509), under m19's fade. OUT: fades 2058.733-2059.733, inside the speech-free gap 2056.79-2065.80 (L1511 -> L1527); last strike 2057.083 (composer marker: the last dark window's celesta note, after the cello's fall at 2056.79; the analysis onset finder misses these ppp notes), silent before the fade, then a beat of silence before m21 at the cut (2061.00). RE-FIT DONE (v7): no line inside the cue changed, so nothing moved against the picture; the code is now written on the current clock (S = 2031.233) and checked word by word.\n\nCASE STATUS: OPEN, part 2. THE THREE HOLDOUTS (ch15-s06, 2032.50-2046.92): M1 on solo cello in D minor: A2 on b1 2032.80, D3 lit on b1b 2034.30 over Dm, in the clear before L1509 (2035.50); the floor moves to C under 'dangerous' (2038.76: the held D grinding gently between C below and E above) and to A-E under 'far enough' (2041.14, Asus4); the unresolved suspension swells in the music-only hold (2041.83-2046.5) while the cards are read (the cue's only swell, intensity 0.4) and does NOT resolve; released by 2046.5 so its tail is gone under the fade to black. WIDROW (ch15-s07, winterBlue): solo cello plays M1 once, FULLY: A2 in the lead-in (2047.08), D3 lit (2047.88) over Dm and very soft winter glass, held through 'died at ninety-five'; the floor slides to A-E on 'ninety-five' (2053.25, doubt); the fall D -> C# over A right after 'never got over it' (2056.79). One high celesta note per window going dark: the first in the breath before 'He wrote' (2054.00), two very soft ones under the quote's words, the last after the fall (2057.08), thinning to silence.\n\nCOMPOSER v7 (2026-10-13; rendered 28.500 s + 6 s tail, -22.6 LUFS I, TP -8.2, no errors): re-written on the current clock (+21.583 s from v6's code); the crest's release shortened (2.6 -> 1.8 s, gone before 'In twenty'), the first dark window moved into the breath before 'He', the two under the quote -5 dB. Per-line margins (gainDb -4): L1509 12.6 dB (1-4 kHz) / 15.4 (250-2k); L1511 10.4 / 14.1 (v6: 8.0 / 12.7). Earlier passes (v5-v6) are archived in score/notes-history.json.",
+  "file": "score/cues/m20.strudel",
+  "render": "score/renders/m20.wav",
+  "gainDb": -4,
+  "fadeIn": 1.5,
+  "fadeOut": 1,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "lastStrike": 2057.083,
+  "lastStrikeFrom": "composer",
+  "clockShift": {
+   "by": 21.583,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  }
+ },
+ {
+  "id": "m21",
+  "start": 2061,
+  "end": 2159.9583,
+  "shots": [
+   "ch15-s08",
+   "ch15-s09",
+   "ch15-s10"
+  ],
+  "mood": "candleAmber: the fast-forward; the verdict; the board becomes a network, the shelf a bar chart in wax; the last slip; a match; a new candle; the unresolved suspension",
+  "tempoBpm": 60,
+  "key": "D major; ends on Asus4 (D held over A-E), never resolved",
+  "instrumentation": "tape-lurch fast-forward (the m01 rewind sound played forwards), gm_celesta, gm_drawbar_organ, gm_cello, piano, oscillator synth pulse, gm_orchestral_harp, gm_pizzicato_strings (every era's instrument of M1, in order), gm_string_ensemble_1, gm_contrabass",
+  "intensity": 0.5,
+  "notes": "CURRENT CLOCK (timeline 2159.9583 s; re-fitted 2026-10-13 by the m21 composer (v6) to narration/timeline.json after the round-2 re-narration; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 2061-2159.958 (98.958 s), ending exactly at the film's end; shots ch15-s08…ch15-s10 (2061-2159.96); lines under it L1527 (2065.80) … L1520 (ends 2128.06). IN: starts 2061 on the cut with no fade-in, inside the speech-free gap 2056.79-2065.80 (L1511 -> L1527), after m20's beat of silence (m20 faded by 2059.73). OUT: a 1 s safety fade 2158.958-2159.958 inside the speech-free gap 2128.06-2159.96 (L1520 -> end); the last struck chord is the Asus4 at the cut (2130.55), the last onset the SOURCES celesta D (2152.58; measured lastStrike 2152.68); the music reaches the room-tone floor by about 2157.5 (below -55 LUFS M in the render), so the fade only guards the last frame. ONE END TIME: 2159.958 (the film's end). RE-FIT DONE (v6). If the pending ch15-s10 trim (to about 22 s) lands, re-fit the window end to the new film end and move the end-card pad with the card beats (Turing b1, disclosure b2, sources).\n\nTHE REVEAL AND THE HANDOFF (rubato; events placed by seconds). THE FAST-FORWARD (2061-2065.80): m01's rewind played forwards: a tape lurch on the cut, then five 0.75-s forward swells on ff1-ff5 (2062.00, 2062.75, 2063.50, 2064.25, 2065.00: valve organ, glass + cello, oscillator, harp, celesta over a soft D), the fifth landing on D before 'Who' (2065.80). THE VERDICT (L1527): a hush; one dry grey pluck each on 'rules' (2067.34) and 'knowledge' (2068.73); M1's rising fourth for LEARNING (A in the breath 2070.45, D struck and let go on 'Learning' 2070.93, the strings' D-major halo holding it); one soft high harp pluck per accomplice (data 2072.76, fire 2073.48, messenger 2074.35, people 2075.51: D F# A D, M3's forward pass). THE NETWORK (L1514, 2077.04-2080.85): M3's forward wave, one era instrument per column every 0.44 s from 2077.04 (celesta, valve organ, cello, piano, oscillator pulse, harp, pizz on 'network' 2079.67), all at about a third under the line. THE BLOOM in the gap 2080.85-2083.09: the trained pass lands on F# (2081.49) in full D major (strings, horns, harp roll, contrabass, one timpani stroke, celesta F#), held to 2082.63, thin by 2083.0: the score's loudest moment (-12.3 LUFS M in the render, about -14.3 after gainDb). THE BAR CHART IN WAX (L1515): one celesta note per candle: 'forty' 2084.38 (short; its length is the contrabass's low D), 'two' 2086.05 (short), 'a day' 2088.07 (the shortest tick), 'still burn' 2089.25 (a held D). 'dark' (2091.89): everything drops to ONE held note, E (piano E6 + strings + glass), carried through L1516/L1516b, re-bowed in the clear after 'open' (2099.28) and held to the cut (2104.29). THE LAST SLIP (ch15-s09): celesta A on the cut (2104.29), D 2104.78, the strings holding the D with a soft A-E fifth beneath from 2106.83, through the quote (L1518, 2110.99-2117.27); gone by about 2117. SILENCE for the stamp (b3 2117.77) and the lamp click (b4 2120.27) (foley bus). M4's walk on solo cello under L1520, very soft, below D3 (A1 D2 E2 F2 G2 on 'rim' 2124.24, F2 E2 C2 D2), home by 2126.8. The match strikes on 'new' (2126.87, foley) in near silence; the wick catches on 'candles' (2127.09): one tiny damped celesta glint only. THE LAST GESTURE, in the clear after 'come from' (2128.06): celesta M1 once more, A 2128.20 -> D 2128.90, held by the high strings; at the cut to black (2131.08) the strings and contrabass slide beneath it to A-E with a solo cello on D3 (2130.55): Asus4, the D the suspension, NEVER RESOLVED. THE END CARDS (ch15-s10, round-2 review): the suspension stays alive as a ppp string pad (lpf 1200) entering under the chord's release (2132.6): A-E + D through the Turing card (about -30 LUFS M in the render, -32 after gainDb, by 2139-2141), thinned to the D alone under the disclosure card (from 2141.38, about -40 render / -42 mixed), decaying toward the floor; one soft celesta D on SOURCES (2152.58), ringing out by about 2157.5. No cadence anywhere.\n\nCOMPOSER v6 (2026-10-13, round-2 re-fit; rendered 98.958 s + 10 s tail, -25.1 LUFS I, TP -4.7, no errors): the v5 code (2139.54 clock) moved bodily to the slip (+21.583 s); the slip's hold lengthened 1.35 s for the rewritten L1517; the walk, the strike and the last gesture re-fitted to ch15-s09's re-timing (strike on 'new', wick on 'candles'); the last chord at the cut; the end-card pad and the SOURCES D added; voice-band pass: the 'Learning' celesta D damped, the accomplice plucks -4.4 dB, the network celesta -2 dB, the bloom's celesta F# released before 'Some candles', the 'forty'/'two' notes damped (the contrabass carries the length). Per-line margins (gainDb -2): 10.7-20.7 dB clear in 1-4 kHz (median 11.7) and 10.8-20.9 in 250 Hz-2 kHz (median 13.8); first v6 render had L1515 at 8.1/9.3 and L1527 250-2k at 9.7. Earlier passes (v3-v5) are archived in score/notes-history.json.",
+  "file": "score/cues/m21.strudel",
+  "render": "score/renders/m21.wav",
+  "gainDb": -2,
+  "fadeIn": 0,
+  "fadeOut": 1,
+  "duck": {
+   "ratio": 3,
+   "attack": 20,
+   "release": 250,
+   "depthDb": 3
+  },
+  "tail": 10,
+  "clockShift": {
+   "by": 21.583,
+   "at": "2026-10-13",
+   "reason": "round-2 line rewrites re-narrated; cue window moved bodily with its first shot"
+  },
+  "lastStrike": 2152.68,
+  "lastStrikeFrom": "analysis"
+ }
+]

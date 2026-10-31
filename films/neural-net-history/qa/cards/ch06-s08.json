@@ -1,0 +1,119 @@
+{
+ "shot": "ch06-s08",
+ "at": "2026-10-13T19:57:18.933Z",
+ "step": 0.0833,
+ "sampled": 84,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@1138,122",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@303,140",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@303,458",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@637,34",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@635,521",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@942,17",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@636,259",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@924,461",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@933,217",
+   "probed": false,
+   "from": 0.05,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@961,677",
+   "probed": false,
+   "from": 0.133,
+   "to": 1.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@162,352",
+   "probed": false,
+   "from": 3.8,
+   "to": 6.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-17,487",
+   "probed": false,
+   "from": 3.8,
+   "to": 6.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-3,883",
+   "probed": false,
+   "from": 3.8,
+   "to": 4.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@404,570",
+   "probed": false,
+   "from": 3.8,
+   "to": 6.967,
+   "minInkWhilePaper": 0.75
+  },
+  {
+   "id": "fillRect@900,375",
+   "probed": false,
+   "from": 4.05,
+   "to": 6.967,
+   "minInkWhilePaper": 1
+  }
+ ]
+}

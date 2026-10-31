@@ -1,0 +1,114 @@
+{
+  "reviewer": "story-editor",
+  "round": 7,
+  "lens": "story, curiosity and voice",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8.5,
+    "clarity": 8,
+    "story": 8.5,
+    "curiosity": 8.5,
+    "visual": 8.5,
+    "voice": 8.5
+  },
+  "critical": [
+    "ch15-s01 L1502 contradicts the script's own staging and the bible. It calls the Boltzmann machine 'a net that learns as it cools'. But ch05-s03's visual says, in so many words, that 'the cooling is how it settles into a state, not how it learns; its learning, by comparing waking and dreaming statistics, is not shown'. Claim e4-boltzmann says learning comes from a local rule that compares clamped and free-running statistics; annealing is how it settles. This line sits in the Nobel citation, the one place a physicist in the audience is guaranteed to be listening. FIX: 'and the tall man's Boltzmann machine, a net that settles as it cools.' This is word-neutral. ch15-s01's 'cools' beat and ch05-s03's thermometer card both already show settling. Also update the ch15-s01 visual note that quotes the old phrase.",
+    "The runtime has no margin left for a slow voice. `script.mjs assemble --check` gives 3,476 words, 34.5 min at 140 wpm against the 32.0 min target: a warning, just inside the 35.2 ceiling. At 130 wpm it gives 36.4 min, an ERROR. The brief asks for a slow voice and no voice.json is locked yet. If the cast voice reads below about 137 wpm, the script fails its own gate at narration time. GATE for this round: at most 33.6 min at 140 wpm, which is about 36 s cut, so that a 133 wpm voice still clears the ceiling. Where to find it, all story-positive: (a) merge ch15-s02 into ch14-s04 (see issues; about -8 words and the 12 s minDuration shot goes); (b) ch03-s06 holdAfter 13.0 → 9.0 (the LOVE · HOPE · DESPAIR card still gets 9 s, enough for its 3 words plus a short attribution); (c) ch07-s06 holdAfter 6.5 → 4.5; ch11-s08 5.3 → 3.5; ch09-s05 5.5 → 4.0; ch11-s05 5.9 → 4.5; (d) ch05-s03: voice the Boltzmann desk inside the existing hold (see issues), 6.2 → 3.5, which is time-neutral; (e) L0522a: move Schank's quote to its on-screen card and keep the spoken warning ('In 1984, at a panel called The Dark Ages of AI, insiders warned of a coming winter.'), -10 words; (f) L1521 drop 'in China' (-2: DeepSeek has been introduced twice by then). Protect from cuts: the ch04 deaths, the stencil/cards/jug mechanics, every fairness clause, and every plant and payoff listed under strengths."
+  ],
+  "issues": [
+    {
+      "where": "ch15-s04 L1530",
+      "problem": "This is the hardest sentence in the film to follow by ear. 'the tasks AI agents, models that work on a computer on their own, can finish double in length…' is a garden path: the listener takes 'the tasks AI agents' as a phrase, then has to hold it through an appositive before the verb arrives. It is the opening of 'the candle of now', the last new candle before the verdict, so the ear must not stumble here.",
+      "fix": "'The candle of now. AI agents are models that work on a computer on their own. By one measure, the tasks they can finish double in length about every seven months.' (+3 words, three plain sentences.)"
+    },
+    {
+      "where": "ch14-s07 L1418 → ch15-s01 L1501",
+      "problem": "Two Octobers sit about 10 seconds apart: 'As of October 2026, nobody agrees…' then 'Two in the morning, October 2024.' The film has just reached the present, and now it steps back two years without saying so. A listener hears 'October twenty-twenty-…' twice and loses the clock right where the finale starts.",
+      "fix": "L1501: 'Back to October 2024. Two in the morning; the tall man's phone rings.' (+2). Keep the date stamp. 'Back to' marks the step back, the same way 'Back in 2021' does in ch12."
+    },
+    {
+      "where": "ch15-s02 (L1503, L1521) ↔ ch14-s04 L1408",
+      "problem": "The film uses a reasoning model before it explains one. L1408 (Jan 2025) has DeepSeek release 'a model that writes out its reasoning before answering'. Two minutes later, ch15-s02 goes back to 2024 to explain how machines 'learned to think longer'. The finale already has nine beats before the verdict, and this one repeats ch14 at the moment the film should be gathering itself. The pairing in L1521 ('OpenAI kept the notes hidden. DeepSeek … published its recipe') is a two-shores beat, so ch14 is where it belongs.",
+      "fix": "Delete ch15-s02 and rewrite ch14-s04 L1408 as: 'Machines had just learned to think longer: trained by reward, they wrote long working notes before answering. OpenAI kept its notes hidden. Then DeepSeek released such a model, its recipe and weights open to all.' Move ch15-s02's claims onto ch14-s04, and keep 'trained by reward' (it pays off AlphaGo's 'rewarded for wins', L0905b). This saves about 8 words and a 12 s minDuration shot, and the ch15 run from the Nobel to the rabbit gets one beat shorter."
+    },
+    {
+      "where": "ch12 shot order (s06 → s03 → s07 → s08)",
+      "problem": "Round 6's reorder put the circle-close first, which helps. But the 45-word Anthropic founding-and-money beat now sits between the chapter's two payoffs: L1215/L1216 ('A new door'; the first note retrieved) and L1217 (Rosenblatt's 1961 note: 'language was the door'). That 'door' rhyme is the best double payoff in the film, and a funding ledger interrupts it.",
+      "fix": "Order s06 → s07 → s03 → s08. The two file payoffs and the two 'door' lines then run back to back. Anthropic's founding becomes the first figure through that door, and L1219 becomes 'Through that door, a stampede.' (+2), so 'Then' no longer follows a 2021 flashback. Update the transition notes in ch12-s07 ('a plain cut … from the founding row') and ch12-s03 ('Crossfade … from the lit city') to match the new neighbours."
+    },
+    {
+      "where": "ch05-s08 L0515 → ch13-s06 L1316 → ch15-s08 L1515",
+      "problem": "The longest candle on the shelf was never lit aloud. The ear heard only 'Another team, entering common sense by hand' (L0515), and Lenat is named for the first time at his death. 'thirty-nine years, the longest candle on our shelf' therefore pays off a candle the listener never saw lit. The ear will probably confuse it with the knowledge candle, which 'burned about seven years' (L0522). Then the verdict (L1515) says 'Some candles burned twenty years': the top figure in that summary undersells the 39 the film has just announced.",
+      "fix": "(a) L0515: 'Another team, led by Doug Lenat, began typing in common sense by hand in 1984: its own candle. They wrote that AI could draw “practically nothing” from raw text.' (+9; claim e5-cyc is already on the shot). (b) L1316 then pays it off as written. (c) L1515: 'Some candles burned nearly forty years; some, two; one match, a day.' (+1)."
+    },
+    {
+      "where": "ch05-s03 L0505 (holdAfter 6.2) → ch15-s01 L1502",
+      "problem": "The Nobel citation names 'the tall man's Boltzmann machine' as if the audience already knows it. In fact it was planted only as a wordless thermometer card in a 6.2-second silent desk montage. Hopfield's 'rolls downhill' (L0524) is a spoken plant and lands as a payoff. The Boltzmann half lands as a new lecture term in the finale.",
+      "fix": "Add L0505b inside the existing hold, cued to the Pittsburgh thermometer beat: 'At one desk, he built a net that settles as it cools, like metal.' (+13; claim e4-boltzmann is already on the shot; holdAfter 6.2 → 3.5 keeps the shot's length about the same). L1502 (corrected as in the critical) then becomes a true callback."
+    },
+    {
+      "where": "ch02-s07 L0216 → ch15-s07 L1511",
+      "problem": "'Remember him' (L0217) is one of the film's finest plants, but what Widrow fell for is unclear. L0216 says 'fell for the dream' straight after Minsky 'turned to symbols and rules', so 'the dream' could mean AI in general or Minsky's turn. The payoff 'He wrote that he “never got over it”' depends on the ear knowing what 'it' is.",
+      "fix": "L0216: 'A young engineer, Bernard Widrow, fell for the dream of building an artificial brain, for good.' (+5; claim e2-widrow-dartmouth, which matches his own words). Then 'never got over it' lands exactly."
+    },
+    {
+      "where": "ch06-s01 L0601",
+      "problem": "A free gift for curiosity is going unclaimed. The 1989 network learned from ZIP codes on Buffalo's mail, and Buffalo is where L0307 had Rosenblatt build his knob machine thirty years earlier. A wry teacher would not let that pass.",
+      "fix": "After L0601, add 'Buffalo, again.' (+2, pauseAfter 0.8, a small smile in the voice). Claims e6-lecun-1989 and e2-mark1-build. Optionally, on the word, a faint ghost of the Mark I silhouette in the post-office window."
+    },
+    {
+      "where": "ch13-s01 L1301",
+      "problem": "Round 6's fix produced a mixed metaphor: 'In our file, one slip has hung in shadow.' Things lie in a file; they hang on a board or a wall. The next line, 'takes it down', needs something that hangs, and the picture is a slip on the Wall beside the board.",
+      "fix": "'On our board, one slip has hung in shadow.' (0 words). 'Board' is the spoken name the ear already knows (L0110, L0706), and it fits 'takes it down' and the Wall staging."
+    },
+    {
+      "where": "ch09-s04 L0909",
+      "problem": "'…co-chaired by Sam Altman and Elon Musk: human-level AI “could benefit society”…' After the colon the quote arrives with no speaker, so the ear can attribute it to Musk or to Altman personally. That is the wrong attribution on a fairness-sensitive founding beat.",
+      "fix": "'Months before Seoul, OpenAI was founded, co-chaired by Sam Altman and Elon Musk. Human-level AI, it said, “could benefit society”, or “damage society if built or used incorrectly.”' (+2). This matches the founding grammar Anthropic gets at L1207 ('It called itself…')."
+    },
+    {
+      "where": "ch15-s05 L1522",
+      "problem": "The finale is titled 'Case Status: Open', yet the one live, contested case in it is told as a closed verdict for one side: the Pentagon 'named it a supply-chain risk.' Claim e14-dow-courts has the courts split. N.D. Cal. ruled the action unlawful retaliation; the D.C. Circuit upheld a parallel designation 2-1 on 25 September 2026. Leaving that out is a small fairness gap, and it also wastes a perfect rhyme with the film's theme.",
+      "fix": "Append to L1522: 'Two courts have since split. That case, too, is open.' (+10). Add claim e14-dow-courts. Pay for it with cut (e) in the runtime critical."
+    },
+    {
+      "where": "ch14-s07 L1420",
+      "problem": "'Back in 2024, DeepSeek's founder…' comes between 'This September' (2026) and 'As of October 2026'. The chapter's last ten seconds go 2026 → 2024 → 2026, so the closing clock zigzags.",
+      "fix": "'DeepSeek's founder had put it another way: “the real gap is the difference between originality and imitation.”' (-2). Move 'in translation' and the 2024 date to the on-screen attribution, which already carries the source."
+    },
+    {
+      "where": "ch04-s06 L0410 → ch04-s07 L0412",
+      "problem": "Two 'Yet's within three sentences: 'Yet British funding fell…' and then 'Yet a few windows stayed lit.' At a slow pace the repetition is audible, and it flattens the turn toward hope that L0412 has to carry.",
+      "fix": "L0412: 'Still, a few windows stayed lit.' (0 words)"
+    },
+    {
+      "where": "ch07-s03 L0704",
+      "problem": "'Hand-labelling her pictures would take nineteen years.' The ear has heard no pictures yet. ImageNet is named two lines later, so 'her pictures' arrives without an antecedent.",
+      "fix": "'Labelling her millions of pictures by hand would have taken nineteen years.' (+2). Check that 'millions' is covered by the ImageNet claim already on the shot. If not, use 'her mountain of pictures'."
+    },
+    {
+      "where": "ch08-s07 L0813 and ch08-s10 L0819",
+      "problem": "Two small stumbles in the deep dive. In L0813, 'It learned six times faster' has no clear 'it': the weir, the messenger or the net. In L0819, 'big strides first, then, three times, shorter steps by hand' puts four commas in nine words, and 'by hand' attaches to the steps rather than to the people who shortened them.",
+      "fix": "L0813 ending: '…stays strong. The net learned six times faster, in their test.' L0819: 'Then five or six days downhill in fog: big strides first; then, three times, they shortened the stride by hand, to the valley floor.' (+2 total)."
+    },
+    {
+      "where": "ch01-s06 L0114 → ch02-s01 L0201",
+      "problem": "'we go back eighty-three years' (to 1943) is followed at once by the first stamp, 'Chicago, around 1941.' A listener who does the sum hears the film's first date miss its own count.",
+      "fix": "L0114: 'To find out, we go back to the war years, to a lamp in Chicago.' (-1). Or keep the number and open ch02 on L0203's 1943 stamp."
+    },
+    {
+      "where": "Film-wide: the 'Not X. Y.' cadence",
+      "problem": "The clipped negation is now the narrator's signature, and it is good: 'Not a new engine. A new door.', 'Not two teams. Three camps.', 'Not rules alone. Not knowledge…'. But it recurs in L0832b ('Not any more'), L1221 ('Not quite'), L1407 ('Not the research. Not the chips.'), L1215, L1309 and L1527: seven times in the last 18 minutes. By the verdict, the most important use, the ear has learned the trick.",
+      "fix": "Vary the two weakest: L1407 → 'The research and the chips came on top.' (+1) and L0832b → 'Thirty-six years at the edge of the light. Now, it found him.' (+1). That leaves the verdict's 'Not … Not …' fresh."
+    }
+  ],
+  "strengths": [
+    "Most of round 6's card was taken, and it shows. Florence now speaks the bad back ('a bad back, so he could not sit, so could not fly'), and the Sussex promise is kept aloud ('Thirty-six years at the edge of the light. Not any more.'). The Florence note is retrieved by name ('the note from Florence came back as a smooth, predictable law'). Lenat's candle is voiced, the chokepoint candle's fate is stated, Beijing's reply is its own equal sentence, and the film now ends on 'That is where new candles come from.'",
+    "The spine works over 30+ minutes. One question ('Who taught it?') is answered by one verdict ('Learning, with its accomplices'). One quiet figure ('A tall young man takes his place, far from the flame') runs from Sussex to a 2 a.m. phone call. And one device, the candle clock, gives the ear a felt sense of how long each belief held, which is exactly the brief's 'how long people thought that way'.",
+    "The plant-and-payoff web is the best part of the writing. Widrow's 'Remember him' pays off in 'never got over it'. The Helsinki thesis on rounding errors pays off as backprop's co-inventor, and 'Who paid for dinner?' is answered with 'Each man lost one bet'. 'Why choose the fog?' leads to the net cutting its own stencils. 'Nobody ever wrote one a rulebook' returns as 'No rulebook. Only odds.' and again as 'Nobody told it to plan.' The common-sense team's 'practically nothing' from raw text comes back as 'Sensible, then.', and the stencils that 'began as noise, like television snow' are a quiet rhyme with the winter.",
+    "Both deep dives teach real mechanics by ear through one inherited set of props: the tin stencil with nine holes, 'Below zero counts as zero', the weir, the snuffed lanterns, the two halves that split colour from edges 'every time'. Then come the question, label and message cards, 'two, nothing, four, two', the jug where 'about half runs to river', and 'Divide by eight… Our toy had four numbers: so we halved.' A listener can actually rebuild attention from this.",
+    "The emotional low of Act 1 is plain and earned: 'That May, Walter Pitts died alone. McCulloch followed four months later.' / 'on his forty-third birthday, Frank Rosenblatt drowned while sailing.' It is set against the most likeable line in the film ('“At the moment, none whatever,” Dr. Rosenblatt said cheerfully.'), so the loss is felt.",
+    "The narrator's voice is distinct and consistent: wry ('A winter, then, of prestige, not of use.'; 'Its plan named no rival.'), warm ('You could hear it learn. I love that.'), and honest about what is not known ('nobody knows exactly when'; 'Still argued.'; 'the accounts differ'; 'Its authors now call that result out of date').",
+    "Fairness is part of the drama, not a disclaimer. Examples: 'In fairness, the Navy, the press and Rosenblatt all fed the hype'; 'Fair credit: that was seven networks voting'; Hinton's 'Google has acted very responsibly'; 'Not two teams. Three camps.'; Anthropic's FTX money, settlement and Pentagon dispute under the same light as OpenAI's sandbox breakout; China's plan that 'named no rival', alongside a Beijing reply given its own sentence."
+  ]
+}

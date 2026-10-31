@@ -1,0 +1,357 @@
+{
+  "id": "ch04",
+  "number": 4,
+  "title": "Always on",
+  "blurb": "One rhythmic triplet, each proof landing on a downbeat with a filtered stab and a brace snap. 'Then it runs on Replay's browsers': the real 'Tue at 3:00 AM · America/New_York' chip lifts under a large thin 3:00 AM like a name tag, a 'hosted by Replay' pill lands on 'browsers', and six ticks mark the six Tuesdays it really fired. Three environment words lift off the real Add environment row as pills and light red-pink as they are said. The Reminders · CI runs table, braces on the first blue PR #3 badge, an 'a test run for every PR' pill, and a ▶ recording chip popping out of every visible run row as each run is recorded, then reviewed, for what's slow as well as what breaks.",
+  "shots": [
+    {
+      "id": "ch04-s01",
+      "kind": "scene",
+      "setting": "studio paper (#e9e8ea), drifting hairlines · 2026 · even studio light; a large thin '3:00 AM' with the real schedule chip as its name tag",
+      "era": "product, as of 2026-10-14",
+      "mood": "parchment",
+      "leadIn": 0.3,
+      "holdAfter": 0.9,
+      "lines": [
+        {
+          "id": "L0401",
+          "text": "Then it runs on Replay's browsers. On a schedule, while you sleep.",
+          "direction": "picks up straight off 'runs them' with forward momentum, the second 'runs' an answer to 'where?': 'on Replay's browsers' plain and sure, the quiet 'you don't have to host anything' of the film; then the first tap of the triplet on 'On a schedule', and softer and warmer, almost a smile, on 'while you sleep' NARRATION (2026-10-14): take ran 216 wpm; breaths at the full stop and the comma.",
+          "insertGaps": {
+            "browsers": 0.15,
+            "schedule": 0.15
+          }
+        }
+      ],
+      "visual": "ALL DRAWN, NO PRODUCT FOOTAGE (director's note 2026-10-14). Studio paper, two hairlines drifting. A large thin '3:00 AM' (Promo Sans light ≈ 128 px) blurs in at the top. On 'Then' a row of five small ABSTRACT browsers (sets/abstract browserWindow: title bar, skeleton page, red-pink recording dot) rises under it; on 'runs' each starts a run (skeleton lighting, progress hairline). On 'browsers' a 'hosted by Replay' pill (server icon) lands under the row, joined to it by a hairline bracket. On 'schedule' the real schedule 'Tue · America/New_York' (the account's Production environment) blurs in under the time with the red-pink underline, and six weekly ticks draw (Sep 1 → Oct 6, 'every Tuesday'). On 'sleep' a crescent moon rises beside the time, the time dims, the paper cools a touch from the top, and the runs finish one by one with green ✓s.",
+      "beats": [
+        {
+          "id": "b-time",
+          "at": {
+            "shotTime": 0.05
+          },
+          "what": "large thin '3:00 AM' fades up"
+        },
+        {
+          "id": "b-tag",
+          "at": {
+            "line": "L0401",
+            "word": "Then"
+          },
+          "what": "downbeat + filtered stab: the Tue at 3:00 AM chip lifts under the time like a name tag"
+        },
+        {
+          "id": "b-hosted",
+          "at": {
+            "line": "L0401",
+            "word": "browsers"
+          },
+          "what": "the 'hosted by Replay' pill with the server icon slides in at the lower right, where the strip will end"
+        },
+        {
+          "id": "b-schedule",
+          "at": {
+            "line": "L0401",
+            "word": "schedule"
+          },
+          "what": "brace halves snap at the chip's measured ends with corner dots; red-pink underline runs under 'Tue at 3:00 AM'"
+        },
+        {
+          "id": "b-strip",
+          "at": {
+            "line": "L0401",
+            "word": "schedule",
+            "offset": 0.3
+          },
+          "what": "0.3 s after the braces, six ticks draw themselves left to right (~0.2 s each), left of the pill; only the ends are labelled 'Sep 1' and 'Oct 6'"
+        },
+        {
+          "id": "b-sleep",
+          "at": {
+            "line": "L0401",
+            "word": "sleep"
+          },
+          "what": "the big 3:00 AM dims slightly; the chip stays bright"
+        }
+      ],
+      "props": [
+        "RrwebScreen take schedule frozen @ 11458, no cursor (crop: schedule chip {1050,166,245,32})",
+        "brace halves at the chip's measured ends + squareDots",
+        "red-pink underline",
+        "six-tick date strip, ends labelled",
+        "kit pill 'hosted by Replay' + kit icon 'server'"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "3:00 AM",
+          "beat": "b-time"
+        },
+        {
+          "kind": "label",
+          "text": "Tue at 3:00 AM · America/New_York",
+          "beat": "b-tag"
+        },
+        {
+          "kind": "label",
+          "text": "hosted by Replay",
+          "beat": "b-hosted"
+        },
+        {
+          "kind": "date",
+          "text": "Sep 1 – Oct 6",
+          "beat": "b-strip"
+        }
+      ],
+      "music": {
+        "cue": "M3 drive",
+        "note": "M3 drive starts on 'Then': full groove, round bass, warm pad, intensity ≈ 0.75. Proof one of the triplet: a filtered stab on the downbeat as the name tag lifts; a small muted pluck as the 'hosted by Replay' pill lands on 'browsers'; a short brace-snap transient on 'schedule'; a soft tick per date tick on the strip riding the hats. No chimes."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "CONT-02",
+        "CONT-03",
+        "CONT-04",
+        "CONT-05",
+        "CONT-19"
+      ]
+    },
+    {
+      "id": "ch04-s02",
+      "kind": "scene",
+      "setting": "studio paper (#e9e8ea) · 2026 · even studio light; a floating settings row and three environment pills",
+      "era": "product, as of 2026-10-14",
+      "mood": "parchment",
+      "leadIn": 0.3,
+      "holdAfter": 0.6,
+      "lines": [
+        {
+          "id": "L0402",
+          "text": "Against staging, a preview, even localhost.",
+          "direction": "three quick taps, rising; a small delighted lift on 'localhost', said as 'local host'. Hold the -st of 'Against' whole: a short break (about 0.1-0.15 s) before 'staging' so the two /st/ sounds do not fuse. NARRATION (2026-10-14, round-1 review): STT heard two takes as 'Again, staging'; re-take solo at 0.98 with the comma break, keep the take only if STT returns 'Against' (qa.expect). If it still fuses, the fallback text is 'Run it against staging, a preview, even localhost.' (same claim, CONT-01; the beats are word-anchored and refit to it). Human ear sign-off still pending for 'Against' and 'localhost' (voice.json listening).",
+          "tts": {
+            "solo": true,
+            "speed": 0.98
+          },
+          "spoken": "Against, staging, a preview, even localhost.",
+          "qa": {
+            "stt": "required",
+            "expect": [
+              "Against"
+            ]
+          }
+        }
+      ],
+      "visual": "ALL DRAWN, NO PRODUCT FOOTAGE (director's note 2026-10-14). Same paper and hairlines. An abstract browser address bar (sets/abstract addressBar) floats in at the top reading https://staging.your-app.dev; it rolls to https://pr-42.preview.your-app.dev on 'preview' and http://localhost:3000 on 'localhost'. Three outlined pills (staging · preview · local) drop out of it into a row; braces and corner dots part round the row on 'Against'; each pill fills Replay red-pink as it is said ('local' with a small pop).",
+      "beats": [
+        {
+          "id": "b-row",
+          "at": {
+            "shotTime": 0.05
+          },
+          "what": "the Add environment row floats in and settles flat (tape 11000 → 11458)"
+        },
+        {
+          "id": "b-lift",
+          "at": {
+            "shotTime": 0.1
+          },
+          "what": "staging · preview · local lift off the grey line as outlined pills"
+        },
+        {
+          "id": "b-brace",
+          "at": {
+            "line": "L0402",
+            "word": "Against"
+          },
+          "what": "downbeat + stab + brace halves snap at the pill row's measured ends"
+        },
+        {
+          "id": "b-staging",
+          "at": {
+            "line": "L0402",
+            "word": "staging"
+          },
+          "what": "'staging' pill fills red-pink; underline runs under it"
+        },
+        {
+          "id": "b-preview",
+          "at": {
+            "line": "L0402",
+            "word": "preview"
+          },
+          "what": "'preview' pill fills red-pink"
+        },
+        {
+          "id": "b-local",
+          "at": {
+            "line": "L0402",
+            "word": "localhost"
+          },
+          "what": "'local' pill fills red-pink with a small pop"
+        }
+      ],
+      "props": [
+        "RrwebScreen take schedule 11000 → 11458, no cursor (crop {300,266,420,54}: Add environment label + grey line)",
+        "three kit pills",
+        "red-pink underline",
+        "brace glyph halves at the pill row's measured ends + squareDots"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "staging · preview · local",
+          "beat": "b-lift"
+        }
+      ],
+      "music": {
+        "cue": "M3 drive",
+        "note": "Proof two of the triplet: a filtered stab and brace-snap transient on the downbeat ('Against'); three rising plucked accents under staging, preview, localhost; groove steady at ≈ 0.75."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "CONT-01",
+        "CONT-14",
+        "SET-05",
+        "SET-06"
+      ]
+    },
+    {
+      "id": "ch04-s03",
+      "kind": "scene",
+      "setting": "studio paper (#e9e8ea) · 2026 · even studio light; the floating Test Runs table of 'Reminders · CI', a check pill, a stack of ▶ recording chips",
+      "era": "product, as of 2026-10-14",
+      "mood": "parchment",
+      "leadIn": 0.3,
+      "holdAfter": 0.9,
+      "lines": [
+        {
+          "id": "L0403",
+          "text": "And on every pull request.",
+          "pauseAfter": 0.3,
+          "direction": "the third tap of the triplet, confident and complete; 'pull request' lands on the brace snap"
+        },
+        {
+          "id": "L0404",
+          "text": "Each run is recorded, then reviewed. For what breaks, and what's slow.",
+          "direction": "even and certain, two clean taps on 'recorded' and 'reviewed' (the first time the film says it aloud: every run is a recording); then 'For what breaks,' plain, and a small beat before a quiet, knowing 'and what's slow.' that hands off to the next register"
+        }
+      ],
+      "visual": "Third of the triplet. A floating RrwebScreen (no chrome, NO cursor, soft shadow, tilt {x: 5, y: -12} settling flat by 0.6 s), ~1000 stage px wide, left of centre: take 'runs' from tape 2900 to mark list (3668) at real speed, then held (no scroll: it moves only 27.5 px). Crop ≈ {x: 500, y: 112, w: 940, h: 458} (verified on the rr-sheet frame at 3668): the 'Test Runs' heading and eight full rows of the 'Reminders · CI' table, columns Created / Description / Environment / Status / Bugs (PR #3, PR #1 and Project default runs, status pills Completed / Cancelled); NO chat column (x < 500), no tab strip (y 70-108), no localhost header. On 'pull' (downbeat, filtered stab) the zoom eases 1.0 → 1.6 toward recording (1015, 300) and kit bracket braces with corner dots snap around the first blue 'PR #3' badge (recording ≈ x 1015, y 224); the red-pink underline runs under it. On 'request' a kit pill slides in from the right beside the table, clear of it: 'a test run for every PR' (what the footage shows: PR-linked test runs from CI; no check or PR comment is depicted). Between 'request' and 'recorded' the zoom eases back 1.6 → 1.0 over 0.4 s (braces and underline fade with it), so all eight rows are in frame again. On 'recorded' a small rounded '▶ recording' chip pops out of each of the eight visible run rows in a quick cascade (≈ 0.1 s apart, top to bottom), each chip flying right and stacking neatly beside the pill: a chip per row, each standing for that run's recordings (a run records every journey it runs, so a many-journey run holds many recordings). On 'reviewed' a small green ✓ ticks onto the top chip of the stack. On 'For' a fresh, anonymous ninth chip (from no row) slides onto the bottom end of the stack, still neutral, with a tiny grey 'illustration' tag beside it (the same tag ch05 uses); on 'slow' it tints Replay red-pink: an illustration of a recording reviewed for slowness, not footage, and not a finding about any of these runs; the hint ch05 pays off. At the end of L0404 the stack settles. In the last 0.6 s a tape-stop: the frame's motion slows, the screen desaturates slightly and the stack of chips stays crisp (it is carried into ch05-s01's frame ribbon).",
+      "beats": [
+        {
+          "id": "b-table",
+          "at": {
+            "shotTime": 0.05
+          },
+          "what": "runs table floats in and settles flat (tape 2900 → 3668)"
+        },
+        {
+          "id": "b-pr",
+          "at": {
+            "line": "L0403",
+            "word": "pull"
+          },
+          "what": "downbeat + stab: zoom 1.0 → 1.6 toward (1015, 300); braces snap around the first blue PR #3 badge; red-pink underline"
+        },
+        {
+          "id": "b-pill",
+          "at": {
+            "line": "L0403",
+            "word": "request"
+          },
+          "what": "the 'a test run for every PR' pill slides in beside the table, clear of it; then the zoom eases back to 1.0 over 0.4 s"
+        },
+        {
+          "id": "b-chips",
+          "at": {
+            "line": "L0404",
+            "word": "recorded"
+          },
+          "what": "a ▶ recording chip pops out of each of the eight visible run rows in a cascade, one soft clack per off-beat"
+        },
+        {
+          "id": "b-check",
+          "at": {
+            "line": "L0404",
+            "word": "reviewed"
+          },
+          "what": "a small green ✓ ticks onto the top chip"
+        },
+        {
+          "id": "b-fresh",
+          "at": {
+            "line": "L0404",
+            "word": "For"
+          },
+          "what": "a fresh anonymous chip (from no row) slides onto the end of the stack, a tiny grey 'illustration' tag beside it"
+        },
+        {
+          "id": "b-slow",
+          "at": {
+            "line": "L0404",
+            "word": "slow"
+          },
+          "what": "the fresh chip tints red-pink: a recording reviewed for slowness (illustration)"
+        },
+        {
+          "id": "b-stack",
+          "at": {
+            "line": "L0404",
+            "edge": "end"
+          },
+          "what": "the chips settle into a neat stack to the right"
+        },
+        {
+          "id": "b-tapestop",
+          "at": {
+            "line": "L0404",
+            "edge": "end",
+            "offset": 0.4
+          },
+          "what": "tape-stop: motion slows, screen desaturates; the chip stack stays crisp for ch05"
+        }
+      ],
+      "props": [
+        "RrwebScreen take runs 2900 → 3668, no cursor (crop {500,112,940,458}: Test Runs table)",
+        "kit bracket + squareDots",
+        "red-pink underline",
+        "kit pill 'a test run for every PR'",
+        "▶ recording chips (the film's recurring object), green ✓, one fresh anonymous red-pink chip with a grey 'illustration' tag"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "a test run for every PR",
+          "beat": "b-pill"
+        },
+        {
+          "kind": "label",
+          "text": "▶ recording",
+          "beat": "b-chips"
+        },
+        {
+          "kind": "label",
+          "text": "illustration",
+          "beat": "b-fresh"
+        }
+      ],
+      "music": {
+        "cue": "M3 drive",
+        "note": "Proof three of the triplet: filtered stab and brace-snap transient on the downbeat at 'pull request'; a soft off-beat clack per popping chip (muted, percussive, never a chime); a small muted tick on the ✓; then a tape-stop pitch-down over the last half second into the blur to ch05's half-time M4."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "CONT-05",
+        "CONT-07",
+        "CONT-15",
+        "LOOP-07",
+        "LOOP-08",
+        "LOOP-12",
+        "TIME-06",
+        "TIME-07",
+        "TIME-C1"
+      ]
+    }
+  ]
+}

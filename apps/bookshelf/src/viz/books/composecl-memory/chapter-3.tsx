@@ -1,6 +1,6 @@
 // Grounding: arXiv:2609.06986 Section 3; official source train.py lines
 // implementing --merge_lora_per_task and experiments/methods.py.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -35,7 +35,7 @@ export function buildScene() {
   tl.caption({ at: 6.4, dur: 5.5, text: 'With one shared adapter, every task writes into the same narrow slot. Later gradients can repaint the path that earlier tasks used.' });
   tl.tween(sharedU, 1, { at: 6.9, dur: 1.0, ease: ease.enter });
   tl.tween(sharedP, 3, { at: 7.9, dur: 3.0, ease: ease.linear });
-  tl.tween(cam, { x: 400, y: 350, k: 1.08 }, { at: 7.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 612, y: 350, k: 1.08 }, { at: 7.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 12.4, dur: 5.5, text: 'Merged low-rank adaptation changes the boundary. Train one rank-thirty-two update, then multiply its two factors into a weight delta.' });
   tl.tween(sharedU, 0, { at: 12.7, dur: 0.6, ease: ease.enter });
@@ -66,7 +66,7 @@ export function buildScene() {
 
   tl.caption({ at: 48.4, dur: 5.5, text: 'The released loop makes the handoff explicit: merge and unload, save the merged checkpoint, then create the next adapter.' });
   tl.tween(codeU, 1, { at: 49.0, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 360, k: 1.08 }, { at: 49.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 350, k: 1.08 }, { at: 49.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 54.4, dur: 5.5, text: 'The anchors still constrain the update while it trains. Merging only decides where that protected update is retained.' });
   tl.tween(memoryU, 1, { at: 55.0, dur: 1.0, ease: ease.pop });
@@ -86,7 +86,7 @@ const scene = buildScene();
 
 function WeightMatrix({ u, merges }: { u: number; merges: number[] }) {
   return <g opacity={u}>
-    <text x={MX + CELL * 4} y={MY - 24} textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>base model weights W</text>
+    <text x={MX + CELL * 4} y={MY - 24} textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>base model weights W</text>
     {Array.from({ length: 8 }, (_, row) => Array.from({ length: 8 }, (_, col) => {
       const idx = row * 8 + col;
       const reveal = clamp01(u * 64 - idx);
@@ -104,8 +104,8 @@ function Factors({ u, task }: { u: number; task: number }) {
     <rect x="966" y="274" width="190" height="74" rx="18" fill="#101827" stroke={color} strokeWidth="3" />
     {Array.from({ length: 6 }, (_, i) => <line key={i} x1={878 + i * 9} y1="238" x2={878 + i * 9} y2="418" stroke={color} strokeWidth="4" opacity={0.25 + i * 0.1} />)}
     {Array.from({ length: 6 }, (_, i) => <line key={i} x1="990" y1={290 + i * 7} x2="1132" y2={290 + i * 7} stroke={color} strokeWidth="3" opacity={0.25 + i * 0.1} />)}
-    <MathLabel tex={'B_tA_t=\Delta W_t'} x={1008} y={482} fontSize={22} opacity={u} />
-    <text x="1008" y="512" textAnchor="middle" fill={color} fontSize="12">rank 32 · task {task + 1}</text>
+    <text x="1008" y="482" textAnchor="middle" fill={colors.TEXT} fontSize="22" fontStyle="italic">B<tspan baselineShift="sub" fontSize="15">t</tspan>A<tspan baselineShift="sub" fontSize="15">t</tspan> = ΔW<tspan baselineShift="sub" fontSize="15">t</tspan></text>
+    <text x="1008" y="512" textAnchor="middle" fill={color} fontSize="14">rank 32 · task {task + 1}</text>
   </g>;
 }
 
@@ -131,8 +131,8 @@ export function Render({ s }: { s: SceneState }) {
         <text x="238" y="214" textAnchor="middle" fill={colors.NEGATIVE} fontSize="16" fontWeight="800">one shared adapter</text>
         <rect x="175" y="252" width="126" height="176" rx="22" fill="#1d1725" stroke={TASK_COLORS[Math.min(2, Math.floor(sharedP))]} strokeWidth="4" />
         {Array.from({ length: 8 }, (_, i) => <path key={i} d={`M194 ${276 + i * 18} C228 ${258 + ((i + Math.floor(sharedP)) % 4) * 32}, 250 ${312 + (i % 3) * 28}, 282 ${278 + i * 17}`} fill="none" stroke={TASK_COLORS[Math.min(2, Math.floor(sharedP))]} strokeWidth="4" opacity="0.65" />)}
-        <text x="238" y="468" textAnchor="middle" fill={colors.MUTED} fontSize="12">task one → task two → task three</text>
-        <text x="238" y="490" textAnchor="middle" fill={colors.NEGATIVE} fontSize="12">same low-rank coordinates</text>
+        <text x="238" y="468" textAnchor="middle" fill={colors.MUTED} fontSize="14">task one → task two → task three</text>
+        <text x="238" y="490" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">same low-rank coordinates</text>
       </g>
 
         <Factors u={factorU * (1 - Math.max(...merges) * 0.35)} task={task} />
@@ -150,8 +150,12 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.codeU)}>
-        <rect x="210" y="444" width="860" height="44" rx="16" fill="#151f31" stroke={colors.ACCENT} />
-        <text x="640" y="472" textAnchor="middle" fill={colors.ACCENT} fontSize="12" fontFamily={colors.font.mono}>model.merge_and_unload() → get_peft_model(merged, lora_cfg)</text>
+        <rect x="176" y="444" width="928" height="44" rx="16" fill="#151f31" stroke={colors.ACCENT} />
+        <text x="350" y="472" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>model.merge_and_unload()</text>
+        <path d="M495 466 H515 M509 460 L515 466 L509 472" fill="none" stroke={colors.MUTED} strokeWidth="2.5" />
+        <text x="640" y="472" textAnchor="middle" fill={colors.TEXT} fontSize="14">save merged checkpoint</text>
+        <path d="M744 466 H764 M758 460 L764 466 L758 472" fill="none" stroke={colors.MUTED} strokeWidth="2.5" />
+        <text x="930" y="472" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>get_peft_model(merged, lora_cfg)</text>
       </g>
       <g opacity={s.get(scene.memoryU)} transform="translate(312 112)">
         <rect width="656" height="48" rx="18" fill="#2b2513" stroke={colors.POSITIVE} strokeWidth="2.5" />

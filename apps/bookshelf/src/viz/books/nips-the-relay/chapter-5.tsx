@@ -35,7 +35,7 @@ const YOU = { x: 620, y: 300 };
 const HALF_W = 84;
 
 const CAM_JSON: CameraState = { x: 320, y: 300, k: 1.28 };
-const CAM_MAP: CameraState = { x: 800, y: 300, k: 1.1 };
+const CAM_MAP: CameraState = { x: 600, y: 300, k: 1.05 };
 
 interface Scene {
   tl: Timeline;
@@ -176,7 +176,7 @@ export function Render({ s }: { s: SceneState }) {
             hidden={RELAYS.filter((_, i) => morph(i) > 0).map((r) => r.path)}
           />
           {jsonU >= 1 && backU >= 1 && (
-            <text x={76} y={330} fill={colors.POSITIVE} fontSize={13} opacity={clamp01((backU - 0.9) * 8)}>
+            <text x={76} y={452} fill={colors.POSITIVE} fontSize={14} opacity={clamp01((backU - 0.9) * 8)}>
               the whole topology, home again — three tags
             </text>
           )}
@@ -193,7 +193,7 @@ export function Render({ s }: { s: SceneState }) {
                   u={u}
                   text={r.short}
                   fill={r.mode === 'write' ? colors.WARM : colors.POSITIVE}
-                  fontSize={13}
+                  fontSize={14}
                   lift={60}
                   fadeOut
                 />
@@ -242,15 +242,15 @@ export function Render({ s }: { s: SceneState }) {
               )}
               {pubU > 0 && (
                 <g opacity={Math.min(1, pubU * 2)}>
-                  <text x={YOU.x} y={YOU.y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text x={YOU.x} y={YOU.y + 120} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     publish = your write relays + each mention&apos;s read relay
                   </text>
                 </g>
               )}
               {smallU > 0 && (
                 <g opacity={smallU}>
-                  <rect x={940} y={540} width={200} height={34} rx={9} fill="none" stroke={colors.SECONDARY} opacity={0.7} />
-                  <text x={1040} y={562} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5}>
+                  <rect x={930} y={500} width={200} height={34} rx={9} fill="none" stroke={colors.SECONDARY} opacity={0.7} />
+                  <text x={1030} y={522} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                     keep it small: 2–4 each
                   </text>
                 </g>
@@ -269,7 +269,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={342} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             read where they write · deliver where they read · the list travels with you
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-65 · kind 10002 · ["r", url, "read"|"write"?]
           </text>
         </g>

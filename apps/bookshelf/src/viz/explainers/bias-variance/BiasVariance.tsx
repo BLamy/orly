@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import { Axes, FunctionPlot } from '../../primitives';
 import overrides from './overrides.json';
@@ -66,7 +66,8 @@ const BAR_BASE = PANEL_Y + 420;
 const barPx = (v: number): number => (v / BAR_MAX) * BAR_H;
 const fmt4 = (v: number): string => v.toFixed(4);
 
-/** One vertical bracket with end caps (the spread annotation at the slice). */
+/** One vertical bracket with end caps (the spread annotation at the slice).
+ *  The label sits on the side away from the dot columns, with a dark halo. */
 function VBracket({
   x,
   y0,
@@ -74,6 +75,7 @@ function VBracket({
   u,
   color,
   label,
+  side,
 }: {
   x: number;
   y0: number;
@@ -81,16 +83,28 @@ function VBracket({
   u: number;
   color: string;
   label: string;
+  side: 'left' | 'right';
 }) {
   if (u <= 0) return null;
   const mid = (y0 + y1) / 2;
   const half = (Math.abs(y1 - y0) / 2) * u;
+  const lx = side === 'left' ? x - 12 : x + 12;
   return (
     <g opacity={u}>
       <line x1={x} y1={mid - half} x2={x} y2={mid + half} stroke={color} strokeWidth={2} />
       <line x1={x - 6} y1={mid - half} x2={x + 6} y2={mid - half} stroke={color} strokeWidth={2} />
       <line x1={x - 6} y1={mid + half} x2={x + 6} y2={mid + half} stroke={color} strokeWidth={2} />
-      <text x={x + 12} y={mid + 5} fill={color} fontSize={15} fontStyle="italic">
+      <text
+        x={lx}
+        y={mid + 5}
+        fill={color}
+        fontSize={16}
+        fontStyle="italic"
+        textAnchor={side === 'left' ? 'end' : 'start'}
+        stroke={colors.BG}
+        strokeWidth={4}
+        paintOrder="stroke"
+      >
         {label}
       </text>
     </g>
@@ -121,7 +135,7 @@ function ErrorStack({
   const yVar = yBias - varH;
   const num = (y: number, v: number, color: string, h: number) =>
     numbersU > 0 && h > 10 ? (
-      <text x={x + BAR_W / 2} y={y + h / 2 + 4} textAnchor="middle" fill={color} fontSize={11.5} opacity={numbersU}>
+      <text x={x + BAR_W / 2} y={y + h / 2 + 4} textAnchor="middle" fill={color} fontSize={12} opacity={numbersU}>
         {fmt4(v)}
       </text>
     ) : null;
@@ -133,14 +147,14 @@ function ErrorStack({
       {num(yNoise, led.noise, colors.TEXT, noiseH)}
       {num(yBias, led.bias2, colors.BG, biasH)}
       {num(yVar, led.variance, colors.BG, varH)}
-      <text x={x + BAR_W / 2} y={BAR_BASE + 22} textAnchor="middle" fill={accent} fontSize={14.5}>
+      <text x={x + BAR_W / 2} y={BAR_BASE + 22} textAnchor="middle" fill={accent} fontSize={15}>
         {title}
       </text>
       <g opacity={numbersU}>
-        <text x={x + BAR_W / 2} y={yVar - 12} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+        <text x={x + BAR_W / 2} y={yVar - 12} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
           {'sum ' + fmt4(led.sum)}
         </text>
-        <text x={x + BAR_W / 2} y={BAR_BASE + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+        <text x={x + BAR_W / 2} y={BAR_BASE + 42} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
           {'measured ' + fmt4(led.measured)}
         </text>
       </g>
@@ -181,6 +195,19 @@ function Frame({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
       <g opacity={mainDim}>
+        {/* soft vertical fade for the degree-9 curves: they dissolve before the
+            clamp line instead of piling up on a hard ceiling at the top edge */}
+        <defs>
+          <linearGradient id="bv-fade-grad" gradientUnits="userSpaceOnUse" x1={0} y1={yScale(1.2)} x2={0} y2={yScale(-1.2)}>
+            <stop offset={0} stopColor="#000" />
+            <stop offset={0.125} stopColor="#fff" />
+            <stop offset={0.875} stopColor="#fff" />
+            <stop offset={1} stopColor="#000" />
+          </linearGradient>
+          <mask id="bv-fade" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x={-2000} y={-2000} width={4000} height={4000}>
+            <rect x={-2000} y={-2000} width={4000} height={4000} fill="url(#bv-fade-grad)" />
+          </mask>
+        </defs>
         <Camera {...cam}>
           <Axes x={xScale} y={yScale} reveal={axesU} xTicks={6} yTicks={5} fontSize={12} />
 
@@ -208,20 +235,22 @@ function Frame({ s }: { s: SceneState }) {
               );
             })}
           {singleFitU > 0 && (
-            <FunctionPlot
-              x={xScale}
-              y={yScale}
-              f={(x) => singleFitAt(morph, x)}
-              domain={[-1.02, 1.02]}
-              reveal={singleFitU}
-              color={colors.WARM}
-              width={2.8}
-              opacity={Math.min(1, singleFitU)}
-            />
+            <g mask="url(#bv-fade)">
+              <FunctionPlot
+                x={xScale}
+                y={yScale}
+                f={(x) => singleFitAt(morph, x)}
+                domain={[-1.02, 1.02]}
+                reveal={singleFitU}
+                color={colors.WARM}
+                width={2.8}
+                opacity={Math.min(1, singleFitU)}
+              />
+            </g>
           )}
 
           {/* the flexible ensemble: 30 real degree-9 fits + their mean */}
-          <g opacity={flexDim}>
+          <g opacity={flexDim} mask="url(#bv-fade)">
             {spagFlexU > 0 &&
               FLEX_FNS.map((f, i) => (
                 <FunctionPlot
@@ -305,6 +334,9 @@ function Frame({ s }: { s: SceneState }) {
                 fill={colors.NEGATIVE}
                 fontSize={16}
                 fontStyle="italic"
+                stroke={colors.BG}
+                strokeWidth={4}
+                paintOrder="stroke"
               >
                 bias
               </text>
@@ -324,13 +356,10 @@ function Frame({ s }: { s: SceneState }) {
                 strokeDasharray="6 5"
                 opacity={0.55 * probeU}
               />
-              <MathLabel
-                tex="x_0"
-                x={SLICE_X + 4}
-                y={yScale(-CLIP_Y) + 26}
-                fontSize={17}
-                opacity={probeU}
-              />
+              {/* sits on the zero line beside the slice, clear of the caption pill */}
+              <text x={SLICE_X + 8} y={yScale(0) - 10} fill={colors.TEXT} fontSize={17} fontStyle="italic" opacity={probeU}>
+                x<tspan fontSize={12} dy={4}>0</tspan>
+              </text>
               {/* the truth at the slice */}
               <circle
                 cx={SLICE_X}
@@ -353,7 +382,7 @@ function Frame({ s }: { s: SceneState }) {
                   key={i}
                   cx={SLICE_X - 26 + jitter(i)}
                   cy={yScale(clipped(p))}
-                  r={3.4 * u}
+                  r={4.2 * u}
                   fill={colors.ACCENT}
                   opacity={0.8 * u * Math.min(1, dotsStiffU)}
                 />
@@ -367,7 +396,7 @@ function Frame({ s }: { s: SceneState }) {
                   key={i}
                   cx={SLICE_X + 26 + jitter(i)}
                   cy={yScale(clipped(p))}
-                  r={3.4 * u}
+                  r={4.2 * u}
                   fill={colors.WARM}
                   opacity={0.8 * u * Math.min(1, dotsFlexU)}
                 />
@@ -384,6 +413,7 @@ function Frame({ s }: { s: SceneState }) {
                 u={bracketU}
                 color={colors.NEGATIVE}
                 label="bias"
+                side="left"
               />
               <VBracket
                 x={SLICE_X + 62}
@@ -392,34 +422,19 @@ function Frame({ s }: { s: SceneState }) {
                 u={bracketU}
                 color={colors.SECONDARY}
                 label="spread"
+                side="right"
               />
             </g>
           )}
         </Camera>
 
         {/* screen-fixed model labels (top-left, clear of the panel) */}
-        <g opacity={Math.max(spagFlexU * flexDim, 0)}>
-          <MathLabel
-            tex="\deg 9 \;\; \text{(flexible)}"
-            x={116}
-            y={96}
-            anchor="start"
-            fontSize={17}
-            color={colors.WARM}
-            opacity={spagFlexU}
-          />
-        </g>
-        <g opacity={spagStiffU}>
-          <MathLabel
-            tex="\deg 2 \;\; \text{(stiff)}"
-            x={116}
-            y={130}
-            anchor="start"
-            fontSize={17}
-            color={colors.ACCENT}
-            opacity={spagStiffU}
-          />
-        </g>
+        <text x={116} y={102} fill={colors.WARM} fontSize={17} opacity={Math.max(spagFlexU * flexDim, 0)}>
+          degree 9 (flexible)
+        </text>
+        <text x={116} y={136} fill={colors.ACCENT} fontSize={17} opacity={spagStiffU}>
+          degree 2 (stiff)
+        </text>
 
         {/* the ledger panel */}
         {panelU > 0 && (
@@ -437,15 +452,9 @@ function Frame({ s }: { s: SceneState }) {
             <text x={PANEL_X + 26} y={PANEL_Y + 38} fill={colors.TEXT} fontSize={17}>
               error at the probe point
             </text>
-            <MathLabel
-              tex="\mathrm{Bias}^2 + \mathrm{Var} + \sigma^2"
-              x={PANEL_X + 26}
-              y={PANEL_Y + 72}
-              anchor="start"
-              fontSize={17}
-              color={colors.MUTED}
-              opacity={panelU}
-            />
+            <text x={PANEL_X + 26} y={PANEL_Y + 78} fill={colors.MUTED} fontSize={17}>
+              Bias² + Var + σ²
+            </text>
             {/* legend */}
             <g fontSize={12.5}>
               <rect x={PANEL_X + 26} y={PANEL_Y + 92} width={12} height={12} fill={colors.NEGATIVE} opacity={0.85} />
@@ -492,6 +501,8 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing card */}
       {closeU > 0 && (
         <g opacity={closeU}>
+          {/* solid panel so the closing text never sits over the faded plot */}
+          <rect x={STAGE_W / 2 - 470} y={262} width={940} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
           <text x={STAGE_W / 2} y={318} textAnchor="middle" fill={colors.TEXT} fontSize={30}>
             Error has two habits.
           </text>

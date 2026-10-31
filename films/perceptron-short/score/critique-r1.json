@@ -1,0 +1,45 @@
+{
+  "verdict": "revise",
+  "notes": [
+    {
+      "cue": "m01 (whole cue): strengths to keep",
+      "problem": "Not a problem; these are the parts the revision must keep. The withheld third (open fifths and sus chords until F natural on 'wrong', F# only on 'right') turns the learning rule into the harmony. The development is real: M1 is asked in bar 1, asked again on the iris in bar 7, answered wrong (E6 to F6), rises before 'right', then completes. The F6 that lands as the flat 13th over A7 and moves up to F# is good voice-leading, and the Bm-G-A7sus4-D coda is the right shape. The anchors match the current clock exactly: 'nudge' 36.93 on the bar-11 downbeat, 'right' 47.06 on the bar-14 downbeat, iris 25.625. Measured: I -23.2 LUFS, true peak -8.0 dBTP, length exact, no Strudel errors, sub-40 Hz energy about -50 dB (clean). With only one cue, there are no neighbouring-cue key or loudness issues.",
+      "fix": "Keep the bar grid, the motif plan, the harmonic plan and all the anchors. Make only the targeted changes below, re-render with score.mjs and re-check the momentary-loudness profile against the narration stem."
+    },
+    {
+      "cue": "m01 bar 1 (3.36-6.6 s) vs bar 14 bloom (47.48 s): dynamic arc",
+      "problem": "The loudest moment of the whole score is the opening Dsus2 string swell (-16.4 LUFS momentary at 5.5 s; speech band 250 Hz-3.5 kHz at -17.7). It is louder than the 'right' bloom (-17.3 momentary at 48.0; speech band -20.4), which is meant to be the film's arrival. The music peaks in the first 6 seconds and never tops that, so the climax lands as a smaller gesture than the opening.",
+      "fix": "Lower the bar-1 strings from velocity .3 to about .22-.24, so bar 1 peaks around -19 to -20 momentary. Lift the bloom chord [f#3,d4,f#4,a4,d5] by about 1.5-2 dB (velocity .33 to about .38, or lpf 2800 to 3200) so 47.5-48.7 is clearly the highest point of the film, at about -16 to -15.5 momentary."
+    },
+    {
+      "cue": "m01 bar 1 to bar 2 (5.9-7.6 s): swell bleeds into L0102",
+      "problem": "The bar-1 string chord [a3,d4,e4]@3 holds to 5.88 s and then has release 2 s. Its A3-E4 (220-330 Hz, right in the narrator's fundamental and lower-formant range) is still sounding when 'Its eye was a grid' starts at 6.60. Measured speech-band separation after gain -3 and the 3 dB duck: about 1 dB at 6.5 s and about 7-8 dB at 7.0-7.5 s, the worst masking in the first half.",
+      "fix": "Shorten the swell to about [[a3,d4,e4]@5 ~@3] (it ends by about 5.46) and set release to about 1.0-1.2 for that bar, so the strings are at least 12 dB down in the speech band by 6.6. Let the crossfade to the lab and the pizz pickup at 6.30 hand off cleanly. The celesta E6 can keep ringing above."
+    },
+    {
+      "cue": "m01 bars 12-13 (42.4-47.5 s): L0107 'Wrong, and wrong again, and then, quite suddenly... right.'",
+      "problem": "This is the film's dramatic line, and it has the thinnest voice-to-music margin in the score: speech-band music about -21 to -24 raw, which is only about 3-6 dB under the voice after gain and duck (elsewhere under speech the margin is 13-20 dB). The main cause is seven celesta strikes in 4 s with room .75 and rsize 5, which leave a 1-3 kHz reverb wash. The strings at velocity .14-.15 add to it. Two strikes also land on words instead of in gaps: E6 at 42.44 is 30 ms before the onset of 'Wrong', and A5 at 46.01 is inside 'suddenly' (45.98-46.43).",
+      "fix": "Keep the F6 velocities (.4) so the wrong cell still reads, but dry the celesta in bars 12-13: room about .45, rsize about 2-2.5 on its own orbit. Drop the strings under L0107 to about .10-.11. Move E6 from 42.44 to just after 'Wrong' starts, or put it in the 42.88-43.30 gap together with F6. Move A5 to the 45.34-45.67 gap ('then' to 'quite') and keep E6 at 46.43 in the held breath. Target at least 10 dB speech-band margin under L0107. Optionally drop the celesta F#6 on 'right' from .42 to about .34; the narration already rides 'right' +5 dB, and the low D carries the arrival."
+    },
+    {
+      "cue": "m01 bar 14 into L0108 (48.7-49.5 s): bloom tail",
+      "problem": "The bloom's upper voices (A4, D5, behind lpf 2800) ring on with release 1.3 s from 48.74. They are still sounding under 'It could learn' (voice back at 48.97): measured speech-band margin about 3 dB at 49.0 s.",
+      "fix": "Let the bloom's upper voices close by about 48.9 (release about .7-.8 on the bloom chord). The soft [f#3,a3,d4] handover at about .13 then carries the D-major warmth into the closing line. This also leaves room for the louder bloom asked for above."
+    },
+    {
+      "cue": "m01 bar 17 coda (57.1-60.375 s): the payoff is rushed and the room collapses",
+      "problem": "The film's final musical statement, M1 completed (D5 A5 E6 to F#6), is played in 16ths (0.21 s each) underneath the last word 'mistakes'. So the payoff is both compressed and partly masked: speech-band margin about 6 dB at 57.5. Then the last chord switches to short-reverb orbits (rsize 1.4, release .9) after a film spent in rsize 3-5. The measured decay is -19.8 at 58.0, -32 at 59.0 and -50 at 59.5, which shows on the spectrogram as a near-vertical edge. The cue goes silent with about 40% of the picture fade still to run, and the room shrinking at the cadence makes the ending sound clipped rather than released. The 2.6 s of clear air after the voice (57.77-60.375) is mostly unused.",
+      "fix": "Move the completion into the clear air. Land the last D chord (strings [d3,a3,d4,f#4,a4], piano D1/D2, contrabass and cello D2) at 57.77. Have the celesta state D5 A5 E6 F#6 in 8ths from 57.77 (57.77, 58.19, 58.61, F#6 at 59.03), or D5 on 57.77 and then quarters, as an echo of the bar-1 asking. Let the music box answer D6 under the F#6. Keep the coda in the film's own acoustic (rsize about 3-4, room .5-.6), with release about 1.6-2.0, so the cue is at about -40 to -45 LUFS momentary at 60.3 and dies with the picture. The 0.8 s fadeOut then only smooths a near-silent tail. This still meets the script's 'decays to silence just before the fade to black completes'."
+    },
+    {
+      "cue": "m01 bar 10 (35.9-37.5 s): F4 doubling under 'the motors nudge the dials'",
+      "problem": "Borderline. The string F4 that doubles the first wrong F6 (from 35.92, @5, release 3) is a mid-register sustained note under 'the motors nudge', together with the Bb chord and the pizz A2s. Speech-band margin is about 9-10 dB, below the 13-20 dB held through the rest of the narration.",
+      "fix": "Shorten the F4 to @3 with release about 1.5, or drop it an octave to F3. Either keeps the minor colour without leaving a sustained 349 Hz note under the narrator."
+    },
+    {
+      "cue": "m01 docs: motifs.md and cues.json",
+      "problem": "motifs.md still describes the revision 3 coda in two places. M1 development 5 says 'D5 A5 E6 F#6 in 16ths (57.77-58.61)', and M5 says 'the film's last musical event is M1 completed with F#6 (58.61)'. The code plays it at 57.14-57.77 inside 'mistakes', and the last event is the music-box D6 at 58.40. The notes for the next revision will be wrong unless both are updated.",
+      "fix": "After applying the coda change above, update M1 development 5, the M5 'After the answer' paragraph, the bar-17 table row and the cues.json notes, so all of them describe the new timings."
+    }
+  ]
+}

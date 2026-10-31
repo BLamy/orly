@@ -98,18 +98,20 @@ export const BEST_SCORE = 3;
 export const POS: Array<{ x: number; y: number }> = [
   { x: 250, y: 180 },
   { x: 120, y: 300 },
-  { x: 330, y: 320 },
+  { x: 350, y: 300 },
   { x: 190, y: 440 },
   { x: 380, y: 470 },
   { x: 590, y: 430 },
-  { x: 700, y: 280 },
+  { x: 720, y: 300 },
   { x: 790, y: 450 },
   { x: 880, y: 300 },
   { x: 760, y: 160 },
 ];
 
 export const CAM_GRAPH: CameraState = { x: 500, y: 330, k: 1.25 };
-export const CAM_BRIDGE: CameraState = { x: 470, y: 430, k: 1.5 };
+export const CAM_BRIDGE: CameraState = { x: 500, y: 355, k: 1.4 };
+// closing framing: the whole graph, centred, with room above for the title
+const CAM_CLOSE: CameraState = { x: 500, y: 315, k: 1.1 };
 
 export interface Scene {
   tl: Timeline;
@@ -206,7 +208,7 @@ export function buildScene(): Scene {
     dur: 5.8,
     text: 'Friend suggestions, protein interactions, fraud rings — both tasks are this exact arithmetic at scale: evidence spreading along edges.',
   });
-  tl.tween(cam, CAMERA_HOME, { at: 50.9, dur: 1.8, ease: ease.move });
+  tl.tween(cam, CAM_CLOSE, { at: 50.9, dur: 1.8, ease: ease.move });
   tl.tween(closeU, 1, { at: 51.7, dur: 0.9, ease: ease.enter });
   tl.hold(56.9, 1.2);
 

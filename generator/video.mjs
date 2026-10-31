@@ -16,14 +16,14 @@
 //     [--subtitle "…"] [--accent "#hex"] [--animal "<animal>"]
 //     [--chapter-titles "t1|t2|…"] [--blurbs "b1|b2|…"]
 //     [--series "<series>" [--series-order <n>]]
-//     [--voice <elevenlabs-voice-id>] [--no-tts] [--no-cover]
+//     [--voice <elevenlabs-voice-id>] [--speed <0.7-1.2>] [--no-tts] [--no-cover]
 //
 // Env (.env, gitignored): ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).
 import { mkdirSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { synthesizeChapter, sanitizeSpoken } from './tts.mjs';
+import { synthesizeChapter, sanitizeSpoken, validateSpeed } from './tts.mjs';
 import { extractScene } from './scene-captions.mjs';
 import { generateAnimal, thumbnailAnimal } from './cover.mjs';
 import { upsertBook, colorForSlug } from './library.mjs';
@@ -56,6 +56,7 @@ function parseArgs(argv) {
     else if (k === '--series-order') a.seriesOrder = Number(val());
     else if (k === '--paper-date') a.paperDate = val();
     else if (k === '--voice') a.voice = val();
+    else if (k === '--speed') a.speed = Number(val());
     else if (k === '--no-tts') a.tts = false;
     else if (k === '--silent-audio') a.silentAudio = true;
     else if (k === '--no-cover') a.cover = false;
@@ -76,7 +77,7 @@ function discoverChapters(slug) {
 }
 
 // Things TTS mangles. Captions ARE the spoken script — keep code on screen.
-const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI', 'GPS']);
+const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI', 'GPS', 'CPU', 'GPU', 'OS', 'ID', 'UI', 'AND']);
 function speakabilityProblems(text) {
   const problems = [];
   if (/https?:\/\/|www\.|\.(com|io|dev|md|ts|tsx|js|json)\b/.test(text)) problems.push('URL/domain/file extension');
@@ -115,6 +116,7 @@ async function main() {
   --chapter-titles "a|b|…"  per-chapter titles (default: scene leading comment / first caption)
   --blurbs "a|b|…"          per-chapter blurbs (default: first caption)
   --voice <id>              ElevenLabs voice id (default ${VOICE_DEFAULT})
+  --speed <n>               narration speed, 0.7–1.2 (ElevenLabs voice_settings.speed; default: the voice's own, unrecorded)
   --no-tts                  skip narration (silent preview; cues fall back to authored times)
   --silent-audio            add a silent MP3 so the authored timeline remains seekable
   --no-cover                skip the animal cover
@@ -122,6 +124,7 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     process.exit(args.help ? 0 : 1);
   }
   const { slug } = args;
+  if (args.speed !== undefined) validateSpeed(args.speed);
 
   // 1) discover + extract
   const files = discoverChapters(slug);
@@ -161,6 +164,7 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
         spokenSegments: ex.captions.map((c) => c.text),
         voiceId: args.voice || VOICE_DEFAULT,
         sep: '\n\n',
+        ...(args.speed !== undefined ? { speed: args.speed } : {}),
       });
       writeFileSync(join(outDir, 'audio', `chapter-${n}.mp3`), r.mp3);
       // TTS sometimes appends junk after the aligned text ("bumbpawee") —
@@ -255,8 +259,16 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     ...(args.subtitle ? { subtitle: args.subtitle } : {}),
     animal: 'animal.webp',
     accent,
+    ...(args.speed !== undefined ? { voiceSpeed: args.speed } : {}),
     chapters,
   };
+  // keep what other stages bind into the manifest: music (generator/book-score.mjs) and the sources page
+  for (const ch of manifest.chapters) {
+    if (existsSync(join(outDir, 'music', `chapter-${ch.number}.mp3`)) && !ch.music) {
+      ch.music = { audio: `music/chapter-${ch.number}.mp3`, gain: 0.3, strudel: `music/chapter-${ch.number}.strudel` };
+    }
+  }
+  if (existsSync(join(outDir, 'sources.json'))) manifest.sources = 'sources.json';
   writeFileSync(join(outDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
   log(`wrote public/generated/${slug}/manifest.json (format 3)`);
 

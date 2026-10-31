@@ -1,0 +1,98 @@
+{
+  "format": 3,
+  "slug": "handwired-bitonic-sorter",
+  "title": "Bitonic Sorter",
+  "subtitle": "Ken Batcher's fixed wiring of comparators, and what a circuit of sums and relu pays to run it.",
+  "animal": "animal.webp",
+  "accent": "#3e9b73",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Two Wires and a Fold",
+      "blurb": "A comparator, a mountain-shaped sequence, and the half-cleaner that splits a mountain into two independent halves.",
+      "scene": "books/handwired-bitonic-sorter/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.564,
+        23.487,
+        34.842,
+        45.976,
+        55.728,
+        67.802,
+        76.405,
+        89.675,
+        101.912,
+        114.625,
+        125.98
+      ],
+      "duration": 136.673
+    },
+    {
+      "number": 2,
+      "title": "Building the Mountains",
+      "blurb": "Eight shuffled numbers become mountains of two, then four, then eight, and finally one sorted line in six stages.",
+      "scene": "books/handwired-bitonic-sorter/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.265,
+        21.49,
+        30.697,
+        42.075,
+        52.327,
+        64.065,
+        74.212,
+        86.483,
+        97.141,
+        109.204
+      ],
+      "duration": 120.373
+    },
+    {
+      "number": 3,
+      "title": "The Staircase",
+      "blurb": "How many stages and comparators a bitonic sorter needs as the list doubles, why a lockstep processor likes it, and two traps for implementers.",
+      "scene": "books/handwired-bitonic-sorter/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.784,
+        25.913,
+        41.215,
+        55.229,
+        68.673,
+        81.839,
+        93.391,
+        107.254,
+        118.121
+      ],
+      "duration": 132.122
+    },
+    {
+      "number": 4,
+      "title": "What Handwired Pays",
+      "blurb": "A comparator as three layers of sums and relu, the measured price of a bitonic network, and why ranks by counting win at interface sizes.",
+      "scene": "books/handwired-bitonic-sorter/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        13.851,
+        26.843,
+        41.053,
+        55.183,
+        68.964,
+        81.677,
+        95.969,
+        109.993,
+        119.537,
+        132.992,
+        144.673,
+        159.01
+      ],
+      "duration": 171.085
+    }
+  ],
+  "sources": "sources.json"
+}

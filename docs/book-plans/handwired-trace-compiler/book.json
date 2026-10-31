@@ -1,0 +1,82 @@
+{
+  "slug": "handwired-trace-compiler",
+  "title": "Trace Compiler",
+  "subtitle": "Can a real gallery's layout code become exact circuits?",
+  "animal": "leafcutter ant",
+  "accent": "#b5532f",
+  "chapters": [
+    {
+      "title": "Source Becomes Wires",
+      "blurb": "The compiler reads real gallery source as a syntax tree, folds the constants, and turns everything else into wires.",
+      "captions": [
+        "Cheng Lou's photo gallery lays out 221 photos with plain number code: widths, columns, positions. This lab asks whether that real code can become a fixed circuit with the same answers.",
+        "It works on a frozen copy of the gallery's source from June 20, 2026, so every measurement can be repeated.",
+        "The compiler is not a tracer that watches the program run. It reads the source as a syntax tree and carries symbolic values, each one a constant or a wire.",
+        "Anything known in advance folds away. In a width minus 24, divided by 244, the 24 and the 244 are constants, so the division becomes one multiply by one over 244.",
+        "That reciprocal is rounded once to single precision, about four thousandths, and the lab's interpreter does the same. It's an explicit policy, not Java Script's own division.",
+        "The width is only known at run time, so it becomes a wire. Each subtraction is tagged as a rounding point, so the builder can't merge it into the next step and erase the rounding.",
+        "A conditional becomes two products and a sum: the chosen value times the bit, plus the other value times one minus the bit. Both multiply by exactly one or zero, so nothing re-rounds.",
+        "The older library select form added the bit times a difference. With plus and minus three times ten to the thirty-eighth, that difference overflows, and a bit of zero returned not a number.",
+        "The two-product form hands back the first value untouched. Because both branches always compute, a branch that can't fit in single precision is rejected up front.",
+        "A loop with a finite integer bound unrolls across every possible count, and a mask bit for each pass decides which writes actually count.",
+        "What comes out is the kind of circuit the first book built, weighted sums and relu, only now generated from real source instead of written by hand.",
+        "And the subset is small on purpose: numbers, fixed arrays, bounded loops, ternaries. It does not compile arbitrary Java Script."
+      ]
+    },
+    {
+      "title": "One Step Below Seven",
+      "blurb": "A comparison becomes an exact zero or one through relu, power-of-two scaling and clamps, forced by a width of 1732.",
+      "captions": [
+        "Back to the width of 1732. After the multiply, the value lands just under seven, and the compiler has to say whether it is below seven.",
+        "Zoom in and the two numbers sit exactly one step apart, a gap of about four point eight times ten to the minus seven. That is the smallest difference single precision can express here.",
+        "The July design scaled the difference into a score near one half and rounded it. At exact column boundaries it lost that tiny step, and the column count came out wrong.",
+        "The replacement first keeps only positive differences with relu. Zero or negative differences come out as zero, so equal values never register as less.",
+        "Then it scales by a power of two chosen from the value's declared range. For a difference bounded by seven, that's two to the twentieth, and our one-step gap becomes one half.",
+        "A clamp holds anything above one at one. Another scale by two to the twenty-third turns one half into four million, and the next clamp pins it to exactly one.",
+        "This is exact because scaling by a power of two only shifts the exponent, and the clamp, a value minus relu of the value minus one, stays exact below two to the twenty-fourth.",
+        "The loop doesn't stop there. It keeps scaling until even the smallest positive single-precision number would reach one, six scale stages for a range of seven.",
+        "If the difference is zero, it stays zero through every stage. The lab's argument is that the bit then matches a native comparison on every input in range, ties included.",
+        "What comes out is a clean zero or one, marked as an integer in the range zero to one. The current test circuits use no boolean atoms.",
+        "The lab is careful about scope. This is exact going forward, but it doesn't make hard comparisons usefully differentiable, and it doesn't prove a long cascade is the fastest way to run.",
+        "A newer library routine plans these stages from declared ranges, fifteen operations for a comparison over zero to sixteen thousand. The compiler still builds its own cascade."
+      ]
+    },
+    {
+      "title": "Five Calculations",
+      "blurb": "Five independent calculations attack the exactness claim, and the report says where single and double precision part ways.",
+      "captions": [
+        "Exactness is a claim, so the lab tries to break it. Every sampled trial feeds one input through five separate calculations.",
+        "Three must agree on the circuit's outputs: a literal reference evaluator, the compiled execution path, which is still Java Script and not a graphics chip, and a single-precision interpreter of the source.",
+        "The other two ignore the circuit. One interprets the source in double precision, and one runs the real source natively in the Java Script engine. Those two must agree with each other.",
+        "That native lane exists because of a September review. The compiler and its interpreter had both dropped a return, so a wrong answer looked verified. Those cases now have regression tests.",
+        "The report checked 1,174,491 circuit outputs and found zero mismatches. Most had all three comparisons; some were constants, and some were absent optional values.",
+        "Natively, it checked 1,193,491 double-precision outputs and found zero disagreements. The larger count includes object fields the program left unchanged.",
+        "Scope matters. These are sampled trials inside declared input ranges, on the frozen fixture, with a fixed seed. The lab says plainly it is not a proof for every supported program.",
+        "Precision is a separate question. Single and double precision are allowed to differ, and the report lists where, rather than calling it a compiler error.",
+        "Of 4,097 integer widths, six differ: 512, 756, 1000, 1244, 1488 and 1732. At those widths the single-precision reciprocal rounds so that one fewer column is chosen.",
+        "Then each column's width can differ by about two hundred forty pixels. The circuit matches single precision exactly, but that agreement doesn't hide the choice from a user.",
+        "A smaller case: one hundred million plus one, minus one hundred million, is zero with a rounding step after each single-precision operation, but one in native Java Script.",
+        "One regression adds one to the double-precision outputs, and the test confirms the native check catches it, even while the circuit and the single-precision interpreter still agree."
+      ]
+    },
+    {
+      "title": "How Much Is Covered",
+      "blurb": "The checked slices cover 64 of 221 statement units; what remains is named, and the lab's standing is stated plainly.",
+      "captions": [
+        "How much of the gallery's code gets through? The frozen render path has 221 statement units, and each one is either compiled and checked, or it isn't.",
+        "The slices actually compile and verify 64 of them. That's 29.0 percent of all units, or 37.0 percent of the 173 that are classified as numeric.",
+        "A syntax-based classifier finds 49 more numeric candidates. They look compilable, but they haven't been compiled and verified, so they don't count.",
+        "An earlier figure, 113 of 173, or 65.3 percent, added those candidates in. The lab now calls it historical, since a candidate is not compiled code.",
+        "Cost varies enormously. The spring snap needs zero operations, while the occlusion pass takes 25,416 and the two-dimensional layout 24,894.",
+        "Depth is a different story. The one-dimensional layout takes 1,580 layers, because positions accumulate one photo after another through all 221.",
+        "A parallel prefix sum would shorten that chain, but it would change the rounding order, so under this exactness rule it is not a free swap.",
+        "Two rejection probes remain on purpose: hit testing that returns early from a search, and spring stepping with no bound on its loop.",
+        "The compiler rejects them under a named category instead of guessing. Also unsupported: dynamic array access, runtime allocation, string encoding, nonfinite sentinels and browser input and output.",
+        "This is not the entire application compiled unchanged, and neither measurement says anything about graphics-chip speed.",
+        "The lab's next steps are bounded first-match selection and explicit gather declarations, with coverage treated as something to measure, not to infer from syntax.",
+        "As for standing, the status page lists the trace compiler under runtime studies, with no verdict row. Its correctness note says the interpreter is checked against native JavaScript. Coverage is not on that page.",
+        "So the route runs from source to a syntax walk, to wires, to an exact comparison, to five checks. Sixty-four of 221 units went all the way through."
+      ]
+    }
+  ]
+}

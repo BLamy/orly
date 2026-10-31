@@ -63,7 +63,7 @@ function Machine({ i, snap, u, dim }: { i: number; snap: Snap; u: number; dim: n
       <text x={x} y={BAR_Y0 - h - 10} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
         {snap.counts[i] > 0 ? est.toFixed(2) : '—'}
       </text>
-      <text x={x} y={BAR_Y0 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+      <text x={x} y={BAR_Y0 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
         {`${snap.counts[i]} pulls`}
       </text>
     </g>
@@ -79,6 +79,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const endU = s.get(scene.endU);
   const greedyMode = s.get(scene.greedyMode);
+  // the ending card takes the stage: fade the whole chart and machine layer away under it
+  const fade = dimU * (1 - 0.85 * endU);
 
   const run = greedyMode > 0.5 ? GREEDY_RUN : EPS_RUN;
   const prog = greedyMode > 0.5 ? s.get(scene.greedyProg) : s.get(scene.pullProg);
@@ -90,7 +92,7 @@ function Frame({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
       <Camera {...cam}>
-        <g opacity={dimU}>
+        <g opacity={fade}>
           {/* the three machines and their belief bars */}
           {[0, 1, 2].map((i) => (
             <Machine key={i} i={i} snap={snap} u={Math.min(1, armsU * 1.6 - i * 0.25)} dim={1} />
@@ -123,8 +125,8 @@ function Frame({ s }: { s: SceneState }) {
           {/* pull counter */}
           {barsU > 0 && (
             <g opacity={barsU}>
-              <rect x={60} y={584} width={210} height={38} rx={9} fill={colors.PANEL} opacity={0.85} stroke={colors.GRID} />
-              <text x={78} y={609} fill={colors.TEXT} fontSize={15}>
+              <rect x={ARM_X[1] - 105} y={500} width={210} height={38} rx={9} fill={colors.PANEL} opacity={0.85} stroke={colors.GRID} />
+              <text x={ARM_X[1] - 87} y={525} fill={colors.TEXT} fontSize={15}>
                 {`turn ${stepShown} / ${T_TOTAL}`}
               </text>
             </g>
@@ -144,7 +146,7 @@ function Frame({ s }: { s: SceneState }) {
                   strokeDasharray="6 5"
                   opacity={0.75}
                 />
-                <text x={ARM_X[i] + BAR_W / 2 + 18} y={BAR_Y0 - BAR_H * p + 5} fill={colors.MUTED} fontSize={13}>
+                <text x={ARM_X[i] + BAR_W / 2 + 18} y={BAR_Y0 - BAR_H * p + 5} fill={colors.MUTED} fontSize={14}>
                   {p.toFixed(2)}
                 </text>
               </g>
@@ -157,14 +159,20 @@ function Frame({ s }: { s: SceneState }) {
               <path d={regretPath(GREEDY_RUN, s.get(scene.greedyCurveU))} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} opacity={s.get(scene.greedyCurveU) > 0 ? 0.9 : 0} />
               <path d={regretPath(EPS_RUN, s.get(scene.epsCurveU))} fill="none" stroke={colors.WARM} strokeWidth={3} opacity={s.get(scene.epsCurveU) > 0 ? 0.9 : 0} />
               <path d={regretPath(UCB_RUN, s.get(scene.ucbCurveU))} fill="none" stroke={colors.ACCENT} strokeWidth={3} opacity={s.get(scene.ucbCurveU) > 0 ? 0.9 : 0} />
+              {/* legend: names the three series before their lines draw */}
+              {[
+                { label: 'greedy', color: colors.NEGATIVE },
+                { label: 'ε-greedy', color: colors.WARM },
+                { label: 'UCB', color: colors.ACCENT },
+              ].map((k, i) => (
+                <g key={k.label}>
+                  <line x1={810} x2={834} y1={156 + i * 22} y2={156 + i * 22} stroke={k.color} strokeWidth={3} />
+                  <text x={842} y={161 + i * 22} fill={colors.TEXT} fontSize={14}>{k.label}</text>
+                </g>
+              ))}
+              <text x={810} y={230} fill={colors.MUTED} fontSize={14}>lower is better</text>
               {s.get(scene.greedyCurveU) > 0.98 && (
-                <text x={regretX(T_TOTAL) + 6} y={regretY(REGRET_GREEDY_FINAL) + 4} fill={colors.NEGATIVE} fontSize={14}>greedy</text>
-              )}
-              {s.get(scene.epsCurveU) > 0.98 && (
-                <text x={regretX(T_TOTAL) + 6} y={regretY(REGRET_EPS_FINAL) + 4} fill={colors.WARM} fontSize={14}>ε-greedy</text>
-              )}
-              {s.get(scene.ucbCurveU) > 0.98 && (
-                <text x={regretX(T_TOTAL) + 6} y={regretY(REGRET_UCB_FINAL) + 4} fill={colors.ACCENT} fontSize={14}>UCB</text>
+                <text x={regretX(T_TOTAL) - 10} y={regretY(REGRET_GREEDY_FINAL) + 24} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>greedy</text>
               )}
             </g>
           )}
@@ -184,7 +192,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={250} y={220} width={780} height={220} rx={16} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+          <rect x={250} y={220} width={780} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={285} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Explore or Exploit
           </text>

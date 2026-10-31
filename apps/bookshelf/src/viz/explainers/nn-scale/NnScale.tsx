@@ -1,7 +1,7 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
-import { BEST_AT, COSTS, N_PTS, PTS, QUERY, TRUE_NN, buildScene } from './scene';
+import { BEST_AT, COSTS, D_EMB, N_PTS, PTS, QUERY, TRUE_NN, buildScene } from './scene';
 
 /**
  * The Nearest-Neighbor Problem at Scale — pure render. The scan and
@@ -16,6 +16,13 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 const TAB_X = 200;
 const TAB_Y = 496;
+// Bar length is linear in log10(ops): 40 px for one thousand documents,
+// 104 px per decade, so the 100 million row ends well inside the panel.
+const BAR_X = TAB_X + 160;
+const VAL_X = BAR_X + 590;
+const barW = (ops: number): number => 40 + 104 * (Math.log10(ops) - Math.log10(1e3 * D_EMB));
+// 10 ms is exactly 1e8 multiply-adds at 1e10 per second.
+const BUDGET_X = BAR_X + barW(1e8);
 
 function fmtMs(ms: number): string {
   return ms >= 1000 ? `${(ms / 1000).toFixed(1)} s` : ms >= 1 ? `${ms.toFixed(0)} ms` : `${ms.toFixed(2)} ms`;
@@ -86,7 +93,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* counter */}
           {scanU > 0 && (
-            <g>
+            <g opacity={1 - endU}>
               <rect x={130} y={78} width={280} height={40} rx={9} fill={colors.PANEL} opacity={0.9} stroke={colors.GRID} />
               <text x={148} y={104} fill={colors.TEXT} fontSize={15}>
                 {`comparisons: ${scanned} / ${N_PTS}`}
@@ -96,23 +103,23 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* the cost table */}
           {tableU > 0 && (
-            <g>
+            <g opacity={1 - endU}>
               <rect x={TAB_X - 36} y={TAB_Y - 44} width={860} height={182} rx={14} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
-              <text x={TAB_X} y={TAB_Y - 12} fill={colors.MUTED} fontSize={13.5} opacity={clamp01(tableU)}>
+              <text x={TAB_X} y={TAB_Y - 12} fill={colors.MUTED} fontSize={14} opacity={clamp01(tableU)}>
                 one query, d = 768, at ten billion multiply-adds per second
               </text>
               {COSTS.map((row, i) => {
                 const u = clamp01(tableU - i);
                 if (u <= 0) return null;
                 const over = budgetU > 0.5 && row.ms > 10;
-                const w = 90 + 115 * (Math.log10(row.ops) - 5.8);
+                const w = barW(row.ops);
                 return (
                   <g key={i} opacity={u}>
                     <text x={TAB_X} y={TAB_Y + 18 + i * 30} fill={colors.TEXT} fontSize={14.5}>
                       {row.label}
                     </text>
-                    <rect x={TAB_X + 160} y={TAB_Y + 6 + i * 30} width={Math.max(8, w)} height={16} rx={4} fill={over ? colors.NEGATIVE : colors.ACCENT} opacity={0.85} />
-                    <text x={TAB_X + 172 + Math.max(8, w)} y={TAB_Y + 19 + i * 30} fill={over ? colors.NEGATIVE : colors.MUTED} fontSize={14}>
+                    <rect x={BAR_X} y={TAB_Y + 6 + i * 30} width={w} height={16} rx={4} fill={over ? colors.NEGATIVE : colors.ACCENT} opacity={0.85} />
+                    <text x={VAL_X} y={TAB_Y + 19 + i * 30} fill={over ? colors.NEGATIVE : colors.MUTED} fontSize={14}>
                       {fmtMs(row.ms)}
                     </text>
                   </g>
@@ -120,8 +127,8 @@ function Frame({ s }: { s: SceneState }) {
               })}
               {budgetU > 0 && (
                 <g opacity={budgetU}>
-                  <line x1={TAB_X + 160 + 90 + 115 * (Math.log10(1e5 * 768) - 5.8) + 24} y1={TAB_Y - 4} x2={TAB_X + 160 + 90 + 115 * (Math.log10(1e5 * 768) - 5.8) + 24} y2={TAB_Y + 128} stroke={colors.WARM} strokeWidth={2} strokeDasharray="6 6" />
-                  <text x={TAB_X + 160 + 90 + 115 * (Math.log10(1e5 * 768) - 5.8) + 34} y={TAB_Y - 4} fill={colors.WARM} fontSize={13}>
+                  <line x1={BUDGET_X} y1={TAB_Y - 4} x2={BUDGET_X} y2={TAB_Y + 118} stroke={colors.WARM} strokeWidth={2} strokeDasharray="6 6" />
+                  <text x={BUDGET_X + 8} y={TAB_Y + 132} fill={colors.WARM} fontSize={14}>
                     10 ms budget
                   </text>
                 </g>
@@ -131,15 +138,12 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math */}
-      <MathLabel
-        tex={'\\text{cost} = N \\cdot d \\qquad 10^6 \\cdot 768 = 7.7\\times 10^8'}
-        x={985}
-        y={70}
-        fontSize={19}
-        color={colors.WARM}
-        opacity={s.get(scene.mathU)}
-      />
+      {/* screen-fixed math: plain SVG text so it never doubles up or runs off the stage */}
+      {s.get(scene.mathU) > 0 && (
+        <text x={640} y={70} textAnchor="middle" fill={colors.WARM} fontSize={19} opacity={s.get(scene.mathU)}>
+          {'cost = N · d   ·   10⁶ × 768 = 7.7 × 10⁸'}
+        </text>
+      )}
 
       {/* clean ending card */}
       {endU > 0 && (
@@ -148,14 +152,9 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Exact Search Doesn't Scale
           </text>
-          <MathLabel
-            tex={'O(N\\,d) \\;\\; \\text{per query} \\; \\Rightarrow \\; \\text{trade proof for probability}'}
-            x={640}
-            y={340}
-            fontSize={20}
-            color={colors.NEGATIVE}
-            opacity={endU}
-          />
+          <text x={640} y={340} textAnchor="middle" fill={colors.NEGATIVE} fontSize={21}>
+            {'O(N·d) per query  ⇒  trade proof for probability'}
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             1M docs = 77 ms per query — the loop itself is the problem
           </text>

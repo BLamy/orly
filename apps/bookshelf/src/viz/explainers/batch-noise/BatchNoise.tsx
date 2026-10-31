@@ -182,8 +182,6 @@ function Frame({ s }: { s: SceneState }) {
             reveal={contourU}
             color={contourColor}
           />
-          <MathLabel tex="w" x={1236} y={cScale(-0.28)} fontSize={22} color={colors.MUTED} opacity={contourU} />
-          <MathLabel tex="c" x={wScale(-1.66)} y={72} fontSize={22} color={colors.MUTED} opacity={contourU} />
         </g>
 
         {/* the best-fit minimum */}
@@ -198,11 +196,21 @@ function Frame({ s }: { s: SceneState }) {
               strokeWidth={2.2}
             />
             <circle cx={wScale(W_STAR)} cy={cScale(C_STAR)} r={2.4} fill={colors.POSITIVE} />
+            <rect
+              x={wScale(W_STAR) - 132}
+              y={cScale(C_STAR) - 42}
+              width={120}
+              height={30}
+              rx={8}
+              fill={colors.BG}
+              opacity={0.8}
+            />
             <MathLabel
               tex="(w^\star,\,c^\star)"
-              x={wScale(W_STAR) + 74}
-              y={cScale(C_STAR) + 30}
+              x={wScale(W_STAR) - 18}
+              y={cScale(C_STAR) - 26}
               fontSize={19}
+              anchor="end"
               color={colors.POSITIVE}
               opacity={starU}
             />
@@ -276,25 +284,28 @@ function Frame({ s }: { s: SceneState }) {
           <g>
             {SPREADS.map((sp, i) => {
               const u = clamp01(ellU * 3 - i);
+              // each label sits in its own row to the right, joined to its ring by a leader
+              const rx = sp.sw * PSCALE * u;
+              const ry = sp.sc * PSCALE * u;
+              const ax = AVG_TIP[0] + rx * 0.707;
+              const ay = AVG_TIP[1] - ry * 0.707;
+              const lx = AVG_TIP[0] + 104;
+              const ly = AVG_TIP[1] - 40 + i * 26;
               return (
                 <g key={sp.b} opacity={u}>
                   <ellipse
                     cx={AVG_TIP[0]}
                     cy={AVG_TIP[1]}
-                    rx={sp.sw * PSCALE * u}
-                    ry={sp.sc * PSCALE * u}
+                    rx={rx}
+                    ry={ry}
                     fill={RUN_COLORS[i]}
                     fillOpacity={0.05}
                     stroke={RUN_COLORS[i]}
                     strokeWidth={1.8}
                     strokeDasharray="5 4"
                   />
-                  <text
-                    x={AVG_TIP[0] + sp.sw * PSCALE * 0.72 + 8}
-                    y={AVG_TIP[1] - sp.sc * PSCALE * 0.72}
-                    fill={RUN_COLORS[i]}
-                    fontSize={14}
-                  >
+                  <line x1={ax} y1={ay} x2={lx - 6} y2={ly - 4} stroke={RUN_COLORS[i]} strokeWidth={1.2} opacity={0.7} />
+                  <text x={lx} y={ly} fill={RUN_COLORS[i]} fontSize={14} dominantBaseline="middle">
                     {RUN_LABELS[i]}
                   </text>
                 </g>
@@ -311,9 +322,15 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
+      {/* axis labels sit in the stage corners, so a camera move never pushes them off */}
+      <g opacity={fieldOp}>
+        <MathLabel tex="w" x={1236} y={cScale(-0.28)} fontSize={22} color={colors.MUTED} opacity={contourU} />
+        <MathLabel tex="c" x={37} y={72} fontSize={22} color={colors.MUTED} opacity={contourU} />
+      </g>
+
       {/* σ/√B annotation near the rings (screen-fixed so it never skews) */}
       <MathLabel
-        tex="\text{spread of } \hat g \;\approx\; \frac{\sigma}{\sqrt{B}}"
+        tex="\mathrm{spread\ of}\ \hat g \;\approx\; \sigma\,B^{-1/2}"
         x={330}
         y={560}
         fontSize={24}
@@ -321,12 +338,12 @@ function Frame({ s }: { s: SceneState }) {
         opacity={sigTexU}
       />
 
-      {/* race legend */}
+      {/* race legend: sits under the loss formula, clear of the c-axis label */}
       {runnersU > 0 && raceOp > 0.5 && (
         <g opacity={runnersU}>
-          <LegendChip x={46} y={56} color={RUN_COLORS[0]} label="batch 1" u={1} />
-          <LegendChip x={46} y={80} color={RUN_COLORS[1]} label="batch 8" u={1} />
-          <LegendChip x={46} y={104} color={RUN_COLORS[2]} label="batch 64" u={1} />
+          <LegendChip x={24} y={124} color={RUN_COLORS[0]} label="batch 1" u={1} />
+          <LegendChip x={24} y={150} color={RUN_COLORS[1]} label="batch 8" u={1} />
+          <LegendChip x={24} y={176} color={RUN_COLORS[2]} label="batch 64" u={1} />
         </g>
       )}
 
@@ -343,7 +360,7 @@ function Frame({ s }: { s: SceneState }) {
             opacity={0.88}
             stroke={colors.GRID}
           />
-          <text x={DP.x + 20} y={DP.y + DP.h - 8} fill={colors.MUTED} fontSize={12}>
+          <text x={DP.x + 20} y={DP.y + DP.h - 10} fill={colors.TEXT} opacity={0.8} fontSize={14}>
             the data: 64 points
           </text>
           <MathLabel
@@ -351,7 +368,7 @@ function Frame({ s }: { s: SceneState }) {
             x={DP.x + 78}
             y={DP.y + 22}
             fontSize={16}
-            color={colors.MUTED}
+            color={colors.TEXT}
             opacity={lineU}
           />
           {DATA_X.map((xv, i) => (
@@ -377,12 +394,14 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       )}
 
-      {/* screen-fixed loss formula (top-left, clear of the data panel) */}
+      {/* screen-fixed loss formula (top-left, left-aligned on the stage margin) */}
       <MathLabel
         tex="L(w,c)=\tfrac{1}{64}\sum_i \tfrac{1}{2}\,(w x_i + c - y_i)^2"
-        x={250}
-        y={64}
+        x={24}
+        y={40}
         fontSize={19}
+        color={colors.TEXT}
+        anchor="start"
         opacity={s.get(scene.lossTexU)}
       />
 
@@ -412,7 +431,7 @@ function Frame({ s }: { s: SceneState }) {
             xTicks={4}
             yTicks={4}
             xLabel="examples seen"
-            fontSize={11}
+            fontSize={14}
           />
           {BUDGET.map((run, i) => (
             <FunctionPlot
@@ -436,14 +455,29 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       )}
 
-      {/* closing card */}
-      <MathLabel
-        tex="\text{noise} \;\propto\; \frac{\sigma}{\sqrt{B}} \qquad\quad \text{cost} \;\propto\; B"
-        x={640}
-        y={330}
-        fontSize={34}
-        opacity={endU}
-      />
+      {/* closing card: a solid panel so it reads over the faded scene */}
+      {endU > 0 && (
+        <g>
+          <rect
+            x={300}
+            y={292}
+            width={680}
+            height={76}
+            rx={14}
+            fill={colors.PANEL}
+            stroke={colors.GRID}
+            opacity={endU}
+          />
+          <MathLabel
+            tex="\mathrm{noise} \;\propto\; \sigma\,B^{-1/2} \qquad\quad \mathrm{cost} \;\propto\; B"
+            x={640}
+            y={330}
+            fontSize={34}
+            color={colors.TEXT}
+            opacity={endU}
+          />
+        </g>
+      )}
     </>
   );
 }

@@ -9,7 +9,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -99,7 +98,9 @@ const CONT_Y = 390;
 const REQ_COLORS = [colors.ACCENT, colors.SECONDARY, colors.POSITIVE, colors.WARM];
 
 const CAM_STATIC: CameraState = { x: 660, y: 250, k: 1.22 };
-const CAM_CONT: CameraState = { x: 660, y: 460, k: 1.22 };
+// Continuous frame sits lower and a touch wider so the static lane's top rows
+// stay below the title band instead of sliding up under it.
+const CAM_CONT: CameraState = { x: 660, y: 400, k: 1.0 };
 
 interface Scene {
   tl: Timeline;
@@ -228,6 +229,7 @@ function Lane({
   idle,
   label,
   frameU,
+  labelOp,
 }: {
   spans: Span[];
   y: number;
@@ -236,22 +238,24 @@ function Lane({
   idle: number;
   label: string;
   frameU: number;
+  labelOp: number;
 }) {
   if (frameU <= 0) return null;
   const sweepStep = sweep * totalSteps;
   return (
     <g opacity={frameU}>
-      <text x={LANE_X(0)} y={y - 34} fill={colors.TEXT} fontSize={16}>
+      <text x={LANE_X(0)} y={y - 34} fill={colors.TEXT} fontSize={16} opacity={labelOp}>
         {label}
       </text>
       {Array.from({ length: SLOTS }, (_, i) => (
         <g key={i}>
           <text
             x={LANE_X(0) - 12}
-            y={y + i * (ROW_H + ROW_GAP) + ROW_H - 4}
+            y={y + i * (ROW_H + ROW_GAP) + ROW_H - 3}
             textAnchor="end"
-            fill={colors.MUTED}
-            fontSize={11}
+            fill={colors.TEXT}
+            opacity={0.8}
+            fontSize={14}
             fontFamily="monospace"
           >
             slot {i}
@@ -333,10 +337,45 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const mainOp = 1 - 0.85 * dimU;
+  // the lane captions give way to the closing panel: they vanish as it arrives
+  const labelOp = 1 - closeU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
+
+      {/* the opening picture: one weight sweep feeds many streams (caption 1) */}
+      {titleU > 0 && staticFrameU < 1 && (
+        <g opacity={titleU * (1 - staticFrameU)}>
+          <text x={240} y={200} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+            model weights
+          </text>
+          <rect x={150} y={220} width={180} height={150} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={240} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={600}>
+            14 GB
+          </text>
+          <text x={240} y={318} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+            one sweep
+          </text>
+          {Array.from({ length: 8 }, (_, i) => {
+            const y = 200 + i * 40;
+            const col = REQ_COLORS[i % REQ_COLORS.length];
+            return (
+              <g key={i}>
+                <line x1={330} y1={295} x2={520} y2={y + 10} stroke={colors.GRID} strokeWidth={1.5} />
+                <rect x={540} y={y} width={240} height={20} rx={3} fill={colors.PANEL} />
+                <rect x={548} y={y + 4} width={12} height={12} rx={2} fill={col} />
+                <text x={570} y={y + 15} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                  stream {i + 1} → token
+                </text>
+              </g>
+            );
+          })}
+          <text x={660} y={520} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+            32 streams share one pass over the weights
+          </text>
+        </g>
+      )}
 
       <g opacity={mainOp}>
         <Camera {...cam}>
@@ -347,6 +386,7 @@ function Frame({ s }: { s: SceneState }) {
             totalSteps={STATIC_STEPS}
             idle={idleU}
             frameU={staticFrameU}
+            labelOp={labelOp}
             label={`static batching — groups of ${SLOTS}, hold until the slowest finishes`}
           />
           {idleU > 0 && (
@@ -354,9 +394,9 @@ function Frame({ s }: { s: SceneState }) {
               x={LANE_X(0)}
               y={STATIC_Y + SLOTS * (ROW_H + ROW_GAP) + 24}
               fill={colors.NEGATIVE}
-              fontSize={13}
+              fontSize={14}
               fontFamily="monospace"
-              opacity={idleU}
+              opacity={idleU * labelOp}
             >
               {STATIC_STEPS} steps · utilization {(STATIC_UTIL * 100).toFixed(1)}% — red is paid-for silence
             </text>
@@ -368,6 +408,7 @@ function Frame({ s }: { s: SceneState }) {
             totalSteps={CONT_STEPS}
             idle={0}
             frameU={contFrameU}
+            labelOp={labelOp}
             label="continuous batching — a freed slot refills next step"
           />
           {contU >= 1 && (
@@ -375,8 +416,9 @@ function Frame({ s }: { s: SceneState }) {
               x={LANE_X(0)}
               y={CONT_Y + SLOTS * (ROW_H + ROW_GAP) + 24}
               fill={colors.POSITIVE}
-              fontSize={13}
+              fontSize={14}
               fontFamily="monospace"
+              opacity={labelOp}
             >
               {CONT_STEPS} steps · utilization {(CONT_UTIL * 100).toFixed(1)}%
             </text>
@@ -385,10 +427,10 @@ function Frame({ s }: { s: SceneState }) {
           {/* measured stats */}
           {statU > 0 && (
             <g opacity={statU}>
-              <text x={250} y={620} fill={colors.TEXT} fontSize={15}>
+              <text x={250} y={600} fill={colors.TEXT} fontSize={16}>
                 same {N_REQ} requests, {TOTAL_TOKENS.toLocaleString()} tokens:
               </text>
-              <text x={620} y={620} fill={colors.WARM} fontSize={15} fontFamily="monospace" fontWeight={700}>
+              <text x={620} y={600} fill={colors.WARM} fontSize={16} fontFamily="monospace" fontWeight={700}>
                 {STATIC_TPS.toFixed(0)} → {CONT_TPS.toFixed(0)} tok/s ({SPEEDUP.toFixed(2)}×)
               </text>
             </g>
@@ -401,17 +443,12 @@ function Frame({ s }: { s: SceneState }) {
           The seating problem
         </text>
       </g>
-      <MathLabel
-        tex="\text{util} = \frac{\text{tokens served}}{\text{steps} \times \text{slots}}"
-        x={900}
-        y={54}
-        fontSize={19}
-        color={colors.SECONDARY}
-        opacity={statU * mainOp}
-      />
+      <text x={900} y={54} fill={colors.SECONDARY} fontSize={17} fontFamily="monospace" opacity={statU * mainOp}>
+        util = tokens served ÷ (steps × slots)
+      </text>
       {tradeU > 0 && (
         <g opacity={tradeU * mainOp}>
-          <text x={40} y={80} fill={colors.MUTED} fontSize={14}>
+          <text x={40} y={80} fill={colors.MUTED} fontSize={16}>
             throughput is bought in bulk · latency is paid alone
           </text>
         </g>
@@ -419,12 +456,12 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Never let a slot go quiet.
           </text>
           <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            Identical work: 441 → 322 steps, 55% → 76% busy,
+            Identical work: 441 → 322 steps, 55% → 76% busy.
           </text>
           <text x={640} y={360} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             1.37× throughput — from scheduling alone.

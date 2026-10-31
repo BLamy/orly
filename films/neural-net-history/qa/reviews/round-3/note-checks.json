@@ -1,0 +1,144 @@
+{
+ "$doc": "Mechanical checks of the round-3 routed shot notes (written by the round-3 global fixer). generator/film/shot-ledger.mjs finalize/check looks each string up in the shot source with comments stripped (plus sets/<id>-*.ts and any listed files): every 'present' string must appear, every 'absent' string must not. A 'fixed' outcome that misses is downgraded to 'partial'. Timing-only notes have word anchors as their check (T.word(...'word')).",
+ "ch15-s09": {
+  "present": [
+   "'suspicious'",
+   "'new'",
+   "'candles'",
+   "'lamp'"
+  ]
+ },
+ "ch08-s13b": {
+  "present": [
+   "'found'",
+   "'him'",
+   "'cut'"
+  ]
+ },
+ "ch10-s04": {
+  "present": [
+   "'every'"
+  ]
+ },
+ "ch05-s07": {
+  "present": [
+   "HUBERT DREYFUS",
+   "What Computers Can't Do, 1972",
+   "early, dramatic success followed by sudden unexpected difficulties",
+   "Hubert Dreyfus, 1972",
+   "'Hubert'",
+   "'early'"
+  ]
+ },
+ "ch09-s05": {
+  "present": [
+   "GARY MARCUS",
+   "Deep Learning: A Critical Appraisal",
+   "2018"
+  ]
+ },
+ "ch08-s05": {
+  "present": [
+   "5 stencil layers",
+   "2 great halls of 4,096",
+   "1,000 answers",
+   "'halls'",
+   "'thousand'"
+  ],
+  "absent": [
+   "55 · 27",
+   "4096 · 4096"
+  ]
+ },
+ "ch10-s12": {
+  "present": [
+   "12 hours",
+   "8 GPUs"
+  ],
+  "absent": [
+   "BLEU",
+   "1/7"
+  ]
+ },
+ "ch13-s01": {
+  "present": [
+   "HOW FAR? HOW FAST?",
+   "WHO TAUGHT IT?"
+  ]
+ },
+ "ch15-s08": {
+  "present": [
+   "HOW FAR? HOW FAST?",
+   "OPEN",
+   "THE FIELD, 2019"
+  ]
+ },
+ "ch15-s05": {
+  "present": [
+   "ANTHROPIC ·",
+   "$1.5B SETTLEMENT",
+   "PIRATED BOOKS",
+   "GOOGLE DEEPMIND",
+   "META"
+  ]
+ },
+ "ch15-s06": {
+  "present": [
+   "left Meta, Nov 2025",
+   "AMI Labs"
+  ]
+ },
+ "ch14-s04b": {
+  "present": [
+   "HELPS HUAWEI",
+   "SELF-DEFEATING",
+   "DECISIVE",
+   "CHINA IS A YEAR",
+   "OR TWO BEHIND"
+  ],
+  "absent": [
+   "ONE TO THREE",
+   "one to three"
+  ]
+ },
+ "ch14-s02": {
+  "present": [
+   "CHINA IS A YEAR",
+   "OR TWO BEHIND",
+   "CAN A FENCE AROUND CHIPS HOLD?"
+  ],
+  "absent": [
+   "ONE TO THREE",
+   "one to three"
+  ],
+  "files": [
+   "sets/ch14-s02-shelf.ts"
+  ]
+ },
+ "ch14-s07": {
+  "present": [
+   "'fence'",
+   "'newer'"
+  ]
+ },
+ "ch06-s03b": {
+  "present": [
+   "features, chosen by hand",
+   "'measure'",
+   "'lifted'",
+   "'hill'"
+  ]
+ },
+ "ch05-s04": {
+  "present": [
+   "blame(i) = slope(i)",
+   "'lantern'"
+  ]
+ },
+ "ch11-s05": {
+  "present": [
+   "simply by waiting for faster GPUs",
+   "'waiting'"
+  ]
+ }
+}

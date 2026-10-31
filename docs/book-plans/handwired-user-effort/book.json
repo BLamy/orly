@@ -1,0 +1,61 @@
+{
+  "slug": "handwired-user-effort",
+  "title": "User Effort",
+  "subtitle": "A tiny circuit learns how long a click takes, then picks the faster layout",
+  "animal": "three-toed sloth",
+  "accent": "#8a9a5b",
+  "chapters": [
+    {
+      "title": "A Law We Wrote",
+      "blurb": "A simulator we authored sets how long each pointer task takes, and a six-operation circuit gets only the same three features to learn it.",
+      "captions": [
+        "How long does it take to click a button? Close and wide is quick, far and small is slow. This lab asks whether a tiny circuit of weighted sums can learn that.",
+        "First the lab writes the truth itself. A simulator takes the distance to a target, the target's width, a clutter number for the layout, and a motor-context number between zero and one.",
+        "Distance and width fold into one difficulty: the base-two logarithm of one plus distance over width. Far and narrow gives a big number. Near and wide gives a small one.",
+        "The mean duration starts at two hundred milliseconds, adds one hundred ten for each unit of difficulty, and adds one hundred eighty for each unit of clutter.",
+        "It adds eighty for motor context, plus sixty-five more for context times difficulty. So a hard target costs extra when the context number is high.",
+        "Then every observation gets random noise of up to thirty-five milliseconds either way. That noise alone has a standard deviation of about twenty point two one milliseconds.",
+        "The lab draws seven hundred twenty training observations from one grid of distances, widths, clutter levels and context levels.",
+        "It also draws a hundred ninety-two held-out observations at values training never used: other distances, other widths, other clutter, other contexts.",
+        "Now the learner. It sees three features: difficulty divided by six, clutter, and motor context. It is never handed the formula's constants.",
+        "Its circuit multiplies difficulty by motor context once, then sums five weighted terms. In all, six operations in three layers, with five coefficients to learn.",
+        "Notice what that means. The circuit's terms are the simulator's own terms. This lab tests fitting an authored law, and the README says the setting is deliberately favorable."
+      ]
+    },
+    {
+      "title": "Fitting It, Then Testing It",
+      "blurb": "Eight hundred Adam steps move five coefficients from zero to within a hundredth of the authored ones, and held-out error lands at the noise floor.",
+      "captions": [
+        "Training starts with all five coefficients at zero, so the circuit predicts zero for everything. Its mean squared error begins at about point five nine, in seconds squared.",
+        "Each step runs the circuit on all seven hundred twenty durations, then backpropagates exact gradients through the same six operations.",
+        "Adam nudges each coefficient, with a learning rate of point zero four, for eight hundred steps. The README says those settings were not tuned on the test cases.",
+        "The loss collapses: about point zero two five at step ten, point zero zero one at step one hundred, and flat near point zero zero zero four from step four hundred on.",
+        "Learned coefficients, in seconds, are point one nine nine eight for the base, point six six four for difficulty, point one seven nine for clutter, point zero seven five for context, point four for the interaction.",
+        "The authored values, converted the same way, are point two, point six six, point one eight, point zero eight and point three nine. Each is within about a hundredth. Close, and the README never claims exact recovery.",
+        "Now the held-out test. Against the noise-free formula, the error is one point six eight milliseconds. A constant guess at the training average misses by about one hundred thirty-four.",
+        "Against the noisy observations, the error is twenty point two two milliseconds. That matches the injected noise of twenty point two one. The circuit sits on the noise floor and can't go below it.",
+        "Three fresh training seeds give point seven six, point six seven and point eight six milliseconds against the noise-free formula, so one lucky run isn't the story.",
+        "The scope is narrow: one simulator, one authored formula, held-out points from the same family. This shows fitting recovers a law we wrote. It says nothing about how people move."
+      ]
+    },
+    {
+      "title": "Choosing a Layout",
+      "blurb": "The fitted model scores four authored layouts for a stated task mix, and the result is 120 of 120, with a catch about how many choices were real.",
+      "captions": [
+        "Prediction alone picks nothing. The second job is to take four authored layouts and a stated mix of tasks, then choose the layout with the lowest expected duration.",
+        "The four layouts are near-small, with three tiny buttons close to the pointer, wide-confirm, wide-details, and balanced, with three medium buttons in a column.",
+        "A task mix gives a probability to confirm, details and cancel. A layout's expected cost is each task's probability times its predicted duration, summed.",
+        "At motor context point three seven five, say eighty percent confirm. Wide-confirm wins at about five hundred forty-six milliseconds, balanced at five eighty-nine, wide-details next, near-small last at six eighty-five.",
+        "Now make details the common task, with the same trained weights. Wide-details wins at the same five hundred forty-six. Only the probabilities changed. Nothing was retrained.",
+        "Compare a rule that just minimizes distance from the pointer. It loves near-small, whose buttons sit closest, though predicted duration puts that layout last in the confirm-heavy case.",
+        "Designers can also forbid layouts: a minimum target width, a maximum clutter. Invalid layouts are skipped. If two valid layouts tie exactly, the earlier one in the list wins.",
+        "Across one hundred twenty situations, the learned model picks the simulator's best layout every time, averaging six hundred six milliseconds. Shortest distance matches eighty-eight, averaging six twenty-four.",
+        "But count the real choices. Forty situations allow only one valid layout, sixty allow three, and just twenty allow all four. So forty of the one hundred twenty are trivial wins.",
+        "In those twenty open situations, learned effort matches the best layout twenty times out of twenty. Shortest distance matches zero, and costs one hundred two milliseconds extra on average.",
+        "Even that is a soft win. The best layout is judged by the true formula, and the learner's features are that formula. Matching it here is close to what you'd expect.",
+        "The status is that it holds. At the pinned commit the eleven tests pass, and the report reproduces the README's numbers. There are no human results, no error prediction, and no uncertainty.",
+        "So: a law we wrote, five coefficients that recover it, and a chooser that follows a stated task mix without retraining. It's a clean pipeline test, not evidence about real users."
+      ]
+    }
+  ]
+}

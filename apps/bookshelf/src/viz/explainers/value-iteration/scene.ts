@@ -141,8 +141,10 @@ export const cellY = (r: number): number => GRID_Y + r * CELL;
 export const cellCX = (c: number): number => cellX(c) + CELL / 2;
 export const cellCY = (r: number): number => cellY(r) + CELL / 2;
 
-export const CAM_GOAL: CameraState = { x: cellCX(GOAL.c) - 40, y: cellCY(GOAL.r) + 60, k: 1.7 };
-export const CAM_GRID: CameraState = { x: 640, y: 316, k: 1.08 };
+// Framed so the whole 6x6 board sits between the formula strip (y≈80) and the
+// caption pill (y≈630): grid centred on its own middle, scaled to fit.
+export const CAM_GOAL: CameraState = { x: 700, y: 215, k: 1.4 };
+export const CAM_GRID: CameraState = { x: GRID_X + (COLS * CELL) / 2, y: GRID_Y + (ROWS * CELL) / 2, k: 0.95 };
 
 // ---------------------------------------------------------------------------
 // The timeline
@@ -270,7 +272,7 @@ export function buildScene(): Scene {
   tl.hold(68.0, 0.6);
 
   // — Beat 7 · recap ——————————————————————————————————————————————————————
-  tl.tween(dimU, 0.15, { at: 68.6, dur: 1.2, ease: ease.move });
+  tl.tween(dimU, 0.1, { at: 68.6, dur: 1.2, ease: ease.move });
   tl.tween(valTexU, 0, { at: 68.6, dur: 0.8, ease: ease.move });
   tl.tween(sweepBadgeU, 0, { at: 68.6, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 69.8, dur: 0.9, ease: ease.enter });

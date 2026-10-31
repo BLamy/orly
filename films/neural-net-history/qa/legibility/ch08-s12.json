@@ -1,0 +1,64 @@
+{
+ "shot": "ch08-s12",
+ "at": "2026-10-13T04:13:51.474Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 10,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "ILSVRC-2012 · top-5 error",
+   "capWhileSubject": 26.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "15.3% vs 26.2% (second place)",
+   "capWhileSubject": 26.2,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "35%",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "30%",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "25%",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "20%",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "15%",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SuperVision ·",
+   "maxCap": 27.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Toronto",
+   "maxCap": 27.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "−10.9",
+   "maxCap": 23.3,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 8
+}

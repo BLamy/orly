@@ -1,0 +1,87 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-06T04:45:23.204Z",
+ "summary": {
+  "pass": 9,
+  "warn": 1,
+  "fail": 0,
+  "skip": 1
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "9 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "warn",
+   "detail": "139 wpm overall; fast: L0105 200",
+   "wpm": 138.8,
+   "perShot": {
+    "ch01-s01": 181.4,
+    "ch01-s02": 138.7,
+    "ch01-s03": 135.8
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all clip edges quiet",
+   "loud": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -18 LUFS (target -18), TP -2.2 dBTP, limiter 0 dB, compressor 3.58 dB GR, line rides ≤ 1.1 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "skip",
+   "detail": "STT round-trip on names not automated (no local STT; ElevenLabs speech-to-text would spend credits) — listen to lines with lexicon entries"
+  },
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "13 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "pass",
+   "detail": "1.0 min vs target 1.0 min (100%)"
+  }
+ ]
+}

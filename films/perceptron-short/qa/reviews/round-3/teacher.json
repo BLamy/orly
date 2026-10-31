@@ -1,0 +1,83 @@
+{
+  "reviewer": "teacher",
+  "lens": "clarity & depth",
+  "round": 3,
+  "note": "This is a one-minute Mark I short, so the lens items on AlexNet and the transformer are out of scope and are not scored. The history test (belief, dissent, duration) is now partly in the film through L0108. The s03 contact sheet has only 6 samples over 42.8 s, so I extracted 55 more frames from render/film.mp4 and timed them against the absolute word clock in apps/bookshelf/src/viz/films/perceptron-short/timeline.json.",
+  "roundTwoCheck": {
+    "tail retina glitch (ch01-s03, major)": "fixed. Try 5 flares in clear air (47.4 s) with then/now captions. On 'simple' (49.9 s) the needle is back at centre, the lantern is idle, and two separate plates (VERTICAL | HORIZONTAL, with a divider) sit under 'what it could learn: simple patterns'. The L-shape merge is gone.",
+    "L0108 history beat (major)": "fixed. 'In 1969, Minsky and Papert showed just how simple; for years, interest faded.' The '1969 · PERCEPTRONS · MINSKY & PAPERT' stamp types on from 'Minsky' (53.5 s), and the stage dims a notch on 'years' (57.6 s). There is no causal overclaim.",
+    "threshold unlabelled (minor)": "fixed. A 'threshold' label appears over the centre tick on 'total' (32.6 s), and VERTICAL bolds on 'decides' (33.3 s).",
+    "right answer never shown (minor)": "fixed. A 'correct answer: horizontal / vertical' tag sits under the retina from 'shape' (25.9 s), and a faint target needle marks the right side during the nudge (36.2-39.2 s).",
+    "lineage unseen (minor)": "NOT fixed. 'Its descendants, today's neural networks' (59.67-62.3 s) starts over iris-black and lands on the unchanged 1960 bookend.",
+    "L0106 caption comma (minor)": "fixed in film.vtt: 'that had a say, / a little, toward the right answer.'",
+    "m01 duck depth (minor)": "fixed: 3.11 dB against a 3 dB target (mix/loudness.json)."
+  },
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 7,
+    "clarity": 8,
+    "story": 8,
+    "visual": 8,
+    "sync": 8,
+    "sound": 7.5,
+    "curiosity": 7
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "Depth stops at 'just how simple' (55.55-56.4 s). The film says what the machine could learn and never shows what it could not. During the Minsky and Papert sentence the only pictures are the two success plates (vertical and horizontal bar) and the stamp. A 15-year-old is left asking 'simple compared to what?', and an expert sees the film's one real limitation (linear separability, the XOR result in limit-linear) stated but never taught. This is now the main thing holding depth below 8.",
+      "fix": "On 'showed just how simple' (55.55 s), add a third small plate after the divider, captioned 'one bar or the other, not both' in the plate-label face. Run it on the real trainPerceptron illustration model: the lantern stays cold, the needle swings back and forth across the threshold for a few tries, and the plate is tagged 'beyond it'. IMPORTANT: use two DISJOINT bars, for example a left vertical bar and a right vertical bar that share no cell. A crossing pair (+) that shares a centre cell is linearly separable for this model (a large weight on the shared cell suffices), so it would not fail, and the picture would then be false. Only ship the failing animation if the actual training run fails to converge; never hand-animate failure. Keep the 'an illustration of the rule' framing, because the Mark I's random association layer makes the hardware story subtler than the single-layer picture (claims limit-linear, mk1-patchboard). Hold the three plates until the iris begins (about 58.2 s)."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "'For years, interest faded' (57.11-58.69 s): the lens asks 'for how long', and the film answers only with 'for years' and a slight dim. The claim gives the span (the 1970s into the early 1980s), but the picture never shows it.",
+      "fix": "With no narration change (the runtime is 65.83 s against a 66 s ceiling), let the stamp's year roll on 'years': '1969' becomes '1969 → 1970s → early 1980s' in the same era type while the stage dims, grounded in limit-linear's evidence. Remove it as the iris begins."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "Lineage is heard, not seen (carried over from round 2). 'Its descendants, today's neural networks' (59.67-62.3 s) begins over iris-black (59.0-60.0 s) and lands on the unchanged 1960 bookend. 'Descendants' is the film's bridge to the viewer's world, and nothing on screen carries it.",
+      "fix": "Pull the iris reopen so the bookend is open by 59.67 s ('Its'). Then, over 'descendants … networks' (59.99-62.3 s), let the window light behind the eye throw two or three faint, stacked retina-and-dial silhouettes (a nod to the multilayer lineage-mlp claim). Fade them before 'still learn from mistakes', or add a small '1958 → today' stamp under the title. Invent no modern specifics."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "During the limit and history passage (48.4-58.4 s), the retina keeps its lit horizontal bar and the threads keep glowing into the dials, so the machine still looks mid-answer. That pulls the eye away from the plates, which are the actual teaching device here.",
+      "fix": "At b.limit (L0108 'It', 48.36 s), fade the retina cells and threads to idle over about 0.6 s, so that only the plates and then the 1969 stamp carry light. Keep the dials' learned settings visible (dimmed), because that is what the machine learned."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The push-in during the nudge (37.6-38.6 s, on 'the dials that had a say') crops the retina at frame left and runs the 'correct answer: horizontal' tag into the try-box row. The frame reads 'correct ✕ ntal' at the very moment the tag matters most, when the dials move toward that answer.",
+      "fix": "Lay out the tag and the try boxes so they cannot overlap at any camera scale: tag above the retina, boxes below it, or both pinned in screen space. Alternatively, limit the push so the full retina and tag stay in frame through 39.6 s."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The 1969 stamp's 'book' is a small bright rectangle at the top right that reads as a fluorescent fitting, not a book. 'PERCEPTRONS' is set in the same caps as the machine's PERCEPTRON plate, so a young viewer may read it as the machine's name, not the title of a critique.",
+      "fix": "Set the title as a book title (italic 'Perceptrons', or in quotes) and replace the rectangle with a clear closed-book silhouette, about twice the size, with a visible spine and a page block. Never draw a likeness of the authors."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Lens note: AlexNet and the transformer cannot be explained in a one-minute Mark I short, and they are not scored against this film.",
+      "fix": "None for this film. Brief a sequel as its own film if wanted."
+    }
+  ],
+  "best_moments": [
+    "ch01-s03, 32.6-33.3 s: 'the total decides'. A 'threshold' label appears over the centre tick on 'total', and VERTICAL bolds as the needle falls left of it on 'decides'. The weighted-sum-plus-threshold rule (mk1-sum) is now fully on screen.",
+    "ch01-s03, 36.2-39.2 s: on 'motors nudge the dials that had a say', only the dials fed by lit cells glow and turn with arc arrows, while a faint target needle marks the correct side. This is the true perceptron rule and the supervision signal in one picture.",
+    "ch01-s03, 40.7-41.6 s: 'Wrong' lands on try 2 (vertical, said horizontal) and 'wrong again' on try 3, with the try boxes ticking X. The narration counts the failures with the picture.",
+    "ch01-s03, 47.4 s: 'NOW try 5 · said horizontal · RIGHT' over a ghosted 'THEN try 1 · said vertical · WRONG' for the same shape, in clear air. It shows that the machine learned rather than got lucky.",
+    "ch01-s03, 49.9-51.8 s: on 'It could learn only simple patterns', the needle returns to centre, the lantern dims, and two clean, separated plates (VERTICAL | HORIZONTAL) sit under 'what it could learn: simple patterns'. Round 2's contradicting L-shape is gone.",
+    "ch01-s03, 23.45-25.9 s: 'Nobody gave it the rule' over an empty stage, then 'Show it a shape' as the bar and the 'correct answer' tag arrive. Answers are given and the rule is not: supervised learning is set up honestly in five seconds."
+  ]
+}

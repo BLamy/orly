@@ -1,0 +1,65 @@
+{
+  "slug": "handwired-generative-fields",
+  "title": "Generative Fields",
+  "subtitle": "One fixed layout program, seventy-two numbers, and what searching, climbing and repairing really showed.",
+  "animal": "chameleon",
+  "accent": "#7fb33a",
+  "chapters": [
+    {
+      "title": "Seventy-Two Numbers, One Program",
+      "blurb": "One circuit with seventy-two numeric fields lays out sixteen slots as a grid, hero, mosaic, list or filmstrip.",
+      "captions": [
+        "A page needs a layout: which items are big, which come first, where each row breaks. This lab asks whether one fixed circuit can decide all of that, steered by nothing but numbers.",
+        "Those numbers are seventy-two generative fields: eight global knobs, plus four fields for each of sixteen slots. The viewport size is held aside as context.",
+        "Each slot has an importance, an order key, a visibility and a height preference, all from zero to one. What makes one slot differ from another lives only in these cells, never in a code branch.",
+        "Importance becomes size. Span is a base span plus importance times a coefficient, capped at one full row by a relu trick. Height follows the same pattern, scaled by the height preference.",
+        "Order keys decide who goes first. The circuit compares every pair of keys, and when two keys are exactly equal, the lower slot number wins.",
+        "Then the slots flow like words in a paragraph. A slot that would pass the right edge starts a new row, and each row is as tall as its tallest member.",
+        "A hero is just an importance peak. One slot with a big importance gets a wide span, and it crowds the others out of its row.",
+        "Now change only numbers. The same sixteen slots reshape into a uniform grid, then a hero with a rail, a mosaic, a list and a filmstrip.",
+        "Between those five families the code reports zero new operations. It is the same compiled program every time, and only the source cells differ.",
+        "The program is not small: the code prints eight thousand four hundred twenty-one operations in two hundred one layers. The flow costs depth, because each wrap decision feeds the next.",
+        "Every family gets a fitness score. The grid scores point eight nine four, the mosaic point eight two three. The list shows six of sixteen slots: its visibility hides the rest, since sixteen rows would overflow.",
+        "So the first claim is narrow and solid: one program, five layouts, set only by numbers. Whether those numbers can be found automatically, and whether they are any good, comes next."
+      ]
+    },
+    {
+      "title": "Scored, Searched, Climbed",
+      "blurb": "Random search and gradient climbing both find valid layouts, and they disagree about which is best.",
+      "captions": [
+        "The circuit grades its own work. It outputs a validity bit that is exactly one or zero, plus a depth in pixels saying how badly a layout breaks the rules.",
+        "Three rules are checked: no two visible slots overlap, nothing runs past the bottom or right edge, and nothing is too small. The right edge allows a small wrap margin, and a half-pixel tolerance applies.",
+        "Sideways overlap is impossible by construction, since the cursor only moves forward and spans are capped. Overlap never occurred in four thousand samples; only a crafted triple of almost-equal keys can cause it.",
+        "The first way to find a layout is search. Draw four thousand random field vectors, and test each one.",
+        "Only one thousand seventy-eight are valid, about twenty-seven percent. The most common failure is spilling out of the viewport: two thousand eight hundred eighty-six samples.",
+        "To rank the valid ones, seven weighted terms add up: fill, vertical fit, importance match, balance, size comfort, row evenness and content richness. Any valid layout beats any invalid one.",
+        "Search's best layout scores point eight seven five. The whole four-thousand-sample search took about a quarter second on this machine.",
+        "The second way is to slide uphill. Gradient ascent minimizes minus fitness plus a small penalty on violation depth, taking one hundred fifty steps from each of twelve random starts.",
+        "But decisions in this circuit are bits, and bits have no slope. So the backward pass fakes one, a straight-through estimate: forward values stay exact, and the derivative through a decision is set to one.",
+        "That fake slope is biased. On one probe the readme measured one hundred seventy-three where the true local slope was one hundred twenty, so the magnitudes are not derivatives.",
+        "In today's run, all twelve climbs end valid, with a best of point nine one nine, a median of point eight eight eight, and a worst of point eight four nine. Search's best was point eight seven five.",
+        "Yet the best climbed layout shows only six slots out of sixteen. Fitness can be gamed: with the richness term removed, a hand-built layout with just two visible slots scored a perfect one.",
+        "The richness term now rewards up to ten visible slots, but climbing still prefers six. Search and gradient optimize the same number and disagree about taste, so the fitness function is the bottleneck."
+      ]
+    },
+    {
+      "title": "The Path Between",
+      "blurb": "Repair makes every interpolated layout valid, but it can hide content, and the lab's claims stand narrowed.",
+      "captions": [
+        "Moving between layouts is what an interface does all the time, so the layouts in between should be valid too. Start with one careful case.",
+        "In the hero migration, importance slides from slot two to slot eleven over twenty-one frames. Slot two falls from about one hundred twenty-nine thousand square pixels to twenty-four thousand; slot eleven rises.",
+        "They cross at sixty-six thousand four hundred forty-three square pixels each, and all twenty-one frames are valid. But that is one chosen pair, and it says nothing about layouts in general.",
+        "Now more pairs. The study walks sixty pairs of layouts, ten among the authored families and fifty random ones, each a straight line of a hundred and one points: six thousand sixty points in all.",
+        "Straight lines mostly fail. Only nineteen hundred six points are valid, thirty-one percent, and just one of the sixty paths is valid from end to end.",
+        "Every one of the four thousand one hundred fifty-four invalid points is the same kind: the layout spills past the bottom of the viewport. No point has overlapping slots.",
+        "The repair is a projection. Take small steps downhill on violation depth, with a gentle pull back toward where the point started, and stop the moment the validity bit reads one.",
+        "It works. On average it takes one point nine steps, out of forty allowed, and all six thousand sixty points end valid. Not one repair fails.",
+        "But the validity bit never asked for content to stay. The July study counted fourteen hundred eight of those repairs hiding visible slots, and one cut sixteen visible slots to six.",
+        "The September audit adds separate reports: required content retained, and strict containment with no slack. A layout can pass the old validity bit and fail both.",
+        "And valid points still do not make smooth motion. Sorting, visibility and wrapping can jump between neighbors, so the readme says the samples do not establish smooth motion.",
+        "The status table gives this lab no tag, only its limits. A fair reading is historical and narrowed: the July counts reproduce, but the readme calls them not promises about the corrected optimizer.",
+        "Still open are a sixty-hertz transition driven by the projection, a second flow region, and learned fitness weights. Today: one program, many layouts, repaired to valid, not yet proven smooth."
+      ]
+    }
+  ]
+}

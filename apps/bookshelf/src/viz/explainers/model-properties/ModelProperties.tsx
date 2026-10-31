@@ -39,20 +39,22 @@ import overrides from './overrides.json';
 
 const rand = mulberry32(37);
 
-// 1) schema validity
+// 1) schema validity — one flag per simulated call, so the grid can draw them
 const N_CALLS = 500;
-let SCHEMA_BAD = 0;
-for (let i = 0; i < N_CALLS; i++) if (rand() < 0.07) SCHEMA_BAD++;
+const BAD_CALL: boolean[] = [];
+for (let i = 0; i < N_CALLS; i++) BAD_CALL.push(rand() < 0.07);
+const SCHEMA_BAD = BAD_CALL.filter(Boolean).length;
 
-// 2) refusal consistency (paraphrase pairs)
+// 2) refusal consistency (paraphrase pairs), one flag per pair
 const N_PAIRS = 300;
-let INCONS = 0;
+const PAIR_BAD: boolean[] = [];
 for (let i = 0; i < N_PAIRS; i++) {
   const h = rand(); // latent harmfulness
   const a = h + (rand() - 0.5) * 0.16 > 0.5;
   const b = h + (rand() - 0.5) * 0.16 > 0.5;
-  if (a !== b) INCONS++;
+  PAIR_BAD.push(a !== b);
 }
+const INCONS = PAIR_BAD.filter(Boolean).length;
 
 // 3) calibration (overconfident toy model), 5 buckets over confidence 0.5–1.0
 interface Bucket { n: number; acc: number; conf: number }
@@ -78,12 +80,36 @@ const TOP_ACC = (TOP.acc / TOP.n) * 100; // 86.5
 // ---------------------------------------------------------------------------
 
 const CAM_PANEL = (i: number): CameraState => ({ x: 640, y: 200 + i * 10, k: 1.0 });
-const CAL_X = 210;
-const CAL_Y = 210;
-const CAL_W = 560;
-const CAL_H = 300;
+
+// The calibration plot gets the middle of the stage to itself; the family
+// cards and their grids are gone (faded out) before it draws.
+const CAL_X = 200;
+const CAL_Y = 150;
+const CAL_W = 680;
+const CAL_H = 330;
 const calX = (i: number) => CAL_X + (i + 0.5) * (CAL_W / 5);
 const calY = (v: number) => CAL_Y + CAL_H - (v - 0.4) / 0.6 * CAL_H;
+
+// Dot grids: one square per simulated call / pair, under the cards.
+const GRID_Y = 352;
+const GRID_PITCH = 9;
+const GRID_CELL = 7;
+const CALL_CELLS = BAD_CALL.map((bad, i) => ({
+  x: 210 + (i % 25) * GRID_PITCH,
+  y: GRID_Y + Math.floor(i / 25) * GRID_PITCH,
+  bad,
+}));
+const PAIR_CELLS = PAIR_BAD.map((bad, i) => ({
+  x: 660 + (i % 30) * GRID_PITCH,
+  y: GRID_Y + Math.floor(i / 30) * GRID_PITCH,
+  bad,
+}));
+
+const FAMILIES = [
+  { n: '1', name: 'structure', line: 'every tool call must parse', color: colors.ACCENT },
+  { n: '2', name: 'consistency', line: 'same request, two phrasings', color: colors.SECONDARY },
+  { n: '3', name: 'calibration', line: 'confidence = frequency', color: colors.WARM },
+];
 
 interface Scene {
   tl: Timeline;
@@ -215,78 +241,144 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
-  const cardFade = 1 - 0.8 * clamp01(calAxesU * 2.5);
+  // The body fades all the way out for the close, so no old label sits behind the panel.
+  const mainOp = 1 - dimU;
+  // The family cards and their grids leave entirely as the calibration plot draws.
+  const cardFade = 1 - clamp01(calAxesU);
+  const tripOp = frameU * (1 - schemaU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
+      <g opacity={mainOp} display={mainOp > 0 ? undefined : 'none'}>
         <Camera {...cam}>
           {/* framing strip */}
-          {frameU > 0 && (
-            <text x={210} y={140} fill={colors.MUTED} fontSize={14.5} opacity={frameU * cardFade}>
+          {frameU > 0 && cardFade > 0 && (
+            <text x={210} y={140} fill={colors.MUTED} fontSize={16} opacity={frameU * cardFade}>
               no oracle → assert <tspan fill={colors.ACCENT}>structure</tspan> · <tspan fill={colors.SECONDARY}>consistency</tspan> · <tspan fill={colors.WARM}>calibration</tspan>
             </text>
           )}
 
+          {/* the three families, before anything is measured */}
+          {tripOp > 0 && (
+            <g opacity={tripOp}>
+              {FAMILIES.map((f, i) => (
+                <g key={f.name}>
+                  <rect x={210 + i * 290} y={200} width={270} height={150} rx={12} fill={colors.PANEL} stroke={f.color} />
+                  <text x={236 + i * 290} y={246} fill={f.color} fontSize={18} fontWeight={700}>
+                    {f.n} · {f.name}
+                  </text>
+                  <text x={236 + i * 290} y={284} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                    {f.line}
+                  </text>
+                </g>
+              ))}
+            </g>
+          )}
+
           {/* schema card */}
-          {schemaU > 0 && (
+          {schemaU > 0 && cardFade > 0 && (
             <g opacity={schemaU * cardFade}>
               <rect x={210} y={170} width={420} height={170} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.ACCENT} />
               <text x={236} y={202} fill={colors.ACCENT} fontSize={15} fontWeight={700}>
                 1 · schema validity — total
               </text>
-              <text x={236} y={230} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={236} y={230} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 every tool call must parse
               </text>
-              <text x={236} y={258} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+              <text x={236} y={258} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 {N_CALLS} calls · {SCHEMA_BAD} malformed
               </text>
-              <text x={236} y={284} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace" fontWeight={700}>
+              <text x={236} y={284} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
                 caught: {SCHEMA_BAD}/{SCHEMA_BAD} — enforced, not sampled
               </text>
-              <text x={236} y={314} fill={colors.MUTED} fontSize={11.5}>
+              <text x={236} y={314} fill={colors.MUTED} fontSize={12}>
                 a tiny kernel at the API boundary
               </text>
             </g>
           )}
 
+          {/* schema grid: one square per call, green = malformed and caught */}
+          {schemaU > 0 && cardFade > 0 && (
+            <g opacity={schemaU * cardFade}>
+              {CALL_CELLS.map((c, i) => (
+                <rect
+                  key={i}
+                  x={c.x}
+                  y={c.y}
+                  width={GRID_CELL}
+                  height={GRID_CELL}
+                  rx={1.5}
+                  fill={c.bad ? colors.POSITIVE : colors.MUTED}
+                  opacity={c.bad ? 1 : 0.5}
+                />
+              ))}
+            </g>
+          )}
+
           {/* refusal card */}
-          {refusalU > 0 && (
+          {refusalU > 0 && cardFade > 0 && (
             <g opacity={refusalU * cardFade}>
               <rect x={660} y={170} width={420} height={170} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.SECONDARY} />
               <text x={686} y={202} fill={colors.SECONDARY} fontSize={15} fontWeight={700}>
                 2 · refusal consistency — relational
               </text>
-              <text x={686} y={230} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
-                same request, two phrasings → same decision
+              <text x={686} y={230} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                same request, 2 phrasings → same call
               </text>
-              <text x={686} y={258} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+              <text x={686} y={258} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 {N_PAIRS} paraphrase pairs
               </text>
-              <text x={686} y={284} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace" fontWeight={700}>
+              <text x={686} y={284} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
                 inconsistent: {INCONS} ({((INCONS / N_PAIRS) * 100).toFixed(1)}%)
               </text>
-              <text x={686} y={314} fill={colors.MUTED} fontSize={11.5}>
+              <text x={686} y={314} fill={colors.MUTED} fontSize={12}>
                 no labels — the model graded against itself
               </text>
             </g>
           )}
 
-          {/* calibration plot */}
+          {/* refusal grid: one square per pair, red = inconsistent */}
+          {refusalU > 0 && cardFade > 0 && (
+            <g opacity={refusalU * cardFade}>
+              {PAIR_CELLS.map((c, i) => (
+                <rect
+                  key={i}
+                  x={c.x}
+                  y={c.y}
+                  width={GRID_CELL}
+                  height={GRID_CELL}
+                  rx={1.5}
+                  fill={c.bad ? colors.NEGATIVE : colors.MUTED}
+                  opacity={c.bad ? 1 : 0.5}
+                />
+              ))}
+            </g>
+          )}
+
+          {/* calibration plot: its own region, nothing else on it */}
           {calAxesU > 0 && (
             <g opacity={calAxesU}>
+              {[0.6, 0.8, 1.0].map((v) => (
+                <g key={v}>
+                  <line x1={CAL_X} y1={calY(v)} x2={CAL_X + CAL_W} y2={calY(v)} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />
+                  <text x={CAL_X - 10} y={calY(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                    {Math.round(v * 100)}%
+                  </text>
+                </g>
+              ))}
               <line x1={CAL_X} y1={CAL_Y} x2={CAL_X} y2={CAL_Y + CAL_H} stroke={colors.GRID} strokeWidth={1.5} />
               <line x1={CAL_X} y1={CAL_Y + CAL_H} x2={CAL_X + CAL_W} y2={CAL_Y + CAL_H} stroke={colors.GRID} strokeWidth={1.5} />
-              {/* the y = x diagonal: perfect calibration */}
-              <line x1={calX(-0.5) - (CAL_W / 10)} y1={calY(0.55)} x2={calX(4.5)} y2={calY(0.975)} stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="6 5" opacity={0.6} />
-              <text x={CAL_X + CAL_W - 4} y={calY(0.975) - 10} textAnchor="end" fill={colors.MUTED} fontSize={11}>
-                perfect calibration
-              </text>
-              <text x={CAL_X + CAL_W / 2} y={CAL_Y + CAL_H + 32} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-                claimed confidence (5 buckets, 1,000 seeded answers)
+              {/* the y = x diagonal: perfect calibration, on the same bucket axis as the bars */}
+              <line x1={calX(-0.5)} y1={calY(0.5)} x2={calX(4.5)} y2={calY(1.0)} stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="6 5" opacity={0.8} />
+              {BUCKETS.map((b, i) => (
+                <text key={i} x={calX(i)} y={CAL_Y + CAL_H + 22} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                  {50 + 10 * i}–{60 + 10 * i}%
+                </text>
+              ))}
+              <text x={CAL_X + CAL_W / 2} y={CAL_Y + CAL_H + 48} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                claimed confidence, 5 buckets, 1,000 seeded answers · label = claimed → delivered %
               </text>
               {BUCKETS.map((b, i) => {
                 const u = clamp01(calBarsU * 5 - i);
@@ -295,35 +387,41 @@ function Frame({ s }: { s: SceneState }) {
                 const acc = b.acc / b.n;
                 return (
                   <g key={i} opacity={u}>
-                    <rect x={calX(i) - 30} y={calY(acc)} width={26} height={CAL_Y + CAL_H - calY(acc)} fill={colors.WARM} opacity={0.75} />
-                    <rect x={calX(i) + 2} y={calY(conf)} width={26} height={CAL_Y + CAL_H - calY(conf)} fill={colors.MUTED} opacity={0.45} />
-                    <text x={calX(i)} y={calY(Math.max(acc, conf)) - 8} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+                    <rect x={calX(i) - 31} y={calY(acc)} width={29} height={CAL_Y + CAL_H - calY(acc)} fill={colors.WARM} opacity={0.75} />
+                    <rect x={calX(i) + 2} y={calY(conf)} width={29} height={CAL_Y + CAL_H - calY(conf)} fill={colors.MUTED} opacity={0.6} />
+                    <text x={calX(i)} y={calY(conf) - 26} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                       {(conf * 100).toFixed(0)}→{(acc * 100).toFixed(0)}
                     </text>
                   </g>
                 );
               })}
+              {/* legend above the plot, outside the bars */}
               <g opacity={calBarsU}>
-                <rect x={CAL_X + 8} y={CAL_Y + 6} width={11} height={11} fill={colors.WARM} opacity={0.75} />
-                <text x={CAL_X + 26} y={CAL_Y + 16} fill={colors.MUTED} fontSize={11}>delivered accuracy</text>
-                <rect x={CAL_X + 180} y={CAL_Y + 6} width={11} height={11} fill={colors.MUTED} opacity={0.45} />
-                <text x={CAL_X + 198} y={CAL_Y + 16} fill={colors.MUTED} fontSize={11}>claimed confidence</text>
+                <rect x={CAL_X} y={CAL_Y - 26} width={12} height={12} fill={colors.WARM} opacity={0.75} />
+                <text x={CAL_X + 18} y={CAL_Y - 16} fill={colors.TEXT} fontSize={14}>delivered accuracy</text>
+                <rect x={CAL_X + 170} y={CAL_Y - 26} width={12} height={12} fill={colors.MUTED} opacity={0.6} />
+                <text x={CAL_X + 188} y={CAL_Y - 16} fill={colors.TEXT} fontSize={14}>claimed confidence</text>
               </g>
+              <line x1={CAL_X + 360} y1={CAL_Y - 20} x2={CAL_X + 384} y2={CAL_Y - 20} stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="6 5" opacity={0.8} />
+              <text x={CAL_X + 392} y={CAL_Y - 16} fill={colors.TEXT} fontSize={14}>perfect calibration (y = x)</text>
             </g>
           )}
           {eceU > 0 && (
             <g opacity={eceU}>
-              <rect x={830} y={230} width={330} height={140} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.WARM} />
-              <text x={856} y={262} fill={colors.WARM} fontSize={15} fontWeight={700}>
+              <rect x={900} y={230} width={350} height={172} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.WARM} />
+              <text x={926} y={262} fill={colors.WARM} fontSize={15} fontWeight={700}>
                 3 · calibration — statistical
               </text>
-              <text x={856} y={292} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
-                top bucket: claims {TOP_CONF.toFixed(1)}%, delivers {TOP_ACC.toFixed(1)}%
+              <text x={926} y={292} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                top bucket claims {TOP_CONF.toFixed(1)}%
               </text>
-              <text x={856} y={318} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace" fontWeight={700}>
+              <text x={926} y={318} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                and delivers {TOP_ACC.toFixed(1)}%
+              </text>
+              <text x={926} y={348} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
                 expected calibration error: {(ECE * 100).toFixed(1)}%
               </text>
-              <text x={856} y={346} fill={colors.MUTED} fontSize={11.5}>
+              <text x={926} y={378} fill={colors.MUTED} fontSize={12}>
                 needs outcomes, never per-answer labels
               </text>
             </g>
@@ -334,11 +432,11 @@ function Frame({ s }: { s: SceneState }) {
       {/* bridge — screen space */}
       {bridgeU > 0 && (
         <g opacity={bridgeU * mainOp}>
-          <rect x={210} y={556} width={860} height={62} rx={10} fill={colors.PANEL} opacity={0.95} stroke={colors.POSITIVE} />
-          <text x={236} y={582} fill={colors.POSITIVE} fontSize={13.5} fontFamily="monospace" fontWeight={700}>
+          <rect x={210} y={546} width={860} height={50} rx={10} fill={colors.PANEL} opacity={0.95} stroke={colors.POSITIVE} />
+          <text x={236} y={568} fill={colors.POSITIVE} fontSize={13.5} fontFamily="monospace" fontWeight={700}>
             verification-based scoring (explained-durable-evals) = these properties, installed as the grader
           </text>
-          <text x={236} y={604} fill={colors.MUTED} fontSize={12}>
+          <text x={236} y={588} fill={colors.MUTED} fontSize={13}>
             and the loop books’ critics = properties of evidence, asserted adversarially
           </text>
         </g>
@@ -350,10 +448,10 @@ function Frame({ s }: { s: SceneState }) {
         </text>
       </g>
 
-      {/* close */}
+      {/* close — a solid panel, so nothing faded shows through the text */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={180} y={200} width={920} height={264} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={180} y={200} width={920} height={264} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={262} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Testing without an oracle
           </text>

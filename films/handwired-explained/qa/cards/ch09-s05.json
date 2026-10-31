@@ -1,0 +1,421 @@
+{
+ "shot": "ch09-s05",
+ "at": "2026-10-28T17:41:31.827Z",
+ "step": 0.0833,
+ "sampled": 154,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@166,622",
+   "probed": false,
+   "from": 0.05,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@57,622",
+   "probed": false,
+   "from": 0.05,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@255,619",
+   "probed": false,
+   "from": 3.05,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@362,619",
+   "probed": false,
+   "from": 3.133,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@496,619",
+   "probed": false,
+   "from": 3.217,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@646,619",
+   "probed": false,
+   "from": 3.3,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@-17,619",
+   "probed": false,
+   "from": 3.3,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@848,619",
+   "probed": false,
+   "from": 3.383,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@737,619",
+   "probed": false,
+   "from": 3.383,
+   "to": 5.133,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@958,619",
+   "probed": false,
+   "from": 3.467,
+   "to": 5.383,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@1069,619",
+   "probed": false,
+   "from": 3.55,
+   "to": 5.383,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@1180,618",
+   "probed": false,
+   "from": 3.633,
+   "to": 5.383,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@1292,618",
+   "probed": false,
+   "from": 3.717,
+   "to": 5.383,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@1403,618",
+   "probed": false,
+   "from": 3.8,
+   "to": 5.383,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@1514,618",
+   "probed": false,
+   "from": 3.883,
+   "to": 5.383,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@1681,618",
+   "probed": false,
+   "from": 3.967,
+   "to": 5.383,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@1758,618",
+   "probed": false,
+   "from": 4.05,
+   "to": 4.55,
+   "minInkWhilePaper": 0.35
+  },
+  {
+   "id": "fillRect@1820,618",
+   "probed": false,
+   "from": 4.717,
+   "to": 4.883,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@-10,618",
+   "probed": false,
+   "from": 4.967,
+   "to": 5.05,
+   "minInkWhilePaper": 0.35
+  },
+  {
+   "id": "fillRect@1851,618",
+   "probed": false,
+   "from": 5.05,
+   "to": 5.383,
+   "minInkWhilePaper": 0.22
+  },
+  {
+   "id": "fillRect@932,618",
+   "probed": false,
+   "from": 5.3,
+   "to": 5.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@913,172",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1025,173",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1136,175",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1248,176",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1359,178",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1471,179",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1583,181",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1694,182",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@1806,184",
+   "probed": false,
+   "from": 5.633,
+   "to": 5.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@758,119",
+   "probed": false,
+   "from": 5.8,
+   "to": 5.883,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@926,146",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.217,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@829,144",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@731,142",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@634,140",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@537,139",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@439,137",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@342,135",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@147,131",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@50,129",
+   "probed": false,
+   "from": 6.133,
+   "to": 6.383,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@781,614",
+   "probed": false,
+   "from": 6.633,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@668,614",
+   "probed": false,
+   "from": 6.633,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@555,614",
+   "probed": false,
+   "from": 6.633,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@442,614",
+   "probed": false,
+   "from": 6.633,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@329,614",
+   "probed": false,
+   "from": 6.633,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@216,614",
+   "probed": false,
+   "from": 6.633,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@103,614",
+   "probed": false,
+   "from": 6.633,
+   "to": 12.717,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@-9,614",
+   "probed": false,
+   "from": 6.633,
+   "to": 7.55,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@932,612",
+   "probed": false,
+   "from": 6.883,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1040,612",
+   "probed": false,
+   "from": 6.967,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1147,611",
+   "probed": false,
+   "from": 7.05,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1255,610",
+   "probed": false,
+   "from": 7.133,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1364,610",
+   "probed": false,
+   "from": 7.217,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1473,609",
+   "probed": false,
+   "from": 7.3,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1582,608",
+   "probed": false,
+   "from": 7.383,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1692,608",
+   "probed": false,
+   "from": 7.467,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@1802,607",
+   "probed": false,
+   "from": 7.55,
+   "to": 12.8,
+   "minInkWhilePaper": 0.62
+  },
+  {
+   "id": "fillRect@789,579",
+   "probed": false,
+   "from": 10.383,
+   "to": 12.8,
+   "minInkWhilePaper": 1
+  }
+ ]
+}

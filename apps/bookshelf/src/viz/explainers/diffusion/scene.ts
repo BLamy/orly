@@ -144,6 +144,15 @@ function panelPoints(cx: number, cy: number, useNoise: boolean, color: string): 
 const LEFT_PTS = panelPoints(PANEL.lx, PANEL.cy, false, colors.ACCENT); // σ = 0
 const RIGHT_PTS = panelPoints(PANEL.rx, PANEL.cy, true, RAMP[64]); // σ = 1
 
+/** Faint reference of the clean moons (σ = 0), drawn under the fog so the curve stays in view. */
+export const GHOST_D = (() => {
+  let d = '';
+  for (let i = 0; i < N; i += 4) {
+    d += `M${(CX + X0[i] * SCALE).toFixed(1)} ${(CY - Y0[i] * SCALE).toFixed(1)}h1`;
+  }
+  return d;
+})();
+
 /* ————— channels + timeline ————— */
 
 export interface DiffusionChannels {
@@ -253,7 +262,9 @@ export function computeParticles(s: SceneState, ch: DiffusionChannels): Particle
       p.x = CX + (a * X0[i] + b * EX[i]) * SCALE;
       p.y = CY - (a * Y0[i] + b * EY[i]) * SCALE;
       p.color = color;
-      p.alpha = 0.8 * mainA * clamp01((entrance - FADE[i] * 0.45) / 0.55);
+      // Soft fade for stray far-tail points, so none sit on the top edge or the timestep bar.
+      const edge = clamp01((p.y - 45) / 25) * clamp01((620 - p.y) / 20);
+      p.alpha = 0.8 * mainA * clamp01((entrance - FADE[i] * 0.45) / 0.55) * edge;
       OUT.push(p);
     }
   }

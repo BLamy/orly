@@ -23,7 +23,7 @@ const RECAP = { y: 250, xs: [180, 480, 780, 1080], w: 250, h: 150 };
 const NOTE = { x: 290, y: 450, w: 700, h: 150 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
-const CAM_MACHINE: CameraState = { x: 700, y: 260, k: 1.14 };
+const CAM_MACHINE: CameraState = { x: 570, y: 300, k: 1.2 }; // frames CI badge through the getter
 const CAM_SITES: CameraState = { x: 460, y: 300, k: 1.08 };
 const CAM_WIDE: CameraState = { x: 640, y: 380, k: 0.94 };
 
@@ -211,9 +211,9 @@ function HandleMachine({
   const h2 = clamp01(hand2);
   const ld = clamp01(land);
   const { size } = HANDLE;
-  // take 1: materializes, then falls past the missing tray and fades
+  // take 1: materializes, then falls past the missing tray and fades out fully
   const y1 = HANDLE.y + f * 220;
-  const o1 = h1 * (1 - f * 0.9) * (h2 > 0.01 ? 0 : 1);
+  const o1 = h1 * (1 - f) * (h2 > 0.01 ? 0 : 1);
   // take 2: materializes, then descends and LANDS on the tray
   const y2 = HANDLE.y + ld * (TRAY.y - size - 2 - HANDLE.y);
   return (
@@ -221,7 +221,7 @@ function HandleMachine({
       {g > 0 && (
         <g transform={`translate(${GETTER.x}, ${GETTER.y + (1 - g) * 10})`} opacity={g}>
           <rect width={GETTER.w} height={GETTER.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={18} y={23} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+          <text x={18} y={23} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
             the default-context getter
           </text>
           <text x={18} y={42} fill={colors.TEXT} fontSize={12.5} fontWeight={700} fontFamily={mono}>
@@ -241,7 +241,7 @@ function HandleMachine({
       ) : (
         h1 > 0.3 && (
           <g opacity={h1}>
-            <line x1={TRAY.x} y1={TRAY.y + 8} x2={TRAY.x + TRAY.w} y2={TRAY.y + 8} stroke={colors.NEGATIVE} strokeWidth={1.5} strokeDasharray="6 6" opacity={0.6} />
+            <line x1={TRAY.x} y1={TRAY.y + 8} x2={TRAY.x + TRAY.w} y2={TRAY.y + 8} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="6 6" opacity={0.9} />
             <text x={TRAY.x + TRAY.w / 2} y={TRAY.y + 34} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
               no HandleScope here
             </text>
@@ -252,13 +252,14 @@ function HandleMachine({
       {o1 > 0 && (
         <g transform={`translate(${HANDLE.x}, ${y1})`} opacity={o1}>
           <rect width={size} height={size} rx={7} fill={f > 0.4 ? colors.NEGATIVE : colors.ACCENT} opacity={0.9} />
-          <text x={size / 2} y={size / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={11} fontWeight={700} fontFamily={mono}>
+          <text x={size / 2} y={size / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={12} fontWeight={700} fontFamily={mono}>
             cx
           </text>
         </g>
       )}
+      {/* sits below the fall path, clear of the caption pill; gone once the tray arrives */}
       {f > 0.7 && h2 < 0.01 && (
-        <text x={HANDLE.x + size / 2} y={HANDLE.y + 270} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={700} fontFamily={mono} opacity={(f - 0.7) / 0.3}>
+        <text x={HANDLE.x + size / 2} y={500} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono} opacity={((f - 0.7) / 0.3) * (1 - tr)}>
           ✗ crash — nowhere to live
         </text>
       )}
@@ -266,7 +267,7 @@ function HandleMachine({
       {h2 > 0 && (
         <g transform={`translate(${HANDLE.x}, ${y2})`} opacity={h2}>
           <rect width={size} height={size} rx={7} fill={ld > 0.9 ? colors.POSITIVE : colors.ACCENT} opacity={0.95} />
-          <text x={size / 2} y={size / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={11} fontWeight={700} fontFamily={mono}>
+          <text x={size / 2} y={size / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={12} fontWeight={700} fontFamily={mono}>
             cx
           </text>
         </g>
@@ -282,7 +283,7 @@ function FixedSites({ n, off }: { n: number; off: number }) {
   const { x, y, w, rowH } = SITES;
   return (
     <g opacity={a}>
-      <text x={x} y={y - 12} fill={colors.MUTED} fontSize={11.5} fontFamily={mono} opacity={clamp01(n)}>
+      <text x={x} y={y - 12} fill={colors.MUTED} fontSize={13} fontFamily={mono} opacity={clamp01(n)}>
         scopes added — 3 call sites
       </text>
       {SITE_ROWS.map((row, i) => {
@@ -291,10 +292,10 @@ function FixedSites({ n, off }: { n: number; off: number }) {
         return (
           <g key={i} transform={`translate(${x}, ${y + i * rowH + (1 - u) * 8})`} opacity={u}>
             <rect width={w} height={rowH - 12} rx={9} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-            <text x={14} y={19} fill={colors.POSITIVE} fontSize={11} fontWeight={700} fontFamily={mono}>
+            <text x={14} y={19} fill={colors.POSITIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
               + HandleScope
             </text>
-            <text x={14} y={35} fill={colors.TEXT} fontSize={10.5} fontFamily={mono}>
+            <text x={14} y={35} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
               {row}
             </text>
           </g>
@@ -304,34 +305,47 @@ function FixedSites({ n, off }: { n: number; off: number }) {
   );
 }
 
-/** The case, re-traced — four cards. */
-function RecapStrip({ n, hl }: { n: number; hl: number }) {
-  if (n <= 0) return null;
+/** The case, re-traced — four cards. `slot` shows empty placeholders first ("the whole case"). */
+function RecapStrip({ n, hl, slot }: { n: number; hl: number; slot: number }) {
   const { y, xs, w, h } = RECAP;
+  const sl = clamp01(slot);
+  if (n <= 0 && sl <= 0) return null;
   return (
     <g>
       {RECAP_CARDS.map((card, i) => {
         const u = clamp01(n - i);
-        if (u <= 0) return null;
-        const lit = Math.abs(hl - i) < 0.5 ? 1 : 0;
         const x = xs[i] - w / 2;
         const tone = i === 0 || i === 1 ? colors.NEGATIVE : i === 2 ? colors.WARM : colors.POSITIVE;
+        const lit = Math.abs(hl - i) < 0.5 ? 1 : 0;
+        const placeholder = sl * (1 - u);
         return (
-          <g key={i} transform={`translate(${x}, ${y + (1 - u) * 12})`} opacity={u * (hl >= -0.5 && !lit ? 0.35 : 1)}>
-            <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={lit ? tone : colors.GRID} strokeWidth={lit ? 2 : 1.5} />
-            <text x={w / 2} y={34} textAnchor="middle" fill={colors.TEXT} fontSize={14.5} fontWeight={700}>
-              {card.title}
-            </text>
-            <text x={w / 2} y={72} textAnchor="middle" fill={tone} fontSize={12.5} fontWeight={700} fontFamily={mono}>
-              {card.code}
-            </text>
-            <text x={w / 2} y={108} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
-              {card.sub}
-            </text>
-            {i < 3 && u > 0.9 && clamp01(n - i - 1) > 0 && (
-              <text x={w + 22} y={h / 2 + 5} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
-                →
-              </text>
+          <g key={i}>
+            {placeholder > 0 && (
+              <g transform={`translate(${x}, ${y})`} opacity={placeholder}>
+                <rect width={w} height={h} rx={12} fill="none" stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="6 6" />
+                <text x={w / 2} y={h / 2 + 5} textAnchor="middle" fill={colors.MUTED} fontSize={14.5} fontWeight={700}>
+                  {card.title}
+                </text>
+              </g>
+            )}
+            {u > 0 && (
+              <g transform={`translate(${x}, ${y + (1 - u) * 12})`} opacity={u * (hl >= -0.5 && !lit ? 0.5 : 1)}>
+                <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={lit ? tone : colors.GRID} strokeWidth={lit ? 2 : 1.5} />
+                <text x={w / 2} y={34} textAnchor="middle" fill={colors.TEXT} fontSize={14.5} fontWeight={700}>
+                  {card.title}
+                </text>
+                <text x={w / 2} y={72} textAnchor="middle" fill={tone} fontSize={14} fontWeight={700} fontFamily={mono}>
+                  {card.code}
+                </text>
+                <text x={w / 2} y={108} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                  {card.sub}
+                </text>
+                {i < 3 && u > 0.9 && clamp01(n - i - 1) > 0 && (
+                  <text x={w + 22} y={h / 2 + 5} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
+                    →
+                  </text>
+                )}
+              </g>
             )}
           </g>
         );
@@ -366,7 +380,12 @@ function renderFrame(s: SceneState) {
   const off = clamp01(s.get(scene.machineOffU));
   return (
     <>
-      <CiBadge u={s.get(scene.ciU)} state={s.get(scene.ciState)} off={off} />
+      {/* the CI badge turns green as the second take lands on the tray */}
+      <CiBadge
+        u={s.get(scene.ciU)}
+        state={Math.max(s.get(scene.ciState), -1 + 2 * clamp01(s.get(scene.landU)))}
+        off={off}
+      />
       <HandleMachine
         getter={s.get(scene.getterU)}
         hand={s.get(scene.handU)}
@@ -377,7 +396,7 @@ function renderFrame(s: SceneState) {
         off={off}
       />
       <FixedSites n={s.get(scene.siteN)} off={off} />
-      <RecapStrip n={s.get(scene.recapN)} hl={s.get(scene.hlRecap)} />
+      <RecapStrip n={s.get(scene.recapN)} hl={s.get(scene.hlRecap)} slot={off} />
       <ClosingNote u={s.get(scene.noteU)} />
     </>
   );

@@ -43,11 +43,11 @@ const CASES = [
 ];
 
 const CARD_W = 356;
-const CARD_H = 108;
+const CARD_H = 160;
 const GRID_X0 = 90;
-const GRID_Y0 = 130;
+const GRID_Y0 = 170;
 const GAP_X = 30;
-const GAP_Y = 24;
+const GAP_Y = 32;
 
 const cardPos = (i: number): { x: number; y: number } => ({
   x: GRID_X0 + (i % 3) * (CARD_W + GAP_X),
@@ -200,8 +200,9 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const mainOp = 1 - 0.85 * dimU;
-  // board dims while the R1 panel is up, comes back with backU
-  const boardOp = 1 - 0.88 * clamp01(focusU - backU);
+  // board leaves while the R1 panel is up (no ghost cards at the panel's edges),
+  // comes back with backU, and is gone under the closing panel
+  const boardOp = (1 - clamp01(focusU - backU)) * (1 - closeU);
   const panelOp = clamp01(focusU - backU);
 
   return (
@@ -220,16 +221,16 @@ function Frame({ s }: { s: SceneState }) {
               return (
                 <g key={c.env} opacity={u}>
                   <rect x={x} y={y} width={CARD_W} height={CARD_H} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-                  <text x={x + 16} y={y + 28} fill={colors.TEXT} fontSize={15} fontWeight={600}>
+                  <text x={x + 18} y={y + 40} fill={colors.TEXT} fontSize={18} fontWeight={600}>
                     {c.env}
                   </text>
-                  <text x={x + 16} y={y + 50} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={x + 18} y={y + 70} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     {c.model} · {c.rate}
                   </text>
                   {vu > 0 && (
                     <g opacity={vu}>
-                      <rect x={x + 12} y={y + 64} width={CARD_W - 24} height={30} rx={8} fill={c.benign ? colors.ACCENT : colors.NEGATIVE} opacity={0.13} />
-                      <text x={x + 22} y={y + 84} fill={c.benign ? colors.ACCENT : colors.NEGATIVE} fontSize={13} fontWeight={600}>
+                      <rect x={x + 12} y={y + 92} width={CARD_W - 24} height={42} rx={8} fill={c.benign ? colors.ACCENT : colors.NEGATIVE} opacity={0.18} />
+                      <text x={x + 24} y={y + 118} fill={c.benign ? colors.ACCENT : colors.NEGATIVE} fontSize={15} fontWeight={600}>
                         {c.verdict}
                       </text>
                     </g>
@@ -246,9 +247,22 @@ function Frame({ s }: { s: SceneState }) {
               <text x={R1_X - 36} y={R1_Y - 44} fill={colors.TEXT} fontSize={18} fontWeight={600}>
                 Evaluation Tampering — DeepSeek R1 0528
               </text>
-              <text x={R1_X - 36} y={R1_Y - 20} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={R1_X - 36} y={R1_Y - 20} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 deception rate under interventions · reported (§6.3, App. C.3) — replotted, not re-run
               </text>
+              {/* the full 0–50% scale is drawn from the start, so the empty panel reads as a chart */}
+              {R1_BARS.map((b, i) => (
+                <rect
+                  key={`track-${i}`}
+                  x={R1_X + 320}
+                  y={R1_Y + 16 + i * 46 - 6}
+                  width={(50 / 50) * R1_BAR_MAX * 0.55}
+                  height={18}
+                  rx={4}
+                  fill={colors.GRID}
+                  opacity={0.35}
+                />
+              ))}
               {r1U > 0 &&
                 R1_BARS.map((b, i) => {
                   const target = clamp01(r1FillU * 4 - i);
@@ -256,12 +270,12 @@ function Frame({ s }: { s: SceneState }) {
                   const y = R1_Y + 16 + i * 46;
                   return (
                     <g key={i} opacity={r1U}>
-                      <text x={R1_X - 36} y={y + 8} fill={colors.TEXT} fontSize={13}>
+                      <text x={R1_X - 36} y={y + 8} fill={colors.TEXT} fontSize={14}>
                         {b.label}
                       </text>
-                      <rect x={R1_X + 320} y={y - 6} width={Math.max(2, w * 0.55)} height={18} rx={4} fill={b.c} opacity={0.8} />
+                      <rect x={R1_X + 320} y={y - 6} width={Math.max(2, w * 0.55)} height={18} rx={4} fill={b.c} opacity={0.9} />
                       {target > 0.9 && (
-                        <text x={R1_X + 328 + w * 0.55} y={y + 8} fill={b.c} fontSize={13} fontFamily={MONO}>
+                        <text x={R1_X + 328 + w * 0.55} y={y + 8} fill={b.c} fontSize={14} fontWeight={600} fontFamily={MONO}>
                           {b.rate}%
                         </text>
                       )}
@@ -274,13 +288,13 @@ function Frame({ s }: { s: SceneState }) {
                   <text x={R1_X - 36} y={R1_Y + 242} fill={colors.TEXT} fontSize={16} fontWeight={600}>
                     Math Sandbagging — same model, different verdict
                   </text>
-                  <text x={R1_X - 36} y={R1_Y + 270} fill={colors.MUTED} fontSize={13}>
+                  <text x={R1_X - 36} y={R1_Y + 270} fill={colors.MUTED} fontSize={14}>
                     baseline 60.5 percent — remove one sentence from the docs — 23.4 percent
                   </text>
-                  <rect x={R1_X - 36} y={R1_Y + 284} width={340} height={16} rx={4} fill={colors.NEGATIVE} opacity={0.7} />
-                  <rect x={R1_X - 36} y={R1_Y + 306} width={131} height={16} rx={4} fill={colors.POSITIVE} opacity={0.7} />
-                  <text x={R1_X + 314} y={R1_Y + 297} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>60.5%</text>
-                  <text x={R1_X + 105} y={R1_Y + 319} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>23.4% — confusion, not scheming</text>
+                  <rect x={R1_X - 36} y={R1_Y + 284} width={340} height={16} rx={4} fill={colors.NEGATIVE} opacity={0.8} />
+                  <rect x={R1_X - 36} y={R1_Y + 306} width={131} height={16} rx={4} fill={colors.POSITIVE} opacity={0.8} />
+                  <text x={R1_X + 314} y={R1_Y + 297} fill={colors.NEGATIVE} fontSize={14} fontWeight={600} fontFamily={MONO}>60.5%</text>
+                  <text x={R1_X + 105} y={R1_Y + 319} fill={colors.POSITIVE} fontSize={14} fontWeight={600} fontFamily={MONO}>23.4% — confusion, not scheming</text>
                 </g>
               )}
             </g>
@@ -300,7 +314,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Motives are specific — and testable
           </text>

@@ -1,0 +1,70 @@
+{
+  "reviewer": "teacher",
+  "round": 9,
+  "lens": "clarity and depth for a curious 15-year-old and an expert at once",
+  "runtimeCheck": "script.mjs assemble --check: 34.7 min (2081.8 s at 143.5 wpm) against a 32.0 min target. 3,585 words, 0 errors, 1 warning. It is inside the brief's 30-35 min range, so runtime is not critical. Since round 8 the script has grown by 147 words (+1.4 min) and now has only about 0.3 min of headroom. Every fix below is therefore word-neutral or paid for: the net change is about -5 words.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8.5,
+    "clarity": 8.5,
+    "story": 8,
+    "curiosity": 8.5,
+    "visual": 8,
+    "voice": 8
+  },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch08-s10 L0819 ('the stride shortened three times, by hand')",
+      "problem": "This is new since round 8, which had 'step'. In the AlexNet deep dive 'stride' is a real and different term. The bible's architecture table lists 'conv1 ... stride 4' and 'max-pool 3×3, stride 2' (bible lines 876-877). That meaning is how far the stencil jumps, not the learning rate. An expert will hear the line as 'they changed the convolution stride three times', which is wrong. A teenager has heard 'step' (L0510, 'a step downhill') and never 'stride'. The OST already says 'step size ÷ 10, three times'.",
+      "fix": "L0819 → 'Then five or six days downhill in fog, the step size cut three times, by hand.' (+1; claims e8-ingredients, e8-architecture). This matches L0510 and the OST exactly."
+    },
+    {
+      "where": "ch08-s08 L0815 (the 1.2 million is still missing from the ear)",
+      "problem": "Round 8's fix landed, so each label now speaks as 'about ten yes-or-no answers'. But the ear goes straight to 'Twelve million answers in all' without the number being multiplied. The narration never says how many labelled photos there were. L0704 says only 'her millions of pictures'. The 1.2 million appears only on the OST (ch08-s08, ch08-s10). A 15-year-old cannot check the arithmetic: twelve million divided by ten is what? The argument here, too few constraints for sixty million knobs, is the cleverest reasoning in the dive, so it should add up out loud.",
+      "fix": "L0815 → 'Sixty million weights; just one point two million labelled photos. Each label, one name in a thousand, is worth about ten yes-or-no answers: twelve million in all. It could memorise the photos, not learn to see.' (+5; claims e8-ingredients, e8-architecture, e7-ilsvrc2010). Pay for it with the L1529 trim below."
+    },
+    {
+      "where": "ch15-s01 L1529 (word budget, to pay for L0815 and L0819)",
+      "problem": "The runtime is 0.3 min below the brief's ceiling. L1529 spends 22 words on names that are already on screen (the ch15-s01 OST: 'Demis Hassabis · John Jumper · DeepMind').",
+      "fix": "L1529 → 'The next day, chemistry's prize went in part to DeepMind's Hassabis and Jumper, for predicting the shapes of proteins.' (−3; claims e12-nobel-chem, e11-alphafold). If more room is needed, also cut L0909b 'Its backers committed a billion dollars.' (−6). The OST 'committed $1B' already carries it."
+    },
+    {
+      "where": "ch10-s04 OST (the Transformer's result is spoken, but no number is shown)",
+      "problem": "L1024 ('From English to German, it out-translated every rival after half a day's training') is now correct, which fixes round 8. But the deep dive never puts the evidence on screen. The AlexNet dive shows 15.3% vs 26.2%, and an expert will want the Transformer's equivalent. The bible has it (e10-results).",
+      "fix": "Add an OST line at ch10-s04 on 'out-translated' (0 spoken words): 'WMT 2014 · English→German · base model 27.3 BLEU (12 h) vs best earlier 26.36, ensembles included · big model 28.4 (3.5 days)'. Claim e10-results is already on the shot."
+    },
+    {
+      "where": "ch06-s04 OST candle label vs L0608",
+      "problem": "Round 8's fix landed in the narration, which now says 'neural nets are fiddly, they stall in the fog, and they're beaten anyway'. But the candle's lettering still says 'NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY'. The candle is the film's record of each belief, and this one now leaves out the very fear (stalling in the fog) that ch06-s08's 'WHY WOULD ANYONE CHOOSE THE FOG?' and L0832 then answer.",
+      "fix": "ch06-s04 OST label → 'NEURAL NETS ARE FIDDLY, STALL IN THE FOG, AND ARE BEATEN ANYWAY' (0 spoken words; claims e6-nn-winter, e6-svm). Make the same change wherever the candle reappears (ch08-s13b, the ch15 shelf)."
+    },
+    {
+      "where": "ch15-s09 L1517 ('The last word is Hinton's, too.')",
+      "problem": "Round 8's L1302 fix removed the 'forecast slip' that this 'too' used to echo. L1302 now reads 'takes down an old forecast. It is his own.' The preceding lines (L1514-L1516) are the narrator's own, so 'too' has nothing to point back to, and the ear stumbles at the film's final cadence.",
+      "fix": "L1517 → 'The last word goes to Hinton.' (0 words). Alternatively, restore the echo with 'The last forecast is Hinton's, too.' (0 words). That works only if the visual pins the quote on the Wall of Forecasts."
+    },
+    {
+      "where": "ch05-s03 L0505b and ch15-s01 L1502 ('a net that settles as it cools')",
+      "problem": "This is said twice and explained zero times. An expert recognises simulated annealing (e4-boltzmann: 'stochastic units, simulated annealing'). A 15-year-old gets a pretty phrase with nothing behind it, and it is the half of the Nobel citation that belongs to the film's protagonist. It is the one mechanism in the film that never gets its picture.",
+      "fix": "Prefer a 0-word fix. In ch05-s03, give 'cools' a visual beat: a jittering lantern net, like hot metal, whose flicker slows until it settles into a pattern, with the OST 'random jiggles, slowly cooled · simulated annealing'. If words allow: L0505b → '...a net that jiggles at random, then settles as it cools.' (+4; claim e4-boltzmann)."
+    },
+    {
+      "where": "ch11-s05 L1110 ('bigger models, lower error')",
+      "problem": "For the expert, this is half of the scaling law. Kaplan's law (e11-kaplan) is a power law in parameters, data and compute, and the compute-optimal recipe was the headline. 'Bigger models' alone also makes the later DeepSeek cost argument (L1406-L1407) and the chip chokepoint (L1405) harder to connect: it was compute, not just model size, that became the lever, and that is why chips became a chokepoint.",
+      "fix": "L1110 → '...came back as a smooth, predictable law: more size, more data, more computing, lower error...' (+3; claim e11-kaplan). Optionally add an OST under the log-scale plate: 'loss falls as a power law in parameters, data, compute'. Pay for it with the L0909b cut above if used."
+    },
+    {
+      "where": "ch11-s02 L1103 / ch07-s06 (the pre-training rhyme is visual only)",
+      "problem": "L1103 now says 'No labels needed: every next word is its own right answer'. That lands the self-supervision idea and fixes round 8's main ch11 gap. The return of the 2006 warm-up as pre-training ('before any right answers', L0702) still happens only on screen: OST 'PRE-TRAINING' at ch07-s06 and 'PRE-TRAINING · READ EVERYTHING FIRST' at ch11-s01. An expert would enjoy hearing the irony the bible names ('Pretraining returned a few years later in a new form').",
+      "fix": "Low priority and word-neutral: L1104 → 'The old warm-up, back as reading. And Lenat's “practically nothing” from “the raw text”? Sensible, then.' (+1 against the current 13; claims e7-pretraining-belief, e5-cyc-rawtext). Skip it if the Lenat beat should stay as it is."
+    }
+  ],
+  "strengths": [
+    "Nearly every round-8 clarity fix landed cleanly. The ten-bit label argument is now spoken. 'Read Everything' finally says what was read and why next-word prediction needs no labels ('every next word is its own right answer'), and it names GPT-2 as 'a Transformer's writing half', which closes the ch10 → ch11 bridge. The fiddly-nets candle now names the fear of stalling in the fog. L1024 is scoped to English-German. 'Deep' is glossed as 'many layers tall' before 'deep learning' is coined. The auction now ends with a buyer. 'Forecast slip' is replaced. 'Nearly right' says which condition failed. Ch12 has 'Through ChatGPT's door'. Widrow's machines 'learned by sliding downhill, toward less wrong', which pre-plants the landscape for L0510, L0607 and L0819.",
+    "The AlexNet dive is correct at expert level and still followable at fifteen. Pixels are numbers. A worked 3×3 stencil sums to 3.88 (I checked it). The OST honestly states that the real first-layer stencils are 11×11×3, so the toy is not passed off as the real thing. The stencil is slid everywhere and named as convolution. The feature-map sizes 55·27·13·13·13 → 4096·4096·1000 are right. Stencils begin as television snow and are cut by the 1986 messenger. ReLU appears as a weir, with the six-fold CIFAR-10 test. Crops and mirrors are ×2048. Dropout at p = 0.5 in fc6/fc7 only. The unprompted colour/edge split comes with the paper's own wording. Top-5 is introduced before 15.3 vs 26.2, followed by fair credit (seven nets voting, one alone 18.2%, IDSIA's earlier wins) and the one-year flip to all top-five teams.",
+    "The Transformer dive is the best teaching in the film, and every number checks. The 2014 bottleneck motivates attention. Q/K/V become question, label and message cards tuned by 'our messenger'. The dot product is 'the stencil's way'. Toy scores 2·0·4·2, halved, pour through softmax to give river 0.534 ('about half'). √dₖ is explained by its failure mode (the jug tips everything into one cup, and learning freezes), with 64 → 8 mirrored by the toy's 4 → 2. Then come eight heads, sinusoidal clock faces, 'talk, then think alone, six times over', the parallelism payoff tied to GPUs, the n² catch, and the decoder-only curtain. The ch10-s13b OST ('not the first attention · not only attention · built to translate') is exactly the hedge an expert wants.",
+    "The brief's 'what people believed, who dissented, and for how long' is spoken aloud for every era, and every span checks against the bible. Logic machine (Gerard, 16 years). Learning machine (Minsky, about 7). Sterile extension (Hinton at the rim, 17). Knowledge by hand (AAAI-84 insiders, about 7; Lenat 39). Fiddly nets (three holdouts, 10 to 15). Warm-up (IDSIA, honestly 'nobody knows exactly when'). Hand-cut stencils (Sutskever, 13). Read in order (Uszkoreit, 20). The creed (adversarial examples and Gender Shades). Scale (the octopus and the parrots). Worry (three camps). Chokepoint and gap (about two years, and a match that burned a day). The candle of now (METR's trial, with its own 'out of date' caveat).",
+    "The metaphors are built once and reused rather than replaced. Switch → knob = weight → lanterns → messenger → fog and bowl → stencil → jug → judge → curtain, with 'weights open to all' at L1408b cashing in the 1958 knob, and the reasoning-model gloss ('trained by reward, they wrote long working notes'). Contested matters stay attributed and even-handed: backprop priority with Hinton's own disclaimer, Gebru ('the accounts differ'), the physics-Nobel question, DeepSeek's cost caveat, the spread of gap estimates on screen, and Anthropic's Pentagon dispute and copyright settlement placed beside OpenAI's warning shot. The Lenat quote at L1104 checks verbatim against quotes.json."
+  ]
+}

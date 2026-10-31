@@ -1,0 +1,103 @@
+{
+ "shot": "ch06-s07",
+ "at": "2026-10-28T13:15:04.611Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 18,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "3",
+   "capWhileSubject": 30.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 30.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 30.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "5",
+   "capWhileSubject": 30.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 30.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2",
+   "capWhileSubject": 30.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "6",
+   "capWhileSubject": 30.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "14",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "23",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "25",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "31",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "SKLANSKY 1960",
+   "capWhileSubject": 23.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "sklanskyPrefix",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a prefix network only in a later reading",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "BRENT · KUNG 1982",
+   "capWhileSubject": 23.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "brentKungPrefix",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

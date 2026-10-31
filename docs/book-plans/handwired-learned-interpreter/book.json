@@ -1,0 +1,63 @@
+{
+  "slug": "handwired-learned-interpreter",
+  "title": "Learned Program",
+  "subtitle": "Training two instructions of a tiny interpreter, what a fixed epsilon broke, and what integer examples cannot say.",
+  "animal": "octopus",
+  "accent": "#8d5fd3",
+  "chapters": [
+    {
+      "title": "A Program in 123 Cells",
+      "blurb": "A two-instruction interpreter whose whole program is a table of dials, one per candidate instruction.",
+      "captions": [
+        "Here's the question: can training find one reusable program, instead of a separate answer for every input? This lab fixes a tiny interpreter and lets learning choose what it runs.",
+        "Four inputs change on every example: the pointer position, the panel's left edge, a scale, and a distractor. The same program has to work for all of them.",
+        "A program is two instructions. Each picks one operation, add, subtract, or multiply, and an ordered pair of values to apply it to.",
+        "Instruction zero reads the four inputs, so it has three operations times four times four: forty-eight candidates. Instruction one can also read instruction zero's result, which makes seventy-five.",
+        "Every candidate gets its own dial. The circuit computes all the candidates' results, multiplies each by its dial, and adds them up. That weighted sum is the soft program.",
+        "Training will push one dial per instruction toward one, and the rest toward zero. Then the leftmost largest dial wins, and the soft mixture becomes one exact instruction.",
+        "Count the cells. Forty-eight plus seventy-five is one hundred twenty-three program cells, beside four input cells. There is no example number and no per-example setting to cheat with.",
+        "Two tasks test it. The coordinate task subtracts the left edge from the pointer, then multiplies by the scale. The two-add task adds the pointer to the left edge, then adds the distractor.",
+        "A separate checker computes each answer, rounding to a thirty-two-bit float after every step. A learned program has to match that checker, not just land close.",
+        "Run today, the circuit has two hundred fifty operations: seventy-seven weighted sums and one hundred seventy-three relu-gated products. The soft and hard versions have the same count.",
+        "So a learned program is just a pair of one-hot choices among those cards. The next chapter asks how training finds them, and what went wrong the first time."
+      ]
+    },
+    {
+      "title": "Cooling the Reels",
+      "blurb": "Score every program once, train probabilities over the table, and watch a tiny optimizer constant decide whether it works.",
+      "captions": [
+        "Here's what makes training possible. Before learning anything, the lab runs every one of the three thousand six hundred possible programs on every training example, and records the error in one table.",
+        "The table has forty-eight rows and seventy-five columns. Each cell holds one complete program's average error over fourteen thousand seven hundred thirty-nine training examples.",
+        "Most cells glow with error. For the coordinate task exactly two cells go dark, zero error on every training example. For the two-add task, twelve do.",
+        "Training never touches a program directly. It keeps one probability per row and one per column, and minimizes the expected error: row probability, times cell error, times column probability, summed.",
+        "A temperature starts hot, at two, so the probabilities stay spread out. It cools through five phases of five hundred steps, down to one eighth, sharpening each reel toward a single card.",
+        "Now one coordinate run with the original optimizer setting. The first reel finds subtracting the left edge from the pointer. The second reel locks onto the wrong card, and the error stops falling.",
+        "The optimizer is Adam, which divides each step by the gradient's recent size plus a tiny constant, epsilon. The lab reports that the old epsilon dominated the small gradients here, so steps shrank.",
+        "Shrink epsilon to ten to the minus fourteen, and the same run escapes. The second reel leaves the wrong card, and the error falls toward zero.",
+        "The second reel ends near one half, not one. That fits the two equivalent coordinate programs, which differ only in the order of the multiplication.",
+        "You can get the same effect without touching epsilon: multiply the loss by a million. All one hundred twenty paired runs then choose identical programs, and their final probabilities differ by almost nothing.",
+        "The scoreboard: with the original epsilon, none of one hundred twenty runs recovered a program. Corrected, all sixty coordinate runs do, and fifty-nine of sixty two-add runs get every integer example right.",
+        "One two-add seed still fails, and the settings were not retuned for it. The lab says epsilon caused most of the failure, not all of it, and the reassessment's numerical diagnosis is unfinished."
+      ]
+    },
+    {
+      "title": "What Integers Cannot Say",
+      "blurb": "Twelve programs pass on whole numbers, four survive exact float checks, and every route still scores the full table first.",
+      "captions": [
+        "Training counts a program as recovered once it gets every integer example right. For the two-add task, twelve different programs do that.",
+        "Then comes the strict checker: thirty-nine thousand six hundred five cases, whole numbers, fractions, and input-rounding tests, each compared against the independent oracle.",
+        "Only four of the twelve survive. All four add the pointer to the left edge first, then add the distractor, and each addition may swap its two operands.",
+        "Why do the others fail? Set the pointer to one, the left edge to two to the minus twenty-fourth, and the distractor to minus one. Adding pointer and edge first rounds back to exactly one, and minus one gives zero.",
+        "Group them the other way and the edge plus minus one is exact. Adding the pointer then leaves two to the minus twenty-fourth. Same three numbers, same two additions, a different answer.",
+        "Small whole numbers add exactly in either grouping, so this lab's small integer examples cannot tell the groupings apart. In the lab's words, integer examples alone cannot identify which grouping is required.",
+        "So the tally splits. Of sixty corrected two-add runs, only fifteen pass the full checks, while all sixty coordinate runs still do. The training data, not the optimizer, is the limit here.",
+        "Reading the table directly is a baseline too: all three thousand six hundred entries, the first minimum wins. On these tasks that program also passes the full checks.",
+        "Starting from each failed run, one sweep of exact coordinate updates reaches zero integer error in one hundred twenty-four table reads. That repairs a run. It does not search from scratch.",
+        "And every hard-loss route reuses the table, which took over fifty-three million second-instruction evaluations to build. Nothing here avoids scoring every complete program first.",
+        "The earlier soft-output trainer, which averages candidate outputs and follows the error, recovered eleven of twenty coordinate runs and none of twenty full two-add runs. Those results are historical.",
+        "The status, plainly: the corrected optimizer result holds on this two-instruction task. It is narrowed to integer data, and the open question is whether fractional examples can identify the grouping.",
+        "Untested: data-dependent choices, loops, varying lengths, longer programs, or training without a full loss table. In the lab's words, neither result establishes scalable program synthesis."
+      ]
+    }
+  ]
+}

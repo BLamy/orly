@@ -20,11 +20,14 @@ import { JsonDoc, layoutJson, shortHex } from '../../primitives';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+// the minted kind — an example number, not yet checked against the NIP registry
+const NEW_KIND = 30777;
+
 const EVENT = {
   id: 'a9f81d2c…10da',
   pubkey: '8e0d3d3e…5e0ed7',
   created_at: 1700900000,
-  kind: 30402,
+  kind: NEW_KIND,
   tags: [['d', 'your-new-thing']],
   content: '…',
   sig: 'c1d7…',
@@ -41,7 +44,6 @@ const PROOFS = [
 
 // mini namespace strip for the mint beat
 const STRIP_KINDS = [1, 7, 9735, 30023, 30311, 31990];
-const NEW_KIND = 30402;
 
 const CAM_EVENT: CameraState = { x: 640, y: 300, k: 1.1 };
 const CAM_MINT: CameraState = { x: 640, y: 360, k: 1.0 };
@@ -144,31 +146,39 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the dim stays readable; the whole main scene fades out behind the closing card
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const focus = proofF >= 0 && proofF < PROOFS.length ? [PROOFS[proofF].key === 'relays' ? 'kind' : PROOFS[proofF].key] : undefined;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0.02 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the event */}
-          <JsonDoc layout={EVENT_LAYOUT} reveal={eventU} focus={mintU > 0 ? ['kind'] : focus} focusU={mintU > 0 ? mintU : proofF >= 0 ? 1 : 0} />
+          <JsonDoc layout={EVENT_LAYOUT} reveal={eventU} focus={mintU > 0 ? ['kind'] : focus} focusU={mintU > 0 ? mintU : proofF >= 0 ? 1 : 0} dim={0.5} />
 
           {/* the four proofs */}
           {PROOFS.map((p, i) => {
             const lit = proofF >= i;
             if (eventU < 1) return null;
             return (
-              <g key={p.key} opacity={lit ? 1 : 0.28}>
+              <g key={p.key} opacity={lit ? 1 : 0.4}>
                 <rect x={p.x - 20} y={p.y - 26} width={250} height={52} rx={9} fill={colors.PANEL} stroke={lit ? p.color : colors.GRID} strokeWidth={lit ? 1.6 : 1} />
-                <text x={p.x - 6} y={p.y - 5} fill={lit ? p.color : colors.MUTED} fontSize={13.5} fontWeight={600}>
+                <text x={p.x - 6} y={p.y - 5} fill={lit ? p.color : colors.MUTED} fontSize={14} fontWeight={600}>
                   {p.label}
                 </text>
-                <text x={p.x - 6} y={p.y + 14} fill={colors.MUTED} fontSize={11.5}>
+                <text x={p.x - 6} y={p.y + 14} fill={colors.MUTED} fontSize={13}>
                   {p.sub}
                 </text>
+                {/* beat 3: three are fixed for everyone, the kind is the open one */}
+                {stripU > 0 && (
+                  <text x={p.x + 224} y={p.y + 14} textAnchor="end" fill={p.key === 'kind' ? colors.SECONDARY : colors.MUTED} fontSize={13} fontWeight={600} opacity={stripU}>
+                    {p.key === 'kind' ? 'open' : 'fixed'}
+                  </text>
+                )}
               </g>
             );
           })}
@@ -177,7 +187,7 @@ export function Render({ s }: { s: SceneState }) {
           {stripU > 0 && (
             <g opacity={stripU}>
               {STRIP_KINDS.map((k, i) => {
-                const x = 300 + i * 116;
+                const x = 244 + i * 116;
                 return (
                   <g key={k}>
                     <rect x={x} y={500} width={96} height={40} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
@@ -189,11 +199,11 @@ export function Render({ s }: { s: SceneState }) {
               })}
               {mintU > 0 && (
                 <g opacity={mintU}>
-                  <rect x={300 + STRIP_KINDS.length * 116} y={500} width={96} height={40} rx={8} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
-                  <text x={300 + STRIP_KINDS.length * 116 + 48} y={525} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily="monospace">
+                  <rect x={244 + STRIP_KINDS.length * 116} y={500} width={96} height={40} rx={8} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
+                  <text x={244 + STRIP_KINDS.length * 116 + 48} y={525} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily="monospace">
                     {NEW_KIND}
                   </text>
-                  <text x={300 + STRIP_KINDS.length * 116 + 48} y={560} textAnchor="middle" fill={colors.WARM} fontSize={11} opacity={mintU}>
+                  <text x={244 + STRIP_KINDS.length * 116 + 48} y={560} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={600} opacity={mintU}>
                     minted
                   </text>
                 </g>
@@ -207,12 +217,12 @@ export function Render({ s }: { s: SceneState }) {
               {WORKS.map((w, i) => {
                 const u = clamp01(worksU * WORKS.length - i);
                 if (u <= 0) return null;
-                const x = 320 + i * 130;
+                const x = 338 + i * 130;
                 return (
                   <g key={w} opacity={u}>
                     <circle cx={x} cy={600} r={7} fill="none" stroke={colors.POSITIVE} strokeWidth={1.8} />
                     <path d={`M${x - 4} 600 l3 3 l6 -7`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />
-                    <text x={x + 16} y={605} fill={colors.POSITIVE} fontSize={13}>
+                    <text x={x + 16} y={605} fill={colors.POSITIVE} fontSize={15} fontWeight={600}>
                       {w}
                     </text>
                   </g>
@@ -222,6 +232,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
@@ -235,7 +246,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             {shortHex('a9f81d2c1c8fbe4443ba0a19f32b4b382cd9bafb90d1a2a0b83c3f21c5cf10da', 10, 6)} — and anyone can mint the next kind
           </text>
-          <text x={640} y={410} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={410} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             Nostr Implementation Possibilities · the series, complete
           </text>
         </g>

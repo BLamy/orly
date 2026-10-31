@@ -32,15 +32,16 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // ---------------------------------------------------------------------------
 
 const RATIOS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+// dash: random is a solid blue-grey line, uniform a dashed violet one, so the two baselines never blur together
 const SERIES = [
-  { key: 'random', vals: [53.01, 56.63, 58.75, 62.86, 66.81, 70.38, 71.33, 74.4, 79.71, 88.82, 112.61], color: colors.MUTED },
-  { key: 'uniform', vals: [52.96, 56.57, 60.28, 62.08, 66.82, 65.25, 72.8, 76.17, 79.2, 81.06, 112.32], color: colors.ACCENT },
-  { key: 'frequency', vals: [52.72, 58.6, 61.92, 66.5, 72.78, 76.19, 82.33, 89.37, 100.67, 107.15, 114.26], color: colors.WARM },
-  { key: 'dynamic-expert-update', vals: [53.37, 70.22, 74.73, 75.55, 80.98, 81.17, 82.3, 88.7, 92.31, 95.04, 112.99], color: colors.POSITIVE },
+  { key: 'random', name: 'random', vals: [53.01, 56.63, 58.75, 62.86, 66.81, 70.38, 71.33, 74.4, 79.71, 88.82, 112.61], color: colors.MUTED, dash: '' },
+  { key: 'uniform', name: 'uniform', vals: [52.96, 56.57, 60.28, 62.08, 66.82, 65.25, 72.8, 76.17, 79.2, 81.06, 112.32], color: colors.SECONDARY, dash: '7 4' },
+  { key: 'frequency', name: 'frequency', vals: [52.72, 58.6, 61.92, 66.5, 72.78, 76.19, 82.33, 89.37, 100.67, 107.15, 114.26], color: colors.WARM, dash: '' },
+  { key: 'dynamic-expert-update', name: 'dynamic update', vals: [53.37, 70.22, 74.73, 75.55, 80.98, 81.17, 82.3, 88.7, 92.31, 95.04, 112.99], color: colors.POSITIVE, dash: '' },
 ] as const;
 
 // plot geometry
-const PLOT = { x: 170, y: 150, w: 700, h: 380 } as const;
+const PLOT = { x: 170, y: 150, w: 600, h: 380 } as const;
 const X = (r: number): number => PLOT.x + (r / 100) * PLOT.w;
 const Y = (v: number): number => PLOT.y + PLOT.h - ((v - 40) / (120 - 40)) * PLOT.h;
 const pathOf = (vals: readonly number[], reveal: number): string => {
@@ -56,10 +57,14 @@ const SEATS = 12;
 const BEFORE_HOT = [0, 3, 4, 8]; // seated experts before stats
 const AFTER_HOT = [1, 2, 5, 8]; // reseated by observed routing
 
-const CAM_PLOT: CameraState = { x: 560, y: 330, k: 1.2 };
-const CAM_LOW: CameraState = { x: 360, y: 400, k: 1.55 };
-const CAM_INSET: CameraState = { x: 1010, y: 260, k: 1.5 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+// Each push keeps every label inside the stage and clear of the caption band (y > 630).
+const CAM_PLOT: CameraState = { x: 458, y: 383, k: 1.25 };
+const CAM_LOW: CameraState = { x: 480, y: 382, k: 1.3 };
+const CAM_INSET: CameraState = { x: 693, y: 380, k: 1.1 };
+const CAM_WIDE: CameraState = { x: 693, y: 349, k: 1.0 };
+
+// series end-labels, spread 18px apart so the four names never stack (order matches SERIES)
+const LABEL_Y = [202, 220, 166, 184] as const;
 
 export interface Scene {
   tl: Timeline;
@@ -189,7 +194,7 @@ export function Render({ s }: { s: SceneState }) {
   const repU = s.get(scene.repU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  const dimAll = 1 - closeU * 0.9;
 
   return (
     <>
@@ -201,30 +206,54 @@ export function Render({ s }: { s: SceneState }) {
             <line x1={PLOT.x} y1={PLOT.y + PLOT.h} x2={PLOT.x + PLOT.w} y2={PLOT.y + PLOT.h} stroke={colors.GRID} strokeWidth={1.4} />
             <line x1={PLOT.x} y1={PLOT.y} x2={PLOT.x} y2={PLOT.y + PLOT.h} stroke={colors.GRID} strokeWidth={1.4} />
             {RATIOS.filter((r) => r % 20 === 0).map((r) => (
-              <text key={r} x={X(r)} y={PLOT.y + PLOT.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+              <text key={r} x={X(r)} y={PLOT.y + PLOT.h + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 {r}%
               </text>
             ))}
             {[60, 80, 100].map((v) => (
               <g key={v}>
                 <line x1={PLOT.x} y1={Y(v)} x2={PLOT.x + PLOT.w} y2={Y(v)} stroke={colors.GRID} strokeWidth={0.6} opacity={0.5} />
-                <text x={PLOT.x - 10} y={Y(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+                <text x={PLOT.x - 10} y={Y(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                   {v}
                 </text>
               </g>
             ))}
-            <text x={X(50)} y={PLOT.y + PLOT.h + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={X(50)} y={PLOT.y + PLOT.h + 46} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               GPU expert ratio
             </text>
-            <text x={PLOT.x - 44} y={PLOT.y - 16} fill={colors.MUTED} fontSize={11.5}>
+            <text x={PLOT.x - 44} y={PLOT.y - 16} fill={colors.TEXT} fontSize={14}>
               tokens/s
+            </text>
+          </g>
+
+          {/* the rig, shown while the caption introduces it; it hands over to the reported stamp */}
+          <g opacity={axesU * (1 - repU)}>
+            <rect x={240} y={245} width={460} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+            <text x={470} y={278} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              the rig that was benchmarked
+            </text>
+            {[0, 1, 2, 3].map((g) => (
+              <g key={g}>
+                <rect x={290 + g * 52} y={300} width={44} height={30} rx={4} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.4} />
+                <circle cx={312 + g * 52} cy={315} r={6} fill={colors.POSITIVE} opacity={0.7} />
+              </g>
+            ))}
+            <text x={372} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              4 × RTX 4090
+            </text>
+            <rect x={540} y={296} width={130} height={38} rx={6} fill={colors.BG} stroke={colors.MUTED} strokeWidth={1.2} />
+            <text x={605} y={320} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              Xeon Gold 6454S
+            </text>
+            <text x={470} y={384} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              Qwen3-Next-80B-A3B · ShareGPT prompts
             </text>
           </g>
 
           {/* reported stamp */}
           <g opacity={repU}>
-            <rect x={PLOT.x + PLOT.w - 268} y={PLOT.y - 34} width={268} height={26} rx={7} fill={colors.BG} stroke={colors.GRID} strokeWidth={1} />
-            <text x={PLOT.x + PLOT.w - 134} y={PLOT.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <rect x={PLOT.x + PLOT.w - 380} y={PLOT.y - 34} width={380} height={26} rx={7} fill={colors.BG} stroke={colors.GRID} strokeWidth={1} />
+            <text x={PLOT.x + PLOT.w - 190} y={PLOT.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               reported · Qwen3-Next-80B-A3B-FP8 · 4× RTX 4090 · ShareGPT
             </text>
           </g>
@@ -232,33 +261,45 @@ export function Render({ s }: { s: SceneState }) {
           {/* curves */}
           {SERIES.map((sr, k) => (
             <g key={sr.key}>
-              <path d={line[k] > 0.01 ? pathOf(sr.vals, line[k]) : ''} fill="none" stroke={sr.color} strokeWidth={k === 3 ? 3 : 2} opacity={k === 3 ? 1 : 0.8} />
+              <path
+                d={line[k] > 0.01 ? pathOf(sr.vals, line[k]) : ''}
+                fill="none"
+                stroke={sr.color}
+                strokeWidth={k === 3 ? 3 : 2}
+                strokeDasharray={sr.dash || undefined}
+                opacity={k === 3 ? 1 : 0.9}
+              />
               {line[k] >= 1 && (
-                <text x={X(100) + 8} y={Y(sr.vals[10]) + (k === 0 ? 12 : k === 1 ? 24 : k === 2 ? -6 : 4)} fill={sr.color} fontSize={10.5} fontFamily="ui-monospace, monospace">
-                  {sr.key}
+                <text x={X(100) + 8} y={LABEL_Y[k]} fill={sr.color} fontSize={14} fontFamily="ui-monospace, monospace">
+                  {sr.name}
                 </text>
               )}
             </g>
           ))}
 
-          {/* low-ratio spotlight */}
+          {/* low-ratio spotlight: the callout sits in empty space above the curves, with a leader down to the point */}
           <g opacity={lowU}>
-            <circle cx={X(10)} cy={Y(70.22)} r={10} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-            <text x={X(10) + 16} y={Y(70.22) - 10} fill={colors.POSITIVE} fontSize={11.5}>
+            <line x1={X(10)} y1={Y(70.22) - 150} x2={X(10)} y2={Y(70.22) - 12} stroke={colors.POSITIVE} strokeWidth={1.2} strokeDasharray="3 3" />
+            <rect x={X(2)} y={Y(70.22) - 186} width={300} height={30} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1} />
+            <text x={X(2) + 12} y={Y(70.22) - 166} fill={colors.POSITIVE} fontSize={14}>
               70.22 t/s at 10% · statics: ~56–58
             </text>
+            <circle cx={X(10)} cy={Y(70.22)} r={10} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
           </g>
 
           {/* mechanism inset */}
           <g opacity={insetU}>
-            <rect x={900} y={140} width={286} height={250} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={1043} y={166} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+            <rect x={950} y={140} width={310} height={250} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
+            <text x={1105} y={164} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               during layerwise prefill
             </text>
+            <text x={1105} y={182} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              the phase that reads the whole prompt first
+            </text>
             {/* the routing counter sweep */}
-            <rect x={922} y={182} width={242} height={16} rx={5} fill={colors.BG} stroke={colors.GRID} />
-            <rect x={922} y={182} width={242 * statsU} height={16} rx={5} fill={colors.SECONDARY} opacity={0.8} />
-            <text x={1043} y={216} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+            <rect x={966} y={196} width={278} height={16} rx={5} fill={colors.BG} stroke={colors.GRID} />
+            <rect x={966} y={196} width={278 * statsU} height={16} rx={5} fill={colors.SECONDARY} opacity={0.8} />
+            <text x={1105} y={230} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               routing statistics collected live
             </text>
             {/* seat strip before/after */}
@@ -269,9 +310,9 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <rect
                   key={j}
-                  x={922 + j * 20.5}
-                  y={236}
-                  width={16}
+                  x={966 + j * 23.5}
+                  y={250}
+                  width={17}
                   height={26}
                   rx={4}
                   fill={on > 0.5 ? colors.POSITIVE : colors.MUTED}
@@ -279,12 +320,12 @@ export function Render({ s }: { s: SceneState }) {
                 />
               );
             })}
-            <text x={1043} y={286} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+            <text x={1105} y={300} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               GPU seats redistributed mid-flight
             </text>
             <g opacity={condU}>
               {['--kt-enable-dynamic-expert-update', '--kt-gpu-prefill-token-threshold 512', 'prefill length ≥ threshold'].map((t, i) => (
-                <text key={t} x={922} y={314 + i * 20} fill={i === 2 ? colors.MUTED : colors.WARM} fontSize={9.5} fontFamily="ui-monospace, monospace">
+                <text key={t} x={966} y={328 + i * 20} fill={i === 2 ? colors.MUTED : colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                   ✓ {t}
                 </text>
               ))}
@@ -298,16 +339,16 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             the expert shuffle, complete
           </text>
-          <text x={640} y={310} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={310} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             a seat budget · four dealing strategies · a deferral dial
           </text>
-          <text x={640} y={332} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             and a live reshuffle that beats them all when seats are scarce
           </text>
-          <text x={640} y={370} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+          <text x={640} y={372} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
             10% of the seats, 62% of the max speed — reported
           </text>
-          <text x={640} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             next: The AMX Path — precision as the lever
           </text>
         </g>

@@ -35,7 +35,8 @@ const BROWSER = { x: 250, y: 392 } as const;
 const APP = { x: 640, y: 392 } as const;
 const PROVIDER = { x: 1030, y: 392 } as const;
 
-const WALL = { x: 872, y: 118, w: 316, h: 196 } as const;
+// raised so the 302 leg and the "npx emulate" tag run clear of its bottom edge
+const WALL = { x: 872, y: 96, w: 316, h: 196 } as const;
 const WALL_ROWS = ['password', 'two-factor code', 'device check'] as const;
 
 const CFG = { x: 56, y: 448, w: 400, h: 158 } as const;
@@ -58,8 +59,10 @@ const RETURN_PATH = [
 ] as const;
 
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_WALL: CameraState = { x: 940, y: 280, k: 1.32 };
-const CAM_CFG: CameraState = { x: 420, y: 430, k: 1.28 };
+// wall push: framed so the test card, the browser and the provider all stay in view
+const CAM_WALL: CameraState = { x: 622, y: 272, k: 1.1 };
+// config push: the test card fades out in Render while the config panel is up, so the framing can close in
+const CAM_CFG: CameraState = { x: 593, y: 440, k: 1.14 };
 const CAM_FLOOR: CameraState = { x: 640, y: 360, k: 1.06 };
 
 /** Piecewise-linear travel along waypoints, u in 0..1. */
@@ -144,7 +147,7 @@ export function buildScene() {
     text: 'Real credentials in CI, rate limits, flaky networks — most teams give up here and stub the login. Emulate does something bolder: it replaces the provider itself.',
   });
   tl.tween(cam, CAM_WIDE, { at: 30.2, dur: 1.4, ease: ease.move });
-  tl.tween(wallU, 0.14, { at: 33.4, dur: 1.2, ease: ease.move });
+  tl.tween(wallU, 0, { at: 33.4, dur: 1.2, ease: ease.move }); // the wall leaves the floor entirely
   tl.tween(stallU, 0, { at: 33.4, dur: 0.8, ease: ease.enter });
   tl.tween(legU, 0, { at: 33.4, dur: 0.01, ease: ease.enter });
   tl.tween(swapU, 1, { at: 34.6, dur: 1.8, ease: ease.move });
@@ -245,7 +248,9 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const teaseU = s.get(scene.teaseU);
 
-  const floorOp = 1 - 0.87 * dimU;
+  const floorOp = 1 - 0.92 * dimU;
+  // the test card leaves for the config push and returns as the replayed dance starts
+  const testVis = testU * floorOp * (1 - cfgU * (1 - clamp01(legU2 * 4)));
   const p1 = along(DANCE_PATH, legU);
   const p2 = along(DANCE_PATH, legU2);
   const pr = along(RETURN_PATH, retU);
@@ -255,7 +260,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* the end-to-end test card */}
-        <g opacity={testU * floorOp}>
+        <g opacity={testVis}>
           <rect x={TEST.x} y={TEST.y} width={TEST.w} height={TEST.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={TEST.x + 20} y={TEST.y + 32} fill={colors.MUTED} fontSize={13} fontStyle="italic">
             the end-to-end test
@@ -303,17 +308,17 @@ export function Render({ s }: { s: SceneState }) {
             x={120}
             y={300}
             w={660}
-            h={180}
+            h={140}
             label="your machine / CI runner"
             kind="group"
             u={stationsU}
-            color={colors.GRID}
+            color={colors.MUTED}
           />
           <ServiceNode
             x={BROWSER.x}
             y={BROWSER.y}
             kind="browser"
-            label="Playwright browser"
+            label="Playwright"
             sublabel="the test's hands"
             u={stationsU}
             glow={clamp01(dashU)}
@@ -370,7 +375,7 @@ export function Render({ s }: { s: SceneState }) {
             u={clamp01(legU * 6)}
             label="GET /api/auth/github"
             color={colors.GRID}
-            labelSize={11}
+            labelSize={12}
           />
           <Connection
             from={{ x: BROWSER.x + 60, y: BROWSER.y - 74 }}
@@ -379,7 +384,7 @@ export function Render({ s }: { s: SceneState }) {
             u={clamp01((legU - 0.62) * 4)}
             label="302 → authorize"
             color={colors.GRID}
-            labelSize={11}
+            labelSize={12}
           />
 
           {/* the traveling request — attempt one */}
@@ -417,25 +422,25 @@ export function Render({ s }: { s: SceneState }) {
               <g key={row}>
                 <rect
                   x={WALL.x + 20}
-                  y={WALL.y + 46 + i * 46}
+                  y={WALL.y + 44 + i * 42}
                   width={WALL.w - 40}
-                  height={36}
+                  height={32}
                   rx={8}
                   fill={colors.BG}
                   stroke={stamped > 0.5 ? colors.NEGATIVE : colors.GRID}
                 />
-                <text x={WALL.x + 36} y={WALL.y + 70 + i * 46} fill={colors.TEXT} fontSize={14.5} fontFamily={MONO}>
+                <text x={WALL.x + 36} y={WALL.y + 65 + i * 42} fill={colors.TEXT} fontSize={14.5} fontFamily={MONO}>
                   {row}
                 </text>
                 {stamped > 0 && (
                   <text
                     x={WALL.x + WALL.w - 44}
-                    y={WALL.y + 72 + i * 46}
+                    y={WALL.y + 66 + i * 42}
                     fill={colors.NEGATIVE}
                     fontSize={20}
                     fontWeight={700}
                     opacity={stamped}
-                    transform={`rotate(${-8 + 8 * stamped} ${WALL.x + WALL.w - 44} ${WALL.y + 72 + i * 46})`}
+                    transform={`rotate(${-8 + 8 * stamped} ${WALL.x + WALL.w - 44} ${WALL.y + 66 + i * 42})`}
                   >
                     ✕
                   </text>
@@ -443,13 +448,14 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={WALL.x + 20} y={WALL.y + WALL.h - 14} fill={colors.NEGATIVE} fontSize={12.5} opacity={clamp01(stampU - 2.5)}>
+          <text x={WALL.x + 20} y={WALL.y + WALL.h - 14} fill={colors.NEGATIVE} fontSize={13} opacity={clamp01(stampU - 2.5)}>
             a robot can do none of these
           </text>
         </g>
 
         {/* the provider config — the only thing that changes */}
-        <g opacity={cfgU * floorOp}>
+        {/* the panel recedes as the replayed dance runs, so its border never meets the session tag */}
+        <g opacity={cfgU * floorOp * (1 - 0.9 * clamp01(legU2 * 4)) * (1 - clamp01(retU * 4))}>
           <rect x={CFG.x} y={CFG.y} width={CFG.w} height={CFG.h} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
           <text x={CFG.x + 20} y={CFG.y + 28} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             examples/oauth/src/lib/providers.ts

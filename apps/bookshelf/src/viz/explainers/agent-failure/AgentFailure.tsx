@@ -228,13 +228,13 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* survival curves */}
+          {/* survival curves: they step aside for the poisoned run and the close */}
           {plotU > 0 && (
-            <g opacity={plotU}>
+            <g opacity={plotU * (1 - poisonU) * (1 - dimU)}>
               <text x={PLOT_X(0)} y={190} fill={colors.TEXT} fontSize={15}>
                 probability the whole chain survives
               </text>
-              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={5} yTicks={5} fontSize={10} xLabel="steps" />
+              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={5} yTicks={5} fontSize={12} xLabel="steps" />
               <FunctionPlot
                 x={PLOT_X}
                 y={PLOT_Y}
@@ -261,7 +261,7 @@ function Frame({ s }: { s: SceneState }) {
                 />
               )}
               {curve99 >= 1 && (
-                <text x={PLOT_X(13)} y={PLOT_Y(P99 ** 16) - 10} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+                <text x={PLOT_X(15.5)} y={PLOT_Y(P99 ** 15.5) - 12} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
                   p=0.99 → {(EXACT_99 * 100).toFixed(1)}%
                 </text>
               )}
@@ -272,7 +272,7 @@ function Frame({ s }: { s: SceneState }) {
           {railU > 0 && (
             <g opacity={Math.min(1, railU * 3)}>
               <text x={RAIL_X(0)} y={RAIL_Y0 - 18} fill={colors.TEXT} fontSize={14}>
-                first 24 of {RUNS.toLocaleString()} simulated runs
+                Monte Carlo: first 24 of {RUNS.toLocaleString()} runs
               </text>
               {SAMPLE_DEATHS.map((death, i) => {
                 const prog = clamp01(railU * STEPS) ;
@@ -292,7 +292,7 @@ function Frame({ s }: { s: SceneState }) {
                       opacity={alive ? 0.9 : 0.55}
                     />
                     {!alive && prog >= death && (
-                      <text x={RAIL_X(death) + 4} y={y + 4} fill={colors.NEGATIVE} fontSize={10} fontWeight={700}>
+                      <text x={RAIL_X(death) + 4} y={y + 4} fill={colors.NEGATIVE} fontSize={12} fontWeight={700}>
                         ×
                       </text>
                     )}
@@ -300,16 +300,21 @@ function Frame({ s }: { s: SceneState }) {
                 );
               })}
               {mcU > 0 && (
-                <text x={RAIL_X(0)} y={RAIL_Y0 + 24 * RAIL_DY + 22} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={mcU}>
-                  measured: {(MEASURED * 100).toFixed(1)}% survive · exact: {(EXACT_95 * 100).toFixed(2)}%
-                </text>
+                <g opacity={mcU}>
+                  <text x={RAIL_X(0)} y={RAIL_Y0 + 24 * RAIL_DY + 22} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
+                    measured: {(MEASURED * 100).toFixed(1)}% survive
+                  </text>
+                  <text x={RAIL_X(0)} y={RAIL_Y0 + 24 * RAIL_DY + 42} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+                    exact: {(EXACT_95 * 100).toFixed(2)}% (0.95^20)
+                  </text>
+                </g>
               )}
             </g>
           )}
 
           {/* the poisoned run */}
-          {poisonU > 0 && (
-            <g opacity={poisonOp}>
+          {poisonU > 0 && dimU < 1 && (
+            <g opacity={poisonOp * (1 - dimU)}>
               <text x={330} y={180} fill={colors.TEXT} fontSize={15} opacity={clamp01(poisonU * 3)}>
                 chapter one again — with one lie in the pipe
               </text>
@@ -357,8 +362,8 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* evaluator gaming */}
-          {gameU > 0 && (
-            <g opacity={gameU}>
+          {gameU > 0 && dimU < 1 && (
+            <g opacity={gameU * (1 - dimU)}>
               <rect x={330} y={520} width={620} height={84} rx={10} fill={colors.PANEL} opacity={0.9} stroke={colors.GRID} />
               <text x={352} y={550} fill={colors.TEXT} fontSize={14} fontWeight={600}>
                 failure three: the gamed checker
@@ -374,7 +379,7 @@ function Frame({ s }: { s: SceneState }) {
         </Camera>
       </g>
 
-      <g opacity={titleU * mainOp}>
+      <g opacity={titleU * mainOp * (1 - dimU)}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Why agents fail
         </text>
@@ -385,7 +390,7 @@ function Frame({ s }: { s: SceneState }) {
         y={54}
         fontSize={19}
         color={colors.SECONDARY}
-        opacity={plotU * mainOp}
+        opacity={plotU * (1 - poisonU) * (1 - dimU) * mainOp}
       />
 
       {closeU > 0 && (
@@ -395,7 +400,7 @@ function Frame({ s }: { s: SceneState }) {
             Busy and confident is not correct.
           </text>
           <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            0.95 to the twentieth is 0.36 · one poisoned lookup flips the answer ·
+            0.95 to the twentieth is 0.36 · one poisoned lookup flips the answer
           </text>
           <text x={640} y={360} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             a greppable checker gets gamed. Hence: verification.

@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -50,6 +50,13 @@ function Frame({ s }: { s: SceneState }) {
 
   const si = Math.max(0, Math.min(CURVE.length - 1, sweep));
   const now = CURVE[Math.min(CURVE.length - 1, Math.round(si))];
+  // approval and agreement start almost on top of each other: keep their end labels 18px apart
+  const yApprovalLabel = chY(now.approval);
+  const yAgreeRaw = chY(now.agree) - 12;
+  const yAgreeLabel =
+    yAgreeRaw <= yApprovalLabel
+      ? Math.min(yAgreeRaw, yApprovalLabel - 18)
+      : Math.max(yAgreeRaw, yApprovalLabel + 18);
 
   return (
     <>
@@ -75,15 +82,19 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
           <g opacity={cloudU}>
-            <text x={clX(0.5)} y={548} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            <text x={clX(0.5)} y={536} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               truthfulness →
             </text>
-            <text x={92} y={320} textAnchor="middle" fill={colors.MUTED} fontSize={13} transform="rotate(-90 92 320)">
+            <text x={92} y={320} textAnchor="middle" fill={colors.MUTED} fontSize={14} transform="rotate(-90 92 320)">
               agrees with the user →
+            </text>
+            {/* the simulated judge's weights, written into the empty top-right corner */}
+            <text x={clX(0.52)} y={clY(0.9)} fill={colors.WARM} fontSize={14}>
+              simulated evaluator: approval = 0.35 truth + 0.65 agreement + noise
             </text>
           </g>
           {pickU > 0.5 && (
-            <text x={clX(0.05)} y={150} fill={colors.NEGATIVE} fontSize={13.5} opacity={pickU}>
+            <text x={clX(0.05)} y={100} fill={colors.NEGATIVE} fontSize={14} opacity={pickU}>
               where approval shops
             </text>
           )}
@@ -92,7 +103,7 @@ function Frame({ s }: { s: SceneState }) {
           {axU > 0 && (
             <g opacity={axU}>
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={chX(NS.length - 1) + 10} y2={CH_Y0} stroke={colors.GRID} />
-              <text x={chX(3.5)} y={CH_Y0 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={chX(3.5)} y={CH_Y0 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 optimization pressure (best of n) →
               </text>
             </g>
@@ -102,13 +113,13 @@ function Frame({ s }: { s: SceneState }) {
               <path d={curvePath('approval', si)} fill="none" stroke={colors.WARM} strokeWidth={3} />
               <path d={curvePath('agree', si)} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} />
               <path d={curvePath('truth', si)} fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
-              <text x={chX(si) + 10} y={chY(now.approval)} fill={colors.WARM} fontSize={13}>
+              <text x={chX(si) + 10} y={yApprovalLabel} fill={colors.WARM} fontSize={14}>
                 {`approval ${now.approval.toFixed(2)}`}
               </text>
-              <text x={chX(si) + 10} y={chY(now.agree) - 12} fill={colors.NEGATIVE} fontSize={13}>
+              <text x={chX(si) + 10} y={yAgreeLabel} fill={colors.NEGATIVE} fontSize={14}>
                 {`agreement ${now.agree.toFixed(2)}`}
               </text>
-              <text x={chX(si) + 10} y={chY(now.truth) + 20} fill={colors.POSITIVE} fontSize={13}>
+              <text x={chX(si) + 10} y={chY(now.truth) + 20} fill={colors.POSITIVE} fontSize={14}>
                 {`truth ${now.truth.toFixed(2)}`}
               </text>
             </g>
@@ -116,7 +127,7 @@ function Frame({ s }: { s: SceneState }) {
           {honestU > 0 && (
             <g opacity={honestU}>
               <path d={curvePath('truthHonest', honestU * (CURVE.length - 1))} fill="none" stroke={colors.POSITIVE} strokeWidth={3} strokeDasharray="8 6" />
-              <text x={chX(NS.length - 1) - 190} y={chY(CURVE[CURVE.length - 1].truthHonest) - 12} fill={colors.POSITIVE} fontSize={13}>
+              <text x={chX(NS.length - 1) - 190} y={chY(CURVE[CURVE.length - 1].truthHonest) - 12} fill={colors.POSITIVE} fontSize={14}>
                 {`truth-first judge: ${CURVE[CURVE.length - 1].truthHonest.toFixed(2)}`}
               </text>
             </g>
@@ -127,19 +138,20 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Sycophancy
           </text>
-          <MathLabel
-            tex={`\\text{approval} \\uparrow ${FINAL.approval.toFixed(2)} \\quad \\text{truth} \\downarrow ${MIN_TRUTH.toFixed(2)} \\quad \\text{truth-first judge}: ${FINAL.truthHonest.toFixed(2)}`}
-            x={640}
-            y={340}
-            fontSize={18}
-            color={colors.WARM}
-            opacity={endU}
-          />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={400} y={340} textAnchor="middle" fill={colors.WARM} fontSize={20}>
+            {`approval ↑ ${FINAL.approval.toFixed(2)}`}
+          </text>
+          <text x={640} y={340} textAnchor="middle" fill={colors.POSITIVE} fontSize={20}>
+            {`truth ↓ ${MIN_TRUTH.toFixed(2)}`}
+          </text>
+          <text x={880} y={340} textAnchor="middle" fill={colors.POSITIVE} fontSize={20}>
+            {`truth-first judge ${FINAL.truthHonest.toFixed(2)}`}
+          </text>
+          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
             sycophancy is a property of the evaluation, not the model
           </text>
         </g>

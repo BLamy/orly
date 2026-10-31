@@ -137,14 +137,20 @@ export const XPLOT = { x: 810, y: 130, w: 380, h: 380 };
 export const xxs = (x: number): number => XPLOT.x + ((x + 1.6) / 3.2) * XPLOT.w;
 export const xys = (y: number): number => XPLOT.y + XPLOT.h - ((y + 1.6) / 3.2) * XPLOT.h;
 
-/** a family of feasible-but-narrow separating lines for the opening beat. */
+/**
+ * a family of feasible-but-narrow separating lines for the opening beat. The
+ * first two are the widest street's normal with its offset pushed 0.8 toward
+ * one class: every point keeps its side (each had |w·x+b| ≥ 1), but each line
+ * grazes the nearest point of the other class.
+ */
 export const CANDIDATES: { w: { x: number; y: number }; b: number }[] = [
-  { w: { x: 1.0, y: 3.2 }, b: -0.6 },
-  { w: { x: 1.1, y: 2.6 }, b: -0.5 },
+  { w: SOLVED.w, b: SOLVED.b + 0.8 },
+  { w: SOLVED.w, b: SOLVED.b - 0.8 },
   { w: { x: 2.4, y: 1.5 }, b: -0.75 },
 ];
 
-export const CAM_PLOT: CameraState = { x: 405, y: 330, k: 1.28 };
+// framed so the whole plot (frame edge included) clears the caption pill at the bottom
+export const CAM_PLOT: CameraState = { x: 410, y: 330, k: 1.05 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

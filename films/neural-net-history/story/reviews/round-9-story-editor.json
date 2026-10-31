@@ -1,0 +1,118 @@
+{
+  "reviewer": "story-editor",
+  "round": 9,
+  "lens": "story, curiosity and voice",
+  "runtimeCheck": "script.mjs assemble --check: 3,585 words, 34.7 min (2081.8 s) at the locked voice's 143.5 wpm, 0 errors, 1 warning against the 32.0 min target. This is inside the brief's 30-35 min range, so runtime is not critical, but it is only 0.3 min from the ceiling. Every addition on this card must be paid for. The last issue lists offsets: hold trims of about -19 s and one cut line.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8.5,
+    "clarity": 8.5,
+    "story": 8.5,
+    "curiosity": 8.5,
+    "visual": 8.5,
+    "voice": 8.5
+  },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch11-s02 L1104",
+      "problem": "'Sensible, then.' is ambiguous to the ear, and one reading reverses the meaning. The intended sense is 'it was sensible at the time'. Spoken flatly, 'then' also reads as 'therefore', so a listener can hear the narrator agreeing that nothing can be learned from raw text, right after GPT-2 learned from it. This is the payoff of the Lenat plant (L0515), so the irony has to land cleanly.",
+      "fix": "'From the file, Lenat's team: “practically nothing” from “the raw text.” It sounded sensible, at the time.' (+3)"
+    },
+    {
+      "where": "ch15-s09 L1517",
+      "problem": "In 'The last word is Hinton's, too.', the 'too' has no antecedent. The line before it (L1516) is the dark lantern, not Hinton. The quote is also from 2017, but it sits after 2026 events with no date, so the ear takes it as his latest word. This misdates the film's final quotation and slightly misrepresents him (the bible files it as a 2017 dissent).",
+      "fix": "'The last word goes to the tall man, back in 2017.' (+4; claim e9-hinton-funeral). This makes the epithet's final appearance the film's farewell to its quiet protagonist, and the date matches the on-screen attribution."
+    },
+    {
+      "where": "ch15-s08 L1516 (second question never answered aloud)",
+      "problem": "Round 8 planted a second question at L1303b: 'how far will it go, and how fast?' The verdict answers 'Who taught it?' and names the dark lantern, but never comes back to the second question by voice. 'The newest still burn' only gestures at it. The stamp STATUS: OPEN is silent, so an ear-only viewer hears a question asked in ch13 and dropped.",
+      "fix": "After L1516 add L1516b: 'And how far, how fast? That file stays open.' (+8, pauseAfter 0.8). The STATUS: OPEN stamp in ch15-s09 then confirms something the listener has already heard."
+    },
+    {
+      "where": "ch12 shot order: s07 → s03 → s08 (Anthropic founding placement)",
+      "problem": "The film's emotional high in Act 3 is 'Rosenblatt's 1961 note, sixty-one years on: language was the door.' It is followed at once by 'Back in 2021…' and three sentences of company history and funding before 'Through ChatGPT's door, a stampede.' The flashback stalls the return-to-the-scene momentum just as it peaks. Placed here, it also makes one lab's founding the first thing through the door, a privileged slot that no other lab gets. OpenAI's founding sits in chronological order in ch09.",
+      "fix": "Reorder to s06, s07, then s08 (L1219 only), then s03, with L1219b moved to the end of s03. Reword L1206: 'Among the runners, a lab born in 2021: former OpenAI researchers, led by Dario and Daniela Amodei, had founded Anthropic.' (+4). L1207 and L1208 stay as they are, then L1219b ('OpenAI's GPT-4 and Anthropic's Claude launched on the same day.') closes the shot. The stampede now follows the door at once, and Anthropic arrives as one rival among the runners, in the same grammar as OpenAI's founding."
+    },
+    {
+      "where": "ch03-s06 L0312 + holdAfter 12.6",
+      "problem": "This is the longest silent hold in the narrated film, 12.6 s at about minute 5. Inside it is the most moving thing Rosenblatt says, “Love,” he said. “Hope. Despair.”, and it is shown only as a card. The ear never hears it. It is also the emotional plant for his death at L0409, and for an ear-only viewer that plant is missing.",
+      "fix": "Extend L0312: '…Dr. Rosenblatt said cheerfully. And what could it never do? “Love,” he said. “Hope. Despair.”' (+9; verbatim from q-rosenblatt-love; claim e2-newyorker already on the shot). Direction: the quote lower and slower, no smile. holdAfter 12.6 → 7.5 (the card no longer has to be read in silence). Net about -1.5 s."
+    },
+    {
+      "where": "ch05-s01 L0501",
+      "problem": "Act 2 opens flat: 'Versailles, 1981. John Hopfield presents a network.' The bible holds a wry, verbatim gem made for this narrator, and the blurb promises 'a talk… that nobody remembered', but the voice never delivers it. As written, the scene in the Hall of Mirrors is a date and a name.",
+      "fix": "After L0524 add L0524b: 'Years later, he wrote: “I have never met anyone who remembered hearing the talk.”' (+13; quote q-hopfield-versailles, claim e4-hopfield-versailles already on the shot), pauseAfter 0.8, with a smile in the voice. It also pays off at L1502: the forgotten talk wins a Nobel."
+    },
+    {
+      "where": "ch11-s01 (9.4 s wordless) → the PRE-TRAINING tag planted in ch07-s06",
+      "problem": "The 'pre-training' thread is planted and paid off only in ink: a tag on a coat hook in ch07, a re-cut coat in ch11. The ear never hears the word. The chapter therefore opens on 9.4 s of silence, and the idea that makes GPT work (read everything first, be taught later) arrives with no spoken bridge from the warm-up candle the audience watched gutter.",
+      "fix": "Add L1101 on the coat beat: 'Remember the warm-up? Its old name came back in a new coat: pre-training. Read first; be taught later.' (+18; claims e7-pretraining-belief, e10-gpt1). holdAfter 9.4 → 5.0. Net about +3 s."
+    },
+    {
+      "where": "ch11-s05 L1110",
+      "problem": "Scale is the new candle, but the ear never hears a scale. The only weight count the audience knows is AlexNet's sixty million. The jump to GPT-3 is the most wonder-inducing number in the film, and it lives only on a brass plate.",
+      "fix": "'…bigger models, lower error. GPT-3 had a hundred and seventy-five billion knobs. Shown a few examples, it did new tasks, untaught.' (+7; claim e11-gpt3 already on the shot). 'Knobs' keeps the film's own word and lets the ear compare it with Florence."
+    },
+    {
+      "where": "ch15-s06 L1509",
+      "problem": "'…the third, that it doesn't go far enough.' is too clever for the ear. 'It' could be the road or the warnings, and a listener can hear LeCun asking for more danger. The bible gives a concrete and fairer statement: an LLM is 'a dead end', backed by a billion-dollar bet on another road. It also rhymes, without comment, with the 1969 candle 'many layers are a dead end'.",
+      "fix": "'The three holdouts, now: two warn the road is dangerous. The third calls today's chat machines “a dead end”, and has bet a billion dollars on another road.' (+11; claim e14-lecun on the shot; the quote fragment is verbatim from the on-screen card). Let the echo of L0405 stand unspoken. Do not editorialise."
+    },
+    {
+      "where": "ch08-s01 L0802 (candle never lit by voice)",
+      "problem": "The deep dive later puts out 'the hand-cut stencil candle' (L0826), but the belief was never voiced as a candle. L0802 says 'the belief' and 'patterns designed by experts', so the payoff names a candle the ear never saw lit. Every other candle in the film is lit by voice.",
+      "fix": "'Since about 1999, a candle: to see, a machine needs its patterns cut by experts, by hand. Even allowed five guesses a picture, the best program missed more than one in four.' (0 words net). The verb 'cut' then pays off three times: 'Nobody cut these stencils', 'stencils cut by hand', 'the net cut its own'."
+    },
+    {
+      "where": "ch07-s02 L0702",
+      "problem": "'before any right answers, warm up a deep net, many layers tall, one layer at a time, each rebuilding its own input' is the film's hardest sentence to say aloud. It opens on an adverbial with no subject, then stacks three appositives. A slow voice runs out of breath before the listener knows what is being claimed.",
+      "fix": "'In 2006, a new candle: a deep net, many layers tall, must first be warmed up. One layer at a time, each learns to rebuild its own input, before it ever sees a right answer.' (+6). The belief is stated first and the method second."
+    },
+    {
+      "where": "ch08-s08 L0815",
+      "problem": "This is the overfitting stake, and the comparison the ear needs (12 million answers against 60 million knobs) is split across three clauses with an aside in the middle. 'Weights' also breaks the film's own vocabulary: 'knob' was planted in Buffalo, and the blurb says 'sixty million knobs'.",
+      "fix": "'Each label, one name in a thousand, is worth about ten yes-or-no answers: twelve million answers in all, for sixty million knobs. It could memorise the photos, not learn to see.' (0 words net)."
+    },
+    {
+      "where": "ch08-s02 L0803",
+      "problem": "In 'Ilya Sutskever, sure deep nets would keep improving with more data, talked Alex Krizhevsky into trying.', a 9-word aside sits between subject and verb. Heard slowly, the listener loses who is talking whom into what. This is the human hinge of the deep dive.",
+      "fix": "'In Hinton's Toronto lab, Ilya Sutskever was sure deep nets would keep improving with more data. He talked Alex Krizhevsky into trying.' (+2)"
+    },
+    {
+      "where": "ch09-s05 L0910",
+      "problem": "'misread the gender of darker-skinned women far more often than of lighter-skinned men' is ungrammatical aloud ('than of'), and the stumble falls on the film's one sentence about social harm in the deep-learning boom.",
+      "fix": "'Commercial face software misread darker-skinned women far more often than lighter-skinned men.' (-3; claim e9-gender-shades; the on-screen label keeps 'gender' and the figures)."
+    },
+    {
+      "where": "ch04-s07 L0412 (optional, if runtime allows)",
+      "problem": "The winter map shows FUKUSHIMA · TOKYO · 1979 with no voice. The bible offers one of its best curiosity nuggets (H-nhk): the ancestor of the convolutional network came from a broadcasting company. It would plant the sliding stencil of ch08 four chapters early, the way the Helsinki thesis plants the messenger.",
+      "fix": "Before 'In Helsinki…' add: 'In Tokyo, at a broadcasting company, Kunihiko Fukushima built a net that sees through stencils.' (+15; claim e3-neocognitron on the shot). Pay it off at L0808: '…slide the same stencil everywhere: Fukushima's trick. A convolution.' (+2). Drop this first if the --check estimate passes 35.0."
+    },
+    {
+      "where": "ch13-s04 L1309",
+      "problem": "'Not two teams. Three camps.' is followed by only two rims ('At one rim… At the other…'). The ear counts two and has to work out that the third camp is the worriers in the candle's own light, two shots back.",
+      "fix": "'Not two teams. Three camps. The worried stood in the candle's light.' (+7). L1310 and L1311 then give the two rims, so the count is heard."
+    },
+    {
+      "where": "ch14-s07 L1418 → ch15-s01 L1501 (re-raised, low priority)",
+      "problem": "'As of October 2026…' is followed within about 4 s by 'Two in the morning, October 2024.' The CALIFORNIA · 8 OCTOBER 2024 stamp helps a viewer, but not a listener.",
+      "fix": "If the showrunner keeps declining 'Back to…', use 'Two years earlier, two in the morning. The tall man's phone rings.' (0 net words: 'October 2024' becomes 'Two years earlier'; the date stays on the stamp)."
+    },
+    {
+      "where": "Runtime offsets (holds and one cut)",
+      "problem": "The additions above (not counting the optional Fukushima) come to about +70 words, about +29 s. Without offsets the film passes the 35-minute ceiling.",
+      "fix": "Trim silent holds that carry no reading load: ch03-s06 12.6 → 7.5 (listed above); ch11-s01 9.4 → 5.0 (listed above); ch05-s08 L0515 pauseAfter 2.4 → 1.2 and holdAfter 5.8 → 4.5; ch15-s08 8.0 → 6.0; ch05-s05 5.4 → 4.2; ch10-s13b 5.3 → 4.2; ch14-s04b 4.5 → 3.5; ch02-s05b 4.45 → 3.5. Cut L0909b ('Its backers committed a billion dollars.'); the $1B label already carries it. That is about -22 s against +29 s, so the film lands near 34.8 min. Re-run --check. If it reads above 35.0, drop L1509's money tail first, then the GPT-3 knob count."
+    }
+  ],
+  "strengths": [
+    "Round 8 was taken almost whole, and the joins are seamless. 'So the file reopens, on a second question' gives Act 4 a spine. 'a hundred million monthly users within two months' makes the stampede literal. 'Some candles burned nearly forty years; some, two; one match, a day.' now matches the shelf. Turing's 'educate a child machine' plants the case's own question in 1950.",
+    "The spine holds over nearly 35 minutes: one case question, three suspects, a candle clock that turns 'how long people believed it' into a felt duration, and the quiet arc of the tall man, from 'far from the flame' through 'Thirty-six years at the edge of the light. Now, it found him.' to a phone call at two in the morning.",
+    "The plant-and-payoff web is the film's signature, and nearly every thread now closes by ear: 'Put that in the file' three times; 'If one exists.' → 'No straight cut can separate them.'; 'Who paid for dinner?' → 'Each man lost one bet.'; the clean bowl → 'Why choose the fog?'; 'Remember him.' → Widrow's 'never got over it'; 'a net that settles as it cools' → the Nobel citation; 'missed more than one in four' → 'Second place missed twenty-six point two'.",
+    "The deep dives teach by touch. The pierced tin stencil, 'Below zero counts as zero', the weir, 'They began as noise, like television snow', the two halves that split colour from edges 'Every time.' The transformer's three cards, 'two, nothing, four, two', the jug that 'pours softly' once divided by eight, 'Words talk to each other, then each thinks alone. Six times over.', and 'twice the words, four times the looking.' This is real mechanism, spoken.",
+    "The answer to the prologue is the best single beat in the film: 'Pick one. Ask again. No rulebook. Only odds.' It then pays off twice more: 'Not a new engine. A new door.' and 'Rosenblatt's 1961 note, sixty-one years on: language was the door.'",
+    "The wry, warm voice is consistent and earned. It saves its single first person for 'You could hear it learn. I love that.' Dry asides land ('A winter, then, of prestige, not of use.'; 'Its plan named no rival.'; 'It left out the research, and the chips.'; 'Two signed. The third stood apart.'). It is honest about uncertainty ('nobody knows exactly when'; 'Still argued.'; 'the accounts differ'; 'Its authors now call that result out of date.').",
+    "Fairness is dramatised rather than appended: the Navy, the press and Rosenblatt all 'fed the hype'; 'Fair credit: that was seven networks voting'; the Swiss lab; 'Google has acted very responsibly'; Beijing's reply in its own words; Anthropic's FTX money, book settlement and court fight under the same light as OpenAI's 'warning shot'.",
+    "The ending is earned. 'Never one person. The board was a network all along.' folds the thesis into the staging. The closing line turns the film's recurring dissenters at the rim into an invitation to the viewer: 'Somewhere tonight a lamp is on, and someone at the rim is suspicious. That is where new candles come from.'"
+  ]
+}

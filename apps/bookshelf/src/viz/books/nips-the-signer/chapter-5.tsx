@@ -38,7 +38,7 @@ interface Scene {
   rowsU: ChannelRef<number>;
   askU: ChannelRef<number>;
   scopeU: ChannelRef<number>;
-  permU: ChannelRef<number>;
+  refuseU: ChannelRef<number>;
   dimU: ChannelRef<number>;
   closeU: ChannelRef<number>;
 }
@@ -51,7 +51,7 @@ export function buildScene(): Scene {
   const rowsU = tl.channel('rowsU', 0);
   const askU = tl.channel('askU', 0);
   const scopeU = tl.channel('scopeU', 0);
-  const permU = tl.channel('permU', 0);
+  const refuseU = tl.channel('refuseU', 0);
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
 
@@ -85,13 +85,13 @@ export function buildScene(): Scene {
   tl.tween(scopeU, 1, { at: 14.6, dur: 1.2, ease: ease.enter });
   tl.hold(19.9, 0.7);
 
-  // Beat 4 — the permission list.
+  // Beat 4 — the permission list, with the deletion refused.
   tl.caption({
     at: 20.6,
     dur: 6.4,
     text: 'So an app might be allowed to post notes and encrypt messages, but refused when it tries to sign a deletion. The secret is not a blank check. It is a gatekeeper that reads each request before it answers.',
   });
-  tl.tween(permU, 1, { at: 21.2, dur: 2.6, ease: ease.enter });
+  tl.tween(refuseU, 1, { at: 21.2, dur: 2.6, ease: ease.enter });
   tl.hold(27.0, 0.7);
 
   // Beat 5 — close the book.
@@ -105,7 +105,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: 29.1, dur: 1.0, ease: ease.enter });
   tl.hold(33.7, 1.4);
 
-  return { tl, cam, appU, vaultU, rowsU, askU, scopeU, permU, dimU, closeU };
+  return { tl, cam, appU, vaultU, rowsU, askU, scopeU, refuseU, dimU, closeU };
 }
 
 const scene = buildScene();
@@ -117,21 +117,22 @@ export function Render({ s }: { s: SceneState }) {
   const rowsU = s.get(scene.rowsU);
   const askU = s.get(scene.askU);
   const scopeU = s.get(scene.scopeU);
-  const permU = s.get(scene.permU);
+  const refuseU = s.get(scene.refuseU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the main layer leaves entirely under the closing panel, so no ghost labels show through
+  const mainOp = 1 - dimU;
   const showPerms = scopeU > 0;
 
   return (
     <>
       <rect width={1280} height={720} fill={colors.BG} />
 
-      <g opacity={mainOp}>
+      {mainOp > 0.01 && <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* three signer rows fade back when the permission panel takes over */}
-          <g opacity={1 - 0.82 * clamp01(scopeU)}>
+          {/* three signer rows and their labels clear off when the permission panel takes over, so no ghost text shows through */}
+          <g opacity={1 - clamp01(scopeU)}>
             {SIGNERS.map((sg, i) => {
               const u = clamp01(rowsU * SIGNERS.length - i);
               if (u <= 0) return null;
@@ -140,12 +141,12 @@ export function Render({ s }: { s: SceneState }) {
                   <line x1={640} y1={sg.y} x2={640} y2={sg.y} stroke={sg.color} />
                   <rect x={490} y={sg.y - 26} width={300} height={52} rx={10} fill={colors.PANEL} stroke={sg.color} strokeWidth={1.5} />
                   <text x={640} y={sg.y - 4} textAnchor="middle" fill={sg.color} fontSize={14} fontWeight={600}>{sg.label}</text>
-                  <text x={640} y={sg.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>{sg.sub}</text>
+                  <text x={640} y={sg.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13}>{sg.sub}</text>
                   {/* ask in, signed out */}
                   {askU > 0 && (
                     <>
-                      <TokenFlight from={{ x: 300, y: sg.y }} to={{ x: 486, y: sg.y }} u={clamp01(askU * 2 - i * 0.2)} text="unsigned →" fill={colors.MUTED} fontSize={11} lift={18} />
-                      <TokenFlight from={{ x: 794, y: sg.y }} to={{ x: 980, y: sg.y }} u={clamp01(askU * 2 - i * 0.2 - 0.5)} text="signed ✓" fill={colors.POSITIVE} fontSize={11} lift={18} />
+                      <TokenFlight from={{ x: 300, y: sg.y }} to={{ x: 486, y: sg.y }} u={clamp01(askU * 2 - i * 0.2)} text="unsigned →" fill={colors.TEXT} fontSize={13} lift={18} />
+                      <TokenFlight from={{ x: 794, y: sg.y }} to={{ x: 980, y: sg.y }} u={clamp01(askU * 2 - i * 0.2 - 0.5)} text="signed ✓" fill={colors.POSITIVE} fontSize={13} lift={18} />
                     </>
                   )}
                 </g>
@@ -162,16 +163,21 @@ export function Render({ s }: { s: SceneState }) {
           {/* permission scope panel */}
           {showPerms && (
             <g opacity={scopeU}>
-              <rect x={410} y={190} width={460} height={260} rx={14} fill={colors.PANEL} opacity={0.97} stroke={colors.GRID} />
+              <rect x={410} y={190} width={460} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={640} y={228} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600}>
                 connect · requested scope
               </text>
               {PERMS.map((p, i) => {
-                const u = clamp01(permU * PERMS.length - i);
+                const u = clamp01(scopeU * PERMS.length - i);
                 if (u <= 0) return null;
                 const y = 272 + i * 46;
+                // the refused row gets a red highlight and a label once the refusal beat starts
+                const refused = !p.ok && refuseU > 0;
                 return (
                   <g key={p.text} opacity={u}>
+                    {refused && (
+                      <rect x={432} y={y - 20} width={416} height={34} rx={8} fill={colors.NEGATIVE} opacity={0.18 * refuseU} stroke={colors.NEGATIVE} strokeOpacity={refuseU} />
+                    )}
                     <circle cx={452} cy={y - 4} r={11} fill="none" stroke={p.ok ? colors.POSITIVE : colors.NEGATIVE} strokeWidth={2} />
                     {p.ok ? (
                       <path d={`M446 ${y - 4} l4 4 l8 -8`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.2} strokeLinecap="round" />
@@ -181,13 +187,16 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={478} y={y} fill={p.ok ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily="monospace">
                       {p.text}
                     </text>
+                    <text x={850} y={y} textAnchor="end" fill={p.ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={13} fontWeight={600}>
+                      {p.ok ? 'allowed' : refused ? 'refused' : ''}
+                    </text>
                   </g>
                 );
               })}
             </g>
           )}
         </Camera>
-      </g>
+      </g>}
 
       {closeU > 0 && (
         <g opacity={closeU}>
@@ -196,12 +205,12 @@ export function Render({ s }: { s: SceneState }) {
             The key stays; the app only asks
           </text>
           <text x={640} y={332} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
-            extension, bunker, or ncryptsec — one principle at three distances,
+            extension, bunker, or ncryptsec — one principle at three distances
           </text>
           <text x={640} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             and every request judged against a scope
           </text>
-          <text x={640} y={400} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={400} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-07 · NIP-46 · NIP-49 — identity you hold
           </text>
         </g>

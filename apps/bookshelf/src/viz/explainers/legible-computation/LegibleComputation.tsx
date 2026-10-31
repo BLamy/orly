@@ -45,7 +45,7 @@ const TOK_X0 = 220;
 const TOK_DX = 92;
 
 const CAM_LANES: CameraState = { x: 640, y: 270, k: 1.2 };
-const CAM_DOTS: CameraState = { x: 640, y: 340, k: 1.5 };
+const CAM_DOTS: CameraState = { x: 640, y: 340, k: 1.35 };
 
 interface Scene {
   tl: Timeline;
@@ -217,15 +217,16 @@ function Frame({ s }: { s: SceneState }) {
               → 76
             </text>
           </g>
-          {eyeU > 0 && (
-            <text x={TOK_X0} y={LANE_Y2 + 66} fill={colors.MUTED} fontSize={13} opacity={eyeU}>
+          {/* sits in the gap between the lanes, clear of the lens labels below */}
+          {eyeU * (1 - closeU) > 0 && (
+            <text x={TOK_X0} y={LANE_Y1 + 58} fill={colors.TEXT} fontSize={14} opacity={0.8 * eyeU * (1 - closeU)}>
               surface oversight reads the top lane and is blind to the bottom one
             </text>
           )}
 
-          {/* the lens x-ray over the dots */}
-          {xrayU > 0 && (
-            <g opacity={xrayU}>
+          {/* the lens x-ray over the dots (gone once the closing panel is up) */}
+          {xrayU * (1 - closeU) > 0 && (
+            <g opacity={xrayU * (1 - closeU)}>
               {HIDDEN.map((h, i) =>
                 h ? (
                   <g key={i}>
@@ -253,7 +254,7 @@ function Frame({ s }: { s: SceneState }) {
                   </g>
                 ) : null,
               )}
-              <text x={TOK_X0} y={LANE_Y2 + 92} fill={colors.TEAL} fontSize={13}>
+              <text x={TOK_X0} y={LANE_Y2 + 92} fill={colors.TEAL} fontSize={14}>
                 the lens, reading the trace beneath the dots (decoded 80–95% of the time)
               </text>
             </g>
@@ -291,7 +292,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={230} width={880} height={200} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={200} y={230} width={880} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Legibility is engineered, not assumed.
           </text>
@@ -301,7 +302,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             and the traces — and went looking.
           </text>
-          <text x={640} y={402} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={402} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             Reading Between the Dots · arXiv:2607.03502
           </text>
         </g>

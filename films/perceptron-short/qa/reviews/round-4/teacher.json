@@ -1,0 +1,76 @@
+{
+  "reviewer": "teacher",
+  "lens": "clarity & depth",
+  "round": 4,
+  "note": "This is a one-minute Mark I short, so the lens items on AlexNet and the transformer are out of scope and are not scored. The film is now 67.75 s. The sheets are denser (32 samples for s03, which fixes the round-3 QA-sheet issue). I also pulled 36 frames from render/film.mp4 and checked them against the absolute word clock (narration/timeline.json, s03 offset 23 s). I confirmed that the XOR plate is driven by a real run: xorRule.ts trainXor() with the xorRule.test.mjs never-settles test, separate from the 64 A-unit board.",
+  "roundThreeCheck": {
+    "limit shown, not told (ch01-s03, major)": "FIXED. The 'XOR · one lit, not both' mini machine (2 cells, 2 dials, threshold gauge) arrives on 'showed' (55.0 s). Its try row ticks ✓ ✗ ✓ ✗ ✓ ✗ ✗ … from the real run, with 'never settles' below and the success plates dimmed beside it. Depth no longer stops at 'just how simple'.",
+    "years span (minor)": "Deferred by the showrunner and still not on screen. The stage does dim measurably on 'years' (mean luma 18.4 → 13.2 from 57.5 to 58.5 s), but 'how long' is still answered only by 'for years'.",
+    "lineage seen (minor)": "PARTLY FIXED. The iris reopens by 59.6 s, so the bookend is readable on 'Its' (59.78 s). Faint 1-, 2- and 3-layer network silhouettes appear in the left windows around 'neural networks' (about 62 s), but at the film's contrast they are small and read as window fixtures.",
+    "limit staging (minor)": "FIXED. On 'learn' (48.9 s) the retina and threads are idle and the dials are dimmed, so the plates carry the light.",
+    "nudge-push collision (minor)": "FIXED. At 38.0 and 38.8 s the 'correct answer: horizontal' tag sits clear above the try row, the retina is whole, and both gauge labels are in frame.",
+    "1969 stamp and book (minor)": "FIXED. '1969' is on screen as it is spoken (52.07 s). The stamp sets 'Minsky & Papert, Perceptrons' with an italic book title, and an upright closed book on a small shelf replaces the light-fitting bar.",
+    "bookend head tangent": "FIXED. A clear sliver of window light separates his profile from the camera housing (63.5 s).",
+    "name card": "FIXED. FRANK ROSENBLATT fades in on 'Frank' (20.83 s), and 'psychologist' follows."
+  },
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 8,
+    "story": 8,
+    "visual": 8,
+    "sync": 8.5,
+    "sound": 8,
+    "curiosity": 7.5
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The XOR plate shows THAT the rule fails, never WHAT was shown or WHY. The main try boxes carry a glyph of each shape (— ✕, | ✕), but the XOR try boxes carry only ✓ and ✗. A 15-year-old cannot tell which of the four cases (neither, top, bottom, both) each try was. The plate also never says 'one layer'. Claim limit-linear's caveat is that the limit belongs to the single-layer machine, and the Mark I itself had a random association layer. As it stands, an expert can read 'It could learn only simple patterns … XOR never settles' as a claim about the whole Mark I and about neural networks in general.",
+      "fix": "Keep the real trainXor() run. (1) Give each XOR try box a tiny two-dot glyph of its case (○○ ●○ ○● ●●) before its ✓ or ✗, matching the main row's style. (2) Under the 'XOR · one lit, not both' caption, add a second line in the same face: 'one layer of dials'. (3) Optional depth beat, only if it is true in the actual run: the first time the run gets the both-lit case wrong, show the two lit dials' tugs adding past the threshold tick (two small arc arrows stacking), so the viewer sees why. Two tugs that each say yes say yes together. This is the linear-separability intuition with no algebra. Hold to the existing beats; no narration change (runtime is 67.75 s against the 68 s cap)."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The lineage payoff is still too faint to teach. The 1-, 2- and 3-layer network silhouettes in the left windows (about 61.5-63 s) are small, low-contrast and off the eyeline, and they read as window fittings. 'Its descendants, today's neural networks' is therefore still mostly heard, and the film misses its one chance to answer the XOR plate's question: more layers.",
+      "fix": "Over 'descendants … networks' (60.09-62.3 s), raise the three layer silhouettes about 2x in contrast and size. Stage them left to right as 1 → 2 → 3 layers in the window directly behind the eye, the brightest region near the eyeline. Draw them in the same dial-and-thread vocabulary as the XOR plate, so the rhyme with 'one layer of dials' lands. Fade them before 'still learn' (63.04 s). Invent no modern specifics: lineage-mlp supports multilayer, nothing more."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "Carried from round 3 (deferred). 'For years, interest faded' (57.21-58.79 s) answers the lens's 'for how long' only with 'for years' plus the dim. The claim evidence gives the span: the 1970s and early 1980s.",
+      "fix": "On 'years' (57.44 s), extend the stamp in the same era type: '1969 · Minsky & Papert, Perceptrons' gains a second line, '→ the 1970s'. That is the minimal form the limit-linear claim text supports; use '1970s · early 1980s' only if the evidence line is accepted. It fades with the iris. It is one short line under the existing stamp, so it does not crowd the plates."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "On 'it guesses' (26.97-27.6 s) the camera is still trucking: the gauge is cut at frame right ('HORIZO…') and the needle sits idle at centre until about 29.5 s. The verb the line names has no picture. The full guess is explained by L0105b, but the first 'guess' should at least register.",
+      "fix": "Finish the truck by about 26.9 s so the full gauge is framed on 'guesses'. Give the needle a small undecided tremble around the threshold on 'guesses' (no verdict yet), and let it commit as L0105b's tugs arrive."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "QA data hygiene. score/analysis/summary.json is stale: it reports a 65.83 s cue and 71.83 s render, while m01.json and the mix use 67.75 s and 73.75 s. QA narration/listening also still warns that the human sign-off for Rosenblatt and Papert is pending. The STT records in narration/stt.json now pass, which fixes round 3's issue.",
+      "fix": "Regenerate score/analysis/summary.json whenever m01 is re-rendered. A human listens and runs film:voice signoff for both terms before publish."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Lens note: AlexNet and the transformer cannot be explained in a one-minute Mark I short, and they are not scored against this film.",
+      "fix": "None for this film. Brief a sequel as its own film if wanted."
+    }
+  ],
+  "best_moments": [
+    "ch01-s03, 55.0-58.4 s: on 'showed just how simple', a separate two-cell XOR mini machine runs Rosenblatt's rule for real. Its try row flips ✓ ✗ ✓ ✗ ✓ ✗ ✗, 'never settles' is set below it, and the success plates dim beside it. The limit is now shown, not told, and it is honest: it is not hand-animated and not run on the 64-unit board.",
+    "ch01-s03, 32.7-33.1 s: 'the total decides'. The threshold label sits over the centre tick and the needle commits to VERTICAL. The weighted sum plus threshold is on screen in one beat.",
+    "ch01-s03, 36.3-39.7 s: 'motors nudge the dials that had a say'. Only the dials fed by lit cells turn, with arc arrows toward the faint target, and the 'correct answer: horizontal' tag is now clear of the try row. This is the true error-correction rule and its supervision in one uncluttered picture.",
+    "ch01-s03, 41.1-46.2 s: 'Wrong' (try 2), 'wrong again' (try 3) and 'right' (try 4, the lantern flares). The narration counts the run's real verdicts.",
+    "ch01-s03, 47.0-48.0 s: 'try 5 · a new horizontal bar · said horizontal · RIGHT' over 'THEN try 1 · a horizontal bar · said vertical · WRONG'. Labelling the new bar as a different shape is honest, and it teaches generalisation, not memorisation.",
+    "ch01-s03, 52.07 s: '1969' types on as it is spoken, set as 'Minsky & Papert, Perceptrons' with an italic title and a closed-book prop. Belief, dissent and decline fit into one sentence with no causal overclaim."
+  ]
+}

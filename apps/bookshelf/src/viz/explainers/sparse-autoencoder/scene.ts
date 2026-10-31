@@ -165,7 +165,7 @@ export function buildScene(): Scene {
     dur: 4.8,
     text: 'We know the ground truth because we built it: five hidden directions, each firing twelve percent of the time. The model never labels them. Could anything recover them from the mixture alone?',
   });
-  tl.tween(dirsU, 1, { at: 8.6, dur: 1.0, ease: ease.draw });
+  tl.tween(dirsU, 1, { at: 8.6, dur: 1.0, ease: ease.enter });
   tl.hold(11.3, 0.5);
 
   // — Beat 2 · the sparse autoencoder ———————————————————————————————————————

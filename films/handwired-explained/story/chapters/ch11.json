@@ -1,0 +1,561 @@
+{
+  "id": "ch11",
+  "number": 11,
+  "title": "The Rule Written First",
+  "blurb": "15 to 16 October 2026: the last experiment before the pin. A strict parser's table has entries valid input never reads; train only those, and valid JSON parses exactly as before. Tag 11 is tied on with a second card on its knot, the rule for failure fixed beforehand, and the test sets committed first. JSON is riveted, with the hand rules' wins on unseen mistakes and on whole agent-written payloads shown beside it; TOML is struck by its own rule and then scoped honestly; the third parser's final test has not run, and the Still open drawer slides out and stays open.",
+  "shots": [
+    {
+      "id": "ch11-s01",
+      "kind": "scene",
+      "setting": "The lab bench at night, 15 October 2026: the JSON highlighter's lookup table laid out like a paper quilt",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 1.2,
+      "holdAfter": 1.8,
+      "lines": [
+        {
+          "id": "L1101",
+          "text": "One last experiment. The search demo's JSON highlighter stops at the first mistake.",
+          "pauseAfter": 0.5,
+          "direction": "fresh start after ch10's dusk, unhurried; 'One last experiment' plain and warm, a teacher turning a page; 'stops' lands with the clack of the stalled thread"
+        },
+        {
+          "id": "L1102",
+          "text": "Its parser is a table, and valid input never reads most of it.",
+          "direction": "a small discovery, curious; a light lift on 'never'"
+        }
+      ],
+      "visual": "THE RECOVERY GRID (bible image 25), part one: the problem. Lamp change from ch10's dusk to a cold winterBlue night. A paper lookup table lies on the lab bench seen at a steep three-quarter angle, like a quilt of shallow paper wells: 40 columns by 39 rows, 1,560 cells (the claim's 'about 1,560', drawn as an exact grid for layout only; no count is spoken). About 240 of the cells glow warm copper along a winding, branching path (the entries valid JSON reads); each lit cell carries a tiny copper pin, frozen. The other cells, about 1,300, are dark wells in winterBlue haze. Slow multiplane push down toward the grid across the shot. MACHINE STEP 1 (on 'experiment'): a thread of light made of abstract glyph beads (round, square, angled beads: never literal JSON text, the film has not run a specific payload) enters at the grid's top-left and runs along the lit path to the far edge: valid input. STEP 2 (on 'stops'): a second thread, one bead visibly out of place (a kink), runs the same path until it reaches a dark well; it halts with a dry relay clack and its beads stack up behind the stall: a strict parser gives up at the first error. STEP 3 (on 'table'): the camera lifts a little so the whole table reads; the dark wells sweep into view as the large majority; ONE small count label sets in beside the grid. The kinked thread stays stalled to the end of the shot. Date stamp lower left from the first frame. No other text: the machine carries the idea (the commit's own sentence, Q120, goes to the sources card).",
+      "beats": [
+        {
+          "id": "date",
+          "at": {
+            "shotTime": 0.5
+          },
+          "what": "date stamp types in lower left"
+        },
+        {
+          "id": "valid",
+          "at": {
+            "line": "L1101",
+            "word": "experiment"
+          },
+          "what": "the valid bead-thread runs the lit path end to end"
+        },
+        {
+          "id": "stall",
+          "at": {
+            "line": "L1101",
+            "word": "stops"
+          },
+          "what": "the kinked thread halts at a dark well with a dry relay clack; beads stack behind it"
+        },
+        {
+          "id": "counts",
+          "at": {
+            "line": "L1102",
+            "word": "table"
+          },
+          "what": "camera lifts so the whole table reads; the dark majority reads as the narrator finishes the line; the one count label sets in"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "paper lookup table (40 x 39 cells)",
+        "copper pins on the ~240 lit cells",
+        "bead-threads of light (abstract glyphs)",
+        "lab bench"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "15 → 16 October 2026 · a side branch of about 240 commits",
+          "beat": "date"
+        },
+        {
+          "kind": "label",
+          "text": "≈ 240 of ≈ 1,560 entries read by valid JSON",
+          "beat": "counts"
+        }
+      ],
+      "music": {
+        "cue": "m11-rule",
+        "note": "winterBlue, low intensity (0.3): after ch10's dusk the score thins to one sustained low line and room tone; a soft woodblock tick under the bead-threads, a dry relay clack on the stall. The both-branches motif is absent here: this chapter is about a rule, not a gate."
+      },
+      "transitionIn": "lampChange",
+      "claims": [
+        "LB19",
+        "PJ15"
+      ]
+    },
+    {
+      "id": "ch11-s01b",
+      "kind": "scene",
+      "setting": "The same lab bench at night, closer on the paper quilt: the stencil laid over the unread wells",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 1,
+      "holdAfter": 2.0,
+      "minDuration": 13,
+      "lines": [
+        {
+          "id": "L1103",
+          "text": "Train only the unread entries, to keep going after a mistake, and valid JSON parses exactly as before.",
+          "direction": "the idea is simple and he enjoys that; a held breath after 'keep going' while the wave of wells snaps (the gap is the picture's); 'after a mistake' light and quick; 'exactly as before' slow and level, the whole point of the trick",
+          "insertGaps": {
+            "going": 3.8
+          }
+        }
+      ],
+      "visual": "THE RECOVERY GRID, part two: the fix, given room to be seen. Cut in closer on the same grid; the kinked thread still sits stalled at its dark well. STEP 4 (on 'Train'): the narrator's hands enter from the lower left and lay a pale paper stencil over the table (the 'place' action): it is solid over every lit cell and cut open over every dark one, so the training light can reach only the unread entries. Backlight passes through the stencil's holes: each dark well fills first with a soft blend of three or four faint copper tiles at once, shimmering (the free entry softened into a weighted mix while it trains). THE HELD WAVE (through the breath after 'keep going', about 4 s, and on into the next words): in a slow wave across the grid on twos, each well snaps to its single strongest tile with a small detent click (rounding to the strongest choice); the wave is the shot's main event and is given time to cross the whole table. The 240 pinned cells never flicker, not once: their pins catch the light, steady, while everything around them moves. The hands lift the stencil away. STEP 5 (on 'exactly'): the valid thread runs again along its path, and a translucent ghost of its first run lies over it, matching bead for bead: unchanged by construction. Then, in the hold, the kinked thread runs again, reaches the cell where it stalled, which now holds a filled tile, and keeps going to the far edge. One small label by the stencil names the training data.",
+      "beats": [
+        {
+          "id": "stencil",
+          "at": {
+            "line": "L1103",
+            "word": "Train"
+          },
+          "what": "the narrator's hands lay the stencil; dark wells fill with soft blends; the training label sets in"
+        },
+        {
+          "id": "wave",
+          "at": {
+            "line": "L1103",
+            "word": "going",
+            "edge": "end"
+          },
+          "what": "the held wave: wells snap to their strongest tile across the grid on twos with detent clicks; the 240 pins never flicker; the stencil lifts away"
+        },
+        {
+          "id": "same",
+          "at": {
+            "line": "L1103",
+            "word": "exactly"
+          },
+          "what": "valid thread re-runs over its own ghost, bead for bead"
+        },
+        {
+          "id": "pass",
+          "at": {
+            "line": "L1103",
+            "edge": "end",
+            "offset": 0.4
+          },
+          "what": "the kinked thread passes its old stall and finishes"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "paper lookup table (40 x 39 cells)",
+        "copper pins on the ~240 lit cells",
+        "bead-threads of light (abstract glyphs)",
+        "pale paper stencil cut over the dark cells",
+        "lab bench"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "training: about 40,000 broken payloads, 55 kinds of mistake",
+          "beat": "stencil"
+        }
+      ],
+      "music": {
+        "cue": "m11-rule",
+        "note": "the same thin winterBlue line (0.3); on the wave of filled cells a fine ratchet of detent clicks on twos, held through the narrator's breath (machines clack, never chime); the woodblock tick returns under the re-run threads."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "LB19",
+        "LB20"
+      ]
+    },
+    {
+      "id": "ch11-s02",
+      "kind": "scene",
+      "setting": "The copper line over the Lifespan Rule, cold blue night, 15 October 2026; three sealed test-set envelopes on a ledge below the post",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 0.6,
+      "holdAfter": 1.7,
+      "lines": [
+        {
+          "id": "L1104",
+          "text": "Before testing, the lab tied on a tag: training can fill those entries. Then it fixed its rule for failure, and committed the test sets first.",
+          "direction": "quiet admiration, no fanfare; 'Before testing' set apart; the tag's belief read plainly as a belief, a small breath after 'entries'; 'its rule for failure' with care, the heart of the chapter; 'first' firm and soft"
+        }
+      ],
+      "visual": "Cut to the copper line strung across the cold blue dark at the backlight's peak, the paper Lifespan Rule running along the bottom of frame with its copper ticks (an hour · a day · a year · a lifetime labelled; the week, month and decade ticks unlabelled). A blank border tag swings in on its string. The narrator's hands enter lower left, ink its front in the house tag type (a paraphrase, never in quotation marks): 'Gradient descent can fill a parser's unused entries'. The tag is a BORDER TAG: a dotted perforation runs down its middle, the left half lettered JSON, the right half TOML, and from its lower edge a third, thinner thread hangs, lettered bison. On 'tied' the hands tie it on (the detent's tie stroke), as the narrator speaks the belief its front carries. Its knot carries TWO small typeset cards threaded through the eyelet: the first 'the recovery experiment', and, on 'failure', a second card slid on behind it, 'the rule for failure, fixed beforehand' (wording from the repo's own phrase; not 'pre-registered', which the fact-check rejected). On 'committed' the camera tilts down to a small ledge beneath the line's post: three paper envelopes, one per track (JSON, TOML, bison), each closed with a paper seal and a small blank date tab (no legible lettering: the narration says when); beside them a plain crate of torn paper slips, the training data (unlabelled here: its numbers were named over the stencil). The envelopes stay closed; nobody opens them in this shot. LIFESPAN (staging.tagLine encoding: a struck or ended thread drops to the rule at its measured lifespan; a still-held thread drops to its age as of 27 October 2026 and ends in a glowing open tip with a short copper arrow pointing right): the tag's thread drops to the Lifespan Rule and comes to rest between a week and a month, at about twelve days (tied 15 October, still held on 27 October), ending in a glowing open tip with its short copper arrow pointing right. It is one thread here; in ch11-s04 the TOML half's strand parts from it at its measured lifespan. No grommet is drawn (the bible does not settle one for this tag). The red-pencil hand does not appear. TAG-LINE STAGING (meta staging.tagLine): WORKSHOP, BEFORE DAWN: the canonical workshop, the window wall going from cold blue to the first dawnGold; the ledger cabinet stands at L3 beside the bench.",
+      "beats": [
+        {
+          "id": "ink",
+          "at": {
+            "shotTime": 0.5
+          },
+          "what": "blank border tag swings in; the narrator's hands ink its front"
+        },
+        {
+          "id": "tie",
+          "at": {
+            "line": "L1104",
+            "word": "tied"
+          },
+          "what": "the hands tie tag 11 on: detent tie stroke; first knot card 'the recovery experiment'"
+        },
+        {
+          "id": "rule",
+          "at": {
+            "line": "L1104",
+            "word": "failure"
+          },
+          "what": "the second knot card slides onto the eyelet: the rule for failure, fixed beforehand"
+        },
+        {
+          "id": "seal",
+          "at": {
+            "line": "L1104",
+            "word": "committed"
+          },
+          "what": "tilt down to the three sealed envelopes and the training crate"
+        },
+        {
+          "id": "drop",
+          "at": {
+            "line": "L1104",
+            "edge": "end"
+          },
+          "what": "the tag's lifespan thread drops to the Lifespan Rule: about twelve days, between a week and a month, ending in a glowing open tip with a short copper arrow pointing right (still held at 27 October 2026)"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "copper line",
+        "Lifespan Rule",
+        "border tag 11 (JSON | TOML halves, bison thread)",
+        "two knot cards",
+        "three sealed test-set envelopes",
+        "crate of torn training slips"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "Gradient descent can fill a parser's unused entries",
+          "beat": "ink"
+        },
+        {
+          "kind": "label",
+          "text": "the rule for failure, fixed beforehand",
+          "beat": "rule"
+        }
+      ],
+      "music": {
+        "cue": "m11-rule",
+        "note": "the detent figure begins: a soft detent click on the tie, then the bar waits; under the envelopes a single held low note. Intensity 0.3, cold and patient."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "LB25",
+        "LB23"
+      ]
+    },
+    {
+      "id": "ch11-s03",
+      "kind": "plate",
+      "setting": "A parchment plate at first light: the JSON verdict, the JSON half of the border tag in its corner",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "lines": [
+        {
+          "id": "L1105",
+          "text": "JSON: “a clear success.”",
+          "pauseAfter": 1.4,
+          "direction": "the quoted words as the write-up's, read plainly, a little pleased; 'JSON' set apart as a heading"
+        },
+        {
+          "id": "L1106",
+          "text": "Though on new kinds of mistake, and on whole payloads written by agents, hand-written rules still won.",
+          "direction": "fair and even, no deflation; a small breath after 'mistake' and after 'agents'; 'still won' given its full weight, not a footnote"
+        }
+      ],
+      "visual": "Paper wipe to a parchment plate warmed by the first dawnGold light. Upper third: the README's verdict as a short fragment only (the narrator speaks it): 'a clear success' in serif, in quotation marks, with its attribution. In the plate's lower right corner, inset, the JSON half of the border tag hangs from a short stub of copper line. On 'success' a copper rivet is punched through the JSON half's corner with a dry clack (kept). On 'Though' a small three-row tally strip slides up into the plate's lower left, drawn as paper bars on a ruled ground, lengths exact to the numbers (percent of payloads entirely right, final test run once, trained = mean of five runs): row one 'familiar mistakes', trained 79.8 against hand rules 79.6, two bars almost equal, effectively a tie; row two 'unseen mistake types', trained 68.9 against hand rules 87.2, the hand-rules bar visibly longer; row three, growing on 'agents', 'agent-written payloads', trained 46.3 against hand rules 56.7, the hand-rules bar again longer. Each row's name is lettered small at its left end on the ruled ground, and each bar's figure is printed at its tip as the bar arrives (79.8 · 79.6, 68.9 · 87.2, 46.3 · 56.7), so the plate is read once, from the bars. The bars grow from zero on twos. Nothing else moves; the camera holds still so the plate can be read.",
+      "beats": [
+        {
+          "id": "plate",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "Q122's first sentence sets in on the plate"
+        },
+        {
+          "id": "rivet",
+          "at": {
+            "line": "L1105",
+            "word": "success"
+          },
+          "what": "copper rivet punched through the JSON half: dry clack"
+        },
+        {
+          "id": "tally",
+          "at": {
+            "line": "L1106",
+            "word": "Though"
+          },
+          "what": "tally strip slides up; bars grow to 79.8/79.6 and 68.9/87.2, each figure printed at its bar's tip"
+        },
+        {
+          "id": "agents",
+          "at": {
+            "line": "L1106",
+            "word": "agents"
+          },
+          "what": "third row grows: agent-written 46.3/56.7, figures at the tips"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "JSON half of border tag 11",
+        "copper rivet",
+        "tally strip of paper bars (three rows)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "“a clear success” — recovery parser README, 16 Oct 2026",
+          "beat": "plate"
+        },
+        {
+          "kind": "label",
+          "text": "% of payloads entirely right · trained vs hand rules",
+          "beat": "tally"
+        }
+      ],
+      "music": {
+        "cue": "m11-rule",
+        "note": "the first warmth: one woody low line rises a step into dawnGold; the rivet is the detent's dry clack (kept). Intensity 0.35. On the tally strip the line simply holds; no flourish, this is a fair verdict, not a triumph."
+      },
+      "transitionIn": "paperWipe",
+      "claims": [
+        "LB21",
+        "LB19"
+      ]
+    },
+    {
+      "id": "ch11-s04",
+      "kind": "plate",
+      "setting": "The same parchment plate, cooled to blue: the TOML verdict and its scoping, the TOML half of the border tag",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "lines": [
+        {
+          "id": "L1107",
+          "text": "For TOML, another format: “By the rule fixed beforehand the track failed”.",
+          "pauseAfter": 0.5,
+          "direction": "TOML said 'TOM-ul'. The quotation read as the write-up's own words, level and unflinching; a small beat before 'failed', no drama"
+        },
+        {
+          "id": "L1108",
+          "text": "It lost to a one-line hand-written fallback, every run.",
+          "preGap": 0.5,
+          "direction": "plain fact, almost gentle"
+        },
+        {
+          "id": "L1108a",
+          "text": "The README is careful: the failure “does not say that training cannot work there.”",
+          "direction": "fair and exact, the lab scoping its own result; no irony"
+        },
+        {
+          "id": "L1109",
+          "text": "This is how a belief should end: by a rule written before the test.",
+          "preGap": 0.8,
+          "direction": "the chapter's turn: resolve, quiet and warm, not a sermon; a breath after 'end'; 'written before the test' slow, an echo of the chapter's title"
+        }
+      ],
+      "visual": "Lamp change across the same plate: the dawnGold drains back to winterBlue as the paper turns. Upper half: a short fragment of the TOML verdict (Q123; the narrator speaks it) in serif with its attribution. In the corner, inset, the TOML half of the border tag hangs from its stub of line, and its knot card 'the rule for failure, fixed beforehand' hangs above it. On 'failed' the knot card swings down on its thread and lies flat across the TOML half like a straightedge. On 'lost' the red-pencil hand enters from frame right and strikes the TOML half through ONCE, its pencil running along the card's edge: the belief is struck by its own pre-set rule, not by anyone's hand of judgement (dry pencil scratch, resolving into a wooden drawer closing). The hand withdraws right. LIFESPAN, on 'lost': at the moment of the strike the TOML half's own strand parts from the tag's lifespan thread and drops back along the Lifespan Rule strip at the plate's foot to its measured lifespan, about one to two days (tied 15 October, failed by 16 October), ending there; the JSON strand keeps its glowing open tip at about twelve days with its short copper arrow pointing right (still held at 27 October 2026). On 'careful' (beat scope), the narrator reads the lab's own scoping (Q124's second sentence, spoken only, not set: 'the failure' is the failure by that rule just drawn), and the lower half of the plate sets the other half of the TOML result as one small label, both conditions named together: gradient descent, then trial and error, trained with TOML mistakes, came level with 39 hand rules (98.3/82.7 against 98.7/81.7, the figures kept for the sources card). Fair to the trained side: the one rule beat gradient descent alone; with both ingredients, training drew level. On 'belief' the camera eases back to show both halves of the border tag together on their stub of line: the JSON half riveted, its strand's open tip at about twelve days; the TOML half struck, its strand ended at one to two days; side by side, both honest. (The rule's wording, start anew on the next line, goes to the sources card.)",
+      "beats": [
+        {
+          "id": "toml",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "lamp change to winterBlue; Q123 fragment sets in on the upper half"
+        },
+        {
+          "id": "card",
+          "at": {
+            "line": "L1107",
+            "word": "failed"
+          },
+          "what": "the rule card swings down and lies across the TOML half like a straightedge"
+        },
+        {
+          "id": "strike",
+          "at": {
+            "line": "L1108",
+            "word": "lost"
+          },
+          "what": "red-pencil hand strikes the TOML half once along the card's edge: scratch, then drawer close; the TOML strand parts from the tag's lifespan thread and drops back to about one to two days"
+        },
+        {
+          "id": "scope",
+          "at": {
+            "line": "L1108a",
+            "word": "careful",
+            "edge": "start"
+          },
+          "what": "as the narrator reads the lab's own scoping (Q124, spoken only), the LB23 label sets in on the lower half: gradient descent then trial and error, with TOML mistakes in training, came level with 39 hand rules"
+        },
+        {
+          "id": "both",
+          "at": {
+            "line": "L1109",
+            "word": "belief"
+          },
+          "what": "camera eases back: JSON half riveted (open tip, about twelve days), TOML half struck (ended at one to two days), side by side"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand"
+      ],
+      "props": [
+        "parchment plate",
+        "TOML half of border tag 11",
+        "knot card used as a straightedge",
+        "red pencil"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "“the track failed” — the recovery parser README, TOML",
+          "beat": "toml"
+        },
+        {
+          "kind": "label",
+          "text": "gradient descent, then trial and error, trained with TOML mistakes: level with 39 hand rules",
+          "beat": "scope"
+        }
+      ],
+      "music": {
+        "cue": "m11-rule",
+        "note": "the detent figure completes for the first time in this chapter: the strike's dry scratch resolves into a wooden drawer closing, then near-silence (room tone) under the narrator's reading of Q124 and the label beside it. On L1109 a single low line returns, warm, intensity 0.3: resolve, not loss."
+      },
+      "transitionIn": "lampChange",
+      "claims": [
+        "LB23"
+      ]
+    },
+    {
+      "id": "ch11-s05",
+      "kind": "scene",
+      "setting": "The lab ledger at first light, 16 October 2026: the bison thread ending in an open loop, the Still open drawer",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 1,
+      "holdAfter": 3.1,
+      "lines": [
+        {
+          "id": "L1110",
+          "text": "The third parser's final test hasn't run yet. That question stays open.",
+          "level": "soft",
+          "direction": "quiet, a small smile on 'stays open'; leave room after it",
+          "pauseAfter": 0.6
+        },
+        {
+          "id": "L1110a",
+          "text": "So does the lab's own list.",
+          "pauseAfter": 0.6,
+          "direction": "plain, a ledger read aloud; the slip carries the items, so the line stays short",
+          "tts": {
+            "solo": true,
+            "speed": 0.8
+          }
+        },
+        {
+          "id": "L1110b",
+          "text": "It says plainly: “a general JavaScript compiler” is “not delivered by these experiments.”",
+          "direction": "level and fair, no irony: the lab stating its own limits"
+        }
+      ],
+      "visual": "Crossfade to dawnGold. Follow the third thread, lettered bison, down from the border tag's lower edge: it runs a short way and ends not in a knot but in a small open loop, swaying (an aspiration not yet tested). A tiny label hangs beside the loop. The thread leads the eye down to the lab's ledger, a tall paper cabinet of labelled drawers (Known issues · Open decisions · Still open · Parked and deferred) standing in the morning haze beneath the window bay. On 'question' the drawer marked Still open slides out with a wooden detent click and STAYS OPEN; inside it, a blank label card waits. The other drawers remain shut. On 'compiler' (beat notDelivered) the card letters, in serif, only the fragment of the lab's own sentence (Q125) that the narrator reads: …not delivered by these experiments. A slow drift toward the open drawer; the camera does not close it: it is still open at the start of ch12. The detent figure plays tie and flip only; the third stroke never comes, and the bar hangs. LEDGER (beat ledger, on 'list'): a narrow paper slip, lab/status.md's own list of what is still open, is pinned inside the open drawer and inks two of its items as the narrator names the list (the label carries the items; the narration does not read them): scaling program learning past a complete loss table; evidence from real human tasks [LB26]. The bison drawer's own state (final test not yet run) is spoken, not captioned.",
+      "beats": [
+        {
+          "id": "loop",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "the bison thread runs down and ends in an open loop; its label sets in"
+        },
+        {
+          "id": "drawer",
+          "at": {
+            "line": "L1110",
+            "word": "question"
+          },
+          "what": "the Still open drawer slides out with a detent click and stays open; Q125 on its label"
+        },
+        {
+          "id": "hold",
+          "at": {
+            "line": "L1110b",
+            "edge": "end",
+            "offset": 1
+          },
+          "what": "slow drift toward the open drawer; nothing closes"
+        },
+        {
+          "id": "ledger",
+          "at": {
+            "line": "L1110a",
+            "word": "list"
+          },
+          "what": "a ledger slip of the lab's still-open questions is pinned inside the open drawer"
+        },
+        {
+          "id": "notDelivered",
+          "at": {
+            "line": "L1110b",
+            "word": "compiler",
+            "edge": "start"
+          },
+          "what": "the drawer's label card inks the fragment the narrator reads"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "bison thread with an open loop",
+        "lab ledger cabinet with four labelled drawers",
+        "Still open drawer and its label card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "still open: scaling program learning past a complete loss table · evidence from real human tasks",
+          "beat": "ledger"
+        },
+        {
+          "kind": "quote",
+          "text": "“…not delivered by these experiments.” — lab/status.md",
+          "beat": "notDelivered"
+        }
+      ],
+      "music": {
+        "cue": "m11-rule",
+        "note": "dawnGold, intensity 0.25: the detent figure plays tie, then flip, and the third stroke is withheld; through the long music-only hold while the drawer's card is read, the bar hangs on an unresolved low note that carries across the cut into ch12's dawn."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "LB24",
+        "LB26"
+      ]
+    }
+  ]
+}

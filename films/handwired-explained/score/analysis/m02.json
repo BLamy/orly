@@ -1,0 +1,18 @@
+{
+ "id": "m02",
+ "start": 99,
+ "end": 191.4,
+ "file": "films/handwired-explained/score/renders/m02.wav",
+ "duration": 98.4,
+ "I": -25.6,
+ "LRA": 7.2,
+ "TP": -7.6,
+ "expected": 98.4,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m02.png",
+ "cueSeconds": 92.4,
+ "cps": 0.23333333333333334,
+ "lastStrikeLocal": 92.08,
+ "lastStrike": 191.08
+}

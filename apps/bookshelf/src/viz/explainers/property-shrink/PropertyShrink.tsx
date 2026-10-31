@@ -11,7 +11,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -92,11 +91,15 @@ for (let i = 0; i < STEPS.length; i++) {
 }
 
 // ---------------------------------------------------------------------------
-// Layout.
+// Layout. World coordinates equal stage coordinates at CAMERA_HOME. The
+// player's caption pill covers y > ~600, so content stays above that line.
 // ---------------------------------------------------------------------------
 
-const CAM_TRIALS: CameraState = { x: 520, y: 340, k: 1.15 };
-const CAM_CHAIN: CameraState = { x: 600, y: 380, k: 1.12 };
+// trial block: x 170–730, y 180–498 (+ the falsified line at 518)
+const CAM_TRIALS: CameraState = { x: 450, y: 349, k: 1.1 };
+// shrink column: x 790–1190, y 146–554. Camera x 680 keeps the ghosted trial
+// block (x 170–730) and the column both on the 1280-wide stage.
+const CAM_CHAIN: CameraState = { x: 680, y: 349, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -214,6 +217,8 @@ const MOTION = {
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+const FORMULA = 'm ∈ xs  ∧  #{x < m} ≤ ⌊n/2⌋  ∧  #{x > m} ≤ ⌊n/2⌋';
+
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const titleU = s.get(scene.titleU);
@@ -226,158 +231,165 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The world (trials, shrink column) gives way to the division-of-labor
+  // panel, which gives way to the closing card. Each layer is removed from
+  // the DOM once it is gone, so nothing shows through the closing text.
+  const worldOp = (1 - clamp01(contrastU)) * (1 - 0.9 * clamp01(dimU)) * (1 - clamp01(closeU));
   const trialsFade = 1 - 0.8 * clamp01(chainU * 3);
+  const propOp = propU * (1 - clamp01(chainU * 3)) * (1 - clamp01(contrastU)) * (1 - clamp01(closeU));
+  const contrastOp = clamp01(contrastU) * (1 - clamp01(dimU)) * (1 - clamp01(closeU));
+  const titleOp = titleU * (1 - clamp01(closeU));
+
+  // The property panel starts centred, then slides up into a top band once
+  // the trials begin, so the trials have the stage.
+  const moveU = clamp01(genU * 8);
+  const pTop = 190 - 118 * moveU;
+  const pH = 150 - 66 * moveU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
-        <Camera {...cam}>
-          {/* trial rows */}
-          {genU > 0 &&
-            TRIALS.map((t, i) => {
-              const u = clamp01(genU * TRIALS.length - i);
-              if (u <= 0) return null;
-              const y = 180 + i * 42;
-              const isFail = !t.ok;
-              return (
-                <g key={i} opacity={u * (isFail ? 1 : trialsFade * 0.9)}>
-                  <rect
-                    x={170}
-                    y={y}
-                    width={560}
-                    height={32}
-                    rx={6}
-                    fill={colors.PANEL}
-                    opacity={0.9}
-                    stroke={isFail ? colors.NEGATIVE : colors.POSITIVE}
-                    strokeWidth={isFail ? 2 + failU : 1}
-                  />
-                  <text x={186} y={y + 21} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
-                    trial {i + 1}
-                  </text>
-                  <text x={262} y={y + 21} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
-                    [{t.xs.join(', ')}]
-                  </text>
-                  <text x={690} y={y + 21} fill={isFail ? colors.NEGATIVE : colors.POSITIVE} fontSize={13} fontFamily="monospace" fontWeight={700} textAnchor="end">
-                    {isFail ? '✗' : '✓'}
-                  </text>
-                </g>
-              );
-            })}
-          {failU > 0 && (
-            <text x={170} y={180 + TRIALS.length * 42 + 22} fill={colors.NEGATIVE} fontSize={13.5} fontFamily="monospace" fontWeight={700} opacity={failU * trialsFade}>
-              falsified on trial {FAIL_TRIAL}: median {buggyMedian(FOUND)} has {FOUND.filter((x) => x < buggyMedian(FOUND)).length}/{FOUND.length} values below it
-            </text>
-          )}
-
-          {/* the shrink chain */}
-          {chainU > 0 && (
-            <g>
-              <text x={790} y={168} fill={colors.TEXT} fontSize={14.5} fontWeight={600} opacity={chainU}>
-                shrinking — keep only what still fails
-              </text>
-              {CHAIN.map((c, i) => {
-                const u = clamp01(chainU * CHAIN.length - i);
+      {worldOp > 0.01 && (
+        <g opacity={worldOp}>
+          <Camera {...cam}>
+            {/* trial rows */}
+            {genU > 0 &&
+              TRIALS.map((t, i) => {
+                const u = clamp01(genU * TRIALS.length - i);
                 if (u <= 0) return null;
-                const y = 190 + i * 40;
-                const last = i === CHAIN.length - 1;
+                const y = 180 + i * 36;
+                const isFail = !t.ok;
                 return (
-                  <g key={i} opacity={u}>
-                    {c.xs ? (
-                      <>
-                        <rect x={790} y={y} width={400} height={30} rx={6} fill={colors.PANEL} opacity={0.9} stroke={last ? colors.WARM : colors.GRID} strokeWidth={last ? 2 : 1} />
-                        <text x={804} y={y + 20} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
-                          {c.label === '0' ? 'start' : `step ${c.label}`}
-                        </text>
-                        <text x={874} y={y + 20} fill={last ? colors.WARM : colors.TEXT} fontSize={12} fontFamily="monospace" fontWeight={last ? 700 : 400}>
-                          [{c.xs.join(', ')}]
-                        </text>
-                      </>
-                    ) : (
-                      <text x={880} y={y + 20} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
-                        ⋮ {N_SHRINK - 7} more failing shrinks ⋮
-                      </text>
-                    )}
+                  <g key={i} opacity={u * (isFail ? trialsFade : trialsFade * 0.9)}>
+                    <rect
+                      x={170}
+                      y={y}
+                      width={560}
+                      height={30}
+                      rx={6}
+                      fill={colors.PANEL}
+                      opacity={0.9}
+                      stroke={isFail ? colors.NEGATIVE : colors.POSITIVE}
+                      strokeWidth={isFail ? 2 + failU : 1}
+                    />
+                    <text x={186} y={y + 20} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+                      trial {i + 1}
+                    </text>
+                    <text x={262} y={y + 20} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+                      [{t.xs.join(', ')}]
+                    </text>
+                    <text x={714} y={y + 20} fill={isFail ? colors.NEGATIVE : colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700} textAnchor="end">
+                      {isFail ? '✗' : '✓'}
+                    </text>
                   </g>
                 );
               })}
-            </g>
-          )}
+            {failU > 0 && (
+              <text x={170} y={180 + TRIALS.length * 36 + 20} fill={colors.NEGATIVE} fontSize={13.5} fontFamily="monospace" fontWeight={700} opacity={failU * trialsFade}>
+                falsified on trial {FAIL_TRIAL}: median {buggyMedian(FOUND)} has {FOUND.filter((x) => x < buggyMedian(FOUND)).length}/{FOUND.length} values below it
+              </text>
+            )}
 
-          {/* minimal witness spotlight */}
-          {minU > 0 && (
-            <g opacity={minU}>
-              <rect x={790} y={190 + CHAIN.length * 40 + 10} width={400} height={104} rx={10} fill={colors.PANEL} opacity={0.97} stroke={colors.WARM} strokeWidth={2} />
-              <text x={814} y={190 + CHAIN.length * 40 + 40} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
-                minimal witness: [{MINIMAL.join(', ')}]
-              </text>
-              <text x={814} y={190 + CHAIN.length * 40 + 64} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
-                claimed median: {MIN_MEDIAN} · {MIN_LESS}/{MINIMAL.length} values below
-              </text>
-              <text x={814} y={190 + CHAIN.length * 40 + 86} fill={colors.MUTED} fontSize={11}>
-                as text, “100” sorts before “2” — the diagnosis, free
-              </text>
-            </g>
-          )}
-        </Camera>
-      </g>
+            {/* the shrink chain */}
+            {chainU > 0 && (
+              <g>
+                <text x={790} y={146} fill={colors.TEXT} fontSize={15} fontWeight={600} opacity={chainU}>
+                  shrinking — keep only what still fails
+                </text>
+                {CHAIN.map((c, i) => {
+                  const u = clamp01(chainU * CHAIN.length - i);
+                  if (u <= 0) return null;
+                  const y = 170 + i * 32;
+                  const last = i === CHAIN.length - 1;
+                  return (
+                    <g key={i} opacity={u}>
+                      {c.xs ? (
+                        <>
+                          <rect x={790} y={y} width={400} height={28} rx={6} fill={colors.PANEL} opacity={0.9} stroke={last ? colors.WARM : colors.GRID} strokeWidth={last ? 2 : 1} />
+                          <text x={804} y={y + 19} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                            {c.label === '0' ? 'start' : `step ${c.label}`}
+                          </text>
+                          <text x={874} y={y + 19} fill={last ? colors.WARM : colors.TEXT} fontSize={12.5} fontFamily="monospace" fontWeight={last ? 700 : 400}>
+                            [{c.xs.join(', ')}]
+                          </text>
+                        </>
+                      ) : (
+                        <text x={990} y={y + 19} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                          ⋮ {N_SHRINK - 7} more failing shrinks ⋮
+                        </text>
+                      )}
+                    </g>
+                  );
+                })}
+              </g>
+            )}
+
+            {/* minimal witness spotlight */}
+            {minU > 0 && (
+              <g opacity={minU}>
+                <rect x={790} y={170 + CHAIN.length * 32 + 12} width={400} height={84} rx={10} fill={colors.PANEL} opacity={0.97} stroke={colors.WARM} strokeWidth={2} />
+                <text x={814} y={170 + CHAIN.length * 32 + 38} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
+                  minimal witness: [{MINIMAL.join(', ')}]
+                </text>
+                <text x={814} y={170 + CHAIN.length * 32 + 60} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+                  claimed median: {MIN_MEDIAN} · {MIN_LESS}/{MINIMAL.length} values below
+                </text>
+                <text x={814} y={170 + CHAIN.length * 32 + 80} fill={colors.MUTED} fontSize={12}>
+                  as text, “100” sorts before “2” — the diagnosis, free
+                </text>
+              </g>
+            )}
+          </Camera>
+        </g>
+      )}
 
       {/* the property — screen space */}
-      {propU > 0 && (
-        <g opacity={propU * mainOp * (1 - 0.8 * clamp01(chainU * 3))}>
-          <rect x={760} y={96} width={480} height={118} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.SECONDARY} />
-          <text x={784} y={126} fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
+      {propOp > 0.01 && (
+        <g opacity={propOp}>
+          <rect x={200} y={pTop} width={880} height={pH} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.SECONDARY} />
+          <text x={640} y={pTop + 34 - 10 * moveU} textAnchor="middle" fill={colors.SECONDARY} fontSize={16} fontWeight={700}>
             the property — no expected values anywhere
           </text>
-          <MathLabel
-            tex="m \in xs \;\wedge\; \#\{x < m\} \le \lfloor n/2 \rfloor \;\wedge\; \#\{x > m\} \le \lfloor n/2 \rfloor"
-            x={784}
-            y={148}
-            fontSize={14}
-            color={colors.TEXT}
-            opacity={1}
-          />
-          <text x={784} y={198} fill={colors.MUTED} fontSize={11.5}>
+          <text x={640} y={pTop + 84 - 34 * moveU} textAnchor="middle" fill={colors.TEXT} fontSize={19 - 5 * moveU} fontFamily="ui-serif, Georgia, serif">
+            {FORMULA}
+          </text>
+          <text x={640} y={pTop + 120 - 46 * moveU} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
             for every list — the generator’s job is to find the “every” you forgot
           </text>
         </g>
       )}
 
-      {/* contrast panel */}
-      {contrastU > 0 && (
-        <g opacity={contrastU * mainOp}>
-          <rect x={790} y={110} width={450} height={172} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={816} y={142} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+      {/* contrast panel: centred, replaces the examples */}
+      {contrastOp > 0.01 && (
+        <g opacity={contrastOp}>
+          <rect x={290} y={130} width={700} height={330} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <text x={330} y={176} fill={colors.TEXT} fontSize={20} fontWeight={600}>
             the division of labor
           </text>
-          <text x={816} y={172} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
-            you:     one invariant
-          </text>
-          <text x={816} y={196} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
-            machine: inputs · search · shrinking
-          </text>
-          <text x={816} y={220} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
-            oracle:  not invited
-          </text>
-          <text x={816} y={254} fill={colors.WARM} fontSize={12}>
+          <text x={330} y={236} fill={colors.MUTED} fontSize={17} fontFamily="monospace">you</text>
+          <text x={520} y={236} fill={colors.TEXT} fontSize={17} fontFamily="monospace">one invariant</text>
+          <text x={330} y={280} fill={colors.MUTED} fontSize={17} fontFamily="monospace">machine</text>
+          <text x={520} y={280} fill={colors.TEXT} fontSize={17} fontFamily="monospace">inputs · search · shrinking</text>
+          <text x={330} y={324} fill={colors.POSITIVE} fontSize={17} fontFamily="monospace">oracle</text>
+          <text x={520} y={324} fill={colors.POSITIVE} fontSize={17} fontFamily="monospace">not invited</text>
+          <line x1={330} y1={352} x2={940} y2={352} stroke={colors.GRID} />
+          <text x={330} y={392} fill={colors.WARM} fontSize={15}>
             found on trial {FAIL_TRIAL} · shrunk in {N_SHRINK} steps · all computed live
           </text>
         </g>
       )}
 
-      <g opacity={titleU * mainOp}>
+      <g opacity={titleOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Properties over examples
         </text>
       </g>
 
-      {/* close */}
+      {/* close: a solid card, on an empty stage */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             State the invariant. The machine finds the “every”.
           </text>

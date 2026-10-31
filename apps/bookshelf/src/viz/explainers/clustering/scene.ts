@@ -197,7 +197,8 @@ export const sy = (y: number): number => PLOT.y + PLOT.h - ((y + 2.1) / 4.2) * P
 export const METER = { x: 820, y: 160, w: 340, h: 26 };
 export const CLUSTER_COLORS_HINT = 'ACCENT / SECONDARY / WARM';
 
-export const CAM_PLOT: CameraState = { x: 400, y: 320, k: 1.25 };
+// Frames the plot and the inertia meter together, clear of the caption bar.
+export const CAM_PLOT: CameraState = { x: 660, y: 362, k: 1.1 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

@@ -85,7 +85,7 @@ export function buildScene(): Scene {
   tl.tween(titleU, 1, { at: 0.4, dur: 0.8, ease: ease.enter });
   tl.tween(cam, CAM_MAP, { at: 1.2, dur: 1.3, ease: ease.move });
   tl.tween(browserU, 1, { at: 1.8, dur: 1.0, ease: ease.enter });
-  tl.tween(rowsU, 1, { at: 2.6, dur: 2.6, ease: ease.linear });
+  tl.tween(rowsU, 1, { at: 2.6, dur: 2.6, ease: ease.enter });
   tl.hold(6.1, 0.5);
 
   // Beat 2 — the OS column, labeled conceptual
@@ -165,102 +165,108 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the mapping fades to nothing before the close card arrives, so no old text sits under it
+  const mainOp = 1 - dimU;
+  const showMain = mainOp > 0.01;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
-        <Camera {...cam}>
-          {/* column headers */}
-          {browserU > 0 && (
-            <text x={190} y={170} fill={colors.MUTED} fontSize={13} fontWeight={600} opacity={browserU}>
-              the four bones
-            </text>
-          )}
-          {browserU > 0 && (
-            <text x={520} y={170} fill={colors.SECONDARY} fontSize={13} fontWeight={700} opacity={browserU}>
-              browser — almostnode (real)
-            </text>
-          )}
-          {osU > 0 && (
-            <g opacity={osU}>
-              <text x={860} y={170} fill={colors.WARM} fontSize={13} fontWeight={700}>
-                OS scale — general pattern
+      {showMain && (
+        <g opacity={mainOp}>
+          <Camera {...cam}>
+            {/* column headers, aligned over their columns */}
+            {browserU > 0 && (
+              <text x={202} y={170} fill={colors.MUTED} fontSize={13} fontWeight={600} opacity={browserU}>
+                the four bones
               </text>
-              {labelU > 0 && (
-                <text x={860} y={188} fill={colors.MUTED} fontSize={10.5} fontStyle="italic" opacity={labelU}>
-                  conceptual · not almostnode specifics
+            )}
+            {browserU > 0 && (
+              <text x={430} y={170} fill={colors.SECONDARY} fontSize={13} fontWeight={700} opacity={browserU}>
+                browser — almostnode (real)
+              </text>
+            )}
+            {osU > 0 && (
+              <g opacity={osU}>
+                <text x={790} y={170} fill={colors.WARM} fontSize={13} fontWeight={700}>
+                  OS scale — general pattern
                 </text>
-              )}
-            </g>
-          )}
+                {labelU > 0 && (
+                  <text x={790} y={188} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={labelU}>
+                    conceptual · not almostnode specifics
+                  </text>
+                )}
+              </g>
+            )}
 
-          {/* mapping rows */}
-          {rowsU > 0 &&
-            MAP.map((m, i) => {
-              const u = clamp01(rowsU * MAP.length - i);
-              if (u <= 0) return null;
-              const y = 210 + i * 72;
-              return (
-                <g key={m.idea} opacity={u}>
-                  <rect x={180} y={y} width={910} height={58} rx={9} fill={colors.PANEL} opacity={0.88} stroke={colors.GRID} />
-                  <text x={202} y={y + 34} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
-                    {m.idea}
-                  </text>
-                  <text x={430} y={y + 34} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
-                    {m.browser}
-                  </text>
-                  <text x={790} y={y + 34} fill={osU > 0 ? colors.WARM : colors.PANEL} fontSize={12} fontFamily="monospace" opacity={osU}>
-                    {m.os}
-                  </text>
-                </g>
-              );
-            })}
-        </Camera>
-      </g>
+            {/* mapping rows */}
+            {rowsU > 0 &&
+              MAP.map((m, i) => {
+                const u = clamp01(rowsU * MAP.length - i);
+                if (u <= 0) return null;
+                const y = 210 + i * 72;
+                return (
+                  <g key={m.idea} opacity={u}>
+                    <rect x={180} y={y} width={910} height={58} rx={9} fill={colors.PANEL} opacity={0.88} stroke={colors.GRID} />
+                    <text x={202} y={y + 34} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
+                      {m.idea}
+                    </text>
+                    <text x={430} y={y + 34} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+                      {m.browser}
+                    </text>
+                    <text x={790} y={y + 34} fill={osU > 0 ? colors.WARM : colors.PANEL} fontSize={13} fontFamily="monospace" opacity={osU}>
+                      {m.os}
+                    </text>
+                  </g>
+                );
+              })}
+          </Camera>
+        </g>
+      )}
 
-      {/* the loop-books bridge — screen space */}
-      {bridgeU > 0 && (
+      {/* the loop-books bridge — screen space, sits above the column headers */}
+      {bridgeU > 0 && showMain && (
         <g opacity={bridgeU * mainOp}>
           {LOOP_BOOKS.map((b, i) => (
             <g key={b.slug}>
-              <rect x={120 + i * 350} y={100} width={320} height={50} rx={9} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-              <text x={140 + i * 350} y={123} fill={colors.ACCENT} fontSize={12.5} fontFamily="monospace" fontWeight={700}>
+              <rect x={120 + i * 350} y={74} width={320} height={50} rx={9} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+              <text x={140 + i * 350} y={97} fill={colors.ACCENT} fontSize={12.5} fontFamily="monospace" fontWeight={700}>
                 {b.slug}
               </text>
-              <text x={140 + i * 350} y={141} fill={colors.MUTED} fontSize={11}>
+              <text x={140 + i * 350} y={115} fill={colors.MUTED} fontSize={12}>
                 {b.note}
               </text>
             </g>
           ))}
-          <text x={640} y={172} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+          <text x={640} y={152} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
             all three must run the agent’s work safely before they can verify it
           </text>
         </g>
       )}
 
-      <g opacity={titleU * mainOp}>
-        <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
-          The same shape, everywhere
-        </text>
-      </g>
+      {showMain && (
+        <g opacity={titleU * mainOp}>
+          <text x={180} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+            The same shape, everywhere
+          </text>
+        </g>
+      )}
 
       {/* close */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={180} y={200} width={920} height={264} rx={16} fill={colors.PANEL} opacity={0.97} stroke={colors.GRID} />
+          <rect x={180} y={200} width={920} height={264} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={262} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             An agent you can’t contain is an agent you can’t verify.
           </text>
-          <text x={640} y={312} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily="monospace">
+          <text x={640} y={312} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={15} fontFamily="monospace">
             boundary · narrow checked channel · deny by default · a cost at every crossing
           </text>
-          <text x={640} y={352} textAnchor="middle" fill={colors.POSITIVE} fontSize={16}>
+          <text x={640} y={362} textAnchor="middle" fill={colors.POSITIVE} fontSize={16}>
             containment is the precondition for verification
           </text>
-          <text x={640} y={402} textAnchor="middle" fill={colors.WARM} fontSize={14.5}>
+          <text x={640} y={412} textAnchor="middle" fill={colors.WARM} fontSize={15}>
             the wall lets you extend trust one careful, revocable inch at a time
           </text>
         </g>

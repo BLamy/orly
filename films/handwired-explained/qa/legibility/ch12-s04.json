@@ -1,0 +1,274 @@
+{
+ "shot": "ch12-s04",
+ "at": "2026-10-28T17:16:47.392Z",
+ "minCapPx": 22,
+ "sampled": 24,
+ "texts": 52,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "why?",
+   "capWhileSubject": 37.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“Let’s find out!”",
+   "capWhileSubject": 71,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— the README",
+   "capWhileSubject": 31.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "The neuron",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "is a logic",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "gate",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "McCulloch & Pitts, 1943",
+   "maxCap": 7.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Learn the",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "weights;",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "don't write",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "them",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Sutton, 2019",
+   "maxCap": 7.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "suspect",
+   "maxCap": 10.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Somebody",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "trained it",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A tool",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "turned",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ordinary",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JavaScript",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "into it",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README",
+   "maxCap": 7.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "It isn't",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "really a",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "network",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "For an",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "integer a",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "maxCap": 12.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "One",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "evaluation",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "per frame",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HandwiredOS's own design",
+   "maxCap": 7.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Established",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "conclusions:",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "take these as",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "given",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the July briefs",
+   "maxCap": 7.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "The GPU is",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the faster",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "one",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(for the highlighter half)",
+   "maxCap": 12.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "09:01",
+   "maxCap": 9.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "fully",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "differentiable!",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README's tagline",
+   "maxCap": 7.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "nanoGPT?",
+   "maxCap": 12.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Gradient",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "descent can",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "fill a parser's",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "unused",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "entries",
+   "maxCap": 15.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the recovery experiment",
+   "maxCap": 7.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the rule for failure, fixed beforehand",
+   "maxCap": 7.4,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 49
+}

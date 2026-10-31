@@ -42,19 +42,25 @@ const stopPos = (i: number) => {
   return { x: BIG.cx + BIG.r * Math.cos(a), y: BIG.cy + BIG.r * Math.sin(a) };
 };
 
+// The card column: one x, one width, a 16px gap between every card.
 const PR_CARD = { x: 905, y: 96, w: 320, h: 104 } as const;
-const PREV_CARD = { x: 905, y: 224, w: 320, h: 92 } as const;
-const REPLY_CARD = { x: 905, y: 340, w: 320, h: 62 } as const;
-const SHELF = { x: 905, y: 428, w: 320, h: 140 } as const;
+const PREV_CARD = { x: 905, y: 216, w: 320, h: 116 } as const;
+const REPLY_CARD = { x: 905, y: 348, w: 320, h: 62 } as const;
+const SHELF = { x: 905, y: 426, w: 320, h: 140 } as const;
+/** Closing panel: right of the ring's labels (the 'scenes' label ends near x 725). */
+const END_PANEL = { x: 770, y: 230, w: 400, h: 168 } as const;
 
 /** Spines already on the shelf (colors from the real library palette). */
 const SPINES = ['#34d399', '#f5b942', '#2dd4bf', '#fb7185', '#22d3ee', '#a78bfa', '#38bdf8', '#fbbf24', '#4ade80'];
 
-// camera marks
-const CAM_CARDS: CameraState = { x: 840, y: 260, k: 1.25 };
-const CAM_RING: CameraState = { x: 520, y: 330, k: 1.1 };
-const CAM_SHELF: CameraState = { x: 890, y: 420, k: 1.3 };
-const CAM_END: CameraState = { x: 570, y: 330, k: 1.06 };
+// camera marks — each keeps the ring's labels (y ≤ ~600) and the cards' right
+// edge (x ≤ ~1200) on the 1280×720 stage.
+/** Ring + card column together: a gentle push from home. */
+const CAM_CARDS: CameraState = { x: 720, y: 325, k: 1.08 };
+const CAM_RING: CameraState = CAM_CARDS;
+const CAM_SHELF: CameraState = { x: 755, y: 370, k: 1.05 };
+/** Whole ring + closing panel framed together, so no card or label is cropped. */
+const CAM_END: CameraState = { x: 678, y: 330, k: 1.12 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -275,7 +281,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- the ring (the pipeline, whole) ---- */}
-        <g opacity={endU > 0 ? 1 - 0.35 * endU : 1}>
+        <g opacity={endU > 0 ? 1 - 0.85 * endU : 1}>
           <LoopRing
             cx={BIG.cx}
             cy={BIG.cy}
@@ -307,20 +313,20 @@ export function Render({ s }: { s: SceneState }) {
         {prU > 0 && (
           <g opacity={prU * cardsOp}>
             <rect x={PR_CARD.x} y={PR_CARD.y} width={PR_CARD.w} height={PR_CARD.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={PR_CARD.x + 18} y={PR_CARD.y + 28} fill={colors.TEXT} fontSize={14} fontWeight={700}>
+            <text x={PR_CARD.x + 18} y={PR_CARD.y + 28} fill={colors.TEXT} fontSize={15} fontWeight={700}>
               book: ORLY Loop
             </text>
-            <text x={PR_CARD.x + 18} y={PR_CARD.y + 50} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
-              src/viz/books/the-orly-loop · manifest
+            <text x={PR_CARD.x + 18} y={PR_CARD.y + 50} fill={colors.TEXT} opacity={0.8} fontSize={13} fontFamily={MONO}>
+              src/viz/books/the-orly-loop
             </text>
-            <text x={PR_CARD.x + 18} y={PR_CARD.y + 68} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
-              audio/ · previews/ · library.json
+            <text x={PR_CARD.x + 18} y={PR_CARD.y + 68} fill={colors.TEXT} opacity={0.8} fontSize={13} fontFamily={MONO}>
+              manifest · audio/ · library.json
             </text>
             <rect x={PR_CARD.x + PR_CARD.w - 78} y={PR_CARD.y + 16} width={60} height={24} rx={12} fill={colors.POSITIVE} opacity={0.5 + 0.5 * openPulse} />
             <text x={PR_CARD.x + PR_CARD.w - 48} y={PR_CARD.y + 33} textAnchor="middle" fill={colors.BG} fontSize={12} fontWeight={700}>
               OPEN
             </text>
-            <text x={PR_CARD.x + 18} y={PR_CARD.y + 90} fill={colors.MUTED} fontSize={11} fontStyle="italic">
+            <text x={PR_CARD.x + 18} y={PR_CARD.y + 90} fill={colors.TEXT} opacity={0.7} fontSize={12.5} fontStyle="italic">
               opened by the run — reviewed by you
             </text>
           </g>
@@ -330,13 +336,16 @@ export function Render({ s }: { s: SceneState }) {
         {prevU > 0 && (
           <g opacity={prevU * cardsOp}>
             <rect x={PREV_CARD.x} y={PREV_CARD.y} width={PREV_CARD.w} height={PREV_CARD.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-            <text x={PREV_CARD.x + 18} y={PREV_CARD.y + 26} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+            <text x={PREV_CARD.x + 18} y={PREV_CARD.y + 28} fill={colors.TEXT} fontSize={14.5} fontWeight={700}>
               📖 Preview deployed
             </text>
-            <text x={PREV_CARD.x + 18} y={PREV_CARD.y + 48} fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
-              …workers.dev/?bundle=the-orly-loop
+            <text x={PREV_CARD.x + 18} y={PREV_CARD.y + 50} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+              …workers.dev/
             </text>
-            <text x={PREV_CARD.x + 18} y={PREV_CARD.y + 70} fill={colors.MUTED} fontSize={11} fontStyle="italic">
+            <text x={PREV_CARD.x + 18} y={PREV_CARD.y + 68} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+              ?bundle=the-orly-loop
+            </text>
+            <text x={PREV_CARD.x + 18} y={PREV_CARD.y + 94} fill={colors.TEXT} opacity={0.7} fontSize={12.5} fontStyle="italic">
               updated on each push · preview.yml
             </text>
           </g>
@@ -346,10 +355,10 @@ export function Render({ s }: { s: SceneState }) {
         {replyU > 0 && (
           <g opacity={replyU * cardsOp}>
             <rect x={REPLY_CARD.x} y={REPLY_CARD.y} width={REPLY_CARD.w} height={REPLY_CARD.h} rx={12} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.3} />
-            <text x={REPLY_CARD.x + 18} y={REPLY_CARD.y + 26} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+            <text x={REPLY_CARD.x + 18} y={REPLY_CARD.y + 26} fill={colors.SECONDARY} fontSize={13.5} fontFamily={MONO}>
               @claude tighten the pacing in
             </text>
-            <text x={REPLY_CARD.x + 18} y={REPLY_CARD.y + 44} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+            <text x={REPLY_CARD.x + 18} y={REPLY_CARD.y + 46} fill={colors.SECONDARY} fontSize={13.5} fontFamily={MONO}>
               chapter two
             </text>
           </g>
@@ -359,7 +368,7 @@ export function Render({ s }: { s: SceneState }) {
         {shelfU > 0 && (
           <g opacity={shelfU * (1 - 0.85 * cardsDim)}>
             <rect x={SHELF.x} y={SHELF.y} width={SHELF.w} height={SHELF.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={SHELF.x + 18} y={SHELF.y + 26} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+            <text x={SHELF.x + 18} y={SHELF.y + 28} fill={colors.TEXT} fontSize={14.5} fontWeight={700}>
               the shelf — production
             </text>
             <line x1={SHELF.x + 16} y1={SHELF.y + 112} x2={SHELF.x + SHELF.w - 16} y2={SHELF.y + 112} stroke={colors.GRID} strokeWidth={3} />
@@ -386,14 +395,14 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the closing panel (opaque — the stage under it stays quiet) ---- */}
         {endU > 0 && (
           <g opacity={endU}>
-            <rect x={640 - 270} y={230} width={540} height={168} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
-            <text x={640} y={295} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={800}>
+            <rect x={END_PANEL.x} y={END_PANEL.y} width={END_PANEL.w} height={END_PANEL.h} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
+            <text x={END_PANEL.x + END_PANEL.w / 2} y={289} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={800}>
               ORLY Loop
             </text>
-            <text x={640} y={330} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontStyle="italic">
+            <text x={END_PANEL.x + END_PANEL.w / 2} y={324} textAnchor="middle" fill={colors.TEXT} opacity={0.75} fontSize={15} fontStyle="italic">
               a book built by the loop it describes
             </text>
-            <text x={640} y={368} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={END_PANEL.x + END_PANEL.w / 2} y={362} textAnchor="middle" fill={colors.TEXT} opacity={0.75} fontSize={14} fontFamily={MONO}>
               issue → build → voice → verify → publish → 🐍
             </text>
           </g>

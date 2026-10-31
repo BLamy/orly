@@ -1,0 +1,28 @@
+{
+ "shot": "ch06-s04",
+ "at": "2026-10-28T11:42:19.797Z",
+ "minCapPx": 22,
+ "sampled": 12,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "300",
+   "capWhileSubject": 23.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "300 steps = 1,200 ms",
+   "capWhileSubject": 25.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "others carry time · Handwired snaps",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

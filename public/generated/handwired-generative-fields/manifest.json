@@ -1,0 +1,80 @@
+{
+  "format": 3,
+  "slug": "handwired-generative-fields",
+  "title": "Generative Fields",
+  "subtitle": "One fixed layout program, seventy-two numbers, and what searching, climbing and repairing really showed.",
+  "animal": "animal.webp",
+  "accent": "#7fb33a",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Seventy-Two Numbers, One Program",
+      "blurb": "One circuit with seventy-two numeric fields lays out sixteen slots as a grid, hero, mosaic, list or filmstrip.",
+      "scene": "books/handwired-generative-fields/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.263,
+        19.238,
+        31.15,
+        43.665,
+        52.698,
+        61.533,
+        69.428,
+        79.9,
+        88.77,
+        100.229,
+        113.255
+      ],
+      "duration": 124.32
+    },
+    {
+      "number": 2,
+      "title": "Scored, Searched, Climbed",
+      "blurb": "Random search and gradient climbing both find valid layouts, and they disagree about which is best.",
+      "scene": "books/handwired-generative-fields/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.369,
+        22.372,
+        35.921,
+        42.597,
+        53.057,
+        69.021,
+        76.893,
+        89.199,
+        101.204,
+        111.989,
+        124.006,
+        134.896
+      ],
+      "duration": 146.146
+    },
+    {
+      "number": 3,
+      "title": "The Path Between",
+      "blurb": "Repair makes every interpolated layout valid, but it can hide content, and the lab's claims stand narrowed.",
+      "scene": "books/handwired-generative-fields/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.581,
+        21.583,
+        32.485,
+        45.221,
+        55.02,
+        65.004,
+        76.045,
+        86.367,
+        98.325,
+        109.378,
+        120.779,
+        134.118
+      ],
+      "duration": 147.54
+    }
+  ],
+  "sources": "sources.json"
+}

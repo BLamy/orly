@@ -9,7 +9,7 @@ import type { CameraState, SceneState } from '../../core';
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const NODES = [
-  { x: 640, y: 330, label: 'claim A', doi: '10.a', color: colors.WARM },
+  { x: 640, y: 330, label: 'claim A', doi: '10.1038/nature14539', color: colors.WARM },
   { x: 430, y: 195, label: 'claim B', doi: '10.b', color: colors.ACCENT },
   { x: 820, y: 165, label: 'claim C', doi: '10.c', color: colors.SECONDARY },
   { x: 930, y: 380, label: 'claim D', doi: '10.d', color: colors.NEGATIVE },
@@ -89,6 +89,9 @@ export function buildScene() {
 
 const scene = buildScene();
 
+// 14px monospace is about 8.4px per character; pad the chip so long labels fit.
+const edgeChipW = (label: string) => label.length * 8.4 + 24;
+
 function edgePoint(from: typeof NODES[number], to: typeof NODES[number], u: number) {
   return { x: from.x + (to.x - from.x) * u, y: from.y + (to.y - from.y) * u };
 }
@@ -97,8 +100,8 @@ function ClaimNode({ node, u, glow = 0 }: { node: typeof NODES[number]; u: numbe
   const uu = clamp01(u);
   return <g opacity={uu} transform={`translate(${node.x} ${node.y}) scale(${0.82 + uu * 0.18 + glow * 0.08})`}>
     <circle r={44 + glow * 4} fill={colors.PANEL} stroke={node.color} strokeWidth={2.5 + glow * 2} />
-    <text y={-4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontWeight={750}>{node.label}</text>
-    <text y={16} textAnchor="middle" fill={node.color} fontSize={10} fontFamily={MONO}>{node.doi}</text>
+    <text y={-4} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={750}>{node.label}</text>
+    <text y={16} textAnchor="middle" fill={node.color} fontSize={14} fontFamily={MONO}>{node.doi.length > 8 ? `${node.doi.slice(0, 8)}…` : node.doi}</text>
   </g>;
 }
 
@@ -113,8 +116,8 @@ function GraphEdge({ edge, u, glow = 0 }: { edge: typeof EDGES[number]; u: numbe
     <line x1={from.x} y1={from.y} x2={p.x} y2={p.y} stroke={edge.color} strokeWidth={2.2 + glow * 2} />
     <circle cx={p.x} cy={p.y} r={5 + glow * 3} fill={edge.color} />
     {uu > 0.75 && <g opacity={clamp01((uu - 0.75) * 4)}>
-      <rect x={mx - 67} y={my - 14} width={134} height={28} rx={9} fill={colors.PANEL} stroke={edge.color} />
-      <text x={mx} y={my + 4} textAnchor="middle" fill={edge.color} fontSize={10} fontFamily={MONO}>{edge.label}</text>
+      <rect x={mx - edgeChipW(edge.label) / 2} y={my - 15} width={edgeChipW(edge.label)} height={30} rx={9} fill={colors.PANEL} stroke={edge.color} />
+      <text x={mx} y={my + 5} textAnchor="middle" fill={edge.color} fontSize={14} fontFamily={MONO}>{edge.label}</text>
     </g>}
   </g>;
 }
@@ -142,31 +145,43 @@ export function Render({ s }: { s: SceneState }) {
           <GraphEdge edge={EDGES[4]} u={crossU} />
           {NODES.map((n, i) => <ClaimNode key={n.label} node={{ ...n, x: n.x }} u={clamp01(graphU * 6 - i)} glow={i === 3 ? contradictionU : i === 0 ? clamp01(pulseU * 4 - 2) : 0} />)}
           {s.get(scene.sourceU) > 0 && <g opacity={s.get(scene.sourceU)}>
-            <path d="M820 535 C860 585 975 560 1010 605" fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
-            <rect x={865} y={576} width={290} height={48} rx={15} fill={colors.PANEL} stroke={colors.POSITIVE} />
-            <text x={1010} y={606} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>askchem_source(doi)</text>
+            <path d="M806 536 C812 540 816 524 822 524" fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
+            <rect x={822} y={500} width={238} height={48} rx={15} fill={colors.PANEL} stroke={colors.POSITIVE} />
+            <text x={941} y={529} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>askchem_source(doi)</text>
+          </g>}
+          {graphU > 0.9 && <g opacity={clamp01(graphU * 2 - 1) * (1 - intraU)}>
+            {/* Tags the ranked claim from the opening caption; it fades before the first edges draw. */}
+            <rect x={592} y={246} width={96} height={30} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
+            <text x={640} y={266} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>rank #1</text>
           </g>}
         </g>
         {s.get(scene.portalU) > 0 && <g opacity={s.get(scene.portalU)}>
           {PORTALS.map((p, i) => <g key={p.label}>
             <rect x={p.x - 94} y={p.y - 32} width={188} height={64} rx={16} fill={colors.PANEL} stroke={p.color} strokeWidth={2} />
-            <text x={p.x} y={p.y - 5} textAnchor="middle" fill={p.color} fontSize={12} fontWeight={800} fontFamily={MONO}>{p.label}</text>
-            <text x={p.x} y={p.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily={MONO}>{p.sub}</text>
-            <path d={`M${p.x + 94} ${p.y} C340 ${p.y} 360 ${330 + graphShift} ${460 + graphShift} 330`} fill="none" stroke={p.color} strokeWidth={2} opacity={accessU} strokeDasharray="7 7" />
+            <text x={p.x} y={p.y - 5} textAnchor="middle" fill={p.color} fontSize={14} fontWeight={800} fontFamily={MONO}>{p.label}</text>
+            <text x={p.x} y={p.y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>{p.sub}</text>
+            <path d={`M${p.x + 94} ${p.y} C${p.x + 200} ${p.y} ${640 + graphShift - 160} 330 ${640 + graphShift - 44} 330`} fill="none" stroke={p.color} strokeWidth={2} opacity={accessU} strokeDasharray="7 7" />
           </g>)}
           {pulseU > 0 && (() => {
-            const p = edgePoint({ x: 264, y: 550 } as typeof NODES[number], { x: 640 + graphShift, y: 330 } as typeof NODES[number], pulseU);
-            return <circle cx={p.x} cy={p.y} r={9} fill={colors.WARM} />;
+            // The dot travels to claim A's rim, not its centre, and fades out on arrival so it never covers the DOI.
+            const cx = 640 + graphShift;
+            const dx = cx - 264;
+            const dy = 330 - 550;
+            const len = Math.hypot(dx, dy);
+            const rim = { x: cx - (dx / len) * 46, y: 330 - (dy / len) * 46 } as typeof NODES[number];
+            const p = edgePoint({ x: 264, y: 550 } as typeof NODES[number], rim, pulseU);
+            return <circle cx={p.x} cy={p.y} r={9} fill={colors.WARM} opacity={1 - clamp01((pulseU - 0.9) * 10)} />;
           })()}
         </g>}
         {retraceU > 0 && <g opacity={retraceU}>
           {['query', 'rank fusion', 'claim', 'evidence graph', 'source'].map((label, i) => {
-            const x = 165 + i * 235;
+            // Row sits right of the portal column (x > 280) and under the graph, above the caption band.
+            const x = 375 + i * 180;
             const active = clamp01(retraceU * 6 - i);
             return <g key={label}>
-              {i > 0 && <line x1={x - 185} y1={590} x2={x - 55} y2={590} stroke={colors.WARM} strokeWidth={3} opacity={active} />}
-              <rect x={x - 55} y={570} width={110} height={40} rx={12} fill={colors.PANEL} stroke={active > 0.4 ? colors.WARM : colors.GRID} />
-              <text x={x} y={595} textAnchor="middle" fill={active > 0.4 ? colors.TEXT : colors.MUTED} fontSize={10} fontFamily={MONO}>{label}</text>
+              {i > 0 && <line x1={x - 105} y1={605} x2={x - 75} y2={605} stroke={colors.WARM} strokeWidth={3} opacity={active} />}
+              <rect x={x - 75} y={586} width={150} height={38} rx={12} fill={colors.PANEL} stroke={active > 0.4 ? colors.WARM : colors.GRID} />
+              <text x={x} y={611} textAnchor="middle" fill={active > 0.4 ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily={MONO}>{label}</text>
             </g>;
           })}
         </g>}

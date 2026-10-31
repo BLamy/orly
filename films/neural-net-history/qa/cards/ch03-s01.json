@@ -1,0 +1,325 @@
+{
+ "shot": "ch03-s01",
+ "at": "2026-10-13T19:51:37.652Z",
+ "step": 0.0833,
+ "sampled": 144,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "fillRect@1369,719",
+   "probed": false,
+   "from": 6.42,
+   "to": 7.08,
+   "seconds": 0.67,
+   "rect": {
+    "x": 1358,
+    "y": 720,
+    "w": 254,
+    "h": 133
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1350,720",
+   "probed": false,
+   "from": 7.5,
+   "to": 9.17,
+   "seconds": 1.67,
+   "rect": {
+    "x": 1330,
+    "y": 722,
+    "w": 255,
+    "h": 134
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1325,722",
+   "probed": false,
+   "from": 9.58,
+   "to": 11.33,
+   "seconds": 1.75,
+   "rect": {
+    "x": 1315,
+    "y": 723,
+    "w": 256,
+    "h": 135
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1314,723",
+   "probed": false,
+   "from": 11.58,
+   "to": 12.08,
+   "seconds": 0.5,
+   "rect": {
+    "x": 1313,
+    "y": 723,
+    "w": 256,
+    "h": 135
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1313,723",
+   "probed": false,
+   "from": 12.17,
+   "to": 12.75,
+   "seconds": 0.58,
+   "rect": {
+    "x": 1313,
+    "y": 722,
+    "w": 256,
+    "h": 135
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@1804,681",
+   "probed": false,
+   "from": 0.833,
+   "to": 12.667,
+   "minInkWhilePaper": 0.91
+  },
+  {
+   "id": "fillRect@1375,719",
+   "probed": false,
+   "from": 6.083,
+   "to": 6.25,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1369,719",
+   "probed": false,
+   "from": 6.417,
+   "to": 7,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1355,720",
+   "probed": false,
+   "from": 7.167,
+   "to": 7.333,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1350,720",
+   "probed": false,
+   "from": 7.5,
+   "to": 9.083,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1325,722",
+   "probed": false,
+   "from": 9.583,
+   "to": 11.25,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1314,723",
+   "probed": false,
+   "from": 11.583,
+   "to": 12,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1313,723",
+   "probed": false,
+   "from": 12.167,
+   "to": 12.667,
+   "minInkWhilePaper": 0
+  }
+ ],
+ "transition": {
+  "kind": "inkBleed",
+  "sampled": 17,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "WHO TAUGHT",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "IT?",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "THE STRUCTURE OF",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "THE NET DOES NOT",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "CHANGE WITH",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "TIME.",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "TURING · DUE 2000",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "3 in 10 fooled",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "How could a net rewire",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "itself?",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "1943",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "in",
+    "text": "L",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.65
+   },
+   {
+    "side": "in",
+    "text": "E",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.63
+   },
+   {
+    "side": "in",
+    "text": "F",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.65
+   },
+   {
+    "side": "in",
+    "text": "R",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.63
+   },
+   {
+    "side": "in",
+    "text": "I",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "in",
+    "text": "T",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.57
+   },
+   {
+    "side": "in",
+    "text": "R",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.65
+   },
+   {
+    "side": "in",
+    "text": "G",
+    "t0": -0.08,
+    "t1": 0.26,
+    "seconds": 0.33,
+    "maxAlpha": 0.59
+   },
+   {
+    "side": "in",
+    "text": "H",
+    "t0": -0.08,
+    "t1": 0.26,
+    "seconds": 0.33,
+    "maxAlpha": 0.62
+   },
+   {
+    "side": "in",
+    "text": "T",
+    "t0": -0.08,
+    "t1": 0.26,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "in",
+    "text": "T",
+    "t0": -0.08,
+    "t1": 0.26,
+    "seconds": 0.33,
+    "maxAlpha": 0.61
+   }
+  ]
+ },
+ "transAt": "2026-10-13T22:54:15.826Z"
+}

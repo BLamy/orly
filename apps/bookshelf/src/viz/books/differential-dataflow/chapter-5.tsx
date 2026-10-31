@@ -39,18 +39,18 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 type GNode = { id: string; x: number; y: number; layer: number };
 // layer = BFS depth from the root; -1 = unreachable until the new edge lands.
 const NODES: GNode[] = [
-  { id: 'root', x: 128, y: 322, layer: 0 },
-  { id: 'a', x: 268, y: 196, layer: 1 },
-  { id: 'b', x: 272, y: 330, layer: 1 },
-  { id: 'c', x: 264, y: 458, layer: 1 },
-  { id: 'd', x: 416, y: 150, layer: 2 },
-  { id: 'e', x: 420, y: 274, layer: 2 },
-  { id: 'f', x: 424, y: 392, layer: 2 },
-  { id: 'g', x: 412, y: 500, layer: 2 },
-  { id: 'h', x: 564, y: 210, layer: 3 },
-  { id: 'i', x: 568, y: 452, layer: 3 },
-  { id: 'u', x: 660, y: 120, layer: -1 }, // reachable only after the new edge
-  { id: 'v', x: 776, y: 176, layer: -2 }, // one hop past u
+  { id: 'root', x: 110, y: 290, layer: 0 },
+  { id: 'a', x: 230, y: 200, layer: 1 },
+  { id: 'b', x: 232, y: 290, layer: 1 },
+  { id: 'c', x: 228, y: 390, layer: 1 },
+  { id: 'd', x: 350, y: 160, layer: 2 },
+  { id: 'e', x: 352, y: 250, layer: 2 },
+  { id: 'f', x: 354, y: 340, layer: 2 },
+  { id: 'g', x: 346, y: 430, layer: 2 },
+  { id: 'h', x: 470, y: 200, layer: 3 },
+  { id: 'i', x: 474, y: 380, layer: 3 },
+  { id: 'u', x: 600, y: 250, layer: -1 }, // reachable only after the new edge
+  { id: 'v', x: 700, y: 200, layer: -2 }, // one hop past u
 ];
 const N = Object.fromEntries(NODES.map((n) => [n.id, n])) as Record<string, GNode>;
 
@@ -67,27 +67,33 @@ const EDGES: Array<[string, string]> = [
   ['u', 'v'], // exists all along, but unreachable
 ];
 const NEW_EDGE: [string, string] = ['e', 'u'];
+// stop the new edge at u's rim (node radius 15 plus the arrowhead), not under its centre
+const EDGE_SHORT = (() => {
+  const len = Math.hypot(N.u.x - N.e.x, N.u.y - N.e.y);
+  return (len - 18) / len;
+})();
 
 /** deltas circulated per lap of the initial flood, then after the new edge */
 const DELTAS_1 = [3, 4, 2, 0];
 const DELTAS_2 = [1, 1, 0];
 
 // the iterate ring
-const RING = { x: 1010, y: 268, r: 118 };
+const RING = { x: 1000, y: 260, r: 110 };
 const RING_STOPS = ['enter', 'semijoin', 'map', 'concat', 'distinct'];
 const ringPt = (frac: number, roff = 0) => ({
   x: RING.x + (RING.r + roff) * Math.cos(-Math.PI / 2 + frac * 2 * Math.PI),
   y: RING.y + (RING.r + roff) * Math.sin(-Math.PI / 2 + frac * 2 * Math.PI),
 });
 
-// the delta meter (persistent across both phases)
-const METER = { x0: 130, y: 596, w: 44, gap: 30, unit: 17 };
-const meterX = (j: number) => METER.x0 + j * (METER.w + METER.gap) + METER.w / 2;
+// the delta meter: a fixed panel in stage space, so camera pushes never crop it
+const METER = { x0: 760, y: 580, w: 38, gap: 24, split: 30, unit: 17 };
+const meterX = (j: number) => METER.x0 + j * (METER.w + METER.gap) + (j >= 4 ? METER.split : 0) + METER.w / 2;
 const METER_LABELS = ['lap 1', 'lap 2', 'lap 3', 'lap 4', 'lap 1', 'lap 2', 'lap 3'];
 
-const CAM_GRAPH: CameraState = { x: 520, y: 330, k: 1.14 };
-const CAM_RING: CameraState = { x: 940, y: 300, k: 1.3 };
-const CAM_EDGE: CameraState = { x: 620, y: 220, k: 1.5 };
+// every frame keeps the graph's left edge, the ring's labels and all nodes above the caption band
+const CAM_GRAPH: CameraState = { x: 640, y: 300, k: 1.06 };
+const CAM_RING: CameraState = { x: 630, y: 290, k: 1.1 };
+const CAM_EDGE: CameraState = { x: 520, y: 240, k: 1.3 };
 
 // node light-up time (in lapU units) — reachable layer L lights as lap L ends
 const litAt = (layer: number) => layer - 0.2;
@@ -247,14 +253,20 @@ export function Render({ s }: { s: SceneState }) {
   const codeU = s.get(scene.codeU);
   const lapU = s.get(scene.lapU);
   const meterU = s.get(scene.meterU);
-  const quietU = s.get(scene.quietU);
   const newEdgeU = s.get(scene.newEdgeU);
   const lap2U = s.get(scene.lap2U);
   const contrastU = s.get(scene.contrastU);
   const dimU = s.get(scene.dimU);
   const recapU = s.get(scene.recapU);
 
-  const stageOp = 1 - 0.87 * dimU;
+  // the old machine fades fully before the recap panel takes the frame, so no ghosts show through
+  const stageOp = 1 - dimU;
+
+  // 1 while the camera sits on the new edge (ring steps aside); follows the camera's own move, no timing of its own
+  const focusU = clamp01((cam.k - 1.1) / 0.2);
+
+  // the fixed-point badge: on once the fourth lap has run dry, cleared when the new edge lands
+  const fixedShown = clamp01((lapU - 3.5) * 4) * (1 - newEdgeU);
 
   // the pulse orbiting the ring: active during either lap phase
   const orbiting = (lapU > 0 && lapU < 4) || (lap2U > 0 && lap2U < 3);
@@ -288,9 +300,9 @@ export function Render({ s }: { s: SceneState }) {
                     y1={a.y}
                     x2={b.x}
                     y2={b.y}
-                    stroke={flowing > 0.5 ? colors.POSITIVE : colors.GRID}
-                    strokeWidth={flowing > 0.5 ? 2.6 : 1.6}
-                    opacity={0.45 + 0.55 * flowing}
+                    stroke={flowing > 0.5 ? colors.POSITIVE : colors.MUTED}
+                    strokeWidth={flowing > 0.5 ? 2.6 : 1.8}
+                    opacity={0.5 + 0.5 * flowing}
                     markerEnd="url(#dd5-arrow)"
                   />
                 );
@@ -299,8 +311,8 @@ export function Render({ s }: { s: SceneState }) {
                 <line
                   x1={N.e.x}
                   y1={N.e.y}
-                  x2={N.e.x + (N.u.x - N.e.x) * clamp01(newEdgeU * 1.3)}
-                  y2={N.e.y + (N.u.y - N.e.y) * clamp01(newEdgeU * 1.3)}
+                  x2={N.e.x + (N.u.x - N.e.x) * clamp01(newEdgeU * 1.3) * EDGE_SHORT}
+                  y2={N.e.y + (N.u.y - N.e.y) * clamp01(newEdgeU * 1.3) * EDGE_SHORT}
                   stroke={colors.WARM}
                   strokeWidth={3}
                   markerEnd={newEdgeU > 0.75 ? 'url(#dd5-arrow-warm)' : undefined}
@@ -309,6 +321,7 @@ export function Render({ s }: { s: SceneState }) {
               {NODES.map((n) => {
                 const lit = nodeLit(n, lapU, lap2U);
                 const pop = lit > 0 && lit < 1 ? Math.sin(lit * Math.PI) : 0;
+                const unreached = n.layer < 0 && lit <= 0.4;
                 return (
                   <g key={n.id}>
                     {lit > 0.4 && <circle cx={n.x} cy={n.y} r={20 + 5 * pop} fill={colors.POSITIVE} opacity={0.16 + 0.1 * pop} />}
@@ -317,10 +330,16 @@ export function Render({ s }: { s: SceneState }) {
                       cy={n.y}
                       r={15 + 3 * pop}
                       fill={lit > 0.4 ? colors.POSITIVE : colors.PANEL}
-                      stroke={n.id === 'root' ? colors.ACCENT : colors.GRID}
-                      strokeWidth={n.id === 'root' ? 2.5 : 1.5}
-                      opacity={0.9}
+                      stroke={n.id === 'root' ? colors.ACCENT : colors.MUTED}
+                      strokeWidth={n.id === 'root' ? 2.5 : 1.8}
+                      strokeDasharray={unreached ? '4 4' : undefined}
+                      opacity={0.95}
                     />
+                    {n.id === 'u' && unreached && (
+                      <text x={n.x} y={n.y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
+                        not yet reached
+                      </text>
+                    )}
                     {n.id === 'root' && (
                       <text x={n.x} y={n.y - 26} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
                         roots
@@ -334,25 +353,29 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---------------- the iterate ring ---------------- */}
           {ringU > 0.01 && (
-            <g opacity={ringU}>
-              <circle cx={RING.x} cy={RING.y} r={RING.r} fill="none" stroke={colors.GRID} strokeWidth={2} strokeDasharray={`${2 * Math.PI * RING.r * clamp01(ringU)} ${2 * Math.PI * RING.r}`} transform={`rotate(-90 ${RING.x} ${RING.y})`} />
+            <g opacity={ringU * (1 - focusU)}>
+              <circle cx={RING.x} cy={RING.y} r={RING.r} fill="none" stroke={colors.MUTED} strokeOpacity={0.6} strokeWidth={2} strokeDasharray={`${2 * Math.PI * RING.r * clamp01(ringU)} ${2 * Math.PI * RING.r}`} transform={`rotate(-90 ${RING.x} ${RING.y})`} />
               <text x={RING.x} y={RING.y - 6} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={650}>
                 iterate
               </text>
-              <text x={RING.x} y={RING.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={RING.x} y={RING.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 nested scope
               </text>
               {RING_STOPS.map((st, i) => {
                 const p = ringPt(i / RING_STOPS.length);
+                const lp = ringPt(i / RING_STOPS.length, 22);
+                // labels grow outward from the ring: right-side stops start, left-side stops end
+                const side = Math.cos(-Math.PI / 2 + (i / RING_STOPS.length) * 2 * Math.PI);
+                const anchor = side > 0.3 ? 'start' : side < -0.3 ? 'end' : 'middle';
                 return (
                   <g key={st}>
                     <circle cx={p.x} cy={p.y} r={7} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
                     <text
-                      x={ringPt(i / RING_STOPS.length, 26).x}
-                      y={ringPt(i / RING_STOPS.length, 26).y + 4}
-                      textAnchor="middle"
+                      x={lp.x}
+                      y={lp.y + 4}
+                      textAnchor={anchor}
                       fill={colors.SECONDARY}
-                      fontSize={12.5}
+                      fontSize={14}
                       fontFamily={MONO}
                     >
                       {st}
@@ -365,10 +388,10 @@ export function Render({ s }: { s: SceneState }) {
                   {null}
                 </circle>
               )}
-              {quietU > 0.01 && (
-                <g opacity={quietU}>
-                  <rect x={RING.x - 96} y={RING.y + RING.r + 18} width={192} height={34} rx={9} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.5} />
-                  <text x={RING.x} y={RING.y + RING.r + 40} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontFamily={MONO}>
+              {fixedShown > 0.01 && (
+                <g opacity={fixedShown}>
+                  <rect x={RING.x - 96} y={RING.y + RING.r + 6} width={192} height={34} rx={9} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.5} />
+                  <text x={RING.x} y={RING.y + RING.r + 28} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
                     0 diffs → fixed point
                   </text>
                 </g>
@@ -377,64 +400,27 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {codeU > 0.01 && (
             <g opacity={codeU}>
-              <rect x={764} y={452} width={492} height={54} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={784} y={474} fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
+              <rect x={740} y={20} width={440} height={80} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={760} y={40} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                 {'roots.iterate(|scope, reach| edges.enter(scope)'}
               </text>
-              <text x={784} y={492} fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
-                {'  .semijoin(reach).map(|(src, dst)| dst).concat(reach).distinct())'}
+              <text x={760} y={59} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
+                {'  .semijoin(reach).map(|(src, dst)| dst)'}
               </text>
-            </g>
-          )}
-
-          {/* ---------------- the delta meter ---------------- */}
-          {meterU > 0.01 && (
-            <g opacity={meterU}>
-              <line x1={METER.x0 - 20} y1={METER.y} x2={METER.x0 + 7 * (METER.w + METER.gap)} y2={METER.y} stroke={colors.GRID} strokeWidth={2} />
-              <text x={METER.x0 - 20} y={METER.y - 78} fill={colors.MUTED} fontSize={13} fontStyle="italic">
-                differences circulated, per lap
+              <text x={760} y={78} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
+                {'  .concat(reach).distinct())'}
               </text>
-              {METER_LABELS.map((lb, j) => {
-                const { v, u } = barVal(j);
-                if (u <= 0.01) return null;
-                const h = Math.max(3, v * METER.unit) * u;
-                const isZero = v === 0;
-                return (
-                  <g key={j} opacity={u}>
-                    <rect
-                      x={meterX(j) - METER.w / 2}
-                      y={METER.y - h}
-                      width={METER.w}
-                      height={h}
-                      rx={4}
-                      fill={isZero ? colors.MUTED : j < 4 ? colors.ACCENT : colors.WARM}
-                      opacity={isZero ? 0.45 : 0.85}
-                    />
-                    <text x={meterX(j)} y={METER.y - h - 7} textAnchor="middle" fill={isZero ? colors.POSITIVE : colors.MUTED} fontSize={12.5} fontFamily={MONO}>
-                      {v}
-                    </text>
-                    <text x={meterX(j)} y={METER.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
-                      {lb}
-                    </text>
-                  </g>
-                );
-              })}
-              {lap2U > 0.05 && (
-                <text x={meterX(4) - METER.w / 2 - 8} y={METER.y - 62} fill={colors.WARM} fontSize={11.5} fontStyle="italic" opacity={clamp01(lap2U * 2)}>
-                  + one edge
-                </text>
-              )}
             </g>
           )}
 
           {/* ---------------- batch vs differential ---------------- */}
           {contrastU > 0.01 && (
             <g opacity={contrastU}>
-              <rect x={806} y={80} width={368} height={78} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={830} y={112} fill={colors.NEGATIVE} fontSize={14.5} fontWeight={600}>
+              <rect x={120} y={28} width={368} height={78} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={144} y={60} fill={colors.NEGATIVE} fontSize={14.5} fontWeight={600}>
                 batch: re-flood all 12 nodes
               </text>
-              <text x={830} y={140} fill={colors.POSITIVE} fontSize={14.5} fontWeight={600}>
+              <text x={144} y={88} fill={colors.POSITIVE} fontSize={14.5} fontWeight={600}>
                 differential: 2 touched, 2 laps
               </text>
             </g>
@@ -458,11 +444,11 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={x} y={342 - (1 - u) * 14} textAnchor="middle" fill={colors.ACCENT} fontSize={17} fontWeight={650}>
                     {r.title}
                   </text>
-                  <text x={x} y={372 - (1 - u) * 14} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                  <text x={x} y={372 - (1 - u) * 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     {r.sub}
                   </text>
                   {i < 4 && (
-                    <text x={x + 100} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={18} opacity={u}>
+                    <text x={x + 106} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={18} opacity={u}>
                       →
                     </text>
                   )}
@@ -475,9 +461,49 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
       </Camera>
+
+      {/* ---------------- the delta meter (stage space, bottom-right) ---------------- */}
+      {meterU > 0.01 && (
+        <g opacity={meterU * (1 - dimU)}>
+          <line x1={METER.x0 - 20} y1={METER.y} x2={METER.x0 + 7 * (METER.w + METER.gap) + METER.split} y2={METER.y} stroke={colors.MUTED} strokeOpacity={0.6} strokeWidth={2} />
+          <text x={METER.x0 - 20} y={METER.y - 88} fill={colors.MUTED} fontSize={14} fontStyle="italic">
+            differences circulated, per lap
+          </text>
+          {METER_LABELS.map((lb, j) => {
+            const { v, u } = barVal(j);
+            if (u <= 0.01) return null;
+            const h = Math.max(3, v * METER.unit) * u;
+            const isZero = v === 0;
+            return (
+              <g key={j} opacity={u}>
+                <rect
+                  x={meterX(j) - METER.w / 2}
+                  y={METER.y - h}
+                  width={METER.w}
+                  height={h}
+                  rx={4}
+                  fill={isZero ? colors.MUTED : j < 4 ? colors.ACCENT : colors.WARM}
+                  opacity={isZero ? 0.45 : 0.85}
+                />
+                <text x={meterX(j)} y={METER.y - h - 7} textAnchor="middle" fill={isZero ? colors.POSITIVE : colors.TEXT} fontSize={14} fontFamily={MONO}>
+                  {v}
+                </text>
+                <text x={meterX(j)} y={METER.y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                  {lb}
+                </text>
+              </g>
+            );
+          })}
+          {lap2U > 0.05 && (
+            <text x={meterX(5) - METER.w / 2} y={METER.y - 46} fill={colors.WARM} fontSize={14} fontStyle="italic" opacity={clamp01(lap2U * 2)}>
+              + one edge
+            </text>
+          )}
+        </g>
+      )}
       <defs>
         <marker id="dd5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 1 L 9 5 L 0 9 z" fill={colors.GRID} />
+          <path d="M 0 1 L 9 5 L 0 9 z" fill={colors.MUTED} />
         </marker>
         <marker id="dd5-arrow-warm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M 0 1 L 9 5 L 0 9 z" fill={colors.WARM} />

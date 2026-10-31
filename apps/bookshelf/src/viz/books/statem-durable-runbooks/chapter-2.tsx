@@ -185,9 +185,9 @@ function Gate({ gate, u, passed, failed }: { gate: (typeof GATES)[number]; u: nu
   return (
     <g opacity={u} transform={`translate(0 ${lerp(-12, 0, u)})`}>
       <line x1={gate.x} y1={RAIL_Y - 82} x2={gate.x} y2={RAIL_Y + 82} stroke={color} strokeWidth={failed ? 5 : 3} />
-      <rect x={gate.x - 55} y={RAIL_Y - 130} width={110} height={48} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.2} />
-      <text x={gate.x} y={RAIL_Y - 111} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={11}>{gate.top}</text>
-      <text x={gate.x} y={RAIL_Y - 96} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={11}>{gate.bottom}</text>
+      <rect x={gate.x - 65} y={RAIL_Y - 140} width={130} height={52} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.2} />
+      <text x={gate.x} y={RAIL_Y - 118} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={14}>{gate.top}</text>
+      <text x={gate.x} y={RAIL_Y - 98} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={14}>{gate.bottom}</text>
       <circle cx={gate.x} cy={RAIL_Y + 106} r={7} fill={color} opacity={passed || failed ? 1 : 0.25} />
       {failed && <path d={`M ${gate.x - 22} ${RAIL_Y - 22} L ${gate.x + 22} ${RAIL_Y + 22} M ${gate.x + 22} ${RAIL_Y - 22} L ${gate.x - 22} ${RAIL_Y + 22}`} stroke={colors.NEGATIVE} strokeWidth={5} strokeLinecap="round" />}
     </g>
@@ -218,8 +218,8 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dim}>
           <StateNode x={SOURCE_X} label="execute" active={!committed} u={nodesU} />
           <StateNode x={TARGET_X} label="verify" active={committed} u={nodesU} />
-          <text x={SOURCE_X} y={160} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12}>entry-e3a1</text>
-          {entryU > 0 && <text x={TARGET_X} y={160} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={12} opacity={entryU}>entry-f902 · new</text>}
+          <text x={SOURCE_X} y={160} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13}>entry-e3a1</text>
+          {entryU > 0 && <text x={TARGET_X} y={160} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={13} opacity={entryU}>entry-f902 · new</text>}
 
           <line x1={SOURCE_X} y1={RAIL_Y} x2={lerp(SOURCE_X, TARGET_X, railU)} y2={RAIL_Y} stroke={colors.GRID} strokeWidth={4} strokeLinecap="round" />
           {GATES.map((gate, i) => (
@@ -230,31 +230,31 @@ export function Render({ s }: { s: SceneState }) {
             <g transform={`translate(${tokenX} ${RAIL_Y})`}>
               <circle r={16 + failU * 2} fill={failU > 0.3 ? colors.NEGATIVE : committed ? colors.POSITIVE : colors.ACCENT} />
               <circle r={25} fill="none" stroke={failU > 0.3 ? colors.NEGATIVE : colors.ACCENT} strokeWidth={2} opacity={0.35 + 0.35 * Math.sin(tokenX * 0.04)} />
-              <text y={42} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={12}>goto verify</text>
+              <text y={42} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={13}>goto verify</text>
             </g>
           )}
 
           {blockedU > 0 && (
             <g opacity={blockedU}>
-              <rect x={70} y={500} width={325} height={80} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={94} y={530} fill={colors.NEGATIVE} fontFamily={MONO} fontSize={13}>history += goto_blocked</text>
-              <text x={94} y={557} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>current: execute · entry-e3a1</text>
+              <rect x={70} y={488} width={325} height={80} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={94} y={518} fill={colors.NEGATIVE} fontFamily={MONO} fontSize={13}>history += goto_blocked</text>
+              <text x={94} y={545} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>current: execute · entry-e3a1</text>
             </g>
           )}
 
           {repairU > 0 && (
             <g opacity={repairU} transform={`translate(0 ${lerp(10, 0, repairU)})`}>
-              <rect x={438} y={500} width={300} height={80} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} />
-              <text x={462} y={530} fill={colors.POSITIVE} fontFamily={MONO} fontSize={13}>evidence/receipt.json</text>
-              <text x={462} y={557} fill={colors.TEXT} fontFamily={MONO} fontSize={12}>exists: true · non_empty: true</text>
+              <rect x={438} y={488} width={300} height={80} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} />
+              <text x={462} y={518} fill={colors.POSITIVE} fontFamily={MONO} fontSize={14}>evidence/receipt.json</text>
+              <text x={462} y={545} fill={colors.TEXT} fontFamily={MONO} fontSize={13}>exists: true · non_empty: true</text>
             </g>
           )}
 
           {persistU > 0 && (
             <g opacity={clamp01(persistU)}>
-              <rect x={790} y={500} width={402} height={80} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={814} y={530} fill={colors.WARM} fontFamily={MONO} fontSize={13}>out_hook → progress receipt</text>
-              <text x={814} y={557} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>external effects require explicit retry or compensation</text>
+              <rect x={790} y={488} width={402} height={80} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
+              <text x={814} y={518} fill={colors.WARM} fontFamily={MONO} fontSize={13}>out_hook → progress receipt</text>
+              <text x={814} y={545} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>external effects require explicit retry or compensation</text>
             </g>
           )}
         </g>

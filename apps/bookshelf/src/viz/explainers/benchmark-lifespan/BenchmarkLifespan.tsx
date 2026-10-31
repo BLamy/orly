@@ -17,6 +17,17 @@ const MOTION = {
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+// Key row x-positions (empty lower-right of the plot) and series label offsets.
+// GLUE and SuperGLUE finish on the same point and GSM8K's climb runs through
+// it, so SuperGLUE is labelled at its launch point instead, and GLUE sits above-left.
+const KEY_X = [760, 840, 960, 1040];
+const LABEL_AT: Record<string, { from: 'start' | 'end'; dx: number; dy: number; anchor: 'start' | 'end' }> = {
+  GLUE: { from: 'end', dx: -6, dy: -10, anchor: 'end' },
+  SuperGLUE: { from: 'start', dx: -8, dy: 4, anchor: 'end' },
+  MMLU: { from: 'end', dx: 10, dy: 5, anchor: 'start' },
+  GSM8K: { from: 'end', dx: 10, dy: 5, anchor: 'start' },
+};
+
 /** Piecewise-linear curve, partially drawn to fraction u of its x-span. */
 function PartialCurve({ pts, u, color, fade }: { pts: [number, number][]; u: number; color: string; fade: number }) {
   if (u <= 0) return null;
@@ -60,25 +71,38 @@ function Frame({ s }: { s: SceneState }) {
         <g opacity={dimU}>
           {/* axes */}
           <g opacity={axU}>
-            <line x1={X0} y1={Y0} x2={X1} y2={Y0} stroke={colors.GRID} />
-            <line x1={X0} y1={Y0} x2={X0} y2={sy(102)} stroke={colors.GRID} />
+            {[25, 50, 75].map((p) => (
+              <line key={p} x1={X0} y1={sy(p)} x2={X1} y2={sy(p)} stroke={colors.MUTED} strokeOpacity={0.16} />
+            ))}
+            <line x1={X0} y1={Y0} x2={X1} y2={Y0} stroke={colors.MUTED} strokeOpacity={0.6} />
+            <line x1={X0} y1={Y0} x2={X0} y2={sy(102)} stroke={colors.MUTED} strokeOpacity={0.6} />
             {[2018, 2020, 2022, 2024, 2026].map((yr) => (
               <g key={yr}>
-                <line x1={sx(yr)} y1={Y0} x2={sx(yr)} y2={Y0 + 6} stroke={colors.MUTED} />
-                <text x={sx(yr)} y={Y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                <line x1={sx(yr)} y1={Y0} x2={sx(yr)} y2={Y0 + 6} stroke={colors.MUTED} strokeOpacity={0.6} />
+                <text x={sx(yr)} y={Y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                   {yr}
                 </text>
               </g>
             ))}
             {[0, 50, 100].map((p) => (
-              <text key={p} x={X0 - 12} y={sy(p) + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text key={p} x={X0 - 12} y={sy(p) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 {p}
               </text>
             ))}
-            <text x={X0 - 12} y={sy(108)} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+            <text x={X0 - 12} y={sy(108)} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               score %
             </text>
-            <text x={X1} y={Y0 + 48} textAnchor="end" fill={colors.MUTED} fontSize={13.5}>
+            {/* key: the four series, so the first frame names what is being plotted */}
+            {SERIES.map((ser, i) => (
+              <g key={ser.name} transform={`translate(${KEY_X[i]}, 470)`}>
+                <circle cx={0} cy={0} r={5} fill={ser.color} />
+                <text x={12} y={5} fill={ser.color} fontSize={14}>
+                  {ser.name}
+                </text>
+              </g>
+            ))}
+            {/* kept above the caption pill, which grows upward for three-line captions */}
+            <text x={X1} y={502} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               best reported score, replotted (approximate)
             </text>
           </g>
@@ -87,7 +111,7 @@ function Frame({ s }: { s: SceneState }) {
           {ceilU > 0 && (
             <g opacity={ceilU}>
               <line x1={X0} y1={sy(100)} x2={X0 + (X1 - X0) * clamp01(ceilU)} y2={sy(100)} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 7" opacity={0.8} />
-              <text x={X1 - 4} y={sy(100) - 10} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>
+              <text x={X0 + 10} y={sy(100) - 10} fill={colors.NEGATIVE} fontSize={14}>
                 ceiling — nothing left to measure
               </text>
             </g>
@@ -99,7 +123,7 @@ function Frame({ s }: { s: SceneState }) {
               <rect x={X0} y={sy(85)} width={X1 - X0} height={sy(30) - sy(85)} fill={colors.POSITIVE} opacity={0.08} />
               <line x1={X0} y1={sy(85)} x2={X1} y2={sy(85)} stroke={colors.POSITIVE} strokeDasharray="4 6" opacity={0.5} />
               <line x1={X0} y1={sy(30)} x2={X1} y2={sy(30)} stroke={colors.POSITIVE} strokeDasharray="4 6" opacity={0.5} />
-              <text x={X0 + 10} y={sy(85) + 24} fill={colors.POSITIVE} fontSize={14.5}>
+              <text x={X1 - 10} y={sy(30) - 10} textAnchor="end" fill={colors.POSITIVE} fontSize={14.5}>
                 the discriminative window — where scores separate models
               </text>
             </g>
@@ -112,9 +136,18 @@ function Frame({ s }: { s: SceneState }) {
           {SERIES.map((ser, i) => {
             const u = s.get(scene.drawU[i]);
             if (u <= 0.15) return null;
-            const last = ser.pts[ser.pts.length - 1];
+            const at = LABEL_AT[ser.name];
+            const [px, py] = at.from === 'start' ? ser.pts[0] : ser.pts[ser.pts.length - 1];
             return (
-              <text key={ser.name} x={sx(last[0]) + 10} y={sy(last[1]) + 5} fill={ser.color} fontSize={14.5} opacity={s.get(scene.fadeU[i]) * clamp01((u - 0.15) * 4)}>
+              <text
+                key={ser.name}
+                x={sx(px) + at.dx}
+                y={sy(py) + at.dy}
+                textAnchor={at.anchor}
+                fill={ser.color}
+                fontSize={14.5}
+                opacity={s.get(scene.fadeU[i]) * clamp01((u - 0.15) * 4)}
+              >
                 {ser.name}
               </text>
             );
@@ -125,7 +158,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={210} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={210} rx={16} fill={colors.PANEL} stroke={colors.MUTED} strokeOpacity={0.3} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             A Benchmark Is an Instrument
           </text>

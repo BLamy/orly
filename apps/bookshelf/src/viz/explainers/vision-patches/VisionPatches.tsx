@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, colors } from '../../core';
+import { Camera, Player, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import { MatrixGrid } from '../../primitives';
 import overrides from './overrides.json';
@@ -88,6 +88,9 @@ function renderFrame(s: SceneState) {
 
   return (
     <Camera {...s.get(scene.cam)}>
+      {/* the keyhole: a 3×3-pixel window on the image, gone once the image is cut */}
+      <rect x={593} y={215} width={70} height={70} rx={8} fill="none" stroke={colors.WARM} strokeWidth={3} opacity={imgU * (1 - cutU)} />
+
       {/* ── the nine patches (one persistent object: grid → token strip) ── */}
       {PATCH.map((p, k) => {
         const su = clamp01(stripP * NP - k * 0.6);
@@ -109,7 +112,7 @@ function renderFrame(s: SceneState) {
               y={STRIP_Y + STRIP_W + 18}
               textAnchor="middle"
               fill={colors.MUTED}
-              fontSize={12}
+              fontSize={14}
               opacity={posU * su}
             >
               {k + 1}
@@ -123,8 +126,11 @@ function renderFrame(s: SceneState) {
       {arc(2, 4, arcEdgeU, colors.ACCENT, 3 + 4 * ATTN[2][4], 'edge')}
 
       {/* ── the attention matrix ── */}
-      <text x={MAT.x + MAT_W / 2} y={MAT.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(matU * 8)}>
+      <text x={MAT.x + MAT_W / 2} y={MAT.y - 56} textAnchor="middle" fill={colors.TEXT} fontSize={15} opacity={clamp01(matU * 8)}>
         attention · 9×9 · row = who patch looks at
+      </text>
+      <text x={MAT.x + MAT_W / 2} y={MAT.y - 36} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(matU * 8)}>
+        scores computed from the pixels · no trained weights
       </text>
       <MatrixGrid
         x={MAT.x}
@@ -135,7 +141,7 @@ function renderFrame(s: SceneState) {
         cellU={(i, j) => clamp01(matU * 81 - (i * 9 + j))}
         emphasize={2}
         showValues={(v) => v.toFixed(2)}
-        labelSize={9}
+        labelSize={15}
         rowLabels={['1', '2', '3', '4', '5', '6', '7', '8', '9']}
         colLabels={['1', '2', '3', '4', '5', '6', '7', '8', '9']}
         highlight={
@@ -150,37 +156,35 @@ function renderFrame(s: SceneState) {
       {/* the computed anchors, pinned beside the matrix */}
       <g opacity={Math.max(rowTwinU, rowEdgeU, rowBlankU)}>
         <rect x={MAT.x + MAT_W + 46} y={330} width={330} height={110} rx={12} fill={colors.PANEL} fillOpacity={0.92} stroke={colors.GRID} />
-        <text x={MAT.x + MAT_W + 66} y={366} fill={colors.WARM} fontSize={15} opacity={Math.max(rowTwinU, 0.4)}>
+        <text x={MAT.x + MAT_W + 66} y={366} fill={colors.WARM} fontSize={15} opacity={Math.max(rowTwinU, 0.75)}>
           checker twins: 0.47 to each other
         </text>
-        <text x={MAT.x + MAT_W + 66} y={392} fill={colors.ACCENT} fontSize={15} opacity={Math.max(rowEdgeU, 0.4)}>
+        <text x={MAT.x + MAT_W + 66} y={392} fill={colors.ACCENT} fontSize={15} opacity={Math.max(rowEdgeU, 0.75)}>
           edge pair: 0.47 to each other
         </text>
-        <text x={MAT.x + MAT_W + 66} y={418} fill={colors.MUTED} fontSize={15} opacity={Math.max(rowBlankU, 0.4)}>
+        <text x={MAT.x + MAT_W + 66} y={418} fill={colors.TEXT} fontSize={15} opacity={Math.max(rowBlankU, 0.75)}>
           blank patches: ≈ 0.11 everywhere
         </text>
       </g>
 
       {/* the honest-trade note */}
       <g opacity={noteU}>
-        <rect x={760} y={470} width={430} height={92} rx={12} fill={colors.PANEL} fillOpacity={0.92} stroke={colors.GRID} />
-        <text x={780} y={504} fill={colors.TEXT} fontSize={15}>
+        <rect x={760} y={460} width={430} height={92} rx={12} fill={colors.PANEL} fillOpacity={0.92} stroke={colors.GRID} />
+        <text x={780} y={494} fill={colors.TEXT} fontSize={15}>
           convolution: locality built in, data cheap
         </text>
-        <text x={780} y={534} fill={colors.TEXT} fontSize={15}>
+        <text x={780} y={524} fill={colors.TEXT} fontSize={15}>
           transformer: locality learned, data hungry
         </text>
       </g>
 
-      {/* closing */}
-      <MathLabel
-        tex="\text{patches} \to \text{tokens} \to \text{attention}"
-        x={960}
-        y={600}
-        fontSize={20}
-        color={colors.MUTED}
-        opacity={closeU}
-      />
+      {/* closing: a solid panel so it reads over whatever is left behind */}
+      <g opacity={closeU}>
+        <rect x={800} y={568} width={380} height={38} rx={10} fill={colors.PANEL} fillOpacity={0.92} stroke={colors.GRID} />
+        <text x={990} y={593} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+          patches → tokens → attention
+        </text>
+      </g>
     </Camera>
   );
 }

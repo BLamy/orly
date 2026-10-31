@@ -169,8 +169,10 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
-  const chartOp = 1 - 0.8 * journeyU;
+  // the closing panel replaces everything else: old content fades to ~0
+  const mainOp = (1 - 0.85 * dimU) * (1 - 0.85 * closeU);
+  // the recap takes over the stage, so the chart steps back out of its way
+  const chartOp = 1 - 0.95 * journeyU;
 
   return (
     <>
@@ -190,11 +192,11 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={AX_X - 24} y={AX_Y - AX_H - 12} fill={colors.MUTED} fontSize={13}>
                   success rate
                 </text>
-                <text x={AX_X + 130} y={AX_Y - AX_H - 12} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                <text x={AX_X + 130} y={AX_Y - AX_H - 12} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   conceptual curves — the endpoints are ch2's toy + ch3's reported spread
                 </text>
                 <line x1={AX_X} y1={py(0.7)} x2={AX_X + AX_W} y2={py(0.7)} stroke={colors.GRID} strokeDasharray="4 5" opacity={0.5} />
-                <text x={AX_X + AX_W + 8} y={py(0.7) + 4} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                <text x={AX_X - 8} y={py(0.7) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   baseline
                 </text>
               </g>
@@ -231,18 +233,21 @@ function Frame({ s }: { s: SceneState }) {
             )}
             {ruleU > 0 && (
               <g opacity={ruleU}>
-                <rect x={840} y={200} width={350} height={120} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
-                <text x={862} y={232} fill={colors.WARM} fontSize={14} fontWeight={600}>
+                <rect x={800} y={372} width={225} height={150} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
+                <text x={818} y={398} fill={colors.WARM} fontSize={14} fontWeight={600}>
                   the discriminator
                 </text>
-                <text x={862} y={260} fill={colors.TEXT} fontSize={13}>
-                  a skill counts only if it survives
+                <text x={818} y={424} fill={colors.TEXT} fontSize={13}>
+                  a skill counts only if it
                 </text>
-                <text x={862} y={282} fill={colors.TEXT} fontSize={13}>
-                  a test it could fail — fresh
+                <text x={818} y={444} fill={colors.TEXT} fontSize={13}>
+                  survives a test it could
                 </text>
-                <text x={862} y={304} fill={colors.TEXT} fontSize={13}>
-                  workspace, frozen file, graded
+                <text x={818} y={464} fill={colors.TEXT} fontSize={13}>
+                  fail — fresh workspace,
+                </text>
+                <text x={818} y={484} fill={colors.TEXT} fontSize={13}>
+                  frozen files, graded checks.
                 </text>
               </g>
             )}

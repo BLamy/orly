@@ -1,0 +1,53 @@
+{
+ "shot": "ch06-s10",
+ "at": "2026-10-28T12:57:04.990Z",
+ "minCapPx": 22,
+ "sampled": 11,
+ "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "0",
+   "capWhileSubject": 39.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 39.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2",
+   "capWhileSubject": 39.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 39.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "30",
+   "capWhileSubject": 41.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "10",
+   "capWhileSubject": 41.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "20",
+   "capWhileSubject": 41.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "keys 30 10 30 20 → ranks 2 0 3 1",
+   "capWhileSubject": 27.3,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

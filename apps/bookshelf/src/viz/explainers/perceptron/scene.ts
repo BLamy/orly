@@ -13,12 +13,10 @@ import type { CameraState, ChannelRef } from '../../core';
  * trajectory of (w1, w2, b) states; nothing is faked and nothing below uses
  * wall-clock time or unseeded randomness.
  *
- * Empirics with SEED = 13 (verified by running this exact code):
- *   32 points, 18 initially misclassified by the starting guess,
- *   8 mistake-driven updates across 4 epochs,
- *   final state w = (2.33, 0.56), b = −0.80,
- *   |w| never drops below ~1.0 along the lerped trajectory (the drawn line
- *   never degenerates while interpolating between recorded states).
+ * Empirics with SEED = 13 (read off the rendered run):
+ *   32 points, 15 initially misclassified by the starting guess,
+ *   3 mistake-driven updates to convergence,
+ *   final state w = (2.05, 1.75), b = 0.20.
  */
 
 export type Pt = readonly [number, number];
@@ -116,12 +114,12 @@ const RUN = train();
 export const STATES: WState[] = RUN.states;
 /** The mistake-driven updates, in the order they actually fired. */
 export const EVENTS: UpdateEvent[] = RUN.events;
-/** The honest mistake count: 8 with the constants above. */
+/** The honest mistake count: 3 with the constants above. */
 export const MISTAKES = EVENTS.length;
 export const EPOCHS = RUN.epochs;
 export const FINAL: WState = STATES[STATES.length - 1];
 
-/** How many points the starting guess gets wrong (18 of 32 with SEED = 13). */
+/** How many points the starting guess gets wrong (15 of 32 with SEED = 13). */
 export const INIT_WRONG: number = POINTS.filter(
   (p) => p.label * (INIT_STATE[0] * p.x + INIT_STATE[1] * p.y + INIT_STATE[2]) <= 0,
 ).length;
@@ -218,10 +216,10 @@ const stagePt = (p: LabeledPoint): Pt => [xScale(p.x), yScale(p.y)];
 /** Camera targets for the three slow, examined updates. */
 export const EVENT_CAMS: CameraState[] = EVENTS.slice(0, 3).map((ev) => {
   const [sx, sy] = stagePt(POINTS[ev.point]);
-  return { x: sx + 30, y: sy - 20, k: 1.55 };
+  return { x: sx + 30, y: sy - 115, k: 1.25 };
 });
 
-export const CAM_LINE: CameraState = { x: 615, y: 345, k: 1.12 };
+export const CAM_LINE: CameraState = { x: 640, y: 350, k: 1.05 };
 
 // ---------------------------------------------------------------------------
 // The timeline

@@ -1,0 +1,142 @@
+{
+ "slug": "replay-qa-promo",
+ "at": "2026-10-14T19:20:56.493Z",
+ "summary": {
+  "pass": 12,
+  "warn": 2,
+  "fail": 1,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "20 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "warn",
+   "detail": "178 wpm overall; fast: L0202 196, L0301 199, L0302 195, L0401 198, L0402 190, L0508 197, L0601 194",
+   "wpm": 177.8,
+   "tooFast": [],
+   "fast": [
+    "L0202 196",
+    "L0301 199",
+    "L0302 195",
+    "L0401 198",
+    "L0402 190",
+    "L0508 197",
+    "L0601 194"
+   ],
+   "perShot": {
+    "ch01-s01": 183.9,
+    "ch01-s03": 139.9,
+    "ch02-s01": 331.1,
+    "ch02-s02": 196.5,
+    "ch03-s01": 196.3,
+    "ch04-s01": 198.2,
+    "ch04-s02": 190.4,
+    "ch04-s03": 173.3,
+    "ch05-s01": 183.5,
+    "ch05-s02": 148.2,
+    "ch05-s03": 162.7,
+    "ch05-s04": 184.6,
+    "ch06-s01": 194.5,
+    "ch06-s02": 165.5
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all 9 cut edges under -50 dBFS",
+   "loud": [],
+   "warm": [],
+   "dirty": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -19 LUFS (target -19), TP -2.7 dBTP, limiter 0 dB, compressor 1.63 dB GR, line rides ≤ 3.0 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "pass",
+   "detail": "20 lines round-tripped on the current takes (scribe_v1; terms heard literally): L0102 (QA); L0402 (localhost); L0502 (QA); L0503 (67); L0602 (QA); L0101 (re-take, WER 0); L0201 (re-take, WER 0); L0202 (re-take, WER 0); L0301 (re-take, WER 0); L0302 (re-take, WER 0); L0401 (re-take, WER 0); L0403 (re-take, WER 0); L0404 (re-take, WER 0); L0501 (re-take, WER 0); L0504 (re-take, WER 0); L0505 (re-take, WER 0.125); L0506 (re-take, WER 0); L0507 (re-take, WER 0.231); L0508 (re-take, WER 0); L0601 (re-take, WER 0)",
+   "targets": [
+    "L0102",
+    "L0402",
+    "L0502",
+    "L0503",
+    "L0602"
+   ],
+   "bad": []
+  },
+  {
+   "stage": "narration",
+   "id": "listening",
+   "status": "warn",
+   "detail": "QA pending; localhost pending — a human listens and runs film:voice signoff --slug replay-qa-promo --term <term> --by <name>"
+  },
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "fresh",
+   "status": "pass",
+   "detail": "timeline.json is newer than script.json and lines.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "97 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "pass",
+   "detail": "1.4 min vs target 1.5 min (94%)"
+  },
+  {
+   "stage": "timeline",
+   "id": "ceiling",
+   "status": "pass",
+   "detail": "84.25 s vs ceiling 100 s (story/meta.json runtimeCeilingSec)"
+  },
+  {
+   "stage": "mix",
+   "id": "master",
+   "status": "fail",
+   "detail": "no mix/loudness.json — run film:mix"
+  }
+ ]
+}

@@ -52,10 +52,12 @@ function orbitPos(u: number): { x: number; y: number } {
 const rand = mulberry32(20260717);
 const mkBars = (): number[] => Array.from({ length: 12 }, () => (rand() > 0.42 ? 1 : 0));
 
-const PAGE = { x: 620, y: 120, w: 230, h: 190 } as const;
+const PAGE = { x: 575, y: 120, w: 230, h: 190 } as const;
 const CONTENT_W: number[] = Array.from({ length: 6 }, () => 0.55 + rand() * 0.4);
 
-const LEDGER = { x: 915, y0: 132, w: 290, rowH: 42 } as const;
+// The ledger sits far enough right that the incoming-signature lane fits in
+// the gutter between the page card and the ledger, with no overlap on either.
+const LEDGER = { x: 940, y0: 132, w: 265, rowH: 42 } as const;
 const LEDGER_ROWS = [
   { label: 'foo', bars: mkBars() },
   { label: 'bar', bars: mkBars() },
@@ -70,7 +72,7 @@ const INCOMING = LEDGER_ROWS[MATCH_ROW].bars;
 const NEAR = INCOMING.map((b, i) => (i === 7 ? 1 - b : b));
 
 // the frontier stub — where the demoted link sinks
-const FRONT = { x: 620, y0: 420, w: 230, rowH: 42 } as const;
+const FRONT = { x: 575, y0: 420, w: 230, rowH: 42 } as const;
 const FRONT_ROWS = ['baz', 'page 9', 'page 4'];
 
 // ---------------------------------------------------------------------------
@@ -81,11 +83,18 @@ const MR_IN = ['foo /a', 'bar /x', 'baz /k', 'bar /x', 'foo /c', 'bar /x', 'page
 const MR_DUP = MR_IN.map((u, i) => MR_IN.indexOf(u) !== i || MR_IN.lastIndexOf(u) !== i);
 const MR = { x0: 96, y0: 140, colW: 165, rowH: 40 } as const;
 
-const CAM_CYCLE: CameraState = { x: 340, y: 300, k: 1.25 };
-const CAM_PRESS: CameraState = { x: 760, y: 280, k: 1.3 };
-const CAM_LEDGER: CameraState = { x: 950, y: 280, k: 1.35 };
-const CAM_SINK: CameraState = { x: 730, y: 420, k: 1.3 };
+// Each push frames its subject whole: the stage must hold every label it
+// shows (and stay above the caption band), so nothing is cropped at the edge.
+const CAM_CYCLE: CameraState = { x: 500, y: 330, k: 1.05 };
+const CAM_PRESS: CameraState = { x: 690, y: 225, k: 1.15 }; // keeps the cycle's left node in frame
+const CAM_LEDGER: CameraState = { x: 960, y: 230, k: 1.6 }; // page card stays visible beside the ledger
+const CAM_SINK: CameraState = { x: 890, y: 330, k: 1.1 };
 const CAM_MR: CameraState = { x: 380, y: 300, k: 1.2 };
+const CAM_SIM: CameraState = { x: 715, y: 505, k: 1.5 };
+
+// Receded opacity: below the stage's 0.15 "visible" floor, so a faded group
+// reads as gone rather than as clutter behind the subject.
+const RECEDE = 0.1;
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -216,7 +225,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'For content, similar is a spectrum, so signatures are compared with similarity measures: the Jaccard index, or cosine similarity.',
   });
-  tl.tween(cam, CAM_PRESS, { at: 55.1, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_SIM, { at: 55.1, dur: 1.5, ease: ease.move });
   tl.tween(simU, 1, { at: 55.8, dur: 1.0, ease: ease.enter });
   tl.hold(61.4, 0.4);
 
@@ -285,6 +294,13 @@ export function Render({ s }: { s: SceneState }) {
   const mrP = s.get(scene.mrP);
   const simU = s.get(scene.simU);
   const closeU = s.get(scene.closeU);
+  // derived from the timed channels, so no extra timing windows are needed:
+  // the cycle recedes while the press has focus and comes back as the orbit
+  // starves (the camera is back on the cycle by then); the page card dims as
+  // the demotion sinks, and the ledger recedes as the frontier enters
+  const cycOp = 1 - (1 - RECEDE) * pressU * orbitOp;
+  const pressOp = 1 - (1 - RECEDE) * sinkU;
+  const ledOp = 1 - (1 - RECEDE) * frontU;
 
   const op = orbitPos(orbitP);
   const wasted = Math.floor(orbitP * 3);
@@ -298,7 +314,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimAll}>
           {/* ---- the cycle ---- */}
-          <g opacity={Math.max(cycU, 0.001)}>
+          <g opacity={Math.max(cycU, 0.001) * cycOp * (1 - mrU * 0.9)}>
             {CYC.map((a, i) => {
               const b = CYC[(i + 1) % 3];
               const u = clamp01(cycU * 3 - i);
@@ -319,12 +335,7 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
             {CYC.map((p, i) => (
-              <g key={`n${i}`}>
-                <circle cx={p.x} cy={p.y} r={26} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} opacity={clamp01(cycU * 3 - i * 0.6)} />
-                <text x={p.x} y={p.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={clamp01(cycU * 3 - i * 0.6)}>
-                  {p.label}
-                </text>
-              </g>
+              <circle key={`n${i}`} cx={p.x} cy={p.y} r={26} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} opacity={clamp01(cycU * 3 - i * 0.6)} />
             ))}
             <text x={330} y={92} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={cycU}>
               a cycle — the graph&apos;s trap
@@ -332,21 +343,35 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {/* the orbiting crawler + wasted-fetch meter */}
-          {orbitP > 0 && orbitOp > 0.01 && (
-            <g opacity={orbitOp}>
+          {orbitP > 0 && orbitOp * cycOp > 0.01 && (
+            <g opacity={orbitOp * cycOp}>
               <circle cx={op.x} cy={op.y} r={13} fill={colors.NEGATIVE} opacity={0.2} />
               <circle cx={op.x} cy={op.y} r={6.5} fill={colors.NEGATIVE} stroke={colors.BG} strokeWidth={1.5} />
-              <rect x={230} y={470} width={200} height={34} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.9} />
-              <text x={330} y={492} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5}>
-                wasted fetches: {wasted}
-              </text>
+              {/* the meter is only read while the cycle has focus, so it leaves with the cycle */}
+              {cycOp > 0.5 && (
+                <>
+                  <rect x={230} y={470} width={200} height={34} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.9} />
+                  <text x={330} y={492} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5}>
+                    wasted fetches: {wasted}
+                  </text>
+                </>
+              )}
             </g>
           )}
 
+          {/* node names are drawn last, so the crawler dot never covers a name */}
+          <g opacity={Math.max(cycU, 0.001) * cycOp * (1 - mrU * 0.9)}>
+            {CYC.map((p, i) => (
+              <text key={`t${i}`} x={p.x} y={p.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={clamp01(cycU * 3 - i * 0.6)}>
+                {p.label}
+              </text>
+            ))}
+          </g>
+
           {/* ---- the signature press ---- */}
-          <g opacity={pressU}>
+          <g opacity={pressU * pressOp * (1 - mrU)}>
             <rect x={PAGE.x} y={PAGE.y} width={PAGE.w} height={PAGE.h * (1 - sigU * 0.55)} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={PAGE.x + 12} y={PAGE.y + 24} fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
+            <text x={PAGE.x + 12} y={PAGE.y + 24} fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
               page.contents
             </text>
             {CONTENT_W.map((w, i) => {
@@ -367,37 +392,41 @@ export function Render({ s }: { s: SceneState }) {
             {/* the barcode it presses into */}
             <g opacity={sigU}>
               <Barcode x={PAGE.x + 62} y={PAGE.y + PAGE.h * (1 - sigU * 0.55) + 16} bars={INCOMING} />
-              <text x={PAGE.x + PAGE.w / 2} y={PAGE.y + PAGE.h * (1 - sigU * 0.55) + 56} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="ui-monospace, monospace">
+              <text x={PAGE.x + PAGE.w / 2} y={PAGE.y + PAGE.h * (1 - sigU * 0.55) + 56} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                 create_signature · url + contents
+              </text>
+              <text x={PAGE.x + PAGE.w / 2} y={PAGE.y + PAGE.h * (1 - sigU * 0.55) + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+                a hash: same bytes, same signature
               </text>
             </g>
           </g>
 
           {/* ---- the crawled_links ledger of barcodes ---- */}
-          <g opacity={ledgU}>
-            <text x={LEDGER.x} y={LEDGER.y0 - 60} fill={colors.WARM} fontSize={12.5} fontFamily="ui-monospace, monospace">
+          <g opacity={ledgU * ledOp * (1 - mrU)}>
+            <text x={LEDGER.x} y={LEDGER.y0 - 66} fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
               crawled_links
+            </text>
+            {/* the query gets its own line under the header, clear of the scan lane */}
+            <text x={LEDGER.x} y={LEDGER.y0 - 44} fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace" opacity={scanP}>
+              crawled_similar(signature)
             </text>
             {LEDGER_ROWS.map((r, i) => {
               const hit = i === MATCH_ROW ? matchU : 0;
               return (
                 <g key={r.label}>
                   <rect x={LEDGER.x} y={LEDGER.y0 + i * LEDGER.rowH} width={LEDGER.w} height={LEDGER.rowH - 8} rx={8} fill={colors.PANEL} stroke={hit > 0.02 ? colors.NEGATIVE : colors.GRID} strokeWidth={hit > 0.02 ? 2 : 1} />
-                  <text x={LEDGER.x + 12} y={LEDGER.y0 + i * LEDGER.rowH + 22} fill={colors.TEXT} fontSize={12}>
+                  <text x={LEDGER.x + 12} y={LEDGER.y0 + i * LEDGER.rowH + 22} fill={colors.TEXT} fontSize={14}>
                     {r.label}
                   </text>
                   <Barcode x={LEDGER.x + LEDGER.w - 112} y={LEDGER.y0 + i * LEDGER.rowH + 7} bars={r.bars} w={96} h={18} opacity={0.75 + 0.25 * hit} />
                 </g>
               );
             })}
-            {/* the incoming signature, scanning down */}
+            {/* the incoming signature, scanning down the gutter beside the ledger */}
             {scanP > 0 && (
               <g>
-                <rect x={LEDGER.x - 130} y={scanY - 6} width={120} height={32} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-                <Barcode x={LEDGER.x - 118} y={scanY} bars={INCOMING} w={96} h={20} />
-                <text x={LEDGER.x + LEDGER.w / 2} y={LEDGER.y0 - 38} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace" opacity={scanP}>
-                  crawled_similar(signature)
-                </text>
+                <rect x={LEDGER.x - 122} y={scanY - 6} width={110} height={32} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
+                <Barcode x={LEDGER.x - 112} y={scanY} bars={INCOMING} w={96} h={20} />
               </g>
             )}
             {matchU > 0.02 && (
@@ -408,8 +437,8 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {/* ---- the frontier stub: the demotion ---- */}
-          <g opacity={frontU}>
-            <text x={FRONT.x} y={FRONT.y0 - 12} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
+          <g opacity={frontU * (1 - mrU)}>
+            <text x={FRONT.x} y={FRONT.y0 - 12} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
               links_to_crawl
             </text>
             {FRONT_ROWS.map((label, i) => {
@@ -422,27 +451,27 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={label}>
                   <rect x={FRONT.x} y={y} width={FRONT.w} height={FRONT.rowH - 8} rx={8} fill={colors.PANEL} stroke={demoted ? (sinkU > 0.1 ? colors.NEGATIVE : colors.ACCENT) : colors.GRID} strokeWidth={demoted ? 1.6 : 1} opacity={demoted ? 1 - sinkU * 0.35 : 1} />
-                  <text x={FRONT.x + 12} y={y + 22} fill={colors.TEXT} fontSize={12.5} opacity={demoted ? 1 - sinkU * 0.3 : 1}>
+                  <text x={FRONT.x + 12} y={y + 22} fill={colors.TEXT} fontSize={14} opacity={demoted ? 1 - sinkU * 0.3 : 1}>
                     {label}
                   </text>
                 </g>
               );
             })}
-            <text x={FRONT.x + FRONT.w / 2} y={FRONT.y0 + 3 * FRONT.rowH + 26} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace" opacity={sinkU}>
+            <text x={FRONT.x + FRONT.w / 2} y={FRONT.y0 + 3 * FRONT.rowH + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={sinkU}>
               reduce_priority_link_to_crawl(url)
             </text>
           </g>
 
           {/* ---- MapReduce: RemoveDuplicateUrls ---- */}
-          <g opacity={mrU}>
+          <g opacity={mrU * (1 - simU)}>
             <text x={MR.x0} y={MR.y0 - 34} fill={colors.TEXT} fontSize={14.5}>
               bulk address dedup
             </text>
-            <text x={MR.x0} y={MR.y0 - 14} fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={MR.x0} y={MR.y0 - 14} fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
               class RemoveDuplicateUrls(MRJob)
             </text>
             {['urls in', 'map: yield line, 1', 'reduce: total == 1'].map((h, c) => (
-              <text key={h} x={MR.x0 + c * (MR.colW + 30) + 8} y={MR.y0 + 12} fill={colors.MUTED} fontSize={11}>
+              <text key={h} x={MR.x0 + c * (MR.colW + 30) + 8} y={MR.y0 + 12} fill={colors.MUTED} fontSize={13}>
                 {h}
               </text>
             ))}
@@ -456,7 +485,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i} opacity={killed ? Math.max(0, 1 - (col - 1.55) * 2.4) : 1}>
                   <rect x={x} y={y} width={MR.colW - 16} height={MR.rowH - 12} rx={7} fill={colors.PANEL} stroke={killed ? colors.NEGATIVE : MR_DUP[i] ? colors.MUTED : colors.POSITIVE} strokeWidth={1.2} />
-                  <text x={x + 10} y={y + 19} fill={colors.TEXT} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                  <text x={x + 10} y={y + 19} fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
                     {col >= 0.98 ? `${u} · 1` : u}
                   </text>
                 </g>
@@ -466,16 +495,19 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- similar, not equal ---- */}
           <g opacity={simU}>
-            <rect x={620} y={430} width={280} height={150} rx={12} fill={colors.PANEL} stroke={colors.GRID} opacity={0.96} />
-            <Barcode x={648} y={456} bars={INCOMING} w={150} h={22} />
-            <Barcode x={648} y={492} bars={NEAR} w={150} h={22} color={colors.SECONDARY} />
-            <text x={836} y={488} textAnchor="middle" fill={colors.POSITIVE} fontSize={19}>
+            <text x={PAGE.x + 140} y={418} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontStyle="italic">
+              near-duplicate, not an exact match
+            </text>
+            <rect x={PAGE.x} y={430} width={280} height={150} rx={12} fill={colors.PANEL} stroke={colors.GRID} opacity={0.96} />
+            <Barcode x={PAGE.x + 28} y={456} bars={INCOMING} w={150} h={22} />
+            <Barcode x={PAGE.x + 28} y={492} bars={NEAR} w={150} h={22} color={colors.SECONDARY} />
+            <text x={PAGE.x + 216} y={488} textAnchor="middle" fill={colors.POSITIVE} fontSize={19}>
               0.92
             </text>
-            <text x={836} y={506} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={PAGE.x + 216} y={508} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               similarity
             </text>
-            <text x={760} y={556} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={PAGE.x + 140} y={556} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               Jaccard index · cosine similarity
             </text>
           </g>

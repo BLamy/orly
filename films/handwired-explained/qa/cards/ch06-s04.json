@@ -1,0 +1,159 @@
+{
+ "shot": "ch06-s04",
+ "at": "2026-10-28T17:39:42.594Z",
+ "step": 0.0833,
+ "sampled": 87,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch06-s04-bound",
+  "ch06-s04-card"
+ ],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "fillRect@286,17",
+   "probed": false,
+   "from": 0.05,
+   "to": 7.3,
+   "seconds": 7.25,
+   "rect": {
+    "x": 265,
+    "y": -15,
+    "w": 1671,
+    "h": 199
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@418,60",
+   "probed": false,
+   "from": 0.05,
+   "to": 7.3,
+   "seconds": 7.25,
+   "rect": {
+    "x": 563,
+    "y": 31,
+    "w": 199,
+    "h": 119
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1036,48",
+   "probed": false,
+   "from": 0.05,
+   "to": 7.3,
+   "seconds": 7.25,
+   "rect": {
+    "x": 877,
+    "y": 18,
+    "w": 172,
+    "h": 132
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1312,66",
+   "probed": false,
+   "from": 0.05,
+   "to": 7.3,
+   "seconds": 7.25,
+   "rect": {
+    "x": 1589,
+    "y": 37,
+    "w": 218,
+    "h": 106
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1338,415",
+   "probed": false,
+   "from": 3.88,
+   "to": 6.05,
+   "seconds": 2.17,
+   "rect": {
+    "x": 1481,
+    "y": 478,
+    "w": 48,
+    "h": 389
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1475,478",
+   "probed": false,
+   "from": 6.3,
+   "to": 7.3,
+   "seconds": 1,
+   "rect": {
+    "x": 1359,
+    "y": 478,
+    "w": 295,
+    "h": 391
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@286,17",
+   "probed": false,
+   "from": 0.05,
+   "to": 7.217,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@418,60",
+   "probed": false,
+   "from": 0.05,
+   "to": 7.217,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1036,48",
+   "probed": false,
+   "from": 0.05,
+   "to": 7.217,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1312,66",
+   "probed": false,
+   "from": 0.05,
+   "to": 7.217,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s04-bound",
+   "probed": true,
+   "from": 3.133,
+   "to": 7.217,
+   "minInkWhilePaper": 0.63
+  },
+  {
+   "id": "fillRect@1338,415",
+   "probed": false,
+   "from": 3.883,
+   "to": 5.967,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s04-card",
+   "probed": true,
+   "from": 3.967,
+   "to": 7.217,
+   "minInkWhilePaper": 0.48
+  },
+  {
+   "id": "fillRect@1475,478",
+   "probed": false,
+   "from": 6.3,
+   "to": 7.217,
+   "minInkWhilePaper": 0
+  }
+ ]
+}

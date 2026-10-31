@@ -1,0 +1,78 @@
+{
+ "shot": "ch06-s08",
+ "at": "2026-10-28T13:15:10.952Z",
+ "minCapPx": 22,
+ "sampled": 15,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "in a row",
+   "capWhileSubject": 32.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "229",
+   "capWhileSubject": 24.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "167.4",
+   "capWhileSubject": 24.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "208.5",
+   "capWhileSubject": 24.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "194.4",
+   "capWhileSubject": 24.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "in pairs",
+   "capWhileSubject": 32.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "799.3000",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "48828125",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "799.2999",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "877929688",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "one 32-bit step",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "10,000 ROWS",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "drift: loop 5.67 px · tree 0.26 px",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

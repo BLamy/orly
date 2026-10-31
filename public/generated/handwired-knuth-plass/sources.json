@@ -1,0 +1,373 @@
+{
+  "version": 1,
+  "slug": "handwired-knuth-plass",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Cheapest Breaks",
+      "claims": [
+        {
+          "id": "c1-cheapest-whole-paragraph",
+          "claim": "Knuth-Plass picks the cheapest set of breaks for the whole paragraph, instead of filling one line at a time.",
+          "caption": 0,
+          "sources": [
+            { "label": "lab reference: cost recurrence", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "26", "quote": "cost[to] = min over from of cost[from] + lineCost(from, to)" }
+          ]
+        },
+        {
+          "id": "c1-fixed-program",
+          "claim": "The lab writes the method as a fixed program of sums, table lookups and relus, and a relu clips negatives to zero.",
+          "caption": 1,
+          "sources": [
+            { "label": "lab program: table read for the squared slack", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "83", "quote": "circuit.indexReadAffine(" },
+            { "label": "lab program: ramp as a relu", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "85", "quote": "circuit.reglu([], 1, [[cells.maxWidth, 1], [start, 1], [end, -1]], 1)" },
+            { "label": "repo README: ReLU definition", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "README.md", "lines": "18", "quote": "Math.max(0, x) is ReLU" }
+          ]
+        },
+        {
+          "id": "c1-cheng-question",
+          "claim": "Cheng asked whether many paragraphs at once would run faster on a graphics chip, if the layout were this program.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab README: Cheng's question", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "5", "quote": "Cheng asked: \"technically our pretext layout, if there's lots of them, is faster than the regular cpu's, then?\"" }
+          ]
+        },
+        {
+          "id": "c1-four-boxes",
+          "claim": "The worked paragraph has four boxes, 3, 2, 2 and 5 pixels wide, with 1 pixel spaces, in a column 6 pixels wide.",
+          "caption": 2,
+          "sources": [
+            { "label": "lab test: classicParagraph", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/knuth-plass.test.ts", "lines": "16", "quote": "Boxes 3, 2, 2 and 5 px wide with 1 px spaces, at 6 px" }
+          ]
+        },
+        {
+          "id": "c1-greedy-fills-first-two",
+          "claim": "Greedy filling puts the first two boxes on a line that fills six pixels, and leaves four pixels empty on the next line.",
+          "caption": 3,
+          "sources": [
+            { "label": "lab test comment: greedy fill", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/knuth-plass.test.ts", "lines": "16", "quote": "greedy fills \"3 2\" and leaves 4 px on the second line" }
+          ]
+        },
+        {
+          "id": "c1-empty-space-squared",
+          "claim": "A line's cost is its empty space squared, so four empty pixels cost sixteen, a full line costs zero, and the last line costs zero.",
+          "caption": 4,
+          "sources": [
+            { "label": "lab reference: line cost", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "9-10", "quote": "return Math.min(slack, slackLimit) ** 2" },
+            { "label": "lab reference: last line", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "9", "quote": "if (to === paragraph.lineEnds.length) return 0" }
+          ]
+        },
+        {
+          "id": "c1-break-after-first-costs-ten",
+          "claim": "Breaking after the first box gives lines costing 9 and 1, with a free last line, for a total of 10 against greedy's 16.",
+          "caption": 5,
+          "sources": [
+            { "label": "lab test: expected costs", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/knuth-plass.test.ts", "lines": "16-17", "quote": "while \"3\" then \"2 2\" costs 9 + 1" },
+            { "label": "lab test: expected breaks and total", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/knuth-plass.test.ts", "lines": "26", "quote": "const expected = {breaks: [1, 3, 4], totalCost: 10}" }
+          ]
+        },
+        {
+          "id": "c1-squaring-prefers-even-gaps",
+          "claim": "Because the cost is squared, one gap of four costs 16, while gaps of three and one cost 9 + 1 = 10.",
+          "caption": 6,
+          "sources": [
+            { "label": "lab reference: squared slack", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "10", "quote": "return Math.min(slack, slackLimit) ** 2" }
+          ]
+        },
+        {
+          "id": "c1-overflow-never-chosen",
+          "claim": "A line that overflows the column costs infeasible, except a single box wider than the column, which costs 63 squared, or 3,969.",
+          "caption": 7,
+          "sources": [
+            { "label": "lab paragraph: infeasible and single-box cost", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/paragraph.ts", "lines": "21-22", "quote": "A line that doesn't fit costs `infeasible`, except a line of one box, which" },
+            { "label": "lab paragraph: lineCostCap", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/paragraph.ts", "lines": "26", "quote": "export const lineCostCap = slackLimit * slackLimit" }
+          ]
+        },
+        {
+          "id": "c1-running-best",
+          "claim": "Each break point's cost is the smallest, over earlier break points, of that point's cost plus the line from there.",
+          "caption": 8,
+          "sources": [
+            { "label": "lab reference: running minimum", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "38", "quote": "const total = costs[from]! + lineCost(paragraph, from, to, maxWidth)" }
+          ]
+        },
+        {
+          "id": "c1-walk-costs-nine-zero-ten",
+          "claim": "Walking the break points gives cost 9 at point one, 0 at point two, and 10 at point three, reached from point one. Running the reference on this paragraph gives those values.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab reference: store best cost and predecessor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "44-45", "quote": "costs.push(best)" },
+            { "label": "lab test: expected totals", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/knuth-plass.test.ts", "lines": "26", "quote": "totalCost: 10" }
+          ]
+        },
+        {
+          "id": "c1-ties-keep-shortest-last-line",
+          "claim": "A later candidate replaces the best only when it costs strictly less, and the shortest line is tried first, so equal totals keep the shortest last line.",
+          "caption": 10,
+          "sources": [
+            { "label": "lab reference: tie rule", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "27", "quote": "keeps a later candidate only when it costs strictly less" },
+            { "label": "lab reference: strict comparison", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "39", "quote": "if (total < best) {" }
+          ]
+        },
+        {
+          "id": "c1-circuit-minimum-is-relu",
+          "claim": "In the circuit, each minimum is a relu: the excess of the left candidate over the right is relu(left - right), and the winner is left minus that excess.",
+          "caption": 11,
+          "sources": [
+            { "label": "lab program: pairwise minimum", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "94-95", "quote": "excess = relu(left - right), then left - excess" },
+            { "label": "lab program: excess as a reglu", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "104", "quote": "const excess = circuit.reglu([], 1," }
+          ]
+        },
+        {
+          "id": "c1-backtrack-to-breaks",
+          "claim": "Following the remembered break points back from the end gives breaks after box one, after box three, and at the end, for a total of 10.",
+          "caption": 12,
+          "sources": [
+            { "label": "lab reference: backtrack", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "52", "quote": "for (let at = breakCount; at > 0; at = predecessors[at]!) breaks.push(at)" },
+            { "label": "lab test: expected breaks", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/knuth-plass.test.ts", "lines": "26", "quote": "const expected = {breaks: [1, 3, 4], totalCost: 10}" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Chain Or Tree",
+      "claims": [
+        {
+          "id": "c2-step-is-a-matrix",
+          "claim": "Each step of the running minimum is a matrix: row 0 holds this break point's line costs, and the other rows move every older cost one place down.",
+          "caption": 0,
+          "sources": [
+            { "label": "lab reference: row 0 of each matrix", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "67", "quote": "row 0 of M[to]: M[to][0][m] = lineCost(to - 1 - m, to)" },
+            { "label": "lab reference: shifting rows", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "68", "quote": "which moves every cost one place down" }
+          ]
+        },
+        {
+          "id": "c2-min-plus-multiply",
+          "claim": "Multiplying is min-plus: each entry adds a pair of values and keeps the smallest sum.",
+          "caption": 1,
+          "sources": [
+            { "label": "lab reference: min-plus apply", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "101", "quote": "best = Math.min(best, matrix[r * window + m]! + vector[m]!)" }
+          ]
+        },
+        {
+          "id": "c2-associative-clamped",
+          "claim": "Min-plus products are associative once sums are clamped at infeasible, so any grouping of the steps gives the same states.",
+          "caption": 2,
+          "sources": [
+            { "label": "lab reference: associativity note", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "69", "quote": "Clamping every sum at `infeasible` keeps the product associative" }
+          ]
+        },
+        {
+          "id": "c2-chain-layers",
+          "claim": "The chain form takes its steps one after another, and at 1,024 break points with a window of 32 it has 10,232 layers.",
+          "caption": 3,
+          "sources": [
+            { "label": "lab README: chain layer count", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "167", "quote": "| chain | 1,024 | 32 | 277,068 | 10,232 |" },
+            { "label": "lab program: chain steps in order", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "138-139", "quote": "const best = step(to, from => costs[from]!)" }
+          ]
+        },
+        {
+          "id": "c2-tree-layers-brent-kung",
+          "claim": "The tree form merges the steps in a Brent-Kung prefix network, and at 1,024 break points with a window of 32 it has 230 layers.",
+          "caption": 4,
+          "sources": [
+            { "label": "lab README: tree layer count", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "168", "quote": "| tree | 1,024 | 32 | 2,823,382 | 230 |" },
+            { "label": "lab reference: Brent-Kung network", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/reference.ts", "lines": "107", "quote": "with Brent-Kung's network like the tree program" }
+          ]
+        },
+        {
+          "id": "c2-tree-work-ten-times",
+          "claim": "The tree does about ten times the work of the chain: 2,823,382 operations against 277,068 at 1,024 break points and window 32.",
+          "caption": 5,
+          "sources": [
+            { "label": "lab README: operation counts", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "167-168", "quote": "| tree | 1,024 | 32 | 2,823,382 | 230 |" },
+            { "label": "lab README: ratio", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "185", "quote": "10.2 times at n = 1,024 and W = 32" }
+          ]
+        },
+        {
+          "id": "c2-tree-slower-on-executor",
+          "claim": "On the lab's CPU executor the chain is the cheaper form at every size measured, and the tree takes 1.7 to 7.7 times the chain's time.",
+          "caption": 6,
+          "sources": [
+            { "label": "lab README: executor timings", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "185", "quote": "the chain is the cheaper form at every size" },
+            { "label": "lab README: time ratio", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "185", "quote": "takes 1.7 to 7.7 times the chain's µs" }
+          ]
+        },
+        {
+          "id": "c2-plain-loop-75us",
+          "claim": "A plain loop takes about 75 microseconds at 1,024 break points and window 32, against 2,925 microseconds for the chain.",
+          "caption": 7,
+          "sources": [
+            { "label": "lab README: reference and chain times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "188", "quote": "e.g. 75 µs against 2,925 µs at n = 1,024 and W = 32" }
+          ]
+        },
+        {
+          "id": "c2-timings-are-historical",
+          "claim": "The microsecond timings were measured before two later commits, so the chain is probably faster now, and the notes did not measure again.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab README: timings predate later commits", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "187", "quote": "Every time and RSS in this README was measured before that commit" },
+            { "label": "lab README: first later commit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "187", "quote": "since commit de04d25, `executeTensorProgram` no longer creates an array view per layer" },
+            { "label": "lab README: second later commit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "187", "quote": "which removed an array of the circuit's width that `compileTensorProgram` allocated for every layer" }
+          ]
+        },
+        {
+          "id": "c2-exact-in-fp32",
+          "claim": "Every value stays below 2^24, where 32-bit floats hold every integer, and the lab reports that costs, pointers and breaks equal the reference on random paragraphs, ties included.",
+          "caption": 9,
+          "sources": [
+            { "label": "lab paragraph: FP32 bound", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/paragraph.ts", "lines": "29", "quote": "where FP32 holds every integer" },
+            { "label": "lab status: reported agreement", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "240", "quote": "costs, pointers and breaks equal the reference exactly on random paragraphs with ties" }
+          ]
+        },
+        {
+          "id": "c2-doubled-jumps",
+          "claim": "Doubling the predecessor table once gives jumps[1], where jumps[1][4] = 1: from point four, a doubled hop lands on point one.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab program: jumps as predecessors applied 2^level times", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "192", "quote": "jumps[level][at] is predecessors applied 2^level times to `at`" },
+            { "label": "lab program: doubling step", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "197", "quote": "jumps.push(previous.map(target => circuit.indexRead(target, previous)))" }
+          ]
+        },
+        {
+          "id": "c2-on-path-check",
+          "claim": "A fixed number of doubling tables lets each break point check whether it lies on the path back from the end.",
+          "caption": 11,
+          "sources": [
+            { "label": "lab program: path check", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "199", "quote": "whether `to` is on the path from breakCount back to 0" },
+            { "label": "lab program: descent loop", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/program.ts", "lines": "205", "quote": "for (let level = levels - 1; level >= 0; level--) {" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Many At Once",
+      "claims": [
+        {
+          "id": "c3-one-dispatch-per-level",
+          "claim": "The tree runs one level per dispatch, with every paragraph's matrices going through together.",
+          "caption": 0,
+          "sources": [
+            { "label": "lab README: one dispatch per level", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "254", "quote": "one dispatch of its matrix products and one of its matrix-vector products, across every paragraph" }
+          ]
+        },
+        {
+          "id": "c3-one-paragraph-gpu-loses",
+          "claim": "For one paragraph the GPU takes longer than both JavaScript loops at every measured size up to 4,096 break points, and each evaluation takes 0.3 to 0.6 ms, mostly the round trip.",
+          "caption": 1,
+          "sources": [
+            { "label": "lab README: one paragraph loses", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "414", "quote": "the GPU takes longer than `knuthPlass` and `knuthPlassTyped`, in Bun and in the page" },
+            { "label": "lab README: round-trip timings", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "382", "quote": "from 64 to 4,096 break points, the dense-rows kernel with positions or widths takes 0.3 to 0.6 ms" }
+          ]
+        },
+        {
+          "id": "c3-256-points-one-paragraph",
+          "claim": "At 256 break points and window 32, one paragraph takes the plain loop 0.016 ms and the chip 0.39 ms with positions uploaded.",
+          "caption": 2,
+          "sources": [
+            { "label": "lab README: many paragraphs table, P = 1", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "352", "quote": "| 32 | 1 | 0.57 (0.54 to 0.71) | 0.42 (0.42 to 0.64) | 0.39 (0.38 to 0.50) | 0.39 (0.38 to 0.64) | 0.016 (0.013 to 0.016)" }
+          ]
+        },
+        {
+          "id": "c3-full-kernel-loses",
+          "claim": "At 1,000 paragraphs and window 32, the full kernel takes 42.3 ms, against 10.4 ms for the typed loop and 18.2 ms for the plain loop.",
+          "caption": 3,
+          "sources": [
+            { "label": "lab README: many paragraphs table, P = 1,000", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "355", "quote": "| 32 | 1,000 | 42.3 (40.5 to 42.9) | 23.4 (18.5 to 30.3) | 4.50 (3.97 to 4.72) | 4.81 (4.37 to 5.75) | 18.2 (18.0 to 18.6) | 10.4 (10.2 to 10.7) |" }
+          ]
+        },
+        {
+          "id": "c3-dense-rows-stores-first-rows",
+          "claim": "The dense-rows kernel stores and reads only the first min(B, W) rows of each block, and at 1,000 paragraphs with positions uploaded it takes 4.50 ms.",
+          "caption": 4,
+          "sources": [
+            { "label": "lab README: dense-rows storage", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "262", "quote": "So the kernel stores and reads only the first min(B, W) rows of a block." },
+            { "label": "lab README: dense-rows timing", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "355", "quote": "| 32 | 1,000 | 42.3 (40.5 to 42.9) | 23.4 (18.5 to 30.3) | 4.50 (3.97 to 4.72)" }
+          ]
+        },
+        {
+          "id": "c3-beats-both-loops",
+          "claim": "At 1,000 paragraphs and window 32, the dense-rows kernel with positions is 2.3 times faster than the typed loop, about four times faster than the plain loop, and grows more slowly as paragraphs are added.",
+          "caption": 5,
+          "sources": [
+            { "label": "lab README: 2.3 times at 1,000 paragraphs", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "411", "quote": "2.3 times at 1,000 paragraphs and W = 32, 4.50 against 10.4 ms" },
+            { "label": "lab README: scaling from 1 to 1,000 paragraphs", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "352-355", "quote": "| 32 | 1,000 | 42.3 (40.5 to 42.9) | 23.4 (18.5 to 30.3) | 4.50 (3.97 to 4.72) | 4.81 (4.37 to 5.75) | 18.2 (18.0 to 18.6)" }
+          ]
+        },
+        {
+          "id": "c3-uploading-line-costs-loses",
+          "claim": "Computing line costs in JavaScript and uploading them never beats the typed loop: 23.4 ms against 10.4 ms at 1,000 paragraphs.",
+          "caption": 6,
+          "sources": [
+            { "label": "lab README: line costs uploaded", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "457", "quote": "Computing the line costs in JavaScript and uploading them never beats `knuthPlassTyped`" },
+            { "label": "lab README: line-cost timing", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "355", "quote": "| 32 | 1,000 | 42.3 (40.5 to 42.9) | 23.4 (18.5 to 30.3)" }
+          ]
+        },
+        {
+          "id": "c3-crossover-range",
+          "claim": "With positions uploaded, across six Chrome sessions, the GPU takes less time than the plain loop from below 30 to about 105 paragraphs, and than the typed loop from about 38 to 188.",
+          "caption": 7,
+          "sources": [
+            { "label": "lab README: crossover range", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "450", "quote": "from below 30 to about 105 paragraphs of 256 break points" },
+            { "label": "lab README: typed-loop range", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "450", "quote": "from about 38 to 188" }
+          ]
+        },
+        {
+          "id": "c3-crossover-not-stable",
+          "claim": "The lab says the crossover counts are not a stable result, and that the round trip changed about two times between sessions.",
+          "caption": 8,
+          "sources": [
+            { "label": "lab README: counts not stable", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "450", "quote": "the counts per W aren't a stable result" },
+            { "label": "lab README: round trip changed", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "454", "quote": "changed about 2 times between sessions" }
+          ]
+        },
+        {
+          "id": "c3-gpu-totals-exact",
+          "claim": "In Chrome the chip's totals and breaks matched the reference with zero mismatches across two check runs, over 730,566,480 values in total, up to 270,532 break points.",
+          "caption": 9,
+          "sources": [
+            { "label": "lab README: first check run", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "301", "quote": "24,823,200 values were compared with `knuthPlass`" },
+            { "label": "lab README: second check run", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "302", "quote": "705,743,280 values compared with `knuthPlass`, with 0 mismatched values and 0 mismatched breaks" }
+          ]
+        },
+        {
+          "id": "c3-lab-answer",
+          "claim": "The lab's answer to Cheng is yes for many paragraphs and no for one; the yes holds for the dense-rows kernel with positions uploaded, on one Apple GPU through Metal in headless Chrome.",
+          "caption": 10,
+          "sources": [
+            { "label": "lab README: the answer", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "454-455", "quote": "For many paragraphs, yes." },
+            { "label": "lab README: one paragraph", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "455", "quote": "For one paragraph, no." },
+            { "label": "lab README: hardware scope", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "470", "quote": "Only Apple's GPU through Metal in headless Chrome 153" }
+          ]
+        },
+        {
+          "id": "c3-not-done",
+          "claim": "Still open in the notes: Sklansky's prefix network, a GPU mode for the page, batches of different lengths, and the demo's justified cost, none of them done.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab README: not done", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "223-226", "quote": "## Not done" },
+            { "label": "lab README: Sklansky's network", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "225", "quote": "Sklansky's network, and the argmin pointers carried inside the matrix products" },
+            { "label": "lab README: no GPU mode on the page", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "462", "quote": "The page: `demo.html` runs the programs on the CPU, and has no GPU mode." }
+          ]
+        },
+        {
+          "id": "c3-summary-inferred",
+          "claim": "Optimal breaks form a running minimum; as matrix products the steps can be merged in a tree with 230 layers instead of 10,232, so one paragraph loses on the GPU while many paragraphs can win within a shifting range.",
+          "caption": 12,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab README: chain and tree layers", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "167-168", "quote": "| tree | 1,024 | 32 | 2,823,382 | 230 |" },
+            { "label": "lab README: many paragraphs can win", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/knuth-plass/README.md", "lines": "454", "quote": "the tree takes less time than plain JavaScript from below 30 to about 190 paragraphs" }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -74,8 +74,10 @@ const SRC_TOKEN = { x: YAML.x + YAML.w - 14, y: lineY(1) - 5 };
 
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_YAML: CameraState = { x: 340, y: 300, k: 1.22 };
-const CAM_USERS: CameraState = { x: 730, y: 220, k: 1.2 };
-const CAM_TOKENS: CameraState = { x: 830, y: 420, k: 1.22 };
+// The store push stays small: at k≈1.06 the YAML file and the store both stay
+// on the 1280×720 stage, so no seed line is cropped at the left edge.
+const CAM_USERS: CameraState = { x: 639, y: 350, k: 1.06 };
+const CAM_TOKENS: CameraState = { x: 639, y: 350, k: 1.06 };
 
 const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 
@@ -257,7 +259,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* the seed file */}
         <g opacity={yamlU * floorOp}>
           <rect x={YAML.x} y={YAML.y} width={YAML.w} height={YAML.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={YAML.x + 20} y={YAML.y + 30} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+          <text x={YAML.x + 20} y={YAML.y + 30} fill={colors.MUTED} fontSize={13.5} fontFamily={MONO}>
             emulate.config.yaml
           </text>
           {YAML_LINES.map((l, i) => {
@@ -268,9 +270,9 @@ export function Render({ s }: { s: SceneState }) {
                 x={YAML.x + 22 + l.indent * 16}
                 y={lineY(i)}
                 fill={hot ? colors.ACCENT : l.tag ? colors.TEXT : colors.MUTED}
-                fontSize={13}
+                fontSize={14}
                 fontFamily={MONO}
-                opacity={yamlU * (hot ? 1 : 0.82)}
+                opacity={yamlU * (hot ? 1 : 0.9)}
               >
                 {l.text}
               </text>
@@ -293,7 +295,7 @@ export function Render({ s }: { s: SceneState }) {
 
         <g opacity={floorOp}>
           {/* shelf: users */}
-          <text x={540} y={116} fill={colors.MUTED} fontSize={12.5} opacity={Math.max(cardPop(usersU), reb[0])}>
+          <text x={540} y={116} fill={colors.MUTED} fontSize={13.5} opacity={Math.max(cardPop(usersU), reb[0])}>
             users
           </text>
           {USER_CARDS.map((u, i) => (
@@ -306,17 +308,17 @@ export function Render({ s }: { s: SceneState }) {
               <text x={u.x + 56} y={u.y + 32} fill={colors.TEXT} fontSize={14.5} fontFamily={MONO}>
                 {u.login}
               </text>
-              <text x={u.x + 56} y={u.y + 52} fill={colors.MUTED} fontSize={12}>
+              <text x={u.x + 56} y={u.y + 52} fill={colors.MUTED} fontSize={13}>
                 {u.name}
               </text>
-              <text x={u.x + 56} y={u.y + 70} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={u.x + 56} y={u.y + 70} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 {u.email}
               </text>
             </g>
           ))}
 
           {/* shelf: the registered client */}
-          <text x={540} y={252} fill={colors.MUTED} fontSize={12.5} opacity={Math.max(appOp, 0)}>
+          <text x={540} y={252} fill={colors.MUTED} fontSize={13.5} opacity={Math.max(appOp, 0)}>
             oauth apps
           </text>
           <g opacity={appOp}>
@@ -324,33 +326,33 @@ export function Render({ s }: { s: SceneState }) {
             <text x={APP_CARD.x + 20} y={APP_CARD.y + 30} fill={colors.TEXT} fontSize={14.5} fontWeight={600}>
               Code App
             </text>
-            <text x={APP_CARD.x + 20} y={APP_CARD.y + 54} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+            <text x={APP_CARD.x + 20} y={APP_CARD.y + 54} fill={colors.SECONDARY} fontSize={13.5} fontFamily={MONO}>
               client_id: emu_github_client_id
             </text>
-            <text x={APP_CARD.x + 20} y={APP_CARD.y + 74} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={APP_CARD.x + 20} y={APP_CARD.y + 74} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               redirect: …/api/auth/callback/github
             </text>
           </g>
 
           {/* shelf: the token → identity table */}
-          <text x={540} y={394} fill={colors.MUTED} fontSize={12.5} opacity={Math.max(tokenOp, 0)}>
+          <text x={540} y={394} fill={colors.MUTED} fontSize={13.5} opacity={Math.max(tokenOp, 0)}>
             token map — token → identity
           </text>
           <g opacity={tokenOp}>
             <rect x={TOKENS.x} y={TOKENS.y} width={TOKENS.w} height={TOKENS.h} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
-            <text x={TOKENS.x + 20} y={TOKENS.y + 32} fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+            <text x={TOKENS.x + 20} y={TOKENS.y + 32} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               gho_test_token_admin
             </text>
-            <text x={TOKENS.x + 300} y={TOKENS.y + 32} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={TOKENS.x + 300} y={TOKENS.y + 32} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               → admin · repo, user, admin:org
             </text>
-            <text x={TOKENS.x + 20} y={TOKENS.y + 62} fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+            <text x={TOKENS.x + 20} y={TOKENS.y + 62} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               gho_test_token_octocat
             </text>
-            <text x={TOKENS.x + 300} y={TOKENS.y + 62} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={TOKENS.x + 300} y={TOKENS.y + 62} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               → octocat · repo, user, workflow
             </text>
-            <text x={TOKENS.x + 20} y={TOKENS.y + 90} fill={colors.MUTED} fontSize={11.5}>
+            <text x={TOKENS.x + 20} y={TOKENS.y + 90} fill={colors.MUTED} fontSize={13}>
               Authorization: Bearer &lt;token&gt; — resolved by the auth middleware
             </text>
           </g>
@@ -367,10 +369,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the scribble a test leaves behind */}
           <g opacity={scribbleOp} transform={`rotate(-4 ${SCRIBBLE.x + SCRIBBLE.w / 2} ${SCRIBBLE.y + SCRIBBLE.h / 2})`}>
             <rect x={SCRIBBLE.x} y={SCRIBBLE.y} width={SCRIBBLE.w} height={SCRIBBLE.h} rx={10} fill={colors.BG} stroke={colors.WARM} strokeDasharray="5 4" strokeWidth={1.4} />
-            <text x={SCRIBBLE.x + 16} y={SCRIBBLE.y + 30} fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+            <text x={SCRIBBLE.x + 16} y={SCRIBBLE.y + 30} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               repo: my-repo
             </text>
-            <text x={SCRIBBLE.x + 16} y={SCRIBBLE.y + 52} fill={colors.MUTED} fontSize={11}>
+            <text x={SCRIBBLE.x + 16} y={SCRIBBLE.y + 52} fill={colors.MUTED} fontSize={13}>
               created mid-test
             </text>
           </g>
@@ -382,6 +384,17 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={STORE.x} y={STORE.y} width={sweepX - STORE.x} height={STORE.h} fill={colors.BG} opacity={0.45} />
             </g>
           )}
+          {/* the empty store between reset's sweep and the re-seed: say so, not a blank box */}
+          <text
+            x={STORE.x + STORE.w / 2}
+            y={STORE.y + STORE.h / 2}
+            textAnchor="middle"
+            fill={colors.MUTED}
+            fontSize={15}
+            opacity={clamp01((wipeU - 0.9) * 10) * (1 - clamp01(rebornU * 4)) * floorOp}
+          >
+            empty store — no users, no apps, no tokens
+          </text>
           {(wipeU > 0.15 || rebornU > 0) && (
             <text x={STORE.x + STORE.w - 20} y={STORE.y + 30} textAnchor="end" fill={rebornU > 0.9 ? colors.POSITIVE : colors.NEGATIVE} fontSize={13.5} fontFamily={MONO} opacity={Math.max(wipeU, clamp01(rebornU * 2)) * floorOp}>
               {rebornU > 0.9 ? 'reset() → re-seeded' : 'reset()'}
@@ -392,10 +405,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* the boot chip */}
         <g opacity={codeU * floorOp}>
           <rect x={CODE.x} y={CODE.y} width={CODE.w} height={CODE.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-          <text x={CODE.x + 18} y={CODE.y + 30} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+          <text x={CODE.x + 18} y={CODE.y + 30} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
             {"await createEmulator({ service:"}
           </text>
-          <text x={CODE.x + 18} y={CODE.y + 52} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+          <text x={CODE.x + 18} y={CODE.y + 52} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
             {"  'github', port, seed })"}
           </text>
         </g>

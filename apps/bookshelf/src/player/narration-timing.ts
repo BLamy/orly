@@ -21,7 +21,10 @@ export function createNarrationTimeMap(
   cues?: number[],
   duration?: number,
 ): NarrationTimeMap {
-  const authoredCaptions = timeline.describe().captions;
+  // Cues are recorded in spoken (time) order; pair them with captions in the
+  // same order. describe() lists captions in declaration order, which differs
+  // whenever a scene declares a later caption first.
+  const authoredCaptions = [...timeline.describe().captions].sort((a, b) => a.at - b.at);
   const source: number[] = [0];
   const playback: number[] = [0];
 
@@ -95,6 +98,10 @@ export function retimeTimelineToNarration(
     const dur = Math.max(0.5, map.toPlayback(caption.at + caption.dur) - at);
     timeline.updateCaption(caption.id, { at, dur });
   }
+
+  // The authored hold is not a keyframe, so preserve the recording's full
+  // tail explicitly rather than ending the seekable clock at the last cue.
+  timeline.hold(map.playbackDuration, 0);
 
   return map;
 }

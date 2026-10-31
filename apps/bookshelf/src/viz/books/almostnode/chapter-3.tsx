@@ -63,7 +63,7 @@ const SHIM_HTTP = SHIMS.indexOf('http');
 const SHIM_FS = SHIMS.indexOf('fs');
 
 // the ESM → CJS station (below the source card)
-const ESM = { x: 95, y: 405, w: 375, h: 96 } as const;
+const ESM = { x: 95, y: 405, w: 430, h: 96 } as const;
 
 // the socket-that-isn't (bottom center) and the bridge registry
 const SOCK = { cx: 700, y: 470, r: 46 } as const;
@@ -83,9 +83,11 @@ const DOORS_Y = 210;
 
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_SRC: CameraState = { x: 340, y: 260, k: 1.35 };
-const CAM_GRID: CameraState = { x: 700, y: 260, k: 1.18 };
-const CAM_SOCK: CameraState = { x: 810, y: 420, k: 1.3 };
+// each mark frames its subject inside the 1280×720 stage and above the caption band (y < 630 on screen)
+const CAM_SRC: CameraState = { x: 282, y: 222, k: 1.45 }; // wrapper + source card
+const CAM_GRID: CameraState = { x: 652, y: 215, k: 1.08 }; // source card → shim grid
+const CAM_ESM: CameraState = { x: 282, y: 292, k: 1.25 }; // source card → rewrite station
+const CAM_SOCK: CameraState = { x: 665, y: 337, k: 1.05 }; // listen(3000) → socket → registry → SW badge
 
 // ---------------------------------------------------------------------------
 // Timeline (~88s, eleven beats).
@@ -178,7 +180,7 @@ export function buildScene() {
   });
   tl.tween(line2Hot, 0, { at: 32.0, dur: 0.5, ease: ease.move });
   tl.tween(rayFs, 0, { at: 32.0, dur: 0.6, ease: ease.move });
-  tl.tween(cam, CAM_SRC, { at: 32.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, CAM_ESM, { at: 32.1, dur: 1.3, ease: ease.move });
   tl.tween(esmU, 1, { at: 32.8, dur: 1.0, ease: ease.enter });
   tl.hold(38.3, 0.5);
 
@@ -289,7 +291,10 @@ export function Render({ s }: { s: SceneState }) {
   const doorU = s.get(scene.doorU);
   const rejectU = s.get(scene.rejectU);
   const closeU = s.get(scene.closeU);
-  const machineOp = 1 - 0.88 * dimU;
+  // the machine dims for the cages, then clears completely behind the closer
+  const machineOp = (1 - dimU) * (1 - closeU);
+  // the shim grid leaves with the camera's pan to the rewrite station: it fades across the pan, then stays gone
+  const gridFade = s.get(scene.esmU) > 0 ? 0 : clamp01((cam.x - CAM_SRC.x) / (CAM_GRID.x - CAM_SRC.x));
 
   const httpCell = shimPos(SHIM_HTTP);
   const fsCell = shimPos(SHIM_FS);
@@ -320,14 +325,14 @@ export function Render({ s }: { s: SceneState }) {
               strokeWidth={1.6}
             />
             {WRAP_TOP.map((line, i) => (
-              <text key={i} x={SRC.x - 6} y={SRC.y - WRAP_PAD_TOP + 22 + i * 18} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+              <text key={i} x={SRC.x - 6} y={SRC.y - WRAP_PAD_TOP + 22 + i * 20} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
                 {line}
               </text>
             ))}
-            <text x={SRC.x - 6} y={SRC.y + SRC.h + 24} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+            <text x={SRC.x - 6} y={SRC.y + SRC.h + 24} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
               {WRAP_BOT}
             </text>
-            <text x={SRC.x + SRC.w + 16} y={SRC.y - WRAP_PAD_TOP + 22} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={SRC.x + SRC.w + 30} y={SRC.y - WRAP_PAD_TOP + 22} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               runtime.ts
             </text>
           </g>
@@ -335,7 +340,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the source card */}
           <g opacity={srcU}>
             <rect x={SRC.x} y={SRC.y} width={SRC.w} height={SRC.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={SRC.x + 16} y={SRC.y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={1 - pressU}>
+            <text x={SRC.x + 16} y={SRC.y - 10} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={1 - pressU}>
               server.js
             </text>
             {SRC_LINES.map((line, i) => (
@@ -358,59 +363,68 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* "no Node here" strike */}
           <g opacity={noNodeU}>
-            <rect x={SRC.x + 40} y={SRC.y + SRC.h + 28} width={295} height={34} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} />
-            <text x={SRC.x + 187} y={SRC.y + SRC.h + 50} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5}>
+            <rect x={SRC.x + 17} y={SRC.y + SRC.h + 28} width={340} height={34} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} />
+            <text x={SRC.x + 187} y={SRC.y + SRC.h + 50} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
               no process · no require · no sockets
             </text>
           </g>
 
           {/* the shim grid */}
-          {SHIMS.map((name, i) => {
-            const u = clamp01(gridU * (SHIMS.length + 2) - i);
-            if (u <= 0) return null;
-            const p = shimPos(i);
-            const hot = (i === SHIM_HTTP && rayHttp > 0.6) || (i === SHIM_FS && rayFs > 0.6);
-            return (
-              <g key={name} opacity={u}>
-                <rect
-                  x={p.x - GRID.cellW / 2}
-                  y={p.y - GRID.cellH / 2}
-                  width={GRID.cellW}
-                  height={GRID.cellH}
-                  rx={9}
-                  fill={colors.PANEL}
-                  stroke={hot ? colors.WARM : colors.GRID}
-                  strokeWidth={hot ? 2.2 : 1.2}
-                />
-                <text x={p.x} y={p.y + 5} textAnchor="middle" fill={hot ? colors.WARM : colors.TEXT} fontSize={13.5} fontFamily={MONO}>
-                  {name}
+          {gridFade > 0.01 && (
+            <g opacity={gridFade}>
+              {SHIMS.map((name, i) => {
+                const u = clamp01(gridU * (SHIMS.length + 2) - i);
+                if (u <= 0) return null;
+                const p = shimPos(i);
+                const hot = (i === SHIM_HTTP && rayHttp > 0.6) || (i === SHIM_FS && rayFs > 0.6);
+                return (
+                  <g key={name} opacity={u}>
+                    <rect
+                      x={p.x - GRID.cellW / 2}
+                      y={p.y - GRID.cellH / 2}
+                      width={GRID.cellW}
+                      height={GRID.cellH}
+                      rx={9}
+                      fill={colors.PANEL}
+                      stroke={hot ? colors.WARM : colors.GRID}
+                      strokeWidth={hot ? 2.2 : 1.2}
+                    />
+                    <text x={p.x} y={p.y + 5} textAnchor="middle" fill={hot ? colors.WARM : colors.TEXT} fontSize={14} fontFamily={MONO}>
+                      {name}
+                    </text>
+                  </g>
+                );
+              })}
+              <g opacity={countU}>
+                {/* left-aligned under the grid so it clears the server-registered label near the SW badge */}
+                <text x={GRID.x0} y={GRID.y0 + 3 * (GRID.cellH + GRID.gapY) + 16} fill={colors.MUTED} fontSize={14}>
+                  … 40+ shimmed modules
+                </text>
+                <text x={GRID.x0 + 2 * (GRID.cellW + GRID.gapX)} y={GRID.y0 - 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+                  {"require(name) → shims[name]"}
                 </text>
               </g>
-            );
-          })}
-          <g opacity={countU}>
-            <text x={GRID.x0 + 2 * (GRID.cellW + GRID.gapX)} y={GRID.y0 + 3 * (GRID.cellH + GRID.gapY) + 16} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
-              … 40+ shimmed modules
-            </text>
-            <text x={GRID.x0 + 2 * (GRID.cellW + GRID.gapX)} y={GRID.y0 - 24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
-              {"require(name) → shims[name]"}
-            </text>
-          </g>
+            </g>
+          )}
 
           {/* require rays */}
-          <Connection from={srcRight} to={{ x: httpCell.x - GRID.cellW / 2, y: httpCell.y }} u={rayHttp} color={colors.WARM} label="require('http')" />
-          <Connection from={srcRight2} to={{ x: fsCell.x - GRID.cellW / 2, y: fsCell.y }} u={rayFs} color={colors.POSITIVE} label="require('fs') → VirtualFS" />
+          <Connection from={srcRight} to={{ x: httpCell.x - GRID.cellW / 2, y: httpCell.y }} u={rayHttp} color={colors.WARM} />
+          <Connection from={srcRight2} to={{ x: fsCell.x - GRID.cellW / 2, y: fsCell.y }} u={rayFs} color={colors.POSITIVE} />
+          {/* the fs answer names its target above the cell, clear of the ray and the grid header */}
+          <text x={fsCell.x} y={GRID.y0 - 8} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={clamp01(rayFs * 2)}>
+            → VirtualFS
+          </text>
 
           {/* the acorn rewrite station */}
           <g opacity={esmU}>
             <rect x={ESM.x} y={ESM.y} width={ESM.w} height={ESM.h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-            <text x={ESM.x + 16} y={ESM.y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={ESM.x + 16} y={ESM.y - 10} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               acorn AST · code-transforms.ts
             </text>
-            <text x={ESM.x + 16} y={ESM.y + 32} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={ESM.x + 16} y={ESM.y + 32} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {"import x from 'y'  →  const x = require('y')"}
             </text>
-            <text x={ESM.x + 16} y={ESM.y + 64} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={ESM.x + 16} y={ESM.y + 64} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {'import(  →  __dynamicImport('}
             </text>
           </g>
@@ -418,15 +432,15 @@ export function Render({ s }: { s: SceneState }) {
           {/* the socket that isn't */}
           <g opacity={sockU * (1 - sockFade)}>
             <circle cx={SOCK.cx} cy={SOCK.y} r={SOCK.r} fill="none" stroke={colors.WARM} strokeWidth={2} strokeDasharray="6 6" />
-            <text x={SOCK.cx} y={SOCK.y - 4} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+            <text x={SOCK.cx} y={SOCK.y - 4} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               socket
             </text>
-            <text x={SOCK.cx} y={SOCK.y + 16} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+            <text x={SOCK.cx} y={SOCK.y + 16} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               :3000
             </text>
           </g>
           {sockU > 0.1 && sockFade > 0.05 && sockFade < 0.98 && (
-            <text x={SOCK.cx} y={SOCK.y + 5} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={Math.sin(Math.PI * sockFade)}>
+            <text x={SOCK.cx} y={SOCK.y + 5} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={Math.sin(Math.PI * sockFade)}>
               never opens
             </text>
           )}
@@ -437,11 +451,11 @@ export function Render({ s }: { s: SceneState }) {
             <text x={REG.x + 18} y={REG.y + 28} fill={colors.TEXT} fontSize={14} fontWeight={600}>
               ServerBridge registry
             </text>
-            <text x={REG.x + 18} y={REG.y + 52} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={REG.x + 18} y={REG.y + 52} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               setServerListenCallback →
             </text>
             <rect x={REG.x + 14} y={REG.y + 62} width={REG.w - 28} height={30} rx={7} fill={colors.BG} stroke={colors.ACCENT} opacity={0.9} />
-            <text x={REG.x + 26} y={REG.y + 82} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+            <text x={REG.x + 26} y={REG.y + 82} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
               {'servers.set(3000, server)'}
             </text>
           </g>
@@ -458,33 +472,37 @@ export function Render({ s }: { s: SceneState }) {
           {pingU > 0 && pingU < 1 && (
             <g>
               <circle cx={pingP.x} cy={pingP.y} r={7} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={pingP.x - 10} y={pingP.y - 13} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+              {/* the label sits under the badge, clear of its text, and follows the ping in */}
+              <text x={SW_BADGE.x + 130} y={SW_BADGE.y + 54 + 24} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={clamp01(pingU * 4)}>
                 {'server-registered {port: 3000}'}
               </text>
             </g>
           )}
         </g>
 
-        {/* the three cages */}
+        {/* the three cages — the question the caption asks, answered by a choice of cage */}
+        <text x={STAGE_W / 2} y={DOORS_Y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={15} opacity={clamp01(doorU * 2) * (1 - closeU)}>
+          where can untrusted code run?
+        </text>
         {DOORS.map((d, i) => {
           const u = clamp01(doorU * 3 - i);
           if (u <= 0) return null;
           const x = DOORS_X0 + i * (DOOR_W + DOOR_GAP);
           return (
-            <g key={d.title} opacity={u}>
+            <g key={d.title} opacity={u * (1 - closeU)}>
               <rect x={x} y={DOORS_Y - 12 * (1 - u)} width={DOOR_W} height={190} rx={14} fill={colors.PANEL} stroke={d.color} strokeWidth={1.5} />
               <rect x={x + 22} y={DOORS_Y + 24} width={44} height={70} rx={6} fill="none" stroke={d.color} strokeWidth={1.6} />
               <circle cx={x + 56} cy={DOORS_Y + 60} r={3} fill={d.color} />
               <text x={x + 84} y={DOORS_Y + 44} fill={colors.TEXT} fontSize={16} fontWeight={650}>
                 {d.title}
               </text>
-              <text x={x + 84} y={DOORS_Y + 68} fill={colors.MUTED} fontSize={12.5}>
+              <text x={x + 84} y={DOORS_Y + 68} fill={colors.MUTED} fontSize={13}>
                 {d.note}
               </text>
-              <text x={x + 22} y={DOORS_Y + 136} fill={d.color} fontSize={12.5} fontFamily={MONO}>
+              <text x={x + 22} y={DOORS_Y + 136} fill={d.color} fontSize={14} fontFamily={MONO}>
                 {d.code}
               </text>
-              <text x={x + 22} y={DOORS_Y + 162} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={x + 22} y={DOORS_Y + 162} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 create-runtime.ts
               </text>
             </g>
@@ -493,11 +511,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the bare call bounces */}
         <g opacity={rejectU}>
-          <rect x={410} y={452} width={460} height={64} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-          <text x={640} y={478} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontFamily={MONO}>
-            createRuntime(vfs)
+          <rect x={400} y={452} width={440} height={64} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+          <text x={620} y={478} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+            createRuntime(vfs) — no cage chosen
           </text>
-          <text x={640} y={502} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO}>
+          <text x={620} y={502} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             {"✗ throws: 'almostnode: For security…'"}
           </text>
         </g>

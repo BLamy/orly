@@ -1,0 +1,795 @@
+{
+  "id": "ch08",
+  "number": 8,
+  "title": "The Summer's Certainties",
+  "blurb": "July to mid-September 2026. The Window Calendar dims: six panes in July, and an August with no commits at all, which the record does not explain. The July briefs list established conclusions to be taken as given, tied on by a design conversation the repo never names. On 3 September a review run by an AI agent retires ten of them, and the dead end's narrower replacement is named (a defined numeric subset can be compiled), and three of its findings go on plates: a nought-out-of-twenty result that becomes twenty out of twenty when the error is multiplied by a million, because the optimiser's tiny safety constant was swamping the slopes; a checker that reported zero mismatches because it skipped the same early return as the compiled code; and, as a silent plate, a gradient that came out nought or three depending on operand order, fixed that morning with 274 tests passing. The film's one plain sentence about tooling: every commit authored by Cheng Lou, most also crediting a coding agent, and this film written with Claude; one process, under his direction. By mid-September three runtime questions are settled, September's panes relight, and the tag hangs struck after about eight weeks.",
+  "shots": [
+    {
+      "id": "ch08-s01",
+      "kind": "scene",
+      "setting": "the Window Calendar at night · July and August 2026 · snow on the sill",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 1.1,
+      "holdAfter": 1,
+      "transitionIn": "fadeBlack",
+      "visual": "THIS SHOT: the quiet months (Device 2, the Window Calendar). Out of black, a cold blue night: the tall paper building of windows, one lit pane per commit, one column per month. June's column (72 panes) glows warm at the left edge, already lit since ch03. CAMERA: a slow lateral track at mid-height from June's column toward the right (months are side-by-side columns), with a slight drop, so that August's snowy sill settles in the lower third. On 'Six' the July column comes into frame with exactly six lit panes, small lamps far apart in a dark column. On 'August' the camera reaches the August column: every pane black glass, no light anywhere in it; on 'none', paper-cut snow drifts down past it and settles on its sill in a thin white line. The camera holds on the dark column. No figures in any pane; nothing is implied about why. On 'guess' the haze thickens a little and the track stops.",
+      "lines": [
+        {
+          "id": "L0801",
+          "text": "Six commits in July. In August, none.",
+          "direction": "low and quiet, counting windows; a long beat after 'In August,' before 'none'",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0802",
+          "text": "The record doesn't say why. So we won't guess.",
+          "direction": "the narrator's honesty, gentle and firm; no drama, a slight warmth on 'we won't guess'",
+          "tts": {
+            "solo": true,
+            "speed": 0.75
+          },
+          "insertGaps": {
+            "why": 0.35
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "july",
+          "at": {
+            "line": "L0801",
+            "word": "Six",
+            "edge": "start"
+          },
+          "what": "July's column: exactly six lit panes"
+        },
+        {
+          "id": "august",
+          "at": {
+            "line": "L0801",
+            "word": "August",
+            "edge": "start"
+          },
+          "what": "the August column: every pane dark"
+        },
+        {
+          "id": "snow",
+          "at": {
+            "line": "L0801",
+            "word": "none",
+            "edge": "start"
+          },
+          "what": "paper snow drifts down and settles on August's sill"
+        },
+        {
+          "id": "guess",
+          "at": {
+            "line": "L0802",
+            "word": "guess",
+            "edge": "start"
+          },
+          "what": "the haze thickens a little; the track stops"
+        }
+      ],
+      "props": [
+        "the Window Calendar building (one pane per commit)",
+        "paper-cut snow",
+        "the sill"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "JULY 2026 · 6",
+          "beat": "july"
+        },
+        {
+          "kind": "date",
+          "text": "AUGUST 2026 · 0",
+          "beat": "august"
+        }
+      ],
+      "music": {
+        "cue": "ch08-summer",
+        "note": "The film's low point begins: the score drops to a single sustained low note and room tone. Six faint, widely spaced woodblock taps as July's panes come into view; nothing at all under August. Intensity 1."
+      },
+      "claims": [
+        "PJ09"
+      ]
+    },
+    {
+      "id": "ch08-s02",
+      "kind": "scene",
+      "setting": "the copper line before a cold lab window · lab round one, 8 July 2026 · night",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 0.6,
+      "holdAfter": 2.3,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: Tag 8 is tied on. CAMERA: from one of July's six lit panes, a push through the glass into a cold blue room: in the far background a window bay with snow light, a desk lamp, a logo-less laptop, and two pairs of paper hands at its keyboard, small and out of focus (cast author-hands and the paler agent-hand, typing; no faces). Across the foreground, the copper line catches the window's cold rim light; the Lifespan Rule runs along the bottom. On 'conclusions' the narrator's hands tie on tag 8 (detent 'tie' stroke): its front is inked with the label in the film's own words (never in quotation marks). On 'Who' a small typeset card threads itself through the tag's eyelet, reading who tied it on, with a smaller caption 'not attributable to Cheng' (the record names no participants; it does not say who was or was not there). The thread hangs down toward the rule with its start on 8 July. CAMERA: settles into a mid-shot on the tag and its knot card. TAG-LINE STAGING (meta staging.tagLine): THE COLD WINDOW: the workshop in winterBlue, the window wall frosted at L2 and the Window Calendar's dark August column seen through it; the line lower (52%), slack, frost on the posts.",
+      "lines": [
+        {
+          "id": "L0803",
+          "text": "July’s lab briefs listed established conclusions, to take as given. One: compiling ordinary code was a dead end.",
+          "direction": "neutral, even, no irony: these were reasonable working beliefs; the example plainly, as one item read off a list",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0804",
+          "text": "Who tied it on? A conversation whose people go unnamed.",
+          "direction": "a small question, plainly answered; no suspicion in the voice"
+        }
+      ],
+      "beats": [
+        {
+          "id": "pane",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "push through a lit July pane into the cold lab room"
+        },
+        {
+          "id": "tie",
+          "at": {
+            "line": "L0803",
+            "word": "conclusions",
+            "edge": "start"
+          },
+          "what": "the narrator's hands tie tag 8 on the line (tie stroke)"
+        },
+        {
+          "id": "knot",
+          "at": {
+            "line": "L0804",
+            "word": "Who",
+            "edge": "start"
+          },
+          "what": "the knot card threads through the eyelet"
+        }
+      ],
+      "cast": [
+        "narrator-hands",
+        "author-hands",
+        "agent-hand"
+      ],
+      "props": [
+        "copper line",
+        "tag 8",
+        "knot card",
+        "Lifespan Rule",
+        "window bay with snow light",
+        "desk lamp",
+        "logo-less laptop"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "8 JULY 2026 · lab round one · 4 experiments",
+          "beat": "pane"
+        },
+        {
+          "kind": "label",
+          "text": "Established conclusions: take these as given",
+          "beat": "tie"
+        },
+        {
+          "kind": "nameCard",
+          "text": "tied on by: unnamed participants · not attributable to Cheng",
+          "beat": "knot"
+        }
+      ],
+      "music": {
+        "cue": "ch08-summer",
+        "note": "Device 4: the detent figure's 'tie' stroke (a soft detent click) on the knot. Otherwise the low sustained note continues, with a faint, steady two-note figure: confident, a little too regular. Intensity 1."
+      },
+      "claims": [
+        "LB01",
+        "LB02"
+      ]
+    },
+    {
+      "id": "ch08-s03",
+      "kind": "scene",
+      "setting": "the copper line at a grey dawn · the September reassessment, 3 September 2026",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "transitionIn": "lampChange",
+      "visual": "THIS SHOT: ten certainties retired; the refrain answered. The lamp changes to a grey pre-dawn: the window behind the line lightens from night blue to a pale cold grey, the first light since July. CAMERA: mid-shot on tag 8. On 'review' the narrator's hands flip the tag (paper snap) and the red-pencil hand enters from frame right and writes the dissenter on the back. On 'ten' it writes ten short red strokes in a row, one per retired earlier claim (the dead-end example from s02 among them), each with a dry scratch; the strokes are paced to finish as the refrain begins. On the answer, It held about eight weeks (beat refrain), the camera slowly pulls back to show the tag on the line and its thread above the Lifespan Rule, the knot card and the ten strokes both in frame; on 'held' the thread's end drops onto the rule at its measured lifespan, about eight weeks: past the unlabelled month tick, well short of 'a year' (a struck or ended thread always drops at its measured lifespan; it never runs off the end of the rule), and its dates ink beside the drop. On 'retired' (beat ledger) a thin ledger strip pins itself under the knot card, carrying the reassessment's own words on 'take as given' (Q118, verbatim fragment, credited to the reassessment, never to Cheng). The front is not struck yet (that comes in s08). TAG-LINE STAGING (meta staging.tagLine): THE COLD WINDOW: the workshop in winterBlue, the window wall frosted at L2 and the Window Calendar's dark August column seen through it; the line lower (52%), slack, frost on the posts.",
+      "lines": [
+        {
+          "id": "L0805",
+          "text": "On the third of September, an AI agent’s review retired ten earlier claims, that one among them. Its narrower replacement: a defined numeric subset can be compiled.",
+          "direction": "plain fact, no relish; 'ten' given weight; the second sentence a quiet correction, not a reversal: 'narrower' leaned on lightly",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0806",
+          "text": "It held about eight weeks.",
+          "direction": "plain, the refrain answered rather than chanted: the third question, how long it held, gets its number; let 'weeks' settle as the thread drops to the ruler"
+        }
+      ],
+      "beats": [
+        {
+          "id": "dawn",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "lamp change: grey pre-dawn light in the window"
+        },
+        {
+          "id": "flip",
+          "at": {
+            "line": "L0805",
+            "word": "review",
+            "edge": "start"
+          },
+          "what": "tag 8 flips; the red pencil writes the dissenter on the back"
+        },
+        {
+          "id": "strokes",
+          "at": {
+            "line": "L0805",
+            "word": "ten",
+            "edge": "start"
+          },
+          "what": "ten short red strokes, one per retired claim"
+        },
+        {
+          "id": "ledger",
+          "at": {
+            "line": "L0805",
+            "word": "retired",
+            "edge": "start"
+          },
+          "what": "a ledger strip pins under the knot card: the reassessment's words on 'take as given' (Q118)"
+        },
+        {
+          "id": "refrain",
+          "at": {
+            "line": "L0806",
+            "edge": "start"
+          },
+          "what": "pull back to the whole tag over the rule; knot card catches the light"
+        },
+        {
+          "id": "held",
+          "at": {
+            "line": "L0806",
+            "word": "held",
+            "edge": "start"
+          },
+          "what": "the thread's end drops onto the rule at about eight weeks"
+        }
+      ],
+      "cast": [
+        "narrator-hands",
+        "red-pencil-hand"
+      ],
+      "props": [
+        "copper line",
+        "tag 8 (flipped)",
+        "red pencil",
+        "Lifespan Rule",
+        "window at grey dawn"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "3 SEPTEMBER 2026",
+          "beat": "dawn"
+        },
+        {
+          "kind": "nameCard",
+          "text": "doubted by: the September reassessment, an agent-run review",
+          "beat": "flip"
+        },
+        {
+          "kind": "label",
+          "text": "10 earlier claims retired · dead end → a defined numeric subset",
+          "beat": "strokes"
+        },
+        {
+          "kind": "quote",
+          "text": "“passes yesterday's interpretation to tomorrow's agents as a constraint” — the reassessment",
+          "beat": "ledger"
+        },
+        {
+          "kind": "label",
+          "text": "8 July → 3 September",
+          "beat": "held"
+        }
+      ],
+      "music": {
+        "cue": "ch08-summer",
+        "note": "Device 4: 'flip' (paper-card snap) on the flip, then ten dry pencil scratches in rhythm, the only percussion. Under the refrain, the low note moves for the first time, one step down, and holds. The third detent stroke is saved for the strike in s08. Intensity 2."
+      },
+      "claims": [
+        "LB02",
+        "LB03",
+        "LB12",
+        "PJ21"
+      ]
+    },
+    {
+      "id": "ch08-s04",
+      "kind": "plate",
+      "setting": "a parchment plate · the learned interpreter's loss-scale test, from the 3 September reassessment · grey light",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 0.6,
+      "holdAfter": 3.0,
+      "transitionIn": "paperWipe",
+      "visual": "THIS SHOT: a result that should not have moved, moved. A parchment plate in cold grey light. At left a paper tally board of twenty pegs (twenty seeds), all dark: on 'nought' a small drawn card above it reads 0 / 20 (the earlier report is undated; nothing on the plate places it in July). At right a brass loss-scale dial with six detents: ×1, ×10, ×100, ×1,000, ×10,000, ×1,000,000. On 'Multiply' a hand-less crank turns the dial one detent at a time, and with each detent the tally board lights the real number of pegs for the two-adds task: 0, 0, 3, 4, 9, then all 20 at a million on 'Twenty out of twenty' (one dry click per detent). A small arrow points at the dial (multiplying every loss by a constant is maths-neutral: the optimiser scales each step to the slope's own size, so the factor should cancel). On 'A' (just before 'tiny safety constant') the cause inks in under the dial: the optimiser's tiny constant, epsilon, drawn as a grain of sand on a balance pan that outweighs a feather-light gradient; the reassessment's caution (the reversal is not proof the method scales) is part of the same label. CAMERA: locked on the plate.",
+      "lines": [
+        {
+          "id": "L0807",
+          "text": "One test, learning two additions, scored nought out of twenty. Multiply its error by a million, which should change nothing: twenty out of twenty. A tiny safety constant was swamping the slopes.",
+          "direction": "puzzle-and-reveal, unhurried; 'which should change nothing' plainly; a beat, then 'twenty out of twenty' with quiet astonishment; the cause as a solved riddle, no triumph"
+        }
+      ],
+      "beats": [
+        {
+          "id": "zero",
+          "at": {
+            "line": "L0807",
+            "word": "nought",
+            "edge": "start"
+          },
+          "what": "the twenty-peg tally, all dark; a small 0 / 20 card above it"
+        },
+        {
+          "id": "dial",
+          "at": {
+            "line": "L0807",
+            "word": "Multiply",
+            "edge": "start"
+          },
+          "what": "the loss-scale dial turns detent by detent; pegs light 0, 0, 3, 4, 9"
+        },
+        {
+          "id": "twenty",
+          "at": {
+            "line": "L0807",
+            "word": 20,
+            "edge": "start"
+          },
+          "what": "at a million, all 20 pegs light"
+        },
+        {
+          "id": "cause",
+          "at": {
+            "line": "L0807",
+            "word": 24,
+            "edge": "start"
+          },
+          "what": "the cause inks in: epsilon's grain of sand outweighing a feather-light gradient; the reassessment's caution beneath it"
+        }
+      ],
+      "props": [
+        "parchment plate",
+        "twenty-peg tally board",
+        "six-detent loss-scale dial",
+        "balance pan with a grain of sand and a feather"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "loss × 1 · 10 · 100 · 1,000 · 10,000 · 1,000,000  →  two adds: 0 · 0 · 3 · 4 · 9 · 20 of 20",
+          "beat": "dial"
+        },
+        {
+          "kind": "label",
+          "text": "Adam's ε = 10⁻⁸ swamped tiny slopes · not proof it scales",
+          "beat": "cause"
+        }
+      ],
+      "music": {
+        "cue": "ch08-summer",
+        "note": "One dry ratchet click per detent, otherwise near-silence; on the twenty, a single low pluck that does not resolve (a reversal, not a triumph). Intensity 2."
+      },
+      "claims": [
+        "LB04",
+        "LB05"
+      ]
+    },
+    {
+      "id": "ch08-s05",
+      "kind": "plate",
+      "setting": "a parchment plate · the trace compiler's checker, from the 3 September reassessment · grey light",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: the checker that shared the bug; the docs' warning lands where it bites. A parchment plate. At top, the tiny program typeset in a code face (beat 'code'), with x = 2 on a tag. Two paper tickets print below it, side by side: JavaScript's answer, 3, and the compiled program's answer, 4 (both named on the code card's single line; the voice does not say the numbers). Between them stands a paper checker with a dial gauge; on 'checker' its needle sits firmly on 0 mismatches. On 'skipped' (beat skip) the early return on the code card is ringed by a thin copper outline, and on the compiled side a small black ink blot lands over that same return. On 'so' (beat bug) the camera reveals the checker's back: inside it, a small copy of the compiled program's card carrying an identical black ink blot in the identical place (the checker's interpreter made the same mistake). The two blots are drawn as one stamp, the same shape and the same black, never red: the red pencil belongs to the doubter's hand and does not appear in this shot. On 'agree' (beat q038), as the narrator reads the docs' warning (Q038), a small pinned parchment plate inks in beside the checker, its edges overlapping, carrying only the fragment two evaluators agree and its attribution. CAMERA: locked; a small push to the checker's back on 'so', then a pull out to fit both plates. A short hold after the quotation.",
+      "lines": [
+        {
+          "id": "L0808",
+          "text": "In July, a checker for the lab's compiler reported zero mismatches. The compiled code skipped an early return, and so did the checker.",
+          "direction": "plain through the first sentence; a wry, almost rueful turn on 'and so did the checker'; no scorn",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0808a",
+          "text": "As the docs warn, “That the two evaluators agree doesn't show that a program does what the JavaScript it replaces did.”",
+          "direction": "level and unhurried, a quotation read as one: let it land as the film's honest warning, no underlining"
+        }
+      ],
+      "beats": [
+        {
+          "id": "code",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "the tiny program inks in, x = 2; tickets 3 (JavaScript) and 4 (compiled) print"
+        },
+        {
+          "id": "zero",
+          "at": {
+            "line": "L0808",
+            "word": "checker",
+            "edge": "start"
+          },
+          "what": "the checker's needle sits on 0 mismatches"
+        },
+        {
+          "id": "skip",
+          "at": {
+            "line": "L0808",
+            "word": "skipped",
+            "edge": "start"
+          },
+          "what": "the early return ringed on the code card; a black ink blot lands over it on the compiled side"
+        },
+        {
+          "id": "bug",
+          "at": {
+            "line": "L0808",
+            "word": 20,
+            "edge": "start"
+          },
+          "what": "push to the checker's back: an identical black ink blot inside it"
+        },
+        {
+          "id": "q038",
+          "at": {
+            "line": "L0808a",
+            "word": "agree",
+            "edge": "start"
+          },
+          "what": "Deep Dive I's plate slides in beside the checker"
+        }
+      ],
+      "props": [
+        "parchment plate",
+        "code card",
+        "two paper answer tickets (3, 4)",
+        "paper checker with a dial gauge",
+        "two identical black ink blots",
+        "Deep Dive I's docs plate"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "if (true) { return x + 1 } return x + 2  ·  x = 2  →  JavaScript 3 · compiled 4",
+          "beat": "code"
+        },
+        {
+          "kind": "quote",
+          "text": "“two evaluators agree” — the docs",
+          "beat": "q038"
+        }
+      ],
+      "music": {
+        "cue": "ch08-summer",
+        "note": "Two short tones a whole tone apart for the two tickets (the both-branches interval, unresolved); the checker's needle a single soft click. On the Deep Dive I plate's return, the both-branches motif's two lines enter together at half level, briefly, then fall away. Intensity 2."
+      },
+      "claims": [
+        "LB08",
+        "LB09"
+      ]
+    },
+    {
+      "id": "ch08-s06",
+      "kind": "plate",
+      "setting": "a parchment plate · multiply's gradient at zero, found and fixed on 3 September 2026 · first light",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 0,
+      "transitionIn": "lampChange",
+      "visual": "THIS SHOT: a gradient that depended on word order; fixed that morning. A SILENT PLATE: no narration; the score's first lift carries it. The first warm light of the chapter: the lamp changes from winterBlue to an early dawnGold. On a parchment plate, two small copies of the same multiplication are inked side by side: 3 · v on the left and v · 3 on the right, each at v = 0, each with a brass slope gauge (beat plate). Beat zero: the left gauge reads 0 while the right gauge reads 3. Beat corners: inside the left copy the multiply's two ramps (the hinged boards of Deep Dive I, in miniature) are drawn both sitting exactly on their corners at v = 0, the reason its slope came out 0. Beat circle: the red-pencil hand enters from frame right, draws one circle around the two gauges together and withdraws (the red pencil only writes, strikes or rests). Beat fixed: a small stamp presses onto the plate: both gauges now read 3, and a brass test counter clicks up to 274. CAMERA: locked; a slight push toward the counter at the end. The on-screen text carries every fact; nothing is spoken.",
+      "lines": [],
+      "beats": [
+        {
+          "id": "plate",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "lamp warms; 3 · v and v · 3 ink in side by side at v = 0"
+        },
+        {
+          "id": "zero",
+          "at": {
+            "shotTime": 1.4
+          },
+          "what": "left gauge reads 0, right gauge reads 3"
+        },
+        {
+          "id": "corners",
+          "at": {
+            "shotTime": 2.6
+          },
+          "what": "the left copy's two ramps shown sitting on their corners"
+        },
+        {
+          "id": "circle",
+          "at": {
+            "shotTime": 3.6
+          },
+          "what": "a red-pencil circle around both gauges"
+        },
+        {
+          "id": "fixed",
+          "at": {
+            "shotTime": 4.4
+          },
+          "what": "a stamp: both gauges read 3; the test counter clicks to 274"
+        }
+      ],
+      "props": [
+        "parchment plate",
+        "two brass slope gauges",
+        "red-pencil circle",
+        "a stamp",
+        "brass test counter"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "slope of 3·v at v = 0 → 0  ·  of v·3 → 3",
+          "beat": "zero"
+        },
+        {
+          "kind": "label",
+          "text": "both ramps on their corners",
+          "beat": "corners"
+        },
+        {
+          "kind": "label",
+          "text": "fixed that morning · 274 tests pass",
+          "beat": "fixed"
+        }
+      ],
+      "music": {
+        "cue": "ch08-summer",
+        "note": "No narration: the music carries the shot. The low note finally lifts: a warmer chord enters under the first light, still sparse. On the stamp, a firm wooden detent; the counter's clicks run up quickly and stop. The climb back begins here, earned by method. Intensity 2, rising to 3."
+      },
+      "claims": [
+        "DG28",
+        "LB12"
+      ],
+      "cast": [
+        "red-pencil-hand"
+      ],
+      "minDuration": 9
+    },
+    {
+      "id": "ch08-s07",
+      "kind": "scene",
+      "setting": "the two hands at one keyboard, from chapter three · the whole history to the pin · dawn",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: the film's one plain statement about tooling (bible §9), and its only mention of any lab's tools. The lamplit desk from ch03-s01's lit pane, now seen close in warm dawn: a logo-less laptop and two pairs of paper hands at one keyboard, Cheng's (cast author-hands, framed at the wrists) and, beside them, the second, paler hand (cast agent-hand), typing half a beat behind. No faces, no words of the agent's own, no logos, no model names. On 'commit' a plain label (with the exact counts, so the voice need not say them) inks across the lower third. On 'agent' the paler hand catches a faint cool rim; on 'Codex' nothing new is drawn (no third hand: it is a mention in a document, not a presence). On 'film' the camera pulls back slightly so the desk sits inside the frame of the copper line and tags, a reminder that the film is a made thing too. On 'process' both pairs of hands rest beside the keyboard at the same moment. Neutral light throughout: no hero lighting on either hand, no praise or blame in the image.",
+      "lines": [
+        {
+          "id": "L0810",
+          "text": "Every commit is Cheng Lou’s; most also credit a coding agent, Claude Code.",
+          "direction": "the plainest voice in the film: factual, level, no emphasis on any name",
+          "pauseAfter": 0.6,
+          "tts": {
+            "speed": 0.99
+          }
+        },
+        {
+          "id": "L0811",
+          "text": "The review also names an earlier OpenAI agent, Codex. This film was written with Claude.",
+          "direction": "same level register; 'This film was written with Claude' as simple disclosure, not a boast or an apology",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0812",
+          "text": "Mistakes and catches alike came from one process, under his direction.",
+          "direction": "fair and unhurried; the turn of the chapter; warm on 'under his direction'"
+        }
+      ],
+      "beats": [
+        {
+          "id": "hands",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "the two pairs of hands at one keyboard, in warm dawn"
+        },
+        {
+          "id": "commits",
+          "at": {
+            "line": "L0810",
+            "word": "commit",
+            "edge": "start"
+          },
+          "what": "the commit label inks across the lower third"
+        },
+        {
+          "id": "agent",
+          "at": {
+            "line": "L0810",
+            "word": "agent",
+            "edge": "start"
+          },
+          "what": "the paler hand catches a faint cool rim"
+        },
+        {
+          "id": "film",
+          "at": {
+            "line": "L0811",
+            "word": "film",
+            "edge": "start"
+          },
+          "what": "slight pull back: the desk framed by the copper line and its tags"
+        },
+        {
+          "id": "process",
+          "at": {
+            "line": "L0812",
+            "word": "process",
+            "edge": "start"
+          },
+          "what": "both pairs of hands rest beside the keyboard together"
+        }
+      ],
+      "cast": [
+        "author-hands",
+        "agent-hand"
+      ],
+      "props": [
+        "lamplit desk",
+        "logo-less laptop",
+        "copper line and tags (framing)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "825 commits · all authored by Cheng Lou · 756 also credit Claude Code · no model named",
+          "beat": "commits"
+        }
+      ],
+      "music": {
+        "cue": "ch08-summer",
+        "note": "Almost nothing: the warm chord from s06 held quietly, the typing as the only rhythm (soft paper key clicks, the second hand half a beat behind). No motif, so nothing reads as a verdict. Intensity 1."
+      },
+      "claims": [
+        "PJ08",
+        "PJ21",
+        "PJ22"
+      ]
+    },
+    {
+      "id": "ch08-s08",
+      "kind": "scene",
+      "setting": "the copper line and the Window Calendar · runtime questions decided, 14 September 2026 · morning",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.8,
+      "holdAfter": 3.4,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: decisions made, the lights come back on, and tag 8 hangs struck. CAMERA: begins on the desk, close: on 'three' three small paper question cards slide under Cheng's hands (cast author-hands, framed at the wrists) and on 'questions' each is stamped in turn with the same small mark, the option the review had recommended (shown, never said): an index read; one comparison helper; JS writes the springs (the label inks on the desk as the shot opens). Just after the line (beat relight) the camera rises out through the window and pulls back onto the Window Calendar in the morning light: September's column relights, its 58 panes coming on in a ripple from the bottom up (the first pane on 3 September). Just after the line (beat strike) the camera finds the copper line strung in front of the building: tag 8 hangs there, and the red-pencil hand enters from frame right and strikes its front through once (dry scratch, the detent's third stroke, resolving into a wooden drawer closing). Then (beat rule) the thread's drop, measured in s03 at about eight weeks (past the unlabelled month tick, well short of 'a year'), glints once. Hold. TAG-LINE STAGING (per-shot variant 'ch08-late', overriding meta staging.tagLine ch08 for this shot only): THE THAWING WINDOW: the same workshop in morning dawnGold, the frost on the window wall thawing from its edges inward, September's relit column of the Window Calendar seen through the clearing glass; the line at 52% but drawn a little tauter than in s02 and s03, the frost on the posts melting to beads.",
+      "lines": [
+        {
+          "id": "L0813",
+          "text": "In mid-September, he settled three questions.",
+          "direction": "lighter, morning in the voice; a small closing cadence on 'questions', then let the relit panes and the music carry the release"
+        }
+      ],
+      "beats": [
+        {
+          "id": "desk",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "the desk, close; the date and the three decisions' label ink in"
+        },
+        {
+          "id": "cards",
+          "at": {
+            "line": "L0813",
+            "word": "three",
+            "edge": "start"
+          },
+          "what": "three question cards slide under the hands"
+        },
+        {
+          "id": "stamp",
+          "at": {
+            "line": "L0813",
+            "word": "questions",
+            "edge": "start"
+          },
+          "what": "each card stamped in turn with the same mark"
+        },
+        {
+          "id": "relight",
+          "at": {
+            "line": "L0813",
+            "edge": "end",
+            "offset": 0.2
+          },
+          "what": "rise out to the Window Calendar: September's 58 panes relight bottom up"
+        },
+        {
+          "id": "strike",
+          "at": {
+            "line": "L0813",
+            "edge": "end",
+            "offset": 1.4
+          },
+          "what": "the red pencil strikes tag 8's front once (third detent stroke)"
+        },
+        {
+          "id": "rule",
+          "at": {
+            "line": "L0813",
+            "edge": "end",
+            "offset": 2.0
+          },
+          "what": "the thread's drop at about eight weeks (8 July to 3 September) glints on the Lifespan Rule"
+        }
+      ],
+      "cast": [
+        "author-hands",
+        "red-pencil-hand"
+      ],
+      "props": [
+        "three paper question cards",
+        "a small stamp",
+        "the Window Calendar",
+        "copper line",
+        "tag 8 (struck)",
+        "Lifespan Rule"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "14 SEPTEMBER 2026",
+          "beat": "desk"
+        },
+        {
+          "kind": "label",
+          "text": "an index read · one comparison helper · JS writes springs",
+          "beat": "desk"
+        },
+        {
+          "kind": "date",
+          "text": "SEPTEMBER 2026 · 58",
+          "beat": "relight"
+        }
+      ],
+      "music": {
+        "cue": "ch08-summer",
+        "note": "Three firm stamps as wooden knocks; then the September panes relight on a gentle rising figure, the first sense of motion since June. Device 4: the strike's dry pencil scratch resolving into a wooden drawer closing, the detent figure completed for a belief that ended. Then dawnGold warmth handing over to ch09's ember. Intensity 3."
+      },
+      "claims": [
+        "PJ23",
+        "PR22",
+        "SP20",
+        "PJ09",
+        "LB03"
+      ]
+    }
+  ]
+}

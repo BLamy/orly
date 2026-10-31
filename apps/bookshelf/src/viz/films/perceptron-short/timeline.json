@@ -1,0 +1,727 @@
+{
+ "slug": "perceptron-short",
+ "fps": 24,
+ "duration": 67.75,
+ "chapters": [
+  {
+   "id": "ch01",
+   "number": 1,
+   "title": "The Machine That Learned to See",
+   "start": 0,
+   "end": 67.75
+  }
+ ],
+ "shots": [
+  {
+   "id": "ch01-s01",
+   "chapter": "ch01",
+   "start": 0,
+   "end": 5.2083,
+   "lines": [
+    {
+     "id": "L0101",
+     "text": "Once, a machine learned to see.",
+     "start": 1.2,
+     "end": 3.185,
+     "words": [
+      {
+       "w": "Once",
+       "start": 1.2,
+       "end": 1.583
+      },
+      {
+       "w": "a",
+       "start": 1.63,
+       "end": 1.676
+      },
+      {
+       "w": "machine",
+       "start": 1.769,
+       "end": 2.257
+      },
+      {
+       "w": "learned",
+       "start": 2.315,
+       "end": 2.628
+      },
+      {
+       "w": "to",
+       "start": 2.651,
+       "end": 2.721
+      },
+      {
+       "w": "see",
+       "start": 2.791,
+       "end": 3.185
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "title": 0.8,
+    "place": 1.769
+   },
+   "transitionIn": "fadeBlack",
+   "transitionDur": 1.6,
+   "mood": "labGreen"
+  },
+  {
+   "id": "ch01-s02",
+   "chapter": "ch01",
+   "start": 5.2083,
+   "end": 23,
+   "lines": [
+    {
+     "id": "L0102",
+     "text": "Its eye: four hundred light cells, twenty by twenty.",
+     "start": 0.4,
+     "end": 4.7,
+     "words": [
+      {
+       "w": "Its",
+       "start": 0.4,
+       "end": 0.69
+      },
+      {
+       "w": "eye",
+       "start": 0.76,
+       "end": 1.178
+      },
+      {
+       "w": "four",
+       "start": 1.624,
+       "end": 1.902
+      },
+      {
+       "w": "hundred",
+       "start": 1.96,
+       "end": 2.274
+      },
+      {
+       "w": "light",
+       "start": 2.343,
+       "end": 2.61
+      },
+      {
+       "w": "cells",
+       "start": 2.657,
+       "end": 3.156
+      },
+      {
+       "w": "twenty",
+       "start": 3.481,
+       "end": 3.876
+      },
+      {
+       "w": "by",
+       "start": 3.934,
+       "end": 4.085
+      },
+      {
+       "w": "twenty",
+       "start": 4.178,
+       "end": 4.7
+      }
+     ]
+    },
+    {
+     "id": "L0103",
+     "text": "Behind it, wires, and racks of dials that motors turned.",
+     "start": 5.15,
+     "end": 10.05,
+     "words": [
+      {
+       "w": "Behind",
+       "start": 5.15,
+       "end": 5.626
+      },
+      {
+       "w": "it",
+       "start": 5.719,
+       "end": 5.905
+      },
+      {
+       "w": "wires",
+       "start": 6.265,
+       "end": 6.892
+      },
+      {
+       "w": "and",
+       "start": 6.938,
+       "end": 7.113
+      },
+      {
+       "w": "racks",
+       "start": 7.252,
+       "end": 7.693
+      },
+      {
+       "w": "of",
+       "start": 7.751,
+       "end": 7.844
+      },
+      {
+       "w": "dials",
+       "start": 7.948,
+       "end": 8.552
+      },
+      {
+       "w": "that",
+       "start": 8.622,
+       "end": 8.796
+      },
+      {
+       "w": "motors",
+       "start": 8.9,
+       "end": 9.4
+      },
+      {
+       "w": "turned",
+       "start": 9.469,
+       "end": 10.05
+      }
+     ]
+    },
+    {
+     "id": "L0104",
+     "text": "It was the Mark I Perceptron, the project of psychologist Frank Rosenblatt.",
+     "start": 10.85,
+     "end": 16.958,
+     "words": [
+      {
+       "w": "It",
+       "start": 10.85,
+       "end": 11.013
+      },
+      {
+       "w": "was",
+       "start": 11.059,
+       "end": 11.21
+      },
+      {
+       "w": "the",
+       "start": 11.268,
+       "end": 11.338
+      },
+      {
+       "w": "Mark",
+       "start": 11.408,
+       "end": 12.255
+      },
+      {
+       "w": "I",
+       "start": 11.408,
+       "end": 12.255
+      },
+      {
+       "w": "Perceptron",
+       "start": 12.325,
+       "end": 13.207
+      },
+      {
+       "w": "the",
+       "start": 13.649,
+       "end": 13.789
+      },
+      {
+       "w": "project",
+       "start": 13.847,
+       "end": 14.357
+      },
+      {
+       "w": "of",
+       "start": 14.415,
+       "end": 14.485
+      },
+      {
+       "w": "psychologist",
+       "start": 14.532,
+       "end": 15.484
+      },
+      {
+       "w": "Frank",
+       "start": 15.623,
+       "end": 15.994
+      },
+      {
+       "w": "Rosenblatt",
+       "start": 16.099,
+       "end": 16.958
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "eye": 0.76,
+    "wires": 6.265,
+    "dials": 8.9,
+    "name": 15.623
+   },
+   "transitionIn": "crossfade",
+   "transitionDur": 1,
+   "mood": "labGreen"
+  },
+  {
+   "id": "ch01-s03",
+   "chapter": "ch01",
+   "start": 23,
+   "end": 67.75,
+   "lines": [
+    {
+     "id": "L0105",
+     "text": "Nobody gave it the rule. Show it a shape; it guesses.",
+     "start": 0.45,
+     "end": 5.063,
+     "words": [
+      {
+       "w": "Nobody",
+       "start": 0.45,
+       "end": 0.891
+      },
+      {
+       "w": "gave",
+       "start": 0.949,
+       "end": 1.181
+      },
+      {
+       "w": "it",
+       "start": 1.228,
+       "end": 1.309
+      },
+      {
+       "w": "the",
+       "start": 1.344,
+       "end": 1.402
+      },
+      {
+       "w": "rule",
+       "start": 1.46,
+       "end": 1.878
+      },
+      {
+       "w": "Show",
+       "start": 2.986,
+       "end": 3.195
+      },
+      {
+       "w": "it",
+       "start": 3.253,
+       "end": 3.334
+      },
+      {
+       "w": "a",
+       "start": 3.381,
+       "end": 3.404
+      },
+      {
+       "w": "shape",
+       "start": 3.474,
+       "end": 3.926
+      },
+      {
+       "w": "it",
+       "start": 4.343,
+       "end": 4.483
+      },
+      {
+       "w": "guesses",
+       "start": 4.541,
+       "end": 5.063
+      }
+     ]
+    },
+    {
+     "id": "L0105b",
+     "text": "Each lit cell tugs the needle through the dials it feeds; the total decides.",
+     "start": 5.513,
+     "end": 11.175,
+     "words": [
+      {
+       "w": "Each",
+       "start": 5.513,
+       "end": 5.873
+      },
+      {
+       "w": "lit",
+       "start": 5.993,
+       "end": 6.26
+      },
+      {
+       "w": "cell",
+       "start": 6.341,
+       "end": 6.771
+      },
+      {
+       "w": "tugs",
+       "start": 6.891,
+       "end": 7.309
+      },
+      {
+       "w": "the",
+       "start": 7.39,
+       "end": 7.448
+      },
+      {
+       "w": "needle",
+       "start": 7.529,
+       "end": 7.878
+      },
+      {
+       "w": "through",
+       "start": 7.924,
+       "end": 8.226
+      },
+      {
+       "w": "the",
+       "start": 8.261,
+       "end": 8.319
+      },
+      {
+       "w": "dials",
+       "start": 8.4,
+       "end": 8.841
+      },
+      {
+       "w": "it",
+       "start": 8.899,
+       "end": 8.992
+      },
+      {
+       "w": "feeds",
+       "start": 9.062,
+       "end": 9.561
+      },
+      {
+       "w": "the",
+       "start": 9.898,
+       "end": 10.014
+      },
+      {
+       "w": "total",
+       "start": 10.072,
+       "end": 10.409
+      },
+      {
+       "w": "decides",
+       "start": 10.467,
+       "end": 11.175
+      }
+     ]
+    },
+    {
+     "id": "L0106",
+     "text": "When it guesses wrong, motors nudge the dials that had a say, a little, toward the right answer.",
+     "start": 11.625,
+     "end": 17.534,
+     "words": [
+      {
+       "w": "When",
+       "start": 11.625,
+       "end": 11.81
+      },
+      {
+       "w": "it",
+       "start": 11.857,
+       "end": 11.915
+      },
+      {
+       "w": "guesses",
+       "start": 11.973,
+       "end": 12.344
+      },
+      {
+       "w": "wrong",
+       "start": 12.391,
+       "end": 12.751
+      },
+      {
+       "w": "motors",
+       "start": 13.122,
+       "end": 13.54
+      },
+      {
+       "w": "nudge",
+       "start": 13.633,
+       "end": 13.981
+      },
+      {
+       "w": "the",
+       "start": 14.039,
+       "end": 14.109
+      },
+      {
+       "w": "dials",
+       "start": 14.167,
+       "end": 14.597
+      },
+      {
+       "w": "that",
+       "start": 14.643,
+       "end": 14.783
+      },
+      {
+       "w": "had",
+       "start": 14.829,
+       "end": 14.957
+      },
+      {
+       "w": "a",
+       "start": 15.003,
+       "end": 15.026
+      },
+      {
+       "w": "say",
+       "start": 15.108,
+       "end": 15.467
+      },
+      {
+       "w": "a",
+       "start": 15.839,
+       "end": 15.92
+      },
+      {
+       "w": "little",
+       "start": 16.002,
+       "end": 16.28
+      },
+      {
+       "w": "toward",
+       "start": 16.327,
+       "end": 16.663
+      },
+      {
+       "w": "the",
+       "start": 16.71,
+       "end": 16.768
+      },
+      {
+       "w": "right",
+       "start": 16.814,
+       "end": 17.046
+      },
+      {
+       "w": "answer",
+       "start": 17.104,
+       "end": 17.534
+      }
+     ]
+    },
+    {
+     "id": "L0107",
+     "text": "Wrong, and wrong again, and then, quite suddenly... right.",
+     "start": 18.484,
+     "end": 23.639,
+     "words": [
+      {
+       "w": "Wrong",
+       "start": 18.484,
+       "end": 18.867
+      },
+      {
+       "w": "and",
+       "start": 19.169,
+       "end": 19.332
+      },
+      {
+       "w": "wrong",
+       "start": 19.39,
+       "end": 19.552
+      },
+      {
+       "w": "again",
+       "start": 19.599,
+       "end": 20.04
+      },
+      {
+       "w": "and",
+       "start": 20.388,
+       "end": 20.551
+      },
+      {
+       "w": "then",
+       "start": 20.597,
+       "end": 20.853
+      },
+      {
+       "w": "quite",
+       "start": 21.305,
+       "end": 21.607
+      },
+      {
+       "w": "suddenly",
+       "start": 21.642,
+       "end": 22.176
+      },
+      {
+       "w": "right",
+       "start": 23.209,
+       "end": 23.639
+      }
+     ]
+    },
+    {
+     "id": "L0108",
+     "text": "It could learn only simple patterns. In 1969, Minsky and Papert showed just how simple; for years, interest faded. Its descendants, today's neural networks, still learn from mistakes.",
+     "start": 25.639,
+     "end": 41.789,
+     "words": [
+      {
+       "w": "It",
+       "start": 25.639,
+       "end": 25.801
+      },
+      {
+       "w": "could",
+       "start": 25.848,
+       "end": 26.01
+      },
+      {
+       "w": "learn",
+       "start": 26.08,
+       "end": 26.417
+      },
+      {
+       "w": "only",
+       "start": 26.544,
+       "end": 27.009
+      },
+      {
+       "w": "simple",
+       "start": 27.195,
+       "end": 27.694
+      },
+      {
+       "w": "patterns",
+       "start": 27.775,
+       "end": 28.437
+      },
+      {
+       "w": "In",
+       "start": 29.035,
+       "end": 29.198
+      },
+      {
+       "w": "1969",
+       "start": 29.244,
+       "end": 30.44
+      },
+      {
+       "w": "Minsky",
+       "start": 30.707,
+       "end": 31.206
+      },
+      {
+       "w": "and",
+       "start": 31.288,
+       "end": 31.427
+      },
+      {
+       "w": "Papert",
+       "start": 31.532,
+       "end": 31.984
+      },
+      {
+       "w": "showed",
+       "start": 32.182,
+       "end": 32.658
+      },
+      {
+       "w": "just",
+       "start": 32.82,
+       "end": 33.087
+      },
+      {
+       "w": "how",
+       "start": 33.157,
+       "end": 33.296
+      },
+      {
+       "w": "simple",
+       "start": 33.401,
+       "end": 33.935
+      },
+      {
+       "w": "for",
+       "start": 34.38,
+       "end": 34.543
+      },
+      {
+       "w": "years",
+       "start": 34.613,
+       "end": 35.1
+      },
+      {
+       "w": "interest",
+       "start": 35.356,
+       "end": 35.867
+      },
+      {
+       "w": "faded",
+       "start": 35.959,
+       "end": 36.447
+      },
+      {
+       "w": "Its",
+       "start": 36.947,
+       "end": 37.203
+      },
+      {
+       "w": "descendants",
+       "start": 37.261,
+       "end": 37.946
+      },
+      {
+       "w": "today's",
+       "start": 38.143,
+       "end": 38.654
+      },
+      {
+       "w": "neural",
+       "start": 38.747,
+       "end": 39.083
+      },
+      {
+       "w": "networks",
+       "start": 39.141,
+       "end": 39.792
+      },
+      {
+       "w": "still",
+       "start": 40.21,
+       "end": 40.511
+      },
+      {
+       "w": "learn",
+       "start": 40.593,
+       "end": 40.86
+      },
+      {
+       "w": "from",
+       "start": 40.918,
+       "end": 41.08
+      },
+      {
+       "w": "mistakes",
+       "start": 41.138,
+       "end": 41.789
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "shape": 3.474,
+    "tug": 6.891,
+    "sum": 10.072,
+    "nudge": 13.633,
+    "right": 23.209,
+    "limit": 27.195,
+    "minsky": 30.707,
+    "years": 34.613,
+    "descendants": 37.261
+   },
+   "transitionIn": "iris",
+   "transitionDur": 1.2,
+   "mood": "candleAmber"
+  }
+ ]
+}

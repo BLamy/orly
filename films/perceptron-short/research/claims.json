@@ -1,0 +1,159 @@
+[
+  {
+    "id": "mk1-builder",
+    "claim": "The Mark I Perceptron was built by psychologist Frank Rosenblatt's project at the Cornell Aeronautical Laboratory in Buffalo, New York.",
+    "date": "1957-1960",
+    "era": "1950s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Perceptron",
+      "https://americanhistory.si.edu/collections/object/nmah_334414"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "mk1-retina",
+    "claim": "Its 'eye' was a 20 by 20 grid of 400 photocells.",
+    "date": "1960",
+    "era": "1950s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Perceptron"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "mk1-weights",
+    "claim": "Its adjustable weights were potentiometers turned by electric motors during learning.",
+    "date": "1960",
+    "era": "1950s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Perceptron"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "mk1-rule",
+    "claim": "The perceptron learned by error correction: when it answered wrongly, its weights were nudged toward the right answer.",
+    "date": "1958",
+    "era": "1950s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Perceptron"
+    ],
+    "status": "confirmed"
+  },
+  {
+    "id": "mk1-sum",
+    "claim": "A perceptron forms its answer from a weighted sum of its inputs: the total is passed through a threshold (step) function, so a total past the threshold gives one answer and a total short of it the other.",
+    "date": "1958",
+    "era": "1950s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Perceptron",
+      "Rosenblatt, F. (1958). The perceptron: a probabilistic model for information storage and organization in the brain. Psychological Review 65(6): 386-408."
+    ],
+    "evidence": [
+      "Wikipedia 'Perceptron': \"the resulting weighted sum passed to a function that produces the output\"",
+      "Wikipedia 'Perceptron': \"an algorithm for learning a binary classifier called a threshold function\"",
+      "Wikipedia 'Perceptron': \"an artificial neuron using the Heaviside step function as the activation function\"",
+      "Wikipedia 'Perceptron': \"Rosenblatt described the details of the perceptron in a 1958 paper\""
+    ],
+    "status": "confirmed",
+    "verifiedAt": "2026-10-06",
+    "verifiedBy": "supervising director, review round 1 fixes (sources fetched and read)"
+  },
+  {
+    "id": "limit-linear",
+    "claim": "A single-layer perceptron can learn only linearly separable patterns; Marvin Minsky and Seymour Papert's 1969 book Perceptrons showed that such networks cannot compute functions like XOR, and the book is often thought to have contributed to a decline in neural-network research in the 1970s.",
+    "date": "1969",
+    "era": "1960s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Perceptron",
+      "https://en.wikipedia.org/wiki/Perceptrons_(book)"
+    ],
+    "evidence": [
+      "Wikipedia 'Perceptron': \"Single-layer perceptrons are only capable of learning linearly separable patterns.\"",
+      "Wikipedia 'Perceptron': \"showed that it was impossible for these classes of network to learn an XOR function.\"",
+      "Wikipedia 'Perceptrons (book)': \"a book written by Marvin Minsky and Seymour Papert and published in 1969\"",
+      "Wikipedia 'Perceptrons (book)': \"Perceptrons is often thought to have caused a decline in neural net research in the 1970s and early 1980s.\""
+    ],
+    "caveats": "Minsky and Papert already knew multilayer perceptrons could compute XOR; the limit is of the single-layer machine, not of neural networks in general. Say 'simple patterns' (fair plain-English for linearly separable), never 'proved neural networks useless'.",
+    "status": "confirmed",
+    "verifiedAt": "2026-10-06",
+    "verifiedBy": "supervising director, review round 1 fixes (sources fetched and read)"
+  },
+  {
+    "id": "lineage-mlp",
+    "claim": "Multilayer perceptrons grew out of efforts to improve on the single-layer perceptron and form the basis of deep learning; like the perceptron, they learn by adjusting connection weights according to the error between their output and the expected result.",
+    "date": "1958-present",
+    "era": "2020s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Multilayer_perceptron",
+      "https://en.wikipedia.org/wiki/Perceptron"
+    ],
+    "evidence": [
+      "Wikipedia 'Multilayer perceptron': \"MLPs grew out of an effort to improve on single-layer perceptrons, which could only be applied to linearly separable data.\"",
+      "Wikipedia 'Multilayer perceptron': \"Multilayer perceptrons form the basis of deep learning\"",
+      "Wikipedia 'Multilayer perceptron': \"Learning occurs in the perceptron by changing connection weights after each piece of data is processed\" ... \"based on the amount of error in the output compared to the expected result.\"",
+      "Wikipedia 'Multilayer perceptron': \"Learning in an MLP occurs by adjusting connections (weights) and biases to minimize a loss function\""
+    ],
+    "caveats": "Modern networks are trained by backpropagation, not by Rosenblatt's rule: the shared lineage is error-driven weight adjustment ('learn from mistakes'), not the identical algorithm.",
+    "status": "confirmed",
+    "verifiedAt": "2026-10-06",
+    "verifiedBy": "supervising director, review round 1 fixes (sources fetched and read)"
+  },
+  {
+    "id": "mk1-trained",
+    "claim": "The Mark I Perceptron was not programmed with the rule for telling shapes apart: it was a supervised learning machine, trained by being shown example images and learning by trial and error (its weights corrected when it answered wrongly).",
+    "date": "1958-1960",
+    "era": "1950s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Mark_I_Perceptron",
+      "https://en.wikipedia.org/wiki/Frank_Rosenblatt",
+      "https://en.wikipedia.org/wiki/Perceptron",
+      "https://news.cornell.edu/stories/2019/09/professors-perceptron-paved-way-ai-60-years-too-soon",
+      "Rosenblatt, F. (1960). Perceptron Simulation Experiments. Proceedings of the IRE 48(3): 301-309.",
+      "Rosenblatt, F. (1958). The perceptron: a probabilistic model for information storage and organization in the brain. Psychological Review 65(6): 386-408. doi:10.1037/h0042519 (read: https://papers.baulab.info/papers/also/Rosenblatt-1958.pdf)",
+      "https://americanhistory.si.edu/collections/object/nmah_334414 (read via Smithsonian Open Access API record edanmdm:nmah_334414)"
+    ],
+    "evidence": [
+      "Wikipedia 'Mark I Perceptron': \"The Mark I Perceptron was a pioneering supervised image classification learning system\"",
+      "Wikipedia 'Mark I Perceptron': \"it could distinguish between the letters X and E with 100% accuracy when trained with only 20 images (10 images of each letter)\" (citing Rosenblatt 1960)",
+      "Wikipedia 'Frank Rosenblatt': the Mark I Perceptron was \"essentially the first computer that could learn new skills by trial and error\"",
+      "Wikipedia 'Perceptron': \"The perceptron was intended to be a machine, rather than a program\"",
+      "Cornell Chronicle (2019): \"What Rosenblatt wanted was to show the machine objects and have it recognize those objects.\"",
+      "Cornell Chronicle (2019): \"The neural network makes a prediction ... and if it's wrong, tweaks itself\"",
+      "Rosenblatt 1958, p. 388: \"At birth, the construction of the most important networks is largely random, subject to a minimum number of genetic constraints.\"",
+      "Rosenblatt 1958, p. 389: \"Through exposure to a large sample of stimuli, those which are most 'similar' ... will tend to form pathways to the same sets of responding cells.\"",
+      "Rosenblatt 1958: \"In experiments intended to evaluate trial-and-error learning ... the experimenter does not force the system to respond in the desired fashion, but merely applies positive reinforcement when the response happens to be correct, and negative reinforcement when the response is wrong.\"",
+      "Rosenblatt 1958: \"with proper reinforcement it will be capable of trial-and-error learning\"",
+      "NMAH record nmah_334414: \"By the following year [1958], he and colleagues had constructed this device, the Mark I Perceptron, an electronic embodiment of the idea\" (the museum record names the device and its S/A/R units; it does not describe training, so it supports the machine's identity, not the training claim)"
+    ],
+    "caveats": "Supervised: after each guess the machine was given the right answer (that is the error signal); Rosenblatt 1958 calls it reinforcement when the response is right or wrong. Say 'nobody gave it the rule', never 'no one told it which shape was which'. The 1958 paper describes the perceptron model (the Mark I is its hardware embodiment, per NMAH); the Mark I's own example-trained results are from Wikipedia 'Mark I Perceptron' citing Rosenblatt 1960.",
+    "status": "confirmed",
+    "verifiedAt": "2026-10-06",
+    "verifiedBy": "script editor (round 2 line fixes) and supervising director (round 2 global: Rosenblatt 1958 PDF, NMAH open-access record, both Wikipedia pages re-fetched and read)"
+  },
+  {
+    "id": "mk1-patchboard",
+    "claim": "In the Mark I the 400 photocells (sensory units) were connected to its association units at random, according to a table of random numbers, through a plugboard (patch board) of cables; the potentiometer arrays that held the adaptive weights stood beside it.",
+    "date": "1960",
+    "era": "1950s",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Perceptron",
+      "https://en.wikipedia.org/wiki/Mark_I_Perceptron",
+      "https://americanhistory.si.edu/collections/object/nmah_334414 (read via Smithsonian Open Access API record edanmdm:nmah_334414)",
+      "Rosenblatt, F. (1958). Psychological Review 65(6): 386-408 (read: https://papers.baulab.info/papers/also/Rosenblatt-1958.pdf)"
+    ],
+    "evidence": [
+      "Wikipedia 'Perceptron': \"The S-units are connected to the A-units randomly (according to a table of random numbers) via a plugboard (see photo)\"",
+      "Wikipedia 'Perceptron': \"The main visible feature is the sensory-to-association plugboard, which sets different combinations of input features. To the right are arrays of potentiometers that implemented the adaptive weights.\"",
+      "Wikipedia 'Perceptron': \"The connection weights are fixed, not learned.\" (the plugboard connections; the learned weights are the potentiometers)",
+      "Wikipedia 'Mark I Perceptron': \"The connection between sensory units and association units were random.\"",
+      "NMAH record nmah_334414: \"A large plugboard is behind the two doors of the cabinet right of the S unit, connecting its circuits to those of the A unit. ... Right of these is the array of potentiometers that comprises the A unit. A mark atop it reads: PERCEPTRON. Right of this is the panel of the R unit, and rightmost a panel of meters.\"",
+      "Wikipedia 'Perceptron': \"Each S-unit can connect to up to 40 A-units.\" and \"Rosenblatt was adamant about the random connections\"",
+      "Rosenblatt 1958 (model): connections in the projection/association area \"are assumed to be random\""
+    ],
+    "caveats": "The plugboard wiring is fixed; only the potentiometer weights (association to response) are learned by the motors. NMAH describes the potentiometer array as the A unit, Wikipedia places the adjustable (motor-driven) weights on the A-to-R connections; the film says only 'dials that motors turned', which fits both. The machine also ended in a panel of meters (NMAH), which backs the lab set's meter-panel rack face.",
+    "status": "confirmed",
+    "verifiedAt": "2026-10-06",
+    "verifiedBy": "script editor (round 2 line fixes) and supervising director (round 2 global: NMAH open-access record, Wikipedia re-fetched and read)"
+  }
+]

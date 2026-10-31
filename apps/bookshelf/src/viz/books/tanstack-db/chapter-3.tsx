@@ -29,27 +29,32 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
 // ---------------------------------------------------------------------------
 // Layout — two skewed planes (overlay above, base below), composite list right,
-// transaction card left, server top-right.
+// transaction card left, server top-centre, read-rule card top-left.
 // ---------------------------------------------------------------------------
 
 const SK = 40; // parallelogram skew
 const OVER = { x: 330, y: 188, w: 380, h: 92 } as const;
-const BASE = { x: 330, y: 368, w: 380, h: 118 } as const;
+const BASE = { x: 330, y: 368, w: 380, h: 130 } as const;
 
 const planePts = (p: { x: number; y: number; w: number; h: number }): string =>
   `${p.x + SK},${p.y} ${p.x + p.w + SK},${p.y} ${p.x + p.w},${p.y + p.h} ${p.x},${p.y + p.h}`;
 
-// Six confirmed rows on the base plane (2 rows × 3 cols).
-const baseSlot = (i: number) => ({
-  x: BASE.x + 34 + (i % 3) * 118 + (i < 3 ? SK * 0.55 : SK * 0.18),
-  y: BASE.y + 18 + Math.floor(i / 3) * 50,
-});
+// The plane's right-hand skew at a given height, so rows sit on the slant.
+const slantAt = (y: number, p: { y: number; h: number }): number => SK * (1 - (y - p.y) / p.h);
+
+// Six confirmed rows on the base plane (2 rows × 3 cols), each row following the skew.
+const baseSlot = (i: number) => {
+  const y = BASE.y + 18 + Math.floor(i / 3) * 50;
+  return { x: BASE.x + 34 + (i % 3) * 118 + slantAt(y + 15, BASE), y };
+};
 // Overlay slots: the inserted row and the edited row.
 const OVER_INS = { x: OVER.x + 62 + SK * 0.4, y: OVER.y + 34 };
 const OVER_UPD = { x: OVER.x + 232 + SK * 0.4, y: OVER.y + 34 };
 
 const ROW_W = 96;
+const UPD_W = 132; // wide enough for "todo 2 · urgent" at 13px
 const ROW_H = 30;
+
 
 // The component's list (the flattened view).
 const LIST = { x: 856, y0: 200, w: 250, rowH: 38 } as const;
@@ -58,12 +63,26 @@ const LIST = { x: 856, y0: 200, w: 250, rowH: 38 } as const;
 const TX = { x: 64, y: 236, w: 190, h: 168 } as const;
 const TX_STATES = ['pending', 'persisting', 'completed', 'failed'] as const;
 
-const SERVER = { x: 1116, y: 96 } as const;
+// The read-rule card, top-left, clear of both planes.
+const RULE = { x: 64, y: 40, w: 320, h: 124 } as const;
 
-const CAM_PLANES: CameraState = { x: 560, y: 320, k: 1.28 };
-const CAM_TX: CameraState = { x: 350, y: 300, k: 1.42 };
-const CAM_LIST: CameraState = { x: 880, y: 300, k: 1.45 };
-const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.05 };
+// ServiceNode takes its centre point.
+const SERVER = { x: 690, y: 84 } as const;
+// Where the rejected write's round trip lands: the server's lower-right edge,
+// clear of the plane titles and the rollback label.
+const REJECT_AT = { x: SERVER.x + 66, y: SERVER.y + 44 } as const;
+
+// Cascade vignette: a key pill sits in the gap between two cards below the base plane.
+const CASC = { y: 542, h: 52, w: 210 } as const;
+const CASC_PILL = { x: 642, y: 508, w: 176, h: 22 } as const;
+
+// Every camera keeps the caption band (screen y > 632) clear of content, and
+// keeps every label on stage. Visible world width = 1280 / k; caption band
+// starts at world y = cy + 272 / k.
+const CAM_PLANES: CameraState = { x: 585, y: 290, k: 1.15 };
+const CAM_TX: CameraState = { x: 587, y: 300, k: 1.15 };
+const CAM_LIST: CameraState = { x: 722, y: 312, k: 1.4 };
+const CAM_WIDE: CameraState = { x: 718, y: 352, k: 1.15 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -152,8 +171,8 @@ export function buildScene(): Scene {
     text: 'So when you insert a todo, it lands in the top layer and nowhere else. The list re-renders in the same frame — the network has not even been dialed yet.',
   });
   tl.tween(insU, 1, { at: 24.6, dur: 0.8, ease: ease.pop });
-  // the read-rule card has served its purpose — fade it to a whisper
-  tl.tween(ruleU, 0.13, { at: 29.4, dur: 1.0, ease: ease.move });
+  // the read-rule card has served its purpose — clear it so it never sits under a later caption
+  tl.tween(ruleU, 0, { at: 29.4, dur: 1.0, ease: ease.move });
   tl.hold(30.5, 0.5);
 
   // — Beat 5 · the transaction —
@@ -274,14 +293,16 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
-function RowChip({ x, y, color, label, u, evaporate = 0 }: { x: number; y: number; color: string; label: string; u: number; evaporate?: number }) {
+function RowChip({ x, y, color, label, u, evaporate = 0, w = ROW_W }: { x: number; y: number; color: string; label: string; u: number; evaporate?: number; w?: number }) {
   if (u <= 0.01 || evaporate >= 1) return null;
   const scale = 1 + evaporate * 0.35;
   const o = u * (1 - evaporate);
+  const cx = x + w / 2;
+  const cy = y + ROW_H / 2;
   return (
-    <g opacity={o} transform={`translate(${x + ROW_W / 2}, ${y + ROW_H / 2}) scale(${scale}) translate(${-(x + ROW_W / 2)}, ${-(y + ROW_H / 2)})`}>
-      <rect x={x} y={y} width={ROW_W} height={ROW_H} rx={7} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
-      <text x={x + ROW_W / 2} y={y + ROW_H / 2 + 4} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily="ui-monospace, monospace">
+    <g opacity={o} transform={`translate(${cx}, ${cy}) scale(${scale}) translate(${-cx}, ${-cy})`}>
+      <rect x={x} y={y} width={w} height={ROW_H} rx={7} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
+      <text x={cx} y={cy + 4.5} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
         {label}
       </text>
     </g>
@@ -310,23 +331,23 @@ export function Render({ s }: { s: SceneState }) {
   const cascFailU = s.get(scene.cascFailU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  const dimAll = 1 - closeU * 0.92;
 
   // What the flattened list shows right now (pure function of channels):
-  // 6 synced rows, +1 inserted row (optimistic until flag flips), row 2 edited
-  // while updU is up and rbU hasn't peeled it.
+  // the 5 confirmed rows on the base plane, +1 inserted row (optimistic until
+  // flag flips), row 2 edited while updU is up and rbU hasn't peeled it.
   const insertedVisible = insU > 0.5;
   const editVisible = updU > 0.5 && rbU < 0.5;
 
   const listRows: Array<{ label: string; state: 'synced' | 'optimistic' | 'edited' }> = [];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     listRows.push({
       label: i === 1 && editVisible ? 'todo 2 · urgent' : `todo ${i + 1}`,
       state: i === 1 && editVisible ? 'edited' : 'synced',
     });
   }
   if (insertedVisible) {
-    listRows.push({ label: 'feed the beaver', state: flagU > 0.5 ? 'synced' : 'optimistic' });
+    listRows.push({ label: 'feed beaver', state: flagU > 0.5 ? 'synced' : 'optimistic' });
   }
 
   const txColor = (st: number): string => (st === 3 ? colors.NEGATIVE : st === 2 ? colors.POSITIVE : st === 1 ? colors.WARM : colors.ACCENT);
@@ -337,7 +358,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ---- server ---- */}
         <g opacity={dimAll}>
-          <ServiceNode x={SERVER.x} y={SERVER.y} kind="server" label="your backend" w={140} u={baseU} />
+          <ServiceNode x={SERVER.x} y={SERVER.y} kind="server" label="your backend" w={164} u={baseU} />
         </g>
 
         {/* ---- the two planes ---- */}
@@ -345,7 +366,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* base: synced truth */}
           <g opacity={baseU}>
             <polygon points={planePts(BASE)} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} opacity={0.92} />
-            <text x={BASE.x + 8} y={BASE.y + BASE.h + 22} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
+            {/* label sits inside the plane's bottom edge, clear of the caption band */}
+            <text x={BASE.x + 14} y={BASE.y + BASE.h - 12} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
               syncedData · SortedMap — confirmed by sync
             </text>
             {[0, 1, 2, 3, 4].map((i) => {
@@ -359,31 +381,36 @@ export function Render({ s }: { s: SceneState }) {
           {/* overlay: optimistic state */}
           <g opacity={overU}>
             <polygon points={planePts(OVER)} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} opacity={0.62} />
-            <text x={OVER.x + 8} y={OVER.y - 12} fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
-              optimisticUpserts · optimisticDeletes — not confirmed yet
+            <text x={OVER.x + 8} y={OVER.y - 12} fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
+              optimisticUpserts · optimisticDeletes
+            </text>
+            {/* the qualifier sits inside the plane's bottom edge, under the chips */}
+            <text x={OVER.x + 14} y={OVER.y + OVER.h - 10} fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
+              — not confirmed yet
             </text>
             {/* the inserted row, then its evaporation once synced data wins */}
             <RowChip x={OVER_INS.x} y={OVER_INS.y} color={colors.WARM} label="feed beaver" u={insU} evaporate={dropU} />
             {/* the doomed edit, peeled off on rollback */}
-            <RowChip x={OVER_UPD.x} y={OVER_UPD.y} color={colors.NEGATIVE} label="todo 2 · urgent" u={updU} evaporate={rbU} />
+            <RowChip x={OVER_UPD.x} y={OVER_UPD.y} color={colors.NEGATIVE} label="todo 2 · urgent" u={updU} evaporate={rbU} w={UPD_W} />
           </g>
 
           {/* look-through arrow between planes */}
           <g opacity={overU * 0.9}>
             <line x1={OVER.x + OVER.w + SK + 18} y1={OVER.y + 10} x2={BASE.x + BASE.w + 14} y2={BASE.y + 30} stroke={colors.MUTED} strokeWidth={1.2} strokeDasharray="5 5" />
-            <text x={OVER.x + OVER.w + SK + 24} y={(OVER.y + BASE.y) / 2 + 16} fill={colors.MUTED} fontSize={10.5} fontStyle="italic">
+            <text x={OVER.x + OVER.w + SK + 24} y={(OVER.y + BASE.y) / 2 + 16} fill={colors.MUTED} fontSize={12} fontStyle="italic">
               reads look
             </text>
-            <text x={OVER.x + OVER.w + SK + 24} y={(OVER.y + BASE.y) / 2 + 30} fill={colors.MUTED} fontSize={10.5} fontStyle="italic">
+            <text x={OVER.x + OVER.w + SK + 24} y={(OVER.y + BASE.y) / 2 + 32} fill={colors.MUTED} fontSize={12} fontStyle="italic">
               down through
             </text>
           </g>
         </g>
 
-        {/* ---- the read-rule card ---- */}
-        <g opacity={ruleU * dimAll}>
-          <rect x={64} y={452} width={330} height={116} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-          <text x={80} y={478} fill={colors.TEXT} fontSize={12.5}>
+        {/* ---- the read-rule card (top-left, clear of the planes) ---- */}
+        {/* once the insert lands the rule has been applied, so the card recedes behind the picture */}
+        <g opacity={ruleU * dimAll * (1 - insU * 0.85)}>
+          <rect x={RULE.x} y={RULE.y} width={RULE.w} height={RULE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+          <text x={RULE.x + 16} y={RULE.y + 26} fill={colors.TEXT} fontSize={14}>
             the read rule, top to bottom
           </text>
           {[
@@ -392,8 +419,8 @@ export function Render({ s }: { s: SceneState }) {
             ['otherwise', 'the synced row below', colors.ACCENT],
           ].map(([q, a, c], i) => (
             <g key={i}>
-              <circle cx={92} cy={498 + i * 22} r={3.4} fill={c as string} />
-              <text x={106} y={502 + i * 22} fill={colors.MUTED} fontSize={11.5}>
+              <circle cx={RULE.x + 28} cy={RULE.y + 52 + i * 24} r={3.6} fill={c as string} />
+              <text x={RULE.x + 42} y={RULE.y + 56 + i * 24} fill={colors.MUTED} fontSize={13}>
                 {q} <tspan fill={colors.TEXT}>{a}</tspan>
               </text>
             </g>
@@ -401,12 +428,13 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---- transaction card 1 (the insert) ---- */}
-        <g opacity={txU * dimAll}>
+        {/* the completed transaction fades as the swap flips the row to synced, so the list gets the frame */}
+        <g opacity={txU * dimAll * (1 - flagU)}>
           <rect x={TX.x} y={TX.y} width={TX.w} height={TX.h} rx={12} fill={colors.PANEL} stroke={txColor(txState)} strokeWidth={1.5} />
-          <text x={TX.x + 14} y={TX.y + 26} fill={colors.TEXT} fontSize={13}>
+          <text x={TX.x + 14} y={TX.y + 26} fill={colors.TEXT} fontSize={14}>
             the transaction
           </text>
-          <text x={TX.x + 14} y={TX.y + 44} fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={TX.x + 14} y={TX.y + 46} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             mutationFn · onInsert
           </text>
           {TX_STATES.map((st, i) => {
@@ -416,8 +444,8 @@ export function Render({ s }: { s: SceneState }) {
             if (skip && !active) return null;
             return (
               <g key={st}>
-                <circle cx={TX.x + 26} cy={TX.y + 68 + i * 24} r={5} fill={active ? txColor(i === 3 ? 3 : i) : 'none'} stroke={passed || active ? txColor(i === 3 ? 3 : i) : colors.GRID} strokeWidth={1.4} />
-                <text x={TX.x + 42} y={TX.y + 72 + i * 24} fill={active ? colors.TEXT : colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                <circle cx={TX.x + 26} cy={TX.y + 70 + i * 24} r={5} fill={active ? txColor(i === 3 ? 3 : i) : 'none'} stroke={passed || active ? txColor(i === 3 ? 3 : i) : colors.GRID} strokeWidth={1.4} />
+                <text x={TX.x + 42} y={TX.y + 74 + i * 24} fill={active ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
                   {st}
                 </text>
               </g>
@@ -429,8 +457,8 @@ export function Render({ s }: { s: SceneState }) {
         {reqU > 0 && reqU < 1 && (
           <RequestFlow
             path={[
-              { x: TX.x + TX.w, y: TX.y + 40 },
-              { x: SERVER.x - 70, y: SERVER.y + 10 },
+              { x: TX.x + TX.w / 2, y: TX.y },
+              { x: SERVER.x - 120, y: SERVER.y + 14 },
             ]}
             u={reqU}
             roundTrip
@@ -444,8 +472,8 @@ export function Render({ s }: { s: SceneState }) {
         {req2U > 0 && req2U < 1 && (
           <RequestFlow
             path={[
-              { x: OVER_UPD.x + ROW_W, y: OVER_UPD.y - 10 },
-              { x: SERVER.x - 70, y: SERVER.y + 24 },
+              { x: OVER_UPD.x + UPD_W, y: OVER_UPD.y + ROW_H / 2 },
+              REJECT_AT,
             ]}
             u={req2U}
             roundTrip
@@ -457,14 +485,14 @@ export function Render({ s }: { s: SceneState }) {
         )}
         {failU > 0.02 && (
           <g opacity={failU}>
-            <circle cx={SERVER.x - 84} cy={SERVER.y + 24} r={13} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
-            <text x={SERVER.x - 84} y={SERVER.y + 29} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
+            <circle cx={REJECT_AT.x} cy={REJECT_AT.y} r={13} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={2} />
+            <text x={REJECT_AT.x} y={REJECT_AT.y + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
               ✕
             </text>
           </g>
         )}
         {rbU > 0.02 && rbU < 0.98 && (
-          <text x={OVER.x + OVER.w - 40} y={OVER.y - 34} textAnchor="end" fill={colors.NEGATIVE} fontSize={11} fontFamily="ui-monospace, monospace" opacity={1 - rbU * 0.6}>
+          <text x={OVER.x + 8} y={OVER.y - 34} fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={1 - rbU * 0.6}>
             rollback → recomputeOptimisticState
           </text>
         )}
@@ -474,7 +502,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={LIST.x} y={LIST.y0 - 34} fill={colors.TEXT} fontSize={14}>
             what the screen sees
           </text>
-          <text x={LIST.x} y={LIST.y0 - 14} fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <text x={LIST.x} y={LIST.y0 - 14} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             useLiveQuery — the flattened view
           </text>
           {listRows.map((r, i) => {
@@ -482,16 +510,16 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i}>
                 <rect x={LIST.x} y={LIST.y0 + i * LIST.rowH} width={LIST.w} height={LIST.rowH - 8} rx={7} fill={colors.PANEL} stroke={c} strokeWidth={r.state === 'synced' ? 1 : 1.6} />
-                <text x={LIST.x + 14} y={LIST.y0 + i * LIST.rowH + 19} fill={colors.TEXT} fontSize={12}>
+                <text x={LIST.x + 14} y={LIST.y0 + i * LIST.rowH + 19} fill={colors.TEXT} fontSize={14}>
                   {r.label}
                 </text>
                 {r.state === 'optimistic' && (
-                  <text x={LIST.x + LIST.w - 12} y={LIST.y0 + i * LIST.rowH + 19} textAnchor="end" fill={colors.WARM} fontSize={9.5} fontFamily="ui-monospace, monospace">
+                  <text x={LIST.x + LIST.w - 12} y={LIST.y0 + i * LIST.rowH + 19} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                     $synced: false
                   </text>
                 )}
                 {i === listRows.length - 1 && insertedVisible && flagU > 0.5 && (
-                  <text x={LIST.x + LIST.w - 12} y={LIST.y0 + i * LIST.rowH + 19} textAnchor="end" fill={colors.POSITIVE} fontSize={9.5} fontFamily="ui-monospace, monospace" opacity={flagU}>
+                  <text x={LIST.x + LIST.w - 12} y={LIST.y0 + i * LIST.rowH + 19} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={flagU}>
                     $synced: true
                   </text>
                 )}
@@ -500,33 +528,35 @@ export function Render({ s }: { s: SceneState }) {
           })}
         </g>
 
-        {/* ---- the cascade vignette ---- */}
+        {/* ---- the cascade vignette (below the base plane, above the caption band) ---- */}
         <g opacity={cascU * dimAll}>
           {[0, 1].map((i) => {
             const x = 505 + i * 240;
             const failed = cascFailU > 0.5;
             return (
               <g key={i}>
-                <rect x={x} y={506} width={210} height={58} rx={10} fill={colors.PANEL} stroke={failed ? colors.NEGATIVE : colors.WARM} strokeWidth={1.4} />
-                <text x={x + 14} y={528} fill={colors.TEXT} fontSize={11.5}>
+                <rect x={x} y={CASC.y} width={CASC.w} height={CASC.h} rx={10} fill={colors.PANEL} stroke={failed ? colors.NEGATIVE : colors.WARM} strokeWidth={1.4} />
+                <text x={x + 14} y={CASC.y + 21} fill={colors.TEXT} fontSize={13}>
                   {i === 0 ? 'transaction A · update' : 'transaction B · delete'}
                 </text>
-                <text x={x + 14} y={548} fill={failed ? colors.NEGATIVE : colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+                <text x={x + 14} y={CASC.y + 40} fill={failed ? colors.NEGATIVE : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                   {failed ? 'failed (cascade)' : 'pending'}
                 </text>
               </g>
             );
           })}
-          <rect x={648} y={470} width={164} height={24} rx={12} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
-          <text x={730} y={486} textAnchor="middle" fill={colors.SECONDARY} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <rect x={CASC_PILL.x} y={CASC_PILL.y} width={CASC_PILL.w} height={CASC_PILL.h} rx={11} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
+          <text x={CASC_PILL.x + CASC_PILL.w / 2} y={CASC_PILL.y + 15} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
             KEY::todos/3 — shared
           </text>
-          <line x1={640} y1={494} x2={610} y2={506} stroke={colors.SECONDARY} strokeWidth={1.1} />
-          <line x1={790} y1={494} x2={850} y2={506} stroke={colors.SECONDARY} strokeWidth={1.1} />
+          <line x1={CASC_PILL.x + 18} y1={CASC_PILL.y + CASC_PILL.h} x2={610} y2={CASC.y} stroke={colors.SECONDARY} strokeWidth={1.1} />
+          <line x1={CASC_PILL.x + CASC_PILL.w - 18} y1={CASC_PILL.y + CASC_PILL.h} x2={850} y2={CASC.y} stroke={colors.SECONDARY} strokeWidth={1.1} />
         </g>
 
         {/* ---- quiet closing panel ---- */}
         <g opacity={closeU}>
+          {/* solid under the panel, so no faded plane shows through the closing text */}
+          <rect x={310} y={210} width={660} height={240} rx={16} fill={colors.BG} />
           <rect x={310} y={210} width={660} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
           <text x={640} y={258} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             the interface never waits
@@ -540,7 +570,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
             confirmed rows sink into synced truth · rejected rows vanish
           </text>
-          <text x={640} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             pending → persisting → completed | failed
           </text>
         </g>

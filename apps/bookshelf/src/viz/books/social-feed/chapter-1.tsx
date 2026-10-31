@@ -80,9 +80,12 @@ const R_RATE = 100000;
 
 // camera marks
 const CAM_CARD: CameraState = { x: 320, y: 235, k: 1.5 };
-const CAM_CROWD: CameraState = { x: 850, y: 340, k: 1.12 };
+// The crowd push keeps the card, the reads counter and the field all in frame.
+const CAM_CROWD: CameraState = { x: 660, y: 360, k: 1.04 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_BARS: CameraState = { x: 340, y: 390, k: 1.3 };
+// The skew: the card, its reads count, and the full read bar (base clears the caption band).
+const CAM_SKEW: CameraState = { x: 300, y: 392, k: 1.35 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -182,7 +185,7 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'And averages hide the skew. One tweet from a big account is read thousands, even millions of times. It was still written once.',
   });
-  tl.tween(cam, CAM_CARD, { at: 36.6, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_SKEW, { at: 36.6, dur: 1.5, ease: ease.move });
   tl.tween(cardN, 1200000, { at: 37.4, dur: 5.4, ease: ease.move });
   tl.hold(43.4, 0.7);
 
@@ -221,6 +224,8 @@ function computeCrowd(s: SceneState) {
   const crowdU = s.get(scene.crowdU);
   const tide = s.get(scene.tide);
   const dim = 1 - 0.88 * s.get(scene.dimU);
+  // the bars take the frame: the crowd steps back so the two bars read first
+  const quiet = 1 - 0.6 * s.get(scene.barU);
   return READERS.map((m, k) => {
     const appear = clamp01(crowdU * 1.6 - (k / READERS.length) * 0.6);
     const lit = clamp01((tide - m.litAt) * 6);
@@ -228,7 +233,7 @@ function computeCrowd(s: SceneState) {
       x: m.x,
       y: m.y,
       r: 2.2 + 2.2 * lit,
-      alpha: appear * (0.16 + 0.7 * lit) * dim,
+      alpha: appear * (0.16 + 0.7 * lit) * dim * quiet,
       color: lit > 0.03 ? colors.ACCENT : colors.MUTED,
     };
   });
@@ -246,14 +251,14 @@ function TweetCard({ u, reads, dim }: { u: number; reads: number; dim: number })
       <text x={CARD.x + 58} y={CARD.y + 32} fill={colors.TEXT} fontSize={15} fontWeight={600}>
         user_id 123
       </text>
-      <text x={CARD.x + 58} y={CARD.y + 50} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+      <text x={CARD.x + 58} y={CARD.y + 50} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
         tweet_id 987
       </text>
       <text x={CARD.x + 24} y={CARD.y + 86} fill={colors.TEXT} fontSize={19}>
         “hello world!”
       </text>
       {reads > 0 && (
-        <text x={CARD.x + CARD.w - 18} y={CARD.y + CARD.h - 14} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
+        <text x={CARD.x + CARD.w - 18} y={CARD.y + CARD.h - 14} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
           reads: {fmt(reads)}
         </text>
       )}
@@ -278,7 +283,8 @@ export function Render({ s }: { s: SceneState }) {
 
   const wH = BARS.maxH * (W_RATE / R_RATE) * barU;
   const rH = BARS.maxH * barU;
-  const faded = 1 - 0.85 * dimU;
+  // the closing panel clears the card, the write trickle and the sparks off the stage
+  const faded = (1 - 0.85 * dimU) * (1 - lawU);
 
   return (
     <>
@@ -287,7 +293,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* the author — one person, one write */}
         <g opacity={cardU * faded}>
           <circle cx={AUTHOR.x} cy={AUTHOR.y} r={11} fill={colors.SECONDARY} />
-          <text x={AUTHOR.x} y={AUTHOR.y + 30} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <text x={AUTHOR.x} y={AUTHOR.y + 30} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             author
           </text>
         </g>
@@ -307,10 +313,11 @@ export function Render({ s }: { s: SceneState }) {
             />
           ))}
 
-        <TweetCard u={cardU} reads={cardN} dim={dimU} />
+        <TweetCard u={cardU * (1 - lawU)} reads={cardN} dim={dimU} />
 
         {/* the crowd of readers */}
-        <g opacity={crowdU * faded}>
+        {/* hidden once the bars take the frame: the camera has pushed it off-stage */}
+        <g opacity={crowdU * faded * (1 - barU)}>
           <text x={(FIELD.x0 + FIELD.x1) / 2} y={FIELD.y0 - 20} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             the readers — every dot, a timeline request
           </text>
@@ -337,13 +344,14 @@ export function Render({ s }: { s: SceneState }) {
           })}
 
         {/* the two rate counters + bars */}
-        <g opacity={faded}>
+        {/* the counters and bars clear out entirely behind the closing panel */}
+        <g opacity={faded * (1 - lawU)}>
           {wN > 0 && (
             <g>
               <text x={BARS.wX + BARS.w / 2} y={BARS.baseY - BARS.maxH - 44} textAnchor="middle" fill={colors.SECONDARY} fontSize={20} fontWeight={700} fontFamily="ui-monospace, monospace">
                 {fmt(wN)}
               </text>
-              <text x={BARS.wX + BARS.w / 2} y={BARS.baseY - BARS.maxH - 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={BARS.wX + BARS.w / 2} y={BARS.baseY - BARS.maxH - 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 writes / s
               </text>
             </g>
@@ -353,7 +361,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={BARS.rX + BARS.w / 2} y={BARS.baseY - BARS.maxH - 44} textAnchor="middle" fill={colors.ACCENT} fontSize={20} fontWeight={700} fontFamily="ui-monospace, monospace">
                 {fmt(rN)}
               </text>
-              <text x={BARS.rX + BARS.w / 2} y={BARS.baseY - BARS.maxH - 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={BARS.rX + BARS.w / 2} y={BARS.baseY - BARS.maxH - 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 reads / s
               </text>
             </g>
@@ -363,9 +371,10 @@ export function Render({ s }: { s: SceneState }) {
               <line x1={BARS.wX - 26} y1={BARS.baseY} x2={BARS.rX + BARS.w + 26} y2={BARS.baseY} stroke={colors.GRID} strokeWidth={1.5} />
               <rect x={BARS.wX} y={BARS.baseY - wH} width={BARS.w} height={Math.max(wH, 0.01)} rx={4} fill={colors.SECONDARY} opacity={0.85} />
               <rect x={BARS.rX} y={BARS.baseY - rH} width={BARS.w} height={Math.max(rH, 0.01)} rx={4} fill={colors.ACCENT} opacity={0.85} />
+              {/* the ratio badge sits beside the read bar's top, clear of the reads/s label */}
               <g opacity={clamp01(barU * 2 - 1)}>
-                <rect x={BARS.rX + BARS.w / 2 - 32} y={BARS.baseY - rH - 4 - 24} width={64} height={22} rx={11} fill={colors.PANEL} stroke={colors.WARM} />
-                <text x={BARS.rX + BARS.w / 2} y={BARS.baseY - rH - 12} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700}>
+                <rect x={BARS.rX + BARS.w + 10} y={BARS.baseY - rH + 4} width={56} height={22} rx={11} fill={colors.PANEL} stroke={colors.WARM} />
+                <text x={BARS.rX + BARS.w + 38} y={BARS.baseY - rH + 19} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
                   ×17
                 </text>
               </g>

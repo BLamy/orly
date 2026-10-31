@@ -1,0 +1,119 @@
+{
+  "reviewer": "art-director",
+  "round": 6,
+  "lens": "visual direction: specific, ambitious, drawable silhouette ideas that teach; moods, staging, transitions, teaching machines; kit feasibility",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8.5,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8.5,
+    "visual": 7.5,
+    "voice": 7.5
+  },
+  "critical": [
+    "THE ROUND-5 RUNTIME SQUEEZE BROKE THE FILM'S RECURRING PAYOFFS. Post-narration beats were compressed by 30% and holds were trimmed, so the visual text now describes rituals the fields no longer leave room for. These are measured at 140 wpm from the shot fields, using generator/film/script.mjs's own timing model. (a) X-RAY RITUAL. ch02-s08: band 1 lights at end+0.4, BEFORE the column fades up at end+1.0, and fades at +2.6, so it shows for about 2 s against the 3.5 s written. ch07-s06: the box is up at +2.12 and the clue pins land 'as the X-ray fades' at +3.52, so band 4 lights 'slowly and unmistakably' for about 1.4 s. ch10-s14: the ghost-slot teaser lands at 17.4 s of a 19.2 s shot, leaving 1.8 s for a 2 s teaser, the crossfade to the study, the band-5 X-ray beat (which has no beat at all) and the C3-d pin; band 5 is effectively deleted. ch11-s03: the pull-back and band 6 get about 2.4 s against the 5 s written. ch12-s07, the film's anatomical payoff: seven bands at 0.55 s each. (b) CANDLE-OUTS. ch09-s03: the paper wipe home, the Coulom pin glint and the Go candle snuffed all start at end+1.14 in a shot that ends at +2.0, about 0.9 s for a bar the finale counts. ch13-s06: the reflection device that all of ch14 depends on starts at 7.3 s of an 8.1 s shot. Round 5 asked for minDuration 12, and the field went DOWN to 8.1, so Cyc's 39-year death (the tallest bar on the shelf) gets 2.5 s. ch05-s04: the sterile candle goes out at 36.4 s of 38.4 s, and the family trees (end+1.2) are cued before the four-case XOR check (0.8 s each from 'solved') can finish. (c) ch09-s05: the 'slow lateral truck' carries the hands along all seven slots in 1.8 s (+0 to +1.84), which is a whip pan. (d) ch15-s09: STATUS: OPEN, the film's one saturated accent, is stamped at end+0.5 and the lamp clicks off at +1.9, so it shows for 1.4 s. FIX, field by field: ch02-s08 column at end+0.3, band 1 at +0.8, fade at +3.3, holdAfter 3.4. ch07-s06 xray at +2.1, clue at +5.1, holdAfter 6.5. Move ch10-s14's X-ray (band 5) and the C3-d pin into ch11-s01's lead-in (leadIn 4.0, CAMERA: X-RAY then BOARD), and give ch10-s14 holdAfter 2.0 for the ghost slot. ch11-s03 holdAfter 3.5. ch12-s07 0.8 s per band, shears at 5.9 s, leadIn 6.4. ch09-s03 candleOut beats at wipe +0.9, glint +1.8, snuff +2.5, with holdAfter 4.0. ch13-s06 minDuration 12, cyc at 1.4–4.4, reflect at 8.2, shelf at 9.0. ch05-s04 L0509 pauseAfter 4.4, family at end+2.8, features and quote at +3.3, holdAfter 2.0. ch09-s05 shadowSlip at +2.4, slipPinned at +3.0, draught at +4.6, holdAfter 5.5. ch15-s09 L1518 pauseAfter 3.6, lamp-off at +3.0. Then strip every seconds figure from visual text (e.g. 'holdAfter 8.0', 'leadIn 5.5', 'about 4.5 seconds'), or regenerate those figures from the fields. Shot authors read the visual, and today it contradicts the clock in at least 20 shots.",
+    "THE READING-TIME GATE IS PASSING TEXT THAT LEAVES THE FRAME. script.mjs measures every on-screen item from its beat to the END OF THE SHOT, but many shots carry a label to a new location mid-shot, so the gate reports 0 warnings while viewers lose the text. Measured to the camera's exit: ch03-s06 'Love. Hope. Despair.' card (70 characters, 7.3 s needed) gets about 1.6 s before the pan to the Wall at end+1.21. ch05-s10 'still argued…' (81 characters, 8.3 s) gets about 1.8 s before the cut to the study on 'worked'. ch08-s13b 'speech went first…' tag (70 characters, 7.3 s) gets about 1.4 s before the tilt on 'choose'. ch11-s01 PRE-TRAINING coat tag (53 characters, 5.9 s) is stamped on 'recut', 0.4 s before the push through the window on 'Read'. ch11-s08 Marcus quote (about 60 characters, 6.5 s) gets 4.2 s before the cut to the board. ch02-s08 frog-paper label (84 characters, 8.5 s) gets about 6.2 s before the reverse flame push. ch12-s08 has four date stamps plus four captions (about 135 characters, 12.8 s) in about 5.6 s before the cut to the study. ch15-s10 gives each SOURCES page 4.3 s (beats at 21.5 and 25.8) for about nine quotations, and the disclosure card 11.5 s against 15.7 s needed. FIX, mostly at zero runtime cost: ch03-s06 cut the card to 'Love. Hope. Despair. — Rosenblatt' (about 33 characters), pan at end+4.4, holdAfter 9.5. ch05-s10 cue the label on 'always' and cut it to 'still argued · a 2023 reply claims to meet it'. ch08-s13b cue the tag on 'fiddly-nets' and cut it to 'speech first: Android voice search, July 2012'. ch11-s01 move 'library' to edge end +2.0 and 'machines' to +3.5, and cut the tag to 'PRE-TRAINING · READ EVERYTHING FIRST'. ch11-s08 move clueCard to end+6.0 (the 6.3 s tail already allows it). ch02-s08 cut the label to 'Lettvin, Maturana, McCulloch & Pitts · 1959'. ch12-s08 drop the four captions and let the date stamps plus prop lettering on each window carry them (CODE RED on the corridor sign, the ledger line, the META tag, two equal lanterns), or raise L1219 pauseAfter to 6.5. ch15-s10: Turing 11 s, disclosure 16 s, and ONE card pointing to the published sources list (5 s) in place of two unreadable pages. TOOLING: add an optional 'until' beat id to onScreenText and have script.mjs measure to it, so this class of failure is caught.",
+    "CHAPTER TITLES, FLAGGED FOR THE FOURTH ROUND. The index-tab device exists only at ch02-s01, ch03-s01, ch04-s01 and ch09-s01. Six chapters have no title on screen at all: ch07 'Two Accomplices', ch11, ch12, ch13, ch14 and ch15 'Case Status: Open'. Four use four different devices: ch05-s01 fades in window light, ch06-s01 is a card over black, ch08-s01 floats over the board, and ch10-s01 sets mid-line on 'read' over the candle reveal. The clue count and the accomplice count are the film's spine and the viewer's map through a 35-minute film, and they vanish from the screen after Clue Three. FIX: paste ch02-s01's CHAPTER INDEX TAB sentence word for word into the first shot of ch05, ch06, ch07, ch08, ch10, ch11, ch12, ch13, ch14 and ch15, each with an indexTab beat at shotTime 0.1 and a 'title' OST item. The DEEP DIVE chapters may add 'DEEP DIVE ·' on the tab. Where the opening shot's lead-in is under 2.6 s (ch07-s01, ch11-s01, ch13-s01, ch15-s01), let the tab ride over the first line, as ch02-s01's does. Delete the other four title devices.",
+    "NET RUNTIME. The script measures 35.0 min at 140 wpm (3,542 spoken words), against a 32-minute target and the 35.2-minute gate. The fixes above that buy time add about 30 s (the largest: ch13-s06 +3.9, ch10-s14/ch11-s01 move +3.5, ch05-s04 +2.9, ch09-s03 +2.6, ch03-s06 +2.4, ch12-s07 +2.2, ch07-s06 +2.0), which would break the gate. They must be paid for, not skipped. The visual lens offers about 10 s of words the picture already carries: ch08-s13b L0831 cut to 'Beside it, the fiddly-nets candle went out too.' (the frayed sleeve and its tag carry the years and the subfields); ch10-s12 L1025 drop 'Twelve hours on one machine, and an English-to-German record.' (the sundial, the compute piles and the ledger's BLEU entry carry it). The story editor owns the remaining roughly 20 s. Do not buy it back from the shots listed above."
+  ],
+  "issues": [
+    {
+      "where": "ch08-s13b (the empty desk payoff)",
+      "problem": "This is a spatial contradiction. The plain wooden desk from ch04-s08 stands on the CANDLE STAGE, at the rim of the sterile candle's pool. Here the camera is on the STUDY shelf (it arrived on a reverse flame push), yet 'the camera WIDENS … to reveal the far rim of the lamp's pool, where the plain wooden desk from ch04-s08 stands'. The study has no such desk at the rim, so the thirty-six-year payoff would be drawn in the wrong world.",
+      "fix": "After the CHM card sets in, push INTO the new candle's flame (FLAME PUSH, crossfadeMood candleAmber→dawnGold, 1.2 s) onto its stage. There the wide reveals the ch04-s08 desk at the rim, its reading lamp clicking on in the new pool. Keep the CHM card at screen level through the push, as ch11-s07 does with its quote."
+    },
+    {
+      "where": "ch02-s03 vs ch03-s05 and staging.questionThread.Q1",
+      "problem": "This is a continuity bug. ch02-s03 hangs the first question card as 'How could a net rewire itself?', but ch03-s05 unpins 'HOW WOULD A MACHINE CHANGE ITS OWN WIRING?', and staging.questionThread uses the ch03 wording. studyState will render one, and a shot author will render the other.",
+      "fix": "Use one wording everywhere. Since ch02-s03's card is the one read on screen, set staging.questionThread.Q1 and ch03-s05 (visual and props) to 'HOW COULD A NET REWIRE ITSELF?'."
+    },
+    {
+      "where": "ch02-s05b (beat 'slip')",
+      "problem": "Turing's slip is pinned on 'child' (4.0 s), while the camera is still at his Manchester window. The pan to the Wall is on 'machine' (4.5 s), so the slip is pinned off-screen before we arrive.",
+      "fix": "slip at {line L0212, edge end, offset 0.3}. holdAfter 4.6 (34 characters need 4.3 s)."
+    },
+    {
+      "where": "ch07-s02 (the 1-s shelf cutaway)",
+      "problem": "In the 1.5 s pause after 'A warm-up.', a 1 s cutaway goes from the dawnGold stage to the candleAmber shelf and back. STUDY LOCK requires a 0.6–1.2 s crossfade at each crossing, so the cutaway is either two tint pops or all crossfade with nothing seen. ch07-s06 already opens on that candle on the shelf.",
+      "fix": "Delete the cutaway and its 'shelf' beat. ch07-s06's opening frame shows the candle in its place on the shelf (studyState already places it)."
+    },
+    {
+      "where": "ch12-s07 (the full X-ray)",
+      "problem": "(a) ch12-s07 is in staging.studyCameras.fullWideOnly, but the shot is a square-on X-RAY plate that 'fills the frame' and never widens, so the second of the three reserved wides never happens (flagged in round 5). (b) It says 'each band lettered only in its own era's typeface', while the canonical X-RAY COLUMN is 'seven faint, empty, unlabelled bands'. Lettered with what? (c) Visual text says leadIn 5.5 and shears at 4.5 s; the fields give leadIn 4.2 and shears at 3.6 s.",
+      "fix": "(a) After the clue pin on 'early', pull back to the full wide (board, shelf and Wall with the X-ray glowing at the output) in a holdAfter of 3.5. Otherwise remove ch12-s07 from fullWideOnly. (b) Bands carry no words: each band's era is signalled by its own object and its chime only. Or, if lettering is wanted, name it (one year per band in that era's face) and amend the canonical X-RAY text. (c) Apply the 0.8 s/band timing from critical 1 and delete the numbers from the visual."
+    },
+    {
+      "where": "ch04-s01, ch06-s04, ch11-s05, ch11-s07, ch12-s03, ch14-s03 (tint pops); ch12-s01 (mood field)",
+      "problem": "These round-5 items remain. Each is a mood jump on a plain cut or paper wipe with nothing under it: ch03-s09 ends candleAmber at the board → ch04-s01 labGreen plate; ch06-s03 duskRose plate → ch06-s04 candleAmber shelf; ch11-s03 serverCyan plate → ch11-s05 candleAmber board; ch11-s05 ends candleAmber at the Wall → ch11-s07 serverCyan stage; ch12-s02 duskRose plate → ch12-s03 candleAmber board; ch14-s02 ends on the candleAmber reflection over dawnGold → ch14-s03 winterBlue. ch12-s01's mood is still duskRose though it opens in the study on the X-ray box.",
+      "fix": "Add 'crossfadeMood <from>→<to>, 0.6–0.8 s, no dip, under the cut/wipe' to the first sentence of each listed shot's visual. Or open ch06-s04, ch11-s05 and ch12-s03 on a reverse flame push from the previous shot's practical (the plate lamp, the jug's light, the shears' glint). Set ch12-s01's mood to candleAmber and leadIn 3.0, as its own visual text says (the glint at 0.8 and the bleed from 1.9 to 3.0 currently run under the line, which starts at 1.4)."
+    },
+    {
+      "where": "ch03-s05 (beat 'if', props), ch12-s08 (window 1, props)",
+      "problem": "Full red is still spent outside the single STATUS: OPEN budget (accentBudget). In ch03-s05 the visual says ink, but the beat says 'IF circled in red ink' and the props say 'red ink margin note'. ch12-s08 still has 'a red lamp comes on' and the prop 'redLamp', which turns one company's moment into the film's alarm colour inside a montage built on parity.",
+      "fix": "ch03-s05: beat 'IF circled in ink'; prop 'ink margin note'. ch12-s08: 'a low-chroma ember lamp (emberRed mixed about 60% into serverCyan), the same brightness and scale as the other three windows' practicals'; prop 'emberLamp'."
+    },
+    {
+      "where": "staging.studyCameras vs the study shots",
+      "problem": "Only ch09-s03a, ch09-s03, ch09-s04 and ch09-s05 carry a CAMERA tag. The other study shots still give no camera grammar, and several mix BOARD, SHELF, FILE and a wide in one shot of a few seconds (ch06-s08 runs a board pin, a shelf description and the bowl and hills set on the desk in a 1.6 s lead-in; ch05-s06; ch08-s13b; ch08-s14). Shot authors will invent the moves, and the three-wides rule will not hold.",
+      "fix": "Add a one-line 'CAMERA: BOARD | SHELF | WALL | FILE | X-RAY (+ inserts)' tag to the first sentence of every study shot's visual. In ch06-s08 drop the shelf paragraph (nothing changes on the shelf; studyState draws it) and set leadIn 2.6 for the pin plus the two desk objects."
+    },
+    {
+      "where": "ch05-s03 (desk travel)",
+      "problem": "The Pittsburgh stop runs from end+1.56 to Toronto at end+4.0, about 2.4 s, against the 'at least 3.5 s' in its own visual and the 3.5 s the Boltzmann label needs. The 6.6 s hold has room for both.",
+      "fix": "toronto at {L0505 end, offset 5.1}. No runtime cost."
+    },
+    {
+      "where": "ch05-s06 (lead-in)",
+      "problem": "The visual says the lead-in is 4.2 s, but the field is 3.2. The question card burns from 1.4 to 3.0 while the plant is tucked at 2.6, so the unexplained plant (a payoff later) overlaps the burn and gets about 0.6 s before the line.",
+      "fix": "leadIn 4.2: question at 1.4, plant at 3.3."
+    },
+    {
+      "where": "ch05-s08 (kind, beats)",
+      "problem": "The kind is 'card', but it is a staged scene (sea of cards, Lenat, ships, Tokyo racks). The 'file' beat (hands in the study) and the 'tokyo' beat (racks across the paper sea) share end+0.4: two locations in one instant.",
+      "fix": "kind 'scene'. file at end+0.4, tokyo at end+1.8; the Tokyo label needs 4.5 s, and the 6.3 s tail (pause 2.4 + hold 3.9) covers it."
+    },
+    {
+      "where": "ch11-s05 (beats glint, wallW4, w4glint)",
+      "problem": "There are three beats for one pan and glint: glint at +0.4 'pan right… pin glints', wallW4 at +0.8 'pan right', and w4glint at +2.2 'catches the light and its pin glints'. The shot author cannot tell which is which.",
+      "fix": "Delete 'glint'. Keep wallW4 at +0.4 (pan begins) and w4glint at +2.2."
+    },
+    {
+      "where": "ch14-s07 (final move)",
+      "problem": "On 'nobody' the camera 'rises slowly above the jetty to a high wide shot: the two candles burning side by side, the board…'. The WINDOW RULE puts the camera in the study looking out, with the candles existing only as a reflection in the glass. A crane up over the jetty leaves the window, so the reflected candles have nowhere to be.",
+      "fix": "Pull BACK into the study instead: the mullions slide in from the frame edges, the reflection steadies in the glass, and the strait, the jetty, the board and both equal shores are seen through it, with the two reflected flames over the water. This also prepares ch15-s01's fade."
+    },
+    {
+      "where": "ch01-s06 vs ch15-s08 (rewind / fast-forward)",
+      "problem": "The rewind's beats are 0.6 s apart (0.5, 1.0, 1.6, 2.2, 2.8; leadIn 3.3), but its visual says about 0.9 s each and 'line enters at 5.0 s'. The finale's fast-forward is 0.75 s per flash. Five reverse-motion images at 0.6 s read as flicker, and the rhyme the finale depends on is weakened when the two speeds differ.",
+      "fix": "Make them match at 0.75 s: goStone 0.5, fans 1.25, snow 2.0, knob 2.75, wick 3.5, leadIn 4.2. Correct the visual text."
+    },
+    {
+      "where": "ch15-s06 (lead-in)",
+      "problem": "The visual says a 4.5 s lead-in, but the field is 2.5, and the crossfade to the stage is at 2.6 s, so L1509 'The three holdouts, now' starts in the study before the holdouts are on stage.",
+      "fix": "leadIn 3.6 (crossfade 2.2–3.4); or move b1b to shotTime 1.4 and keep the field at 2.5."
+    },
+    {
+      "where": "staging.candleClock.placement and finaleChart ('in the order lit')",
+      "problem": "'In the order lit, left to right' is ambiguous. In film order, the warm-up candle (2006, lit in ch07) stands left of the expert-features candle (1999, lit in ch08-s01), and read-in-order (1997, lit in ch10-s01) stands right of the Go candle (2014). The finale list in ch15-s08 numbers them by date. studyState and the ch15-s08 author will disagree.",
+      "fix": "State it once in placement: 'ordered by the year on the base tag, left to right; a candle lit late in the film is set into its year's place on the shelf'. ch15-s08's numbered list already follows that."
+    },
+    {
+      "where": "kitWork (props absent from kit-catalog.md and from every kitWork item)",
+      "problem": "These props are not in the catalogue and not in kitWork: surplus gyro autopilot (ch02-s06), toggle switch and sweeping dial pair (ch02-s04), mail sack and cheque-sorting machine (ch06-s01, ch06-s02), decision-tree forest and paper voters (ch06-s03), family trees (ch05-s04), envelope-and-funnel (ch10-s02), espresso machine (ch10-s11), islands with undersea telegraph cable (ch11-s08; the octopus, bear and parrot are listed), rule-page fence (ch14-s02), schoolroom bell and child's slate (ch02-s05b).",
+      "fix": "Append them, with their shots, to the non-blocking 'props (study and symbolic, round 5)' item, each built from ornament, lathe, type or existing silhouettes."
+    },
+    {
+      "where": "stale visual text (small continuity)",
+      "problem": "(a) ch03-s06 still lists the Wall as 'W1 to W7' and ch04-s08 lists seven slots; BOARD MAP has W1–W8. (b) ch08-s04 beats 'worked' and 'slide' still say 'lantern glides/returns', against its own WORD RULE. (c) ch04-s08's date stamp is 'in VT323 phosphor type', unlike every other stamp, which is Special Elite. (d) ch14-s04b's tags are 0.6 s apart in the beats but '1.2 s apart' in the visual.",
+      "fix": "(a) Quote BOARD MAP's W1–W8 list. (b) 'stencil glides/returns'. (c) Special Elite, or make era faces for stamps a stated rule. (d) Delete the figure from the visual."
+    }
+  ],
+  "strengths": [
+    "Most of round 5's art fixes landed cleanly. FOUNDING GRAMMAR now fixes lantern meanings for every lab (warm = the promise, cold = the danger), and ch12-s03 swings the cold lantern on 'safety' exactly as ch09-s04 swings it on 'damage'. ch12-s06 now opens the door where the camera is. ch14-s04 is split into the hall and ticker and a reflection-only macro, with equal-weight dissent tags. ch11-s03's typesetter's case recedes into thousands of drawers, so 'every word it knows' is drawn. ch15-s08 states explicitly that F1–F2 and the question thread stay paper. ch15-s05's fairness rule is restated so the picture can keep it.",
+    "The teaching machines are still the best thing in the script, and they are bound to real numbers a shot author can verify. Knobs turn only on mistakes. The XOR scissors make one cut that cannot work, then two cuts and a fold. The messenger bead tugs each string by |dL/dw|. The 3.88 stencil cell has all nine terms. The softmax jug pours 0.20 · 0.07 · 0.53 · 0.20, then slams to 1.00 · 0.00 · 0.00 unscaled and pours 0.67 · 0.24 · 0.09 scaled. Dropout uses a seeded mask. The temperature dial is on the typesetter's case. The AlphaGo board shows policy, value and search with light alone, then human games, self-play and reward. None of these are boxes and arrows; each is an object a viewer will remember.",
+    "The film's recurring grammar does story work in pictures. The tall man goes seated at the rim (1976), to standing at the centre (2012), to the rim again (2023), with his younger self as a ghost. The Hall of Mirrors turns away in 1981 and turns back in 2024, with one figure still turned away for the dissent. 'Three lamps, not two teams.' The wax bar chart is read strictly as sleeves, with live flames scattered and no trend by decade. The board is revealed as a network with one dark lantern under the last question, and the microscope that examined the rabbit is turned toward it.",
+    "Chapter 14's WINDOW RULE is a genuinely good invention. Every image of the US–China race is seen from the study through mullions, the candles exist only as reflections over the strait, and the shores are mirror-balanced with identical warmth and no emblems. The device makes even-handedness a property of the frame rather than a promise in the narration. The Go board kept as a record of moves and answers, with the handset laid across it, is a clean wordless image for 'rivals who opened a channel'.",
+    "Restraint is drawn rather than asserted, and the death and private scenes are handled with real tact. There are two lamps on sills for Pitts and McCulloch, one candle and a dedication for Rosenblatt, and an empty hotel room for the Nobel call. Widrow's Dartmouth lantern is still lit on a snowy sill before the MTurk globe goes dark. The 'accounts differ' cards for Gebru are two identical cards, and the Go makers get their own practical rather than the doubters' rim."
+  ]
+}

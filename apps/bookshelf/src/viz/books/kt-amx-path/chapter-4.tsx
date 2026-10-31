@@ -14,7 +14,6 @@
 // stamped "reported", then the honest caveat: these are the project's own
 // benchmarks. The book closes by tying tiles → menu → layout together.
 import {
-  CAMERA_HOME,
   Camera,
   STAGE_H,
   STAGE_W,
@@ -36,15 +35,22 @@ const KERNEL = [
   { key: 'Int8', val: 35, unit: 'TOPS', color: colors.POSITIVE },
 ] as const;
 
+// Two different models: the 91 is DeepSeek-V3 before the tile path, the 347 is
+// Qwen3 on a workstation with it. The panel subtitle says so; no ratio is drawn.
 const PREFILL = [
-  { key: 'llamafile kernels (before)', val: 91, color: colors.MUTED },
-  { key: 'AMX path (after)', val: 347, color: colors.WARM },
+  { key: 'before AMX', val: 91, unit: 'tok/s', color: colors.MUTED },
+  { key: 'AMX path', val: 347, unit: 'tok/s', color: colors.WARM },
 ] as const;
 
 const BARS = { x: 260, y0: 480, w: 46, gap: 130, hMax: 260 } as const;
 
-const CAM_KERNEL: CameraState = { x: 420, y: 360, k: 1.4 };
-const CAM_PREFILL: CameraState = { x: 800, y: 360, k: 1.35 };
+// The board opens on one frame: both panels, the chips and the receipts fit
+// inside the stage. The beats then nudge toward the kernel and the prefill
+// panels, and pull back to the wide frame for the caveat. Every pan keeps the
+// subtitles and chips on the stage, so no label is cut off.
+const CAM_BOARD: CameraState = { x: 640, y: 340, k: 1.08 };
+const CAM_KERNEL: CameraState = { x: 600, y: 360, k: 1.3 };
+const CAM_PREFILL: CameraState = { x: 690, y: 360, k: 1.35 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -61,7 +67,7 @@ export interface Scene {
 
 export function buildScene(): Scene {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_BOARD, cameraInterp);
   const boardU = tl.channel('boardU', 0);
   const kbar = KERNEL.map((_, i) => tl.channel(`kbar${i}`, 0));
   const fourU = tl.channel('fourU', 0);
@@ -165,8 +171,11 @@ function Bar({ x, val, max, u, color, label, unit }: { x: number; val: number; m
           {val} {unit}
         </text>
       )}
-      <text x={x + BARS.w / 2} y={BARS.y0 + 20} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
-        {label.split(' (')[0]}
+      <text x={x + BARS.w / 2} y={BARS.y0 + 20} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+        {label}
+      </text>
+      <text x={x + BARS.w / 2} y={BARS.y0 + 38} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
+        reported
       </text>
     </g>
   );
@@ -182,7 +191,8 @@ export function Render({ s }: { s: SceneState }) {
   const capU = s.get(scene.capU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  // At the close the board fades to near nothing, so the closing panel sits on a clean background.
+  const dimAll = 1 - closeU * 0.97;
 
   return (
     <>
@@ -196,7 +206,10 @@ export function Render({ s }: { s: SceneState }) {
               kernel throughput · Xeon 4
             </text>
             <text x={820} y={150} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
-              DeepSeek-V3 prefill · tokens/s
+              prefill · tokens/s
+            </text>
+            <text x={820} y={172} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              91: DeepSeek-V3 before AMX · 347: Qwen3 on a workstation
             </text>
           </g>
 
@@ -206,34 +219,29 @@ export function Render({ s }: { s: SceneState }) {
           ))}
           <g opacity={fourU}>
             <rect x={BARS.x - 32} y={186} width={230} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={BARS.x + 83} y={206} textAnchor="middle" fill={colors.WARM} fontSize={11.5}>
+            <text x={BARS.x + 83} y={206} textAnchor="middle" fill={colors.WARM} fontSize={13}>
               ≈ 4× the stock AMX kernel
             </text>
           </g>
 
           {/* prefill bars */}
           {PREFILL.map((p, i) => (
-            <Bar key={p.key} x={700 + i * BARS.gap} val={p.val} max={400} u={pbar[i]} color={p.color} label={p.key} unit={''} />
+            <Bar key={p.key} x={700 + i * BARS.gap} val={p.val} max={400} u={pbar[i]} color={p.color} label={p.key} unit={p.unit} />
           ))}
-          {pbar[1] >= 1 && (
-            <text x={830 + BARS.w / 2} y={BARS.y0 - (347 / 400) * BARS.hMax - 30} textAnchor="middle" fill={colors.WARM} fontSize={10.5}>
-              3.8× prefill
-            </text>
-          )}
 
           {/* end-to-end chip */}
           <g opacity={e2eU}>
-            <rect x={430} y={520} width={420} height={56} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-            <text x={640} y={544} textAnchor="middle" fill={colors.TEXT} fontSize={14.5}>
+            <rect x={430} y={532} width={420} height={56} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
+            <text x={640} y={556} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
               418 tokens/s end-to-end
             </text>
-            <text x={640} y={564} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={640} y={576} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               DeepSeek-V3 · 1× Xeon 4 + 1× RTX 4090
             </text>
           </g>
 
           {/* the reported stamp */}
-          <g opacity={capU} transform="rotate(-8 1050 200)">
+          <g opacity={capU} transform="translate(0 34) rotate(-8 1050 200)">
             <rect x={975} y={178} width={150} height={44} rx={9} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.2} />
             <text x={1050} y={206} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16} fontWeight={700} letterSpacing={2}>
               REPORTED
@@ -253,18 +261,18 @@ export function Render({ s }: { s: SceneState }) {
             ['the feed', 'aligned bricks,\ncache-resident blocks', colors.WARM],
           ].map(([head, sub, c], i) => (
             <g key={head}>
-              <rect x={338 + i * 210} y={288} width={190} height={100} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
-              <text x={433 + i * 210} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
+              <rect x={335 + i * 210} y={288} width={190} height={100} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
+              <text x={430 + i * 210} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 {head}
               </text>
               {String(sub).split('\n').map((line, k) => (
-                <text key={k} x={433 + i * 210} y={344 + k * 15} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                <text key={k} x={430 + i * 210} y={344 + k * 18} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   {line}
                 </text>
               ))}
             </g>
           ))}
-          <text x={640} y={432} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={436} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             next: Tuning at Home — the same rig, fine-tuning the giant
           </text>
         </g>

@@ -1,0 +1,174 @@
+{
+ "shot": "ch03-s04",
+ "at": "2026-10-28T09:54:57.856Z",
+ "minCapPx": 22,
+ "sampled": 15,
+ "texts": 32,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "0",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "17",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1280",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "800",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "x",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "window",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "y",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "pointer events",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "state",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "spring",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "sum",
+   "capWhileSubject": 22.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "source table · 20 cells",
+   "capWhileSubject": 29.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "wire = the position of a number",
+   "capWhileSubject": 29.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "20",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "2",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "5",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "6",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "8",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "10",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "11",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "12",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "13",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "14",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "15",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "16",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "18",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "19",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 16
+}

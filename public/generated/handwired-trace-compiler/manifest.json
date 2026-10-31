@@ -1,0 +1,101 @@
+{
+  "format": 3,
+  "slug": "handwired-trace-compiler",
+  "title": "Trace Compiler",
+  "subtitle": "Can a real gallery's layout code become exact circuits?",
+  "animal": "animal.webp",
+  "accent": "#b5532f",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Source Becomes Wires",
+      "blurb": "The compiler reads real gallery source as a syntax tree, folds the constants, and turns everything else into wires.",
+      "scene": "books/handwired-trace-compiler/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        13.491,
+        21.211,
+        32.043,
+        43.34,
+        54.16,
+        64.343,
+        76.336,
+        87.83,
+        98.418,
+        107.729,
+        116.935
+      ],
+      "duration": 125.388
+    },
+    {
+      "number": 2,
+      "title": "One Step Below Seven",
+      "blurb": "A comparison becomes an exact zero or one through relu, power-of-two scaling and clamps, forced by a width of 1732.",
+      "scene": "books/handwired-trace-compiler/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.694,
+        21.699,
+        33.797,
+        44.246,
+        55.194,
+        65.086,
+        77.833,
+        87.679,
+        98.661,
+        107.241,
+        118.851
+      ],
+      "duration": 129.381
+    },
+    {
+      "number": 3,
+      "title": "Five Calculations",
+      "blurb": "Five independent calculations attack the exactness claim, and the report says where single and double precision part ways.",
+      "scene": "books/handwired-trace-compiler/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.011,
+        20.863,
+        32.16,
+        44.617,
+        57.342,
+        69.428,
+        82.187,
+        91.022,
+        107.637,
+        117.18,
+        128.789
+      ],
+      "duration": 138.902
+    },
+    {
+      "number": 4,
+      "title": "How Much Is Covered",
+      "blurb": "The checked slices cover 64 of 221 statement units; what remains is named, and the lab's standing is stated plainly.",
+      "scene": "books/handwired-trace-compiler/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.112,
+        21.932,
+        30.256,
+        41.646,
+        53.186,
+        63.101,
+        71.634,
+        79.912,
+        96.015,
+        103.214,
+        114.939,
+        128.5
+      ],
+      "duration": 138.949
+    }
+  ],
+  "sources": "sources.json"
+}

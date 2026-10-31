@@ -1,0 +1,175 @@
+// m17 — THE CASE REOPENED (ch13 s01-s04, s06). duskRose with an emberRed edge.
+// RE-FIT (review round 1) to the 2139.54 s clock: window 1653.15–1752.15 s (99.00 s). Every event is written in
+// ABSOLUTE film seconds (line() subtracts T0). Key: D minor (the home key darkened again: doubt from the centre).
+// CURRENT CLOCK (2026-10-13, 2159.9583 s): window 1666.108–1765.108 s (99.00 s); moved bodily +12.958 s, no line inside it
+//    changed. The code's absolute times stay on the 2139.54 s clock (T0 = 1653.15 was the cue start there), so every event
+//    is still exact relative to the cue: add 12.958 s to read a time on the current clock (slip 1668.58, 'down' 1673.61,
+//    'harms' 1729.88, 'water' 1762.47; all re-checked against narration/timeline.json).
+// Rubato; 54 BPM only for the three camps' piano pulse (1.111 s).
+//
+//   1653.15–1660.65 THE SLIP     low strings in D minor, alone in the gap after L1219b; M1's rising fourth A2 → D3 as
+//                                the camera finds the slip ('slip' 1655.62 / 'through' 1656.22), the strings rising with
+//                                the push and the hand to the pin ('reach' 1659.89) ...
+//   1660.65–1664.08 SILENCE      ... and EVERYTHING STOPS DEAD on 'down' (1660.65): dry layers (no reverb), hard
+//                                releases, nothing sounds until the quote. A scored silence.
+//   1664.08–1687.33 DOUBT        one sustained cello D3 (re-struck in the gaps between lines) over a pp low A.
+//   1687.33–1690.55 THE WALK     on 'walk' the held D becomes M4's walk D3 → E3 → F3; a quiet piano A on 'rim'.
+//   1690.55–1714.47 THE WORRY    M1 lit by low horn: A2 → D3 on 'strike'/'lit' over Dm(add9) low strings, darker
+//                                than any earlier lighting; on 'dangerous' (1696.97) the horn lets go and, review r1,
+//                                L1307b ('...None came', 1698.10–1702.66) gets the CELLO PEDAL ALONE (A2, below D3, no
+//                                horn or string entries) from 1697.67 to 1703.17; then the suspension (D over A-E)
+//                                creeps back in (slow attacks) under the warning and holds. Never resolves.
+//   1714.47–1737.67 THREE CAMPS  three lines, none dominant: the worry's suspension (strings), a plain repeated piano
+//                                D5 in quarters from 'harms' (1716.92), a dry plucked bass for the sceptic from
+//                                'lecun' (1724.61); they never cadence together; the medals get nothing; they end apart
+//                                (strings on "Two signed", piano after "The third", the last pluck on 'apart' 1737.67).
+//   1738.67–1752.15 CYC          M1 on solo celesta, very soft: A → D as the flame goes out ('out' 1741.33), the D
+//                                held over A-E; on 'shelf' (1747.14) the taper's note simply stops (no fall). One
+//                                neutral harp E, dead centre, on 'water' (1749.51): Two Shores, foreshadowed. Last onset.
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): every absolute time +17.75 s (no line inside the window changed length).
+// WORD PASS (2026-10-12): L1316 (Cyc) measured -1.4 dB speech-to-music in 1-4 kHz: Cyc's celesta D (sounding D6) now
+//                                lands on 'out' and is re-struck only in the micro-gaps, each softer; the strings' high D thinner.
+// VOICE PASS (2026-10-11): L1302, L1307 and L1316 measured 6-7 dB speech-to-music: the slip's held cello D and the
+//                                strings' push softer and below D3 under 'In 2023, Geoffrey Hinton takes down'; the worry
+//                                horn and its Dm(add9) about 3 dB softer under the line; Cyc's celesta lighter.
+// CRITIC r1, ROUND 2 (2026-10-12): the hand-off to m18 no longer chops a ringing note: the 'water' harp E is released
+//                                by 1751.5 and the fade-out is the full 1.5 s overlap (1750.65-1752.15; cues.json fadeOut 1.5).
+// CRITIC r1 (2026-10-13, current clock): M4's walk back to the rim is a set motif payoff and was only ~1.6 dB above the
+//                                bed. It now has its own lane in the only music-only gap (1699.49-1703.81 current = code
+//                                1686.53-1690.85): cello sul tasto (lpf 700), the held D swelling from 1699.60, D3-E3-F3 on
+//                                'walk', the piano A on 'rim' clearer (.1 -> .17); all released by 1703.68, before L1307.
+//                                Measured: gap 1699.6-1703.5 is +4.4 dB against the fair-line bed (was +1.8 dB, now +6.2);
+//                                L1307's first second unchanged. The rest of the cue untouched.
+const T0 = 1653.15, DUR = 99.0, BPM = 54
+const VEL = 4.1          // global velocity scale (about -22 LUFS integrated)
+// ---- seconds-based event compiler (shared by m13-m18; here events are absolute film seconds) ---
+// Events are [startSec, holdSec, notes, velocity, {per-event params}]. Each lane is compiled to one
+// mini-notation sequence that spans SPAN seconds, then slowed to SPAN·cps cycles, so every onset lands
+// exactly where the clock needs it, independent of the tempo grid.
+const CPS = BPM / 240
+setcps(CPS)
+const SPAN = Math.ceil(DUR) + 4
+const DFLT = { pan: .5, lpf: 18000, attack: .01, release: .3 }
+const r4 = (x) => (Math.round(x * 10000) / 10000).toFixed(4)
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = evs.filter(Boolean).map((e) => [e[0] - T0, ...e.slice(1)]).filter((e) => e[0] < DUR).sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const keys = new Set(Object.keys(defs))
+  for (const e of sorted) if (e[4]) for (const k of Object.keys(e[4])) keys.add(k)
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + r4(e[0] - pos))
+      out.push(val(e) + '@' + r4(e[1]))
+      pos = e[0] + e[1]
+    }
+    if (SPAN - pos > 1e-6) out.push('~@' + r4(SPAN - pos))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => r4(Math.min(1, e[3] * VEL))))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DFLT[k] != null ? DFLT[k] : 0)))
+    return p.slow(SPAN * CPS)
+  }))
+}
+// a run of notes on a grid: from t0 (inclusive) to t1 (exclusive), one onset every `step` seconds,
+// cycling through `notes`; vel may be a number or a function of (i, t); len = hold as a fraction of step
+function run(t0, t1, step, notes, vel, len, params) {
+  const out = []
+  for (let i = 0, t = t0; t < t1 - 1e-6; i++, t = t0 + i * step) {
+    const n = notes[i % notes.length]
+    if (n === '~') continue
+    const v = typeof vel === 'function' ? vel(i, t) : vel
+    if (v <= 0) continue
+    out.push([t, step * (len || 1), n, +v.toFixed(3), typeof params === 'function' ? params(i, t) : params])
+  }
+  return out
+}
+// ------------------------------------------------------------------------------------------------
+const Q = 60 / BPM   // 1.111 s
+
+// ═══ THE SLIP: dry (orbit 8, no reverb) so nothing leaks past 'down' (1660.65) ══════════════════════════
+$: line([
+  [1653.25, 2.97, '[d2,a2]', .1, { attack: 1.2 }],
+  [1656.22, 3.67, '[d2,a2,f3]', .085, { attack: .9 }],            // the strings rise with the push ...
+  [1659.89, .76, '[d2,a2,d3]', .1, { attack: .3 }],               // ... and the hand to the pin (below D3: he is speaking)
+], { release: .04 }).s('gm_string_ensemble_1').lpf(1200).orbit(8)
+$: line([
+  [1655.62, .6, 'a2', .2, { attack: .2 }], [1656.22, 4.43, 'd3', .15, { attack: .3 }],   // M1 lit: A2 → D3 (cello), in the clear; the D held soft under L1302
+], { release: .04 }).s('gm_cello').lpf(900).hpf(40).orbit(8)
+
+// ═══ CELLO: doubt (the held D), the walk back to the rim, the pedal under "None came" ═══════════════════
+$: line([
+  [1664.08, 9.5, 'd3', .16, { attack: 1.2 }],                      // 'Machines smarter than people?': the held D
+  [1673.58, 6.47, 'd3', .14, { attack: 1.4 }],                     // re-struck in the gap before L1303b
+  [1680.05, 6.59, 'd3', .13, { attack: 1.4, release: .6 }],       // ... and after it, under the fair line; hands over to the walk at the gap
+  [1696.97, 6.3, 'a2', .06, { attack: .8, release: 1.2 }],         // review r1: the pedal alone under L1307b (below D3)
+], { attack: .2, release: 1.2 }).s('gm_cello').lpf(900).hpf(40).room(.4).rsize(4).orbit(1)
+
+// ═══ THE WALK BACK TO THE RIM (critic r1, round 1 of this pass): M1's held note turns back into M4 ══════════════
+// The only music-only gap of the cue (current clock 1699.49-1703.81 = code 1686.53-1690.85). The walk is brought
+// forward about 4 dB here, in its own lane: cello sul tasto (darker lpf, slower bow), the held D swelling as the fair
+// line ends, then D3 -> E3 -> F3 on 'walk'; everything released by code 1690.75, before L1307 (code 1690.85).
+$: line([
+  [1686.64, 1.19, 'd3', .25, { attack: .55 }],                    // the held D swells into the gap (no re-attack)
+  [1687.83, .54, 'e3', .25, { attack: .12 }],                     // the walk ...
+  [1688.37, 1.6, 'f3', .24, { attack: .12, release: .75 }],         // ... to the rim; gone by 1690.72
+], { release: .3 }).s('gm_cello').lpf(700).hpf(40).gain(1.12).room(.4).rsize(4).orbit(1)
+$: line([
+  [1664.08, 23.07, 'a1', .08, { attack: 3, release: 1.5 }],        // pp low A: the D held over A (doubt)
+  [1690.55, 6.42, 'd2', .1, { attack: .6, release: .7 }],          // the worry: Dm(add9) floor, gone by the letter
+  [1703.17, 5.8, 'a1', .11, { attack: 2 }], [1708.97, 5.5, 'a1', .11, { attack: 1 }],
+  [1714.47, 6.9, 'a1', .1, { attack: 1.5 }], [1721.37, 6.9, 'a1', .09, { attack: 1.5 }], [1728.27, 7.4, 'a1', .09, { attack: 1.5, release: .8 }],
+  [1741.33, 5.81, 'a1', .065, { attack: 1.5, release: .3 }],       // Cyc: the low A, stops on 'shelf'
+], { attack: 1, release: 1.4 }).s('gm_contrabass').lpf(360).hpf(40).room(.35).rsize(3).orbit(1)
+
+// ═══ THE WORRY CANDLE: low horn (A2 → D3, at or below D3 while he speaks), never resolved ════════════════
+$: line([
+  [1690.55, .71, 'a2', .17, { attack: .15 }],
+  [1691.26, 5.71, 'd3', .13, { attack: .2, release: .6 }],         // lit; lets go on 'dangerous', clear before L1307b
+  [1703.17, 5.8, 'd3', .13, { attack: 2 }],                        // creeps back under the warning: held over A-E
+  [1708.97, 5.2, 'd3', .12, { attack: 1, release: 2 }],
+], { release: 1 }).s('gm_french_horn').lpf(1000).room(.5).rsize(4).orbit(2)
+
+$: line([
+  [1690.55, 6.42, '[d2,a2,e3,f3]', .07, { attack: .8, release: .6 }], // Dm(add9), dark and low
+  [1703.17, 5.8, '[a1,e2,a2,e3]', .09, { attack: 2 }],             // the floor: A-E under the held D
+  [1708.97, 5.5, '[a1,e2,a2,e3]', .09, { attack: 1 }],
+  // THREE CAMPS, line 1: the worry's suspension (A-D-E), low, re-bowed; it lets go first ("Two signed")
+  [1714.47, 6.9, '[a2,d3,e3]', .08, { attack: 1.5 }], [1721.37, 6.9, '[a2,d3,e3]', .08, { attack: 1.5 }],
+  [1728.27, 7.3, '[a2,d3,e3]', .08, { attack: 1.5, release: .9 }],
+  // CYC: the taper's D, doubled pp high (sounding D5) over A-E, and it simply STOPS on 'shelf'
+  [1741.33, 5.81, 'd5', .03, { attack: .8, release: .25, lpf: 1400 }],
+  [1741.33, 5.81, '[e2,a2]', .07, { attack: 1.2, release: .25 }],
+], { attack: 1, release: 1.4, lpf: 1100 }).s('gm_string_ensemble_1').room(.55).rsize(4).orbit(3)
+
+// ═══ PIANO: one note at the rim; THREE CAMPS line 2 (present harms): a plain D5 in quarters ══════════════
+$: line([
+  [1688.37, 1.55, 'a5', .17, { release: .8 }],                      // 'rim': the A clear in the gap, released by 1690.72
+  ...run(1716.92, 1737.52, Q, ['d5'], .1, .9),                       // 'harms' → stops after "The third"
+], { release: 1 }).s('piano').lpf(2600).room(.45).rsize(3).orbit(7)
+
+// THREE CAMPS line 3 (the sceptic): a dry plucked bass, its own uneven gait; the last pluck alone on 'apart'
+const SC = (t) => 1724.61 + (t - 70.0) * (1737.67 - 1724.61) / 12.6
+$: line([
+  ...[70.00, 70.95, 72.35, 72.80, 74.15, 76.60, 77.55, 78.95, 79.40, 82.60].map((t, i) => [SC(t), .25, ['d2', 'a1', 'f2', 'e2', 'd2', 'a1', 'c2', 'd2', 'e2', 'a1'][i], .2]),
+], { release: .18 }).s('gm_contrabass').lpf(700).room(.15).orbit(4)
+
+// ═══ CYC: M1 on solo celesta, very soft (sounds A5 → D6) ═════════════════════════════════════════════════
+$: line([
+  // word pass: A → D on 'out' ("died"), the D re-struck only in the micro-gaps (after "died", after "sense", after "years")
+  [1740.56, .5, 'a4', .07, { release: .5 }], [1741.33, .6, 'd5', .075, { release: .6 }],
+  [1741.80, .4, 'd5', .05, { release: .5 }], [1743.92, .3, 'd5', .045, { release: .4 }], [1745.40, .25, 'd5', .035, { release: .3 }],
+], { release: 1.4 }).s('gm_celesta').room(.65).rsize(4).orbit(5)
+
+// the neutral harp, dead centre, on 'water': Two Shores' E. Critic r1 round 2: it is released by 1751.5 (hold 1.2 s,
+// release .8) and the cue's fade now spans the whole 1.5 s overlap (1750.65-1752.15), so it decays instead of being cut
+$: line([[1749.51, 1.2, 'e4', .16, { release: .8 }]]).s('gm_orchestral_harp').pan(.5).room(.5).rsize(3).orbit(6)

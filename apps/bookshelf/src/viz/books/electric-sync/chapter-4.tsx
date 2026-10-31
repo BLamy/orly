@@ -40,10 +40,10 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 const CLIENT = { x: 180, y: 250 } as const;
 const ELECTRIC = { x: 880, y: 230 } as const;
-const CDN = { x: 520, y: 150 } as const;
+const CDN = { x: 560, y: 60 } as const;
 
-const STORE = { x: 70, y: 330, w: 250, h: 190 } as const;
-const TAPE = { x0: 140, x1: 1140, y: 560, h: 24 } as const;
+const STORE = { x: 70, y: 300, w: 250, h: 190 } as const;
+const TAPE = { x0: 140, x1: 1140, y: 520, h: 24 } as const;
 const SEG_W = 58;
 const segX = (i: number): number => TAPE.x0 + 30 + i * (SEG_W + 5);
 
@@ -80,9 +80,9 @@ const BASE_ROWS = [
 const NEW_ROW = { id: 73, title: 'Fix flaky test', status: 'todo' } as const;
 
 // camera marks
-const CAM_PAIR: CameraState = { x: 540, y: 320, k: 1.12 };
-const CAM_HOLD: CameraState = { x: 760, y: 240, k: 1.3 };
-const CAM_TAPE: CameraState = { x: 620, y: 480, k: 1.25 };
+const CAM_PAIR: CameraState = { x: 540, y: 330, k: 1.12 };
+const CAM_HOLD: CameraState = { x: 520, y: 350, k: 1.25 };
+const CAM_TAPE: CameraState = { x: 600, y: 400, k: 1.12 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -296,7 +296,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const stageDim = 1 - 0.85 * dimU;
+  const stageDim = 1 - 0.92 * dimU;
   const phX = playheadX(playU);
   // the held arc is visible while parked (parkU), gone once released, back with park2U
   const arcOn = Math.max(parkU * (1 - releaseU), park2U);
@@ -323,14 +323,14 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={i}>
                   <circle cx={p.x} cy={p.y} r={5} fill="none" stroke={colors.MUTED} strokeWidth={1.6} />
                   {u > 0.45 && u < 0.98 && (
-                    <text x={p.x + 14} y={p.y - 6} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                    <text x={p.x + 14} y={p.y - 6} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                       nothing new
                     </text>
                   )}
                 </g>
               );
             })}
-            <text x={(CLIENT.x + ELECTRIC.x) / 2} y={CLIENT.y - 128} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={(CLIENT.x + ELECTRIC.x) / 2} y={CLIENT.y - 128} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
               poll · poll · poll
             </text>
           </g>
@@ -340,7 +340,7 @@ export function Render({ s }: { s: SceneState }) {
             <g>
               <circle cx={catchPos.x} cy={catchPos.y} r={6.5} fill={catchU > 0.5 ? colors.WARM : 'none'} stroke={catchU > 0.5 ? colors.BG : colors.ACCENT} strokeWidth={1.6} />
               {catchU > 0.55 && (
-                <text x={catchPos.x + 14} y={catchPos.y - 8} fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+                <text x={catchPos.x + 12} y={catchPos.y + 24} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                   update id=41 → done
                 </text>
               )}
@@ -351,22 +351,22 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={arcOn}>
             <path d={ARC} fill="none" stroke={colors.ACCENT} strokeWidth={2.2} strokeDasharray="1 0" opacity={0.9} />
             <circle cx={ELECTRIC.x - 70} cy={ELECTRIC.y - 8} r={6} fill={colors.ACCENT} />
-            <text x={(CLIENT.x + ELECTRIC.x) / 2} y={CLIENT.y - 116} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>
+            <text x={(CLIENT.x + ELECTRIC.x) / 2} y={118} textAnchor="middle" fill={colors.ACCENT} fontSize={13}>
               parked — waiting inside Electric
             </text>
           </g>
           {/* live params chip */}
-          <g opacity={chipU * (1 - 0.5 * releaseU)}>
-            <rect x={340} y={CLIENT.y - 96} width={400} height={26} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
-            <text x={540} y={CLIENT.y - 78} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
+          <g opacity={chipU}>
+            <rect x={330} y={CLIENT.y - 96} width={420} height={26} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
+            <text x={540} y={CLIENT.y - 78} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
               ?live=true&handle=62488107-…&offset=1837_0&cursor=…
             </text>
           </g>
 
-          {/* the twenty-second timer */}
+          {/* the twenty-second timer, perched above Electric clear of the arc */}
           <g opacity={arcOn * clamp01(timerNow * 8 + (timerNow > 0 ? 0.2 : 0))}>
-            <TimerArc cx={ELECTRIC.x - 100} cy={ELECTRIC.y - 60} r={20} u={timerNow} color={timerNow > 0.9 ? colors.WARM : colors.ACCENT} />
-            <text x={ELECTRIC.x - 100} y={ELECTRIC.y - 92} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <TimerArc cx={ELECTRIC.x} cy={130} r={20} u={timerNow} color={timerNow > 0.9 ? colors.WARM : colors.ACCENT} />
+            <text x={ELECTRIC.x} y={96} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               long_poll_timeout: 20_000
             </text>
           </g>
@@ -378,8 +378,8 @@ export function Render({ s }: { s: SceneState }) {
                 const p = arcPoint(emptyU, true);
                 return (
                   <g>
-                    <rect x={p.x - 46} y={p.y - 12} width={92} height={22} rx={10} fill={colors.BG} stroke={colors.MUTED} strokeWidth={1.2} />
-                    <text x={p.x} y={p.y + 3} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+                    <rect x={p.x - 76} y={p.y - 14} width={152} height={26} rx={10} fill={colors.BG} stroke={colors.MUTED} strokeWidth={1.2} />
+                    <text x={p.x} y={p.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                       up-to-date · empty
                     </text>
                   </g>
@@ -391,8 +391,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* the released response carrying the insert */}
           {releaseU > 0.02 && releaseU < 0.99 && (
             <g>
-              <rect x={relPos.x - 56} y={relPos.y - 13} width={112} height={24} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.4} />
-              <text x={relPos.x} y={relPos.y + 3} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily={MONO}>
+              <rect x={relPos.x - 62} y={relPos.y - 14} width={124} height={28} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.4} />
+              <text x={relPos.x} y={relPos.y + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 insert id=73
               </text>
             </g>
@@ -401,7 +401,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ------------------------------------------------ the local store */}
           <g opacity={nodesU}>
             <rect x={STORE.x} y={STORE.y} width={STORE.w} height={STORE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={STORE.x + 16} y={STORE.y + 24} fill={colors.MUTED} fontSize={12}>
+            <text x={STORE.x + 16} y={STORE.y + 24} fill={colors.MUTED} fontSize={13}>
               local store
             </text>
             {BASE_ROWS.map((r, i) => {
@@ -409,13 +409,13 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={r.id}>
                   <rect x={STORE.x + 12} y={STORE.y + 36 + i * 30} width={STORE.w - 24} height={24} rx={5} fill="rgba(56,189,248,0.07)" stroke={colors.GRID} />
-                  <text x={STORE.x + 22} y={STORE.y + 53 + i * 30} fill={r.id === 41 ? colors.WARM : colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+                  <text x={STORE.x + 22} y={STORE.y + 53 + i * 30} fill={r.id === 41 ? colors.WARM : colors.TEXT} fontSize={13} fontFamily={MONO}>
                     {r.id}
                   </text>
-                  <text x={STORE.x + 54} y={STORE.y + 53 + i * 30} fill={colors.TEXT} fontSize={11.5}>
+                  <text x={STORE.x + 54} y={STORE.y + 53 + i * 30} fill={colors.TEXT} fontSize={13}>
                     {r.title}
                   </text>
-                  <text x={STORE.x + STORE.w - 20} y={STORE.y + 53 + i * 30} textAnchor="end" fill={STATUS_COLOR[status]} fontSize={11} fontFamily={MONO}>
+                  <text x={STORE.x + STORE.w - 20} y={STORE.y + 53 + i * 30} textAnchor="end" fill={STATUS_COLOR[status]} fontSize={12} fontFamily={MONO}>
                     {status}
                   </text>
                   {r.id === 41 && flipU > 0.5 && flipU < 1 && (
@@ -427,13 +427,13 @@ export function Render({ s }: { s: SceneState }) {
             {/* the live-inserted row */}
             <g opacity={applyU}>
               <rect x={STORE.x + 12} y={STORE.y + 36 + 4 * 30} width={STORE.w - 24} height={24} rx={5} fill="rgba(52,211,153,0.10)" stroke={colors.POSITIVE} strokeWidth={1.2} />
-              <text x={STORE.x + 22} y={STORE.y + 53 + 4 * 30} fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
+              <text x={STORE.x + 22} y={STORE.y + 53 + 4 * 30} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                 {NEW_ROW.id}
               </text>
-              <text x={STORE.x + 54} y={STORE.y + 53 + 4 * 30} fill={colors.TEXT} fontSize={11.5}>
+              <text x={STORE.x + 54} y={STORE.y + 53 + 4 * 30} fill={colors.TEXT} fontSize={13}>
                 {NEW_ROW.title}
               </text>
-              <text x={STORE.x + STORE.w - 20} y={STORE.y + 53 + 4 * 30} textAnchor="end" fill={STATUS_COLOR[NEW_ROW.status]} fontSize={11} fontFamily={MONO}>
+              <text x={STORE.x + STORE.w - 20} y={STORE.y + 53 + 4 * 30} textAnchor="end" fill={STATUS_COLOR[NEW_ROW.status]} fontSize={12} fontFamily={MONO}>
                 {NEW_ROW.status}
               </text>
             </g>
@@ -441,7 +441,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ------------------------------------------------ the tape */}
           <g opacity={nodesU}>
-            <text x={TAPE.x0} y={TAPE.y - 12} fill={colors.MUTED} fontSize={11.5}>
+            <text x={TAPE.x0} y={TAPE.y - 10} fill={colors.MUTED} fontSize={13}>
               the shape log
             </text>
             <rect x={TAPE.x0} y={TAPE.y} width={TAPE.x1 - TAPE.x0} height={TAPE.h} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
@@ -456,7 +456,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={seg.off} transform={`translate(0, ${dropY})`} opacity={segU}>
                   <rect x={segX(i)} y={TAPE.y + 3} width={SEG_W} height={TAPE.h - 6} rx={4} fill={fill} stroke={color} strokeWidth={1} />
-                  <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h + 15} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+                  <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     {seg.off}
                   </text>
                 </g>
@@ -464,7 +464,7 @@ export function Render({ s }: { s: SceneState }) {
             })}
             {/* the playhead */}
             <path d={`M ${phX - 7} ${TAPE.y - 15} L ${phX + 7} ${TAPE.y - 15} L ${phX} ${TAPE.y - 3} Z`} fill={colors.WARM} />
-            <text x={phX} y={TAPE.y - 22} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>
+            <text x={phX} y={TAPE.y - 22} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
               offset
             </text>
           </g>
@@ -473,20 +473,21 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={cdnU}>
             <ServiceNode x={CDN.x} y={CDN.y} kind="cdn" label="CDN" sublabel="max-age=60" u={cdnU} />
             {/* the fleet of new clients */}
+            {/* the fleet of new clients, stacked clear of the store and the held arc */}
             {[0, 1, 2, 3].map((i) => {
-              const cy = 420 + i * 28;
+              const cy = 112 + i * 26;
               return (
                 <g key={i} opacity={win(cdnU, 4, i, 2)}>
-                  <circle cx={64} cy={cy} r={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-                  <line x1={74} y1={cy} x2={CDN.x - 46} y2={CDN.y + 30} stroke={colors.ACCENT} strokeWidth={0.9} opacity={0.5} />
+                  <circle cx={60} cy={cy} r={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+                  <line x1={70} y1={cy} x2={CDN.x - 84} y2={CDN.y + 20} stroke={colors.ACCENT} strokeWidth={0.9} opacity={0.5} />
                 </g>
               );
             })}
             <line x1={CDN.x + 48} y1={CDN.y + 6} x2={ELECTRIC.x - 66} y2={ELECTRIC.y - 16} stroke={colors.ACCENT} strokeWidth={1.1} strokeDasharray="5 5" opacity={0.7} />
-            <text x={CDN.x + 10} y={CDN.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={CDN.x - 92} y={CDN.y - 6} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               cached chunks served here
             </text>
-            <text x={(CDN.x + ELECTRIC.x) / 2 + 30} y={CDN.y - 6} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={CDN.x + 104} y={CDN.y - 6} textAnchor="start" fill={colors.MUTED} fontSize={12}>
               only live holds pass through
             </text>
           </g>
@@ -494,11 +495,12 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ------------------------------------------------ the closing panel */}
         <g opacity={closeU}>
+          <rect x={300} y={240} width={680} height={140} rx={16} fill={colors.BG} />
           <rect x={300} y={240} width={680} height={140} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={600}>
             hold → release on change → hold again
           </text>
-          <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={14.5}>
+          <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             one held request per client · one write fanned out to everyone
           </text>
         </g>

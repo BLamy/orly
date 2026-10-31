@@ -1,0 +1,135 @@
+Debugging with Replay
+
+## Replay MCP
+Agentic time travel debugging for your application.
+
+Replay MCP gives AI agents a set of time-travel debugging tools to inspect Replay recordings. Agents can examine console output, read source code, inspect variables, analyze React components, profile performance, and much more — all through the MCP protocol.
+
+## What can agents do?
+
+Replay MCP provides tools across several areas that give agents deep visibility into your application's runtime behavior:
+
+- Source code & console — browse and search source files, read code with execution annotations, view console output, and see screenshots of visual state at any moment
+
+- Code inspection — inspect variables, evaluate expressions, and examine call stacks at any point during execution. Set virtual breakpoints to observe how values change across multiple executions.
+
+- Error detection — find uncaught exceptions and React-specific crashes that caused components to unmount
+
+- Network & storage — inspect HTTP requests and responses, view localStorage operations
+
+- React analysis — examine the component tree, analyze render behavior across the entire recording, trace what triggered specific re-renders, and identify wasted renders. Agents can drill from a high-level render summary all the way down to why a specific component fiber re-rendered.
+
+- Test analysis — inspect Playwright test steps, find where tests failed, and see the protocol commands executed during each step
+
+- Performance profiling — profile JavaScript statement execution, analyze React render and effect costs, and find slow functions
+
+For details on every available tool, see the MCP tools reference.
+
+Some tools are specific to certain recording types. React analysis tools only
+work with recordings of React applications, and test analysis tools only work
+with Playwright test recordings.
+
+## Get started
+
+The fastest path is to install the Replay skills, connect your agent to the MCP server, and then ask the agent to record your app and investigate.
+
+1
+
+## Install the Replay skills
+Replay skills are instruction files that teach your agent how to use Replay tools effectively. The replay-mcp skill covers which tools to call and in what order when investigating a recording. The replay-cli and replay-playwright skills let the agent create recordings on your behalf.
+- npm
+- yarn
+- pnpm
+- bun
+
+Terminal
+npx skills add https://github.com/replayio/skills --skill '*'
+
+2
+
+## Connect the Replay MCP server
+The server URL is https://dispatch.replay.io/nut/mcp. It uses streamable HTTP. The Authorization header is only required for recordings that belong to a team; public recordings work without it. See API keys and tokens for how to create one.
+- Claude Code
+- Cursor
+- VS Code
+- Codex
+- Other
+
+Terminal
+claude mcp add replay\
+
+ --transport http https://dispatch.replay.io/nut/mcp\
+
+ --header "Authorization: YOUR_API_KEY"
+
+3
+
+## Record and debug
+Ask your agent to record the app and investigate. With the replay-cli skill installed, the agent launches the Replay Browser, waits for you to reproduce the issue and close the browser, uploads the recording, and then calls Replay MCP with the new recording ID.
+
+Please help me debug issues on my application.
+
+Use the replay-cli skill to record my application running on localhost:3000.
+
+Then use Replay MCP to debug the recording.
+
+If you already have a recording, give the agent its ID or URL instead:
+
+Use the Replay MCP server to debug this test failure in recording abc123:
+
+Error: Timed out 15000ms waiting for
+
+  expect(locator).toBeVisible()
+
+    Locator: getByTestId('submit-button')
+
+Keep recordings short. A recording that captures just the reproduction is much
+faster for the agent to analyze than one that covers a long session.
+
+Other ways to record
+
+You can also record manually with the Replay Browser and CLI, or from a
+Playwright test run. See How to
+record for a comparison of all
+methods.
+
+## Connection modes
+
+The universal endpoint above works with any recording. Every tool accepts a recordingId parameter, so one server connection lets the agent move between recordings.
+
+There is also a per-recording endpoint at https://dispatch.replay.io/nut/recording/<recording-id>/mcp. Tools on this endpoint do not take a recordingId, because the recording is fixed by the URL. Use it when a script or CI job hands the agent a single recording and you want a smaller tool surface. The configuration is the same as above with the URL swapped.
+
+## Agent skills
+
+Skills are Markdown instruction files your agent loads on demand. Replay publishes them at github.com/replayio/skills, and npx skills add https://github.com/replayio/skills --skill '<name>' installs one at a time.
+
+SkillWhat it teaches the agent
+replay-mcpWhich Replay MCP tools to call, in what order, to investigate a recording
+replay-cliInstall replayio, record a URL in Replay Browser, upload, and list recordings
+replay-playwrightAdd the @replayio/playwright reporter to a Playwright project and run tests in Replay Browser
+
+The same files are served from this site at /.well-known/agent-skills/index.json for agents that discover skills automatically.
+
+## Tips
+
+## Use development builds or source maps
+
+Recordings of minified production code are much harder for agents (and humans) to understand. Use development builds when recording, or ensure source maps are available. This lets agents read meaningful variable names, function names, and original source code.
+
+React apps: React analysis tools (render tracking, component inspection,
+performance profiling) work on React 18 and 19, including Next.js 13.5 through
+16, without any source maps or build plugin for React itself. Your
+application's source maps are what give the agent real component and file
+names. See React support.
+
+## Understand execution points
+
+Many MCP tools work with execution points — opaque identifiers that represent a specific moment during the recording's execution. Some tools produce execution points (e.g., searching source code, viewing console messages, setting virtual breakpoints), and other tools consume them (e.g., inspecting variables, evaluating expressions, getting call stacks). Think of them as bookmarks to specific moments in time that agents pass between tools.
+
+## Some tools are recording-type specific
+
+React analysis tools only work when the recording contains a React application, and test analysis tools only work with Playwright test recordings. The agent will get an error if it tries to use these on an incompatible recording — but it will recover and try other approaches.
+
+## Start broad, then drill down
+
+A good investigation pattern is to start with broad tools — console output, exception detection, network requests — to get an overview, then use targeted tools like virtual breakpoints and expression evaluation to dig into specific issues. For React apps, the render analysis tools support progressive drill-down from a high-level summary all the way to individual fiber render causes.

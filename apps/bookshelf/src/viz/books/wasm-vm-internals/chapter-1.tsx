@@ -44,9 +44,10 @@ const DISTINCT = 3765; // files actually under releases/chunked-alpine/chunks/
 
 const COLS = 96;
 const ROWS = COUNT / COLS; // 64
-const CELL = 8;
+const CELL = 7;
 const GX = 640 - (COLS * CELL) / 2;
-const GY = 96;
+const GY = 80;
+const GRID_CY = GY + (ROWS * CELL) / 2; // grid center y; the parked grid pivots on it
 const cellX = (i: number): number => GX + (i % COLS) * CELL;
 const cellY = (i: number): number => GY + Math.floor(i / COLS) * CELL;
 
@@ -85,15 +86,18 @@ const MB = (chunks: number): string => ((chunks * CHUNK) / 1_048_576).toFixed(1)
 // ---------------------------------------------------------------------------
 
 // Park transform: scale about the origin plus a translate chosen so the grid
-// center (640, 352) lands at (300, 360).
+// center (640, GRID_CY) lands at (300, PARK_CY).
 const PARK_S = 0.62;
+const PARK_CY = 360;
 const PARK_TX = 300 - 640 * PARK_S; // ≈ -96.8
-const PARK_TY = 360 - 352 * PARK_S; // ≈ 141.8
+const PARK_TY = PARK_CY - GRID_CY * PARK_S;
 
 const SW_CX = 930;
-const SW_CY = 368;
-const SW_R = 168;
-const ORIGIN = { x: SW_CX, y: 108 }; // the bucket, above the ring
+const SW_CY = 340;
+const SW_R = 124;
+const ORIGIN = { x: SW_CX, y: 110 }; // the bucket, above the ring
+const TAILNET_Y = SW_CY + SW_R + 76; // tailnet label sits below the ring, clear of the seed line
+const NOTE_Y = TAILNET_Y + 26; // one-line notes under the ring
 const YOU = 0;
 const PEERS = Array.from({ length: 8 }, (_, k) => {
   const a = -Math.PI / 2 + (k * 2 * Math.PI) / 8;
@@ -111,8 +115,8 @@ const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 const CAM_CELL: CameraState = { x: cellX(READ_CHUNK) + 40, y: cellY(READ_CHUNK) + 120, k: 1.75 };
 const CAM_RUN: CameraState = { x: cellX(RUN[0]) + 40, y: cellY(RUN[0]) + 30, k: 2.2 };
 const CAM_OVERLAY: CameraState = { x: 640, y: 400, k: 1.15 };
-const CAM_SWARM: CameraState = { x: SW_CX - 50, y: SW_CY - 40, k: 1.3 };
-const CAM_PARK: CameraState = { x: 310, y: 380, k: 1.45 };
+const CAM_SWARM: CameraState = { x: 700, y: 340, k: 1.0 };
+const CAM_PARK: CameraState = { x: 640, y: 340, k: 1.0 };
 
 export interface Scene {
   tl: Timeline;
@@ -437,7 +441,7 @@ function Bucket({ u, demoted, econ }: { u: number; demoted: number; econ: number
       <text x={ORIGIN.x} y={ORIGIN.y - 2} textAnchor="middle" fill={c} fontSize={13.5} fontWeight={700}>
         {econ > 0.4 ? 'R2 · S3' : 'bucket'}
       </text>
-      <text x={ORIGIN.x} y={ORIGIN.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+      <text x={ORIGIN.x} y={ORIGIN.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
         chunks/&lt;sha256&gt;
       </text>
       {demoted > 0 && (
@@ -456,7 +460,7 @@ function Tab({ x, y, u, you, label }: { x: number; y: number; u: number; you?: b
     <g opacity={u}>
       <rect x={x - 26} y={y - 18} width={52} height={36} rx={6} fill={colors.PANEL} stroke={c} strokeWidth={you ? 2 : 1.3} />
       <rect x={x - 26} y={y - 18} width={52} height={9} rx={4} fill={c} opacity={0.35} />
-      <text x={x} y={y + 9} textAnchor="middle" fill={c} fontSize={11} fontWeight={you ? 700 : 400}>
+      <text x={x} y={y + 9} textAnchor="middle" fill={c} fontSize={13} fontWeight={you ? 700 : 400}>
         {label ?? 'tab'}
       </text>
     </g>
@@ -496,7 +500,8 @@ export function Render({ s }: { s: SceneState }) {
 
   // how many boot-profile chunks are resident right now
   const bootN = Math.floor(bootU * BOOT_PROFILE.length);
-  const resident = bootN + (verifyU > 0.5 ? 1 : 0);
+  const hot = BOOT_PROFILE.slice(0, bootN);
+  const resident = hot.length + (verifyU > 0.5 && !hot.includes(READ_CHUNK) ? 1 : 0);
 
   // park transform for movement 2
   const ps = lerp(1, PARK_S, shiftU);
@@ -515,6 +520,10 @@ export function Render({ s }: { s: SceneState }) {
           <g transform={`translate(${ptx} ${pty}) scale(${ps})`}>
             <g opacity={imageU}>
               <rect x={GX} y={GY} width={gridW} height={gridH} fill="#16202e" stroke={colors.GRID} strokeWidth={1.4} />
+              {/* every chunk exists on disk: the whole field reads as one image before any chunk is touched */}
+              {Array.from({ length: COUNT }, (_, i) => (
+                <rect key={`t${i}`} x={cellX(i)} y={cellY(i)} width={CELL - 1} height={CELL - 1} fill="#2c3e57" opacity={1 - clamp01(availU) * 0.7} />
+              ))}
               {monoU > 0 && (
                 <>
                   <rect x={GX} y={GY} width={gridW} height={gridH * monoU} fill={colors.NEGATIVE} opacity={0.28} />
@@ -558,24 +567,18 @@ export function Render({ s }: { s: SceneState }) {
                 )}
               </g>
             )}
-            {shiftU > 0.6 && (
-              <text x={GX} y={GY - 24} fill={colors.TEXT} fontSize={17} opacity={clamp01(shiftU * 3 - 2)}>
-                the same image — hot boot path always faintly lit
-              </text>
-            )}
-
             {/* ---- the one read ---- */}
             {readU > 0 && (
-              <g opacity={readU}>
+              <g opacity={readU * (1 - clamp01(raU * 2)) * (1 - clamp01(bootU * 3))}>
                 <rect x={cellX(READ_CHUNK) - 2} y={cellY(READ_CHUNK) - 2} width={CELL + 3} height={CELL + 3} fill="none" stroke={colors.WARM} strokeWidth={2} />
                 <line x1={cellX(READ_CHUNK) + CELL / 2} y1={cellY(READ_CHUNK) - 44} x2={cellX(READ_CHUNK) + CELL / 2} y2={cellY(READ_CHUNK) - 6} stroke={colors.WARM} strokeWidth={2} />
-                <text x={cellX(READ_CHUNK) + CELL / 2} y={cellY(READ_CHUNK) - 52} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700}>
+                <text x={cellX(READ_CHUNK) + CELL / 2} y={cellY(READ_CHUNK) - 52} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
                   virtio-blk read · 4 KiB
                 </text>
               </g>
             )}
             {mathU > 0 && (
-              <g opacity={mathU}>
+              <g opacity={mathU * (1 - clamp01(bootU * 3)) * (1 - clamp01(raU * 2))}>
                 <rect x={cellX(READ_CHUNK) - 150} y={cellY(READ_CHUNK) + 26} width={330} height={78} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} />
                 <text x={cellX(READ_CHUNK) - 136} y={cellY(READ_CHUNK) + 52} fill={colors.TEXT} fontSize={13.5} fontFamily="monospace">
                   offset {READ_OFFSET.toLocaleString()}
@@ -589,9 +592,9 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             )}
             {verifyU > 0 && shiftU < 0.4 && (
-              <g opacity={verifyU * (1 - clamp01(shiftU * 2.5))}>
+              <g opacity={verifyU * (1 - clamp01(shiftU * 2.5)) * (1 - clamp01(raU * 2))}>
                 <Cell i={READ_CHUNK} fill={colors.ACCENT} u={1} />
-                <text x={cellX(READ_CHUNK) + 22} y={cellY(READ_CHUNK) + 6} fill={colors.POSITIVE} fontSize={13} fontWeight={700}>
+                <text x={cellX(READ_CHUNK) + 22} y={cellY(READ_CHUNK) + 6} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                   sha256 ✓ cached
                 </text>
               </g>
@@ -618,9 +621,12 @@ export function Render({ s }: { s: SceneState }) {
                   <Cell key={i} i={i} fill={colors.SECONDARY} u={clamp01(raU * 2 - 0.9 - k * 0.18)} />
                 ))}
                 {raU > 0.55 && (
-                  <text x={cellX(RUN[0]) - 6} y={cellY(RUN[0]) - 16} fill={colors.SECONDARY} fontSize={13} fontWeight={700} opacity={clamp01(raU * 3 - 1.7)}>
-                    run of 3 → prefetch the next 4
-                  </text>
+                  <g opacity={clamp01(raU * 3 - 1.7) * (1 - clamp01(cowU * 2))}>
+                    <rect x={cellX(RUN[0]) - 12} y={cellY(RUN[0]) - 32} width={266} height={26} rx={5} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
+                    <text x={cellX(RUN[0]) - 2} y={cellY(RUN[0]) - 14} fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
+                      run of 3 → prefetch the next 4
+                    </text>
+                  </g>
                 )}
               </g>
             )}
@@ -651,7 +657,7 @@ export function Render({ s }: { s: SceneState }) {
                     </g>
                   );
                 })}
-                <text x={GX + gridW - 12} y={GY + gridH + 26} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                <text x={GX + gridW - 12} y={GY + gridH + 26} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                   the base image is never modified
                 </text>
               </g>
@@ -662,11 +668,6 @@ export function Render({ s }: { s: SceneState }) {
               Array.from({ length: fillRows }, (_, r) => (
                 <rect key={`f${r}`} x={GX} y={GY + r * CELL} width={gridW} height={CELL - 0.8} fill={colors.SECONDARY} opacity={0.22} />
               ))}
-            {fillU > 0.05 && fillU < 1 && (
-              <text x={GX + gridW / 2} y={GY + gridH + 30} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} opacity={0.9}>
-                background fill — {Math.floor(fillU * 100)}% resident, never blocking a read
-              </text>
-            )}
             {availU > 0 && (
               <g opacity={availU}>
                 {Array.from({ length: COUNT }, (_, i) => {
@@ -684,31 +685,47 @@ export function Render({ s }: { s: SceneState }) {
                     />
                   );
                 })}
-                <text x={GX + gridW / 2} y={GY + gridH + 30} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700}>
-                  brightness = how many peers hold the piece
-                </text>
-                <text x={GX + gridW / 2} y={GY + gridH + 56} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
-                  the swarm rediscovers the boot profile on its own
-                </text>
               </g>
             )}
 
             {/* ---- the running byte counter (movement 1) ---- */}
             {(bootU > 0 || verifyU > 0) && shiftU < 0.4 && (
               <g opacity={clamp01(Math.max(bootU * 4, verifyU)) * (1 - clamp01(shiftU * 2.5))}>
-                <text x={GX + gridW / 2} y={GY + gridH + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={19} fontWeight={700} opacity={cowU > 0.3 ? 0.25 : 1}>
+                <text x={470} y={GY - 18} fill={colors.ACCENT} fontSize={15} fontWeight={700} opacity={1 - clamp01(cowU * 3)}>
                   {MB(resident)} MB fetched · {MB(COUNT)} MB image
                 </text>
               </g>
             )}
           </g>
 
+          {/* movement 2 captions sit under the parked field, in camera coordinates, so they stay at full size */}
+          {shiftU > 0.6 && (
+            <text x={92} y={206} fill={colors.TEXT} fontSize={16} opacity={clamp01(shiftU * 3 - 2)}>
+              the same image — hot boot path always faintly lit
+            </text>
+          )}
+          {fillU > 0.05 && fillU < 1 && (
+            <text x={300} y={540} textAnchor="middle" fill={colors.SECONDARY} fontSize={16} fontWeight={700} opacity={0.95}>
+              background fill — {Math.floor(fillU * 100)}% resident, never blocking a read
+            </text>
+          )}
+          {availU > 0 && (
+            <g opacity={availU}>
+              <text x={300} y={540} textAnchor="middle" fill={colors.WARM} fontSize={17} fontWeight={700}>
+                brightness = how many peers hold the piece
+              </text>
+              <text x={300} y={562} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
+                the swarm rediscovers the boot profile on its own
+              </text>
+            </g>
+          )}
+
           {/* ================ movement 2 · the swarm (unparked coordinates) ================ */}
           {swarmU > 0 && (
             <g>
               {/* the tailnet boundary */}
               <circle cx={SW_CX} cy={SW_CY} r={SW_R + 58} fill="none" stroke={colors.TEAL} strokeWidth={1.4} strokeDasharray="8 7" opacity={swarmU * 0.55} />
-              <text x={SW_CX} y={SW_CY - SW_R - 68} textAnchor="middle" fill={colors.TEAL} fontSize={13.5} fontWeight={700} opacity={swarmU}>
+              <text x={SW_CX} y={TAILNET_Y} textAnchor="middle" fill={colors.TEAL} fontSize={13.5} fontWeight={700} opacity={swarmU}>
                 your tailnet — authenticated peers, access rules gate the swarm
               </text>
               {MESH.map(([a, b], k) => (
@@ -739,7 +756,7 @@ export function Render({ s }: { s: SceneState }) {
                 />
               )}
               {swarmU > 0.6 && seedU < 0.3 && (
-                <text x={SW_CX} y={SW_CY + SW_R + 52} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={700} opacity={clamp01(swarmU * 3 - 2)}>
+                <text x={SW_CX} y={NOTE_Y} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={700} opacity={clamp01(swarmU * 3 - 2)}>
                   peers trade the pieces they already hold
                 </text>
               )}
@@ -758,7 +775,7 @@ export function Render({ s }: { s: SceneState }) {
                       opacity={clamp01(giveU * 2 - k * 0.25) * 0.8}
                     />
                   ))}
-                  <text x={SW_CX} y={SW_CY + SW_R + 52} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5} fontWeight={700}>
+                  <text x={SW_CX} y={NOTE_Y} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5} fontWeight={700}>
                     you hold the hot 100 — now you serve them
                   </text>
                 </g>
@@ -770,8 +787,8 @@ export function Render({ s }: { s: SceneState }) {
           <Bucket u={originU} demoted={seedU} econ={econU} />
           {originU > 0.3 && swarmU < 0.3 && (
             <g opacity={clamp01(originU * 2 - 0.6) * (1 - clamp01(mapU * 1.5))}>
-              <line x1={GX * PARK_S + PARK_TX + gridW * PARK_S + 8} y1={330} x2={ORIGIN.x - 58} y2={ORIGIN.y + 12} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 5" opacity={0.7} />
-              <text x={700} y={200} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <line x1={GX * PARK_S + PARK_TX + gridW * PARK_S + 8} y1={PARK_CY} x2={ORIGIN.x - 58} y2={ORIGIN.y + 12} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 5" opacity={0.7} />
+              <text x={700} y={200} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 every chunk, one source
               </text>
             </g>
@@ -792,7 +809,7 @@ export function Render({ s }: { s: SceneState }) {
                   />
                 </g>
               ))}
-              <text x={SW_CX} y={SW_CY + SW_R + 52} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>
+              <text x={SW_CX} y={NOTE_Y} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>
                 1,000 boots × 100 chunks = 100,000 fetches of the same bytes
               </text>
             </g>
@@ -810,18 +827,18 @@ export function Render({ s }: { s: SceneState }) {
               </text>
               {[
                 ['128 KiB chunk', 'piece'],
-                ['manifest hash list', 'piece hashes (v2: sha-256)'],
+                ['manifest sha-256 list', 'v2 piece hashes: sha-256'],
                 ['chunk index', 'piece index'],
                 ['immutable base image', 'the shared file'],
               ].map(([l, r], k) => (
                 <g key={k}>
-                  <text x={SW_CX - 218} y={302 + k * 27} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                  <text x={SW_CX - 218} y={302 + k * 27} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                     {l}
                   </text>
                   <text x={SW_CX} y={302 + k * 27} textAnchor="middle" fill={colors.ACCENT} fontSize={13}>
                     =
                   </text>
-                  <text x={SW_CX + 218} y={302 + k * 27} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="monospace">
+                  <text x={SW_CX + 218} y={302 + k * 27} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                     {r}
                   </text>
                 </g>
@@ -832,17 +849,17 @@ export function Render({ s }: { s: SceneState }) {
           {/* seed economics: R2 vs S3 */}
           {econU > 0 && (
             <g opacity={econU}>
-              <rect x={SW_CX - 250} y={SW_CY + SW_R + 66} width={500} height={118} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-              <text x={SW_CX} y={SW_CY + SW_R + 94} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
+              <rect x={60} y={506} width={520} height={78} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+              <text x={320} y={524} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 who should hold the seed?
               </text>
-              <text x={SW_CX - 228} y={SW_CY + SW_R + 122} fill={colors.ACCENT} fontSize={12.5} fontFamily="monospace">
+              <text x={84} y={542} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
                 quiet swarm → R2: free egress wins
               </text>
-              <text x={SW_CX - 228} y={SW_CY + SW_R + 146} fill={colors.WARM} fontSize={12.5} fontFamily="monospace">
+              <text x={84} y={558} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 busy swarm → seed idle → S3 cold tiers win
               </text>
-              <text x={SW_CX - 228} y={SW_CY + SW_R + 170} fill={colors.MUTED} fontSize={12}>
+              <text x={84} y={574} fill={colors.MUTED} fontSize={14}>
                 same manifest either way — or both at once
               </text>
             </g>
@@ -851,14 +868,14 @@ export function Render({ s }: { s: SceneState }) {
           {/* a read is a deadline */}
           {prioU > 0 && (
             <g opacity={prioU}>
-              <rect x={370} y={470} width={620} height={64} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-              <text x={388} y={496} fill={colors.WARM} fontSize={13.5} fontWeight={700}>
+              <rect x={60} y={506} width={600} height={64} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+              <text x={78} y={528} fill={colors.WARM} fontSize={14} fontWeight={700}>
                 guest read → chunk 67 · CRITICAL
               </text>
-              <text x={388} y={518} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+              <text x={78} y={550} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 ask: 3 peers + web seed, in parallel — first verified answer wins
               </text>
-              <text x={972} y={496} textAnchor="end" fill={colors.MUTED} fontSize={12.5}>
+              <text x={642} y={528} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 queue: background pieces wait
               </text>
               {[PEERS[2], PEERS[5], PEERS[7]].map((p, k) => (
@@ -880,11 +897,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* trust is layered */}
           {trustU > 0 && (
             <g opacity={trustU}>
-              <rect x={SW_CX - 210} y={SW_CY + SW_R + 66} width={420} height={58} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-              <text x={SW_CX} y={SW_CY + SW_R + 90} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={700}>
+              <rect x={60} y={506} width={520} height={60} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+              <text x={320} y={528} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                 every chunk: sha256 vs manifest, whoever sent it
               </text>
-              <text x={SW_CX} y={SW_CY + SW_R + 110} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={320} y={548} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 tailnet identity to join · hash mismatch → drop and re-request
               </text>
             </g>
@@ -893,8 +910,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {closeU > 0 && (
           <g opacity={closeU}>
-            <rect x={300} y={262} width={680} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={316} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
+            <rect x={280} y={262} width={720} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+            <text x={640} y={316} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
               content-addressed · hash-verified · one manifest, two transports
             </text>
             <text x={640} y={360} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>

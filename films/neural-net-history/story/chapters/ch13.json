@@ -1,0 +1,665 @@
+{
+ "id": "ch13",
+ "number": 13,
+ "title": "The Case Reopened",
+ "blurb": "2023. A pioneer takes down his own forecast, a new candle of worry is lit and the debate splits into three lamps, not two teams.",
+ "shots": [
+  {
+   "id": "ch13-s01",
+   "kind": "scene",
+   "setting": "The detective's study at night: the Wall of Forecasts pinned beside the dark case board; then, through it, the paper stage under the candle of 2012 · May 2023",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L1302",
+     "text": "In 2023, Geoffrey Hinton takes down an old forecast. It is his own.",
+     "pauseAfter": 0.85,
+     "direction": "slow and musical, the teacher leaning in; \"an old forecast\" plain (the slip is on screen); let \"his own\" land, then leave the silence alone",
+     "spoken": "In twenty twenty-three, Geoffrey Hinton takes down an old forecast. It is his own."
+    },
+    {
+     "id": "L1303",
+     "text": "Machines smarter than people? “I thought it was 30 to 50 years or even longer away. Obviously, I no longer think that.”",
+     "spoken": "Machines smarter than people? \"I thought it was thirty to fifty years or even longer away. Obviously, I no longer think that.\"",
+     "direction": "read the quotation plainly, as his words, not performed; no imitation of any voice"
+    },
+    {
+     "id": "L1303b",
+     "text": "So the file reopens, on a second question: how far will it go, and how fast?",
+     "pauseAfter": 0.8,
+     "direction": "the narrator, framing, not quoting: unhurried and curious, a teacher setting the question for the act; a small lift on \"how far\", a plainer \"and how fast\"; let it hang"
+    }
+   ],
+   "leadIn": 3.3,
+   "holdAfter": 1.3,
+   "visual": "THIS SHOT: the case reopens: Hinton takes his own 30-to-50-years slip off the Wall, it darkens and curls in his hand, and the new question is asked aloud. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'The Case Reopened', drops down from the frame's top edge at top-left like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up; no new shot, no lamp change. CAMERA: WALL (a slow lateral truck to W6), then the push through the slip onto the stage. (The truck, the settle on the slip and the push through it all play wordless in the lead-in, under the tab; the first line begins on the stage.) STUDY LOCK (staging appendix): every study, board, shelf and Wall beat is candleAmber, so the shot opens candleAmber and its mood field names the opening location only. Open on the Wall of Forecasts in the green lamp's pool, the camera trucking slowly right along its fixed slot order (see the staging appendix): Turing's curled 'about fifty years', the yellowed chess slip's empty pin, Rosenblatt's 1961 slip, Florence's 2012 slip, Coulom's glinting Go slip. The truck slows on the next slot, one slip half in shadow, the one whose half-lit corner we glimpsed in ch01-s05, ch06-s07 and ch09-s05: '30 TO 50 YEARS OR EVEN LONGER' in typewriter type, with no date of pinning shown. Just beyond it, at the far end, Hinton's 2017 'graduate student' slip sits in the dark, unvisited. The camera does not stop at the wall; it pushes through the slip's paper grain (the FLAME PUSH device from the staging appendix, anchored on the slip instead of a flame: a 1.2 s camera push to lens 1.6 with bloom up and crossfadeMood candleAmber to duskRose over the same 1.2 s, no foreground dip; never TRANSITIONS.lampChange inside a shot. The shot itself arrives from ch12 on a lampChange, for the chapter break) onto the paper stage of the still-burning 2012 candle LEARNED FEATURES, GIVEN DATA AND ARITHMETIC, where the same wall now stands huge as a backdrop. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. In the centre of the candle's pool of light stands the tall man: lean, white-grey hair swept back, standing (as he has been since the mid-2000s), facing the wall. He reaches up with his near hand (pinch), lifts the slip off its pin in one slow arc on twos, and lowers it to look at it. The pin is left bare and catches a tiny glint; the slot stays empty for the rest of the film. Music drops out on 'down' and stays silent through the pause: only the candle's flicker and the faint paper rustle. As the quote is read, the quote card rises beside him in EB Garamond with speaker and date. He does not turn to camera.",
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "manila index tab typed ‘The Case Reopened’ drops down from the frame's top edge at top-left, holds 2.5 s, slides back up"
+    },
+    {
+     "id": "truck",
+     "at": {
+      "shotTime": 0
+     },
+     "what": "slow truck right along the Wall of Forecasts past the familiar slips"
+    },
+    {
+     "id": "slip",
+     "at": {
+      "shotTime": 1.2
+     },
+     "what": "the camera settles on the '30 TO 50 YEARS OR EVEN LONGER' slip; a faint rim catches its curled corner"
+    },
+    {
+     "id": "through",
+     "at": {
+      "shotTime": 1.8
+     },
+     "what": "wordless push through the slip (1.2 s) into the stage: the 2012 candle’s pool, the tall man standing in its centre; the line begins as the push lands"
+    },
+    {
+     "id": "reach",
+     "at": {
+      "line": "L1302",
+      "word": "Hinton"
+     },
+     "what": "his hand rises to the pin"
+    },
+    {
+     "id": "lift",
+     "at": {
+      "line": "L1302",
+      "word": "down"
+     },
+     "what": "the slip comes off its pin; the bare pin glints; music cuts to silence"
+    },
+    {
+     "id": "own",
+     "at": {
+      "line": "L1302",
+      "word": "own"
+     },
+     "what": "he lowers the slip and looks at it; hold"
+    },
+    {
+     "id": "quote",
+     "at": {
+      "line": "L1303",
+      "word": "Machines"
+     },
+     "what": "quote card rises beside him as the question is asked"
+    },
+    {
+     "id": "nolonger",
+     "at": {
+      "line": "L1303",
+      "word": "Obviously"
+     },
+     "what": "the slip's paper darkens and curls in his hand, the way overdue slips have aged all film"
+    },
+    {
+     "id": "question",
+     "at": {
+      "line": "L1303b",
+      "word": "question"
+     },
+     "what": "the quote card fades; hold on him at the wall with the darkened slip in his hand while the question is posed; the bare pin glints once"
+    }
+   ],
+   "cast": [
+    "hinton"
+   ],
+   "props": [
+    "wallOfForecasts",
+    "forecastSlip",
+    "pin",
+    "bankersLamp",
+    "beliefCandle2012"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "The Case Reopened",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "date",
+     "text": "1 MAY 2023",
+     "beat": "through"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Geoffrey Hinton",
+     "beat": "reach"
+    },
+    {
+     "kind": "label",
+     "text": "30 TO 50 YEARS OR EVEN LONGER",
+     "beat": "slip"
+    },
+    {
+     "kind": "quote",
+     "text": "“I thought it was 30 to 50 years or even longer away. Obviously, I no longer think that.” — Hinton, 2023",
+     "beat": "quote"
+    }
+   ],
+   "music": {
+    "cue": "ch13-reopened",
+    "note": "duskRose strings, low and sparse; the candle motif's rising fourth begins as the camera finds the slip, then everything stops dead on 'down'. Full silence through the pause (a scored silence, one of the film's five). Re-enter only under the quote with a single sustained cello note, the held suspension: doubt."
+   },
+   "transitionIn": "lampChange",
+   "claims": [
+    "e12-hinton-timeline",
+    "e12-hinton-leaves"
+   ],
+   "creditsSources": [
+    "“I thought it was 30 to 50 years or even longer away. Obviously, I no longer think that.” — Geoffrey Hinton, The New York Times, 1 May 2023 (q12-hinton-wayoff)"
+   ]
+  },
+  {
+   "id": "ch13-s02",
+   "kind": "scene",
+   "setting": "The paper stage of the 2012 candle: its pool of light on the floor, and the dark rim beyond · May 2023",
+   "era": "2020s",
+   "mood": "duskRose",
+   "lines": [
+    {
+     "id": "L1304",
+     "text": "He left Google to speak freely, adding: “Google has acted very responsibly.”",
+     "direction": "even-handed; the fairness clause matters as much as the news; then let the walk play in silence"
+    }
+   ],
+   "holdAfter": 3.7,
+   "visual": "THIS SHOT: on the 2012 candle's stage Hinton walks from the centre of the light to its rim, where a faint ghost of his 1976 self once sat. CAMERA: stage only (the walk to the rim; no study visit). Wide on the candle-clock's stage (Edge of the Light): the 2012 candle stands huge, its pool a soft ellipse on the boards. The tall man still holds his slip. As the line begins, a small parchment fairness card rises at his shoulder with the tweet's last sentence, its attribution marked '(tweet, as widely reproduced)'; it stays up through the walk. Then the walk: in profile, on twos, he walks slowly out of the centre of the pool, his shadow shortening and then swinging long across the floor as he crosses the bright ring, and he stops at the rim, half in shadow, turned to face outward like every dissenter before him. Camera holds wide and lets him walk; at the rim a slow dolly-in to a two-shot of his profile and the flame behind him. A ghost-image memory, very faint, is laid over the floor: a seated young man at the rim in 1976 (the hinton-young silhouette at a desk), so the viewer sees he has stood here before, in a different chair. This is the dissenter's walk, completed: rim (1976) to centre (2012) and back to the rim (2023). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim.",
+   "beats": [
+    {
+     "id": "fair",
+     "at": {
+      "line": "L1304",
+      "edge": "start"
+     },
+     "what": "the fairness card rises at his shoulder as the line begins, so it can be read through the line and the walk"
+    },
+    {
+     "id": "walk",
+     "at": {
+      "line": "L1304",
+      "edge": "end",
+      "offset": 0.8
+     },
+     "what": "wordless: he begins the walk from centre to rim; shadow swings long"
+    },
+    {
+     "id": "rim",
+     "at": {
+      "line": "L1304",
+      "edge": "end",
+      "offset": 1.84
+     },
+     "what": "he arrives at the rim, half in shadow, facing out"
+    },
+    {
+     "id": "ghost",
+     "at": {
+      "line": "L1304",
+      "edge": "end",
+      "offset": 2.12
+     },
+     "what": "the faint 1976 ghost of a seated young man at the same rim; slow dolly-in"
+    }
+   ],
+   "cast": [
+    "hinton",
+    "hinton-young"
+   ],
+   "props": [
+    "beliefCandle2012",
+    "forecastSlip",
+    "parchmentCard"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "“Google has acted very responsibly.” — Hinton, May 2023 (tweet, as widely reproduced)",
+     "beat": "fair"
+    }
+   ],
+   "music": {
+    "cue": "ch13-reopened",
+    "note": "the held suspension continues on solo cello under the walk, very soft; no resolution. A single quiet piano note as he reaches the rim."
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e12-hinton-leaves",
+    "e4-hinton-cv",
+    "e8-hinton-back"
+   ],
+   "creditsSources": [
+    "“Google has acted very responsibly.” — Geoffrey Hinton, on Twitter, 1 May 2023 (as widely reproduced; q12-hinton-tweet)"
+   ]
+  },
+  {
+   "id": "ch13-s03",
+   "kind": "scene",
+   "setting": "The candle shelf under the case board, then the paper stage of the new candle · 30 May 2023",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L1307",
+     "text": "Another candle, lit by worry: machines smarter than us may be only years away, and dangerous.",
+     "pauseAfter": 0.55,
+     "direction": "unadorned; say the belief plainly, as the label on a candle, not as a warning"
+    },
+    {
+     "id": "L1307b",
+     "text": "In March, an open letter asked for a pause. None came.",
+     "pauseAfter": 0.6,
+     "direction": "plain and brief, a matter of record; a small beat before 'None came', said flatly, no irony",
+     "trimDb": 0
+    },
+    {
+     "id": "L1308",
+     "text": "Then a one-sentence warning, about extinction. Hinton signed first, Bengio second, and the heads of leading labs too.",
+     "pauseAfter": 0.6,
+     "direction": "level; a short beat after 'extinction' so the strip can begin to be read; 'the heads of leading labs' even, not pointed, no lab stressed"
+    }
+   ],
+   "holdAfter": 2.3,
+   "visual": "THIS SHOT: a match lights the worry candle; a pause letter lies unanswered beside it, and a one-sentence warning is signed, Hinton first, Bengio second, then lab heads. CAMERA: SHELF (low macro; the worry candle lit, the letter beside it), then the flame push onto the stage. Candle-clock: back on the study shelf (STUDY LOCK: the shelf is candleAmber; the shot arrives on a tint crossfade, duskRose to candleAmber), the hands strike a match and light a tall new candle at the right end of the row. It is lettered in IBM Plex Mono small caps, a paraphrase with no quotation marks: SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND DANGEROUS. The lettering is part of the candle prop (no separate caption label). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. This candle is new: its first year-ring is scored just below the wick and it has no sleeve yet. The flame takes with an emberRed bloom from the match, a practical light only and the one red accent of the act; it settles to an ordinary candle flame within a second, and the stage beyond the flame is duskRose. As the March line begins, still on the shelf in the new flame's light, a small open parchment letter lies beside the candle (parchmentCard), its short label rising (MARCH 2023 · PAUSE LETTER · NO MAJOR LAB PAUSED; the letter's full wording is in creditsSources); on 'None came' the hands lay it face down and push it aside, unanswered. Then, a second after 'None came' ends, push into the flame and through it (the FLAME PUSH device from the staging appendix: a 1.2 s camera push to lens 1.6 on the flame anchor with bloom up and crossfadeMood candleAmber to duskRose over the same 1.2 s (duskRose, the same stage tint as the other two lamps in ch13-s04: emberRed is never the stage tint here, only the match's practical bloom), no foreground dip; never TRANSITIONS.lampChange inside a shot) to its stage: the new candle stands huge, and a long parchment strip unrolls across the backdrop carrying the statement's opening clause in EB Garamond, large and alone, word for word identical to the on-screen quote: “Mitigating the risk of extinction from AI should be a global priority…” (the full sentence, with its comparison to pandemics and nuclear war, is in the published sources list) The narrator does not read it; the strip rises a second after 'None came' ends, while the camera lands on the stage, and stays on screen to the end of the shot, and the shot holds music only after the last line, long enough for the clause to be read. Its attribution reads only 'Statement on AI Risk' (the date card carries 30 MAY 2023; the full credit is in creditsSources). Beneath the strip, signatures appear one after another as small pen-written lines: Hinton (first), Bengio (second); Bengio's silhouette (grey curly hair, strong brows, blazer) steps into the pool from the dark to stand beside Hinton's, both facing the flame, inside the light. On 'heads', three more pen lines are written below in the same pen hand, the names legible as part of the strip prop (Demis Hassabis, Sam Altman, Dario Amodei; no 'Also signed' caption card), and three smaller figures (Hassabis, Altman, Dario Amodei, in their recorded silhouettes) stand further back in the same pool, equal in size and light: no lab is singled out. Hold on the figures and the strip in silence; the candle's first ring is the only one burning.",
+   "beats": [
+    {
+     "id": "strike",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "the hands strike a match on the shelf"
+    },
+    {
+     "id": "lit",
+     "at": {
+      "line": "L1307",
+      "word": "candle"
+     },
+     "what": "the new candle catches; a brief emberRed bloom from the match (practical only); lettering legible"
+    },
+    {
+     "id": "belief",
+     "at": {
+      "line": "L1307",
+      "word": "machines"
+     },
+     "what": "slow push toward the lettering as the belief is spoken"
+    },
+    {
+     "id": "letter",
+     "at": {
+      "line": "L1307b",
+      "edge": "start"
+     },
+     "what": "as the March line begins, a small open letter lies beside the new candle on the shelf; date label rises; on 'None came' the hands lay it face down"
+    },
+    {
+     "id": "strip",
+     "at": {
+      "line": "L1307b",
+      "edge": "end",
+      "offset": 1
+     },
+     "what": "a second after 'None came' ends, push through the flame; the parchment strip unrolls on the stage and stays up to the end of the shot"
+    },
+    {
+     "id": "sig1",
+     "at": {
+      "line": "L1308",
+      "word": "first"
+     },
+     "what": "the first signature line is written; Hinton's figure in the pool"
+    },
+    {
+     "id": "sig2",
+     "at": {
+      "line": "L1308",
+      "word": "Bengio"
+     },
+     "what": "the second signature; Bengio steps into the light beside him"
+    },
+    {
+     "id": "labs",
+     "at": {
+      "line": "L1308",
+      "word": "heads"
+     },
+     "what": "three more pen-written signature lines on the strip (the names in the pen hand, part of the prop, not a caption); three lab heads stand further back in the same pool, equal in light"
+    },
+    {
+     "id": "read",
+     "at": {
+      "line": "L1308",
+      "word": "too",
+      "edge": "end"
+     },
+     "what": "music-only hold on the strip and figures: the reading window"
+    }
+   ],
+   "cast": [
+    "hinton",
+    "bengio-2020s",
+    "hassabis",
+    "altman",
+    "amodei-dario",
+    "narrator-hands"
+   ],
+   "props": [
+    "candleShelf",
+    "beliefCandleWorry",
+    "match",
+    "parchmentStrip",
+    "parchmentCard"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "MARCH 2023 · PAUSE LETTER · NO MAJOR LAB PAUSED",
+     "beat": "letter",
+     "until": "strip"
+    },
+    {
+     "kind": "date",
+     "text": "30 MAY 2023",
+     "beat": "strip"
+    },
+    {
+     "kind": "quote",
+     "text": "“Mitigating the risk of extinction from AI should be a global priority…” — Statement on AI Risk",
+     "beat": "strip"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Geoffrey Hinton · first signatory",
+     "beat": "sig1"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Yoshua Bengio · second signatory",
+     "beat": "sig2"
+    }
+   ],
+   "music": {
+    "cue": "ch13-worry",
+    "note": "the candle motif's rising fourth, lit: low brass and strings in a darker voicing than any earlier lighting, warm with an edge. It climbs to the suspension and holds there under the reading window; this belief is still burning, so it never resolves."
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e12-fli",
+    "e12-cais"
+   ],
+   "leadIn": 0.6,
+   "minDuration": 18,
+   "creditsSources": [
+    "“Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war.” — Statement on AI Risk, Center for AI Safety, 30 May 2023; Hinton first signatory, Bengio second; Demis Hassabis (Google DeepMind), Sam Altman (OpenAI) and Dario Amodei (Anthropic) also signed (q12-cais; e12-cais)",
+    "Open letter, Future of Life Institute, March 2023: a call to pause for at least six months the training of AI systems more powerful than GPT-4; no major lab paused (e12-fli)"
+   ]
+  },
+  {
+   "id": "ch13-s04",
+   "kind": "scene",
+   "setting": "One wide paper stage with three lamps, their pools overlapping at the edges · 2023",
+   "era": "2020s",
+   "mood": "duskRose",
+   "lines": [
+    {
+     "id": "L1309",
+     "text": "Not two teams. Three camps.",
+     "pauseAfter": 0.6,
+     "direction": "wry, gently correcting a common picture"
+    },
+    {
+     "id": "L1310",
+     "text": "At one rim, Timnit Gebru and colleagues: “The harms from so-called AI are real and present.”",
+     "direction": "plain and respectful; their words read exactly, without irony",
+     "spoken": "At one rim, Timnit Gebru and colleagues: “The harms from so-called A.I. are real and present.”",
+     "pauseAfter": 1
+    },
+    {
+     "id": "L1311",
+     "text": "At the other, Yann LeCun called fears of a sudden takeover “preposterously ridiculous.”",
+     "direction": "the same plain, respectful tone; his words read exactly, no relish",
+     "spoken": "At the other, Yann Le Cun called fears of a sudden takeover “preposterously ridiculous.”"
+    },
+    {
+     "id": "L1312",
+     "text": "Hinton, Bengio and LeCun had shared computing's million-dollar Turing Award. Two signed. The third stood apart.",
+     "pauseAfter": 0.55,
+     "direction": "plain, even; 'million-dollar' said as a fact, not with awe, so a newcomer knows the prize is the field's highest; then a count, not a judgement",
+     "spoken": "Hinton, Bengio and Le Cun had shared computing's million-dollar Turing Award. Two signed. The third stood apart."
+    }
+   ],
+   "holdAfter": 0.5,
+   "visual": "THIS SHOT: one stage, three lamps with overlapping pools: present harms at one rim, LeCun at the other, and three Turing medallions over the men who shared them. CAMERA: stage only (one continuous pull-back, then the pans; no study visit). A plain continuous pull-back with no tint change (ch13-s03 already ends in duskRose on the worry candle's stage), as the camera pulls back from the worry candle to reveal it is one of three lamps on a single wide stage, not two opposing teams: centre, the tall worry candle with Hinton and Bengio inside its pool; stage left, a plain reading lamp over a desk of papers (present harms), where Timnit Gebru and Emily M. Bender stand in its light; stage right, a hooded lamp barely lit, with Yann LeCun (grey hair, dark-rimmed glasses, dark jacket) standing at its rim with his back half to the worry candle, a small off-switch plate glinting on a server-cabinet silhouette behind him. The three pools of light overlap at their edges, and Hinton's long shadow falls across the present-harms lamp's pool too: people belonged to more than one lamp. Quote cards rise beside each group in turn, each a short fragment that the narrator speaks. On the last line ('Hinton, Bengio and LeCun had shared computing's million-dollar Turing Award'; the names are spoken so the ear knows which three, and the gloss tells a newcomer what the prize is), the name card '2018 A.M. Turing Award' rises (so the prize is not confused with Minsky's 1969 award) and three small medallions, each stamped only with a tiny '2018' (in-world, not a caption), hang above the stage on threads; two drift down to hang over Hinton and Bengio by the worry candle, the third over LeCun at his own lamp. Camera: slow pull-back on the first line, a gentle pan left then right with the quotes, settling wide.",
+   "beats": [
+    {
+     "id": "three",
+     "at": {
+      "line": "L1309",
+      "word": "Three"
+     },
+     "what": "pull back: three lamps revealed on one stage; pools overlapping"
+    },
+    {
+     "id": "harms",
+     "at": {
+      "line": "L1310",
+      "edge": "start"
+     },
+     "what": "pan left as the line begins: the present-harms lamp, Gebru and Bender; quote card (until the pan right)"
+    },
+    {
+     "id": "lecun",
+     "at": {
+      "line": "L1311",
+      "word": "other"
+     },
+     "what": "pan right: LeCun at the hooded lamp’s rim; quote card (until the medallions)"
+    },
+    {
+     "id": "medals",
+     "at": {
+      "line": "L1312",
+      "word": "Hinton"
+     },
+     "what": "three medallions hang above the stage on threads"
+    },
+    {
+     "id": "split",
+     "at": {
+      "line": "L1312",
+      "word": "apart"
+     },
+     "what": "two medallions over Hinton and Bengio, the third over LeCun at his own lamp; settle wide"
+    }
+   ],
+   "cast": [
+    "hinton",
+    "bengio-2020s",
+    "gebru",
+    "bender",
+    "lecun-2020s"
+   ],
+   "props": [
+    "beliefCandleWorry",
+    "readingLamp",
+    "hoodedLamp",
+    "serverCabinet",
+    "turingMedallion"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Timnit Gebru · Emily M. Bender",
+     "beat": "harms"
+    },
+    {
+     "kind": "quote",
+     "text": "“The harms from so-called AI are real and present…” — Gebru, Bender & McMillan‑Major",
+     "beat": "harms",
+     "until": "lecun"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Yann LeCun",
+     "beat": "lecun"
+    },
+    {
+     "kind": "quote",
+     "text": "“…just preposterously ridiculous.” — Yann LeCun",
+     "beat": "lecun",
+     "until": "medals"
+    },
+    {
+     "kind": "nameCard",
+     "text": "2018 A.M. TURING AWARD · BENGIO · HINTON · LECUN",
+     "beat": "medals"
+    }
+   ],
+   "music": {
+    "cue": "ch13-worry",
+    "note": "three-voice texture, one line per lamp, none dominant: the worry candle's held suspension in the strings, a plain repeated piano figure for present harms, a dry plucked bass for the sceptic. They overlap and never cadence together."
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e12-three-camps",
+    "e12-dair",
+    "e12-lecun-2023",
+    "e9-turing",
+    "e12-fli"
+   ],
+   "leadIn": 0.6,
+   "creditsSources": [
+    "“The harms from so-called AI are real and present and follow from the acts of people and corporations deploying automated systems.” — Timnit Gebru, Emily M. Bender, Angelina McMillan-Major (DAIR statement), 31 March 2023, replying to the March pause letter (q12-dair-harms)",
+    "“That’s you know just preposterously ridiculous.” — Yann LeCun, BBC, June 2023, on fears of a super-intelligent system taking over the world within minutes (q12-lecun-ridiculous)"
+   ]
+  },
+  {
+   "id": "ch13-s06",
+   "kind": "scene",
+   "setting": "The detective's study: the case board under the green-shaded lamp; the window behind it shows dark water · timeless",
+   "era": "timeless",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L1316",
+     "text": "That August, Doug Lenat died, still at work on common sense: thirty-nine years, the longest candle on our shelf.",
+     "direction": "quiet and respectful, an obituary not a verdict; no irony in the voice (the picture holds the irony); let 'thirty-nine years' land on the dark sleeve"
+    }
+   ],
+   "leadIn": 1,
+   "holdAfter": 5.8,
+   "visual": "THIS SHOT: the thin Cyc taper goes out at thirty-nine rings, the case card is re-pinned, and an oxblood thread leads to the window, where the candle shelf's reflection settles over dark water between two shores. CAMERA: the reverse flame push out to SHELF (low macro; the Cyc taper goes out), a tilt up to BOARD (the K card re-pinned as an insert), then along the thread to the study window. Back in the study on a reverse FLAME PUSH (no lampChange, so the film stays out of black): the shot opens inside the worry candle's flame at lens 1.6 with bloom up and pulls back over 1.2 s onto the study's candle shelf, with crossfadeMood duskRose to candleAmber over the same 1.2 s (STUDY LOCK). The camera settles low on the candle shelf beneath the board, the new worry candle at frame right, and stays on the shelf for the whole of the narrated line: the thin Cyc taper, lit in chapter 5 in 1984 and still burning in ch11, bows its flame on 'died' and goes out with a thread of smoke; on 'thirty-nine' a faint rim of light runs up its sleeve, now 39 rings (234 px), dark, the tallest bar on the shelf, and its small tag reads '1984–2023 · 39'. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. As the line ends, the camera tilts up to the board. On the case board, the case card WHO TAUGHT IT? (in slot K at the board's centre) had been tilted in ch12-s08 as if the case were closing; the hands straighten it and press its pin firmly home (beat 'repin'). Hinton's taken-down slip lies flat on the desk under the lamp. Then a hand draws a new oxblood thread from the 2022 garden-shears card in slot C4-b toward the right edge of the board (beat 'thread'); the thread runs off the board, across the dark wall and toward the study window, where the night outside resolves into dark water and, faintly, two far shorelines with small lit windows, equal in warmth. The camera follows the thread across to the window (beat 'water') and holds on the water. The reflection gets its own unhurried moment: first the lamp's reflection trembles in the glass alone (beat 'reflect'); then (beat 'shelf') the right end of the candle shelf, flames and all, resolves in the glass, laid over the dark water, so the shelf seems to run on out across the strait, and it holds to the end of the shot under music alone: this reflection is how chapter 14 shows its candles (staging: CANDLE PLACEMENT); they are lit on the study shelf's right end, where ch15-s08 finds them directly. Chapter 14's first line ('Back in 2017, China…') names where the thread leads.",
+   "beats": [
+    {
+     "id": "cyc",
+     "at": {
+      "shotTime": 1.4
+     },
+     "what": "the reverse flame push lands on the candle shelf; the thin Cyc taper still burning, its dark sleeve tall beside the new worry candle; tag '1984–2023 · 39'"
+    },
+    {
+     "id": "out",
+     "at": {
+      "line": "L1316",
+      "word": "died"
+     },
+     "what": "the Cyc taper's flame bows and goes out; a thread of smoke rises"
+    },
+    {
+     "id": "sleeve",
+     "at": {
+      "line": "L1316",
+      "word": "thirty-nine"
+     },
+     "what": "a faint rim of light runs up the dark 39-ring sleeve, the tallest bar on the shelf"
+    },
+    {
+     "id": "repin",
+     "at": {
+      "line": "L1316",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "tilt up to the board; the hands straighten the case card WHO TAUGHT IT? and press its pin home"
+    },
+    {
+     "id": "thread",
+     "at": {
+      "line": "L1316",
+      "edge": "end",
+      "offset": 1.1
+     },
+     "what": "an oxblood thread is drawn off the board's right edge"
+    },
+    {
+     "id": "water",
+     "at": {
+      "line": "L1316",
+      "edge": "end",
+      "offset": 2
+     },
+     "what": "follow the thread to the window: dark water, two far shores lit equally"
+    },
+    {
+     "id": "reflect",
+     "at": {
+      "line": "L1316",
+      "edge": "end",
+      "offset": 2.9
+     },
+     "what": "the lamp's reflection trembles in the glass, alone, first"
+    },
+    {
+     "id": "shelf",
+     "at": {
+      "line": "L1316",
+      "edge": "end",
+      "offset": 3.9
+     },
+     "what": "the right end of the candle shelf, flames and all, resolves over the dark water and holds to the end of the shot before ch14-s01 pushes through the mullions"
+    }
+   ],
+   "props": [
+    "caseBoard",
+    "caseCard",
+    "redThread",
+    "bankersLamp",
+    "studyWindow"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "CYC · 1984–2023 · 39",
+     "beat": "cyc"
+    }
+   ],
+   "music": {
+    "cue": "ch13-reopened",
+    "note": "the candle motif on solo celesta, rising fourth, very soft under the line; the held suspension as the Cyc flame goes out; a single neutral plucked string enters on 'water', panned dead centre, foreshadowing Two Shores."
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e5-lenat-death",
+    "e5-cyc",
+    "e12-bletchley"
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "minDuration": 12
+  }
+ ]
+}

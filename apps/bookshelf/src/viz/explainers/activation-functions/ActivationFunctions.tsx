@@ -3,6 +3,7 @@ import type { SceneState, TimelineOverrides } from '../../core';
 import { Axes, FunctionPlot } from '../../primitives';
 import overrides from './overrides.json';
 import {
+  HIDDEN,
   HINGES,
   LOG_MAX,
   LOSS_PANEL,
@@ -96,16 +97,16 @@ function Frame({ s }: { s: SceneState }) {
             />
             <MathLabel
               tex="f_1(x)=a_1x+b_1"
-              x={xScale(1.75)}
-              y={yScale(line1(1.75)) - 28}
+              x={xScale(-1.5)}
+              y={yScale(line1(-1.5) + 0.6)}
               fontSize={19}
               color={colors.ACCENT}
               opacity={s.get(scene.line1TexU) * line1U}
             />
             <MathLabel
               tex="f_2(f_1(x))"
-              x={xScale(-1.75)}
-              y={yScale(composed(-1.75)) - 30}
+              x={xScale(0.9)}
+              y={yScale(0.9)}
               fontSize={19}
               color={colors.WARM}
               opacity={compMorph * compU}
@@ -123,7 +124,7 @@ function Frame({ s }: { s: SceneState }) {
               reveal={reluU}
               color={colors.POSITIVE}
               width={3}
-              opacity={sumM > 0 ? Math.max(0.25, 1 - sumM) : 1}
+              opacity={sumM > 0 ? Math.max(0, 1 - sumM) : 1}
             />
             {sumM > 0 && (
               <FunctionPlot
@@ -216,6 +217,18 @@ function Frame({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed labels (clear of the caption lower-third) */}
+      {/* a solid plate keeps the composed line from running through the equation */}
+      {s.get(scene.collapseTexU) > 0 && (
+        <rect
+          x={STAGE_W / 2 - 470}
+          y={28}
+          width={940}
+          height={48}
+          rx={10}
+          fill={colors.BG}
+          opacity={s.get(scene.collapseTexU) * 0.92}
+        />
+      )}
       <MathLabel
         tex="a_2(a_1x+b_1)+b_2=(a_2a_1)\,x+(a_2b_1+b_2)"
         x={STAGE_W / 2}
@@ -249,6 +262,33 @@ function Frame({ s }: { s: SceneState }) {
         opacity={s.get(scene.netTexU)}
       />
 
+      {/* the 1-16-1 network the caption names; it fades as the fitted curve draws in */}
+      {targetU * (1 - netU) > 0 && (
+        <g opacity={targetU * (1 - netU)}>
+          {Array.from({ length: HIDDEN }, (_, j) => {
+            const hy = 118 + (j * 94) / (HIDDEN - 1);
+            return (
+              <g key={j}>
+                <line x1={150} y1={165} x2={270} y2={hy} stroke={colors.GRID} strokeWidth={1.4} />
+                <line x1={270} y1={hy} x2={390} y2={165} stroke={colors.GRID} strokeWidth={1.4} />
+                <circle cx={270} cy={hy} r={4} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.8} />
+              </g>
+            );
+          })}
+          <circle cx={150} cy={165} r={7} fill={colors.ACCENT} />
+          <circle cx={390} cy={165} r={7} fill={colors.ACCENT} />
+          <text x={150} y={194} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+            input
+          </text>
+          <text x={390} y={194} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+            output
+          </text>
+          <text x={270} y={236} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            16 hidden hinges
+          </text>
+        </g>
+      )}
+
       {/* the loss inset: the REAL training curve */}
       {panelU > 0 && (
         <g opacity={panelU}>
@@ -265,7 +305,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={LOSS_PANEL.x + 22} y={LOSS_PANEL.y + 28} fill={colors.TEXT} fontSize={15}>
             loss per epoch
           </text>
-          <Axes x={xLoss} y={yLoss} reveal={panelU} xTicks={3} yTicks={3} fontSize={10} />
+          <Axes x={xLoss} y={yLoss} reveal={panelU} xTicks={3} yTicks={3} fontSize={12} />
           <FunctionPlot
             x={xLoss}
             y={yLoss}
@@ -289,7 +329,7 @@ function Frame({ s }: { s: SceneState }) {
             y={LOSS_PANEL.y + 28}
             textAnchor="end"
             fill={colors.MUTED}
-            fontSize={13}
+            fontSize={12}
           >
             {`epoch ${Math.round(epoch)} · mse ${mse.toFixed(3)}`}
           </text>

@@ -1,0 +1,175 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-05T15:32:10.009Z",
+ "summary": {
+  "pass": 19,
+  "warn": 4,
+  "fail": 0,
+  "skip": 2
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "7 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "pass",
+   "detail": "128 wpm overall",
+   "wpm": 127.8,
+   "perShot": {
+    "ch01-s01": 149.8,
+    "ch01-s02": 134.1,
+    "ch01-s03": 117.4
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "warn",
+   "detail": "loud clip edges (possible clipped words): L0101 (head -29 dBFS)",
+   "loud": [
+    "L0101 (head -29 dBFS)"
+   ]
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "warn",
+   "detail": "stem -22.4 LUFS (target -18), TP -1.3 dBTP, limiter 4 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "skip",
+   "detail": "STT round-trip on names not automated (no local STT; ElevenLabs speech-to-text would spend credits) — listen to lines with lexicon entries"
+  },
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "fresh",
+   "status": "warn",
+   "detail": "script.json is newer than timeline.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "9 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "warn",
+   "detail": "0.7 min vs target 1.0 min (75%)"
+  },
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "pass",
+   "detail": "1 cues rendered at exact length",
+   "problems": [],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "0.7 min of music over 0.7 min (100%)"
+  },
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-16 LUFS (target -16), LRA 3.7, dynamic normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-1.5 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "pass",
+   "detail": "44.75s vs film 44.75s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "pass",
+   "detail": "music ducks 6.44 dB under 34.6s of narration"
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "1 slices"
+  },
+  {
+   "stage": "render",
+   "id": "frames",
+   "status": "pass",
+   "detail": "1074 frames (expected 1074 = round(44.75 × 24))"
+  },
+  {
+   "stage": "render",
+   "id": "format",
+   "status": "pass",
+   "detail": "1920×1080 @ 24 fps yuv420p"
+  },
+  {
+   "stage": "render",
+   "id": "av",
+   "status": "pass",
+   "detail": "video 44.750s, audio 44.75s (aac)"
+  },
+  {
+   "stage": "render",
+   "id": "extras",
+   "status": "pass",
+   "detail": "captions muxed"
+  },
+  {
+   "stage": "sheets",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "3 sheets current"
+  },
+  {
+   "stage": "publish",
+   "id": "manifest",
+   "status": "skip",
+   "detail": "not published"
+  }
+ ]
+}

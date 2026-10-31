@@ -1,0 +1,19 @@
+{
+ "shot": "ch07-s08",
+ "at": "2026-10-28T17:40:40.480Z",
+ "step": 0.0833,
+ "sampled": 117,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": []
+}

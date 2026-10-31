@@ -13,7 +13,7 @@
 // timeline into the ordered script the generator extracts.
 import { CAMERA_HOME, Camera, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, ChannelRef, SceneState } from '../../core';
-import { ProgressRing, RING } from './ring';
+import { ProgressRing, RING, STATIONS } from './ring';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
@@ -40,7 +40,7 @@ const PLAN_CARDS = [
   { title: 'Ch 4', idea: 'a browser demands proof', glyph: 'browser' },
   { title: 'Ch 5', idea: 'the ring closes', glyph: 'ring' },
 ];
-const CARD = { w: 196, h: 110, y: 120, gap: 16 };
+const CARD = { w: 204, h: 110, y: 120, gap: 12 };
 const cardX = (i: number) => 640 + (i - 2) * (CARD.w + CARD.gap);
 
 /** The mini-stage (top) and the timeline editor (bottom). */
@@ -72,6 +72,9 @@ const MINI_CAPS = [
 /** Script panel the captions lift into (the extracted narration). */
 const SCRIPT = { x: 928, y: 78, w: 318, h: 222 } as const;
 
+/** Numbered station key, shown as the world fades so the wink can call one back. */
+const KEY = { x: 928, y: 330, w: 300, h: 236 } as const;
+
 /** Mini-scene geometry: a quadratic arc + a counting bar. */
 const ARC_A = { x: 408, y: 258 };
 const ARC_C = { x: 620, y: 96 };
@@ -89,10 +92,12 @@ const BAR = { x: 884, base: 262, w: 16, maxH: 132 };
 const rowU = (row: EdRow, p: number) => clamp01((p - row.from) / (row.to - row.from));
 
 // camera marks
-const CAM_CARDS: CameraState = { x: 640, y: 200, k: 1.35 };
-const CAM_EDITOR: CameraState = { x: 640, y: 350, k: 1.12 };
-const CAM_ROWS: CameraState = { x: 640, y: 452, k: 1.5 };
-const CAM_CAPS: CameraState = { x: 640, y: 500, k: 1.55 };
+// Each push is sized so the whole subject, its labels, and the caption band
+// (y > 630 on screen) stay inside the 1280×720 frame.
+const CAM_CARDS: CameraState = { x: 640, y: 242, k: 1.1 };
+const CAM_EDITOR: CameraState = { x: 640, y: 331, k: 1.0 };
+const CAM_ROWS: CameraState = { x: 640, y: 375, k: 1.2 };
+const CAM_CAPS: CameraState = { x: 640, y: 375, k: 1.2 };
 const CAM_DIGEST: CameraState = { x: 760, y: 280, k: 1.3 };
 
 // ---------------------------------------------------------------------------
@@ -323,7 +328,7 @@ export function Render({ s }: { s: SceneState }) {
   const ringU = s.get(scene.ringU);
   const litU = s.get(scene.litU);
 
-  const worldOp = 1 - 0.88 * dimU;
+  const worldOp = Math.max(0, 1 - dimU);
   const dotU = rowU(ROWS[1], p);
   const barU = rowU(ROWS[2], p);
   const camU = rowU(ROWS[0], p);
@@ -356,7 +361,7 @@ export function Render({ s }: { s: SceneState }) {
                       fill={colors.PANEL}
                       stroke={colors.GRID}
                     />
-                    <text x={x0 + (x1 - x0) * u + 6} y={y0 + (y1 - y0) * u + 4} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                    <text x={x0 + (x1 - x0) * u + 6} y={y0 + (y1 - y0) * u + 4} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       {f}
                     </text>
                   </g>
@@ -368,7 +373,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={DIGEST.x + 18} y={DIGEST.y + 30} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                     the digest
                   </text>
-                  <text x={DIGEST.x + DIGEST.w - 18} y={DIGEST.y + 30} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={DIGEST.x + DIGEST.w - 18} y={DIGEST.y + 30} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                     31 files · 57k chars
                   </text>
                 </g>
@@ -388,18 +393,18 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={c.title} opacity={op} transform={`translate(0 ${(1 - u) * 18})`}>
                     <rect x={x} y={CARD.y} width={CARD.w} height={CARD.h} rx={12} fill={colors.PANEL} stroke={focused && focusCard > 0.3 ? colors.ACCENT : colors.GRID} strokeWidth={focused && focusCard > 0.3 ? 1.8 : 1} />
-                    <text x={x + 14} y={CARD.y + 24} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                    <text x={x + 14} y={CARD.y + 24} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                       {c.title}
                     </text>
                     <CardGlyph kind={c.glyph} cx={x + CARD.w / 2} cy={CARD.y + 52} />
-                    <text x={x + CARD.w / 2} y={CARD.y + 92} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+                    <text x={x + CARD.w / 2} y={CARD.y + 92} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                       {c.idea}
                     </text>
                   </g>
                 );
               })}
               {cardsU > 0.8 && focusCard < 0.3 && (
-                <text x={640} y={CARD.y + CARD.h + 34} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={(cardsU - 0.8) * 5}>
+                <text x={640} y={CARD.y + CARD.h + 34} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={(cardsU - 0.8) * 5}>
                   one visual idea per chapter — before any code
                 </text>
               )}
@@ -410,7 +415,7 @@ export function Render({ s }: { s: SceneState }) {
           {edU > 0 && (
             <g opacity={edU * (1 - 0.85 * stageDim)}>
               <rect x={STAGE.x} y={STAGE.y} width={STAGE.w} height={STAGE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={STAGE.x + 14} y={STAGE.y + 24} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={STAGE.x + 14} y={STAGE.y + 24} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 stage — a pure function of t
               </text>
               <g transform={`translate(${STAGE.x + STAGE.w / 2} ${STAGE.y + STAGE.h / 2}) scale(${miniScale}) translate(${-(STAGE.x + STAGE.w / 2)} ${-(STAGE.y + STAGE.h / 2)})`}>
@@ -438,7 +443,7 @@ export function Render({ s }: { s: SceneState }) {
               {Array.from({ length: ED_SECS + 1 }, (_, t) => (
                 <g key={t} opacity={0.85}>
                   <line x1={tx(t)} y1={ED.y + 28} x2={tx(t)} y2={ED.y + 34} stroke={colors.GRID} strokeWidth={1.5} />
-                  <text x={tx(t)} y={ED.y + 22} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                  <text x={tx(t)} y={ED.y + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     {t}s
                   </text>
                 </g>
@@ -448,7 +453,7 @@ export function Render({ s }: { s: SceneState }) {
                 const u = clamp01(rowsU * (ROWS.length + 1.5) - i);
                 return (
                   <g key={r.name} opacity={u}>
-                    <text x={ED.x + 38} y={r.y + 5} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                    <text x={ED.x + 38} y={r.y + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                       {r.name}
                     </text>
                     <line x1={tx(0)} y1={r.y} x2={tx(ED_SECS)} y2={r.y} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />
@@ -457,12 +462,20 @@ export function Render({ s }: { s: SceneState }) {
                 );
               })}
               {rowsU > 0.9 && (
-                <text x={tx(ROWS[1].from) + 8} y={ROWS[1].y - 14} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={(rowsU - 0.9) * 10}>
+                <text x={tx(ROWS[1].from) + 8} y={ROWS[1].y - 14} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={(rowsU - 0.9) * 10}>
                   tl.tween(dotU, 1, ...)
                 </text>
               )}
+              {/* playhead: drawn under the caption blocks so their words stay clean */}
+              <g>
+                <line x1={tx(p)} y1={ED.y + 30} x2={tx(p)} y2={ED.y + ED.h - 22} stroke={colors.WARM} strokeWidth={2} />
+                <path d={`M ${tx(p) - 6} ${ED.y + 30} l 12 0 l -6 9 z`} fill={colors.WARM} />
+                <text x={tx(p)} y={ED.y + ED.h - 6} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
+                  t={p.toFixed(1)}s
+                </text>
+              </g>
               {/* caption row */}
-              <text x={ED.x + 38} y={CAP_ROW_Y + 5} textAnchor="end" fill={capGlow > 0.3 ? colors.WARM : colors.MUTED} fontSize={12} fontFamily={MONO} fontWeight={capGlow > 0.3 ? 700 : 400}>
+              <text x={ED.x + 38} y={CAP_ROW_Y + 5} textAnchor="end" fill={capGlow > 0.3 ? colors.WARM : colors.MUTED} fontSize={14} fontFamily={MONO} fontWeight={capGlow > 0.3 ? 700 : 400}>
                 caption
               </text>
               {MINI_CAPS.map((c, i) => {
@@ -490,22 +503,14 @@ export function Render({ s }: { s: SceneState }) {
                       stroke={glow || trickU > 0.3 ? colors.WARM : colors.GRID}
                       strokeWidth={glow || trickU > 0.3 ? 1.8 : 1}
                     />
-                    <text x={x + 8} y={y + 15} fill={colors.TEXT} fontSize={10.5} opacity={0.95} clipPath={undefined}>
-                      {lift > 0.5 ? `${i + 1}. ${c.text}` : c.text.length > w0 / 6.2 ? c.text.slice(0, Math.max(3, Math.floor(w0 / 6.2))) + '…' : c.text}
+                    <text x={x + 8} y={y + 15} fill={colors.TEXT} fontSize={14} opacity={0.95}>
+                      {lift > 0.5 ? `${i + 1}. ${c.text}` : c.text.length > w0 / 8 ? c.text.slice(0, Math.max(3, Math.floor(w0 / 8))) + '…' : c.text}
                     </text>
                   </g>
                 );
               })}
-              {/* playhead */}
-              <g>
-                <line x1={tx(p)} y1={ED.y + 30} x2={tx(p)} y2={ED.y + ED.h - 22} stroke={colors.WARM} strokeWidth={2} />
-                <path d={`M ${tx(p) - 6} ${ED.y + 30} l 12 0 l -6 9 z`} fill={colors.WARM} />
-                <text x={tx(p)} y={ED.y + ED.h - 6} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
-                  t={p.toFixed(1)}s
-                </text>
-              </g>
               {trickU > 0 && (
-                <text x={640} y={ED.y - 12} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700} opacity={trickU}>
+                <text x={640} y={ED.y - 12} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700} opacity={trickU * (1 - dimU)}>
                   the captions ARE the narration script
                 </text>
               )}
@@ -516,21 +521,43 @@ export function Render({ s }: { s: SceneState }) {
           {liftU > 0.1 && (
             <g opacity={clamp01(liftU * 2)}>
               <rect x={SCRIPT.x} y={SCRIPT.y} width={SCRIPT.w} height={SCRIPT.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-              <text x={SCRIPT.x + 16} y={SCRIPT.y + 28} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+              <text x={SCRIPT.x + 16} y={SCRIPT.y + 28} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 the script — in order
               </text>
-              <text x={SCRIPT.x + 16} y={SCRIPT.y + SCRIPT.h - 14} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={SCRIPT.x + 16} y={SCRIPT.y + SCRIPT.h - 14} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 tl.describe().captions · scene-captions.mjs
               </text>
             </g>
           )}
         </g>
 
+        {/* ---- the station key: named before the wink calls one back ---- */}
+        {dimU > 0 && (
+          <g opacity={clamp01(dimU)}>
+            <rect x={KEY.x} y={KEY.y} width={KEY.w} height={KEY.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={KEY.x + 18} y={KEY.y + 30} fill={colors.TEXT} fontSize={14} fontWeight={700}>
+              the stations, in order
+            </text>
+            {STATIONS.map((name, i) => {
+              const lit = i < 2 && litU > 0.3;
+              const y = KEY.y + 68 + i * 34;
+              return (
+                <g key={name}>
+                  <circle cx={KEY.x + 26} cy={y - 5} r={7} fill={colors.BG} stroke={i < 2 ? colors.ACCENT : colors.GRID} strokeWidth={2} />
+                  <text x={KEY.x + 46} y={y} fill={lit ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily={MONO} fontWeight={lit ? 700 : 400}>
+                    {`${i + 1}  ${name}`}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+        )}
+
         {/* ---- the wink + ring finale ---- */}
         {winkU > 0 && (
           <g opacity={winkU * (1 - clamp01(ringU) * 0.0)}>
-            <rect x={640 - 240} y={84} width={480} height={40} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-            <text x={640} y={109} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontFamily={MONO}>
+            <rect x={640 - 240} y={20} width={480} height={40} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
+            <text x={640} y={45} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               src/viz/books/the-orly-loop/chapter-2.tsx
             </text>
           </g>

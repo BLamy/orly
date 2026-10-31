@@ -1,0 +1,164 @@
+{
+ "shot": "ch02-s05b",
+ "at": "2026-10-13T04:13:00.444Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 30,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "M",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "A",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "N",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "C",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "H",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "E",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "alan turing",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "S",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "T",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "R",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "5",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "mathematician",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "capWhileSubject": 24.7,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "capWhileSubject": 29.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "How could a net rewire",
+   "maxCap": 33.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "itself?",
+   "maxCap": 33.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 58.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 58.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 33.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 28.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 28.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 28.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 28.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "30 TO 50 YEARS OR",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EVEN LONGER",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 13
+}

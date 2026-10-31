@@ -34,10 +34,10 @@ export const COL_LABELS = ['umbrella', 'no umbrella'];
 
 // layout: joint tiles left (area-true: cell side ∝ sqrt p), bars right
 export const TILES = { x: 150, y: 130, size: 400 };
-export const IND_TILES = { x: 640, y: 130, size: 400 };
-export const BARS = { x: 180, y: 120, w: 900, rowH: 92, scale: 470 }; // px per bit
+export const IND_TILES = { x: 740, y: 130, size: 400 }; // clears the marginal chips in the gap
+export const BARS = { x: 200, y: 196, w: 900, rowH: 110, scale: 470 }; // px per bit; y = top of the H(X) bar
 
-export const CAM_TILES: CameraState = { x: 420, y: 320, k: 1.22 };
+export const CAM_TILES: CameraState = { x: 420, y: 350, k: 1.22 }; // pans so the column labels clear the caption
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -101,7 +101,7 @@ export function buildScene(): Scene {
   tl.hold(22.8, 0.5);
 
   // — Beat 3 · the accounting ———————————————————————————————————————————————
-  tl.tween(tableDim, 0.12, { at: 23.3, dur: 1.0, ease: ease.move });
+  tl.tween(tableDim, 0, { at: 23.3, dur: 1.0, ease: ease.move });
   tl.tween(barsU, 1, { at: 24.3, dur: 1.2, ease: ease.draw });
   tl.caption({
     at: 24.5,
@@ -146,7 +146,7 @@ export function buildScene(): Scene {
   tl.hold(59.5, 0.6);
 
   // — Beat 6 · recap ————————————————————————————————————————————————————————
-  tl.tween(dimU, 0.13, { at: 60.1, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 60.1, dur: 1.1, ease: ease.move });
   tl.tween(texU, 0, { at: 60.1, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 61.3, dur: 0.9, ease: ease.enter });
   tl.caption({

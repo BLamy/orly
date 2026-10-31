@@ -29,7 +29,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // The recording strip — 130 commits, 5 heavy (>16ms). All data seeded.
 // ---------------------------------------------------------------------------
 
-const STRIP = { x0: 90, x1: 1190, y: 168 } as const;
+const STRIP = { x0: 150, x1: 1130, y: 168 } as const;
 const N_COMMITS = 120; // illustrative
 const HEAVY = new Set([17, 44, 63, 88, 112]);
 const FOCUS = 63; // the pause/paused commit we zoom into
@@ -54,9 +54,9 @@ const FOCUS_X = COMMITS[FOCUS].x;
 // The evidence field — the dispatch chip, 269 component dots, 82 selectors.
 // ---------------------------------------------------------------------------
 
-const CHIP = { x: 340, y: 292, w: 220, h: 36 } as const;
+const CHIP = { x: 315, y: 292, w: 220, h: 36 } as const;
 
-const DOT_FIELD = { x0: 130, y0: 348, x1: 552, y1: 578 } as const;
+const DOT_FIELD = { x0: 140, y0: 348, x1: 490, y1: 578 } as const;
 const N_DOTS = 240; // illustrative
 const DOT_COLS = 23;
 const NOT_WASTED = 137; // the single render that actually changed the DOM
@@ -84,14 +84,14 @@ const CORR_TARGETS: number[] = Array.from({ length: 22 }, () =>
   Math.floor(rand() * N_DOTS),
 );
 
-const SELECTORS = { x0: 130, x1: 552, y: 602, n: 90 } as const; // illustrative
+const SELECTORS = { x0: 140, x1: 490, y: 612, n: 90 } as const; // illustrative
 const SEL_CHANGED = new Set([9, 31, 52, 74]); // 4 of 82 returned new values
 
 // ---------------------------------------------------------------------------
 // The finding card — rows appear as the evidence that backs them lands.
 // ---------------------------------------------------------------------------
 
-const CARD = { x: 610, y: 268, w: 588, h: 344 } as const;
+const CARD = { x: 600, y: 268, w: 560, h: 344 } as const;
 
 interface CardRow {
   text: string;
@@ -106,18 +106,19 @@ const CARD_ROWS: CardRow[] = [
   { text: '42ms total = 12ms dispatch + 30ms render', color: colors.TEXT, size: 13 },
   { text: '240 components · 239 wasted renders (~100% waste)', color: colors.NEGATIVE, size: 13 },
   { text: '90 selector evaluations → 4 changed, 86 unchanged', color: colors.TEXT, size: 13 },
-  { text: 'navigate to: point 10384593717662262675036164455399426', color: colors.ACCENT, size: 11 },
-  { text: 'fix: React.memo() — Toolbar, Timeline, CommentsOverlay', color: colors.POSITIVE, size: 12 },
-  { text: 'fix: createSelector — 78 selectors ran for nothing', color: colors.POSITIVE, size: 12 },
+  { text: 'navigate to: point 10384593717662262675036164455399426', color: colors.ACCENT, size: 12 },
+  { text: 'fix: React.memo() — Toolbar, Timeline, CommentsOverlay', color: colors.POSITIVE, size: 13 },
+  { text: 'fix: createSelector — 78 selectors ran for nothing', color: colors.POSITIVE, size: 13 },
 ];
 const ROW_Y0 = CARD.y + 40;
 const ROW_DY = 33;
 
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_STRIP: CameraState = { x: 640, y: 200, k: 1.45 };
-const CAM_EVIDENCE: CameraState = { x: 360, y: 430, k: 1.3 };
-const CAM_CARD: CameraState = { x: 900, y: 430, k: 1.3 };
+// Each framing keeps the strip labels, the evidence and the card on the stage.
+const CAM_STRIP: CameraState = { x: 640, y: 200, k: 1.12 };
+const CAM_EVIDENCE: CameraState = { x: 640, y: 385, k: 1.2 };
+const CAM_CARD: CameraState = { x: 650, y: 380, k: 1.15 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -313,6 +314,18 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         <g opacity={dim}>
+          {/* the title: shown only at the home framing, before the strip zooms in */}
+          <text
+            x={640}
+            y={300}
+            textAnchor="middle"
+            fill={colors.TEXT}
+            fontSize={28}
+            fontFamily={MONO}
+            opacity={Math.min(1, stripU * 4) * (1 - endDim) * Math.max(0, 1 - (cam.k - 1) * 10)}
+          >
+            ReactPerformanceInsights
+          </text>
           {/* the recording strip */}
           <g opacity={Math.min(1, stripU * 4)}>
             <line x1={STRIP.x0 - 16} y1={STRIP.y} x2={STRIP.x1 + 16} y2={STRIP.y} stroke={colors.GRID} strokeWidth={1.5} />
@@ -320,7 +333,7 @@ export function Render({ s }: { s: SceneState }) {
               one Replay recording
             </text>
             <g opacity={heavyU}>
-              <text x={STRIP.x1} y={STRIP.y - 66} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+              <text x={STRIP.x1} y={STRIP.y - 66} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                 120 commits · 5 heavy (&gt;16ms)
               </text>
             </g>
@@ -344,8 +357,8 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={phaseU}>
             {(['render', 'commit', 'effects'] as const).map((p, i) => (
               <g key={p}>
-                <rect x={504 + i * 96} y={STRIP.y + 18} width={86} height={22} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={547 + i * 96} y={STRIP.y + 33} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                <rect x={800 + i * 96} y={STRIP.y + 18} width={86} height={24} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
+                <text x={843 + i * 96} y={STRIP.y + 35} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                   {p}
                 </text>
               </g>
@@ -417,16 +430,18 @@ export function Render({ s }: { s: SceneState }) {
               />
             );
           })}
+          {/* the label sits on a backing pill so correlation lines pass beneath it */}
           <g opacity={dotsU}>
-            <text x={(DOT_FIELD.x0 + DOT_FIELD.x1) / 2} y={DOT_FIELD.y0 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <rect x={(DOT_FIELD.x0 + DOT_FIELD.x1) / 2 - 110} y={DOT_FIELD.y0 - 27} width={220} height={22} rx={5} fill={colors.BG} opacity={0.9} />
+            <text x={(DOT_FIELD.x0 + DOT_FIELD.x1) / 2} y={DOT_FIELD.y0 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
               240 components re-rendered
             </text>
           </g>
           <g opacity={wasteU}>
-            <text x={DOT_FIELD.x1 + 10} y={DOT_FIELD.y1 - 4} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} textAnchor="start">
+            <text x={DOT_FIELD.x1 + 10} y={DOT_FIELD.y1 - 4} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} textAnchor="start">
               239 wasted
             </text>
-            <text x={DOT_FIELD.x1 + 10} y={DOT_FIELD.y1 + 14} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} textAnchor="start">
+            <text x={DOT_FIELD.x1 + 10} y={DOT_FIELD.y1 + 14} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} textAnchor="start">
               1 real
             </text>
           </g>
@@ -451,11 +466,11 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           <g opacity={selU}>
-            <text x={SELECTORS.x0} y={SELECTORS.y - 12} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={SELECTORS.x0} y={SELECTORS.y - 12} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               90 selector evaluations
             </text>
             <g opacity={selChangedU}>
-              <text x={SELECTORS.x1} y={SELECTORS.y - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
+              <text x={SELECTORS.x1} y={SELECTORS.y - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                 4 changed
               </text>
             </g>
@@ -464,11 +479,13 @@ export function Render({ s }: { s: SceneState }) {
           {/* the finding card — his exact markdown shape */}
           <g opacity={cardU}>
             <rect x={CARD.x} y={CARD.y} width={CARD.w} height={CARD.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={CARD.x + 22} y={CARD.y + 24} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={CARD.x + 22} y={CARD.y + 24} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               finding · ReactPerformanceInsights
             </text>
             {CARD_ROWS.map((r, i) => {
-              const u = clamp01(cardRows - i);
+              // the two numbers rows land with the waste counter, before the rest of the card
+              const numbers = i === 3 || i === 4 ? wasteU : 0;
+              const u = Math.max(clamp01(cardRows - i), numbers);
               return (
                 <text
                   key={i}
@@ -488,7 +505,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the close: the shape of the pattern, over dimmed evidence */}
         <g opacity={endU}>
-          <rect x={190} y={250} width={900} height={190} rx={16} fill={colors.BG} opacity={0.92} />
+          <rect x={190} y={250} width={900} height={190} rx={16} fill={colors.BG} />
           <rect x={190} y={250} width={900} height={190} rx={16} fill="none" stroke={colors.GRID} strokeWidth={1.5} />
           {['recorded internals', 'correlation layer', 'AI → findings'].map((t, i) => (
             <g key={t}>
@@ -503,10 +520,10 @@ export function Render({ s }: { s: SceneState }) {
               )}
             </g>
           ))}
-          <text x={640} y={286} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+          <text x={640} y={286} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             React Performance Insights · Replay
           </text>
-          <text x={640} y={412} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={640} y={412} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             hold onto this shape
           </text>
         </g>

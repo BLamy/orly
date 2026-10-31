@@ -1,0 +1,828 @@
+{
+  "slug": "neural-net-history",
+  "title": "Who Taught the Machine?",
+  "subtitle": "A case history of neural networks, 1943–2026",
+  "logline": "A machine answers you in fluent sentences, and nobody ever wrote it a rulebook. So who taught it? A teacher follows the case from a lamp in Chicago in 1943 to the present, lighting a candle for each era's certainty and letting it burn exactly as long as people believed it, while the doubters stand at the edge of its light. In the end the culprit is never one person: the case board itself turns out to be shaped like a neural network, with one lantern still dark.",
+  "runtimeTargetSec": 1920,
+  "vhs": {
+    "subject": "Computer Science",
+    "theme": "sunset",
+    "icons": [
+      "neuron",
+      "magnifier",
+      "lightbulb",
+      "chip"
+    ],
+    "tagline": "Crack the case of the thinking machine!"
+  },
+  "staging": {
+    "note": "Staging appendix (script editor, rounds 1, 2 and 6). Fixed geography and recurring-device rules that every shot obeys; shots quote the BOARD MAP and CANDLE-CLOCK RULE text below word for word. Spread into script.json by the assembler.",
+    "studyLock": {
+      "canonical": "STUDY LOCK (canonical): every beat in the study, at the case board, on the candle shelf or at the Wall of Forecasts is candleAmber, under the same green-shaded desk lamp, in every era. Era colour enters the study only through practicals: the X-ray chat box glows serverCyan; the window shows the era's sky (dawn gold, rose dusk, snow seen past the glass, never a cooled lamp); a struck match or a candle flame. A shot that crosses between a stage or era location and the study tint-crossfades (crossfadeMood, about 0.6 to 1.2 s, no dip) to candleAmber at the moment the frame reaches the study, board, shelf or Wall, and back again if it leaves; the shot's mood field names its OPENING location only. Two shots in the study that cut together never change tint.",
+      "examples": "ch05-s09b (winter is snow past the window, not a cooled lamp); ch12-s07 (the X-ray box is the only serverCyan); ch03-s05, ch03-s06, ch03-s08, ch04-s08, ch05-s10, ch10-s14 (open in an era location, crossfade to candleAmber on reaching the board, shelf or Wall); ch14 (the study's colour enters only as the shelf's reflection in the window glass)."
+    },
+    "caseBoard": {
+      "canonical": "BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15).",
+      "slots": {
+        "K": {
+          "card": "WHO TAUGHT IT? (case card)",
+          "pinned": "ch01-s04",
+          "later": "tilted ch12-s08; straightened ch13-s06; drops from its pin into the lamp's pool ch15-s08 (the answer is the shape of the board); stamped STATUS: OPEN ch15-s09"
+        },
+        "S1": {
+          "card": "RULES (a paper-cut key over a branching tree)",
+          "pinned": "ch01-s05",
+          "verdict": "ch15-s08: the lamp passes over it; it stays grey"
+        },
+        "S2": {
+          "card": "KNOWLEDGE (a small drawer of index cards)",
+          "pinned": "ch01-s05",
+          "lit": "ch05-s07",
+          "verdict": "ch15-s08: stays grey"
+        },
+        "S3": {
+          "card": "LEARNING (an unlit paper lantern)",
+          "pinned": "ch01-s05",
+          "flickers": "ch03-s09, ch05-s10",
+          "verdict": "ch15-s08: catches and glows for the first time"
+        },
+        "C1": {
+          "card": "1943 lantern with a wick (clue one)",
+          "pinned": "ch02-s08",
+          "column": "C1 head (input layer)"
+        },
+        "C1-a": {
+          "card": "the 1943 paper's fifth assumption, typed (footnote slot)",
+          "pinned": "ch02-s03"
+        },
+        "C1-b": {
+          "card": "1958 potentiometer knob (clue two)",
+          "pinned": "ch03-s09"
+        },
+        "C1-c": {
+          "card": "BACK-PROPAGATING ERROR-CORRECTION EXPERIMENTS, 1961, tagged with an oxblood question mark (the false clue)",
+          "pinned": "ch03-s08",
+          "revisited": "ch05-s06"
+        },
+        "C2-a": {
+          "card": "scissors making two cuts (1969)",
+          "pinned": "ch04-s08"
+        },
+        "C2-h": {
+          "card": "HELSINKI · 1970 thesis card, just below the scissors",
+          "pinned": "ch04-s08",
+          "lit": "ch05-s06"
+        },
+        "C2-b": {
+          "card": "a bead of light running backward on a string (the messenger, 1986; clue three)",
+          "pinned": "ch05-s10"
+        },
+        "C2-row": {
+          "card": "the backpropagation credit cluster (Kelley 1960 … Le Cun 1985), a loose row of small cards",
+          "shown": "ch05-s06"
+        },
+        "C2-d": {
+          "card": "pierced tin stencil, 1989, with a small straight pipe (LSTM) drawn beside it",
+          "pinned": "ch06-s08"
+        },
+        "C3-a": {
+          "card": "a grid of a thousand tiny tiles (data, ImageNet)",
+          "pinned": "ch07-s06"
+        },
+        "C3-b": {
+          "card": "two small furnaces (fire, graphics cards)",
+          "pinned": "ch07-s06"
+        },
+        "C3-c": {
+          "card": "one learned filter tile, a grey striped edge (AlexNet, 2012)",
+          "pinned": "ch08-s14"
+        },
+        "C3-d": {
+          "card": "a thread of light between two word-slips (attention, 2017)",
+          "pinned": "ch10-s14"
+        },
+        "C4-lineage": {
+          "card": "small cards GENERATING WIKIPEDIA · 2018 and GPT, hung in the gutter between C3 and C4",
+          "pinned": "ch11-s02"
+        },
+        "C4-a": {
+          "card": "a single type sort (next-word prediction)",
+          "pinned": "ch11-s08"
+        },
+        "C4-b": {
+          "card": "a pair of garden shears (human preference)",
+          "pinned": "ch12-s07"
+        },
+        "F1": {
+          "card": "OpenAI founding announcement, 11 December 2015",
+          "pinned": "ch09-s04"
+        },
+        "F2": {
+          "card": "Anthropic Series A announcement, 28 May 2021, same height and size as F1",
+          "pinned": "ch12-s03"
+        },
+        "O": {
+          "card": "the glowing chat box (output)",
+          "note": "also drawn as the X-ray column"
+        }
+      },
+      "finale": "ch15-s08: every clue card swells into a paper lantern in its slot; columns C1 to C4 become the network's layers left to right, the chat box is the output; one lantern in the middle layer never lights, with question card Q4 above it."
+    },
+    "questionThread": {
+      "look": "a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) along the board's top edge; it glints only where the lamp's pool falls; never full red",
+      "Q1": [
+        "ch02-s03 'How could a net rewire itself?'",
+        "ch03-s05 replaced by 'AND IF NO STRAIGHT LINE EXISTS?'",
+        "ch04-s08 replaced by 'THEN HOW DO YOU TRAIN THE HIDDEN LAYER?'",
+        "ch05-s04 drops into the candle's pool and burns out (answered)"
+      ],
+      "Q2": [
+        "ch06-s05 'WHO PAID FOR DINNER?'",
+        "ch07-s01 unpinned (answered: each man lost one bet)"
+      ],
+      "Q3": [
+        "ch06-s08 'WHY WOULD ANYONE CHOOSE THE FOG?'",
+        "ch08-s13b unpinned (answered: given data and fire)"
+      ],
+      "Q4": [
+        "ch15-s08 'How, exactly, does it reach its answer?' hangs above the dark lantern; still open"
+      ]
+    },
+    "wallOfForecasts": {
+      "position": "pinned beside the Case Board on its right; slots left to right from the lamp outward",
+      "W1": "Turing 1950, 'about fifty years' (pinned ch02-s05b; curls when 2000 passes, ch06-s07)",
+      "W2": "Simon & Newell 1958, chess champion in ten years, due 1968 (pinned ch03-s06; overdue ch04-s08; resolved ch06-s07, empty pin thereafter)",
+      "W3": "Rosenblatt 1961, the linguistic-capability sentence (pinned ch03-s08; read over the X-ray box ch12-s07)",
+      "W4": "Florence 2012, 'simply by waiting for faster GPUs and bigger datasets' (pinned ch08-s14; glints ch11-s05)",
+      "W5": "Coulom 2014, 'maybe ten years' for Go, due 2024 (pinned ch09-s03; glints, came true early)",
+      "W6": "the 30-to-50-years slip, in deep shadow: only its lower corner half-lit, words unreadable (planted ch01-s05; corner glimpsed ch02-s05b, ch03-s06, ch06-s07, ch09-s05, ch12-s08; Hinton takes it down ch13-s01; a bare pin thereafter)",
+      "W7": "Hinton 2017, 'some graduate student…' at the far end (pinned ch09-s05; floats down and is read ch15-s09)",
+      "W8": "Hassabis 2025, AGI in 5 to 10 years, about even odds (pinned ch15-s06)"
+    },
+    "candleClock": {
+      "canonical": "CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim.",
+      "definedIn": "ch01-s05 (glimpse) and ch02-s04 (first full use); repeated word for word in every candle shot",
+      "candles": [
+        {
+          "text": "THE BRAIN IS A LOGIC MACHINE",
+          "lit": "1943 (ch02-s04)",
+          "end": "out 1959 (ch02-s08)",
+          "years": 16
+        },
+        {
+          "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+          "lit": "1958 (ch03-s03)",
+          "end": "guttered c. 1965 (ch03-s09), frayed",
+          "years": "about 7"
+        },
+        {
+          "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+          "lit": "1969 (ch04-s02)",
+          "end": "out 1986 (ch05-s04)",
+          "years": 17
+        },
+        {
+          "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+          "lit": "c. 1980 (ch05-s07)",
+          "end": "out 1987 (ch05-s09b)",
+          "years": "about 7"
+        },
+        {
+          "text": "CYC (thin taper)",
+          "lit": "1984 (ch05-s09b)",
+          "end": "out 2023 (Lenat's death), wordless, in the lead-in of ch13-s06; 39 rings = 234 px, the tallest dark sleeve on the shelf; ch15-s08 shows it already dark",
+          "years": 39
+        },
+        {
+          "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+          "lit": "c. mid-1990s (ch06-s04)",
+          "end": "out 2012 (ch08-s13b), frayed",
+          "years": "about 15–17"
+        },
+        {
+          "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY EXPERTS",
+          "lit": "1999 (ch08-s01)",
+          "end": "out 2012 (ch08-s13b)",
+          "years": 13
+        },
+        {
+          "text": "LANGUAGE MUST BE READ IN ORDER",
+          "lit": "1997 (ch10-s01)",
+          "end": "out 2017 (ch10-s13b)",
+          "years": 20
+        },
+        {
+          "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+          "lit": "2006 (ch07-s02)",
+          "end": "guttered c. 2010–12 (ch07-s06), frayed",
+          "years": "about 5"
+        },
+        {
+          "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+          "lit": "2012 (ch08-s13b)",
+          "end": "still burning as of October 2026"
+        },
+        {
+          "text": "A GO MACHINE IS A DECADE AWAY",
+          "lit": "2014 (ch09-s03)",
+          "end": "out 2016 (ch09-s03)",
+          "years": 2
+        },
+        {
+          "text": "SCALE IS THE MAIN LEVER",
+          "lit": "2020 (ch11-s05)",
+          "end": "still burning, contested, as of October 2026; its wick is trimmed (not snuffed) in ch15-s04"
+        },
+        {
+          "text": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND DANGEROUS",
+          "lit": "2023 (ch13-s03)",
+          "end": "still burning"
+        },
+        {
+          "text": "COMPUTE IS THE CHOKEPOINT",
+          "lit": "2022 (ch14-s02)",
+          "end": "still burning, contested, as of October 2026"
+        },
+        {
+          "text": "CHINA IS A YEAR OR TWO BEHIND",
+          "lit": "2022 (ch14-s02)",
+          "end": "out January 2025 (ch14-s04)",
+          "years": "about 2"
+        },
+        {
+          "text": "match: COMPUTE DOESN'T MATTER",
+          "lit": "January 2025 (ch14-s04)",
+          "end": "out within a day"
+        },
+        {
+          "text": "THE GAP IS MONTHS, NOT YEARS",
+          "lit": "2025 (ch14-s07)",
+          "end": "still burning, contested, as of October 2026"
+        },
+        {
+          "text": "(unlettered, unscored)",
+          "lit": "ch15-s09, by a hand from the viewer's side",
+          "end": "open"
+        }
+      ],
+      "placement": "CANDLE PLACEMENT: every belief candle stands on the one study shelf beneath the case board, ordered by the year on its base tag, left to right; a candle lit late in the film is set into its year's place on the shelf (so the 1999 expert-features candle, lit in ch08-s01, stands left of the 2006 warm-up candle lit in ch07-s02, and the 1997 read-in-order candle, lit in ch10-s01, stands left of both). The China-race candles of chapter 14 (COMPUTE IS THE CHOKEPOINT, CHINA IS A YEAR OR TWO BEHIND, the match, THE GAP IS MONTHS, NOT YEARS) stand at the shelf's right end, by the study window; chapter 14 shows them only as a reflection in that window over the strait (opened in ch13-s06), never on the jetty; ch15-s08 sees them directly.",
+      "finaleChart": "ch15-s08 reads the shelf as a bar chart in wax: sleeves of every length with no trend by decade. Tallest dark bar: Cyc 39; then read-in-order 20, sterile 17, logic 16, fiddly-nets about 16 (frayed), expert stencils 13, learning-machine about 7 (frayed), knowledge about 7, warm-up about 5 (frayed), Go 2, China one-to-three about 2, the match flat. Still lit at the right end as of October 2026: learned features (2012), scale (2020, trimmed), compute chokepoint (2022, contested), smarter-than-human AI may be years away and dangerous (2023), the gap is months, not years (2025, contested)."
+    },
+    "xrayColumn": "Defined in ch02-s08: the chat box as a translucent column of seven faint bands, bottom to top: 1 threshold lanterns (1943), 2 adjustable knobs (1958), 3 hidden layers and a backward arrow (1986), 4 furnaces and a sea of text (2012), 5 threads (2017), 6 type sorts (2018), 7 shears (2022); a seam between bands 3 and 4 that never lights (the hand-cut stencils). Each X-ray beat lights exactly one new band; ch12-s07 lights them all.",
+    "hands": "cast.json 'narrator-hands': the detective's two steady, cuffed tweed forearms (a mid-life teacher's, forties or fifties; the signet ring kept; never aged or weathered) from a fixed lamp-side entry at lower right (L5); six actions only: pin, unpin/drop, strike match/light, fold into the file, stamp, hold up.",
+    "accentBudget": "One saturated accent per shot, motivated by a practical light. The question thread is low-chroma oxblood (see questionThread). Full saturated red is used once only: the STATUS: OPEN stamp in ch15-s09.",
+    "transitions": "Signature transitions (lampChange, iris, inkBleed, fadeBlack) only for real mood changes, chapter breaks or the push-into-the-flame cue; same-mood changes are plain cuts, crossfades or occluder wipes. Wherever a lampChange stays, the incoming leadIn and the outgoing holdAfter are at least 1.6 s (iris 1.2, inkBleed 1.1).",
+    "textRule": "Besides the date/place stamp and name cards, at most two text items per shot. Two exceptions, each counting as ONE item: DISSENT TAGS (the short attributed tags that ring a contested candle, as in ch14-s04b and ch14-s07), up to three per shot, about 48 characters or fewer each, cued at least 1 s apart; and a TWO-ACCOUNTS label (both sides of one disputed event on a single card, at equal size, as in ch11-s08). A quote shown but not spoken gets a music-only window of at least (characters / 12 + 1.5) s. Quotes over about 160 characters are cut to the fragment the shot needs; the rest move to the end-credits sources card (creditsSources). DATE AND PLACE STAMPS use the era's face: Special Elite typewriter for 1943 to the end of the 1970s, VT323 phosphor type for the 1980s, IBM Plex Mono from 1989 on; chapter index tabs are always Special Elite.",
+    "creditsSources": [
+      {
+        "from": "ch02-s07",
+        "text": "We sort of quit science for a while to watch the machine. — Marvin Minsky, recalling 1951"
+      },
+      {
+        "from": "ch03-s03",
+        "text": "“…the views of the loyal opposition…” — Frank Rosenblatt, 1961"
+      },
+      {
+        "from": "ch08-s08b",
+        "text": "samples a different architecture, but all these architectures share weights — Krizhevsky, Sutskever & Hinton, 2012"
+      },
+      {
+        "from": "ch10-s01",
+        "text": "If you have a thousand words, you have to wait for a thousand cycles. — Illia Polosukhin, 2024"
+      },
+      {
+        "from": "ch10-s04",
+        "text": "the Transformer, based solely on attention mechanisms — Vaswani et al., 2017"
+      },
+      {
+        "from": "ch10-s07",
+        "text": "the dot products grow large in magnitude — Vaswani et al., 2017"
+      },
+      {
+        "from": "ch15-s07",
+        "text": "almost 50,000 workers from 167 countries — Fei‑Fei Li, 2015, of ImageNet's labellers"
+      },
+      {
+        "from": "ch02-s05b",
+        "text": "I believe that in about fifty years' time it will be possible to programme computers, with a storage capacity of about 10⁹, to make them play the imitation game so well that an average interrogator will not have more than 70 per cent. chance of making the right identification after five minutes of questioning. — Alan M. Turing, 1950"
+      },
+      {
+        "from": "ch02-s05",
+        "text": "Not Hebb's words: 'fire together, wire together' is a 1992 paraphrase."
+      },
+      {
+        "from": "ch15-s01",
+        "text": "There is no Nobel prize for computer science so this is an interesting way of creating one, but it does seem a bit of a stretch. — Dame Wendy Hall, 8 October 2024"
+      },
+      {
+        "from": "ch15-s06",
+        "text": "You see, we've never had to deal with things more intelligent than ourselves before. — Geoffrey Hinton, December 2024"
+      },
+      {
+        "from": "ch15-s06",
+        "text": "Current frontier systems are already showing signs of self-preservation and deceptive behaviours — Yoshua Bengio, 3 June 2025"
+      },
+      {
+        "from": "ch15-s06",
+        "text": "So it's back to the age of research again, just with big computers. — Ilya Sutskever, 25 November 2025"
+      },
+      {
+        "from": "ch09-s03",
+        "text": "Even if I become the number one, there is an entity that cannot be defeated. — Lee Sedol, to Yonhap, November 2019"
+      },
+      {
+        "from": "ch14-s02",
+        "text": "Money has never been the problem for us; bans on shipments of advanced chips are the problem. — Liang Wenfeng, founder of DeepSeek, July 2024 (ChinaTalk translation)"
+      },
+      {
+        "from": "ch12-s01",
+        "text": "…trained using 900 queries in less than an hour. — Christiano et al., 2017 (a simulated Hopper robot learned backflips from human choices)"
+      },
+      {
+        "from": "ch15-s01",
+        "text": "2024 Nobel Prize in Chemistry: half to David Baker, half jointly to Demis Hassabis and John Jumper (DeepMind), for protein structure prediction"
+      },
+      {
+        "from": "ch05-s06",
+        "text": "I have never claimed that I invented backpropagation. David Rumelhart invented it independently long after people in other fields had invented it. — Geoffrey Hinton, April 2020"
+      },
+      {
+        "from": "ch07-s03",
+        "text": "ImageNet Large Scale Visual Recognition Challenge, 2010: 1.2 million training photos, 1,000 categories"
+      },
+      {
+        "from": "ch11-s08",
+        "text": "Timnit Gebru left Google in December 2020: she says she was fired; Google says it accepted her resignation."
+      },
+      {
+        "from": "ch13-s02",
+        "text": "In the NYT today, Cade Metz implies that I left Google so that I could criticize Google. Actually, I left so that I could talk about the dangers of AI without considering how this impacts Google. Google has acted very responsibly. — Geoffrey Hinton, 1 May 2023 (tweet, as widely reproduced)"
+      },
+      {
+        "from": "ch09-s05",
+        "text": "Gender Shades (Buolamwini & Gebru, 2018): commercial gender classifiers erred on up to 34.7% of darker-skinned women and at most 0.8% of lighter-skinned men."
+      },
+      {
+        "from": "ch10-s04",
+        "text": "Equal contribution. Listing order is random. — Vaswani et al., 2017 (the paper was submitted at the NIPS deadline, 19 May 2017)"
+      },
+      {
+        "from": "ch05-s01",
+        "text": "I have never met anyone who remembered hearing the talk. — John J. Hopfield, recalling his Versailles talk of summer 1981"
+      },
+      {
+        "from": "ch13-s03",
+        "text": "Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war. — Statement on AI Risk (Center for AI Safety), 30 May 2023"
+      },
+      {
+        "from": "ch09-s01",
+        "text": "Hinton's company chose Google; the deal was announced in March 2013 (as reported by Cade Metz)."
+      },
+      {
+        "from": "ch08-s07",
+        "text": "AlexNet also used overlapping max-pooling: 3 × 3 windows stepped two at a time, keeping each window's brightest value (Krizhevsky, Sutskever & Hinton, 2012)."
+      },
+      {
+        "from": "ch15-s07",
+        "text": "Amazon Mechanical Turk, the marketplace where ImageNet's labellers worked, closed on 30 September 2026."
+      },
+      {
+        "from": "ch15-s05",
+        "text": "29 September 2026: the White House Accord on Super Intelligence, signed by six tech leaders; voluntary, with no penalties (Microsoft and Amazon did not sign)."
+      }
+    ],
+    "kitWork": {
+      "note": "KIT WORK (script editor, rounds 3, 4 and 8): every kit extension or new prop the script depends on that docs/film/kit-catalog.md does not yet provide (none of these is in the catalogue as of round 8). Each is a BLOCKING dependency for film-shots unless it names a fallback: build it (with a gallery entry and a contact-sheet check) before authoring any shot listed against it. Shots that say 'KIT DEPENDENCY' or 'KIT WORK' refer to this list. BUILD ORDER (round 8): items are listed in build order ('order'), the film's SPINE first: (1) the one-study state table (caseBoard, candleShelf, wallOfForecasts, xrayColumn and the derived studyState module), (2) the narratorHands rig, (3) the beliefCandle prop; together they gate about half the film's shots. Then everything else by shot count ('shotCount'). SPINE GATE: before ANY shot is authored, render ONE contact sheet of the study state table at five points in the film, ch01-s05, ch05-s10, ch08-s14, ch12-s07 and ch15-s08 (board slots, shelf candles with their sleeves and stubs, Wall slips and X-ray bands as studyState returns them at each shot, hands at rest at the L5 entry), and check it against BOARD MAP, CANDLE-CLOCK RULE, the Wall of Forecasts table and the X-ray column; fix the state table, not the shots. hallOfMirrors (2 shots) has a non-blocking fallback (see its entry).",
+      "items": [
+        {
+          "order": 1,
+          "phase": "spine",
+          "kit": "sets/candleShelf + sets/caseBoard + sets/wallOfForecasts + props/xrayColumn (one study, one state table)",
+          "shotCount": 64,
+          "extend": "candleShelf: the long shelf beneath the board, candles left to right by the year on each base tag (a candle lit late in the film is set into its year's place), the China-race candles at its right end by the study window (CANDLE PLACEMENT). caseBoard: corkboard with the fixed slot grid of BOARD MAP (K, S1–S3, C1–C4 and their sub-slots, F1–F2, Q1–Q4 on the oxblood thread, O = the chat box), clue cards, brass pins, threads of light, the oxblood question thread (emberRed mixed about 60% into candleAmber). wallOfForecasts: slots W1–W8 left to right from the lamp outward, slips that can curl, glint, sit in shadow (W6) or be taken down. xrayColumn: the translucent chat box as seven bands bottom to top (1 threshold lanterns, 2 knobs, 3 hidden layers + backward arrow, 4 furnaces + sea of text, 5 threads, 6 type sorts, 7 shears) with the never-lit seam between bands 3 and 4, a serverCyan practical. DERIVED STATE (required; no shot author re-derives it): generate ONE module, e.g. apps/bookshelf/src/viz/films/neural-net-history/sets/studyState.ts, from staging.caseBoard.slots, staging.questionThread, staging.candleClock.candles, staging.wallOfForecasts and staging.xrayColumn, exporting boardStateAt(shotId) (which cards, pins, threads and the K card's tilt exist at that shot), shelfStateAt(shotId) (every candle with its rings burned, state and tag at that shot), wallStateAt(shotId) (every slip and its state) and xrayBandsAt(shotId) (which bands are lit). Every study shot renders the board, shelf and Wall from these functions, with only its own beat's change animated on top.",
+          "shots": [
+            "ch01-s04",
+            "ch01-s05",
+            "ch02-s03",
+            "ch02-s04",
+            "ch02-s05b",
+            "ch02-s07",
+            "ch02-s08",
+            "ch03-s03",
+            "ch03-s05",
+            "ch03-s06",
+            "ch03-s08",
+            "ch03-s09",
+            "ch04-s02",
+            "ch04-s08",
+            "ch05-s01",
+            "ch05-s03",
+            "ch05-s04",
+            "ch05-s06",
+            "ch05-s07",
+            "ch05-s09b",
+            "ch05-s10",
+            "ch06-s04",
+            "ch06-s05",
+            "ch06-s07",
+            "ch06-s08",
+            "ch07-s01",
+            "ch07-s02",
+            "ch07-s04",
+            "ch07-s06",
+            "ch08-s01",
+            "ch08-s06",
+            "ch08-s13b",
+            "ch08-s14",
+            "ch09-s01",
+            "ch09-s03",
+            "ch09-s03a",
+            "ch09-s04",
+            "ch09-s05",
+            "ch10-s01",
+            "ch10-s13b",
+            "ch10-s14",
+            "ch11-s01",
+            "ch11-s02",
+            "ch11-s03",
+            "ch11-s05",
+            "ch11-s08",
+            "ch12-s01",
+            "ch12-s03",
+            "ch12-s07",
+            "ch12-s08",
+            "ch13-s01",
+            "ch13-s02",
+            "ch13-s03",
+            "ch13-s04",
+            "ch13-s06",
+            "ch14-s01",
+            "ch14-s02",
+            "ch14-s04",
+            "ch14-s07",
+            "ch15-s04",
+            "ch15-s05",
+            "ch15-s06",
+            "ch15-s08",
+            "ch15-s09"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 2,
+          "phase": "spine",
+          "kit": "puppet/narratorHands (forearm rig)",
+          "shotCount": 54,
+          "extend": "two cuffed tweed forearms on a two-bone rig from the fixed lamp-side entry at lower right (L5), per cast.json 'narrator-hands', with the six actions pin, unpinDrop, strikeLight, fileFold, stamp, holdUp; puppet/hands.ts today offers only pipe, chalk, pen, book, clipboard, papers, mug, laptop, phone and cards, so add the held objects these actions need: match and matchbox, brass pin, rubber stamp (STATUS: OPEN, ch15-s09), manila file, brass snuffer-scissors (ch15-s04), and a fountain pen that can write (ch06-s05).",
+          "shots": [
+            "ch01-s04",
+            "ch01-s05",
+            "ch02-s03",
+            "ch02-s04",
+            "ch02-s05b",
+            "ch02-s08",
+            "ch03-s03",
+            "ch03-s05",
+            "ch03-s06",
+            "ch03-s08",
+            "ch03-s09",
+            "ch04-s05",
+            "ch04-s08",
+            "ch05-s04",
+            "ch05-s06",
+            "ch05-s07",
+            "ch05-s08",
+            "ch05-s10",
+            "ch06-s04",
+            "ch06-s05",
+            "ch06-s07",
+            "ch06-s08",
+            "ch07-s01",
+            "ch07-s04",
+            "ch07-s06",
+            "ch08-s01",
+            "ch08-s13b",
+            "ch08-s14",
+            "ch09-s03a",
+            "ch09-s03",
+            "ch09-s04",
+            "ch09-s05",
+            "ch10-s14",
+            "ch11-s01",
+            "ch11-s02",
+            "ch11-s05",
+            "ch11-s08",
+            "ch12-s03",
+            "ch12-s07",
+            "ch12-s08",
+            "ch13-s03",
+            "ch13-s06",
+            "ch14-s01",
+            "ch14-s02",
+            "ch14-s03",
+            "ch14-s04",
+            "ch14-s05",
+            "ch14-s06",
+            "ch14-s07",
+            "ch15-s03",
+            "ch15-s04",
+            "ch15-s06",
+            "ch15-s08",
+            "ch15-s09"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 3,
+          "phase": "spine",
+          "kit": "props/beliefCandle (the CANDLE-CLOCK candle)",
+          "shotCount": 40,
+          "extend": "new prop, NOT the kit's candle()/candlestick({burn}) (those are brass candlesticks with no rings or sleeve): a paper-cut taper cut to 45 scored rings at 6 px per ring at L3 (270 px); flame on the top ring; base tag (year lit, Special Elite); ghost sleeve above the stub (ring-scored, translucent in haze) so sleeve + stub = 270 px and the sleeve length is the years; states live (flame at the sleeve/stub join), out (dark sleeve + smokeThread), guttered (frayed sleeve rim + ember); variants thin taper (Cyc) and the struck match (lies flat, blackened); params {lit, years, state, tag, text, seed}. The ch15-s08 wax bar chart is a row of these, read from candleShelf.",
+          "shots": [
+            "ch01-s05",
+            "ch02-s04",
+            "ch02-s08",
+            "ch03-s03",
+            "ch03-s09",
+            "ch04-s02",
+            "ch04-s08",
+            "ch05-s03",
+            "ch05-s04",
+            "ch05-s06",
+            "ch05-s07",
+            "ch05-s09b",
+            "ch06-s04",
+            "ch06-s05",
+            "ch06-s07",
+            "ch07-s02",
+            "ch07-s06",
+            "ch08-s01",
+            "ch08-s13b",
+            "ch09-s01",
+            "ch09-s03a",
+            "ch09-s03",
+            "ch10-s01",
+            "ch10-s13b",
+            "ch11-s02",
+            "ch11-s05",
+            "ch11-s08",
+            "ch13-s01",
+            "ch13-s02",
+            "ch13-s03",
+            "ch13-s04",
+            "ch13-s06",
+            "ch14-s01",
+            "ch14-s02",
+            "ch14-s04",
+            "ch14-s07",
+            "ch15-s04",
+            "ch15-s06",
+            "ch15-s08",
+            "ch15-s09"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 4,
+          "phase": "after-spine",
+          "kit": "props (study and symbolic, round 5)",
+          "shotCount": 28,
+          "extend": "small props not in the kit, built from existing primitives (ornament, lathe, type): ledger page in IBM Plex Mono (BLOCKING: ch09-s04, ch12-s03; also ch12-s08); warm/cold hand-lantern pair hung from one nail (BLOCKING: ch09-s04, ch12-s03; also ch06-s04, ch07-s02); telephone handset with cord and two name-plates (ch14-s06); coat hook with a frock coat that re-cuts into an overcoat (ch07-s06, ch11-s01); sundial and compute piles (ch10-s12); clock-face badges (ch10-s09); paper ships and boats (ch05-s08, ch08-s07); ticker banner (ch14-s04); price tag (ch14-s03); snuffer-scissors (ch15-s03, ch15-s04); thermometer (ch05-s03); lectern (ch04-s06, ch08-s11, ch14-s02). The ledger and the hand-lantern pair are BLOCKING for the founding-parity shots, so both labs' foundings render from one prop; the rest are non-blocking. ROUND 6 additions (non-blocking, each built from ornament, lathe, type or existing silhouettes): toggle switch and sweeping dial pair (ch02-s04); schoolroom bell and child's slate (ch02-s05b); family trees, English and Italian, as paper-cut tree silhouettes (ch05-s04); canvas mail sack stencilled BUFFALO, N.Y. and a cheque-sorting machine of belts and rollers (ch06-s01, ch06-s02); decision-tree forest with paper voting flags (ch06-s03); envelope-and-funnel bottleneck (ch10-s02); two islands joined by an undersea telegraph cable (ch11-s08); a fence of parchment rule pages standing in water (ch14-s02).",
+          "shots": [
+            "ch09-s04",
+            "ch12-s03",
+            "ch12-s08",
+            "ch06-s04",
+            "ch07-s02",
+            "ch14-s06",
+            "ch07-s06",
+            "ch11-s01",
+            "ch10-s12",
+            "ch10-s09",
+            "ch05-s08",
+            "ch08-s07",
+            "ch14-s04",
+            "ch14-s03",
+            "ch15-s03",
+            "ch15-s04",
+            "ch05-s03",
+            "ch04-s06",
+            "ch08-s11",
+            "ch14-s02",
+            "ch02-s04",
+            "ch02-s05b",
+            "ch05-s04",
+            "ch06-s01",
+            "ch06-s02",
+            "ch06-s03",
+            "ch10-s02",
+            "ch11-s08"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 5,
+          "phase": "after-spine",
+          "kit": "props (symbolic, paper-cut)",
+          "shotCount": 7,
+          "extend": "weir, ladle, balanceScale, microscope, foldingRuler, terrarium, hopperRobot",
+          "shots": [
+            "ch08-s07 (weir, ladle)",
+            "ch08-s08 (balanceScale)",
+            "ch12-s02 (balanceScale)",
+            "ch15-s03, ch15-s08 (microscope)",
+            "ch15-s04 (foldingRuler)",
+            "ch15-s05 (terrarium)",
+            "ch12-s01 (hopperRobot)"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 6,
+          "phase": "after-spine",
+          "kit": "finish/reflection",
+          "shotCount": 6,
+          "extend": "reflection(layerFn, {alpha, flip: false, ripple}): an offscreen sub-render of the study shelf (candles, match, hands) composited on ONE plane (L2, about 35% alpha, slight ripple) over the water, plus the study-window mullions as a faint L1 occluder",
+          "shots": [
+            "ch14-s01",
+            "ch14-s02",
+            "ch14-s03",
+            "ch14-s04",
+            "ch14-s05",
+            "ch14-s07"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 7,
+          "phase": "after-spine",
+          "kit": "lanternNetwork",
+          "shotCount": 4,
+          "extend": "{mask, maskSeed} (dropout: a fresh seed per example, p = 0.5, applied only to named layers) and {topology: custom layer sizes + fixed weights} (a long single-file chain; small fixed nets bound to real numbers)",
+          "shots": [
+            "ch06-s06",
+            "ch07-s02",
+            "ch08-s08b",
+            "ch15-s08"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 8,
+          "phase": "after-spine",
+          "kit": "threadsOfLight + attentionMath (sentence overrides)",
+          "shotCount": 4,
+          "extend": "both are hard-wired to 'The animal didn't cross the street…'; add {tokens, weights[h][i][j], cups: n, sharesEtched} overrides so the toy 'crossed the river bank' example binds its real numbers (scores 2, 0, 4, 2; ÷2; softmax ≈ 0.53 to river) and the eight-head shot can show its own patterns",
+          "shots": [
+            "ch10-s04",
+            "ch10-s06",
+            "ch10-s07",
+            "ch10-s08"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 9,
+          "phase": "after-spine",
+          "kit": "props (symbolic cut-outs, round 4)",
+          "shotCount": 4,
+          "extend": "animal cut-outs frog (ch02-s08), octopus, bear and parrot (ch11-s08); stopwatch with a ghost hand (ch15-s04); courthouse and gavel (ch15-s05)",
+          "shots": [
+            "ch02-s08",
+            "ch11-s08",
+            "ch15-s04",
+            "ch15-s05"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 10,
+          "phase": "after-spine",
+          "kit": "alexnetCathedral (extensions)",
+          "shotCount": 3,
+          "extend": "{mosaic: 96 first-layer filter tiles that morph noise → learned (ch08-s06)}, {gpuSort: the 48/48 split, colour-agnostic on one tower, colour-specific on the other (ch08-s09)}, {roseWindows: per-layer vignettes edges → textures → parts → things (ch08-s05)}. If the real conv1 weights are not used for the mosaic, the shot must carry a small 'ILLUSTRATIVE' tag on the prop.",
+          "shots": [
+            "ch08-s05",
+            "ch08-s06",
+            "ch08-s09"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 11,
+          "phase": "after-spine",
+          "kit": "props/paperGlobe (lit windows)",
+          "shotCount": 3,
+          "extend": "a paper globe of lit windows (a sphere of small window rectangles lighting by a seeded scatter, param litFraction 0..1); the kit's globe() is a desk globe and does not serve",
+          "shots": [
+            "ch07-s03",
+            "ch07-s04",
+            "ch15-s07"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 12,
+          "phase": "after-spine",
+          "kit": "transformerLoom",
+          "shotCount": 2,
+          "extend": "{causal: boolean} (today hard-wired to one causal head) and {halves: 'encoder' | 'decoder' | 'both'} for the original two-loom layout and the writing half kept alone",
+          "shots": [
+            "ch10-s10",
+            "ch10-s14"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 13,
+          "phase": "after-spine",
+          "kit": "mistyHills",
+          "shotCount": 2,
+          "extend": "{lossF, lossDf, minima, lrSchedule} so a shot can supply its own landscape (one convex bowl; a rugged ridge with false hollows) and a stepped learning-rate schedule (three hand cuts)",
+          "shots": [
+            "ch06-s03",
+            "ch08-s10"
+          ],
+          "blocking": true
+        },
+        {
+          "order": 14,
+          "phase": "after-spine",
+          "kit": "sets/hallOfMirrors",
+          "shotCount": 2,
+          "extend": "the Hall of Mirrors at Versailles in paper cut-out: an arcade of mirror arches with reflected silhouette audiences whose heads can turn one by one (a per-figure turn parameter, seeded), a lectern figure, and an arch rim that can match-cut from a medallion",
+          "shots": [
+            "ch05-s01",
+            "ch15-s01"
+          ],
+          "blocking": false,
+          "fallback": "If hallOfMirrors is not built in time, both shots (ch05-s01, ch15-s01) fall back to the kit's architecture arches (an arcade of three to five arch silhouettes, haze between them) with mirrored copies of the existing figure silhouettes (flipX, about 60% alpha, a slight per-figure offset), heads turned by swapping each copy's facing one at a time on a seeded order; the lectern from props (round 5); the ch15-s01 medallion-to-arch match cut becomes a crossfade through the medallion's glow. The fallback is not blocking."
+        },
+        {
+          "order": 15,
+          "phase": "after-spine",
+          "kit": "sets/nightLimb",
+          "shotCount": 1,
+          "extend": "new reusable set: the night limb of the earth seen from orbit, specified in ch01-s03 (ch12-s06 uses the city only, not the limb)",
+          "shots": [
+            "ch01-s03"
+          ],
+          "blocking": true
+        }
+      ],
+      "spineGate": {
+        "contactSheetAt": [
+          "ch01-s05",
+          "ch05-s10",
+          "ch08-s14",
+          "ch12-s07",
+          "ch15-s08"
+        ],
+        "renders": "boardStateAt, shelfStateAt, wallStateAt and xrayBandsAt at each shot, plus the hands at rest at the L5 entry, on one sheet",
+        "before": "any shot authoring in film-shots"
+      }
+    },
+    "studyCameras": {
+      "canonical": "STUDY CAMERAS (canonical): every study visit uses the camera of the device it visits, so no two kinds of visit look alike. BOARD: always frontal and medium on the Case Board, the lamp's pool on the board; pins, unpins and stamps are 1–2 s inserts, never a held wide. SHELF: always a low macro along the candle rings at shelf height, shallow depth of field, haze between candles; candles are read as sleeves and stubs, never from above. WALL: always a slow lateral truck along the Wall of Forecasts from the lamp outward (W1 toward W8), slips in passing focus. FILE: always top-down on the desk (the manila file, the slip folded in, the flap closed). X-RAY: the chat box framed square-on as a plate, the room falling away behind its serverCyan glow. THE FULL WIDE (board, shelf and Wall in one frame) is reserved for exactly three moments: ch01-s05, ch12-s07 and ch15-s08.",
+      "board": "frontal, medium; inserts of 1–2 s for pins",
+      "shelf": "low macro along the rings; shallow focus; haze between candles",
+      "wall": "slow lateral truck from the lamp outward",
+      "file": "top-down on the desk",
+      "xray": "square-on plate, room falling away",
+      "fullWideOnly": [
+        "ch01-s05",
+        "ch12-s07",
+        "ch15-s08"
+      ]
+    },
+    "runtime": {
+      "note": "RUNTIME BUDGET (script editor, round 5 wrap-up). Brief: 30–35 min, target 32 min ≈ 3,040 narration words. Gate: generator/film/script.mjs assemble at 140 wpm (house pace; voice.json wpm overrides once cast) must be at or under 35.2 min. Numeric hold, lead-in and pause lengths quoted inside shot visual text (e.g. \"holdAfter 5.5 s\", \"about 10 seconds\") are superseded by the shot fields and the locked clock (timeline.json); shot authors time to the clock.",
+      "spokenWords": 3585,
+      "wordsBefore": {
+        "round3": 3179,
+        "round4Review": 3638,
+        "round4AfterRevisers": 3666,
+        "round4WrapUp": 3497,
+        "round5AfterRevisers": 3590,
+        "round5WrapUp": 3542,
+        "round6AfterRevisers": 3577,
+        "round6WrapUp": 3476,
+        "round7AfterRevisers": 3446,
+        "round7WrapUp": 3438,
+        "round8AfterRevisers": 3583
+      },
+      "timingModel": "leadIn + line (words / wpm) + pauseAfter … + holdAfter, max with minDuration, summed over all shots; on-screen text needs characters / 12 + 1.5 s from its beat to the end of its shot",
+      "round5": "Cut from 38.4 to about 35.0 min at 140 wpm with every on-screen text item at full reading time (0 reading-time warnings). Words: the film-wide notes' cuts plus ear-pass trims (L1019, L1509, L0512 quote shortened to its first sentence with the rest in creditsSources, L0613/L0614, L0615, L0218, L0307, L0401, L0410, L0522, L0302, L0821, L0114, L1401, L1502); a few ear-pass additions (L0210 sets up the rim aloud, L0807 says 'nine holes', L0907 names Lee Sedol as the opponent, L1104 reminds who said 'practically nothing', L1312 names the three laureates). Air: every non-protected shot's holdAfter set to exactly what its text and its last beat need (0.5 s floor after the last line, 2 s at chapter ends); pauses 0.6–1.5 s cut by 20%; long pauses and lead-ins trimmed; post-narration beat offsets compressed by 30%; labels cued earlier, mid-line, where they name what is being said; long attributions and sourcing caveats moved to creditsSources. Protected: the opening, the deaths in ch04, the transformer reveal, the last narrated shot, the title and credits cards.",
+      "gate": "Gate: script.mjs assemble at the locked voice pace (voice.json wpm 143.5) under the 35.2 min ceiling, and at or under 33.6 min (story editor, round 7; round 8 measured 34.7 min after the reviewers' requested additions: see round8). If the recorded narration runs long, cut in this order: chapter-final holds to their 2 s floors, then words that carry no unique claim. The remaining words are deep-dive mechanics, attributions, fairness clauses, plants and payoffs, and the ear-pass set-ups.",
+      "round6": "Cut from 36.0 to 34.5 min at 140 wpm, with every on-screen item readable to its exit. TOOLING: onScreenText takes an optional 'until' beat id (the beat where the camera carries the text out of frame); script.mjs measures reading time from cue to exit, so a pan, cut or push no longer hides short text. WORDS (3,577 → 3,476 spoken): L0502 (Hopfield's recollection; its spoken payoff was already cut), L0905b/c folded into one AlphaGo line (learning from reward kept for ch15), L0910, L1110 (GPT-3's size moves to a brass plate), L0522, L0831, L0218, L0103, L1502 (Hopfield by name), L0902's spoken text matched to the page; ear-pass additions L1302 ('In 2023'), L0510 ('toward less error'), L0514 ('expert system', set up before Schank says it), L0215 split around Minsky's learning machine. SHOTS CUT: ch12-s04 (Constitutional AI; RLHF in ch12-s02 already carries 'people choosing'), ch11-s07 (Chinchilla and the scale candle's rule-of-thumb tag), ch10-s11 (the deadline micro-kitchen; the title is now spoken over the ch10-s04 banner), ch02-s06 (SNARC; Minsky's learning machine is now said in L0215b and shown on the Dartmouth sill). AIR AND TEXT: the statement on AI risk shown as its opening clause, the AlexNet pooling vignette, the bold-stride replay (shown once, in ch08-s10), the Mechanical Turk vignette, the accord vignette, the 'chose Google' and author-order captions moved to creditsSources; labels re-cued earlier where they name what is said; credits card 33.3 → 28.8 s. Protected: deep-dive mechanics, attributions, fairness clauses, the ch04 deaths, the X-ray and candle rituals at the art director's timings.",
+      "estimateVoice": "34.7 min at the locked voice pace (voice.json, 143.5 wpm; script.mjs assemble: 2,081.8 s), 120 shots, 223 lines, 3,585 words; 0 errors; 0 reading-time warnings; runtime warning only (target 32.0, ceiling 35.2)",
+      "round7": "Script editor wrap-up, round 7. The revisers had already taken most of the film-wide cuts (L1101, L1105, L1301, L0706, L0819, L1220-21, L1416, L1007, L0902, L1217, ch15-s02 merged into ch14-s04, L1502 now 'settles as it cools'). This pass: L0702's spoken text matched to the page ('A warm-up.' gone); L1110 'The giant GPT-3' became 'GPT-3', and the callback now names its source ('AlexNet's waiting note'); L0815's number cluster simplified (the bits arithmetic stays on its label); L0522a's panel name moved to its stamp; L0821, L0803, L0114 and L1530 trimmed; L1407 and L0832b varied away from the 'Not X. Y.' cadence; in L1502 'he co-invented' became 'Hinton co-invented' (the pronoun could be heard as Hopfield). Ear-pass additions: L1107 now says what the jug pours over before 'Pick one' (spoken inside the old wordless lead-in, so it costs no time); L0601b reminds the ear that Buffalo is the perceptron's city; L0832 says 'the rivals' clean bowl'; L0832b opens with 'And the tall man?' (its 'him' had no spoken antecedent since Florence). Kept despite the historian's cut list: 'rewarded for wins' in L0905b (the plant that ch14's 'trained by reward' pays off) and 'toward less error' in L0510 (the only place the ear is told what the hill is). Air: ch13-s06 hold cut from 4.9 to 3.5. The faster locked pace had caused 20 reading-time warnings; they were cleared by cueing cards up to 0.6 s earlier, raising holds by 0.1-0.4 s only where a card had no earlier anchor.",
+      "round8": "Script editor wrap-up, round 8. The round-8 revisers had already applied the critical timing fixes (ch08-s05 breaths and 2.5 s hold, beat 'doors' renamed 'lastHall'; ch08-s06 hold 2.6 with the 'mosaic' beat and no corner inset; ch12-s06 pullBack/cityLit re-anchored to the line end, hold 4.0; ch13-s06 hold 5.8 with the five moves re-spaced; ch03-s01 leadIn 1.2; ch05-s04 leadIn 1.3 with 'stamp' at 0.9 s) and the reviewers' word additions (+145 words). TOOLING: script.mjs beatAt now resolves edge 'end' on a word to that word's END, as lib/timing.mjs resolveBeat does (wpm estimates and recorded words), adds each line's insertGaps to its estimated length and to the word times after them, and errors on any beat at or after the shot's end; a unit test covers it. No beat in the film resolves past its shot; ch10-s12 costEq moved to the word end (offset 0). HOLDS (story editor): ch03-s06 13.0 → 12.6 (the LOVE card's attribution shortened to 'on its limits (New Yorker, 1958)', still dated, so the card and the chess slip each keep full reading time); ch10-s13b 5.7 → 5.3 (honest card cued on 'Transformer'); ch14-s04b 5.0 → 4.5; ch02-s05b 4.6 → 4.45; ch15-s06 5.2 → 5.1. Each stops at the first value that keeps its last card readable; the reviewer's lower numbers would have made those cards short. EAR PASS: L0405 'what it called' marks Minsky and Papert's words as theirs (otherwise the narrator seems to own the 'intuitive judgment'); L0412 'the next clue'; L0703 'Hinton and a student wrote' (an attribution needs a name, not a callback); L0803 'In Hinton's Toronto lab'; L0821 'the tall man, Hinton' re-ties the chapter 4 image to the name before L0832b and L0902 lean on it; L0813 'in the team's test' ('their' had no spoken antecedent); L0815 'Twelve million answers in all'; L1104 'From the file, Lenat's team:' restores who said 'practically nothing'; L1415 'In September, twenty twenty-six' ('This September' had no year for the ear); L1517 'The last word is Hinton's, too' (the ear never heard the word 'slip'). CUT: L0601b ('Buffalo, again'; the teacher's offset for L1103), its ghost stamp kept as a wordless beat. RUNTIME: 34.7 min at 143.5 wpm, under the 35.2 ceiling and inside the brief's 30-35 range, but over the 33.6 round-7 gate: the round-8 additions were all reviewer-requested teaching, fairness or art-direction timing, and no remaining word is free of a claim, a plant or a payoff. If the recorded narration runs long, cut in this order: L1529 (the chemistry prize, the story editor's named first drop, about 11 s), then chapter-final holds to their 2 s floors, then L0605's 'Forests of decision trees voted.' and L1219's 'monthly'. VISUALS: every shot's visual now opens with a one-sentence 'THIS SHOT:' lead (teaching image and move), as ch14 did. KIT WORK reordered into build order, the spine first, with a five-point study contact sheet gate and a non-blocking fallback for hallOfMirrors."
+    },
+    "foundingGrammar": {
+      "canonical": "FOUNDING GRAMMAR (canonical, every lab): flat even light, no office, no spotlight, no faces, no hero framing; a typewritten announcement pinned in the founding row (F1 OpenAI, 11 December 2015, ch09-s04; F2 Anthropic, founded January 2021, announced 28 May 2021, ch12-s03), same height and size, no name card under the pin (founders are named only in the narration); a warm and a cold hand-lantern hanging from the same nail; one plain ledger page in IBM Plex Mono for the lab's money. The lantern MEANINGS never change from lab to lab: the WARM lantern is always the promise the lab names, the COLD lantern is always the danger the lab names. OpenAI: warm on 'benefit', cold on 'damage'. Anthropic: cold on 'safety' (the risk its name answers, as OpenAI's 'damage'), warm on 'research'. The order of swings may differ; the meanings may not."
+    }
+  },
+  "runtimeCeilingSec": 2172,
+  "runtimeCeilingNote": "2026-10-13: +6 s for the end CREDITS card (user direction: list every model and tool), outside the story runtime."
+}

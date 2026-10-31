@@ -1,0 +1,77 @@
+{
+  "reviewer": "historian",
+  "round": 8,
+  "lens": "accuracy and fairness: every narration line, spoken override and on-screen text item checked against research/claims.json and quotes.json, with the bible's era analyses, cast list and quote archive as backup",
+  "runtimeCheck": "node generator/film/script.mjs assemble --slug neural-net-history --check: 15 chapters, 120 shots, 222 lines, 3,438 words, est. 33.3 min (1998.5 s at the locked 143.5 wpm), 0 errors, 1 warning (over the 32-minute target). That is inside the brief's 30-35 minute range, so runtime is not critical.",
+  "method": "I dumped all 15 chapters: every line, every spoken override, every onScreenText item, and each shot's cited claims. All 215 cited claim IDs resolve. I read every line and label against the text of the claims its shot cites. I machine-matched all 78 quoted fragments, spoken and on screen, against quotes.json after normalising punctuation and splitting at ellipses. All match word for word; the only non-match is the mentioned word 'rabbit', which is a word being named, not a quotation. I read the speaker, date and context fields of all 45 quote entries used. I checked the bible for facts the claims do not carry: Salakhutdinov as Hinton's student; 'colleagues and even Uszkoreit's father doubted'; the Linnainmaa thesis 'about rounding errors'; 'statistics over hand-written rules in speech and language'; Pitts 1923-1969 and McCulloch 1898-1969; Huang's 'nanoseconds'; era 3 dated 'roughly 1969 to 1982-86'. I re-did the arithmetic: 3.88; softmax(1,0,2,1) gives 0.534 to 'river'; 150,528; 16, 7, 17, 13, 20 and 39 years; 'sixty-one years on'; 'under two' years from May 2014 to March 2016; 'a week later' from 20 to 27 January 2025. I read the visuals of ch02-s07, ch03-s06, ch03-s08, ch05-s04, ch06-s05, ch10-s03, ch12-s08, ch13-s03, ch13-s06, ch14-s04b, ch15-s03, ch15-s05 and ch15-s08. Round-7 status: both criticals are resolved. Runtime is now 33.3 minutes, inside the range. L1502 now reads 'the Boltzmann machine Hinton co-invented, a net that settles as it cools'. Of the round-7 issues, these are fixed: the Boltzmann label with Sejnowski and Ackley; L0510 with the 'rare in the 1986 tests' label; all eight Transformer authors on the banner; the court label saying which court found what; the ch15-s07 Widrow card dated 2005; L1410 'might matter less'; L1110 'AlexNet's waiting note'; the W3 'a hunch, not a forecast' tag; the contest-scoped ImageNet label; the CHM card dated 2025. The undated ch02-s07 Widrow card is the one round-7 item still open; its date was moved to the credits.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 7.5
+  },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch06-s05 OST quote '…no one in his right mind will use neural nets…' and L0610 ('Vapnik said by 2005 \"no one in his right mind\" would use them')",
+      "problem": "The ellipsis cuts a qualifier that changes the meaning. q-bet-vapnik reads '…no one in his right mind will use neural nets that are essentially like those used in 1995', and e6-bet repeats 'essentially like those of 1995'. Vapnik bet against 1995-style nets, not against neural nets as such. As cut, the card and the line make his claim broader than he signed, and the narrator's pen underlines exactly the truncated phrase. Of all 78 quoted fragments, this is the only one whose ellipsis changes the sense of the claim.",
+      "fix": "OST: '…no one in his right mind will use neural nets that are essentially like those used in 1995.' — Vapnik's bet, 1995. L0610: '…Vapnik said by 2005 \"no one in his right mind\" would use nets like those.' (+1 word)."
+    },
+    {
+      "where": "ch10-s04 L1024 ('It out-translated every rival, after half a day's training.')",
+      "problem": "Two results are merged. Per e10-results, the 12-hour base model beat every previous single model and ensemble only on English-German (27.3 vs 26.36). Beating every rival on both language pairs took the big model, which trained for 3.5 days. Read as written, half a day bought the whole win.",
+      "fix": "'Its title: Attention Is All You Need. Even its small version, after half a day's training, out-translated every rival from English into German.' Or keep the line and add ' · base model, English→German' to the ch10-s12 '12 hours' label."
+    },
+    {
+      "where": "ch14-s04b match prop lettering 'COMPUTE DOESN'T MATTER' (visual, beat 'the match is struck')",
+      "problem": "Round 7 softened the narration to 'markets bet chips might matter less' (the bible's era-13 wording is 'maybe compute doesn't matter', 'held briefly by markets'). The prop still states the unhedged version, so the picture contradicts the corrected line.",
+      "fix": "Letter the match 'COMPUTE MATTERS LESS?' or 'MAYBE COMPUTE DOESN'T MATTER'."
+    },
+    {
+      "where": "ch14-s04b candle tag '2022–2025' on a two-ring sleeve (visual), with L1410 'That belief burned about two'",
+      "problem": "Year subtraction gives three, so the tag disagrees with its own sleeve and with the narration. The real span is about October 2022 to January 2025, roughly 2¼ years. Every other candle's tag subtracts cleanly to its ring count, a rule the film teaches viewers to rely on.",
+      "fix": "Tag 'OCT 2022 – JAN 2025 · ≈ 2'. Or use the same 'c.' convention as the warm-up candle."
+    },
+    {
+      "where": "ch13-s03 OST 'MARCH 2023 · PAUSE LETTER · NO LAB PAUSED'",
+      "problem": "A slight overstatement. e12-fli says 'no major lab paused'. The film cannot vouch for every lab.",
+      "fix": "'MARCH 2023 · PAUSE LETTER · NO MAJOR LAB PAUSED' (40 characters)."
+    },
+    {
+      "where": "ch03-s06 Love card ('— Rosenblatt, on its limits') and L0312",
+      "problem": "Provenance is missing from the card. Both q-rosenblatt-love and q-rosenblatt-none are 'Frank Rosenblatt (as reported by The New Yorker)'. The magazine's narrative sentence ('Dr. Rosenblatt said cheerfully') is read in the narrator's voice, and the card no longer says where it comes from. Round 7 counted 'The New Yorker, 1958' among the provenance markers, but it has since moved to the credits. Every other reported quote in the film keeps its marker on screen ('as reported by Cade Metz', 'as quoted by Gary Marcus', 'tweet, as widely reproduced').",
+      "fix": "Card attribution '— Rosenblatt, on its limits (The New Yorker, 1958)' (49 characters). Optionally start L0312 with 'A magazine asked what use it was.' in place of 'What use was it?'."
+    },
+    {
+      "where": "Undated quote cards: ch02-s07 Widrow ('— Bernard Widrow'), ch05-s09b Schank ('— Roger Schank'), ch13-s04 DAIR ('— Gebru, Bender & McMillan‑Major') and LeCun ('— Yann LeCun')",
+      "problem": "Every other quote card carries a year. Undated, the Widrow card at Dartmouth 1956 reads as words spoken in 1956, when they were written in January 2005 (q-widrow-dartmouth). That is the only one of the four that misleads. The other three are just inconsistent.",
+      "fix": "'— Bernard Widrow, recalling it in 2005'; '— Roger Schank, 1984'; '— Gebru, Bender & McMillan‑Major, March 2023'; '— Yann LeCun, June 2023'."
+    },
+    {
+      "where": "ch15-s04 OST 'METR, Mar 2025 · agent tasks double ≈ every 7 months' and L1530",
+      "problem": "The measure loses its definition. e14-metr-horizon defines the time horizon as the length of task, measured in human-expert time, that an agent completes with 50% reliability. 'The tasks AI agents can finish alone' and 'agent tasks double' both drop the 50% reliability threshold, which is the hedge that makes the trend honest.",
+      "fix": "OST: 'METR, Mar 2025 · task length agents finish half the time: doubles ≈ every 7 months' (fits one line at label size). The narration can stay, since it already opens with 'By one measure'."
+    },
+    {
+      "where": "ch15-s05 OST date 'JULY 2026' on the books-settlement stop (L1524 'Anthropic also agreed to pay…')",
+      "problem": "A minor date ambiguity. Per e14-copyright, July 2026 is the settlement's final approval (20 July 2026), not the date Anthropic agreed to it. Beside 'agreed to pay', the stamp reads as the date of the agreement.",
+      "fix": "Stamp 'APPROVED JULY 2026' (18 characters, within the 32-character stamp rule)."
+    },
+    {
+      "where": "ch14-s03 L1407 ('It left out the research, and the chips.')",
+      "problem": "This is fair but compressed. The report's own caveat (e13-deepseek-v3) excludes 'prior research and ablation experiments'. That it left out the chips is an inference: the figure is a rental-equivalent price for 2,048 H800s, not the cost of owning hardware, and the ~50,000-chip figure is SemiAnalysis's outside estimate. e13-cost-debate also records that defenders say DeepSeek never claimed the whole programme cost $6M. The line still says 'final training run', which is accurate, so this is low priority.",
+      "fix": "Optional: 'It left out the research, and the chips it owned.' (+2 words). Or add 'RENTAL-PRICE ESTIMATE' to the stamp."
+    }
+  ],
+  "strengths": [
+    "Quote discipline is airtight. All 78 quoted fragments, spoken and on screen, match quotes.json word for word, including the stitched ones: OpenAI 2015 'could benefit society' / 'damage society…'; Stochastic Parrots 'haphazardly stitching together' / 'without any reference to meaning'; Lenat's 'practically nothing' / 'the raw text'; and Hinton's 30-to-50-years sentence after the NYT's 'he said' split. Paraphrases carry no quotation marks: Fodor and Pylyshyn, Hassabis's odds, Huang's 'HELPS HUAWEI', Lin's under-1-in-5, and China's 'SELF-DEFEATING'. The provenance markers that matter most are on screen: 'tweet, as widely reproduced'; the AP, ChinaTalk and DigiChina translations; 'as quoted by Gary Marcus'; 'as reported by Cade Metz'; 'Fei-Fei Li recalls'; 'writing in 2020'; 'Lenat, Prakash & Shepherd'.",
+    "Round-7 accuracy fixes landed cleanly and in the film's voice. The Boltzmann machine is now co-invented and settles, rather than learns, as it cools, in both the label and the Nobel line. The 1986 local-minima staging carries 'rare in the 1986 tests'. All eight Transformer authors appear in the paper's order. The court label says which court found what. Widrow's closing card is dated 2005. The market 'bet chips might matter less'. The Florence callback is now 'AlexNet's waiting note'. Rosenblatt's 1961 sentence is tagged 'a hunch, not a forecast'. The ImageNet label scopes the 1,000 categories to the contest.",
+    "Contested matters carry the hedge their claims require, every time: bedroom or lab (CHM vs NVIDIA); eight names for back-propagation, with 'credit still disputed' and Hinton's own disclaimer; 'Historians still argue; there were several blows', with four equal cards and Lighthill's target scoped to 'rules far more than nets'; Amari's method shown at the 1969 rim; systematicity 'still argued · a 2023 reply claims to meet it'; the warm-up candle 'nobody knows exactly when'; Gebru's departure, both accounts at equal size; the auction 'by one reporter's account'; seven networks voting and the IDSIA wins credited; speech going first in July 2012; DeepSeek's 'final training run' with the report's caveat and an outside estimate; the Nobel's 'a bit of a stretch'; the METR trial its own authors now call out of date.",
+    "Even-handedness across labs and nations holds up line by line. Anthropic gets no promotional pass. Its FTX money is labelled ('not implicated'). Its $1.5 billion settlement and the Pentagon designation sit beside OpenAI's sandbox escape under an explicit same-lamp rule; the government's position is spoken; the court split is shown both ways. Its interpretability claim is hedged twice ('a simplified copy'; 'about a quarter of the prompts'). Its CEO's export-control view is tagged with his affiliation, like Huang's and Khan's. On China, Washington's stated military rationale and Beijing's reply are both quoted verbatim. The 2017 plan 'named no rival'. The talent figure is paired with 'America employed the most'. Qwen's open-weight lead is reported. Bletchley and the September 2026 dialogue sit beside 'Chip rules unchanged'. The closing card discloses that an Anthropic model wrote the film.",
+    "The two deep dives are mechanically exact and honest about what is illustrative. The AlexNet dive gets these right: 224×224×3 = 150,528; the worked stencil sums to 3.88 under the real ReLU; 96 first-layer stencils of 11×11×3 learned in colour; 55·27·13·13·13 → 4096·4096·1000; about 60 million weights against about 12 million bits of labels (the paper's own 10-bit argument); ×2048 augmentation; dropout on fc6 and fc7 only; ReLU's 6× scoped to the CIFAR-10 test net; the colour-agnostic/colour-specific split 'every time'; the step size cut ÷10 three times. The Transformer dive gets these right: scores 2,0,4,2 ÷ √4 → softmax ≈ 0.53 to 'river'; √64 = 8; 8 heads × 64; sinusoidal positions; ×6 blocks; n² cost; the one-seventh compute marked as derived; decoder-only credited to the 2018 Google paper GPT-1 cites. The 1986 XOR run is lettered as a demonstration on the loom beam, because the paper's own demos were family trees and symmetry.",
+    "The candle clock matches the bible's era durations: logic machine 1943–59 (16); learning machine about 7; sterile extension 1969–86 (17, inside era 3's 'roughly 1969 to 1982–86'); knowledge about 1980–87 (7); hand-cut stencils 1999–2012 (13); fiddly nets 10–15 years, field by field; read-in-order 1997–2017 (20); the market match one day; Cyc 1984–2023 (39), correctly the longest. Each era names its dissenters at the rim: Gerard, Minsky, Michie, Fodor and Pylyshyn, the holdouts, Kelcey, Bender and Koller, Gebru, Marcus, LeCun. That meets the brief's demand for what people believed, who dissented and for how long."
+  ]
+}

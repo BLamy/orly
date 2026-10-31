@@ -39,14 +39,15 @@ const ROWS = [
   { model: 'Qwen3.6-Plus', base: 56.45, pre: 59.9, post: 54.33 },
 ];
 
-const CHART_X = 260;
+const CHART_X = 300;
 const CHART_Y = 150;
-const ROW_H = 84;
-const BAR_MAX = 700;
+const ROW_H = 72;
+const BAR_MAX = 600;
 const BAR_H = 16;
+const TITLE_BAND_H = 92;
 
-const CAM_CHART: CameraState = { x: 640, y: 340, k: 1.12 };
-const CAM_DEEP: CameraState = { x: 640, y: CHART_Y + 3 * ROW_H + 30, k: 1.5 };
+const CAM_CHART: CameraState = { x: 640, y: 340, k: 1.08 };
+const CAM_DEEP: CameraState = { x: 560, y: CHART_Y + 3 * ROW_H + 30, k: 1.5 };
 
 interface Scene {
   tl: Timeline;
@@ -162,7 +163,9 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
+  const stripY = CHART_Y + 4 * ROW_H + 56;
+  const verdictY = stripY + 40;
 
   return (
     <>
@@ -171,22 +174,20 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           <text x={CHART_X} y={CHART_Y - 40} fill={colors.TEXT} fontSize={16} opacity={rowsU}>
-            nanobot runtime · % sub-problems passed
+            Nanobot runtime · % sub-problems passed
           </text>
           <text x={CHART_X + 420} y={CHART_Y - 40} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={rowsU}>
             reported — replotted, not re-run
           </text>
-          {/* legend */}
-          {preU > 0 && (
-            <g opacity={Math.max(preU, postU)}>
-              <rect x={CHART_X} y={CHART_Y - 26} width={12} height={12} fill={colors.MUTED} opacity={0.55} />
-              <text x={CHART_X + 18} y={CHART_Y - 16} fill={colors.MUTED} fontSize={11}>baseline</text>
-              <rect x={CHART_X + 90} y={CHART_Y - 26} width={12} height={12} fill={colors.SECONDARY} opacity={0.75} />
-              <text x={CHART_X + 108} y={CHART_Y - 16} fill={colors.MUTED} fontSize={11}>author-first</text>
-              <rect x={CHART_X + 200} y={CHART_Y - 26} width={12} height={12} fill={colors.ACCENT} opacity={0.85} />
-              <text x={CHART_X + 218} y={CHART_Y - 16} fill={colors.MUTED} fontSize={11}>learn-from-run</text>
-            </g>
-          )}
+          {/* legend: always on screen, so every bar has its key */}
+          <g opacity={rowsU}>
+            <rect x={CHART_X} y={CHART_Y - 24} width={12} height={12} rx={2} fill={colors.MUTED} opacity={0.7} />
+            <text x={CHART_X + 18} y={CHART_Y - 14} fill={colors.TEXT} fontSize={13}>baseline · no skills</text>
+            <rect x={CHART_X + 170} y={CHART_Y - 24} width={12} height={12} rx={2} fill={colors.SECONDARY} opacity={0.85} />
+            <text x={CHART_X + 188} y={CHART_Y - 14} fill={colors.TEXT} fontSize={13}>author-first</text>
+            <rect x={CHART_X + 300} y={CHART_Y - 24} width={12} height={12} rx={2} fill={colors.ACCENT} opacity={0.9} />
+            <text x={CHART_X + 318} y={CHART_Y - 14} fill={colors.TEXT} fontSize={13}>learn-from-run</text>
+          </g>
 
           {ROWS.map((r, i) => {
             const u = clamp01(rowsU * ROWS.length - i);
@@ -196,20 +197,21 @@ function Frame({ s }: { s: SceneState }) {
             const wBase = (r.base / 100) * BAR_MAX;
             const wPre = (r.pre / 100) * BAR_MAX * preU;
             const wPost = (r.post / 100) * BAR_MAX * postU;
+            const isBucks = r.model === 'MiniMax-M2.7';
             return (
               <g key={r.model} opacity={u}>
                 <text x={CHART_X - 14} y={y + 22} textAnchor="end" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {r.model}
                 </text>
-                <rect x={CHART_X} y={y} width={wBase} height={BAR_H} rx={3} fill={colors.MUTED} opacity={0.55} />
-                <text x={CHART_X + wBase + 8} y={y + 13} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                <rect x={CHART_X} y={y} width={wBase} height={BAR_H} rx={3} fill={colors.MUTED} opacity={0.7} />
+                <text x={CHART_X + wBase + 8} y={y + 13} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
                   {r.base.toFixed(2)}
                 </text>
                 {preU > 0 && (
                   <g opacity={preU}>
                     <rect x={CHART_X} y={y + 20} width={Math.max(wPre, 2)} height={BAR_H} rx={3}
-                      fill={isDeep && deepU > 0 ? colors.NEGATIVE : colors.SECONDARY} opacity={0.75} />
-                    <text x={CHART_X + Math.max(wPre, 2) + 8} y={y + 33} fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>
+                      fill={isDeep && deepU > 0 ? colors.NEGATIVE : colors.SECONDARY} opacity={0.85} />
+                    <text x={CHART_X + Math.max(wPre, 2) + 8} y={y + 33} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
                       {r.pre.toFixed(2)}
                     </text>
                   </g>
@@ -217,10 +219,15 @@ function Frame({ s }: { s: SceneState }) {
                 {postU > 0 && (
                   <g opacity={postU}>
                     <rect x={CHART_X} y={y + 40} width={Math.max(wPost, 2)} height={BAR_H} rx={3}
-                      fill={isDeep && deepU > 0 ? colors.NEGATIVE : colors.ACCENT} opacity={0.85} />
-                    <text x={CHART_X + Math.max(wPost, 2) + 8} y={y + 53} fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>
+                      fill={isDeep && deepU > 0 ? colors.NEGATIVE : colors.ACCENT} opacity={0.9} />
+                    <text x={CHART_X + Math.max(wPost, 2) + 8} y={y + 53} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
                       {r.post.toFixed(2)}
                     </text>
+                    {isBucks && (
+                      <text x={CHART_X + Math.max(wPost, 2) + 70} y={y + 53} fill={colors.ACCENT} fontSize={13} fontWeight={600}>
+                        +{(r.post - r.base).toFixed(2)}
+                      </text>
+                    )}
                   </g>
                 )}
                 {isDeep && deepU > 0 && (
@@ -232,22 +239,22 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
 
-          {/* OpenClaw strip */}
+          {/* OpenClaw strip: the second runtime, kept above the caption zone */}
           {clawU > 0 && (
             <g opacity={clawU}>
-              <rect x={CHART_X} y={CHART_Y + 5 * ROW_H + 6} width={BAR_MAX} height={40} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-              <rect x={CHART_X} y={CHART_Y + 5 * ROW_H + 6} width={(20 / 100) * BAR_MAX} height={40} rx={8} fill={colors.NEGATIVE} opacity={0.18} />
-              <text x={CHART_X + 16} y={CHART_Y + 5 * ROW_H + 31} fill={colors.TEXT} fontSize={13}>
-                OpenClaw runtime: every model, every mode — below 20% (GPT-5.4 PostSkill: 1.14)
+              <rect x={CHART_X} y={stripY} width={BAR_MAX} height={32} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+              <rect x={CHART_X} y={stripY} width={(20 / 100) * BAR_MAX} height={32} rx={8} fill={colors.NEGATIVE} opacity={0.18} />
+              <text x={CHART_X + 14} y={stripY + 21} fill={colors.TEXT} fontSize={14}>
+                OpenClaw runtime: all models, all modes below 20% (GPT-5.4 PostSkill 1.14)
               </text>
             </g>
           )}
 
-          {/* verdict */}
+          {/* verdict, sitting under the strip (in view, above the caption) */}
           {verdictU > 0 && (
             <g opacity={verdictU}>
-              <rect x={CHART_X + 180} y={CHART_Y + 5 * ROW_H + 60} width={560} height={40} rx={10} fill={colors.WARM} opacity={0.12} />
-              <text x={CHART_X + 460} y={CHART_Y + 5 * ROW_H + 86} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
+              <rect x={CHART_X} y={verdictY} width={BAR_MAX} height={32} rx={8} fill={colors.WARM} opacity={0.12} />
+              <text x={CHART_X + BAR_MAX / 2} y={verdictY + 21} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
                 “selective and cost-sensitive, rather than an automatic benefit”
               </text>
             </g>
@@ -255,8 +262,10 @@ function Frame({ s }: { s: SceneState }) {
         </Camera>
       </g>
 
-      {/* screen-fixed */}
-      <g opacity={titleU * mainOp}>
+      {/* screen-fixed top bar: a solid band so chart rows never run under the title */}
+      <rect x={0} y={0} width={STAGE_W} height={TITLE_BAND_H} fill={colors.BG} />
+      <rect x={0} y={TITLE_BAND_H} width={STAGE_W} height={1} fill={colors.GRID} opacity={titleU} />
+      <g opacity={titleU}>
         <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           The measured answer
         </text>

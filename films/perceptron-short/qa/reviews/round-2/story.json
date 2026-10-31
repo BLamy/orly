@@ -1,0 +1,74 @@
+{
+  "reviewer": "story",
+  "lens": "STORY & CURIOSITY: arc, stakes, emotion, pacing, memorable images, questions planted and paid off",
+  "round": 2,
+  "previousRounds": "Round-1 story issues checked against the film.mp4 frames at 0.9-60.3 s. FIXED: (1) K2 no longer crops the retina; it stays in frame through 'right' (47.06) and the hold. (2) Discrimination is now proven: try 4 is a vertical bar answered VERTICAL and try 5 a horizontal bar answered HORIZONTAL, with try 1's verdict ghosted beneath. (3) The tail is extended to 60.375 s with a fade to true black. (4) Bookend: iris on the lantern, match to the glowing eye, the lab at night, Rosenblatt, and the title returning small. (5) Wrong beats now read as wrong: the lantern gutters cold blue-grey and thick nudge arrows show on the dials. (6) The name card sits beside Rosenblatt and the PERCEPTRON plate appears. (7) The low end of m01 thins under L0107, so the bloom on 'right' opens out (see the spectrogram). PARTIAL: s01 still shows the machine in full silhouette from 2.5 s (only the first ~1 s is black). Verdict captions are still small italic, and the ghosted try-1 line is barely legible.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 7,
+    "clarity": 7,
+    "story": 7,
+    "visual": 8,
+    "sync": 8,
+    "sound": 7.5,
+    "curiosity": 6.5
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "The proof of discrimination is muddied by the 'simple patterns' pair. At about 50.0-50.8 s, while the caption still reads 'try 5 · said horizontal · right' and the needle points at HORIZONTAL, the retina morphs into a single '-|' glyph: the horizontal bar shifted left and a vertical bar beside it on the same 20x20 plate. A viewer reads it as the machine now seeing a strange new shape and calling it horizontal. It is not read as 'the two shapes it learned', so the clean before/after that try 5 just set up gets blurred right before the iris.",
+      "fix": "Keep try 5's horizontal bar alone on the plate until the try-5 caption and the needle have settled (at least 0.8 s after the flare). If the 'simple patterns' pair stays, fade the caption and return the needle to centre first. Then show the two shapes as two separate small plates (or two clearly separated halves with a gap and a rule between them), each tagged in era type with its learned answer (VERTICAL / HORIZONTAL), and only then start the K3 push and iris. If that does not fit, drop the pair and iris straight from the lit hbar and lantern."
+    },
+    {
+      "owner": "line",
+      "id": "L0108",
+      "severity": "major",
+      "problem": "The second triumph has no room. Try 5's flare (about 49.3-49.7 s) lands under 'It could learn only simple patterns' (which starts at 48.97). The film's proof that it really learned is spoken over by the deflating limit, and the D-major bloom is already closing by 49.0. The emotional sequence 'right, and right again... and yet only simple patterns' is compressed into one overlapping moment, so neither the joy nor the honest limit fully lands.",
+      "fix": "Lengthen the gap before L0108 from about 1.5 s to about 3.2 s, so L0108 starts at about 50.7 s and try 5 flares in the clear air after 'right'. Re-lock the clock (the film runs about 62 s, which is fine for 'about a minute'). Re-anchor the s03 P5 schedule to land on its own (for example right + 1.6 s), let m01 answer that second flare (see the cue issue), and keep the iris and bookend anchored to 'simple' and 'descendants' as now."
+    },
+    {
+      "owner": "global",
+      "id": "wonder-question",
+      "severity": "major",
+      "problem": "Curiosity is still the weakest lens. The film never plants the question that makes the perceptron astonishing: nobody told it which shape was which, and it found the rule from its own mistakes. It goes straight from a 20-second parts inventory (s02: eye, wires, dials, name) to 'Show it a shape, and it guesses'. The viewer is never made to wonder 'how could a machine possibly learn that?' before the answer arrives, so the payoff feels like a demonstration rather than a revelation.",
+      "fix": "Research first: verify a claim that the Mark I was trained by example and error correction rather than programmed with the answer (for example from Rosenblatt 1958 or the Cornell Aeronautical Laboratory reports; mk1-rule nearly covers it). Then story: make L0105 plant the question, for example 'No one told it which shape was which. Show it one, and it guesses.' Optionally tighten L0103 so s02 ends sooner and the question arrives before about 24 s. Re-narrate L0105 only, then re-anchor s03's 'shape' beat."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "minor",
+      "problem": "The second correct answer (the try-5 lantern flare) has no musical answer. The bloom on 'right' closes by 49.0, and the spectrogram shows the bed simply resuming. Musically the film says 'right' once, which undersells the proof that it learned both shapes.",
+      "fix": "After the L0108 re-time, put a small, quiet echo of the 'right' figure on the try-5 flare (celesta F#6 over D, or the music-box D6-F#6, at about -6 dB against the first) in the word gap before L0108. Keep the full bloom unique to the first 'right'."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The bookend's human beat is inert. From 53.5 to 59.8 s Rosenblatt holds the same outstretched presenting pose he struck in s02 while 'Its descendants, today's neural networks, still learn from mistakes' plays. The last emotional image belongs to a statue, not to a person who has just watched his machine learn.",
+      "fix": "Give him one small, motivated gesture anchored to 'still learn from mistakes': lower the arm, half-turn the head toward the eye's lit bar, or take a step closer to the stand. Then hold still into the fade. Use no new props or claims."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The verdict captions that carry the struggle and the comparison are still small italic type. The ghosted 'try 1 · said vertical · wrong' under try 5 is roughly 15-18 px high at 1080p and faint, and it is the one piece of text that turns try 5 into a before/after.",
+      "fix": "Set the main verdict at about 30 px, cream on a dark band, with the verdict word ('wrong' / 'right') in roman small caps. Raise the ghost line to at least 22 px at about 55% opacity, and hold both for at least 1.2 s before any other change to the retina."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "Carried over from round 1, still partly open. From about 2.5 s the eye, its stand and all three racks are shown in clear silhouette under the title, so s02's part-by-part reveal ('Its eye... Behind it... racks of dials') repeats what has already been seen and slows the setup.",
+      "fix": "Keep the racks and stand below about 15% luminance in s01, so only the window light, the blind shafts and (on 'see') the eye's lit row of cells read. Let the s02 crossfade bring up the rest."
+    }
+  ],
+  "best_moments": [
+    "'Wrong, and wrong again, and then, quite suddenly... right' (42.5-47.1 s): each word gets its own try. Try 2 gutters cold on 'Wrong', try 3 on 'wrong again', try 4's vertical bar holds through the breath, and the lantern flares exactly on 'right' as the low bass opens into the D-major bloom. This is a genuinely felt turn.",
+    "Try 5 with try 1's verdict ghosted beneath it: the same horizontal bar, once called vertical, now called horizontal. Learning is shown as a before/after on one shape.",
+    "The iris from the lit lantern to a single glowing point that match-dissolves into the camera-box eye in the night lab. The film closes its own frame: lab, then inside its mind, then the lab again, with the title returning small.",
+    "The honest close: 'It could learn only simple patterns' followed by 'still learn from mistakes' pays off the fairy-tale 'Once, a machine learned to see' without overselling it.",
+    "The theatre of the machine's mind (retina, tangle, dials, needle, lantern) runs the real perceptron rule on real tries, with only the dials that had a say turning. This is the new-way-to-learn image the film is built on."
+  ]
+}

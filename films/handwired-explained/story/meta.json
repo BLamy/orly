@@ -1,0 +1,96 @@
+{
+  "slug": "handwired-explained",
+  "title": "Promises, Not Proofs",
+  "subtitle": "How a program becomes a hand-wired neural network, told in the things people were sure of",
+  "logline": "Handwired lets you write a JavaScript interface as builder code that becomes a neural network with every weight written by hand. It runs every operation every frame, cannot stop early, and matches JavaScript exactly, as long as nobody lies to it. Told through the beliefs tied onto its wires like paper tags (who tied each one on, who doubted it, how long it held), the film teaches how the machine really computes: two ramps for every if, a clockwork for every loop, a valve for every gradient. And it meets a lab that writes its doubts beside its certainties, and breaks them on a schedule.",
+  "runtimeTargetSec": 1440,
+  "vhs": {
+    "subject": "Computer Science",
+    "theme": "grid",
+    "icons": [
+      "neuron",
+      "gear",
+      "chip",
+      "lightbulb"
+    ],
+    "tagline": "Every weight wired by hand!"
+  },
+  "staging": {
+    "note": "Staging appendix (script editor, round 1 wrap-up). Fixed geography, hand signatures, text rules and the shared build list that every shot obeys. Spread into script.json by the assembler; film-shots builds the modules in buildList before any shot.",
+    "tagLine": {
+      "canonical": "TAG-LINE MAP (canonical): the copper line is a set, not a void: the tag-keeper's workshop, established in ch01-s05. L2 a tall paned window wall (its sky carries the mood); L3 the workbench with the HandwiredOS desk's silhouette and the parchment plates pinned along its back edge; L4 the copper line between two posts at 58% frame height; L5 the narrator's hands, always from lower left; L6 the near post at frame right, where the red pencil rests. The Lifespan Rule lies front-on along the bench edge under the line: log-scale ticks, labelled an hour · a day · a year · a lifetime (week, month and decade unlabelled). Tags hang left to right in the order they are tied (tag 1 at the far left, the blank why tag at the far right since ch01-s05) and never change places except in the ch12 re-hang. LIFESPAN ENCODING (one rule, film-wide; every tag's thread obeys it): a struck or ended thread drops to the rule at its measured lifespan and ends there in a cut, dull tip. A still-held thread drops to its age as of 27 October 2026 and ends in a glowing open tip with a short copper arrow pointing right. Nothing runs off the rule's end except a thread that really is older than a lifetime. Tip positions: tag 1 biology strand ended at about seventy-seven years (1943 to 2020), just short of 'a lifetime'; tag 1 engineering strand still held at about eighty-three years, the ONLY thread past 'a lifetime'; tag 2 still held at about seven and a half years (March 2019), between 'a year' and 'a lifetime', short of the decade tick; tag 6 still held at thirteen days (the README's small print, 14 October 2026), between a week and a month; tag 7 ended at about three months; tag 8 ended at about eight weeks; tag 9 ended within hours, between 'an hour' and 'a day'; tag 10 still held at thirteen days (14 October 2026), between a week and a month; tag 11 JSON strand still held at about twelve days (15 October), TOML strand ended at one to two days. Question cards (qK, why?, the nanoGPT question) never drop to the rule. Suspects 3, 4 and 5 hang slack with no drop (a suspect has no date to measure).",
+      "tags": {
+        "1": "the neuron is a logic gate (ch02-s01; split thread: biology frays at 2020, engineering runs on)",
+        "2": "learn the weights, don't write them (ch02-s05; contested, pencil rests)",
+        "3": "Somebody trained it (ch01-s05; struck ch03-s06)",
+        "4": "A tool turned ordinary JavaScript into it (ch01-s05; struck ch03-s03; knot: the README's tagline)",
+        "5": "It isn't really a network (ch01-s05; struck ch05-s03)",
+        "6": "For an integer a (ch01-s07; re-tied as grid 1 ch04; riveted ch10-s02)",
+        "7": "one evaluation per frame (ch06-s05b; struck)",
+        "8": "the July established conclusions (ch08-s02; ten strokes ch08-s03; struck ch08-s08)",
+        "9": "the GPU is faster (ch09-s03b; struck ch09-s07)",
+        "10": "fully differentiable (ch07-s05; contested)",
+        "11": "the JSON / TOML border tag (ch11-s02; JSON riveted, TOML struck, bison loop open)",
+        "why": "blank from ch01-s05; the stranger's why? written on it by the red pencil in ch10-s03; answered nearest in ch12-s04"
+      },
+      "variants": {
+        "ch01, ch03": "WORKSHOP (canonical), night; in ch03 the desk on the bench is lit from inside (the X-ray has begun)",
+        "ch02": "PERIOD ROOMS: the line passes through each era's room at 50%, an older bronze wire, posts replaced by the room's own furniture",
+        "ch04": "WORKSHOP AT THE BENCH: line at 66%, cropped by the plates; tag 6 lifted onto the bench and back",
+        "ch05": "THROUGH THE LOOM: line threaded through the loom's two nearest end frames at 64%; pencil rests on the loom's end post",
+        "ch06": "ABOVE THE CLOCKWORK: line high (40%) over the host clockwork, camera low; pencil on the escapement bridge",
+        "ch07": "BY THE GALLERY: line across the learned gallery's stage at 56%, the valves' dark shapes below",
+        "ch08": "THE COLD WINDOW: the workshop in winterBlue, window wall frosted, the Window Calendar's dark August column through it; line at 52%, slack",
+        "ch09": "THE CYAN GRAIN: line inside the search hall at 60%, the search map's serverCyan grain behind",
+        "ch10": "OUT OF DOORS: misty hills at dusk, line at 48%, fence-stake posts, the far ridge of lit windows",
+        "ch11": "WORKSHOP, BEFORE DAWN: canonical workshop going from cold blue to first dawnGold; the ledger cabinet at L3",
+        "ch12": "THE VALLEY AT DAWN: the line laid across the valley, re-hung by dependency depth as the loom"
+      },
+      "ritual": "The flip / write / strike ritual is never shot twice at the same height and framing in a row: vary the chapter set above, and shoot strikes as TIGHT INSERTS (macro on the tag face, the pencil tip entering from frame right, about 1.5 s) in ch03-s03, ch05-s03, ch06-s05b and ch09-s07; the other strikes play in the wide."
+    },
+    "hands": {
+      "canonical": "HAND SIGNATURES (canonical, cast.json signatureLock): the narrator's hands enter from the lower LEFT and alone tie, flip, rivet, lift, place, bend and hold up; the red-pencil hand enters from frame RIGHT and only writes, strikes or rests; the author's hands appear only at a laptop or desk under a lamp; the agent's hand is a paper sheet paler, sits beside the author's, and never acts first; the viewer's hand is bare and rises from below, once (ch12-s06). No tag is tied, flipped, written, struck or riveted without a hand. (Lines of light, loom threads and drawn diagrams may draw themselves, as in ch01-s01, ch07-s10, ch08-s04 and ch12-s02; a tag's state never changes on its own.)",
+      "module": "Reuse neural-net-history's sets/narratorHands.ts (copied into this film's sets/), mirrored to the lower left with a linen sleeve; the red pencil, author, agent and viewer hands are variants on the same sprites, so all five share one silhouette language at one scale."
+    },
+    "text": {
+      "canonical": "TEXT RULE (canonical): apart from the date stamp and name card, a shot carries at most two text items, one per beat. A quotation the narrator speaks is never also set in full: only a short verbatim fragment and its attribution. A quotation shown but not spoken holds in a music-only window of at least characters/12 + 1.5 s. Secondary context (Siegelmann & Sontag, Maass & Orponen, Tracr, Giannou et al., Percepta) goes to the sources card, except the one ch02-s06 card the line L0211 cues."
+    },
+    "buildList": {
+      "note": "Shared, data-driven set modules for apps/bookshelf/src/viz/films/handwired-explained/sets/, built and contact-sheeted before any shot, so scale, colour code and placement cannot drift between shot authors. Each takes a progress parameter (0..1 or a beat-driven state) and draws nothing that is not bound to a real quantity (style bible §6).",
+      "narratorHands": {
+        "from": "neural-net-history sets/narratorHands.ts",
+        "params": "action, u, target point, held object, entry 'L' (narrator) | 'R' (red pencil)",
+        "shots": "every shot with narrator-hands, red-pencil-hand or viewer-hand in cast"
+      },
+      "tagLine": {
+        "params": "chapter variant (staging.tagLine.variants), tags[] {n, state: slack|struck|riveted|split|contested|open, front, knotCard, backMarks}, lifespan per tag on the log-scale Lifespan Rule, line height",
+        "shots": "ch01-s05, ch01-s07, ch02-s01, ch02-s04..s06, ch03-s03, ch03-s06, ch04-s09, ch04-s11, ch05-s03, ch06-s05b, ch07-s01, ch07-s05, ch07-s11, ch08-s02, ch08-s03, ch08-s08, ch09-s03b, ch09-s07, ch10-s01..s04, ch11-s02..s04, ch12-s01..s04"
+      },
+      "windowCalendar": {
+        "params": "panes lit per month from the real commit counts (June 72, July 6, August 0, September 58, October 1-12: 6, then the 13-16 October tower 242 / 200 / 113 / 128), 6 panes per storey, fill progress, lit pane index",
+        "shots": "ch03-s01, ch08-s01, ch08-s02, ch08-s03, ch08-s08, ch09-s01, ch09-s08, ch12-s01"
+      },
+      "handwiredDesk": {
+        "params": "the HandwiredOS desk (Monitor, Notes, Photos, dock) with X-ray flags: table (234 cells), gates (2,776 ReGLU, 59 boolean), loom (130 layers), clockwork, valve; translucency 0..1",
+        "shots": "ch01-s02, ch01-s03, ch03-s07, ch04-s16, ch05-s07, ch06-s13, ch07-s12, ch12-s05, ch12-s06"
+      },
+      "rampBench": {
+        "params": "hinge positions (4, 5), marble position a, lever = clamp, belts with shutters scaling their tiles by the bit (10 → 5 at a half), magnifier lens train (2^14 · 2^24 ×5 · 2^15), the 'grid 1' rig; every number computed with Math.fround",
+        "shots": "ch01-s06, ch04-s01..s11, ch10-s02"
+      },
+      "matmulLoom": {
+        "params": "the REAL compiled HandwiredOS circuit: per-frame (layer) threads from the export (count and sign of each layer's stored weights), ReLU ramps for gate rows and detent wheels for boolean rows, the highlighted path on the real 71-gate chain, a light-wave progress; the ch01-s04 / ch05-s04 wallpaper arcs from the same export, laid out as src/handwiredos/wiring.ts lays them out",
+        "data": "films/handwired-explained/tools/export-handwiredos-circuit.ts (command in its header) writes research/exports/handwiredos-circuit.json; the shots stage runs it against the pinned clone, checks its totals against OS02 / CM07 (234 cells, 130 layers, 4,646 live operations, 9,909 weights, 2,776 ReGLU, 59 boolean, chain 71) and records the command in sources.json. A reviser's note in ch05-s01 reports a summary export that matched on 2026-10-28; the story stage did not run the full export. If it cannot be run, the loom is drawn as representative density with no per-thread claim, and ch05-s04's dissolve shows the two pictures side by side rather than thread becoming arc (the narration, 'The wallpaper draws these same threads', stays true of the program either way).",
+        "shots": "ch01-s04, ch05-s01..s07, ch06-s02, ch06-s12, ch07-s04, ch12-s02..s04"
+      },
+      "hostClockwork": {
+        "params": "escapement tick (one evaluation), 4 ms step ratchet with 300 teeth and a release pawl, crank turning the loom once per tick, four arms (count, tree, table, same work)",
+        "shots": "ch06-s01..s06, ch06-s12, ch06-s13"
+      },
+      "reGluValve": {
+        "params": "w, g, b with the real values (0.5, 0.25, -0.1 → opening 0.15, y 0.225; slopes 0.45 and 1.5; b = -0.4 shut), forward and backward channel glow",
+        "shots": "ch07-s02, ch07-s03, ch07-s04, ch07-s05, ch07-s12"
+      }
+    }
+  }
+}

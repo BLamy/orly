@@ -1,0 +1,84 @@
+{
+ "shot": "ch10-s10",
+ "at": "2026-10-14T00:39:22.423Z",
+ "minCapPx": 22,
+ "sampled": 12,
+ "texts": 14,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "talk",
+   "capWhileSubject": 31.3,
+   "why": "named: \"talk\""
+  },
+  {
+   "text": "think alone",
+   "capWhileSubject": 31.3,
+   "why": "named: \"think alone\""
+  },
+  {
+   "text": "attention → feed-forward, × 6",
+   "capWhileSubject": 28.4,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "crossed",
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "river",
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bank",
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BLOCK 1",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BLOCK 2",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BLOCK 3",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BLOCK 4",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BLOCK 5",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BLOCK 6",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 11
+}

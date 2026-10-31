@@ -1,0 +1,309 @@
+{
+ "shot": "ch03-s08",
+ "at": "2026-10-13T04:13:13.327Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 59,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "BACK-PROPAGATING",
+   "capWhileSubject": 32.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "capWhileSubject": 32.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS",
+   "capWhileSubject": 23.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "“Linguistic capability, related to perceptual",
+   "capWhileSubject": 28.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "experience, is of the essence…”",
+   "capWhileSubject": 28.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "— rosenblatt, 1961",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "capWhileSubject": 37.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "essence…",
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "B",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "C",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "D",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "E",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "F",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "G",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "H",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "J",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "K",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "L",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "M",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "N",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "O",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "P",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Q",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "R",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "S",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "T",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "U",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "V",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "W",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "X",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Y",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Z",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "AND IF NO STRAIGHT LINE",
+   "maxCap": 44.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXISTS?",
+   "maxCap": 44.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 76.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 76.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 44.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 38.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 38.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 44.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 37.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 37.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 37.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 32.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 34.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 41.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SIMON & NEWELL",
+   "maxCap": 43.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHESS CHAMPION",
+   "maxCap": 43.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BY 1968",
+   "maxCap": 43.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1968",
+   "maxCap": 43.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 47
+}

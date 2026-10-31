@@ -31,6 +31,9 @@ const scene = buildScene();
 scene.tl.applyOverrides(overrides as TimelineOverrides);
 const MOTION = { file: 'src/viz/explainers/rlvr-loop/overrides.json', slug: 'rlvr-loop' };
 
+/** half-width of a loop node box; arrows start and stop at its edge */
+const NODE_HW = 88;
+
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 /** which of the three showcased attempts pass (deterministic story beats) */
 const PKT_PASS = [false, false, true];
@@ -77,30 +80,30 @@ function Frame({ s }: { s: SceneState }) {
               { p: LOOP_VERIF, label: 'verifier', sub: 'runs the test suite', c: colors.POSITIVE },
             ].map((n) => (
               <g key={n.label}>
-                <rect x={n.p.x - 78} y={n.p.y - 34} width={156} height={68} rx={12} fill={colors.PANEL} stroke={n.c} strokeWidth={1.5} />
+                <rect x={n.p.x - NODE_HW} y={n.p.y - 34} width={NODE_HW * 2} height={68} rx={12} fill={colors.PANEL} stroke={n.c} strokeWidth={1.5} />
                 <text x={n.p.x} y={n.p.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={640}>
                   {n.label}
                 </text>
-                <text x={n.p.x} y={n.p.y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                <text x={n.p.x} y={n.p.y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                   {n.sub}
                 </text>
               </g>
             ))}
             <path
-              d={`M${LOOP_POLICY.x + 82} ${LOOP_POLICY.y - 12} L${LOOP_VERIF.x - 82} ${LOOP_VERIF.y - 12}`}
+              d={`M${LOOP_POLICY.x + NODE_HW} ${LOOP_POLICY.y - 12} L${LOOP_VERIF.x - NODE_HW} ${LOOP_VERIF.y - 12}`}
               stroke={colors.GRID}
               strokeWidth={1.5}
               markerEnd="none"
             />
             <path
-              d={`M${LOOP_VERIF.x - 82} ${LOOP_VERIF.y + 12} L${LOOP_POLICY.x + 82} ${LOOP_POLICY.y + 12}`}
+              d={`M${LOOP_VERIF.x - NODE_HW} ${LOOP_VERIF.y + 12} L${LOOP_POLICY.x + NODE_HW} ${LOOP_POLICY.y + 12}`}
               stroke={colors.GRID}
               strokeWidth={1.5}
             />
-            <text x={(LOOP_POLICY.x + LOOP_VERIF.x) / 2} y={LOOP_POLICY.y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={(LOOP_POLICY.x + LOOP_VERIF.x) / 2} y={LOOP_POLICY.y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               attempt →
             </text>
-            <text x={(LOOP_POLICY.x + LOOP_VERIF.x) / 2} y={LOOP_POLICY.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={(LOOP_POLICY.x + LOOP_VERIF.x) / 2} y={LOOP_POLICY.y + 66} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               ← reward: pass = 1 · fail = 0
             </text>
           </g>
@@ -113,7 +116,7 @@ function Frame({ s }: { s: SceneState }) {
                 <circle cx={bx} cy={LOOP_POLICY.y + 12} r={7} fill={pass ? colors.POSITIVE : colors.NEGATIVE} />
               )}
               {back > 0 && (
-                <text x={bx} y={LOOP_POLICY.y + 44} textAnchor="middle" fill={pass ? colors.POSITIVE : colors.NEGATIVE} fontSize={13}>
+                <text x={bx} y={LOOP_POLICY.y + 46} textAnchor="middle" fill={pass ? colors.POSITIVE : colors.NEGATIVE} fontSize={14}>
                   {pass ? 'pass · r = 1' : 'fail · r = 0'}
                 </text>
               )}
@@ -136,16 +139,16 @@ function Frame({ s }: { s: SceneState }) {
                     fill={best ? colors.POSITIVE : colors.ACCENT}
                     opacity={best ? 0.95 : 0.55}
                   />
-                  <text x={barX(i) + BAR_W / 2} y={BAR_Y0 + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+                  <text x={barX(i) + BAR_W / 2} y={BAR_Y0 + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     {`${Math.round(P_PASS[i] * 100)}%`}
                   </text>
                 </g>
               );
             })}
-            <text x={barX(0)} y={BAR_Y0 - BAR_H - 14} fill={colors.MUTED} fontSize={13}>
+            <text x={barX(0)} y={BAR_Y0 - BAR_H - 14} fill={colors.MUTED} fontSize={14}>
               policy over 12 strategies (labels: true pass rate)
             </text>
-            <text x={barX(0)} y={BAR_Y0 + 38} fill={colors.MUTED} fontSize={12.5}>
+            <text x={barX(0)} y={BAR_Y0 + 42} fill={colors.MUTED} fontSize={14}>
               {`step ${Math.round(snap.step)} · mass on best: ${(snap.pi[K - 1] * 100).toFixed(0)}%`}
             </text>
           </g>
@@ -155,14 +158,14 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={axU}>
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={chX(T_STEPS) + 10} y2={CH_Y0} stroke={colors.GRID} />
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={CH_X0 - 8} y2={chY(0.92)} stroke={colors.GRID} />
-              <text x={chX(T_STEPS / 2)} y={CH_Y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={chX(T_STEPS / 2)} y={CH_Y0 + 28} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 training steps →
               </text>
-              <text x={CH_X0 - 18} y={chY(0.85) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 18} y={chY(0.85) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 0.85
               </text>
               <line x1={CH_X0 - 8} y1={chY(0.85)} x2={chX(T_STEPS) + 10} y2={chY(0.85)} stroke={colors.GRID} strokeDasharray="4 5" />
-              <text x={chX(T_STEPS) - 4} y={chY(0.85) - 8} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 + 6} y={chY(0.85) - 8} textAnchor="start" fill={colors.MUTED} fontSize={14}>
                 best strategy ceiling
               </text>
             </g>
@@ -171,7 +174,7 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <path d={passCurve(train)} fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
               <circle cx={chX(Math.min(train, T_STEPS))} cy={chY(snap.expPass)} r={5} fill={colors.POSITIVE} />
-              <text x={chX(Math.min(train, T_STEPS)) - 10} y={chY(snap.expPass) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={13.5}>
+              <text x={chX(Math.min(train, T_STEPS)) - 10} y={chY(snap.expPass) - 14} textAnchor="end" fill={colors.POSITIVE} fontSize={15}>
                 {`pass rate: ${(snap.expPass * 100).toFixed(1)}%`}
               </text>
             </g>
@@ -192,18 +195,13 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The RLVR Loop
           </text>
-          <MathLabel
-            tex={`\\text{pass rate}: ${(START.expPass * 100).toFixed(1)}\\% \\to ${(FINAL.expPass * 100).toFixed(1)}\\%`}
-            x={640}
-            y={340}
-            fontSize={20}
-            color={colors.POSITIVE}
-            opacity={endU}
-          />
+          <text x={640} y={342} textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={600}>
+            {`pass rate: ${(START.expPass * 100).toFixed(1)}% → ${(FINAL.expPass * 100).toFixed(1)}%`}
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             propose → execute → reinforce: reward only for passing
           </text>

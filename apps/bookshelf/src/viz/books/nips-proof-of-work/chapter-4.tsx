@@ -24,26 +24,27 @@ const MINED_BITS = hexToBits(MINED_ID);
 
 // the serialization strip: what the id commits to — and what it doesn't
 const STRIP = [
-  { label: '0', w: 34 },
+  { label: 'leading 0', w: 84 },
   { label: 'pubkey', w: 96 },
   { label: 'created_at', w: 110 },
   { label: 'kind', w: 62 },
   { label: 'tags ⟵ nonce', w: 128 },
   { label: 'content', w: 96 },
 ];
-const STRIP_X = 250;
 const STRIP_Y = 150;
 const STRIP_TOTAL = STRIP.reduce((a, c) => a + c.w + 10, -10);
+// the strip plus the dashed sig slot, centred on the camera's x
+const STRIP_X = 640 - (STRIP_TOTAL + 110) / 2;
 
 const PHONE = { x: 220, y: 400 };
 const PROVIDER = { x: 1010, y: 400 };
 const HALF_W = 84;
 const HALF_H = 28;
 
-const GRID = { x: PROVIDER.x - 100, y: 462, cell: 8.5, gap: 1.8 };
+const GRID = { x: PROVIDER.x - 100, y: 440, cell: 8.5, gap: 1.8 };
 const GRID_W = 16 * (GRID.cell + GRID.gap) - GRID.gap;
 
-const CAM_STRIP: CameraState = { x: 640, y: 240, k: 1.2 };
+const CAM_STRIP: CameraState = { x: 640, y: 270, k: 1.1 };
 const CAM_WIRE: CameraState = { x: 620, y: 400, k: 1.1 };
 
 interface Scene {
@@ -166,12 +167,15 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel replaces the diagram: fade the diagram out under it
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   // the traveling draft chip
   const outbound = clamp01(sendU);
   const inbound = clamp01(returnU);
   const draftX = PHONE.x + HALF_W + 40 + (PROVIDER.x - PHONE.x - 2 * HALF_W - 120) * (inbound > 0 ? 1 - inbound : outbound);
   const draftVisible = (sendU > 0 && grindU < 1) || (returnU > 0 && returnU < 1);
+  // the check panel rises during the return leg, no timing of its own
+  const verifyU = clamp01((returnU - 0.4) * 2.5);
 
   return (
     <>
@@ -199,10 +203,10 @@ export function Render({ s }: { s: SceneState }) {
               {sigGapU > 0 && (
                 <g opacity={sigGapU}>
                   <rect x={STRIP_X + STRIP_TOTAL + 24} y={STRIP_Y} width={86} height={38} rx={7} fill="none" stroke={colors.NEGATIVE} strokeDasharray="5 4" />
-                  <text x={STRIP_X + STRIP_TOTAL + 67} y={STRIP_Y + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
+                  <text x={STRIP_X + STRIP_TOTAL + 67} y={STRIP_Y + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
                     sig
                   </text>
-                  <text x={STRIP_X + STRIP_TOTAL + 67} y={STRIP_Y + 62} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5}>
+                  <text x={STRIP_X + STRIP_TOTAL + 67} y={STRIP_Y + 62} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
                     not hashed
                   </text>
                 </g>
@@ -218,19 +222,28 @@ export function Render({ s }: { s: SceneState }) {
                 <g opacity={batteryU}>
                   <rect x={PHONE.x - 44} y={PHONE.y + 44} width={88} height={14} rx={4} fill="none" stroke={colors.MUTED} />
                   <rect x={PHONE.x - 42} y={PHONE.y + 46} width={84 * 0.18} height={10} rx={3} fill={colors.NEGATIVE} opacity={0.85} />
-                  <text x={PHONE.x} y={PHONE.y + 78} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                  <text x={PHONE.x} y={PHONE.y + 78} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
                     2²⁰ hashes? not on this battery
                   </text>
                 </g>
               )}
             </g>
           )}
+          {/* the relay that asks for the work; it hands over to the provider */}
+          {phoneU > 0 && sendU < 1 && (
+            <g opacity={phoneU * (1 - clamp01(sendU * 4))}>
+              <ServiceNode x={PROVIDER.x} y={PROVIDER.y} kind="server" label="relay" sublabel="asks 20 bits" u={1} />
+              <text x={PROVIDER.x} y={PROVIDER.y - 64} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                20 bits · ~1M hashes
+              </text>
+            </g>
+          )}
           {sendU > 0 && (
             <g>
               <ServiceNode x={PROVIDER.x} y={PROVIDER.y} kind="server" label="pow provider" sublabel="sells hashes" u={Math.min(1, sendU * 2)} glow={grindU > 0 && grindU < 1 ? 0.8 : 0} />
               <Connection
-                from={{ x: PHONE.x + HALF_W, y: PHONE.y - 10 }}
-                to={{ x: PROVIDER.x - HALF_W, y: PROVIDER.y - 10 }}
+                from={{ x: PHONE.x + HALF_W, y: PHONE.y - 20 }}
+                to={{ x: PROVIDER.x - HALF_W, y: PROVIDER.y - 20 }}
                 u={Math.min(1, sendU * 1.6)}
                 label="unsigned draft →"
                 color={colors.MUTED}
@@ -239,8 +252,8 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {returnU > 0 && (
             <Connection
-              from={{ x: PROVIDER.x - HALF_W, y: PROVIDER.y + 12 }}
-              to={{ x: PHONE.x + HALF_W, y: PHONE.y + 12 }}
+              from={{ x: PROVIDER.x - HALF_W, y: PROVIDER.y + 20 }}
+              to={{ x: PHONE.x + HALF_W, y: PHONE.y + 20 }}
               u={Math.min(1, returnU * 1.6)}
               label="← mined draft + nonce"
               color={colors.WARM}
@@ -249,7 +262,7 @@ export function Render({ s }: { s: SceneState }) {
           {draftVisible && (
             <g>
               <rect x={draftX - 46} y={PHONE.y - 64} width={92} height={30} rx={7} fill={colors.PANEL} stroke={inbound > 0 ? colors.WARM : colors.MUTED} />
-              <text x={draftX} y={PHONE.y - 44} textAnchor="middle" fill={inbound > 0 ? colors.WARM : colors.MUTED} fontSize={11.5} fontFamily="monospace">
+              <text x={draftX} y={PHONE.y - 44} textAnchor="middle" fill={inbound > 0 ? colors.WARM : colors.MUTED} fontSize={12} fontFamily="monospace">
                 {inbound > 0 ? 'id: 0002e0…' : 'draft · no sig'}
               </text>
             </g>
@@ -271,10 +284,23 @@ export function Render({ s }: { s: SceneState }) {
                 seed={47}
               />
               {grindU >= 1 && (
-                <text x={GRID.x + GRID_W / 2} y={GRID.y + GRID_W + 20} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="monospace">
+                <text x={GRID.x + GRID_W / 2} y={GRID.y + GRID_W + 20} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
                   {shortHex(MINED_ID, 10, 4)} · {TARGET} bits
                 </text>
               )}
+            </g>
+          )}
+
+          {/* the phone checks the returned draft against what it sent */}
+          {verifyU > 0 && signU < 1 && (
+            <g opacity={verifyU * (1 - signU)}>
+              <rect x={PHONE.x - 100} y={PHONE.y + 96} width={200} height={52} rx={9} fill={colors.PANEL} stroke={colors.MUTED} />
+              <text x={PHONE.x} y={PHONE.y + 116} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                check vs. the draft it sent
+              </text>
+              <text x={PHONE.x} y={PHONE.y + 136} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+                author · words · tags ✓
+              </text>
             </g>
           )}
 
@@ -301,7 +327,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             the id never commits to the signature, so the grinding can be bought
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-13 · delegated proof of work
           </text>
         </g>

@@ -131,8 +131,8 @@ export const sx = (x: number): number => STRIP_X0 + ((x - X_MIN) / (X_MAX - X_MI
 export const sy = (p: number): number => STRIP_Y0 - p * (STRIP_Y0 - STRIP_Y1);
 
 export const REL_X0 = 460;
-export const REL_Y0 = 590; // bottom of the reliability square
-export const REL_S = 330; // square size
+export const REL_Y0 = 600; // bottom of the reliability square (clears the strip's p=0 line)
+export const REL_S = 290; // square size
 export const rx = (conf: number): number => REL_X0 + (conf - 0.5) * 2 * REL_S;
 export const ry = (acc: number): number => REL_Y0 - (acc - 0.5) * 2 * REL_S;
 
@@ -225,7 +225,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 43.3, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 43.9, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 43.9, dur: 1.1, ease: ease.move });
   tl.tween(endU, 1, { at: 45.1, dur: 0.9, ease: ease.enter });
   tl.caption({
     at: 45.1,

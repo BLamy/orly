@@ -1,0 +1,131 @@
+{
+  "reviewer": "teacher",
+  "round": 3,
+  "lens": "clarity and depth for a curious 15-year-old and an expert at once",
+  "wordCount": 3179,
+  "scores": { "accuracy": 8, "depth": 7.5, "clarity": 7.5, "story": 8, "curiosity": 8, "visual": 8, "voice": 7.5 },
+  "critical": [
+    "ch08-s05 L0810 (with its visual): the AlexNet layer count is wrong by ear. 'Then three great halls, where every lantern sees everything, and a thousand doors, one per answer.' The visual stacks three halls and then a separate crown of a thousand doors. That is four fully connected stages. The paper (e8-architecture; bible Primer F table) has three: fc6 with 4,096 units, fc7 with 4,096, and fc8, which is itself the 1,000-way output. The plate's own onScreenText '4096 · 4096 · 1000' contradicts the narration and the picture. It matters downstream: L0830 and ch08-s08b put dropout in 'the great halls', but dropout ran only in the two big halls (fc6 and fc7). FIX L0810: 'Then two great halls, where every lantern sees everything, and a third with a thousand doors, one per answer.' Visual: two 4,096 halls plus a third hall that is the band of a thousand doors, not three halls with doors on top. L0830 can then stay as written, since 'the great halls' now means exactly fc6 and fc7."
+  ],
+  "issues": [
+    {
+      "where": "ch08-s07 L0813",
+      "problem": "ReLU's advantage has nothing to compare against. 'Strong signals pass undimmed. In their test, six times faster.' Faster than what? The ear never heard that older nets squashed signals with an S-curve (tanh/sigmoid), so 'undimmed' and 'six times' land as bare assertions. The visual races the weir against a ghost S-curve, but the ear does not get it. The link to the fading whisper (L0613) is also lost, and that link is the reason it matters for depth.",
+      "fix": "L0813: 'Older nets squashed strong signals flat. This weir lets them pass undimmed, so the messenger's tug stays strong. In their test, six times faster.' (+10 words; e8-ingredients; still flag 'their test' as the 4-layer CIFAR net, as the visual already does.)"
+    },
+    {
+      "where": "ch08-s10 L0819 vs ch05-s05 L0510",
+      "problem": "The step-size payoff contradicts its setup. L0510 teaches that 'timid steps get trapped'. Three chapters later, L0819 says 'Three times, they shortened their steps by hand' without saying why. A careful 15-year-old hears the team deliberately becoming timid. An expert knows the real reason: big steps early to cross ridges, small steps late to settle into the valley floor. The script omits it, though the visual shows the traveller settling.",
+      "fix": "L0819: 'Then five or six days downhill in fog. Big strides to cross the ridges; then, three times, they shortened their steps by hand, to settle on the valley floor.' (+11 words; e8-ingredients.)"
+    },
+    {
+      "where": "ch08-s08 L0815",
+      "problem": "The overfitting argument, the deepest idea in the AlexNet ingredients, is left half-said. 'Each label carries about ten yes-or-no answers. Sixty million weights could simply memorise.' The multiplication that makes it bite is skipped: 1.2 million labels times about 10 bits is about 12 million bits, against 60 million weights. 'Memorise' is also never contrasted with learning to see, so dropout (L0830) and cropping (L0816) cure a disease the teenager can't picture.",
+      "fix": "L0815: 'Each label carries about ten yes-or-no answers. A million labels: some twelve million answers, for sixty million weights. It could simply memorise the photos, instead of learning to see.' (+15 words; e8-ingredients, bible Primer F 'Why augmentation'.)"
+    },
+    {
+      "where": "ch08-s05 L0809",
+      "problem": "The key insight of depth is not spoken: each higher layer slides its stencils over the previous layer's maps, so detectors are built from detectors. 'Ninety-six stencils at the bottom; four more layers above: edges, textures, parts, things' reads as a list of labels, not a mechanism. An expert will notice the omission, and a teenager will wonder how a stencil can find 'a part'.",
+      "fix": "L0809: 'Ninety-six stencils at the bottom. Four more layers above, each one stencilling the bright spots of the layer below: edges, then textures, parts, things.' (+8 words; e8-architecture, Primer F 'Intuition'.)"
+    },
+    {
+      "where": "ch08-s04 L0806 vs ch08-s05 L0810, ch08-s08b L0830, ch05-s04 L0520",
+      "problem": "Inside the AlexNet deep dive, 'lantern' means two different things in quick succession. In L0806 the tin lantern is the stencil (the filter). Four lines later, in L0810 and L0830, a lantern is a unit or neuron ('every lantern sees everything', 'snuffed half the lanterns'). Earlier, in L0401, lanterns were the four XOR cases. A first-time viewer can't tell whether dropout snuffs filters or neurons.",
+      "fix": "Keep 'lantern' for units only (the film-wide 'lantern network'). Rename the filter: L0806 'Hold a tin stencil, pierced in a pattern, over the picture, with a light behind it.' This also matches L0802's 'stencils cut by experts' and L0811's 'Nobody cut these stencils'. The teaching-machine name stencilLantern can stay internal."
+    },
+    {
+      "where": "ch05-s09b L0522",
+      "problem": "The second AI winter is a must-cover topic. It gets one sentence, its two numbers still collide ('within three years ... about seven'), and its cause is never spoken. The ear does not learn what actually happened in 1987. The bible gives the concrete event (e5-lisp-crash): the special Lisp machines built to run these programs were overtaken by ordinary workstations, and an industry of half a billion dollars vanished in about a year.",
+      "fix": "L0522: 'In 1984, a panel warned of an AI winter. By 1987 it had come: the special machines built to run these programs stopped selling, and the money fled. The knowledge candle had burned about seven years.' (+14 words; e5-aaai84, e5-lisp-crash, e5-expert-survive. Keep the on-screen note that rule engines lived on.)"
+    },
+    {
+      "where": "ch05-s01 L0501-L0502 (payoff ch15-s01 L1502)",
+      "problem": "Hopfield's idea is never stated. 'John Hopfield presents a network' is followed by the joke that nobody remembered the talk. Then 25 minutes later the Nobel 'shared with the man from Versailles' rewards an idea the viewer never heard, so 'The talk nobody remembered, remembered' is warm but empty. An expert expects the content-addressable memory (and that it recalls rather than learns by gradient). A teenager would love the image of half a memory completing itself.",
+      "fix": "Add after L0501: 'Give it half a memory, and it rolls downhill, like a ball into a hollow, until the whole memory returns.' (+19 words; e4-hopfield, bible Primer C.) The ch05-s01 easel ring can show a half-lit pattern completing. This also plants the downhill-landscape image before L0510."
+    },
+    {
+      "where": "ch06-s06 L0613",
+      "problem": "'Sent back through many steps, the messenger fades like a whisper.' Steps of what? The ear has heard 'steps' only as strides downhill (L0510). The idea that a network reads a sequence one word at a time is first spoken in ch10 (L1002). So the vanishing gradient, which is also why deep stacks were hard to train before 2006 and 2012, comes across as a riddle.",
+      "fix": "L0613: 'Sent back through many layers, or through a long sentence read word by word, the messenger fades like a whisper.' (+9 words; e5-vanishing.) L1003 ('over a long line the whisper faded') then pays it off."
+    },
+    {
+      "where": "ch10-s02 L1005",
+      "problem": "'In 2014, the translator learned to look back at every word: attention.' No translator has been introduced. The problem attention solved, squeezing a whole sentence into one list of numbers (a bottleneck), is carried only by the picture and a quote card. A teenager hears 'the translator' as a person, and an expert misses seq2seq entirely.",
+      "fix": "L1005: 'In 2014, translating machines squeezed a whole sentence into one list of numbers before writing it out again: a bottleneck. So they learned to look back at every word: attention.' (+15 words; e9-seq2seq, e9-attention.)"
+    },
+    {
+      "where": "ch10-s06 L1011",
+      "problem": "How a score is made is never said, and the film misses its best bridge. 'Bank holds its question up to every label' is followed straight by the numbers 'two, nothing, four, two'. The operation is a dot product: multiply matching numbers and add. That is the same arithmetic as the stencil in L0807 ('Each hole weighs the light beneath it. Add the nine.'). Saying so ties the two deep dives together and tells the expert exactly what QK^T is.",
+      "fix": "L1011: 'Four words: crossed the river bank. Bank holds its question up to every label, and scores the match the stencil's way: multiply, and add.' (+10 words; e10-architecture, Primer J three cards.)"
+    },
+    {
+      "where": "ch10-s03 L1007",
+      "problem": "'So did his father.' This is a joke the ear can't get, because nothing says why the father's opinion counts. The bible's detail (e10-hans) is that Hans Uszkoreit was a computational linguist.",
+      "fix": "L1007: 'Colleagues doubted it. So did his father, a computational linguist.' (+3 words.)"
+    },
+    {
+      "where": "ch01-s03 L0103-L0105",
+      "problem": "The pronoun number shifts across three lines: 'something ... writes back' (singular), then 'seven hundred million people use them weekly' (plural, no antecedent), then 'nobody ever wrote it a rulebook' (singular). On the film's first content beat the ear briefly can't tell what is being counted. The claim (e14-bengio) is also 'at least 700 million weekly users of leading AI systems', not people.",
+      "fix": "L0104-L0105: 'By one count, at least seven hundred million people use such machines every week. Yet nobody ever wrote one a rulebook.' (+4 words.)"
+    },
+    {
+      "where": "ch12-s01 L1201-L1202",
+      "problem": "'The last accomplice was a person, choosing. A simulated robot learned a backflip from nine hundred such choices.' Choosing what? Human-preference learning means comparing two attempts and picking the better one, and the ear is never told so. Every later step (rankings, the judge, ChatGPT 'tuned by human choices') rests on this.",
+      "fix": "L1201: 'The last accomplice was a person, choosing: shown two tries, which is better?' (+6 words; e11-christiano.)"
+    },
+    {
+      "where": "ch15-s04 L1507",
+      "problem": "Clarity and fairness both suffer here. 'That year' is ambiguous: L1503's 'that year' was 2024, but this trial is 2025. 'Early tools' doesn't say tools for what. The finding is spoken as current, while METR itself has marked it out of date (e14-metr-rct). That caveat is only on screen, so the spoken side overstates a result its own authors have withdrawn as current.",
+      "fix": "L1507: 'In 2025, a trial: developers using early AI coding tools were slower, yet felt faster. Its makers now call that result out of date.' (+12 words.)"
+    },
+    {
+      "where": "ch14-s07 L1415",
+      "problem": "'the shores ended up on the same page' mixes the shores metaphor with an idiom, and 'an incident channel' is jargon a teenager won't parse. This is the one hopeful beat in the geopolitics chapter.",
+      "fix": "L1415: 'Yet this September the two shores agreed to talk: an AI dialogue, and a hotline for AI accidents.' (e13-summits-2026: 'a channel for AI incidents'.)"
+    },
+    {
+      "where": "ch09 (whole chapter, 91 words)",
+      "problem": "This is still the one era with no spoken belief and no mechanism. The bible's Era 9 belief, 'the AlexNet recipe works everywhere', is never lit. AlphaGo, the period's signature experiment, gets an anecdote (moves 37 and 78) but not one word on how a neural net plays Go. That gap stands out in a film whose brief says 'cover the experiments'.",
+      "fix": "Add after L0905: 'One network suggested moves, a second judged the board, and a search weighed them.' (+14 words; e9-alphago-method.) Optionally voice the era's candle on the ch09-s01 bonfire: 'A new candle: this recipe works on everything.' (+8)."
+    },
+    {
+      "where": "ch10-s12 L1025, ch14-s02 L1405, ch14-s04 L1410",
+      "problem": "'Compute' as a noun is first spoken in L1025 ('a seventh of the old compute') and becomes central in ch14 ('compute is the chokepoint'). It is industry jargon that is never glossed.",
+      "fix": "L1025: '... about a seventh of the old computing ...'; L1405: 'Two new candles: computing power is the chokepoint, and China is one to three years behind.' After that, 'compute' can stand."
+    },
+    {
+      "where": "ch02-s02 L0205",
+      "problem": "'Neural network', the film's subject, is never spoken as a defined phrase. 'Network' first appears in L0501 and 'neural' in L0608. A teenager who missed the title card never hears that a neural network is a web of these artificial nerve cells.",
+      "fix": "L0205: 'Wire a few together, a network of these neurons, and you had logic.' (+6 words.)"
+    },
+    {
+      "where": "ch08-s09 L0818; ch08-s14 L0827",
+      "problem": "In L0818, 'Nobody told the towers to divide the work' refers to towers the ear never met; L0817 said 'two graphics chips'. In L0827, the verbatim quote says 'GPUs', an acronym the narration has never used (it always says 'graphics chips').",
+      "fix": "L0818: 'Nobody told the two halves to divide the work.' L0817: 'It ran on two graphics chips, GPUs, half the stencils on each.' Then the verbatim 'GPUs' in L0827 has an antecedent."
+    },
+    {
+      "where": "ch15-s01 L1528 onScreenText",
+      "problem": "Dame Wendy Hall's 'a bit of a stretch' is spoken as a quotation but does not appear on screen. Every other spoken quote in the film gets a card, and quotes.json has the full sentence.",
+      "fix": "Add an on-screen quote: '…it does seem a bit of a stretch.' — Dame Wendy Hall, October 2024 (verbatim from quotes.json)."
+    },
+    {
+      "where": "global word budget",
+      "problem": "The narration is 3,179 words against the 3,040 target, so it fits the 30–35 minute window. The fixes above add about 150 words.",
+      "fix": "Pay for them with trims that don't lose a mechanism. L0412 to 'Yet a few windows stayed lit. In Helsinki, the case's key clue sat in a thesis about rounding errors.' (−11). L1509 to 'The three who kept these networks alive lived to see them win. Now two warn this road is dangerous; the third, that it doesn't go far enough.' (−4). L0610 drop 'for dinner' (−2). L1208 to 'Five hundred million came from FTX, later exposed as a fraud, though not Anthropic's; then billions from Amazon and Google.' (−4). L0304 (−6). L1110 to 'In 2020, a straight line: bigger, better.' (−3). Drop L0602 'Buffalo, again.' (the ch06-s01 visual carries it, −2). Drop L0212's second sentence (Turing's forecast is on the wall slip, −11). Treat L0814 and L1003 as optional. If a gap remains, accept about 3,250 words. At about 95 words a minute that is still under 35 minutes."
+    },
+    {
+      "where": "voice casting (brief vs task)",
+      "problem": "The workflow task describes the narrator as 'an elderly British academic', and the ch01 blurb says 'An old teacher opens the case'. But brief.md (user direction, 2026-10-05) says mid-life, forties or fifties, explicitly not an old-man voice. The narrate stage should not inherit 'elderly' from the story directions.",
+      "fix": "Change the ch01 blurb to 'A teacher opens the case'. Check line directions for age cues before film-narrate casts the voice."
+    }
+  ],
+  "strengths": [
+    "Terms are now mostly introduced before use: knob = weight (L0307), exclusive-or defined aloud (L0401), the candle rule stated in L0209, downhill tied to error (L0510), 'top five' explained as 'with five guesses', and ReLU taught as 'below zero counts as zero' before it is named as a weir.",
+    "The convolution lesson (L0806-L0808) is excellent: a real worked sum, nine terms with the zero column visible, labelled ILLUSTRATIVE, landing on 'nearly four', and the word 'convolution' arriving only after the idea.",
+    "The transformer deep dive is the best teaching in the film. Words as lists of numbers, three cards made by weights, a fully worked bank/river example (2, 0, 4, 2, halved, about half to river), a genuinely correct reason for √d_k ('Divide by eight ... and that, you see, is why we halved'), heads, positional clocks, attention plus feed-forward times six, the n² catch, and the decoder curtain leading into next-word prediction.",
+    "The AlexNet result is reported honestly: 15.3% was 'seven networks voting; the best single one, nearer eighteen', with fair credit to IDSIA's earlier GPU wins (L0825). Experts will trust the film because of lines like these.",
+    "Belief, dissent and duration are now audible in almost every era: logic machine (Gerard, 16 years), learning machine (Minsky, about 7), sterile extension (17), knowledge by hand (about 7), fiddly nets (the three holdouts), hand-cut stencils (13), read-in-order (20), warm-up (guttered), scale (trimmed, still burning), and in China, 1–3 years behind (out after 2) and months not years (contested). The finale's 'Some candles burned twenty years. Some, two. One, a single day.' is earned.",
+    "Long-range plants pay off cleanly by ear: Rosenblatt's 1961 'Linguistic capability' quote, filed and returned 61 years later; 'pre-training, in a different coat'; Cyc's 'practically nothing from the raw text' against GPT-2's training goal; 'Who paid for dinner?'; Widrow's 'Remember him'; and the Florence 'simply by waiting' line returning in 2020.",
+    "Contested matters are handled even-handedly in the spoken text: Gebru's departure ('the accounts differ'), DeepSeek's cost ('the final run only'), both governments' stated reasons for export controls, the three-camp split among the Turing laureates, Anthropic's Pentagon dispute and its settlement alongside OpenAI's sandbox incident, and the closing disclosure about how the film itself was made."
+  ]
+}

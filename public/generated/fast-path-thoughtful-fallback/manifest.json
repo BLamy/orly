@@ -1,0 +1,64 @@
+{
+  "format": 3,
+  "slug": "fast-path-thoughtful-fallback",
+  "title": "A Fast Path with a Thoughtful Fallback",
+  "subtitle": "How a small policy and GLM can work together",
+  "animal": "animal.webp",
+  "accent": "#fb7185",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Learn the familiar, escalate the unfamiliar",
+      "blurb": "Use a small policy for supported decisions and an explicit large-model path for planning or fallback.",
+      "scene": "books/fast-path-thoughtful-fallback/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.124,
+        18.901,
+        27.26,
+        36.745,
+        47.287,
+        55.065,
+        66.605
+      ],
+      "duration": 74.767
+    },
+    {
+      "number": 2,
+      "title": "Can constrained decoding scale up?",
+      "blurb": "A hosted structured-output endpoint is distinct from low-level RLCD access; a larger model still costs compute.",
+      "scene": "books/fast-path-thoughtful-fallback/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.243,
+        18.959,
+        29.025,
+        38.812,
+        47.565,
+        57.387,
+        68.637
+      ],
+      "duration": 77.833
+    },
+    {
+      "number": 3,
+      "title": "Measure the whole trip",
+      "blurb": "Judge complete, useful tasks at frozen quality gates, counting all latency and fallback costs.",
+      "scene": "books/fast-path-thoughtful-fallback/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.109,
+        21.095,
+        34.11,
+        44.907,
+        52.872,
+        62.438,
+        74.478
+      ],
+      "duration": 83.639
+    }
+  ]
+}

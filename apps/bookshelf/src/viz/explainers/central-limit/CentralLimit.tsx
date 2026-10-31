@@ -1,5 +1,5 @@
 import { scaleLinear } from 'd3';
-import { Camera, MathLabel, Player, colors } from '../../core';
+import { Camera, Player, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import { FunctionPlot, NumberLine, ParticleCloud } from '../../primitives';
@@ -49,6 +49,7 @@ function renderFrame(s: SceneState) {
 
   const rainU = Math.min(1, drop * 6); // N badge appears with the rain
   const labelU = [rainU * (1 - u12), u12 * (1 - u25), u25 * (1 - u530), u530];
+  const active = labelU.indexOf(Math.max(...labelU));
 
   return (
     <Camera {...s.get(ch.cam)}>
@@ -76,13 +77,16 @@ function renderFrame(s: SceneState) {
               />
             );
           })}
-          <MathLabel
-            tex="P(\text{any face}) = \tfrac{1}{6}"
+          <text
             x={640}
             y={380}
+            textAnchor="middle"
+            fill={colors.TEXT}
             fontSize={24}
             opacity={s.get(ch.dieTexU) * dieBarsU}
-          />
+          >
+            P(any face) = 1/6
+          </text>
         </g>
       )}
 
@@ -122,31 +126,29 @@ function renderFrame(s: SceneState) {
       )}
 
       {/* the N badge, crossfading with the blend channels */}
+      {/* one badge at a time: the strongest label wins, so two N's never stack */}
       {rainU > 0.002 && (
-        <g>
-          {N_LABELS.map((l, k) =>
-            labelU[k] > 0.002 ? (
-              <g key={l.n} opacity={labelU[k]}>
-                <text x={252} y={152} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={600}>
-                  {l.n}
-                </text>
-                <text x={252} y={178} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
-                  {l.sub}
-                </text>
-              </g>
-            ) : null,
-          )}
+        <g opacity={labelU[active]}>
+          <text x={252} y={152} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={600}>
+            {N_LABELS[active].n}
+          </text>
+          <text x={252} y={178} textAnchor="middle" fill={colors.TEXT} opacity={0.75} fontSize={15}>
+            {N_LABELS[active].sub}
+          </text>
         </g>
       )}
 
       {/* the theorem, once it has earned the screen time */}
-      <MathLabel
-        tex="\frac{\bar X-\mu}{\sigma/\sqrt{n}}\;\xrightarrow{d}\;\mathcal N(0,1)"
+      <text
         x={640}
         y={108}
+        textAnchor="middle"
+        fill={colors.TEXT}
         fontSize={30}
         opacity={s.get(ch.clTexU)}
-      />
+      >
+        {'(X̄ − μ) / (σ / √n)  →  N(0, 1)'}
+      </text>
     </Camera>
   );
 }

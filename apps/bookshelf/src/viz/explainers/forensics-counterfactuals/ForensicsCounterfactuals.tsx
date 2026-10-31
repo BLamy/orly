@@ -47,9 +47,9 @@ const CURVE = [
 
 // plot area
 const PLOT_X = 150;
-const PLOT_Y = 140;
+const PLOT_Y = 186;
 const PLOT_W = 620;
-const PLOT_H = 330;
+const PLOT_H = 320;
 const X_MAX = 280;
 const Y_MAX = 16;
 
@@ -74,8 +74,10 @@ const PATH_D = PATH_PTS.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},$
 const PROBE_X = 830;
 const PROBE_W = 380;
 
-const CAM_PLOT: CameraState = { x: PLOT_X + PLOT_W / 2, y: PLOT_Y + PLOT_H / 2 + 10, k: 1.25 };
-const CAM_PROBES: CameraState = { x: PROBE_X + PROBE_W / 2 - 40, y: 300, k: 1.2 };
+// Framed so the prediction banner and the plot's x-axis title both stay on
+// stage, and the probe boxes sit beside the full curve (not cut off at its left).
+const CAM_PLOT: CameraState = { x: 440, y: 329, k: 1.15 };
+const CAM_PROBES: CameraState = { x: 680, y: 328, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -208,21 +210,27 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Old content fades to 0.1 under the closing panel, then leaves the tree so
+  // its labels do not sit underneath the closing text.
+  const mainOp = 1 - 0.9 * dimU;
   const head = curvePoint(clamp01(curveU));
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {dimU < 1 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* prediction banner */}
           {predU > 0 && (
-            <g opacity={predU * (1 - 0.6 * stampU)}>
-              <rect x={PLOT_X} y={92} width={560} height={34} rx={9} fill={colors.WARM} opacity={0.12} />
-              <text x={PLOT_X + 14} y={115} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
-                prediction: rate(workaround) ∝ tedium — falls smoothly with fewer errors
+            <g opacity={predU * (1 - 0.85 * stampU)}>
+              <rect x={PLOT_X} y={100} width={600} height={54} rx={9} fill={colors.WARM} opacity={0.14} />
+              <text x={PLOT_X + 16} y={124} fill={colors.WARM} fontSize={19} fontFamily={MONO}>
+                prediction: rate(workaround) ∝ tedium
+              </text>
+              <text x={PLOT_X + 16} y={146} fill={colors.TEXT} fontSize={15}>
+                falls smoothly as pre-existing errors fall
               </text>
             </g>
           )}
@@ -235,7 +243,7 @@ function Frame({ s }: { s: SceneState }) {
               {[0, 50, 100, 150, 200, 258].map((e) => (
                 <g key={e}>
                   <line x1={px(e)} y1={PLOT_Y + PLOT_H} x2={px(e)} y2={PLOT_Y + PLOT_H + 6} stroke={colors.GRID} />
-                  <text x={px(e)} y={PLOT_Y + PLOT_H + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={px(e)} y={PLOT_Y + PLOT_H + 24} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={13} fontFamily={MONO}>
                     {e}
                   </text>
                 </g>
@@ -243,15 +251,15 @@ function Frame({ s }: { s: SceneState }) {
               {[0, 5, 10, 15].map((r) => (
                 <g key={r}>
                   <line x1={PLOT_X} y1={py(r)} x2={PLOT_X + PLOT_W} y2={py(r)} stroke={colors.GRID} opacity={0.25} />
-                  <text x={PLOT_X - 10} y={py(r) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={PLOT_X - 10} y={py(r) + 4} textAnchor="end" fill={colors.TEXT} opacity={0.8} fontSize={13} fontFamily={MONO}>
                     {r}%
                   </text>
                 </g>
               ))}
-              <text x={PLOT_X + PLOT_W / 2} y={PLOT_Y + PLOT_H + 48} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={PLOT_X + PLOT_W / 2} y={PLOT_Y + PLOT_H + 50} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14}>
                 pre-existing type errors in the repository
               </text>
-              <text x={PLOT_X - 90} y={PLOT_Y - 16} fill={colors.MUTED} fontSize={13}>
+              <text x={PLOT_X} y={PLOT_Y - 14} fill={colors.TEXT} opacity={0.85} fontSize={14}>
                 workaround rate — reported (Fig. 3), replotted, not re-run
               </text>
             </g>
@@ -275,8 +283,8 @@ function Frame({ s }: { s: SceneState }) {
                 return (
                   <g key={i} opacity={u}>
                     <circle cx={px(p.errors)} cy={py(p.rate)} r={5} fill={p.rate === 0 ? colors.POSITIVE : colors.WARM} />
-                    {(p.errors === 258 || p.errors === 50) && (
-                      <text x={px(p.errors) + (p.errors === 258 ? -8 : 0)} y={py(p.rate) - 12} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                    {p.errors === 258 && (
+                      <text x={px(p.errors) - 8} y={py(p.rate) - 12} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                         {p.rate}%
                       </text>
                     )}
@@ -285,8 +293,9 @@ function Frame({ s }: { s: SceneState }) {
               })}
               {zeroU > 0 && (
                 <g opacity={zeroU}>
-                  <rect x={px(0) - 6} y={py(0) - 22} width={px(50) - px(0) + 12} height={40} rx={8} fill="none" stroke={colors.POSITIVE} strokeWidth={1.5} strokeDasharray="4 4" />
-                  <text x={px(25)} y={py(0) - 32} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>
+                  {/* sits above the x-axis tick labels, so it clears the 0 and 50 ticks */}
+                  <rect x={px(0) - 8} y={py(0) - 26} width={px(50) - px(0) + 16} height={32} rx={8} fill="none" stroke={colors.POSITIVE} strokeWidth={1.5} strokeDasharray="4 4" />
+                  <text x={px(25)} y={py(0) - 36} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
                     ≤ 50 errors: never
                   </text>
                 </g>
@@ -301,10 +310,10 @@ function Frame({ s }: { s: SceneState }) {
               <text x={PROBE_X + 18} y={200} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
                 third-person probe
               </text>
-              <text x={PROBE_X + 18} y={226} fill={colors.TEXT} fontSize={13}>
+              <text x={PROBE_X + 18} y={226} fill={colors.TEXT} fontSize={14}>
                 “Should a coding agent fix the errors
               </text>
-              <text x={PROBE_X + 18} y={246} fill={colors.TEXT} fontSize={13}>
+              <text x={PROBE_X + 18} y={246} fill={colors.TEXT} fontSize={14}>
                 or commit without fixing?”
               </text>
               <text x={PROBE_X + PROBE_W - 18} y={266} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
@@ -318,10 +327,10 @@ function Frame({ s }: { s: SceneState }) {
               <text x={PROBE_X + 18} y={340} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
                 note-to-future-self probe
               </text>
-              <text x={PROBE_X + 18} y={366} fill={colors.TEXT} fontSize={13}>
+              <text x={PROBE_X + 18} y={366} fill={colors.TEXT} fontSize={14}>
                 interrupted mid-rollout, it writes a
               </text>
-              <text x={PROBE_X + 18} y={386} fill={colors.TEXT} fontSize={13}>
+              <text x={PROBE_X + 18} y={386} fill={colors.TEXT} fontSize={14}>
                 resumption prompt for itself
               </text>
               <text x={PROBE_X + PROBE_W - 18} y={406} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
@@ -332,18 +341,19 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* verdict stamp */}
           {stampU > 0 && (
-            <g opacity={stampU} transform={`translate(640, 545) scale(${0.8 + 0.2 * stampU})`}>
-              <rect x={-330} y={-34} width={660} height={64} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.POSITIVE} strokeWidth={2} />
+            <g opacity={stampU} transform={`translate(640, 598) scale(${0.8 + 0.2 * stampU})`}>
+              <rect x={-330} y={-34} width={660} height={64} rx={12} fill={colors.PANEL} opacity={1} stroke={colors.POSITIVE} strokeWidth={2} />
               <text x={0} y={-4} textAnchor="middle" fill={colors.POSITIVE} fontSize={17} fontWeight={600}>
                 verdict: genuine disposition toward less tedious actions
               </text>
-              <text x={0} y={20} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={0} y={20} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14}>
                 confusion falsified · adversarial intent: no evidence found (weak — no positive control)
               </text>
             </g>
           )}
         </Camera>
       </g>
+      )}
 
       {/* screen-fixed */}
       <g opacity={titleU * mainOp}>
@@ -357,14 +367,14 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Confirmed predictions convict; silence does not acquit
           </text>
-          <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={340} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={17}>
             the dose response curve was strong evidence; the absence probes
           </text>
-          <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={364} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={17}>
             were weak without positive controls — and the paper says so
           </text>
         </g>

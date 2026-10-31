@@ -37,14 +37,19 @@ const ROWS = [
   { id: '75', product: '3', sold: '80,000' },
 ] as const;
 
-const TBL = { x: 900, y0: 160, w: 320, rowH: 44 } as const;
+const TBL = { x: 800, y0: 150, w: 380, rowH: 44 } as const;
+// column x offsets inside the table: wide enough that category_id and total_sold never touch
+const COL_X = [14, 106, 198, 290] as const;
 const PATH = {
-  client: { x: 130, y: 360 },
-  web: { x: 360, y: 360 },
-  api: { x: 600, y: 360 },
-  db: { x: 900, y: 360 },
+  client: { x: 170, y: 400 },
+  web: { x: 390, y: 400 },
+  api: { x: 610, y: 400 },
+  db: { x: 830, y: 400 },
 } as const;
-const CACHE = { x: 750, y: 520 } as const;
+const CACHE = { x: 790, y: 540 } as const;
+const RETURN_Y = 452; // the answer rides home in its own lane under the boxes
+// the first hop of the request, where the read flood lands: client's right edge → web server's left edge
+const HOP = { x0: PATH.client.x + 55, x1: PATH.web.x - 80, y: PATH.client.y } as const;
 
 const rand = mulberry32(20260718);
 const N_READS = 30;
@@ -54,9 +59,9 @@ const READS = Array.from({ length: N_READS }, (_, i) => ({
   toCache: i % 5 !== 0, // most reads absorbed by the cache
 }));
 
-const CAM_TBL: CameraState = { x: 950, y: 300, k: 1.3 };
-const CAM_PATH: CameraState = { x: 560, y: 380, k: 1.12 };
-const CAM_SCALE: CameraState = { x: 700, y: 420, k: 1.1 };
+const CAM_TBL: CameraState = { x: 980, y: 290, k: 1.3 };
+const CAM_PATH: CameraState = { x: 600, y: 380, k: 1.0 };
+const CAM_SCALE: CameraState = { x: 660, y: 420, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;
@@ -181,11 +186,11 @@ function Box({ x, y, w = 160, h = 60, title, sub, stroke = colors.GRID, opacity 
   return (
     <g opacity={opacity}>
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={1.3} />
-      <text x={x} y={y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+      <text x={x} y={y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -206,7 +211,7 @@ export function Render({ s }: { s: SceneState }) {
   const whU = s.get(scene.whU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.88;
+  const dimAll = 1 - closeU * 0.92;
   // request: 0..0.25 client→web, 0.25..0.5 web→api, 0.5..0.75 api→db, 0.75..1 db→client (the answer)
   const segs = [
     { a: PATH.client, b: PATH.web },
@@ -220,15 +225,16 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ---- the sales_rank table ---- */}
         <g opacity={tblU * dimAll}>
-          <text x={TBL.x} y={TBL.y0 - 40} fill={colors.TEXT} fontSize={15}>
+          <text x={TBL.x} y={TBL.y0 - 40} fill={colors.TEXT} fontSize={16}>
             the leaderboard table
           </text>
-          <text x={TBL.x} y={TBL.y0 - 18} fill={colors.ACCENT} fontSize={11} fontFamily="ui-monospace, monospace">
+          <text x={TBL.x} y={TBL.y0 - 18} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
             sales_rank(id, category_id, total_sold, product_id)
           </text>
           <rect x={TBL.x} y={TBL.y0} width={TBL.w} height={30} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
+          {/* the indexed columns (id, category_id, product_id) are highlighted: that is what the caption says is indexed */}
           {['id', 'category_id', 'total_sold', 'product_id'].map((h, i) => (
-            <text key={h} x={TBL.x + 14 + i * 80} y={TBL.y0 + 20} fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+            <text key={h} x={TBL.x + COL_X[i]} y={TBL.y0 + 20} fill={h === 'total_sold' ? colors.TEXT : colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
               {h}
             </text>
           ))}
@@ -240,14 +246,14 @@ export function Render({ s }: { s: SceneState }) {
               <g key={i} opacity={u}>
                 <rect x={TBL.x + (1 - u) * -50} y={y} width={TBL.w} height={TBL.rowH - 8} rx={7} fill={colors.PANEL} stroke={i === 0 ? colors.POSITIVE : colors.GRID} strokeWidth={i === 0 ? 1.5 : 1} />
                 {[r.id, '1234', r.sold, r.product].map((v, j) => (
-                  <text key={j} x={TBL.x + 14 + j * 80} y={y + 24} fill={j === 2 ? colors.POSITIVE : colors.TEXT} fontSize={11} fontFamily="ui-monospace, monospace">
+                  <text key={j} x={TBL.x + COL_X[j]} y={y + 24} fill={j === 2 ? colors.POSITIVE : colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
                     {v}
                   </text>
                 ))}
               </g>
             );
           })}
-          <text x={TBL.x} y={TBL.y0 + 36 + 3 * TBL.rowH + 18} fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace" opacity={fillU}>
+          <text x={TBL.x} y={TBL.y0 + 36 + 3 * TBL.rowH + 14} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace" opacity={fillU}>
             INDEX(id, category_id, product_id) · hourly rewrite
           </text>
         </g>
@@ -257,6 +263,8 @@ export function Render({ s }: { s: SceneState }) {
           {segs.map((sg, i) => (
             <line key={i} x1={sg.a.x + 80} y1={sg.a.y} x2={sg.b.x - 80} y2={sg.b.y} stroke={colors.GRID} strokeWidth={1.5} />
           ))}
+          <line x1={PATH.db.x - 80} y1={RETURN_Y} x2={PATH.client.x + 55} y2={RETURN_Y} stroke={colors.GRID} strokeWidth={1} strokeDasharray="4 5" opacity={0.6} />
+
           <Box x={PATH.client.x} y={PATH.client.y} w={110} title="Client" />
           <Box x={PATH.web.x} y={PATH.web.y} title="Web Server" sub="reverse proxy" />
           <Box x={PATH.api.x} y={PATH.api.y} title="Read API" sub="GET /api/v1/popular" stroke={colors.ACCENT} />
@@ -270,35 +278,38 @@ export function Render({ s }: { s: SceneState }) {
             return <Packet from={{ x: sg.a.x + 80, y: sg.a.y }} to={{ x: sg.b.x - 80, y: sg.b.y }} u={u} r={7} color={colors.ACCENT} />;
           }
           const u = (reqU - 0.75) / 0.25;
-          return <Packet from={{ x: PATH.db.x - 80, y: PATH.db.y + 16 }} to={{ x: PATH.client.x + 60, y: PATH.client.y + 16 }} u={u} r={7} color={colors.POSITIVE} />;
+          return <Packet from={{ x: PATH.db.x - 80, y: RETURN_Y }} to={{ x: PATH.client.x + 55, y: RETURN_Y }} u={u} r={7} color={colors.POSITIVE} />;
         })()}
 
         {/* ---- the JSON answer ---- */}
         <g opacity={jsonU * dimAll * (1 - rainU * 0.75)}>
-          <rect x={120} y={430} width={330} height={150} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
-          <text x={138} y={456} fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <rect x={100} y={480} width={320} height={140} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
+          <text x={118} y={504} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             GET /api/v1/popular?category_id=1234
           </text>
+          {/* JSON numbers carry no thousands separators */}
           {ROWS.map((r, i) => (
-            <text key={i} x={138} y={482 + i * 22} fill={colors.TEXT} fontSize={10.5} fontFamily="ui-monospace, monospace">
-              {`{ product_id: ${r.product}, total_sold: ${r.sold} }`}
+            <text key={i} x={118} y={530 + i * 22} fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
+              {`{ product_id: ${r.product}, total_sold: ${r.sold.replace(',', '')} }`}
             </text>
           ))}
-          <text x={138} y={566} fill={colors.POSITIVE} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <text x={118} y={600} fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace">
             200 OK · REST
           </text>
         </g>
 
         {/* ---- the read flood ---- */}
+        {/* the reads ride the request's first hop only; each dot finishes inside the rain, so none get stuck mid-flight */}
         <g opacity={dimAll}>
           {READS.map((r, i) => {
-            const u = clamp01((rainU - r.delay) * 3.4);
-            if (u <= 0 || u >= 1) return null;
-            const target = r.toCache && cacheU > 0.5 ? CACHE : PATH.db;
-            return <circle key={i} cx={40 + u * (target.x - 120)} cy={r.y + (target.y - r.y) * u} r={4.5} fill={r.toCache && cacheU > 0.5 ? colors.WARM : colors.MUTED} opacity={0.8} />;
+            const p = clamp01((rainU - r.delay * 0.7) / 0.3);
+            if (p <= 0 || p >= 1) return null;
+            const cx = HOP.x0 + p * (HOP.x1 - HOP.x0);
+            const cy = HOP.y + ((r.y - 150) / 380 - 0.5) * 22;
+            return <circle key={i} cx={cx} cy={cy} r={4} fill={r.toCache ? colors.WARM : colors.MUTED} opacity={0.9} />;
           })}
           {rainU > 0.1 && rainU < 1 && (
-            <text x={80} y={130} fill={colors.WARM} fontSize={13} opacity={dimAll}>
+            <text x={268} y={350} textAnchor="middle" fill={colors.WARM} fontSize={14} opacity={dimAll}>
               40,000 reads / s
             </text>
           )}
@@ -306,48 +317,49 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- memory cache + replicas + warehouse ---- */}
         <g opacity={cacheU * dimAll}>
+          <line x1={PATH.api.x + 40} y1={PATH.api.y + 30} x2={CACHE.x - 60} y2={CACHE.y - 30} stroke={colors.WARM} strokeWidth={1.5} />
+          <line x1={CACHE.x + 40} y1={CACHE.y - 30} x2={PATH.db.x} y2={PATH.db.y + 30} stroke={colors.MUTED} strokeWidth={1.2} strokeDasharray="4 5" />
           <Box x={CACHE.x} y={CACHE.y} w={180} title="Memory Cache" sub="hot categories" stroke={colors.WARM} />
         </g>
         <g opacity={replU * dimAll}>
-          <Box x={1060} y={470} w={150} h={48} title="Read Replica" stroke={colors.GRID} />
-          <Box x={1060} y={540} w={150} h={48} title="Read Replica" stroke={colors.GRID} />
-          <line x1={PATH.db.x + 40} y1={PATH.db.y + 30} x2={1000} y2={470} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
-          <line x1={PATH.db.x + 40} y1={PATH.db.y + 30} x2={1000} y2={540} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
+          <Box x={1060} y={480} w={150} h={48} title="Read Replica" stroke={colors.GRID} />
+          <Box x={1060} y={550} w={150} h={48} title="Read Replica" stroke={colors.GRID} />
+          <line x1={PATH.db.x + 50} y1={PATH.db.y + 30} x2={985} y2={480} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
+          <line x1={PATH.db.x + 50} y1={PATH.db.y + 30} x2={985} y2={550} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
         </g>
         <g opacity={whU * dimAll}>
-          <Box x={480} y={540} w={190} h={50} title="Analytics Warehouse" sub="Redshift / BigQuery" stroke={colors.SECONDARY} />
-          <Box x={260} y={610} w={0} h={0} title="" opacity={0} />
-          <text x={480} y={596} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontStyle="italic">
-            old receipts retire to the Object Store
-          </text>
+          <Box x={540} y={500} w={190} h={50} title="Analytics Warehouse" sub="Redshift / BigQuery" stroke={colors.SECONDARY} />
+          <Box x={540} y={572} w={190} h={44} title="Object Store" sub="old receipts retire here" stroke={colors.GRID} />
         </g>
 
-        {/* ---- closing panel ---- */}
-        <g opacity={closeU}>
-          <rect x={265} y={195} width={750} height={280} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={244} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
-            sales rank, end to end
-          </text>
-          {[
-            ['log', 'every sale writes one line from the Sales API'],
-            ['store', 'raw logs land in the object store'],
-            ['rank', 'the two-step MapReduce sums and sorts, hourly'],
-            ['serve', 'one indexed lookup, cached for the hot categories'],
-          ].map(([k, v], i) => (
-            <g key={k}>
-              <text x={430} y={292 + i * 40} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
-                {k}
-              </text>
-              <text x={458} y={292 + i * 40} fill={colors.MUTED} fontSize={13}>
-                {v}
-              </text>
-            </g>
-          ))}
-          <text x={640} y={448} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
-            a billion receipts a month, one calm leaderboard
-          </text>
-        </g>
       </Camera>
+
+      {/* ---- closing panel: screen space, over a solid backdrop so no faded diagram shows through ---- */}
+      <g opacity={closeU}>
+        <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.94} />
+        <rect x={265} y={195} width={750} height={280} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+        <text x={640} y={244} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+          sales rank, end to end
+        </text>
+        {[
+          ['log', 'every sale writes one line from the Sales API'],
+          ['store', 'raw logs land in the object store'],
+          ['rank', 'the two-step MapReduce sums and sorts, hourly'],
+          ['serve', 'one indexed lookup, cached for the hot categories'],
+        ].map(([k, v], i) => (
+          <g key={k}>
+            <text x={430} y={292 + i * 40} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
+              {k}
+            </text>
+            <text x={458} y={292 + i * 40} fill={colors.TEXT} fontSize={14}>
+              {v}
+            </text>
+          </g>
+        ))}
+        <text x={640} y={448} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
+          a billion receipts a month, one calm leaderboard
+        </text>
+      </g>
     </>
   );
 }

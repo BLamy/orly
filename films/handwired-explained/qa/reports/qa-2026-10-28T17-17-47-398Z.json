@@ -1,0 +1,54 @@
+{
+ "slug": "handwired-explained",
+ "at": "2026-10-28T17:17:47.398Z",
+ "summary": {
+  "pass": 7,
+  "warn": 0,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "fresh",
+   "status": "pass",
+   "detail": "timeline.json is newer than script.json and lines.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "493 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "pass",
+   "detail": "24.3 min vs target 24.0 min (101%)"
+  }
+ ]
+}

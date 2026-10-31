@@ -133,7 +133,7 @@ function Branch({
         <text x={TREE.wordX} y={y + 6} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={600}>
           {word}
         </text>
-        <text x={TREE.wordX} y={y - 30} textAnchor="middle" fill={color} fontSize={13} fontStyle="italic">
+        <text x={TREE.wordX} y={y - 30} textAnchor="middle" fill={color} fontSize={14} fontStyle="italic">
           {tag}
         </text>
       </g>
@@ -194,18 +194,18 @@ function Frame({ s }: { s: SceneState }) {
         <g opacity={chartOp}>
           {/* baseline + probability gridlines */}
           <line x1={CHART_L} y1={BASE_Y} x2={CHART_R} y2={BASE_Y} stroke={colors.GRID} strokeWidth={1.5} />
-          <g opacity={axisProbU * 0.6}>
+          <g opacity={axisProbU * 0.9}>
             {[0.25, 0.5, 0.75, 1].map((p) => (
               <g key={p}>
                 <line x1={CHART_L} y1={barTopY(p)} x2={CHART_R} y2={barTopY(p)} stroke={colors.GRID} strokeWidth={0.8} strokeDasharray="2 6" />
-                <text x={CHART_L - 10} y={barTopY(p) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11}>
+                <text x={CHART_L - 10} y={barTopY(p) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                   {p.toFixed(2)}
                 </text>
               </g>
             ))}
           </g>
-          {/* axis label morphs meaning: raw score → probability */}
-          <text x={CHART_L} y={barTopY(1) - 18} fill={colors.MUTED} fontSize={14} fontStyle="italic">
+          {/* axis label morphs meaning: raw score → probability (sits above the 100% line, clear of the bars' labels) */}
+          <text x={CHART_L} y={barTopY(1) - 40} fill={colors.MUTED} fontSize={14} fontStyle="italic">
             {axisProbU < 0.5 ? 'raw score (logit)' : 'probability'}
           </text>
 
@@ -225,7 +225,7 @@ function Frame({ s }: { s: SceneState }) {
                   fill={i === 0 ? colors.ACCENT : colors.SECONDARY}
                   opacity={i === 0 ? 0.95 : 0.75}
                 />
-                <text x={barCX(i)} y={BASE_Y + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+                <text x={barCX(i)} y={BASE_Y + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                   {w}
                 </text>
               </g>
@@ -233,15 +233,16 @@ function Frame({ s }: { s: SceneState }) {
           })}
 
           {/* the top-probability annotation (mat) */}
-          {pctU > 0 && axisProbU > 0.5 && (
+          {/* it hands over to the top-k percentages (crossfade, never both at once) */}
+          {pctU > 0 && axisProbU > 0.5 && topkPctU < 1 && (
             <text
               x={barCX(0)}
-              y={barTopY(heights[0]) - (greedyU > 0 ? 34 : 12)}
+              y={barTopY(heights[0]) - 12}
               textAnchor="middle"
               fill={colors.ACCENT}
               fontSize={17}
               fontWeight={600}
-              opacity={pctU}
+              opacity={pctU * (1 - topkPctU)}
             >
               {`${(heights[0] * 100).toFixed(heights[0] > 0.99 ? 1 : 0)}%`}
             </text>
@@ -254,29 +255,39 @@ function Frame({ s }: { s: SceneState }) {
             </text>
           )}
 
-          {/* greedy marker: always mat */}
+          {/* greedy marker: always mat — a leader line beside the bar, clear of its % value */}
           {greedyU > 0 && (
             <g opacity={greedyU}>
-              <text x={barCX(0)} y={barTopY(heights[0]) - 12} textAnchor="middle" fill={colors.WARM} fontSize={14} fontStyle="italic">
+              <line
+                x1={barX(0) + BAR_W + 6}
+                y1={barTopY(heights[0] * 0.5)}
+                x2={barX(0) + BAR_W + 30}
+                y2={barTopY(heights[0] * 0.5)}
+                stroke={colors.WARM}
+                strokeWidth={1.6}
+              />
+              <text x={barX(0) + BAR_W + 36} y={barTopY(heights[0] * 0.5) + 5} fill={colors.WARM} fontSize={15} fontStyle="italic">
                 greedy: always here
               </text>
             </g>
           )}
 
-          {/* sampled tallies at T = 0.7 — ten REAL seeded draws */}
+          {/* sampled tallies at T = 0.7 — ten REAL seeded draws, each word's draws fanned in a row above its bar */}
           {tallyOp > 0 &&
             SAMPLES.map((w, j) => {
               const u = clamp01(sampleN - j);
               if (u <= 0) return null;
-              const y = barTopY(P_07[w]) - 16 - SAMPLE_STACK[j] * 15;
+              const drawsForWord = SAMPLES.filter((x) => x === w).length;
+              const dx = (SAMPLE_STACK[j] - (drawsForWord - 1) / 2) * 22;
+              const y = barTopY(P_07[w]) - 34;
               return (
-                <g key={j} opacity={tallyOp} transform={`translate(${barCX(w)} ${y}) scale(${0.5 + 0.5 * u})`}>
-                  <rect x={-11} y={-5} width={22} height={10} rx={5} fill={colors.POSITIVE} opacity={0.9 * u} />
+                <g key={j} opacity={tallyOp} transform={`translate(${barCX(w) + dx} ${y}) scale(${0.5 + 0.5 * u})`}>
+                  <rect x={-8} y={-5} width={16} height={10} rx={5} fill={colors.POSITIVE} opacity={0.9 * u} />
                 </g>
               );
             })}
           {tallyOp > 0 && sampleN > 0 && (
-            <text x={CHART_R - 4} y={barTopY(1) - 18} textAnchor="end" fill={colors.POSITIVE} fontSize={14} opacity={tallyOp}>
+            <text x={CHART_L + 150} y={barTopY(1) - 40} fill={colors.POSITIVE} fontSize={14} opacity={tallyOp}>
               {`draws: ${Math.min(N_SAMPLES, Math.floor(sampleN))} of ${N_SAMPLES}`}
             </text>
           )}

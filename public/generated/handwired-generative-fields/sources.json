@@ -1,0 +1,366 @@
+{
+  "version": 1,
+  "slug": "handwired-generative-fields",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Seventy-Two Numbers, One Program",
+      "claims": [
+        {
+          "id": "c1-field-vector-is-72",
+          "claim": "The generative field vector is 72 numbers: eight global knobs plus four fields for each of sixteen slots, with the viewport and validity thresholds held as context.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, the layout model", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "19", "quote": "The generative field vector is these 8 knobs plus 64 per-slot fields = 72 dimensions; the viewport and the validity thresholds are held as context." }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c1-cells-not-branches",
+          "claim": "What makes one slot differ from another is a per-slot source cell (importance, order key, visibility, height preference), never a code branch.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, the layout model", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "19", "quote": "Every quantity that makes one slot different from another is a per-slot source cell, never a code branch" },
+            { "label": "flow-layout.ts header", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/flow-layout.ts", "lines": "9", "quote": "the only thing distinguishing slots is their field values" }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c1-span-and-height",
+          "claim": "Span is min(1, baseSpan + spanFromImportance times importance), computed in the circuit as a raw value minus a relu of that value minus one, so it caps at one full row. Height is (baseHeight + heightFromImportance times importance) times (0.5 + heightPreference).",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, the shared per-slot function", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "21", "quote": "min(1, baseSpan + spanFromImportance * importance)" },
+            { "label": "flow-layout.ts span cap", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/flow-layout.ts", "lines": "198-200", "quote": "[emitRelu(circuit, circuit.affine([[raw, 1]], -1)), -1]" }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c1-equal-keys-lower-slot-wins",
+          "claim": "Order keys are compared pairwise in the circuit, and when two keys are exactly equal, the lower slot number wins.",
+          "status": "verified",
+          "sources": [
+            { "label": "flow-layout.ts order bit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/flow-layout.ts", "lines": "110", "quote": "Exactly equal keys give score 0.5, which rounds to 1: the earlier slot wins." },
+            { "label": "flow-layout.ts pair comparisons", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/flow-layout.ts", "lines": "137", "quote": "One comparison bit per unordered pair" }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c1-greedy-rows",
+          "claim": "Slots flow like words: a slot that would overflow the row starts a new row, and each row is as tall as its tallest member.",
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab README, the shared per-slot function", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "21", "quote": "a slot that would overflow the current row starts a new row, and a row is as tall as its tallest member" },
+            { "label": "flow-layout.ts wrap test", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/flow-layout.ts", "lines": "263-264", "quote": "Wrap when cursor + span >= 1 + wrapSlack" }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c1-hero-is-importance-peak",
+          "claim": "A hero is an importance peak: one slot with a large importance gets a wide span and crowds the others out of its row.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, the layout model", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "21", "quote": "A hero is nothing but an importance peak: a large importance produces a wide span that crowds everything else out of its row." }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c1-five-families-by-numbers",
+          "claim": "The same compiled program produces a uniform grid, a hero layout, an importance-weighted mosaic, a list and a filmstrip, purely by changing numbers in the source table.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, the historical July study", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "13", "quote": "The same compiled program produces a uniform grid, a hero layout, an importance-weighted mosaic, a list, and a filmstrip purely by changing numbers in the source table" }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c1-zero-new-operations",
+          "claim": "Switching between the five families reports zero new operations, because it is the same tensor program object each time.",
+          "status": "verified",
+          "sources": [
+            { "label": "experiments.ts family check", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "143", "quote": "new operations (same tensor program object)" }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c1-operations-layers-and-depth",
+          "claim": "The circuit has 8,421 operations in 201 layers. The depth comes from the flow: each wrap decision feeds the next cursor.",
+          "status": "verified",
+          "sources": [
+            { "label": "experiments.ts circuit statistics (printed by the run)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "119-120", "quote": "- operations: ${machine.circuit.operations.length}" },
+            { "label": "lab README, the sequential flow", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "29", "quote": "each wrap decision feeding the next cursor" }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c1-family-fitness-and-list",
+          "claim": "Each family gets a fitness score: the grid scores 0.894 and the mosaic 0.823. The list shows six of sixteen slots because its visibility hides the rest, and sixteen rows would overflow.",
+          "status": "verified",
+          "sources": [
+            { "label": "experiments.ts family table (printed by the run)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "133", "quote": "${fitness.value.toFixed(3)}" },
+            { "label": "fields.ts authored list visibility", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/fields.ts", "lines": "276", "quote": "visibility: slot < 6 ? 1 : 0," },
+            { "label": "lab README, limits (no scrolling)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "129", "quote": "the 16-slot list overflows the 800px viewport, so the authored list hides 10 slots" }
+          ],
+          "caption": 10
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Scored, Searched, Climbed",
+      "claims": [
+        {
+          "id": "c2-validity-bit-and-depth",
+          "claim": "The circuit grades its own output: a validity bit that is exactly one or zero, and a violation depth in pixels.",
+          "status": "verified",
+          "sources": [
+            { "label": "flow-layout.ts validity bit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/flow-layout.ts", "lines": "433", "quote": "const validBit = circuit.affine([[emitCountAtLeastOne(circuit, violationCount), -1]], 1)" },
+            { "label": "lab README, validity is self-scored", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "35", "quote": "a continuous `violationDepth` in pixels" }
+          ],
+          "caption": 0
+        },
+        {
+          "id": "c2-three-rules-and-slack",
+          "claim": "Three rules are checked: no two visible slots overlap, nothing runs past the bottom or right edge, and nothing is too small. The historical check allows a small wrap margin on the right and a 0.5-pixel tolerance.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, validity is self-scored", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "35", "quote": "containment (bottom and right edges), minimum visible sizes" },
+            { "label": "lab README, September corrections", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "7", "quote": "horizontal containment allows `innerWidth * wrapSlack` extra pixels, and checks have a 0.5-pixel tolerance" }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c2-overlap-by-construction",
+          "claim": "Sideways overlap is impossible by construction, since the cursor only moves forward and spans are capped. Overlap never occurred in the 4,000 search samples, and only a crafted triple of almost-equal keys can collide slots.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, structural result", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "37", "quote": "across the 4,000 search samples, 0 have overlap" },
+            { "label": "lab README, failures and limits", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "125", "quote": "An adversarial triple inside the band produces colliding ranks and stacked slots." }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c2-search-samples",
+          "claim": "The search draws four thousand seeded random field vectors and tests each one.",
+          "status": "verified",
+          "sources": [
+            { "label": "experiments.ts search config", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "26", "quote": "export const searchConfig = {sampleCount: 4000, seed: 0x5EED, keep: 30} as const" }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c2-1078-valid",
+          "claim": "1,078 of the 4,000 samples are valid, about 27 percent. Containment fails in 2,886 samples and minimum size in 44.",
+          "status": "verified",
+          "sources": [
+            { "label": "generation.test.ts search counts", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/generation.test.ts", "lines": "17", "quote": "assert.equal(search.validCount, 1078)" },
+            { "label": "generation.test.ts containment count", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/generation.test.ts", "lines": "21", "quote": "assert.equal(search.containViolationSamples, 2886)" }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c2-seven-terms-rank",
+          "claim": "Seven weighted terms make the fitness score, and any valid layout ranks above any invalid one.",
+          "status": "verified",
+          "sources": [
+            { "label": "fitness.ts weights", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/fitness.ts", "lines": "31-37", "quote": "fill: 0.25," },
+            { "label": "fitness.ts ranking comment", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/fitness.ts", "lines": "358-359", "quote": "valid layouts rank by fitness in [0, 1]; invalid" }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c2-search-best",
+          "claim": "Search's best valid layout scores 0.875. The whole four-thousand-sample search took about a quarter second on this machine.",
+          "status": "verified",
+          "sources": [
+            { "label": "generation.test.ts best search score", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/generation.test.ts", "lines": "24", "quote": "search.top[0]!.fitness > 0.87 && search.top[0]!.fitness < 0.88" },
+            { "label": "experiments.ts search timing (this machine: 242 ms in one run)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "150", "quote": "samples in ${searchMs.toFixed(0)}ms" }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c2-gradient-loss-and-starts",
+          "claim": "Gradient ascent minimizes minus fitness plus a small penalty on violation depth, taking 150 steps from each of twelve random starts.",
+          "status": "verified",
+          "sources": [
+            { "label": "optimize.ts loss", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/optimize.ts", "lines": "179", "quote": "// Loss = -fitness + violationWeight * violationDepth; descend it." },
+            { "label": "experiments.ts ascent config", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "29-31", "quote": "startCount: 12," }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c2-straight-through-slope",
+          "claim": "Decisions are bits with no slope, so the backward pass substitutes an identity derivative: forward values stay exact, and the derivative through a decision is set to one.",
+          "status": "verified",
+          "sources": [
+            { "label": "ste-backprop.ts", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/ste-backprop.ts", "lines": "8", "quote": "Exact forward values, explicitly substituted identity derivative for booleans." }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c2-biased-slope",
+          "claim": "The straight-through slope is biased: on one probe the readme measured 173 where the true local slope was 120, so its magnitudes are not derivatives.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, straight-through characterization", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "80", "quote": "measured 173 vs a true local slope of 120 on the hero importance probe" }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c2-climbs-all-valid",
+          "claim": "In today's run all twelve climbs end on valid layouts, with best 0.919, median 0.888 and worst 0.849, above search's best of 0.875.",
+          "status": "verified",
+          "sources": [
+            { "label": "generation.test.ts valid-end assertion", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/generation.test.ts", "lines": "54", "quote": "must end on a valid layout" },
+            { "label": "experiments.ts ascent statistics (printed by the run)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "182", "quote": "worst ${ascentScores[0]!.toFixed(3)}" }
+          ],
+          "caption": 10
+        },
+        {
+          "id": "c2-fitness-gamed",
+          "claim": "The best climbed layout shows only six slots of sixteen. With the richness term removed, a hand-built layout with two visible slots scores a perfect one, so fitness can be gamed.",
+          "status": "verified",
+          "sources": [
+            { "label": "experiments.ts best ascent layout (printed by the run)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "185", "quote": "best ascent layout: visible" },
+            { "label": "generation.test.ts hand-built two-slot layout", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/generation.test.ts", "lines": "78-104", "quote": "without content richness, two visible slabs can receive the maximum score" }
+          ],
+          "caption": 11
+        },
+        {
+          "id": "c2-richness-and-taste",
+          "claim": "The richness term rewards up to ten visible slots, but search and gradient optimize the same number and disagree about taste, so the fitness function is the bottleneck.",
+          "status": "verified",
+          "sources": [
+            { "label": "fitness.ts richness term", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/fitness.ts", "lines": "190", "quote": "terms.contentRichness = Math.min(1, visibleCount / richSlotCount)" },
+            { "label": "lab README, failures and limits", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "127", "quote": "search-with-prior and gradient optimize the same number and disagree about taste, so the fitness function is the bottleneck" }
+          ],
+          "caption": 12
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "The Path Between",
+      "claims": [
+        {
+          "id": "c3-hero-migration",
+          "claim": "In the hero migration, importance moves from slot two to slot eleven over 21 sampled points. Slot two's area falls from 129,064 to 24,191 square pixels, and slot eleven's rises the other way.",
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab README, experiment 4 hero migration", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "98", "quote": "importance mass moving from slot 2 to slot 11" },
+            { "label": "lab README, hero migration areas", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "98", "quote": "129,064px² vs 24,191px² at t=0" }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c3-hero-cross-valid",
+          "claim": "The two heroes cross at 66,443 square pixels each, and all 21 points on the hero migration are valid without projection.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, hero migration midpoint", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "98", "quote": "exactly equal at t=0.5 (66,443px² each)" },
+            { "label": "lab README, hero migration validity", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "98", "quote": "All 21 naive points are already valid" }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c3-sixty-pairs",
+          "claim": "The study walks sixty pairs of layouts, ten among the authored families and fifty random ones, each a straight line of 101 points: 6,060 points in all.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, experiment 4 setup", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "84", "quote": "all 10 authored-authored pairs plus 50 seeded pairs" }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c3-straight-lines-fail",
+          "claim": "Straight lines mostly fail: 1,906 of 6,060 points are valid, 31.5 percent, and only one of the sixty paths is valid from end to end.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, experiment 4 table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "88", "quote": "valid before projection | 1,906 / 6,060 (31.5%)" },
+            { "label": "lab README, experiment 4 table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "90", "quote": "fully valid naive paths | 1 / 60" }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c3-invalid-are-overflow",
+          "claim": "Every one of the 4,154 invalid points is a vertical overflow past the bottom of the viewport. None overlap, and none has a slot below minimum size.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, experiment 4 analysis", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "96", "quote": "every one of the 4,154 invalid points is a vertical overflow" },
+            { "label": "experiments.ts per-category counts (printed by the run)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/experiments.ts", "lines": "206", "quote": "overlap ${study.overlapPointCount}, containment ${study.containPointCount}, minimum size ${study.sizePointCount}" }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c3-repair-is-projection",
+          "claim": "The repair is a projection: small steps downhill on violation depth, with a pull back toward the interpolated anchor, stopping as soon as the validity bit reads one.",
+          "status": "verified",
+          "sources": [
+            { "label": "optimize.ts stop on validity", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/optimize.ts", "lines": "229", "quote": "if (values[machine.output.validBit]! === 1) {" },
+            { "label": "optimize.ts proximal pull", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/optimize.ts", "lines": "236", "quote": "Proximal pull: d/dField of proximalWeight * ||normalized - anchor||^2." }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c3-repair-counts",
+          "claim": "After projection all 6,060 points are valid. The 4,154 repairs average 1.9 steps out of forty allowed, and none fail.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, experiment 4 table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "89", "quote": "valid after projection | 6,060 / 6,060 (100.0%)" },
+            { "label": "lab README, experiment 4 table", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "92", "quote": "mean projection steps | 1.9 (cap 40)" }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c3-july-hidden-content",
+          "claim": "In the July study, 1,408 of the 4,154 repairs hid previously visible items, and one cut sixteen visible slots to six. The validity bit never asked for content to stay.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, September corrections (July figures)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "7", "quote": "Of the July study's 4,154 repairs, 1,408 hid previously visible items; one reduced sixteen visible items to six." }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c3-audit-reports",
+          "claim": "A September audit adds two separate reports: required content retained, and strict containment with no slack. A layout can pass the old validity bit and fail both.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, September corrections", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "7", "quote": "A layout can pass the historical bit and fail both stricter reports." },
+            { "label": "lab README, September corrections (the audit function)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "7", "quote": "`auditContent(snapshot, required)` adds separate required-content retention and strict padded containment reports" }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c3-no-smooth-motion",
+          "claim": "Valid samples do not establish smooth motion: sorting, visibility and wrapping can jump between neighbors.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, September corrections", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "9", "quote": "The samples do not establish smooth motion: sorting, visibility, and wrapping can jump." }
+          ],
+          "caption": 10
+        },
+        {
+          "id": "c3-status-historical",
+          "claim": "The status table gives this lab no tag, only its limits. The fair reading is historical and narrowed, and the readme says the July tables are not promises about the corrected optimizer.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab/status.md, the status table header", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "194", "quote": "| Experiment | What changes during training or search | Held-out result | Main limitation |" },
+            { "label": "lab/status.md, this lab's limit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "201", "quote": "Historical repair could hide content, and valid samples do not establish a smooth valid interpolation." },
+            { "label": "lab README, July tables", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "5", "quote": "The tables below are the July study, not promises about the corrected optimizer." }
+          ],
+          "caption": 11
+        },
+        {
+          "id": "c3-open-items",
+          "claim": "Still open: a 60 Hz transition driven by the projection, a second flow region, and learned fitness weights.",
+          "status": "verified",
+          "sources": [
+            { "label": "lab README, next steps", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "135", "quote": "sample the repaired path at 60Hz" },
+            { "label": "lab README, next steps", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/generative-fields/README.md", "lines": "136-137", "quote": "Second flow region" }
+          ],
+          "caption": 12
+        }
+      ]
+    }
+  ]
+}

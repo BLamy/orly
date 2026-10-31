@@ -1,0 +1,33 @@
+{
+ "shot": "ch01-s08",
+ "at": "2026-10-28T09:01:29.664Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "HANDWIRED",
+   "capWhileSubject": 91.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Promises, Not Proofs",
+   "capWhileSubject": 45,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "How a program becomes a hand-wired neural network,",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "told in the things people were sure of",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

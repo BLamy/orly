@@ -102,12 +102,16 @@ const SWEEP: { p: number; loss: number | null; diverged: boolean }[] = [
 // ---------------------------------------------------------------------------
 
 const PLOT_X = scaleLinear().domain([1, R_MAX]).range([140, 590]);
-const PLOT_Y = scaleLinear().domain([0, 0.16]).range([560, 300]);
+const PLOT_Y = scaleLinear().domain([0, 0.16]).range([560, 340]);
 
 const SW_X = scaleLinear().domain([0.28, 0.62]).range([740, 1170]);
 const SW_Y = scaleLinear().domain([3.6, 3.95]).range([560, 380]);
 
-const CAM_EQ: CameraState = { x: 640, y: 240, k: 1.2 };
+// Both panels share a top edge (y 290 / title baseline 320) so they read as a pair.
+const PANEL_TOP = 290;
+const PANEL_TITLE_Y = 320;
+
+const CAM_EQ: CameraState = { x: 640, y: 190, k: 1.2 };
 
 interface Scene {
   tl: Timeline;
@@ -251,7 +255,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Everything fades to nothing at the close, so the closing panel stands alone.
+  const mainOp = 1 - dimU;
 
   return (
     <>
@@ -263,7 +268,7 @@ function Frame({ s }: { s: SceneState }) {
           <MathLabel
             tex="x_{i+1} = \mathrm{Norm}\!\left(\alpha\, x_i + f_j(x_i;\, \phi_j)\right)"
             x={640}
-            y={150}
+            y={140}
             fontSize={26}
             color={colors.TEXT}
             opacity={eqU}
@@ -274,10 +279,11 @@ function Frame({ s }: { s: SceneState }) {
             <MathLabel
               tex="\text{DeepNorm:}\quad \alpha = (2N)^{1/4},\quad \beta = (8N)^{-1/4}"
               x={640}
-              y={205}
+              y={188}
               fontSize={20}
               color={colors.MUTED}
               anchor="middle"
+              boxWidth={1100}
             />
           </g>
           {/* DeepLoop exponents */}
@@ -285,10 +291,11 @@ function Frame({ s }: { s: SceneState }) {
             <MathLabel
               tex="\text{DeepLoop:}\quad \alpha = (2N)^{1/2},\quad \beta = (8N)^{-1/2},\quad N = M\!\cdot\! R"
               x={640}
-              y={250}
+              y={230}
               fontSize={20}
               color={colors.POSITIVE}
               anchor="middle"
+              boxWidth={1100}
             />
           </g>
         </Camera>
@@ -304,12 +311,27 @@ function Frame({ s }: { s: SceneState }) {
         </text>
       </g>
 
+      {/* beat 1: each layer adds one small shock; the row stays bounded.
+          It gives way to the computed plot when the plot draws in. */}
+      <g opacity={dnU * (1 - plotU) * mainOp}>
+        {Array.from({ length: 8 }, (_, i) => (
+          <g key={i}>
+            <line x1={400 + i * 60} y1={382} x2={400 + i * 60} y2={408} stroke={colors.ACCENT} strokeWidth={2} />
+            <circle cx={400 + i * 60} cy={420} r={7} fill={colors.ACCENT} />
+          </g>
+        ))}
+        <line x1={370} y1={456} x2={910} y2={456} stroke={colors.GRID} strokeWidth={1.5} />
+        <text x={640} y={486} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+          one small shock per layer, and the total stays bounded
+        </text>
+      </g>
+
       {/* left plot: computed perturbation growth */}
       <g opacity={plotU * mainOp}>
-        <text x={140} y={272} fill={colors.TEXT} fontSize={15}>
+        <text x={140} y={PANEL_TITLE_Y} fill={colors.TEXT} fontSize={15}>
           output shift from a small weight perturbation (computed)
         </text>
-        <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={3} xLabel="loop count R" fontSize={11} />
+        <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={3} xLabel="loop count R" fontSize={12} />
         <path d={curvePath(DF_QUARTER, qTok)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.6} />
         {qTok > 0 &&
           DF_QUARTER.slice(0, Math.min(R_MAX, Math.ceil(qTok))).map((v, i) => (
@@ -326,25 +348,26 @@ function Frame({ s }: { s: SceneState }) {
             <circle key={i} cx={PLOT_X(i + 1)} cy={PLOT_Y(v)} r={3.5} fill={colors.POSITIVE} opacity={clamp01(hTok - i)} />
           ))}
         {hTok >= R_MAX - 0.02 && (
-          <text x={PLOT_X(R_MAX) - 2} y={PLOT_Y(DF_HALF[R_MAX - 1]) + 22} textAnchor="end" fill={colors.POSITIVE} fontSize={12}>
+          // above the flat line, clear of the x-axis label below it
+          <text x={PLOT_X(R_MAX) - 2} y={PLOT_Y(DF_HALF[R_MAX - 1]) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={12}>
             p = 1/2: flat at {DF_HALF[R_MAX - 1].toFixed(3)}
           </text>
         )}
-        <text x={140} y={600} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+        <text x={140} y={602} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
           tied Post-LN toy · d=8 · M=4 blocks · ‖ΔF‖ at the output
         </text>
       </g>
 
       {/* right panel: the reported p-sweep */}
       <g opacity={sweepU * mainOp}>
-        <rect x={700} y={300} width={510} height={330} rx={12} fill={colors.PANEL} opacity={0.5} stroke={colors.GRID} />
-        <text x={724} y={332} fill={colors.TEXT} fontSize={15}>
+        <rect x={700} y={PANEL_TOP} width={510} height={330} rx={12} fill={colors.PANEL} opacity={0.5} stroke={colors.GRID} />
+        <text x={724} y={PANEL_TITLE_Y} fill={colors.TEXT} fontSize={15}>
           exponent sweep at R = 3
         </text>
-        <text x={1186} y={332} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="monospace">
-          reported, not re-run
+        <text x={724} y={PANEL_TITLE_Y + 24} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+          reported, not re-run · seed spread not shown
         </text>
-        <Axes x={SW_X} y={SW_Y} reveal={sweepU} xTicks={4} yTicks={3} xLabel="exponent p" fontSize={11} />
+        <Axes x={SW_X} y={SW_Y} reveal={sweepU} xTicks={4} yTicks={3} xLabel="exponent p" fontSize={12} />
         {SWEEP.map((pt, i) => {
           const u = clamp01(sweepTok - i + 1);
           if (u <= 0) return null;
@@ -354,7 +377,7 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={SW_X(pt.p)} y={SW_Y(3.9)} textAnchor="middle" fill={colors.NEGATIVE} fontSize={17} fontWeight={700}>
                   ✕
                 </text>
-                <text x={SW_X(pt.p)} y={SW_Y(3.9) + 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={9}>
+                <text x={SW_X(pt.p)} y={SW_Y(3.9) + 20} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
                   diverges
                 </text>
               </g>
@@ -363,7 +386,7 @@ function Frame({ s }: { s: SceneState }) {
           return (
             <g key={i} opacity={u}>
               <circle cx={SW_X(pt.p)} cy={SW_Y(pt.loss as number)} r={5} fill={pt.p === 0.5 ? colors.POSITIVE : colors.ACCENT} />
-              <text x={SW_X(pt.p)} y={SW_Y(pt.loss as number) - 12} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+              <text x={SW_X(pt.p)} y={SW_Y(pt.loss as number) - 12} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
                 {(pt.loss as number).toFixed(2)}
               </text>
             </g>
@@ -372,8 +395,8 @@ function Frame({ s }: { s: SceneState }) {
         {sweepTok >= 6.9 && (
           <>
             <line x1={SW_X(0.475)} y1={SW_Y(3.62)} x2={SW_X(0.475)} y2={SW_Y(3.93)} stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="4 4" />
-            <text x={SW_X(0.5)} y={SW_Y(3.62)} textAnchor="middle" fill={colors.POSITIVE} fontSize={11}>
-              p = 1/2: smallest reliable
+            <text x={SW_X(0.475) + 8} y={SW_Y(3.93) + 4} fill={colors.POSITIVE} fontSize={12}>
+              p = 1/2 (DeepLoop)
             </text>
           </>
         )}
@@ -382,7 +405,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Count depth in visits, anchor by its square root.
           </text>

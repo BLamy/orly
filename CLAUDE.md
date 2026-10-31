@@ -12,14 +12,33 @@ Use **GPT-6.1 Sol (`gpt-6.1-sol`) for planning and Blender 3D modeling** and
 [the authoring model workflow](docs/authoring-models.md) for handoffs, provider
 provenance and hybrid scene verification. Always launch Claude with
 `npx --yes @anthropic-ai/claude-code@latest`, never the installed global CLI.
-Keep the exact requested model; save progress on a provider limit rather than
-silently substituting. Sol may continue independent 3D/integration work.
+Book planning and 3D modeling use Sol; D3/SVG and Strudel authoring use Opus 5.5.
+If a provider reaches a limit, preserve progress and report the blocker without
+substitution. The user's persistent model override forbids Astra and Fable launches.
+The separate film pipeline retains its all-Opus routing and strict launcher.
 
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
 (see `.claude/commands/new-book.md`). It digests the repo, Sol writes the visual plan and Opus authors D3 scenes,
 then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (gpt‑image),
 adds Noun Project icons, and you commit + push to redeploy.
+
+
+**Book quality doctrine:** every book is proactive (researches past the digest, verifies before
+narrating, self-grades on the eight-dimension rubric, runs its own checks), cites its sources in
+`public/generated/<slug>/sources.json` (`npm run book:sources`), and can carry a Strudel music bed
+(`npm run book:score`). See [docs/book-quality.md](docs/book-quality.md).
+
+## Films
+**Model routing for films:** every film's code and story (research, script, shots, Strudel music, pipeline code) is written by **Claude Opus 5.5 (`claude-opus-5-5`) at high effort only**, per the film brief: no fallback model. Books follow the routing above.
+
+**Films** are the long-form level above books: 20–40 minute, art-directed (silhouette /
+paper-cut), narrated and scored documentaries rendered frame-exactly in JavaScript.
+Start with **[docs/film/ARCHITECTURE.md](docs/film/ARCHITECTURE.md)** (stages, timing
+model, engine, routing). Make one with **`/new-film`** (`.claude/commands/new-film.md`);
+the stages run as saved workflows in `.claude/workflows/film-*.js` (`/film-research`,
+`/film-story`, … `/film-loop`). Film code lives in `apps/bookshelf/src/viz/film/`,
+`generator/film/`, `tools/film/`; each film's sources and provenance live in `films/<slug>/`.
 
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):

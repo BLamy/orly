@@ -1,0 +1,8 @@
+[
+  {
+    "slug": "neural-net-history",
+    "brief": "I want you to build an educational cartoon that is artistic, visually stunning, creative, and educational at the same time. Watching this video should feel like something new. A new way to learn. Memorable. Exceptional.\n\nI want to learn the history of Neural Nets - as it was studied, and by whom. The debates. Classical ML. Cold Winter, ChatGPT, Anthropic and the AI race with china. Take us through the history of AI and educate us on the current understanding at that time, what people believed, who dissented, how long people thought that way? Cover about the experiments. Cover alexnet and transformers in depth.\n\nI want you to generate the music please use browser use and https://strudel.cc/ to compose music. Look at the orly repo and use eleven labs to create a and use a slow distinguished Godfrey Hinton like voice. Work in a loop until you have achieved excellence. You may call as many subagents as needed; however, only use opus 5.5 on high reasoning when writing any code, or writing any of the story, nothing else should be used for those but opus 5.5.\n\nTake your time, you have as many tokens as you need. i want this to spark curiosity in all who watch.",
+    "status": "in-progress",
+    "note": "pilot film for the orly-2 production level"
+  }
+]

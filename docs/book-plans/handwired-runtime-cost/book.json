@@ -1,0 +1,61 @@
+{
+  "slug": "handwired-runtime-cost",
+  "title": "Runtime Cost",
+  "subtitle": "What a CPU pays to run a handwired circuit: allocation, copying, and layers",
+  "animal": "cheetah",
+  "accent": "#e0457b",
+  "chapters": [
+    {
+      "title": "Three ways to run one circuit",
+      "blurb": "Reference, full-array and reusable-buffer evaluation, and what each call allocates.",
+      "captions": [
+        "Handwired turns a program into layers of weighted sums. This lab asks a plain question: when that circuit runs on a CPU, how much of each call goes to allocating and copying memory?",
+        "Three runners get the same circuit. The reference walks operations one at a time. The tensor executor runs layer by layer. The third is that executor with its buffers kept between calls.",
+        "The reference allocates one fresh array on every call, sized for every source cell plus every operation, then evaluates each operation as its own scalar step.",
+        "The plain tensor executor allocates a whole new workspace on every call, runs the layers, then builds a full array holding every wire and scatters each value into it.",
+        "The reusable version builds its workspace once, plus one small output array. Each call runs the layers and copies out only the outputs you asked for.",
+        "The price is that the next call overwrites that output array. Anyone who wants to keep a frame has to copy it first.",
+        "All three also check, on every call, that each source value sits inside its declared range. That check is inside every timing, so it is a shared cost, not a difference.",
+        "The harness is careful. Each method warms up two hundred times, the order rotates between samples, seven samples are taken, and if the checksums of the outputs disagree, the run throws.",
+        "The test circuit is the Handwired OS window manager: two hundred thirty-four source cells, four thousand six hundred forty-six live operations, one hundred thirty layers.",
+        "On one run, the reference takes about one hundred fifty microseconds per evaluation, the full-array executor about forty-nine, and the reusable one about forty-three.",
+        "So reusable is about one point one six times faster than full array, and three and a half times faster than the reference. One run, one machine, one process."
+      ]
+    },
+    {
+      "title": "What a layer costs by itself",
+      "blurb": "Sixteen thousand sums in three layer counts isolate the cost of a layer.",
+      "captions": [
+        "Now a sharper question: what does a layer cost on its own, apart from the arithmetic inside it? The lab builds a clean experiment to isolate that.",
+        "Take sixteen thousand three hundred eighty-four sums, each adding two numbers. Chain them into sixty-four layers, or one thousand twenty-four, or sixteen thousand three hundred eighty-four.",
+        "With sixty-four layers, two hundred fifty-six chains run side by side, so every layer is two hundred fifty-six sums wide. With sixteen thousand layers there is one chain, and one sum per layer.",
+        "A layer is just a depth. Each operation sits one level above the deepest thing it reads, and the compiler gives every level its own layer.",
+        "Each layer copies its inputs out of one shared array, does its sparse sums, rounding every product and every partial sum to a thirty-two-bit float, then copies its results back.",
+        "Across all three shapes the totals are identical: thirty-two thousand seven hundred sixty-eight input reads, sixteen thousand three hundred eighty-four outputs, the same stored weights.",
+        "So with the totals fixed, the time difference tracks the number of layers, not the amount of arithmetic. Each shape runs in its own process, and the answer is checked against its exact value.",
+        "The readme reports fifty-four to fifty-five microseconds at sixty-four layers, sixty-four to sixty-five at one thousand twenty-four, and two hundred ten to two hundred fourteen at sixteen thousand.",
+        "That works out to about ten microseconds for every thousand layers, measured on an Apple M five Max at a load average of about four.",
+        "Rerun here, on an M four Max at a load of about nine, it gave sixty-seven, seventy-seven, and two hundred fifty. The slope held near ten, but the absolute numbers shifted.",
+        "The docs blame copying values. But copy volume is the same in all three shapes, so what grows is fixed work per layer. That reading is our inference; the lab doesn't test it.",
+        "An older executor needed seven hundred nine microseconds for the sixteen thousand layer case. After a change to how outputs are copied, the same probe took two hundred fifty. Layer overhead is real."
+      ]
+    },
+    {
+      "title": "Real circuits, honest limits",
+      "blurb": "The window manager's layer shape, the smaller circuits, and the lab's status.",
+      "captions": [
+        "Back to a real program. The window manager is neither tall nor wide: its first layer holds four hundred one operations, and by the sixth layer it is down to ten.",
+        "Near the end it swells again to one hundred thirty-three. The median layer holds twenty-six and a half operations, and all the widths add up to four thousand six hundred forty-six.",
+        "So the layer toll is paid one hundred thirty times here, not sixteen thousand. That may be part of why the real circuit sits so far from the worst case.",
+        "Two smaller circuits show the same ordering. On the candidate gallery, the reference takes nineteen microseconds, the full array four point six five, and reusable three point one eight.",
+        "The tiny coordinate transform, four operations in three layers, gains little: ninety-three nanoseconds for the reference, seventy-eight reusable. Plain scalar code beats them all, at twenty-nine.",
+        "Reusable beats full array by one point five three times there, one point four six on the gallery, and one point one six on the window manager. In this one run, the smallest circuit gains most.",
+        "One caveat hides in the harness: the reference and full-array runners copy their outputs in an extra loop, and the reusable runner doesn't. Part of the gap is that copy.",
+        "The readme warns that timing several programs in one process can distort later timings. A standalone check here landed within noise of the shared run, so we could not confirm it.",
+        "Status, plainly. Reusable buffers hold as an interface, on the CPU only. The layer probe is narrowed to a local figure at a stated load. The three-way absolute timings are one run, not a standing result.",
+        "Not measured: events, graphics processors, compilation, or browser frames. Smarter layer scheduling is parked, because the latest-legal version increased gathered inputs.",
+        "To recap: a call can allocate or reuse, a layer costs about ten microseconds per thousand, and real circuits are wide at first, thin in the middle, and swell near the end. Rerun locally before trusting any one ratio."
+      ]
+    }
+  ]
+}

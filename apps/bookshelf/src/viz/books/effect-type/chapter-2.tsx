@@ -84,9 +84,11 @@ const STAMPS: Stamp[] = [
 
 // camera marks
 const CAM_CARD: CameraState = { x: 640, y: 340, k: 1.12 };
-const CAM_A: CameraState = { x: 900, y: 290, k: 1.5 };
-const CAM_E: CameraState = { x: 900, y: 420, k: 1.5 };
-const CAM_R: CameraState = { x: 420, y: 440, k: 1.5 };
+// k 1.4 keeps the card, its chute labels and the signature readout (y ≈ 146)
+// inside the stage; y 350 centres the card so its bottom edge clears the caption pill
+const CAM_A: CameraState = { x: 780, y: 350, k: 1.4 };
+const CAM_E: CameraState = { x: 780, y: 350, k: 1.4 };
+const CAM_R: CameraState = { x: 560, y: 350, k: 1.4 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -261,13 +263,14 @@ function Chute({ x, y, color, label, weld, u, dir = 1 }: {
           {[-20, 0, 20].map((dx) => (
             <circle key={dx} cx={x + dir * 28 + dx * 0.8} cy={y} r={2.4} fill={colors.MUTED} />
           ))}
-          <text x={x + dir * 28} y={y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+          <text x={x + dir * 28} y={y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             never
           </text>
         </g>
       )}
+      {/* label sits past the mouth (x + 64), so it never overlaps the chute */}
       {label && open > 0.4 && (
-        <text x={x + dir * 56} y={y + 4} textAnchor={dir === 1 ? 'start' : 'end'} fill={color} fontSize={12.5} fontFamily="monospace" opacity={open}>
+        <text x={x + dir * 74} y={y + 5} textAnchor={dir === 1 ? 'start' : 'end'} fill={color} fontSize={14} fontFamily="monospace" opacity={open}>
           {label}
         </text>
       )}
@@ -302,6 +305,8 @@ export function Render({ s }: { s: SceneState }) {
   // the plug is still sliding in); otherwise a faint ghost below the label
   // threshold, so "Database" never reads on unrelated beats.
   const socketOpen = stamp?.r ? stampU : idx === 4 ? 1 - plugU : rU * 0.3;
+  // once the plug is seated, the socket welds shut and R reads "never"
+  const neverU = clamp01((plugU - 0.5) * 2);
 
   return (
     <>
@@ -329,7 +334,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={cardU * dimU}>
           <rect x={BIG.x} y={BIG.y} width={BIG.w} height={BIG.h} rx={18} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
           <rect x={BIG.x + 20} y={BIG.y + 18} width={130} height={24} rx={12} fill={colors.BG} stroke={colors.GRID} />
-          <text x={BIG.x + 85} y={BIG.y + 34} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+          <text x={BIG.x + 85} y={BIG.y + 34} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
             a description
           </text>
           {/* the frozen work inside */}
@@ -340,9 +345,9 @@ export function Render({ s }: { s: SceneState }) {
               x={BIG.x + 38}
               y={BIG.y + 88 + i * 22}
               fill={i === 0 && stamp ? colors.TEXT : colors.MUTED}
-              fontSize={13}
+              fontSize={14}
               fontFamily="monospace"
-              opacity={stamp ? stampU : 0.7}
+              opacity={stamp ? stampU : 0.85}
             >
               {line}
             </text>
@@ -353,7 +358,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimU}>
           <Chute x={A_PORT.x} y={A_PORT.y} color={colors.POSITIVE} label={aLabel} weld={aWeld} u={aU * cardU} />
           {aU > 0.3 && (
-            <text x={A_PORT.x - 16} y={A_PORT.y - 30} textAnchor="end" fill={colors.POSITIVE} fontSize={13} opacity={aU * dimU}>
+            <text x={A_PORT.x - 16} y={A_PORT.y - 30} textAnchor="end" fill={colors.POSITIVE} fontSize={14} opacity={aU * dimU}>
               success — what it yields
             </text>
           )}
@@ -363,7 +368,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimU}>
           <Chute x={E_PORT.x} y={E_PORT.y} color={colors.NEGATIVE} label={eLabel} weld={eWeld} u={eU * cardU} />
           {eU > 0.3 && (
-            <text x={E_PORT.x - 16} y={E_PORT.y + 42} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} opacity={eU * dimU}>
+            <text x={E_PORT.x - 16} y={E_PORT.y + 42} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} opacity={eU * dimU}>
               failure — how it can go wrong
             </text>
           )}
@@ -372,7 +377,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- R socket (requirement, left side) ---- */}
         {rU > 0.01 && (
           <g opacity={rU * cardU * dimU}>
-            <text x={R_PORT.x + 16} y={R_PORT.y + 52} fill={colors.SECONDARY} fontSize={13}>
+            <text x={R_PORT.x + 16} y={R_PORT.y + 52} fill={colors.SECONDARY} fontSize={14}>
               requirements — what it needs
             </text>
             {/* socket opening */}
@@ -382,23 +387,34 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={R_PORT.x - 20} y={R_PORT.y + 3} width={10} height={8} fill={colors.SECONDARY} opacity={0.9} />
             </g>
             {socketOpen > 0.4 && plugU < 0.9 && (
-              <text x={R_PORT.x - 40} y={R_PORT.y + 4} textAnchor="end" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace" opacity={socketOpen * (1 - plugU)}>
+              <text x={R_PORT.x - 40} y={R_PORT.y + 5} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace" opacity={socketOpen * clamp01(1 - plugU * 2.5)}>
                 Database
               </text>
             )}
-            {/* the plug provided by provideService */}
-            {plugU > 0.01 && (
-              <g opacity={Math.min(1, plugU * 1.4)}>
-                <rect x={R_PORT.x - 30 - 90 * (1 - plugU) - 46} y={R_PORT.y - 14} width={46} height={28} rx={6} fill={colors.SECONDARY} opacity={0.85} />
-                <text x={R_PORT.x - 30 - 90 * (1 - plugU) - 23} y={R_PORT.y + 4} textAnchor="middle" fill={colors.BG} fontSize={11} fontFamily="monospace" fontWeight={700}>
+            {/* the plug provided by provideService slides in and seats in the socket */}
+            {plugU > 0.3 && (
+              <g opacity={clamp01((plugU - 0.3) * 2.5) * (1 - neverU)}>
+                <rect x={R_PORT.x - 30 - 90 * (1 - plugU)} y={R_PORT.y - 14} width={44} height={28} rx={6} fill={colors.SECONDARY} opacity={0.85} />
+                <text x={R_PORT.x - 8 - 90 * (1 - plugU)} y={R_PORT.y + 5} textAnchor="middle" fill={colors.BG} fontSize={14} fontFamily="monospace" fontWeight={700}>
                   db
+                </text>
+              </g>
+            )}
+            {neverU > 0.01 && (
+              <g opacity={neverU}>
+                <rect x={R_PORT.x - 30} y={R_PORT.y - 22} width={44} height={44} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.5} />
+                {[-12, 0, 12].map((dx) => (
+                  <circle key={dx} cx={R_PORT.x - 8 + dx} cy={R_PORT.y} r={2.4} fill={colors.MUTED} />
+                ))}
+                <text x={R_PORT.x - 8} y={R_PORT.y - 30} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+                  never
                 </text>
               </g>
             )}
             {/* refusal pulse: a fiber icon bouncing off while the socket is empty */}
             {socketPulse > 0.01 && (
               <g opacity={socketPulse}>
-                <text x={R_PORT.x - 120} y={R_PORT.y - 40} fill={colors.WARM} fontSize={12.5}>
+                <text x={R_PORT.x - 40} y={R_PORT.y - 40} textAnchor="end" fill={colors.WARM} fontSize={14}>
                   no fiber will take it
                 </text>
               </g>
@@ -409,6 +425,8 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing panel ---- */}
         {closeU > 0.01 && (
           <g opacity={closeU}>
+            {/* veil the faded diagram so no port or label peeks past the panel */}
+            <rect x={-2000} y={-2000} width={6000} height={6000} fill={colors.BG} opacity={0.94} />
             <rect x={310} y={240} width={660} height={170} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
             <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontFamily="monospace">
               {'Effect<'}

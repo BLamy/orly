@@ -1,0 +1,113 @@
+// m05 — DEEP DIVE I, part 2: THE PROMISE (handwired-explained), shots ch04-s08…ch04-s11.
+// Window 428.95-494.60 (65.65 s). 66 BPM, one 4/4 bar per cycle (cps 0.275, bar 3.636 s): 18.054 cycles.
+// Cue-local seconds = absolute - 428.95. Every hit below is read from narration/timeline.json.
+//
+// Key plan: D major (V of home: the promise, cleaner and more confident) -> the broken promise is the
+// musical eleven in its HOME voicing (B-D-E / A-C-D at half gate each, the same pitches as ch04-s06:
+// "Eleven again") -> the refrain hangs on A (V of D, the third stroke withheld) -> the lenses climb up
+// the D scale into a broad warm D-major bar -> D becomes V of G and cadences HOME on 'return'.
+//
+//   0.10  IN alone (m04 fades to 0.60): a clean D dyad; M1-U in D (f#4 a4 b4 a4) at gate 1 before L0414 (2.32)
+//   6.40  'retie': the tie stroke on D (tag 6 re-tied as a promise); 8.95 'shrink': a tidy two-click
+//  11.75  gap: M1 at full gate (U = 1, L = 0), piano + soft strings, ending before L0416 (14.32)
+//  20.19  'eleven': gate 0.5, both lines at half level, the home voicing; 22.02 'validator': one dry clack
+//  25.41  'quote': thins to one held interval (D-A); 31.25 'caller' tie, 32.48 'flipTag' flip; the bar hangs on A
+//  37.95  gap: a 6-5 sigh over A, unresolved
+//  42.58  'hairline': a thin held A; 44.45 'lenses': six clicks up the D scale, strings enter one at a time
+//  47.15  the breath before L0421: the full bar, a broad warm D major (strings, lpf 1200), gate exactly 1
+//  56.00  gap: M1-U in D, at full gate, confident
+//  61.22  'fourteen': fourteen tiny ticks falling away, two remain (62.55, 62.80) in the gap
+//  63.02  'return': the D7 falls home to a soft G chord. LAST ONSET; it decays through the fade (64.85).
+setcpm(66/4)
+const CPS = 66/240, DUR = 65.65
+const Q = 256, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (b <= a) throw new Error('tl empty slot at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+// events [t, d, pattern] in any order and overlapping: spread over as many tl lanes as needed
+const lanes = evs => { const s = [...evs].sort((a, b) => a[0] - b[0]), L = []
+  for (const e of s) { let l = L.find(l => l.end <= qn(e[0])); if (!l) { l = { end: 0, evs: [] }; L.push(l) }
+    l.evs.push(e); l.end = qn(e[0] + e[1]) }
+  return stack(...L.map(l => tl(...l.evs))) }
+const hits = list => lanes(list.map(([t, d, n, v]) => [t, d, note(n).velocity(v)]))
+const room = x => x.room(0.3).rsize(3)
+
+// the narrator's lines (cue-local): onsets struck inside a line are scaled down (the bed breathes with him)
+const LINES = [[2.32, 5.70], [6.40, 11.70], [14.32, 19.49], [20.19, 23.12], [23.82, 28.87], [29.57, 37.86],
+  [39.48, 47.12], [47.82, 55.94], [57.57, 62.42]]
+const speech = (vs, vg = 1) => { const segs = []; let cur = 0
+  for (const [a, b] of LINES) { const qa = qn(a), qb = qn(b); if (qa > cur) segs.push([qa - cur, pure(vg)]); segs.push([qb - qa, pure(vs)]); cur = qb }
+  const end = qn(DUR); if (end > cur) segs.push([end - cur, pure(vg)]); return stepcat(...segs).slow(end / Q) }
+
+// ================================================================ M1, THE SELECT: both lines always scheduled
+// [t, d, U cell, L cell, gate]: U.gain(gate), L.gain(1 - gate). Gate 1 / 0 = one line heard; 0.5 = the eleven.
+const M1 = [
+  [0.12, 2.15, "f#4@0.5 a4@0.5 b4@0.6 a4@0.55", "e4@0.5 g4@0.5 a4@0.6 g4@0.55", 1],     // the promise, in D
+  [11.75, 2.5, "f#4@0.5 a4@0.5 d5@0.8 b4@0.7", "e4@0.5 g4@0.5 c5@0.8 a4@0.7", 1],       // full gate, confident
+  [20.19, 2.7, "b4@0.55 d5@0.55 e5@1.6", "a4@0.55 c5@0.55 d5@1.6", 0.5],                // 'eleven': home voicing
+  [56.00, 1.55, "f#4@0.4 a4@0.4 b4@0.75", "e4@0.4 g4@0.4 a4@0.75", 1],                  // after 'Correct.'
+  [63.02, 2.6, "[b4,d5]", "[a4,c5]", 1],                                                 // 'return': home
+]
+const m1 = (cell, g) => M1.map(([t, d, u, l, gate]) => [t, d, note(cell === 'U' ? u : l).gain(g(gate))])
+$: room(lanes(m1('U', g => g))).s("piano").velocity(0.3).lpf(1700).pan(0.58).release(0.5)
+$: room(lanes(m1('L', g => 1 - g))).s("piano").velocity(0.3).lpf(1700).pan(0.42).release(0.5)
+// a soft string shadow of the gate-1 statements (in the gaps only)
+$: room(tl([0.12, 2.15, note("[d4,f#4]")], [11.75, 2.5, note("[d4,a4]")], [56.0, 1.55, note("[d4,f#4]")]))
+  .s("gm_string_ensemble_1").velocity(0.09).attack(0.25).release(1.2).lpf(1100)
+
+// ================================================================ the bed: held harmony, low, under the voice
+// D (promise) -> G/D on 'push' -> D-A interval from 'quote' -> A (hang) from 'flipTag' -> the climb ->
+// D major full bar -> D7 as V of G -> G
+$: room(tl([0.10, 14.1, note("[d3,a3]")], [14.64, 5.5, note("[d3,g3,b3]")], [20.19, 5.2, note("[d3,a3]")],
+           [25.41, 7.05, note("[d3,a3]")], [32.48, 9.9, note("[a2,e3,a3]")], [57.57, 3.65, note("[d3,f#3,a3]")],
+           [61.22, 1.78, note("[c3,f#3,a3]")]))
+  .s("gm_string_ensemble_1").velocity(0.085).attack(1.1).release(1.6).lpf(800)
+$: tl([0.10, 32.36, note("d2")], [32.48, 14.6, note("a1")], [47.15, 10.4, note("d2")], [57.57, 5.43, note("d2")], [63.02, 2.5, note("g1")])
+  .s("gm_contrabass").velocity(0.15).attack(1.2).release(2.2).lpf(320)
+
+// ================================================================ M2, the detent figure (in D: I = D, V = A)
+// 'retie' (6.40): the tie, barely (tag 6 re-tied as a promise)
+$: tl([6.40, 0.2, note("e6")], [31.25, 0.2, note("e6")]).s("gm_woodblock").velocity(0.17).decay(0.03).sustain(0)
+$: tl([6.40, 0.5, note("d3")], [31.25, 0.5, note("d3")], [32.48, 0.5, note("a2")]).s("gm_pizzicato_strings").velocity(0.13).lpf(1500)
+// 'flipTag' (32.48): the card snap; then NO strike: the bar hangs on A through 'rest'
+$: tl([32.48, 0.1, s("white")]).hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(0.12)
+// 'shrink' (8.95): the rig shrinks to two operations: a tidy two-click figure
+$: hits([[8.95, 0.18, "a5", 0.14], [9.20, 0.18, "d6", 0.12]]).s("gm_woodblock").decay(0.03).sustain(0)
+// 'validator' (22.02): one sharp dry clack, no tail
+$: tl([22.02, 0.1, note("g5")]).s("gm_woodblock").velocity(0.3).decay(0.04).sustain(0)
+$: tl([22.02, 0.08, s("white")]).hpf(2500).decay(0.025).sustain(0).gain(0.07)
+
+// the gap after 'rest' (37.86-39.48): a 6-5 sigh over A, left unresolved
+$: room(tl([37.95, 1.45, note("f#4@0.6 e4@0.85")])).s("piano").velocity(0.24).lpf(1500).release(0.6)
+$: room(tl([37.95, 1.45, note("[a3,c#4]")])).s("piano").velocity(0.14).lpf(1000).release(0.6)
+
+// ================================================================ ch04-s10, THE LENSES
+// 'hairline' (42.58): a thin copper line of light, held A5 (880 Hz), very soft
+$: room(tl([42.58, 4.6, note("a5")])).s("gm_string_ensemble_1").velocity(0.05).attack(1.2).release(0.8).lpf(1200)
+// 'lenses' (44.45): one soft mechanical click per lens, each a step higher up the D scale (ghost: under words)
+$: hits([[44.45, 0.2, "d5", 0.11], [44.89, 0.2, "e5", 0.11], [45.33, 0.2, "f#5", 0.12], [45.77, 0.2, "g5", 0.12],
+         [46.21, 0.2, "a5", 0.13], [46.65, 0.2, "b5", 0.13]]).s("gm_woodblock").decay(0.03).sustain(0)
+// the beam thickens: string voices enter one at a time (D3, A3, D4, F#4), quiet
+$: room(tl([44.45, 2.7, note("d3")])).s("gm_cello").velocity(0.12).attack(0.6).release(0.6).lpf(900)
+$: room(hits([[44.89, 2.26, "a3", 0.06], [45.77, 1.38, "d4", 0.06], [46.65, 0.5, "f#4", 0.06]]))
+  .s("gm_string_ensemble_1").attack(0.4).release(0.6).lpf(1000)
+// THE FULL BAR, its attack in the breath before L0421 (47.12-47.82), broad and warm, held under the line
+// (top kept under ~1.2 kHz); it swells, then settles to a lower sustain while the narrator speaks
+$: room(tl([47.15, 8.8, note("[d2,a2,d3,f#3,a3,d4,f#4,a4]")])).s("gm_string_ensemble_1")
+  .velocity(0.17).attack(0.35).decay(1.6).sustain(0.35).release(2.0).lpf(1000)
+$: room(tl([47.15, 0.9, note("[d3,a3,d4,f#4]")])).s("piano").velocity(0.2).lpf(1300).release(1.6)
+$: tl([47.15, 8.8, note("d2")]).s("gm_cello").velocity(0.12).attack(0.4).decay(1.5).sustain(0.5).release(1.8).lpf(600)
+
+// ================================================================ ch04-s11, THE CADENCE
+// 'fourteen' (61.22): fourteen tiny dry ticks falling away (ghosts), then the two that remain, in the gap
+$: hits([...Array.from({ length: 14 }, (_, i) => [61.22 + i * 0.082, 0.07, ["a5", "g5", "f#5", "e5"][i % 4], 0.1 * (1 - i / 16)]),
+         [62.55, 0.15, "d5", 0.13], [62.80, 0.15, "a5", 0.12]]).s("gm_woodblock").decay(0.025).sustain(0)
+// 'return' (63.02): home. A soft G chord that holds and decays (the last onset of the cue)
+$: room(tl([63.02, 1.9, note("[g2,d3,g3,b3,d4]")])).s("gm_string_ensemble_1").velocity(0.12).attack(0.12).release(2.2).lpf(1000)
+$: room(tl([63.02, 2.4, note("[g2,d3,g3]")])).s("piano").velocity(0.18).lpf(1200).release(2.0)
+
+// house level: about -24.5 LUFS integrated, true peak under -6 dBTP (render 1 was -28 at postgain 1.6)
+all(x => x.mul(velocity(speech(0.75))).postgain(2.7))

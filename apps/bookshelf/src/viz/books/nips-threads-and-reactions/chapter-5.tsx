@@ -23,7 +23,8 @@ export const SHELF = [
   { kind: 10003, label: 'bookmarks' },
 ];
 const SHELF_Y = 140;
-const shelfX = (i: number) => 250 + i * 200;
+// spacing keeps the last box inside the list camera's view (see CAM_LIST)
+const shelfX = (i: number) => 230 + i * 170;
 
 // the mute list we open up
 const MUTED_PK = '966698ab2c4f8e0d6a2b8c4e0f6a2d8b4c0e6f2a8d4b0c6e2f8a4d0b6c2e8f4a';
@@ -189,7 +190,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel sits on a clean field: the body fades out behind it
+  const mainOp = (1 - 0.85 * dimU) * (1 - 0.92 * closeU);
   const sealed = sealU >= 1;
   const oldOp = 1 - 0.85 * clamp01(replaceU * 1.4); // the old list fades wholesale
 
@@ -210,14 +212,14 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={shelfX(i)} y={SHELF_Y - 8} textAnchor="middle" fill={hot ? colors.WARM : colors.TEXT} fontSize={14} fontWeight={600}>
                   {b.label}
                 </text>
-                <text x={shelfX(i)} y={SHELF_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                <text x={shelfX(i)} y={SHELF_Y + 16} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
                   kind {b.kind}
                 </text>
               </g>
             );
           })}
           {shelfU >= 1 && listU <= 0 && (
-            <text x={640} y={SHELF_Y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={640} y={SHELF_Y + 64} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
               replaceable — one per kind, newest wins
             </text>
           )}
@@ -228,10 +230,14 @@ function Frame({ s }: { s: SceneState }) {
               layout={LIST_LAYOUT}
               reveal={listU}
               opacity={listU}
-              hidden={sealed ? undefined : ['content']}
+              hidden={['content']}
             />
             {sealed && (
-              <text x={CONTENT_ANCHOR.x} y={CONTENT_ANCHOR.cy + 5} fill={colors.SECONDARY} fontSize={11} fontFamily="monospace" opacity={sealU * oldOp}>
+              // the sealed blob replaces the content slot underneath it
+              <rect x={CONTENT_ANCHOR.x - 2} y={CONTENT_ANCHOR.y} width={CONTENT_ANCHOR.w + 4} height={CONTENT_ANCHOR.h} fill={colors.BG} />
+            )}
+            {sealed && (
+              <text x={CONTENT_ANCHOR.x} y={CONTENT_ANCHOR.cy + 5} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace" opacity={sealU * oldOp}>
                 "{BLOB.slice(0, 34)}…"
               </text>
             )}
@@ -239,7 +245,7 @@ function Frame({ s }: { s: SceneState }) {
             {/* private items → sealed blob */}
             {privU > 0 && (
               <g>
-                <text x={PRIV_X} y={PRIV_Y - 46} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace" opacity={privU * (1 - sealU)}>
+                <text x={PRIV_X} y={PRIV_Y - 46} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace" opacity={privU * (1 - sealU)}>
                   private items — encrypted to yourself
                 </text>
                 {PRIVATE_ITEMS.map((it, i) => {
@@ -253,7 +259,7 @@ function Frame({ s }: { s: SceneState }) {
                   return (
                     <g key={i} opacity={u * (1 - 0.9 * sealU)}>
                       <rect x={x - 4} y={y - 16} width={190 * (1 - 0.5 * sealU)} height={26} rx={6} fill={colors.PANEL} stroke={colors.SECONDARY} />
-                      <text x={x + 6} y={y + 1} fill={colors.SECONDARY} fontSize={11} fontFamily="monospace">
+                      <text x={x + 6} y={y + 1} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
                         {it}
                       </text>
                     </g>
@@ -263,8 +269,8 @@ function Frame({ s }: { s: SceneState }) {
                   <circle cx={CONTENT_ANCHOR.cx} cy={CONTENT_ANCHOR.cy} r={10 + 26 * (1 - sealU)} fill="none" stroke={colors.SECONDARY} strokeWidth={1.6} opacity={sealU} />
                 )}
                 {sealed && (
-                  <text x={PRIV_X} y={PRIV_Y - 46} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace" opacity={0.8}>
-                    ciphertext illustrative — scheme is the encryption spec, key = your own
+                  <text x={CONTENT_ANCHOR.x} y={CONTENT_ANCHOR.y + CONTENT_ANCHOR.h + 18} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace" opacity={0.9}>
+                    ciphertext illustrative — key = your own
                   </text>
                 )}
               </g>
@@ -273,21 +279,22 @@ function Frame({ s }: { s: SceneState }) {
             {/* the relay's eye */}
             {eyeU > 0 && (
               <g opacity={eyeU}>
-                <text x={96} y={520} fill={colors.MUTED} fontSize={12} fontFamily="monospace">the relay sees:</text>
-                <text x={230} y={520} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">tags — indexable</text>
-                <text x={420} y={520} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">content — opaque</text>
+                <text x={96} y={520} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">the relay sees:</text>
+                <text x={250} y={520} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">tags — indexable</text>
+                <text x={470} y={520} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">content — opaque</text>
               </g>
             )}
           </g>
 
           {/* replacement */}
           {replaceU > 0 && (
-            <g opacity={clamp01(replaceU * 1.6)}>
-              <rect x={96} y={556} width={430} height={52} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-              <text x={112} y={578} fill={colors.WARM} fontSize={12.5} fontWeight={600}>
+            // sits beside the list, clear of the caption band; gives way to the sets
+            <g opacity={clamp01(replaceU * 1.6) * (1 - setsU)}>
+              <rect x={560} y={440} width={430} height={52} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+              <text x={576} y={462} fill={colors.WARM} fontSize={12.5} fontWeight={600}>
                 new kind-10000 arrives → old version gone, wholesale
               </text>
-              <text x={112} y={597} fill={colors.MUTED} fontSize={11}>
+              <text x={576} y={481} fill={colors.TEXT} fontSize={13}>
                 no append: always publish the whole list
               </text>
             </g>
@@ -296,7 +303,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* sets */}
           {setsU > 0 && (
             <g opacity={setsU}>
-              <text x={1000} y={330} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={1000} y={330} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
                 kind 30003 bookmark sets — many per person
               </text>
               {SETS.map((st, i) => {
@@ -307,7 +314,7 @@ function Frame({ s }: { s: SceneState }) {
                   <g key={st.d} opacity={u}>
                     <rect x={880} y={y - 22} width={240} height={48} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
                     <text x={898} y={y} fill={colors.ACCENT} fontSize={12.5} fontFamily="monospace">d "{st.d}"</text>
-                    <text x={898} y={y + 18} fill={colors.MUTED} fontSize={10.5}>{st.n} items</text>
+                    <text x={898} y={y + 18} fill={colors.TEXT} fontSize={13}>{st.n} items</text>
                   </g>
                 );
               })}
@@ -318,7 +325,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={220} width={880} height={210} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={220} width={880} height={210} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             One tag vocabulary — a whole social network
           </text>
@@ -328,7 +335,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             all of it events pointing at events — no platform required
           </text>
-          <text x={640} y={406} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={406} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-10 · NIP-25 · NIP-18 · NIP-27 · NIP-22 · NIP-51
           </text>
         </g>

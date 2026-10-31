@@ -1,0 +1,574 @@
+{
+ "shot": "ch09-s07",
+ "at": "2026-10-28T15:47:57.287Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 112,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "123",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "34",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "105",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "100",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "58",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "49",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "53",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "57",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "54",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "44",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "110",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "97",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "109",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "101",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "77",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "114",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "103",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "116",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "32",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "71",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "99",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "237",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "108",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "46",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "64",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "120",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "112",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "111",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "118",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "102",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "115",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "91",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "93",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "51",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "82",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "117",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "70",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "121",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "79",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "107",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "122",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "56",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "80",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "84",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "125",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "76",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "50",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "48",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "45",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "55",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "90",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "98",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "119",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "113",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "104",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "-1",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "353",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "The GPU is",
+   "capWhileSubject": 35.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the faster",
+   "capWhileSubject": 35.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "one",
+   "capWhileSubject": 35.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "09:01",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "(for the",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "highlighter half)",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a review, the same day · 1 of 18 cores",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "13 OCTOBER 2026 · THE SAME DAY",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1 of 18",
+   "capWhileSubject": 40.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "c",
+   "capWhileSubject": 40.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "cores",
+   "capWhileSubject": 40.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "RegExp in 8 workers: 1.9–6.7 ms",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "GPU: 4.5–5.2 ms back to back, 2–8× as long after a pause",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "an hour",
+   "maxCap": 52,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a day",
+   "maxCap": 52,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a year",
+   "maxCap": 52,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a lifetime",
+   "maxCap": 52,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "nanoGPT?",
+   "maxCap": 28.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "The neuron",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "is a logic",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "gate",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "McCulloch & Pitts, 1943",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Learn the",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "weights;",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "don't write",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "them",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Sutton, 2019",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1992–2026",
+   "maxCap": 28.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "suspect",
+   "maxCap": 23.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Somebody",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "trained it",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A tool",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "turned",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ordinary",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JavaScript",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "into it",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "It isn't",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "really a",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "network",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "For an",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "integer a",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "maxCap": 28.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "One",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "evaluation",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "per frame",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Established",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "conclusions:",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "take these as",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "given",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the July briefs",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "fully",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "differentiable!",
+   "maxCap": 36,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README's tagline",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HandwiredOS's own design",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 42
+}

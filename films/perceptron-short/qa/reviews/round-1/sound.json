@@ -1,0 +1,92 @@
+{
+  "lens": "sound",
+  "round": 1,
+  "scores": { "accuracy": 8, "depth": 5, "clarity": 7, "story": 7, "visual": 7, "sync": 7, "sound": 6, "curiosity": 6 },
+  "issues": [
+    {
+      "id": "end-tail",
+      "owner": "global",
+      "severity": "major",
+      "problem": "The film ends 1.62 s after the last word ('right' ends 43.13, film ends 44.75) on a hard cut. The final frame at 44.40 is still fully lit, with no fade to black. The D-major bloom, the payoff of the whole score, starts at 43.11, peaks around 43.6 (master -17.5 LUFS momentary) and is still at -31.6 LUFS at 44.6 when the 0.5 s safety fade cuts it. The arrival has no room to land, and the runtime QA already warns 0.7 min vs a 1.0 min target.",
+      "fix": "Extend the timeline tail of ch01-s03 by 3.5-4.5 s, so the film ends around 48.5 s. Hold the lit response lantern, then fade picture to black over the last ~1.5 s. Re-run assemble so m01 can ring out to true silence, under -60 LUFS, before the final frame."
+    },
+    {
+      "id": "L0107-right-level",
+      "owner": "line",
+      "severity": "major",
+      "problem": "The payoff word is the quietest word in the film. In the narration stem, 'right' (42.66-43.13) is -28.8 dB RMS, against -18.3 for the first 'Wrong' and -17.7 for 'eye'. In the master it is -22.4 dB RMS, about 7 dB under ordinary speech. It also lands exactly with the celesta F#6 and the low D. The sentence-final trail-off swallows the turn the whole film builds to.",
+      "fix": "Re-narrate L0107 so that 'right' carries weight, e.g. as its own sentence ('...and then, quite suddenly... right.') with a slightly lower stability or a delivery tag on that line. Alternatively, apply a word-level gain ride of +5 to +6 dB over 42.62-43.20 in the narration stem before the mix. Check that 'right' then sits within 2 dB of the line's other stressed words."
+    },
+    {
+      "id": "L0104-rosenblatt",
+      "owner": "line",
+      "severity": "major",
+      "problem": "The lexicon sends 'Frank Roh-zen-blatt' to ElevenLabs. Hyphenated respellings tend to come out syllable by syllable. The aligned word runs 22.00-23.04 (1.04 s for three syllables), against 0.85 s for the four-syllable 'psychologist' in the same line, and it is 3-5 dB quieter than the line around it. The STT check was skipped, and voice.json is still marked 'provisional, pending a listening check'. The protagonist's name is unverified and shows a stilted-delivery signature.",
+      "fix": "Drop the hyphens: use 'Rosenblatt' as written (multilingual_v2 says it correctly) or 'Rozenblatt'. Re-narrate L0104, then do a listening check or an STT round-trip on the name. If its timing changes, re-lock the clock and move the M4 cello entry (now 23.11) so it still answers the end of the name."
+    },
+    {
+      "id": "L0101-head",
+      "owner": "line",
+      "severity": "major",
+      "problem": "L0101 is the first sound of the film, and it starts on live signal. The clip's first 30 ms already peak at -20 dBFS (speechStart 0, no pre-roll; QA clipEdges warns 'head -29 dBFS'). Other clips start below -64 dBFS. Music at 1.1 s is only -33 LUFS momentary because the drone attack is 2.5 s, so any truncated /w/ onset or click on 'Once' is fully exposed.",
+      "fix": "Re-cut L0101 from the chunk with about 120 ms of pre-roll, matching the mid-chunk lines' 0.12 s. If the TTS audio itself starts hot, regenerate with a leading pause or prepend 150 ms of silence plus a 5-10 ms fade-in. Do the same for L0102 (-41 dBFS) and L0105 (-50 dBFS) heads, which are also chunk starts with no pre-roll."
+    },
+    {
+      "id": "chunk-level-step",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Narration loudness steps down by chunk rather than by intent. L0102-L0104 measure -21.2 to -21.3 LUFS in the stem, and L0105-L0107 measure -23.6 to -24.4. In the master the s03 lines run 1.2-2.4 dB quieter than s02, so the climactic shot is the quietest stretch of narration. The stem also missed its target, at -22.4 vs -18 LUFS.",
+      "fix": "In the narration stem build, normalise each chunk (or each line) to a common speech loudness, about -18 LUFS short-term, before the global gain stage. Keep only intentional delivery dynamics, e.g. the softer L0101, as explicit per-line offsets."
+    },
+    {
+      "id": "limiting-stack",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Peaks are limited twice: the narration stem has 4 dB of limiter gain reduction (peaks -5.8 dBFS at -30 LUFS, PLR about 24 dB), then the master pre-limiter takes another 5.25 dB. Two-pass loudnorm still fell back to 'dynamic' mode, which rides gain and flattens the voiceless title swell and the final bloom. The master LRA is 3.7 LU on a quiet, contemplative short.",
+      "fix": "Put a gentle speech compressor (2-3:1, ~10 ms attack, ~120 ms release, 3-4 dB GR) on the narration before makeup gain, so the stem reaches -18 LUFS with 1 dB of limiting or less. Then aim for linear loudnorm (check measured TP and LRA against the -1.5 dBTP ceiling). Report preLimit reductionDb in QA and warn above 2 dB."
+    },
+    {
+      "id": "m01-duck-vs-gap-writing",
+      "owner": "cue",
+      "severity": "minor",
+      "problem": "m01 was written to sit under speech: the bed is about -22 to -25 LUFS momentary, and the celesta and pizz figures are placed in 50-650 ms word gaps (F6 at 30.67 after 'wrong', E6/F6 at 37.15/37.45 and 38.67/38.89, the three 'nudge' plucks from 32.00). The mix still applies -6 dB cue gain plus a 6.44 dB sidechain duck with 500 ms release, so those micro-gap figures stay mostly ducked, about 12 dB under their written level. The semitone 'wrong' cell, the score's central idea, is at risk of not being heard.",
+      "fix": "In cues.json set m01 to a light duck (e.g. ratio 3, release 150 ms, or a per-cue duck depth of about 3 dB) and gainDb -3. The composer has already pre-levelled the bed for speech. Verify in the master that the F6 at 30.67 and the 37.45 F6 come through at no more than 8-10 dB under the surrounding speech."
+    },
+    {
+      "id": "m01-ending-for-new-tail",
+      "owner": "cue",
+      "severity": "minor",
+      "problem": "The ending is compressed to fit 1.6 s: the bloom has a 0.3 s attack, holds to 43.56 and releases over 0.8 s, and the music-box echo F#6-D6-A5 is crammed into 0.8 s. When the tail is extended (see end-tail), the current cue would leave 3-4 s of silence or be faded early.",
+      "fix": "After the clock is re-locked with the longer tail, recompose bar 12 onward. Keep 'right' bare (F#6 + low D), bloom D major at the voice's end, spread the music-box echo over about 2 s, and let the strings and drone decay naturally into silence about 0.5 s before the picture's fade to black finishes."
+    },
+    {
+      "id": "m01-render-error",
+      "owner": "cue",
+      "severity": "minor",
+      "problem": "The m01 render log records '[webaudio] error: no soundfont zone found for preset', so at least one note was silently dropped. The likeliest candidates are the music-box E7 in bar 7 (the 'machine's mind' octave doubling) or a contrabass G1/Bb1/A1 below the preset's zone.",
+      "fix": "Find the failing preset/note by rendering each $: layer alone. Transpose the offending note into range (e.g. music box D6 A6 E6 instead of E7, or the contrabass up an octave with cello support) and re-render. Treat any soundfont-zone error as a render failure in QA."
+    },
+    {
+      "id": "L0107-preroll",
+      "owner": "line",
+      "severity": "minor",
+      "problem": "Every line within a chunk is separated by the same mechanical 0.45 s gap. Before L0107 ('Wrong, and wrong again...') that gap comes straight after '...toward the right answer.', which is itself trailing off (-30.9 dB RMS on 'answer'). The turn into the climax gets no breath, unlike the 1.44 s pause across the iris.",
+      "fix": "Lengthen the gap before L0107 to about 0.9-1.1 s, using the s03 tail extension, and re-lock the clock. Shift m01 bar 10-12 events with it, or re-time the tempo grid so 'right' still lands on a downbeat."
+    },
+    {
+      "id": "no-diegetic-sound",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The soundtrack is voice plus score only. The story is about a machine whose motors turn dials, and the picture shows needles swinging and weights changing, yet not one relay click, motor whirr or lantern hum is heard. The pizz 'ratchet' and 'nudge' plucks stand in for them, but those are ducked under speech (see m01-duck-vs-gap-writing).",
+      "fix": "Optional: add a very low, sparse foley layer of soft motor whirrs on the weight updates in ch01-s03 and a faint fluorescent-tube hum in ch01-s02, at -30 LUFS or below, or let the pizz nudge plucks escape the duck."
+    }
+  ],
+  "best_moments": [
+    "The withheld third: no F or F# until 'wrong' (celesta F6 at 30.67, just after 'wrong' ends at 30.62), then F# and the film's first D major on 'right'. The weight update is staged as a single semitone.",
+    "The bar grid is tuned (67.5 BPM) so that 'right' (42.66) falls on bar 12's downbeat (42.667), the iris falls on bar 7 beat 2 and 'nudge' falls on bar 9's downbeat, all without cutting the narration.",
+    "L0107 delivery: about 0.65 s savouring gaps ('again'-'and', 'then'-'quite', 'suddenly'-'right') at 1.4 words/s, with celesta E6/F6 and the rising D5-A5-E6 placed in those gaps.",
+    "The 3.0 s voiceless title gap (3.60-6.60), where M1 'The Question' is first asked on celesta and the master swells to about -15 LUFS before the lab interior.",
+    "The M4 cello A2-B2-D3 enters at 23.11, after 'Rosenblatt' ends at 23.04, so the human theme answers the name instead of covering it.",
+    "The music's spectral balance is clean (sub-40 Hz about -49 dB RMS; 40-120 Hz and 120-400 Hz about equal), and true peak and integrated loudness are on spec."
+  ]
+}

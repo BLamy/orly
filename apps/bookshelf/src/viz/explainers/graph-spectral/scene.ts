@@ -99,10 +99,12 @@ export const MG = 2;
 export const MP = MC + MG;
 export const MAT = { x: 60, y: 200 } as const; // 10·19−2 = 188
 
-export const BAR = { x0: 300, y: 560, dx: 70, h: 90 } as const;
+export const BAR = { x0: 300, y: 480, dx: 70, h: 90 } as const;
 
-export const CAM_GRAPH: CameraState = { x: 640, y: 340, k: 1.15 };
-export const CAM_MAT: CameraState = { x: 260, y: 320, k: 1.5 };
+/** framings: the graph alone for the opening, then graph + matrix side by side */
+export const CAM_OPEN: CameraState = { x: 640, y: 340, k: 1.15 };
+export const CAM_GRAPH: CameraState = { x: 540, y: 330, k: 1.25 };
+export const CAM_MAT: CameraState = { x: 520, y: 330, k: 1.25 };
 
 export interface Scene {
   tl: Timeline;
@@ -138,7 +140,7 @@ export function buildScene(): Scene {
     text: 'So far we have walked this graph, hop by hop. There is a second way to know it: strike it like a drum, and listen to how it vibrates.',
   });
   tl.tween(graphU, 1, { at: 0.5, dur: 2.4, ease: ease.draw });
-  tl.tween(cam, CAM_GRAPH, { at: 0.8, dur: 2.0, ease: ease.move });
+  tl.tween(cam, CAM_OPEN, { at: 0.8, dur: 2.0, ease: ease.move });
 
   // — Beat 2 · the Laplacian ————————————————————————————————————————————
   tl.caption({

@@ -4,7 +4,7 @@ description: Generate a multi-book O'RLY series from docs/a repo and publish it 
 
 # /new-series — add a whole book series to the shelf
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Sol plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** A Opus worker consumes Sol's written plan; it does not replace the planner. Preserve provider provenance and stop that role on a provider limit without substitution.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Sol plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Sol's written plan; it does not replace the planner. If a provider reaches a limit, preserve progress and report the blocker; no model substitution is authorized.
 
 
 Turn a docs site or repo into a **grouped series** of explainer books, each its own
@@ -47,6 +47,6 @@ series is too big a unit of work; runs that try will die partway).
 
 ### Working locally
 
-Follow `.claude/commands/new-book.md` end to end once per book, passing
+Follow `.claude/commands/new-book.md` end to end once per book (including its sources, optional music and self-grade steps; see `docs/book-quality.md`), passing
 `--series "<name>" --series-order <n>` to `generator/video.mjs`. Build and
 verify each book before starting the next.

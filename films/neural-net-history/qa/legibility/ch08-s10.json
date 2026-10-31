@@ -1,0 +1,84 @@
+{
+ "shot": "ch08-s10",
+ "at": "2026-10-13T04:13:50.376Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 14,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "5–6 days · ≈ 90 passes · 1.2 million pictures",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "step size ÷ 10, three times",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "pass 00 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 13 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 19 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 29 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lr ÷ 10",
+   "maxCap": 27.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 41 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 43 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 61 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 66 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 87 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 89 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "pass 90 of ≈ 90",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 12
+}

@@ -244,11 +244,11 @@ function ExpertGrid({
           rx={5}
           fill={shown.has(e) ? color : colors.PANEL}
           stroke={colors.GRID}
-          opacity={shown.has(e) ? 0.9 : 0.6}
+          opacity={shown.has(e) ? 0.95 : 0.8}
         />
       ))}
       {prog > 0.95 && (
-        <text x={x} y={y + 4 * GCELL + 18} fill={color} fontSize={13} fontFamily="monospace">
+        <text x={x} y={y + 4 * GCELL + 18} fill={color} fontSize={14} fontFamily="monospace">
           {new Set(hits).size} distinct experts loaded
         </text>
       )}
@@ -268,7 +268,7 @@ function Frame({ s }: { s: SceneState }) {
   const barsU = s.get(scene.barsU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  const mainOp = 1 - 0.9 * closeU;
   const accepts = [true, true, true, false]; // illustrative round: 3 of 4 accepted
 
   return (
@@ -312,7 +312,7 @@ function Frame({ s }: { s: SceneState }) {
                 );
               })}
               {acceptU > 0 && (
-                <text x={DRAFT_X} y={LOOP_Y + 84} fill={colors.MUTED} fontSize={13} opacity={acceptU}>
+                <text x={DRAFT_X} y={LOOP_Y + 84} fill={colors.MUTED} fontSize={14} opacity={acceptU}>
                   three accepted plus one corrected token — four for the price of one pass
                 </text>
               )}
@@ -326,7 +326,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* simulated speedups */}
           {barsU > 0 && (
             <g opacity={barsU}>
-              <text x={880} y={GRID_Y - 14} fill={colors.TEXT} fontSize={15}>
+              <text x={920} y={GRID_Y - 14} fill={colors.TEXT} fontSize={15}>
                 simulated speedup vs plain decoding
               </text>
               {[
@@ -334,16 +334,16 @@ function Frame({ s }: { s: SceneState }) {
                 { label: 'cost-aware', v: ECO.speedup, exp: ECO.meanExperts, c: colors.POSITIVE },
               ].map((r, i) => (
                 <g key={r.label}>
-                  <text x={880} y={GRID_Y + 22 + i * 64} fill={colors.MUTED} fontSize={13}>
+                  <text x={920} y={GRID_Y + 22 + i * 64} fill={colors.MUTED} fontSize={14}>
                     {r.label} · {r.exp.toFixed(1)} experts/round
                   </text>
-                  <rect x={880} y={GRID_Y + 30 + i * 64} width={150 * r.v * barsU} height={18} rx={4} fill={r.c} opacity={0.85} />
-                  <text x={886 + 150 * r.v * barsU} y={GRID_Y + 44 + i * 64} fill={r.c} fontSize={14} fontFamily="monospace">
+                  <rect x={920} y={GRID_Y + 30 + i * 64} width={150 * r.v * barsU} height={18} rx={4} fill={r.c} opacity={0.85} />
+                  <text x={926 + 150 * r.v * barsU} y={GRID_Y + 44 + i * 64} fill={r.c} fontSize={14} fontFamily="monospace">
                     {r.v.toFixed(2)}×
                   </text>
                 </g>
               ))}
-              <text x={880} y={GRID_Y + 22 + 2 * 64 + 8} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={920} y={GRID_Y + 22 + 2 * 64 + 8} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 paper, real models: up to 1.62× (reported)
               </text>
             </g>
@@ -363,7 +363,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             A guess has a memory price.
           </text>

@@ -33,7 +33,18 @@ for(const name of ['new-book','comment-edit','arxiv-weekly'])test(`${name}: Sol 
  const steps=Object.values(workflow.jobs).flatMap(j=>j.steps??[]);
  const planning=steps.filter(s=>s.uses==='openai/codex-action@v1');assert.equal(planning.length,1);assert.equal(planning[0].with.model,policy.planning);
  assert.ok(!steps.some(s=>s.uses?.startsWith('anthropics/')));
+ assert.ok(!steps.some(s=>s.id==='sol_fallback'||s.if?.includes('provider_limit')),'provider limits cannot trigger a replacement author');
  if(name!=='arxiv-weekly'){
   const author=steps.find(s=>s.run?.includes('generator/run-claude.mjs'));assert.ok(author);assert.ok(steps.indexOf(author)>steps.indexOf(planning[0]));
  }
+});
+
+test('CLI defaults and entry points keep the two authoring pipelines explicit',()=>{
+ const pkg=JSON.parse(readFileSync('package.json','utf8'));
+ assert.equal(pkg.scripts['author:d3'],'node generator/run-claude.mjs');
+ assert.equal(pkg.scripts.author,'node generator/run-opus.mjs');
+ const settings=JSON.parse(readFileSync('.claude/settings.json','utf8'));
+ assert.equal(settings.model,'claude-opus-5-5');
+ for(const key of ['ANTHROPIC_DEFAULT_OPUS_MODEL','ANTHROPIC_DEFAULT_SONNET_MODEL','ANTHROPIC_DEFAULT_HAIKU_MODEL','CLAUDE_CODE_SUBAGENT_MODEL'])assert.equal(settings.env[key],'claude-opus-5-5');
+ assert.match(readFileSync('.codex/config.toml','utf8'),/model = "gpt-6\.1-sol"/);
 });

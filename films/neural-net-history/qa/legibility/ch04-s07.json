@@ -1,0 +1,79 @@
+{
+ "shot": "ch04-s07",
+ "at": "2026-10-13T23:12:45.212Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "FUKUSHIMA · TOKYO · 1979",
+   "capWhileSubject": 22.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "AMARI · JAPAN · 1967",
+   "capWhileSubject": 22.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "a way to train more than one layer",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "HELSINKI · 1970",
+   "capWhileSubject": 22.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "thesis: reverse-mode differentiation",
+   "capWhileSubject": 25.4,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "ROUNDING ERRORS",
+   "maxCap": 39.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "C     ACCUMULATED ROUNDING ERROR",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DO 20 K = N, 1, -1",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "D(K) = D(K) + E(K)*W(K)",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "20 CONTINUE",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DO 30 K = 1, N",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "R(K) = R(K) + D(K)*U(K)",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "30 CONTINUE",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 8
+}

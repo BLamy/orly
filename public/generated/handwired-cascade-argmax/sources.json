@@ -1,0 +1,372 @@
+{
+  "version": 1,
+  "slug": "handwired-cascade-argmax",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Sign Cascade",
+      "claims": [
+        {
+          "id": "c1-exact-scores",
+          "claim": "The cascade resolves distinct FP32 scores in [0, 1] exactly, even when two differ only in their last bit, and keeps the leftmost winner on ties.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab README, first paragraph", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "3", "quote": "resolves distinct FP32 scores in `[0, 1]` and keeps the leftmost winner on ties" }
+          ]
+        },
+        {
+          "id": "c1-relu-and-products",
+          "claim": "The cascade is built only from weighted sums and products gated by a ReLU; a ReLU keeps a positive number and turns a negative one into zero.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade relu line", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "63", "quote": "const aboveOne = circuit.reglu([], 1, [[value, 1]], -1)" },
+            { "label": "tutorial: reglu computes a ReLU", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "docs/tutorial.md", "lines": "74", "quote": "`circuit.reglu([], 1, terms, bias)` computes `max(0, terms + bias)`, a ReLU." },
+            { "label": "README: Math.max(0, x) is ReLU", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "README.md", "lines": "18", "quote": "Math.max(0, x) is ReLU" }
+          ]
+        },
+        {
+          "id": "c1-one-bit",
+          "claim": "The decision is one exact bit of [right > left]: 1 when the right score is strictly larger, 0 otherwise.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade header: the bit", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "11", "quote": "exact bit of [right > left]" }
+          ]
+        },
+        {
+          "id": "c1-relu-of-difference",
+          "claim": "The first step is a ReLU of right minus left, which is zero for a tie or a left win and positive for a right win.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade first reglu", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "75-76", "quote": "relu(right - left + offset) in one operation" }
+          ]
+        },
+        {
+          "id": "c1-smallest-gap",
+          "claim": "The smallest positive FP32 difference is 2^-149, the value the cascade must still saturate to exactly 1.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade header: smallest difference", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "29", "quote": "the smallest positive FP32 difference (2**-149)" }
+          ]
+        },
+        {
+          "id": "c1-power-of-two-scaling",
+          "claim": "Multiplying by a power of two only shifts the exponent, so scaling a gap by 2^23 does not lose precision.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "cascade header: power-of-two scaling", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "8-9", "quote": "multiplying by a power of two" }
+          ]
+        },
+        {
+          "id": "c1-clamp",
+          "claim": "The clamp caps a value at one as value minus ReLU of (value minus one), and it is exact for values below 2^24.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade clamp01 definition", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "61", "quote": "clamp01(value) = value - relu(value - 1), exact for value below 2**24." }
+          ]
+        },
+        {
+          "id": "c1-rounding-points",
+          "claim": "Each multiply and each clamp is its own rounding point, so the simplifier cannot merge the stages into one formula.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade: separate rounding points", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "55-56", "quote": "Separate rounding points are essential." },
+            { "label": "core roundAffine preserves rounding", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "419", "quote": "{preserveRounding: true}" }
+          ]
+        },
+        {
+          "id": "c1-total-gain",
+          "claim": "Seven stages of 2^23 give a total gain of 2^161, which saturates the smallest positive FP32 difference to exactly 1.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade options: seven stages and total gain", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "26-29", "quote": "Seven multiplicative stages" },
+            { "label": "cascade options: total gain 2**161", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "28", "quote": "the total gain 2**161" }
+          ]
+        },
+        {
+          "id": "c1-exponent-chain",
+          "claim": "Inferred from the stage gain: the smallest gap goes from 2^-149 to 2^-126 after the first multiply and to 2^12 after the seventh, and the final clamp then reads exactly 1. The lab's probe confirms the chain; no test pins each intermediate value.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            { "label": "cascade stage loop", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "81-86", "quote": "value = frozenStep(circuit, [[value, f32(options.stageScales[0]!)]])" }
+          ]
+        },
+        {
+          "id": "c1-ties-and-larger-gaps",
+          "claim": "Inferred from the stage gain: a larger gap saturates earlier and stays at one; a tie is zero and zero times any gain is still zero, so exact ties keep the left candidate.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "hard form: exact ties stay left", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "31", "quote": "Zero in the hard form (exact ties stay left)." },
+            { "label": "test: ties keep the left candidate", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.test.ts", "lines": "54-68", "quote": "exact ties keep the left candidate in both trees" }
+          ]
+        },
+        {
+          "id": "c1-no-boolean-atoms",
+          "claim": "The bit is made only of sums, ReLUs and scaling; the lab's test asserts that the cascade contains zero boolean atoms.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade header: no boolean atom", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "11", "quote": "No boolean atom" },
+            { "label": "test: zero boolean atoms", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.test.ts", "lines": "164-172", "quote": "assert.equal(cascade.boolean, 0)" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Eight Candidates, One Winner",
+      "claims": [
+        {
+          "id": "c2-tournament",
+          "claim": "Eight candidates are resolved by a tournament: each round pairs the candidates, compares each pair, and sends the winners on.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade argmax: pairwise rounds", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "112-113", "quote": "while (level.length > 1) {" }
+          ]
+        },
+        {
+          "id": "c2-match-bits-and-route",
+          "claim": "Each match makes a right-wins bit and a left-wins bit equal to one minus it, carries the winner's score through two gated products, and keeps the route as a one-hot.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "left-wins is one minus right-wins", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "123", "quote": "const leftWins = circuit.affine([[rightWins, -1]], 1)" },
+            { "label": "winner score through gated products", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "125", "quote": "const leftPart = circuit.reglu([[left.score, 1]], 0, [[leftWins, 1]], 0)" },
+            { "label": "route down the tree", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "139", "quote": "function routeCascade(circuit: Circuit, node: CascadeNode, route: Wire, selected: Wire[]) {" }
+          ]
+        },
+        {
+          "id": "c2-leftmost-rule",
+          "claim": "Both argmax versions aim at the leftmost-maximum rule, and the test oracle is that rule written in plain code.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "leftmost argmax definition", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "185-186", "quote": "The leftmost index attaining the maximum" },
+            { "label": "test uses the leftmost oracle", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.test.ts", "lines": "144", "quote": "assert.equal(leftmostArgmax(scores), 6)" }
+          ]
+        },
+        {
+          "id": "c2-production-boolean",
+          "claim": "The production argmax scales the gap to near one half and rounds it with a boolean atom, and exact ties choose left.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "production: one FP32 step above 0.5", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "2735", "quote": "One FP32 step above 0.5 makes exact ties choose left without exceeding 1." },
+            { "label": "production: boolean atom", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "2743", "quote": "const leftWins = circuit.boolean(comparison)" }
+          ]
+        },
+        {
+          "id": "c2-rounding-band",
+          "claim": "The lab's header states that the production encoding keeps the left candidate throughout a rounding band of roughly 2.4e-7, and the test bounds that band under 2.5e-7. A scratch probe in the research found a largest kept-left difference of 1.86e-7, so the 2.4e-7 figure is the lab's own and not reproduced exactly.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade header: the band", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "3-4", "quote": "a rounding band of roughly 2.4e-7" },
+            { "label": "test: band bound", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.test.ts", "lines": "34", "quote": "const productionBandBound = 2.5e-7" }
+          ]
+        },
+        {
+          "id": "c2-planted-near-tie",
+          "claim": "With one candidate a single float step above the leader, the cascade picks it at position six while production keeps position two.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            { "label": "test: planted one-ULP candidate", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.test.ts", "lines": "143", "quote": "scores[6] = f32(base + ulpAt(base))" },
+            { "label": "test: cascade winner 6, production winner 2", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.test.ts", "lines": "146-147", "quote": "assert.equal(runArgmaxTree(production, scores, backend).winner, 2)" }
+          ]
+        },
+        {
+          "id": "c2-test-coverage",
+          "claim": "The exactness tests cover ties, subnormals, adjacent FP32 values, random vectors, and reference/tensor agreement, with 2,000 random vectors per candidate width.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "README: what the tests include", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "5", "quote": "Exactness tests include ties, subnormals, adjacent FP32 values, random vectors, and reference/tensor agreement." },
+            { "label": "test: 2000 trials", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.test.ts", "lines": "108", "quote": "const trials = 2000" }
+          ]
+        },
+        {
+          "id": "c2-sampled-not-proven",
+          "claim": "Inferred from the tests: the exactness checks sample a finite set of score pairs and vectors, so they are sampled testing and not a proof for every pair; the argmax also assumes scores lie between zero and one.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            { "label": "argmax range assumption", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "110", "quote": "argmax scores must be within zero and one" },
+            { "label": "test: sampled trials", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.test.ts", "lines": "108", "quote": "const trials = 2000" }
+          ]
+        },
+        {
+          "id": "c2-built-cost-8",
+          "claim": "At eight candidates the lab's report counts built operations: 56 for production in 15 layers and 196 for the cascade in 75 layers.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "README cost table, 8 candidates", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "27", "quote": "| 8 | 56 | 196 | 15 | 75 |" }
+          ]
+        },
+        {
+          "id": "c2-built-cost-64",
+          "claim": "At sixty-four candidates the built counts are 504 against 1764 operations, and 33 against 150 layers.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "README cost table, 64 candidates", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "29", "quote": "| 64 | 504 | 1764 | 33 | 150 |" }
+          ]
+        },
+        {
+          "id": "c2-compiled-cost",
+          "claim": "Compiled, production at eight candidates is 45 operations, pinned by the core's test; the cascade's 187 is a scratch compile of the same tree with selected roots and no lab test pins it, so the about-four-times ratio is inferred.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "core test: production 45 compiled", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/examples/patterns/selection/highest-score-tree.test.ts", "lines": "155", "quote": "'45 operations, 15 layers, 88 weights'" }
+          ]
+        },
+        {
+          "id": "c2-available-not-minimal",
+          "claim": "The lab calls the cascade an available construction, not a proof of minimality; the core's own exact tree is 150 operations in 57 layers, a count taken after compiling.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            { "label": "README: not a proof of minimality", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "31", "quote": "The long exact cascade is an available construction, not a proof of minimality." },
+            { "label": "README: core exact tree", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "33", "quote": "150 operations in 57 layers" },
+            { "label": "core test pins 150 ops, 57 layers", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/examples/patterns/selection/highest-score-tree.test.ts", "lines": "155", "quote": "'150 operations, 57 layers, 235 weights'" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Training It Soft",
+      "claims": [
+        {
+          "id": "c3-hard-no-gradient",
+          "claim": "The hard cascade is exact, but it does not provide useful score gradients.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "README: hard cascade gives no useful gradient", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "9", "quote": "The hard cascade does not provide useful score gradients." }
+          ]
+        },
+        {
+          "id": "c3-zero-gradient-probes",
+          "claim": "For separated scores, a tie, and the smallest gap, the gradient reaching the two scores is exactly zero. The test checks only the source-wire gradients.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "ramp test: probe scores", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/ramp.test.ts", "lines": "18", "quote": "for (const scores of [[0.4, 0.6], [0.6, 0.4], [0.5, 0.5], [0, 2 ** -149]])" },
+            { "label": "ramp test: zero gradient", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/ramp.test.ts", "lines": "23", "quote": "expect([...gradient.subarray(0, 2)]).toEqual([0, 0])" }
+          ]
+        },
+        {
+          "id": "c3-soft-scales",
+          "claim": "Training uses the same topology soft: the seven scale factors shrink from 2^23 to an annealed gain, and each clamp becomes a ramp.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "cascade header: soft training", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "15-16", "quote": "shrink the seven scale factors from 2**23 to an annealed gain" }
+          ]
+        },
+        {
+          "id": "c3-ramp-centered",
+          "claim": "The soft ramp is centered on a zero gap, so a tie sits mid-ramp and both orderings of a wrong decision receive gradient.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "soft options: ramp centered on zero difference", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "17-18", "quote": "softCascadeOptions also centers the ramp on zero difference so both" },
+            { "label": "soft form: tie mid-ramp", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/cascade-argmax.ts", "lines": "32", "quote": "so a tie sits mid-ramp and gradient reaches both" }
+          ]
+        },
+        {
+          "id": "c3-table-size",
+          "claim": "The task has sixteen cases and eight candidates, with one learned score per case and candidate: a table of 128 cells.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "README: the task", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "11", "quote": "The task has sixteen cases and eight candidates, with one learned score per case and candidate." },
+            { "label": "training config", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/training.ts", "lines": "46", "quote": "caseCount: 16," }
+          ]
+        },
+        {
+          "id": "c3-anneal-schedule",
+          "claim": "Training anneals the total gain through five steps, from 2^3 up to 2^21, with up to 150 epochs at each and an early stop once every case is right.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            { "label": "training config: epochs", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/training.ts", "lines": "47", "quote": "epochsPerStage: 150," },
+            { "label": "training config: five gains", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/training.ts", "lines": "49", "quote": "softStageGains: [2 ** 3, 2 ** 6, 2 ** 10, 2 ** 15, 2 ** 21]," },
+            { "label": "training loop: early break", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/training.ts", "lines": "165", "quote": "if (stageCorrect === caseCount && epoch > 10) break" }
+          ]
+        },
+        {
+          "id": "c3-initial-weights",
+          "claim": "The weights start close together near one half, so every comparison sits inside the widest soft ramp; the code's comment says this gives gradient from the first epoch. The lab does not measure learning at epoch one.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "training: weights start close together", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/training.ts", "lines": "115-116", "quote": "Weights start close together so every comparison sits inside the widest soft ramp and" },
+            { "label": "training: initial weight formula", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/training.ts", "lines": "119", "quote": "0.5 + 0.04 * (random.next() - 0.5)" }
+          ]
+        },
+        {
+          "id": "c3-hardening",
+          "claim": "Hardening puts the same weights into the exact cascade, and every winner must come out exact through both evaluators.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "training: harden", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/training.ts", "lines": "170", "quote": "Harden: same weights, exact cascade. Winners must be exact through both evaluators." }
+          ]
+        },
+        {
+          "id": "c3-ten-seeds",
+          "claim": "Across ten seeds, all 160 winners are correct after hardening; the lab's report says this holds for this table and these seeds.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "report: hardened winners across ten seeds", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/report.ts", "lines": "65", "quote": "Hardened winners: ${totalCorrect}/160 across 10 seeds." },
+            { "label": "README: seven-stage soft cascade 160/160", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "15", "quote": "| Seven-stage soft cascade | 1-10 | 160/160 |" }
+          ]
+        },
+        {
+          "id": "c3-single-ramp-control",
+          "claim": "A control with a single clipped ramp uses less than half the operations of the cascade in the eight-candidate soft tree and reaches 160 of 160 winners on ten fresh seeds, 101 to 110.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "ramp test: fewer than half the operations", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/ramp.test.ts", "lines": "13", "quote": "expect(ramp.circuit.operations.length).toBeLessThan(cascade.circuit.operations.length / 2)" },
+            { "label": "README: single clipped ramp 160/160", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "16", "quote": "| Single clipped ramp | 101-110 | 160/160 |" }
+          ]
+        },
+        {
+          "id": "c3-table-fitting",
+          "claim": "This is per-case table fitting: there is no learned shared query/key function and no claim about unseen contexts.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            { "label": "README: table fitting, not generalization", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/cascade-argmax/README.md", "lines": "11", "quote": "There is no learned shared query/key function and no claim about unseen contexts." }
+          ]
+        },
+        {
+          "id": "c3-scorecard",
+          "claim": "The lab's status page says the cascade selection fits a table and not a shared query/key rule, and that hard score gradients still provide no useful learning signal.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            { "label": "lab status: cascade selection row", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "202", "quote": "This fits a table, not a shared query/key rule." }
+          ]
+        }
+      ]
+    }
+  ]
+}

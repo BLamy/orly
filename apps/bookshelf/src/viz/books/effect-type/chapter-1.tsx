@@ -49,10 +49,14 @@ const sparkPos = (u: number, lineY: number): { x: number; y: number } => {
 };
 
 // camera marks
+const COPY_STEP = 36; // vertical gap between stacked copies (their op tags peek out)
+
 const CAM_OPEN: CameraState = { x: 640, y: 330, k: 1.06 };
-const CAM_BENCH: CameraState = { x: 420, y: 300, k: 1.3 };
-const CAM_WORLD: CameraState = { x: 820, y: 310, k: 1.12 };
-const CAM_FIBER: CameraState = { x: 700, y: 400, k: 1.14 };
+// Each push keeps the bench (x 110–550), the console (x 872–1228) and the
+// fiber in frame together, so no panel is cut at the stage edge.
+const CAM_BENCH: CameraState = { x: 655, y: 320, k: 1.1 };
+const CAM_WORLD: CameraState = { x: 660, y: 310, k: 1.1 };
+const CAM_FIBER: CameraState = { x: 670, y: 390, k: 1.12 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -124,7 +128,7 @@ export function buildScene(): Scene {
     dur: 7.0,
     text: 'Now wrap that same code in the sync constructor. Out comes a value: a little frozen object holding your function. And look at the console. Nothing happened.',
   });
-  tl.tween(rawDim, 0.12, { at: 14.9, dur: 1.0, ease: ease.move });
+  tl.tween(rawDim, 0, { at: 14.9, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_BENCH, { at: 15.0, dur: 1.5, ease: ease.move });
   tl.tween(wrapU, 1, { at: 15.8, dur: 1.1, ease: ease.enter });
   tl.hold(21.8, 0.5);
@@ -180,7 +184,7 @@ export function buildScene(): Scene {
     text: 'So hold onto this picture. Creating an Effect does nothing. Running it is a separate, deliberate act. Everything else in this book is about composing these descriptions.',
   });
   tl.tween(cam, CAM_WIDE, { at: 53.8, dur: 1.6, ease: ease.move });
-  tl.tween(dimU, 0.12, { at: 54.2, dur: 1.2, ease: ease.move });
+  tl.tween(dimU, 0.06, { at: 54.2, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 55.6, dur: 0.9, ease: ease.enter });
   tl.hold(60.8, 1.4);
 
@@ -213,36 +217,44 @@ const scene = buildScene();
 // Pure functions of sampled values only.
 // ---------------------------------------------------------------------------
 
-function EffectCard({ x, y, scale = 1, opacity = 1 }: {
+// `compact` draws only the card and its op tag, so a card stacked behind
+// another still shows its own label as a tab above the front card.
+function EffectCard({ x, y, scale = 1, opacity = 1, compact = false }: {
   x: number;
   y: number;
   scale?: number;
   opacity?: number;
+  compact?: boolean;
 }) {
   if (opacity <= 0.01) return null;
   return (
     <g transform={`translate(${x} ${y}) scale(${scale})`} opacity={opacity}>
-      <rect width={CARD.w} height={CARD.h} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-      <rect x={14} y={12} width={104} height={22} rx={11} fill={colors.BG} stroke={colors.GRID} />
-      <text x={66} y={27} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+      {/* a compact card is only its tab: no body, so the stack reads as shelved copies */}
+      <rect width={CARD.w} height={compact ? COPY_STEP + 4 : CARD.h} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
+      <rect x={14} y={12} width={108} height={24} rx={12} fill={colors.BG} stroke={colors.GRID} />
+      <text x={68} y={28} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
         op: "Sync"
       </text>
-      <rect x={14} y={46} width={CARD.w - 28} height={74} rx={8} fill={colors.BG} stroke={colors.GRID} strokeDasharray="5 5" />
-      <text x={26} y={76} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
-        {'() => console.log('}
-      </text>
-      <text x={44} y={96} fill={colors.WARM} fontSize={12.5} fontFamily="monospace">
-        "Hello, World!"
-      </text>
-      <text x={26} y={112} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
-        {')'}
-      </text>
-      <text x={CARD.w - 16} y={62} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontStyle="italic">
-        frozen thunk
-      </text>
-      <text x={14} y={CARD.h - 14} fill={colors.MUTED} fontSize={11}>
-        an inert object — nothing runs
-      </text>
+      {!compact && (
+        <g>
+          <rect x={14} y={46} width={CARD.w - 28} height={74} rx={8} fill={colors.BG} stroke={colors.GRID} strokeDasharray="5 5" />
+          <text x={26} y={76} fill={colors.TEXT} fontSize={13.5} fontFamily="monospace">
+            {'() => console.log('}
+          </text>
+          <text x={44} y={96} fill={colors.WARM} fontSize={13.5} fontFamily="monospace">
+            "Hello, World!"
+          </text>
+          <text x={26} y={112} fill={colors.TEXT} fontSize={13.5} fontFamily="monospace">
+            {')'}
+          </text>
+          <text x={CARD.w - 16} y={62} textAnchor="end" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            frozen thunk
+          </text>
+          <text x={14} y={CARD.h - 14} fill={colors.MUTED} fontSize={13}>
+            an inert object — nothing runs
+          </text>
+        </g>
+      )}
     </g>
   );
 }
@@ -257,14 +269,14 @@ function ConsolePanel({ dim, lines, ghostU }: { dim: number; lines: ConsoleLine[
   return (
     <g>
       <rect x={CONSOLE.x} y={CONSOLE.y} width={CONSOLE.w} height={CONSOLE.h} rx={12} fill="#050810" stroke={colors.GRID} />
-      <text x={CONSOLE.x + 16} y={CONSOLE.y - 12} fill={colors.MUTED} fontSize={13}>
+      <text x={CONSOLE.x + 16} y={CONSOLE.y - 12} fill={colors.MUTED} fontSize={14}>
         the outside world — console
       </text>
       <circle cx={CONSOLE.x + 20} cy={CONSOLE.y + 20} r={4} fill={colors.NEGATIVE} opacity={0.7} />
       <circle cx={CONSOLE.x + 36} cy={CONSOLE.y + 20} r={4} fill={colors.WARM} opacity={0.7} />
       <circle cx={CONSOLE.x + 52} cy={CONSOLE.y + 20} r={4} fill={colors.POSITIVE} opacity={0.7} />
       {ghostU > 0.01 && (
-        <text x={CONSOLE.x + CONSOLE.w / 2} y={CONSOLE.y + 200} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={ghostU * 0.65}>
+        <text x={CONSOLE.x + CONSOLE.w / 2} y={CONSOLE.y + 200} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={ghostU * 0.65}>
           — no output —
         </text>
       )}
@@ -278,7 +290,7 @@ function ConsolePanel({ dim, lines, ghostU }: { dim: number; lines: ConsoleLine[
               {l.text}
             </text>
             {l.note && (
-              <text x={CONSOLE.x + 20} y={y + 17} fill={colors.MUTED} fontSize={10.5} fontStyle="italic">
+              <text x={CONSOLE.x + 20} y={y + 17} fill={colors.MUTED} fontSize={12} fontStyle="italic">
                 {l.note}
               </text>
             )}
@@ -296,7 +308,7 @@ function FiberMachine({ u, spin }: { u: number; spin: number }) {
   return (
     <g opacity={u}>
       <rect x={FIBER.x} y={FIBER.y} width={FIBER.w} height={FIBER.h} rx={14} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-      <text x={cx} y={FIBER.y - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+      <text x={cx} y={FIBER.y - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
         a fiber — the thing that runs
       </text>
       {/* intake slot */}
@@ -317,7 +329,7 @@ function FiberMachine({ u, spin }: { u: number; spin: number }) {
           />
         ))}
       </g>
-      <text x={cx} y={FIBER.y + FIBER.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+      <text x={cx} y={FIBER.y + FIBER.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
         Effect.runSync(program)
       </text>
     </g>
@@ -353,16 +365,16 @@ export function Render({ s }: { s: SceneState }) {
   const c1x = lerp(CARD.x, FIBER.x - 40, run1U);
   const c1y = lerp(CARD.y, FIBER.y + 24, run1U);
   const c1s = 1 - 0.68 * run1U;
-  // card 2 (a copy) flight
-  const c2x = lerp(CARD.x + 30, FIBER.x - 40, run2U);
-  const c2y = lerp(CARD.y + 22, FIBER.y + 24, run2U);
+  // card 2 (a copy) flight, starting from the copy's tab position in the stack
+  const c2x = lerp(CARD.x, FIBER.x - 40, run2U);
+  const c2y = lerp(CARD.y - COPY_STEP, FIBER.y + 24, run2U);
   const c2s = 1 - 0.68 * run2U;
 
   const sp1 = sparkPos(spark1, CONSOLE.y + 96);
   const sp2 = sparkPos(spark2, CONSOLE.y + 136);
 
   const lines: ConsoleLine[] = [
-    { text: 'Hello, World!', u: clamp01(rawSpark * 5 - 4) * rawDim, note: 'printed at definition time' },
+    { text: 'Hello, World!', u: clamp01(rawSpark * 5 - 4) * rawDim, note: 'printed the moment it was called' },
     { text: 'Hello, World!', u: clamp01(spark1 * 5 - 4), note: 'first run' },
     { text: 'Hello, World!', u: clamp01(spark2 * 5 - 4), note: 'second run' },
   ];
@@ -388,11 +400,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the familiar world: raw call ---- */}
         <g opacity={rawU * rawDim * dimU}>
-          <rect x={90} y={168} width={452} height={52} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={110} y={200} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+          <rect x={110} y={168} width={432} height={52} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={130} y={200} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             console.log(<tspan fill={colors.WARM}>"Hello, World!"</tspan>)
           </text>
-          <text x={110} y={150} fill={colors.MUTED} fontSize={13}>
+          <text x={110} y={150} fill={colors.MUTED} fontSize={14}>
             plain JavaScript — runs when written
           </text>
         </g>
@@ -407,11 +419,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the minting bench ---- */}
         <g opacity={wrapU * dimU}>
-          <rect x={80} y={128} width={470} height={56} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={98} y={151} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+          <rect x={110} y={118} width={440} height={56} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={126} y={141} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             const program = <tspan fill={colors.ACCENT}>Effect.sync</tspan>(
           </text>
-          <text x={124} y={170} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+          <text x={142} y={160} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             {'() => console.log('}<tspan fill={colors.WARM}>"Hello, World!"</tspan>{'))'}
           </text>
         </g>
@@ -421,9 +433,10 @@ export function Render({ s }: { s: SceneState }) {
           {[2, 1].map((i) => (
             <EffectCard
               key={i}
-              x={CARD.x + i * 30}
-              y={CARD.y + i * 22}
-              opacity={clamp01(copiesU * 3 - i) * 0.55 * (i === 1 ? 1 - run2U : 1)}
+              compact={i === 2 || run1U < 0.98}
+              x={CARD.x}
+              y={CARD.y - i * COPY_STEP}
+              opacity={clamp01(copiesU * 3 - i) * 0.8 * (i === 1 ? 1 - run2U : 1)}
             />
           ))}
           {/* copy 1 in flight for run 2 */}
@@ -431,7 +444,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the main card (run 1) */}
           {run1U < 0.98 && <EffectCard x={c1x} y={c1y} scale={c1s} opacity={wrapU} />}
           {copiesU > 0.01 && (
-            <text x={CARD.x + 10} y={CARD.y + CARD.h + 62} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={copiesU * (1 - run2U)}>
+            <text x={CARD.x} y={CARD.y + CARD.h + 62} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={copiesU * (1 - run2U)}>
               const copies = [program, program, program]
             </text>
           )}
@@ -439,23 +452,23 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* type chip + source quote */}
         {typeU > 0.01 && (
-          <g opacity={typeU * dimU}>
-            <rect x={CARD.x} y={CARD.y - 46} width={262} height={30} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
-            <text x={CARD.x + 131} y={CARD.y - 26} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
+          <g opacity={typeU * dimU * (1 - run1U)}>
+            <rect x={CARD.x} y={CARD.y + CARD.h + 10} width={262} height={30} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
+            <text x={CARD.x + 131} y={CARD.y + CARD.h + 30} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
               {'Effect<void, never, never>'}
             </text>
           </g>
         )}
         {quoteU > 0.01 && (
           <g opacity={quoteU * dimU}>
-            <rect x={560} y={230} width={420} height={120} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={580} y={270} fill={colors.TEXT} fontSize={14.5} fontStyle="italic">
+            <rect x={462} y={210} width={380} height={120} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={482} y={250} fill={colors.TEXT} fontSize={14.5} fontStyle="italic">
               “a value that lazily describes
             </text>
-            <text x={580} y={294} fill={colors.TEXT} fontSize={14.5} fontStyle="italic">
+            <text x={482} y={274} fill={colors.TEXT} fontSize={14.5} fontStyle="italic">
               a workflow or job”
             </text>
-            <text x={960} y={330} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+            <text x={822} y={310} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               — packages/effect/src/Effect.ts
             </text>
           </g>

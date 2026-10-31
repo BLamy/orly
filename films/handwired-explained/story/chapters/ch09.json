@@ -1,0 +1,825 @@
+{
+  "id": "ch09",
+  "number": 9,
+  "title": "Four Days in October",
+  "blurb": "13 to 14 October 2026. The Window Calendar blazes: 689 commits in October, 683 of them in four days. A question from Cheng, and, weighing a million documents, a sentence that could be this film's motto: check before you build. JSON search gets its machine time: 100,000 documents, one GPU thread each, all running the same small step. Tag 9, the GPU is the faster one, is tied on at 09:01, already hedged. Then the test: a pattern written as cells, two forward passes because a program can't go back, and the browser's RegExp on one thread in its booth with a ten-second hourglass. A same-day review finds one of eighteen cores; given eight workers, RegExp keeps up back to back and wins after a pause, and the tag is struck: the shortest thread in the film. Then the go-ahead, and the repository goes public.",
+  "shots": [
+    {
+      "id": "ch09-s01",
+      "kind": "scene",
+      "setting": "the Window Calendar, a tall paper building at night, seen across a dark street; October 2026, 13 to 16 October; every hour of the clock",
+      "era": "2020s",
+      "mood": "emberRed",
+      "transitionIn": "lampChange",
+      "leadIn": 3,
+      "holdAfter": 2.5,
+      "visual": "CHAPTER CARD: at the shot's first frame the chapter title 'Four Days in October' sets in at upper left in the house title type, holds about 3 s and fades, over the building. THE WINDOW CALENDAR (Device 2, the same paper building as ch03 and ch08, same scale and placement): a tall cut-paper tower at night against the emberRed backlight, one column of windows per month, one lit pane per commit, exact counts, never rounded. Left to right: June's 72 panes warm, July's 6, August's column black glass with snow on the sill (as ch08 left it), September's 58 (relit at the end of ch08). The lamp change from ch08's dawnGold to emberRed lands as the shot opens: the backlight warms and deepens, haze sheet A drifts across the lower third. CAMERA (the grid is fixed: six panes per storey, so the 12-storey block holds June's 72 and October's annexe stacks 41, 34, 19 and 22 storeys on top of it, about 53 storeys in all): open wide and still on the 12-storey block alone, the block about 45% of frame height, for the lead-in. On 'four' the annexe begins to rise and the camera cranes up about three frame-heights, following the leading edge of the 13 October cascade as it climbs. As the last panes light, the camera pulls back to a final wide in which the 53-storey silhouette fills the frame height and the original block reads as its plinth (at that wide one storey is about 13 px, which sets the pane size the shot author builds to). On 'October' (beat october) six single panes light one by one, spaced out down the column: the six commits of 1 to 12 October (689 minus 683). On 'four' (beat fourDays) the column splits into four crowded sub-columns, labelled at their feet 13 · 14 · 15 · 16, and they fill in a fast cascade, every pane drawn and lit, in exactly these counts: 242, 200, 113 and 128 (683 in all; the shot author builds them from the counts, not a texture). As the four columns fill, a round clock face mounted on the crown of the 13 October column (it rides up with that column's leading edge, so the crane keeps it in frame) lights its twenty-four hour marks one by one, as panes in that hour light, until every hour on the dial is lit (beat everyHour, carried by the picture, not the voice). No figure inside any pane, no coffee cups, no suggestion of sleeplessness or strain: the panes say it and nothing else. Hold on the blazing column, the clock fully lit, embers of rim light on the window frames.",
+      "lines": [
+        {
+          "id": "L0901",
+          "text": "Then October: six hundred and eighty-nine commits.",
+          "direction": "a turn of the page; 'Then October' light, almost a smile after the cold of chapter eight; the number plain",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0902",
+          "text": "Nearly all of them in four days.",
+          "direction": "let 'four days' land with quiet wonder, no exclamation; no comment on anyone's sleep",
+          "pauseAfter": 0.5,
+          "tts": {
+            "solo": true,
+            "speed": 0.78
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "chapterCard",
+          "at": {
+            "shotTime": 0.1
+          },
+          "what": "chapter title card sets in at upper left, holds about 3 s, fades"
+        },
+        {
+          "id": "october",
+          "at": {
+            "line": "L0901",
+            "word": "October"
+          },
+          "what": "on the block's October column (camera still wide on the block) its six scattered panes for 1 to 12 October light one by one"
+        },
+        {
+          "id": "count",
+          "at": {
+            "line": "L0901",
+            "word": "commits"
+          },
+          "what": "the month stamp with its count sets in at lower left"
+        },
+        {
+          "id": "fourDays",
+          "at": {
+            "line": "L0902",
+            "word": "four"
+          },
+          "what": "October's annexe rises as four sub-columns, 13 to 16 October, and fills: 242, 200, 113, 128; the camera cranes up with the 13 October leading edge, then pulls back to the 53-storey wide"
+        },
+        {
+          "id": "everyHour",
+          "at": {
+            "line": "L0902",
+            "word": "days",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "the clock on the 13 October column's crown lights its last hour marks; every hour of the dial is lit"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "the Window Calendar building (one pane per commit, one column per month)",
+        "August's dark column with snow on the sill",
+        "four crowded October sub-columns labelled 13, 14, 15, 16",
+        "a clock face with twenty-four hour marks on the 13 October column's crown"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "Four Days in October",
+          "beat": "chapterCard",
+          "until": "october"
+        },
+        {
+          "kind": "date",
+          "text": "OCTOBER 2026 · 689 COMMITS",
+          "beat": "count"
+        },
+        {
+          "kind": "label",
+          "text": "242 · 200 · 113 · 128",
+          "beat": "fourDays"
+        }
+      ],
+      "music": {
+        "cue": "octoberBlaze",
+        "note": "The film's only driving pulse begins here: a quick, dry relay-clack ostinato (woodblock and ratchet, never a chime) entering on 'October' at moderate intensity (0.55), the both-branches motif riding above it, its gate wide open on the upper line. Each sub-column's cascade is a run of tiny detent clicks, densest on the 13th. The pulse keeps going under the next shots; no resolution."
+      },
+      "claims": [
+        "PJ09"
+      ]
+    },
+    {
+      "id": "ch09-s02",
+      "kind": "card",
+      "setting": "a plain desk under a lamp, a laptop pushed aside; October 2026, night, lit by one lamp",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "transitionIn": "crossfade",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "The crane from s01 dissolves through one lit pane of the 13 October sub-column into the room behind it: a plain paper desk, a lamp (a practical, kind 'lamp', warm candleAmber pool), a generic laptop pushed to the side, closed or dim, no logos. Cheng appears only as his hands (author-hands), never a face: they lay one typed index card in the lamp's pool. THE CARD (beat cardOne, on 'asked'): a verbatim substring of Q099 (its question only), set legibly in a plain typewriter face, lowercase and typos as in the source; the one quotation set on screen in this shot, because the voice reads only three of its words. The camera rests on it, a slow 3% push. After the line (beat motto) a single soft detent click; the author's hands come to rest flat on the desk either side of the card, still, and the silence holds. Composition: the card in the upper two thirds of frame, clear of the lower-left caption band; no other text in frame.",
+      "lines": [
+        {
+          "id": "L0903",
+          "text": "Cheng asked whether search on the GPU was “clearly more performant”, and if so, worth a demo.",
+          "direction": "warm, curious; 'Cheng asked' plainly, so the ear knows whose question follows; the quoted words read as his, lightly; 'and if so, worth a demo' a small afterthought, the demo hanging on the answer",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "cardOne",
+          "at": {
+            "line": "L0903",
+            "word": "asked"
+          },
+          "what": "the author's hands lay card one (Q099 substring) in the lamp's pool"
+        },
+        {
+          "id": "motto",
+          "at": {
+            "line": "L0903",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "one soft detent click; the hands come to rest flat on the desk; silence"
+        }
+      ],
+      "cast": [
+        "author-hands"
+      ],
+      "props": [
+        "plain desk",
+        "lamp (practical)",
+        "generic laptop, no logos",
+        "two typed lowercase index cards"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "“…is clearly more performant from the gpu parallelism?” — Cheng Lou",
+          "beat": "cardOne"
+        }
+      ],
+      "music": {
+        "cue": "octoberBlaze",
+        "note": "The pulse drops to half intensity (0.3) and steps back under the voice: just the ratchet ticking softly, as if heard through the window. On 'check' the both-branches motif sounds its upper line once, alone, unhurried. No chime; the detent click after the line is part of the score, then near-silence through the hold."
+      },
+      "claims": [
+        "JS20",
+        "PJ21"
+      ]
+    },
+    {
+      "id": "ch09-s03",
+      "kind": "scene",
+      "setting": "the JSON search map: a vast backlit sheet of 100,000 tiny cells, one per document, in a server-cyan hall; the cold furnace from ch05 at frame left, now lit; 13 to 14 October 2026",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "transitionIn": "lampChange",
+      "leadIn": 0.6,
+      "holdAfter": 2.8,
+      "visual": "Lamp change to serverCyan. THE JSON SEARCH MAP (machine jsonSearchMap), given real machine time. OPEN CLOSE: one document, enlarged across the frame as a long paper strip of 512 numbered slots, each holding a code point as a number (the first few slots of a real generated document from the repo's documents.ts, e.g. 123 for '{', 34 for '\"'; the shot author takes a real document from documentAt(seed, index) and prints its real numbers; slots past the text's end hold -1), plus one slot for its length. A single thread of light (threadsOfLight) is that document's GPU thread: a small copper bead that steps along the strip one slot at a time, through a fixed cut-brass stencil plate that is the step (a plain shared-kit prop drawn with paperLantern glow and label, NOT the stencilLantern convolution painter: the same cut pattern every time), on twos, with a soft detent per slot. On 'lane' (beat oneThread) the bead brightens as the narration names it; the slot numbers stay legible as numbers, a strip of 512 plus one length slot. PULL BACK (beat pullBack, on 'step'): a long, smooth pull out, the strip shrinking to one fine row among thousands, until the whole map fills the frame: 100,000 tiny cells in the documents' order, row after row, each with its own bead stepping in perfect unison through an identical brass plate (one plate drawn per row in the near plane; the far rows read as a shimmering grain of identical motion). FURNACE PAYOFF: at frame left, half in haze, the cold furnace from ch05-s06 (where the GPU ran HandwiredOS about twenty-seven times slower) stands again; on 'GPU' (beat furnace) its grate lights serverCyan and fine threads run from it into every row at once. THE ANSWER (beat answer, on 'demo's'): a pattern is typed in a small field above the map, 'error'; just after the line ends (beat onePass) one sweep of light crosses the whole map, and matches light copper, each copper mark drawn larger than its cell (as the real page draws them, so one match can be seen among 100,000); the count sets in beneath: 10,559 of 100,000 documents match (the field above still reads 'error'). Hold on the copper-flecked map, the furnace glowing, every bead still stepping. Text: the voice reads the README's words, so the quotation itself is never set on screen; only its short attribution sits small in the upper band from 'demo's' until the sweep, then leaves; the count label sets in at lower right on the sweep. The silent machine time after the line belongs to the map.",
+      "lines": [
+        {
+          "id": "L0906",
+          "text": "A hundred thousand JSON documents, small text records, one per GPU lane, all running one small step.",
+          "direction": "steady and clear; 'small text records' a light aside, so the word JSON never stands unexplained; the picture is doing a lot, so let it breathe between the phrases; 'one small step' a little slower; 'lane' plain (a lane of the graphics card, not a loom thread)",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0907",
+          "text": "So what is a GPU for? The demo's answer: “It is for many documents”.",
+          "direction": "the question is the one hung on the line in chapter five: let it sound like the payoff of a long wait, with a hint of a smile; 'The demo's answer' plain; the quoted words set down simply, then let the map work in silence",
+          "pauseAfter": 0.5
+        }
+      ],
+      "beats": [
+        {
+          "id": "oneThread",
+          "at": {
+            "line": "L0906",
+            "word": "lane"
+          },
+          "what": "the copper bead on the enlarged strip brightens as it is named"
+        },
+        {
+          "id": "pullBack",
+          "at": {
+            "line": "L0906",
+            "word": "step"
+          },
+          "what": "long pull out from one strip to the whole 100,000-cell map, every bead stepping in unison through its brass plate"
+        },
+        {
+          "id": "furnace",
+          "at": {
+            "line": "L0907",
+            "word": "GPU"
+          },
+          "what": "the cold furnace from ch05 lights serverCyan; threads run from its grate into every row"
+        },
+        {
+          "id": "answer",
+          "at": {
+            "line": "L0907",
+            "word": "demo's"
+          },
+          "what": "the README's short attribution sets in in the upper band; the pattern 'error' is typed in the field above the map"
+        },
+        {
+          "id": "onePass",
+          "at": {
+            "line": "L0907",
+            "word": "documents",
+            "edge": "end",
+            "offset": 0.2
+          },
+          "what": "after the line, one sweep of light crosses the whole map; matches light copper, larger than their cells; the count sets in"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "one document as a 512-slot paper strip of code points",
+        "copper bead (a GPU thread)",
+        "fixed cut-brass stencil plate (the step; not the stencilLantern painter)",
+        "the 100,000-cell map",
+        "the cold furnace from ch05, relit",
+        "a small pattern field"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "the demo's README",
+          "beat": "answer",
+          "until": "onePass"
+        },
+        {
+          "kind": "label",
+          "text": "10,559 match",
+          "beat": "onePass"
+        }
+      ],
+      "music": {
+        "cue": "searchMap",
+        "note": "The pulse returns, lighter and wider (intensity 0.5): the ratchet ostinato now doubled in a high, fast tick, one click per slot as the bead steps, and in the pull-back the ticks multiply into a fine rattling shimmer, like rain on paper. On 'GPU' a low sustained note warms under the furnace. The one-pass sweep is a single dry rising scrape, landing as the copper marks appear; no chime."
+      },
+      "claims": [
+        "JS01",
+        "JS03",
+        "JS04",
+        "JS15",
+        "CM08"
+      ]
+    },
+    {
+      "id": "ch09-s03b",
+      "kind": "scene",
+      "setting": "the copper line over the Lifespan Rule, strung inside the search hall's cyan grain; 13 October 2026, 09:01",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "transitionIn": "crossfade",
+      "leadIn": 0.6,
+      "holdAfter": 2.5,
+      "visual": "Crossfade: the copper-flecked grain of the search map softens into the haze behind the copper line (Device 1), strung across the frame at 58% height inside the search hall, the map still faintly shimmering on the back plane, the Lifespan Rule's paper ruler along the bottom with its four canonical labels (an hour · a day · a year · a lifetime) and unlabelled ticks for a week, a month and a decade, drawn by the shared tagLine module; earlier tags hang along the line, soft in the haze. TAG 9 (beat tied, on 'tied'): a fresh paper tag swings in and is tied on with the detent's tie click; its knot card carries only the time, 09:01 (the date stamp sets in with it). Its front, in ink, the film's label (no quotation marks): THE GPU IS THE FASTER ONE, with a small pencilled qualifier under it, (for the highlighter half): already hedged. On 'faster' (beat hedged) the qualifier darkens a shade, and the tag turns gently on its thread toward the hall, as if to face the test that is coming. Hold on the unstruck tag, its thread just begun. The red pencil is nowhere in frame yet. TAG-LINE STAGING (meta staging.tagLine): THE CYAN GRAIN: the line strung inside the search hall at 60%, the grain of the search map's hundred thousand cells shimmering serverCyan behind it; the pencil rests on a hall pillar.",
+      "lines": [
+        {
+          "id": "L0914",
+          "text": "On the thirteenth, a hedged write-up tied on a tag: the GPU is faster.",
+          "direction": "fond and fair: whoever wrote it was careful; 'hedged' gently; the tag's words said as a paraphrase, not a quotation, and left hanging, as a claim about to be tested",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "tied",
+          "at": {
+            "line": "L0914",
+            "word": "tied"
+          },
+          "what": "tag 9 swings in and is tied on with the detent's tie click; knot card 09:01; date stamp"
+        },
+        {
+          "id": "hedged",
+          "at": {
+            "line": "L0914",
+            "word": "faster"
+          },
+          "what": "the pencilled qualifier '(for the highlighter half)' darkens a shade; the tag turns toward the hall"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "the copper line",
+        "the Lifespan Rule",
+        "tag 9 with its knot card",
+        "the search map, faint on the back plane"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "13 OCTOBER 2026 · 09:01",
+          "beat": "tied"
+        },
+        {
+          "kind": "label",
+          "text": "THE GPU IS THE FASTER ONE (for the highlighter half)",
+          "beat": "tied"
+        }
+      ],
+      "music": {
+        "cue": "tagNine",
+        "note": "The search map's tick thins to a whisper under the line. The detent figure's first movement only: a soft tie click on 'tied', then the both-branches motif's upper line held, unresolved, as a question left hanging for the test."
+      },
+      "claims": [
+        "JS21"
+      ]
+    },
+    {
+      "id": "ch09-s04",
+      "kind": "scene",
+      "setting": "match cut: the search pattern field, then Kleene's typed RAND memorandum page (December 1951, from ch02) dissolving into the search pattern written as cells in a table; 2026",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "transitionIn": "inkBleed",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "MATCH CUT (ink bleed): from the copper line, ink bleeds back to the pattern field above the search map, still reading 'error'; then the frame bleeds to the typed page from ch02-s03, Kleene's 1951 RAND memorandum on the typewriter, the clock dial with its fixed ring of stops beside it, winterBlue paper briefly re-tinted serverCyan. On 'Kleene' (beat kleene) the date stamp sets in. On 'regular' (beat regular) the page's typed lines lift off the paper as fine threads and re-form into the automaton for 'error', built from the shared metaphor kit (NOT the lanternNetwork painter, which is an XOR-trained network): six paperLanterns in a row, each with its brass threshold ring (one state per character it reads, plus one, as the repo counts them), joined by five threads drawn with thread(), each lettered with label(): e, r, r, o, r; the last lantern carries a second brass ring that marks it as accepting. The echo caption sets in small at lower left and stays for the rest of the shot. Then (beat table, on 'code') the six lanterns flatten down onto a parchment grid of cells, the way a loom flattens into cloth: the threads become 1s and 0s in a transition table for each character class, the accepting ring becomes a row of accepting-state cells, and a strip of class cells sits beside it; a small brass counter at the grid's corner, part of the machine (like a gauge readout), rolls up to 1,097, the cell count of the 8-state program's pattern. ON 'changes' (beat writes): a hand-typed second pattern replaces 'error' in the field; only the cells change, flickering to new values in a wave, while beside the grid the program itself, drawn as a fixed cut-brass plate (a plain prop, not the stencilLantern painter), does not move or relight at all. No portrait of Kleene: the typewriter and the page only. The quoted words are spoken, so they are not set on screen.",
+      "lines": [
+        {
+          "id": "L0908",
+          "text": "Search patterns are what Kleene, back in 1951, called regular events.",
+          "direction": "the callback to chapter two, unhurried; 'Kleene' as KLAY-nee; 'regular events' as a term, not a quotation",
+          "pauseAfter": 0.7,
+          "spoken": "Search patterns are what Kleene, back in nineteen fifty-one, called regular events."
+        },
+        {
+          "id": "L0909",
+          "text": "As the code says, a new pattern “writes cells and changes no program.”",
+          "direction": "plain and delighted; 'As the code says' gives the speaker; the quoted words read as the code's own comment, crisp",
+          "pauseAfter": 0.5
+        }
+      ],
+      "beats": [
+        {
+          "id": "kleene",
+          "at": {
+            "line": "L0908",
+            "word": "Clay-nee"
+          },
+          "what": "the RAND page and typewriter are in frame; the date stamp sets in"
+        },
+        {
+          "id": "regular",
+          "at": {
+            "line": "L0908",
+            "word": "regular"
+          },
+          "what": "the typed lines lift into six paperLanterns with lettered threads for 'error'; the echo caption sets in"
+        },
+        {
+          "id": "table",
+          "at": {
+            "line": "L0909",
+            "word": "code"
+          },
+          "what": "the six lanterns flatten into a parchment grid of transition, accepting and class cells; the brass counter rolls to 1,097"
+        },
+        {
+          "id": "writes",
+          "at": {
+            "line": "L0909",
+            "word": "changes"
+          },
+          "what": "a new pattern replaces 'error': only the cells change; the program stencil stays still"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "Kleene's typed RAND memorandum page and typewriter (from ch02)",
+        "six paperLanterns with brass threshold rings, five lettered threads (e r r o r), an accepting ring on the last",
+        "parchment grid of pattern cells with a brass counter (1,097)",
+        "fixed cut-brass plate (the program)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "RAND · 15 DECEMBER 1951",
+          "beat": "kleene"
+        },
+        {
+          "kind": "label",
+          "text": "an echo, not a citation: the repo does not cite Kleene",
+          "beat": "regular"
+        }
+      ],
+      "music": {
+        "cue": "searchMap",
+        "note": "The pulse thins to its high tick alone (0.35); under the 1951 page a single low typewriter-carriage figure from chapter two returns, slowed. When the lanterns flatten into cells the tick resumes at full speed, as if the old idea had been plugged into the new machine. No chime."
+      },
+      "claims": [
+        "FR07",
+        "FR22",
+        "JS07",
+        "JS26"
+      ]
+    },
+    {
+      "id": "ch09-s05",
+      "kind": "scene",
+      "setting": "one document's 512-cell strip fed through a fixed brass reading head in the search hall; 2026",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "transitionIn": "cut",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "A long, low paper strip runs across the frame: one document's 512 cells, the real text of a generated log-event document (the shot author takes it from the repo's documentAt and runs the pattern 'error' over it, so every mark is computed, not drawn by eye), its characters cut out above their code-point numbers. At frame centre stands a fixed brass READING HEAD, a small paper gantry with a slot the strip passes through; on its side a ratchet wheel (the host ratchet from ch06) clicks forward one tooth per cell and never turns back: the program's steps, once each, in order. The head never moves; the strip is fed through it, and it ALWAYS travels left to right, in both passes, so nothing on screen ever goes back. FIRST PASS (beat backward, on 'walks'): the strip is fed in REVERSED, turned end for end so the document's last character leads, sliding left to right through the slot one cell per tick, on twos; each cell the head has read is left faintly lit, a trace that the pass has been there (no notes, no marks of meaning: only that it was read). The ratchet clicks forward 512 times. BETWEEN PASSES the strip leaves the head at the right, is lifted clear by a hand off frame, turned end for end in the air, and carried back over the head to the left without touching it; the ratchet resets with one clean click, a new pass. SECOND PASS (beat forward, on 'start'): the strip is fed in again left to right, now first character leading; where the head has read past the end of a match (beat known, on 'past'), the whole matched span lights copper at once, drawn a little larger than its cells: the match is only known once the head is beyond it. Head, ratchet and strip all go forward both times. Camera: locked on the head, a slight push in for pass two. Each pass label sets in as its pass begins and leaves when the next arrives.",
+      "lines": [
+        {
+          "id": "L0910",
+          "text": "A program can't go back, so search walks each document twice.",
+          "direction": "clear, practical, a craftsman explaining a trick; 'can't go back' plain",
+          "pauseAfter": 0.5
+        },
+        {
+          "id": "L0911",
+          "text": "From the end, then the start: a longest match is only known after reading past its end.",
+          "direction": "follow the strip: 'From the end' and 'then the start' evenly, a small turn between them; the reason after the colon plain and clear, a little lift on 'past its end'",
+          "pauseAfter": 0.5
+        }
+      ],
+      "beats": [
+        {
+          "id": "quote",
+          "at": {
+            "line": "L0910",
+            "word": "program"
+          },
+          "what": "the reading head's ratchet wheel catches the light: it turns one way only"
+        },
+        {
+          "id": "backward",
+          "at": {
+            "line": "L0910",
+            "word": "walks"
+          },
+          "what": "pass 1: the strip, turned end for end (last character leading), is fed left to right through the fixed head; read cells left faintly lit"
+        },
+        {
+          "id": "forward",
+          "at": {
+            "line": "L0911",
+            "word": "start"
+          },
+          "what": "between passes the strip is lifted, turned end for end and carried back to the left; pass 2 feeds it left to right, first character leading"
+        },
+        {
+          "id": "known",
+          "at": {
+            "line": "L0911",
+            "word": "past"
+          },
+          "what": "once the head has read past a match's end, the whole matched span lights copper, larger than its cells"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "one document's 512-cell strip with real characters and code points",
+        "a fixed brass reading head with a one-way ratchet wheel (from ch06)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "pass 1: from the end",
+          "beat": "backward",
+          "until": "forward"
+        },
+        {
+          "kind": "label",
+          "text": "pass 2: from the start",
+          "beat": "forward"
+        }
+      ],
+      "music": {
+        "cue": "searchMap",
+        "note": "The ostinato becomes the ratchet itself: one dry clack per cell as the strip feeds through, a descending woodblock line for pass one, the same line rising for pass two, the wheel's click the same in both; the both-branches motif's two lines take one pass each, a whole tone apart. Copper matches land as small ratchet catches."
+      },
+      "claims": [
+        "JS06",
+        "JS24"
+      ]
+    },
+    {
+      "id": "ch09-s06",
+      "kind": "scene",
+      "setting": "beside the search map: a small paper booth for the browser's own RegExp, a spool winder on one thread inside, a ten-second hourglass on its roof and a trapdoor in its floor; one machine, 14 October 2026",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "transitionIn": "cut",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "Camera crabs right from the reading head to a small cut-paper booth standing beside the map, like a ticket kiosk: inside, a mechanical paper worker (an automaton figure, not a person) at a small SPOOL WINDER, a single shuttle running back and forth on ONE thread, winding one document after another onto one spool: the browser's own RegExp, on one thread (looms belong to Handwired only; none appears in this booth). On its roof a ten-second hourglass marked '10 s'; in its floor a hinged trapdoor. Two dial gauges stand between the booth and the map, labelled 'this program' and 'RegExp', each with a small readout window. The scope label (per keystroke) sets in on the first word under the gauges. On 'keystroke' (beat dials) both needles flick and settle across their ranges, the program's between 11 and 15 ms, RegExp's between 8 and 28 ms, overlapping: neither always wins. Then (beat backtrack, on 'pattern') a new pattern slides into the field: ([a-z]+)+x. In the booth the shuttle starts running back and forth over the same stretch of thread, faster and faster, overwinding until the spool swells into a tangle; the hourglass turns and sand runs; RegExp's needle sweeps round past its scale and its readout climbs to 2.1 s. The scope label leaves as the equation sets in. On 'eleven' (beat program) the program's gauge has long since stopped at 11.0 ms; beside it the map's beads keep stepping strictly forward through their plates. Last (beat trapdoor, near the end of the hold): the hourglass is the page's limit, ten seconds, after which the page ends RegExp's worker; the trapdoor opens a crack and shuts, a visual for ending the worker (no figure falls; the automaton and its tangled spool simply go dark). Labels sit in the lower band; nothing overlaps the booth.",
+      "lines": [
+        {
+          "id": "L0912",
+          "text": "The browser's pattern-matcher, RegExp, on one core: eight to twenty-eight milliseconds a keystroke. The search: eleven to fifteen.",
+          "direction": "'RegExp' as REDGE-exp throughout; 'the browser's pattern-matcher' a light gloss; 'on one core' clear, it matters later; even-handed, the numbers given evenly, no thumb on the scale",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0913",
+          "text": "One pattern makes it try every way back: over two seconds. The program never goes back: eleven milliseconds.",
+          "direction": "a raised eyebrow on 'every way back'; 'over two seconds' with patience; 'never goes back' a quiet callback; the last number simple",
+          "pauseAfter": 0.5
+        }
+      ],
+      "beats": [
+        {
+          "id": "booth",
+          "at": {
+            "line": "L0912",
+            "word": "browser's"
+          },
+          "what": "the booth comes into frame with its hourglass and trapdoor; the worker at the spool winder; the scope label sets in"
+        },
+        {
+          "id": "dials",
+          "at": {
+            "line": "L0912",
+            "word": "keystroke"
+          },
+          "what": "both gauges flick and settle in overlapping ranges"
+        },
+        {
+          "id": "backtrack",
+          "at": {
+            "line": "L0913",
+            "word": "pattern"
+          },
+          "what": "the pattern ([a-z]+)+x slides in; the shuttle overwinds into a tangle; the hourglass runs; RegExp's readout climbs to 2.1 s; the equation replaces the scope label"
+        },
+        {
+          "id": "program",
+          "at": {
+            "line": "L0913",
+            "word": "eleven"
+          },
+          "what": "the program's gauge reads 11.0 ms, long settled; the map's beads step on, forward only"
+        },
+        {
+          "id": "trapdoor",
+          "at": {
+            "line": "L0913",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "the trapdoor opens a crack and shuts; the booth's worker and tangled spool go dark"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "paper booth with a mechanical worker at a spool winder (one shuttle, one thread)",
+        "ten-second hourglass marked 10 s",
+        "trapdoor",
+        "two dial gauges with readouts",
+        "the pattern field"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "Chrome 155 · 100,000 documents · per keystroke · RegExp on one thread",
+          "beat": "booth",
+          "until": "backtrack"
+        },
+        {
+          "kind": "equation",
+          "text": "([a-z]+)+x : RegExp 2.1 s · this program 11.0 ms",
+          "beat": "backtrack"
+        }
+      ],
+      "music": {
+        "cue": "searchMap",
+        "note": "The pulse steadies (0.45). The booth's tangle is a shuttle clattering back and forth faster and faster, a little comic; the hourglass is a soft continuous rasp of sand. The program's needle stopping at 11.0 ms is one clean woodblock clack against the still-clattering shuttle. The trapdoor is a dull wooden thunk; then just the pulse."
+      },
+      "claims": [
+        "JS11",
+        "JS12",
+        "JS16",
+        "JS26"
+      ]
+    },
+    {
+      "id": "ch09-s07",
+      "kind": "scene",
+      "setting": "the copper line over the Lifespan Rule, in the search hall's cyan grain, the RegExp booth far behind in the haze; 13 October 2026, later the same day",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "transitionIn": "cut",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "CUT, an insert: tight on tag 9 where s03b left it on the copper line (Device 1), the pencilled qualifier '(for the highlighter half)' legible on its front, the search hall's cyan grain behind and, small and hazy on the back plane, the RegExp booth from s06 with its single spool winder. THE REVIEW (beat review, on 'review'): the red-pencil hand arrives from the dark post at frame edge; the narrator's hands (lower left) flip the tag with a paper snap; on its back the red pencil writes '1 of 18 cores' as the label sets in (the date stamp, the same day, sets in with it). WORKERS (beat workers, on 'workers'): on the back plane the one booth opens out into eight booths side by side, eight spool winders running clean and fast, each on its own thread; the review label leaves and the measurement label sets in, both sides' numbers in equal light, neither lit as the winner. The narrator's hands flip it front again and the red pencil strikes it through once, a tight insert (beat struck, in the pause after the line). The thread drops to the Lifespan Rule and lands between 'an hour' and 'a day': barely a millimetre from the knot's start, the shortest thread in the film; a hairline copper pointer marks it. On 'hours' (beat hours) the camera eases down the thread to the ruler and holds: everything else on the line hangs far longer. Music near-silent here. THE GRACE NOTE (beat grace, on 'fast'): the red pencil is laid down beside the tag, unhurried, and far behind, the eight spool winders glint once. Hold on the struck tag and the millimetre of thread. TAG-LINE STAGING (meta staging.tagLine): THE CYAN GRAIN: the line strung inside the search hall at 60%, the grain of the search map's hundred thousand cells shimmering serverCyan behind it; the pencil rests on a hall pillar.",
+      "lines": [
+        {
+          "id": "L0915",
+          "text": "The same day, a review found RegExp had one of eighteen cores.",
+          "direction": "matter-of-fact, no relish; 'one of eighteen cores' clear",
+          "pauseAfter": 0.5
+        },
+        {
+          "id": "L0920",
+          "text": "With eight workers, RegExp keeps up, and wins after a pause, except on that one pattern.",
+          "direction": "even-handed, a fair witness; 'eight workers' plain; 'keeps up' and 'wins after a pause' given equal weight, no thumb on the scale; 'that one pattern' a light callback to the tangle; then let the strike land in the pause",
+          "pauseAfter": 0.7,
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        },
+        {
+          "id": "L0916",
+          "text": "That tag held for hours.",
+          "direction": "the refrain's single clause, quiet and almost tender, with a whisper of a smile; 'That tag' reminds the ear which belief; then let the silence sit",
+          "level": "soft",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0917",
+          "text": "The lab, with good grace: “RegExp is fast.”",
+          "direction": "warm; 'The lab' gives the speaker; 'with good grace' admiring; the three quoted words plain and unhurried, as the lab's own",
+          "pauseAfter": 0.5
+        }
+      ],
+      "beats": [
+        {
+          "id": "review",
+          "at": {
+            "line": "L0915",
+            "word": "review"
+          },
+          "what": "the red-pencil hand arrives; the tag flips with a paper snap; '1 of 18 cores' is written on its back; date stamp"
+        },
+        {
+          "id": "workers",
+          "at": {
+            "line": "L0920",
+            "word": "workers"
+          },
+          "what": "on the back plane the one RegExp booth opens into eight, eight spool winders running; the measurement label replaces the review label"
+        },
+        {
+          "id": "struck",
+          "at": {
+            "line": "L0920",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "the tag flips back and is struck through once; its thread drops to the Lifespan Rule between an hour and a day"
+        },
+        {
+          "id": "hours",
+          "at": {
+            "line": "L0916",
+            "word": "hours"
+          },
+          "what": "the camera eases down the hairline thread to the ruler and holds"
+        },
+        {
+          "id": "grace",
+          "at": {
+            "line": "L0917",
+            "word": "fast"
+          },
+          "what": "the red pencil is laid down beside the tag; the eight spool winders glint once, far behind"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand",
+        "narrator-hands"
+      ],
+      "props": [
+        "the copper line",
+        "the Lifespan Rule",
+        "tag 9",
+        "red pencil",
+        "the RegExp booth, then eight booths, small on the back plane"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "13 OCTOBER 2026 · THE SAME DAY",
+          "beat": "review"
+        },
+        {
+          "kind": "label",
+          "text": "a review, the same day · 1 of 18 cores",
+          "beat": "review",
+          "until": "workers"
+        },
+        {
+          "kind": "label",
+          "text": "RegExp in 8 workers: 1.9–6.7 ms · GPU: 4.5–5.2 ms back to back, 2–8× as long after a pause",
+          "beat": "workers"
+        }
+      ],
+      "music": {
+        "cue": "tagNine",
+        "note": "The detent figure completes its life in seconds: flip (paper snap) on 'review', a light patter of eight shuttles on 'workers', strike (dry pencil scratch into a wooden drawer closing) on 'struck'. On the strike the October pulse cuts to near-silence: room tone and one sustained low note through 'It held for hours.' On 'The lab' the pulse resumes lighter, at half its old tempo feel, and stays light."
+      },
+      "claims": [
+        "JS21",
+        "JS13",
+        "JS19"
+      ]
+    },
+    {
+      "id": "ch09-s08",
+      "kind": "card",
+      "setting": "the author's desk at evening, lamp lit; through the window behind, the Window Calendar's October column; 14 October 2026, evening, Pacific time",
+      "era": "2020s",
+      "mood": "emberRed",
+      "transitionIn": "lampChange",
+      "leadIn": 1.4,
+      "holdAfter": 2.5,
+      "visual": "Lamp change back to emberRed, cooling toward candleAmber over the shot (the score's resolution). The plain desk from s02 at evening: the lamp lit, the laptop open now, no logos, the author's hands absent. Through the window behind it, small and hazy, the Window Calendar's blazing October column, its 14 October sub-column fully lit. COMMIT CARD (beat commitCard, on 'go-ahead'): a small lowercase commit card slides under the lamp; the voice reads its words, so its typing is seen only as soft lines of ink, and the attribution with the commit's short hash 0237d40 (on screen only, never spoken) sets in beneath it. PUBLIC (beat public, on 'public'): in the calendar building behind, a ground-floor shutter rolls up and the street in front of the building fills with light: the repository open to anyone. The date stamp sets in at lower left. LAUNCH POST (beat post, on 'friends'): a second, plain card, white paper with no platform branding or logo, lands beside the commit card, its type also soft (the voice reads it); the commit attribution leaves as the post's attribution sets in. Hold on the two cards under the lamp and the lit street beyond as the shot ends.",
+      "lines": [
+        {
+          "id": "L0918",
+          "text": "On the fourteenth, Cheng gave the go-ahead: “Do it quick plz, then publish.”",
+          "direction": "light, amused, affectionate; read his words as his, quick and plain; 'plz' as 'pleez' (lexicon), not spelled out",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0919",
+          "text": "That evening it went public: “My dear friends, I’d like to show you my latest toy project”.",
+          "direction": "warm; 'went public' plain; then read his words gently and as his (the previous line named him), with the smallest smile on 'toy project'",
+          "pauseAfter": 0.5,
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "commitCard",
+          "at": {
+            "line": "L0918",
+            "word": "go-ahead"
+          },
+          "what": "the lowercase commit card (Q103) slides under the lamp"
+        },
+        {
+          "id": "public",
+          "at": {
+            "line": "L0919",
+            "word": "public"
+          },
+          "what": "the calendar building's ground-floor shutter rolls up and the street fills with light; date stamp sets in"
+        },
+        {
+          "id": "post",
+          "at": {
+            "line": "L0919",
+            "word": "friends"
+          },
+          "what": "the plain launch-post text card (Q104 substring) lands beside the commit card"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "plain desk and lamp from s02",
+        "generic laptop, open, no logos",
+        "lowercase commit card",
+        "plain white text card, no branding",
+        "the Window Calendar through the window"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "Cheng Lou · commit 0237d40",
+          "beat": "commitCard",
+          "until": "post"
+        },
+        {
+          "kind": "date",
+          "text": "14 OCTOBER 2026 · EVENING",
+          "beat": "public"
+        },
+        {
+          "kind": "label",
+          "text": "Cheng Lou · launch post",
+          "beat": "post"
+        }
+      ],
+      "music": {
+        "cue": "octoberBlaze",
+        "note": "The light pulse from s07 gathers once more (0.45) under the commit card, then eases as the shutter rolls up: the both-branches motif settles onto its upper line, gate fully open, and resolves for the first time in the chapter on 'toy project'. Fades to room tone across the hold, ready for chapter ten's dusk."
+      },
+      "claims": [
+        "PJ11",
+        "PJ12",
+        "PJ14"
+      ]
+    }
+  ]
+}

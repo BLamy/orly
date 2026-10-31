@@ -1,0 +1,84 @@
+{
+  "id": "demo-handwiredos",
+  "checked": 24,
+  "confirmed": 16,
+  "corrected": 7,
+  "unverifiable": 1,
+  "notes": "18 key claims plus 6 other dossier items. Confirmed key claims: 1,2,3,4,6,7,8,9,10,11,12,13,15,16,17,18. Corrected key claims: 5 (the machine isn't named for the Oct 13-14 runs; the film's own run is a single-session record) and 14 (the drop from 21,229 to 4,251 took two steps). Also corrected: the GPU-cases overstatement, the README line citations, the emitFrontmost direction, the pinned commit's description. Unverifiable: quote 11 (the X post), kept UNVERIFIED. Executing repo code was denied, so 'about 9 s' for the tests and the 40.9-44.2 µs film run were not reproduced. 127 tests confirmed statically.",
+  "corrections": [
+    {
+      "original": "Claim 5: '25.1-25.3 µs at 4,251-4,254 ops (Oct 13-14, author's M5 Max)'; misconception 7 'The author's runs used an Apple M5 Max'.",
+      "verdict": "corrected",
+      "fix": "status.md doesn't name the machine for the Oct 13-14 runs (25.1-25.3 µs on Oct 13 at load 3.7-4.2; 25.2-25.3 µs on Oct 14), nor for the 35.76 µs median (load 1.5-1.7). M5 Max is stated only for the Sept 16/17 runs and some doc measurements. Caption without a machine. The film's 40.92/42.13/44.20 µs (M4 Max, load ~10.5) is a single-session record that no one reproduced.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L26",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L28",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L40",
+        "films/handwired-explained/research/dossiers/compilation-matmul-backends.md §5c"
+      ]
+    },
+    {
+      "original": "Claim 14 / hook 8: the program went from 21,229 to 4,251 ops 'by handing text back to the browser's own textarea'; §7 'about 4.6× smaller'.",
+      "verdict": "corrected",
+      "fix": "Two steps on Oct 13: merging Files into Monitor took 21,229 ops / 230 layers to 19,851 / 217. That evening the textarea took 19,851 to 4,251 ops / 123 layers (about 4.7× smaller; 113.8-114.8 µs to 25.1-25.3 µs, about 4.5× faster).",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L22",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L24",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L26"
+      ]
+    },
+    {
+      "original": "§4: 'The GPU wins only when one program runs over many tables that stay on the GPU, as in JSON search.'",
+      "verdict": "corrected",
+      "fix": "patterns.md names two cases: a tree of matrix products run one dispatch per level (knuth-plass, 0.47 ms on WebGPU against 3.4 ms on the CPU), and one program over many tables that stay on the GPU (JSON search).",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L55-L58"
+      ]
+    },
+    {
+      "original": "README citations: S1 L8 (tests), L23 (viewport), L30 (Photos zoom), L32 (Monitor), L33 (Notes, quote 9), L45-L57 (files).",
+      "verdict": "corrected",
+      "fix": "At 257856e: tests L9, viewport L22, Photos L29, Monitor L30, Notes L31, files table L35-L44.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md"
+      ]
+    },
+    {
+      "original": "§5d: 'emitFrontmost walks stacking ranks front to back'; the hit test is '13 operations in 4 layers per rectangle'.",
+      "verdict": "corrected",
+      "fix": "The code checks ranks one at a time, looping from rank windowCount-1 down to 0, and no source says which end is the front. The hit test is '13 operations in 4 layers per rectangle once the edges exist', with edge bits shared between rectangles, comparing distance >= 0.5.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/window-manager.ts#L2269-L2326",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L121"
+      ]
+    },
+    {
+      "original": "Pinned commit 257856e described as 'a lab commit'.",
+      "verdict": "corrected",
+      "fix": "257856e is a merge commit (parents 4ea7fcb, e86c1b4) bringing in the recovery-parser lab experiment; author date 2026-10-16; no HandwiredOS change.",
+      "sources": [
+        "https://github.com/chenglou/handwired/commit/257856e",
+        "git show 257856e in the clone"
+      ]
+    },
+    {
+      "original": "Sept 16 WebGPU row and focused-window description lacked conditions / cited CSS for the filled title dot.",
+      "verdict": "corrected",
+      "fix": "Added Bun 1.4.0 and load average 4-6, and noted that the 4-window, 14,019-op program was measured before the Sept 17 pass and that the drag was Files over Notes. The filled title dot is now cited to the screenshot; the CSS gives the 7% copper wash and the 24% hairline.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L40",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/handwired-os.css#L242-L253",
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos-handwiredos.webp"
+      ]
+    },
+    {
+      "original": "Quote 11: \"Isn't a neural net probabilistic? Yes if you train it, no if you hand-wrote the weights that correspond exactly to your program\" (Cheng Lou on X).",
+      "verdict": "unverifiable",
+      "fix": "Keep it UNVERIFIED and do not use it as a quote. Only a members-only Medium article carries it, and its excerpt ends ', lol 🙂'. The original X post was not found on 2026-10-27.",
+      "sources": [
+        "https://javascript.plainenglish.io/goodbye-if-else-hello-handwired-neural-code-35c821945d96"
+      ]
+    }
+  ]
+}

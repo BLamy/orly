@@ -90,12 +90,12 @@ export const CLOUD_IDX: number[] = Array.from({ length: 500 }, (_, i) => i * 8);
 
 export const CH_X0 = 690;
 export const CH_X1 = 1185;
-export const CH_Y0 = 505;
-export const CH_H = 340;
+export const CH_Y0 = 480;
+export const CH_H = 330;
 export const chX = (i: number): number => CH_X0 + (i / (NS.length - 1)) * (CH_X1 - CH_X0);
 export const chY = (acc: number): number => CH_Y0 - acc * CH_H;
 
-export const CAM_CLOUD: CameraState = { x: 385, y: 320, k: 1.25 };
+export const CAM_CLOUD: CameraState = { x: 385, y: 340, k: 1.2 };
 export const CAM_CURVES: CameraState = { x: 910, y: 330, k: 1.15 };
 
 export interface Scene {

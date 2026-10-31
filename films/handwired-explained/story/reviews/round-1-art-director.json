@@ -1,0 +1,138 @@
+{
+  "reviewer": "art-director",
+  "round": 1,
+  "lens": "visual direction",
+  "method": "Read all 101 shots (12 chapters) in script.json against the kit catalogue (docs/film/kit-catalog.md), the style bible (§2 moods, §3.3 camera, §6 metaphors and the binding rule, §9 transitions and pacing, §10 don'ts), the bible's art-department list (§4, machines 1-26) and contracts.ts. Ran `node generator/film/script.mjs assemble --slug handwired-explained --check`: 0 errors, 70 warnings (all on-screen reading time), estimate 25.8 min (1,550.6 s) at 140 wpm, inside the brief's 22-26 min range, so runtime is not an issue. Counted 284 on-screen text items (76 quotes); 48 shots carry more than two non-stamp text items. Transition census: 38 crossfade, 25 cut, 18 lampChange, 11 paperWipe, 6 inkBleed, 3 fadeBlack. Checked the plate arithmetic with Math.fround: 1708 x f(1/244) = 6.999999523162842; 229+167.4+208.5+194.4 is 799.300048828125 summed in a row and 799.2999877929688 summed in pairs; the 8,388,609 detent gives 0 for 0.49999997 and 1 for 0.5; 16,777,222 - 5 rounds to 16,777,216 and -4 stays at 16,777,218; the ReGLU valve's 0.225 / 0.45 / 1.5; the rank board's 2 0 3 1 and the K-slot rack's 1, 2, 4. All of them check.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8.5,
+    "clarity": 7,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 7,
+    "voice": 7.5
+  },
+  "critical": [
+    "ON-SCREEN TEXT OVERLOAD buries the machines. The check reports 70 shots or items short of reading time. There are 284 text items (76 quotes), and 48 shots carry 3 to 6 non-stamp items while the narrator is speaking. Worst: ch02-s01 (6 items, 386 characters, including a 178-character quote that is also spoken), ch06-s05 (6 items, 378 characters), ch06-s07 (6 items: equation, label, 2 name cards, Brent quote, caption), ch02-s03 (6), ch05-s06 (5), ch06-s03 (5), ch09-s07 (5), ch03-s05 (5 equations at once), ch01-s06 (5 labels on the film's first machine). The teaching machines are the film's strength, and the picture is a captioned diagram whenever 4 to 6 cards sit on top of them. FIX, as a film-wide rule: (a) apart from the date stamp and name card, a shot gets at most 2 text items, one per beat, and each leaves before the next arrives; (b) a quote that is spoken is never also set in full on screen, only a 3-to-6-word attribution fragment (ch02-s01, ch03-s02, ch03-s06, ch06-s01, ch07-s01 and ch09-s03 all read the full quote aloud over the full card); (c) a quote shown but not spoken gets a music-only window of at least (characters / 12 + 1.5) s through minDuration or holdAfter; (d) move secondary labels (ch02's 'context: the repo cites none of this work' caption, the Gidon 2020 card, the Siegelmann/Sontag and Maass/Orponen cards, the 'since then a drag frame with 16 moves...' label, scope lines like 'one machine · Chrome 155 ...') into narration or the sources card; (e) re-run --check until the reading-time warnings are 0 or each is justified in writing.",
+    "THE CENTRAL MACHINE'S IDENTITY CLAIM IS DRAWN ON MADE-UP DATA. ch05-s01 says the loom's 'thread counts are illustrative density only'. ch05-s04 then says 'the loom's threads ARE the wallpaper: one arc per weight', and ch01-s04 and the bible (art department 10) say the wallpaper is drawn from the real wiring, 9,909 arcs. If the loom is illustrative and the wallpaper is real, the match cut that pays off ch01 shows something false, and it breaks the style bible's first rule for metaphors (§6: 'bind every visual variable to a real quantity... a metaphor that is only decoration is a lie'). The same loom carries ch07-s04 (backwards), the X-ray desk beats and the finale (ch12-s02/03). FIX: export the compiled HandwiredOS circuit from the pinned clone (the page's own wallpaper generator already walks it). Bind per-frame thread count and sign to each layer's real nonzeros (copper +, indigo -), gate frames to the real ReGLU/boolean layers, and the highlighted chain to the real 71-gate path. Generate the ch01-s04/ch05-s04 arcs from the same export, so the loom-to-wallpaper dissolve is one dataset seen two ways. Record the export command in sources.json. If the export cannot be made, cut 'are the wallpaper' from the picture's claim and label the loom 'shape, not data'."
+  ],
+  "issues": [
+    {
+      "where": "ch04-s06, ch04-s07, ch04-s09 (and ch01-s06)",
+      "problem": "The film's signature result is shown as a trick, not as arithmetic: 'a tile slides out into the tray that neither belt carried: 11'. ch04-s06 is the explanation shot, but 'both belts feed half-tiles' never shows HOW 0.5 x 10 + 0.5 x 12 becomes 11. In ch04-s07, shutters 'twice open' and 'minus one' produce an 8 the eye cannot add up. The ch01 cold open may keep the mystery; the deep dive must not.",
+      "fix": "Make the shutters scale the tiles they pass. A half-open shutter re-letters a 10 tile to 5 as it squeezes through and a 12 tile to 6; the two land in the tray and fuse into 11 on the clack. At 4.25: 2.5 and 9 make 11.5. In ch04-s07 the over-open 10 shutter passes a 20 tile, and the 'minus one' 12 shutter passes an INDIGO -12 tile (reusing the film's own copper-adds / indigo-subtracts code from ch01-s04), and 20 + (-12) fuses to 8. ch04-s09 repeats the 5 + 6 fusion. Then the tray's tile is a visible sum, and the select formula on the plate is the picture."
+    },
+    {
+      "where": "ch09-s05",
+      "problem": "Contradictory teaching image. The strip sits on a ratchet whose teeth 'face one way only, a visual for a program can't go back', and the first clerk then walks the strip right to left, backwards across the ratchet. The picture says the opposite of the line.",
+      "fix": "Show both passes as a single forward sweep in program order: a fixed reading head (the ratchet) and the strip fed through it, first from its right end (pass 1, leaving notes), then re-fed from its left end (pass 2, counting). Or put a one-way turnstile at each cell that each clerk passes exactly once. In both versions, each cell is visited once per pass and nothing ever steps back."
+    },
+    {
+      "where": "ch07-s09 (and ch07-s06 backdrop)",
+      "problem": "The mistyHills traveller walks downhill as 'a picture of descent, not the gallery's own data'. The kit's ridge is a fixed closed-form loss with its own trap and minimum (kit-catalog: f(x) = 0.04x^2 + ...), unrelated to the gallery, so this is decoration presented as teaching, beside a loss chart that IS real.",
+      "fix": "Either drive the front ridge's profile and the traveller's strides from the gallery's real loss curve (the same trainer run, Story preset, seed 0x517a9e, that the shot already requires for the apron chart; mistyHills accepts a landscape, so pass it the measured curve), or drop the traveller and keep the hills as a backdrop only. Do not show two descent pictures with different data in one frame."
+    },
+    {
+      "where": "film-wide transitions; ch04 in particular",
+      "problem": "Too many lamp changes and too much mood whiplash. The film has 18 lampChanges (3 s each, about 54 s of frame dimmed to the fg value) plus 20 other signature devices: one device every ~41 s, against the bible's §9 'roughly one per 60-120 s; signature transitions mark chapter and era boundaries only'. ch04 runs parchment -> candleAmber (lampChange s06) -> winterBlue (lampChange s07) -> parchment -> duskRose (lampChange s09) -> labGreen (lampChange s10) -> parchment: four lampChanges and five moods in about three minutes of one continuous argument. ch09 has three, ch11 two inside five shots, ch08 two.",
+      "fix": "Keep lampChange for chapter openings and true era shifts (ch03-s01, ch05-s06 furnace, ch07-s01, ch09-s01, ch11-s01, ch12-s05), about 6 to 8 in all. Turn the mid-argument mood moves into tint crossfades (2-4 s Lab interpolation, which costs nothing): ch04-s06, ch04-s09, ch07-s03, ch08-s03, ch08-s06, ch09-s03, ch09-s08, ch11-s04. Keep Deep Dive I in the parchment/candleAmber family, with ONE cold excursion (winterBlue for the 2^24 ruler, tint in, tint out) and labGreen only for the lens train if it earns it. Turn half of the 38 crossfades into plain cuts on motion."
+    },
+    {
+      "where": "ch04 (s01-s03, s06-s07, s11-s15)",
+      "problem": "Deep Dive I is 10 parchment plates out of 16 shots, about 6 minutes of ink-on-paper in a row. The plate is the bible's mode for equations, but this hides the film's best silhouette machines (hinged black boards, lever, belts) from the backlight and haze they need. ch04-s02/s03 are 'plates' on which black boards rise, a hybrid that loses both depth and contrast.",
+      "fix": "Stage the machine build (s02, s03, s06, s07, s08-s10) as a backlit workbench SCENE: boards, lever, belts and tray as ink silhouettes against a lit window bay (windowWall at L2, haze band at board height, an L6 framing post), with the ledger/formula as a small parchment card clipped to the bench. Keep true plates for s12 (detent), s13 (exactness) and s14 (study card). This also gives the copper line (below) a home."
+    },
+    {
+      "where": "Device 1, the copper line (28 shots: ch01-s05/s07/s08, ch02-s01/s05/s06, ch03-s03/s06, ch05-s03, ch06-s05, ch07-s01/s05/s11, ch08-s02/s03/s08, ch09-s07, ch10-s01..s04, ch11-s02, ch12-s01..s04)",
+      "problem": "The line is mostly 'strung across the dark', a void with no set. Across 28 shots the flip / red-pencil-writes / flip / strike routine repeats about 8 times at the same height (58%), with the same framing and the same mid-shot. The bible's don'ts #9 (camera sliding a flat picture: every move needs 2+ planes) and #20 (static, centred staging for minutes) apply. There is also a risk of monotony across 25 minutes.",
+      "fix": "Give the line a physical home established in ch01-s05: the tag-keeper's workshop, with a window bay at L2 (windowWall), the HandwiredOS desk on a table at L3, the line at L4 and a dark L6 post at frame edge where the red pencil rests. Then vary the ritual's staging by chapter: ch03 close and low (tag fills a third of frame); ch05 seen through the loom's frames; ch06 from above the clockwork; ch08 against the cold window with snow beyond; ch09 inside the search hall's cyan grain; ch10 at dusk over the hills (already planned). Shoot at least two strikes as inserts (tight on the pencil and the tag's edge, a cut, not a camera move) so the routine reads as a refrain, not a repeat."
+    },
+    {
+      "where": "ch10 (all four shots)",
+      "problem": "The chapter is four shots of white text cards dropping onto the copper line at dusk. Its idea, 'the world reads the tags', has no image of a world. It is the film's visually thinnest stretch.",
+      "fix": "Show the strangers without drawing anyone. Put a far ridge of lit windows across the valley (skyline 'bayArea' at L1, lit ~0.4, hazed). Each stranger's card arrives along a fine thread from one of those windows to the line, so the threads visibly come from outside the lab. ch10-s04's 'no public word about the lab' becomes the ledger table at the line's end with no thread reaching it while the town's threads end at the tags. Keep the cards to one per beat."
+    },
+    {
+      "where": "ch06-s05",
+      "problem": "Two shots' worth of action in about 25 s: split-screen desks, ghosts, drift gauge, two 32-cell bit strips, carbon-paper tray, then a tilt to the line, tag 7 tied, flipped, written, struck, the thread dropping to a date tag, and a label, with 6 text items.",
+      "fix": "Split it. s05a: the two desks (ghost drift to 359 px, bits lock, carbon sheets thrown away), with one caption. s05b: tag 7 on the line (tie, flip, strike, drop to 15 Sept). Move 'since then a drag frame with 16 moves runs about 17 evaluations' into narration or cut it."
+    },
+    {
+      "where": "ch11-s01",
+      "problem": "Five machine steps (valid run, kinked stall, count reveal, stencil training with soft blends and a detent wave, two re-runs plus a ghost) in 34 words, about 15 s of voice. The bible's 'one focal motion per moment' cannot hold, and the stencil-softening reading (the core idea) will flash by.",
+      "fix": "Split at 'Train': s01a (grid, valid thread, kinked stall, the dark wells), s01b (stencil laid, wells blend then snap, the 240 pins never flicker, re-runs). Give s01b minDuration about 14 s with a held wave of snapping wells under music. Drop the 3-label count block for a single label."
+    },
+    {
+      "where": "ch06-s09",
+      "problem": "The table-as-arithmetic picture is muddled: 'every drawer front lights at once... a one-hot row of lamps with one lit and every other tray still filled and summed'. The eye cannot read 30,002 operations or why they are needed.",
+      "fix": "Reuse the film's own select vocabulary. Every one of the 10,000 drawers slides open and pushes its card toward a shared funnel past its OWN shutter (the ch04 shutter); one shutter is open and 9,999 are shut, and all of the cards move. The counter spins while the shut ones still travel. Cut to the index-read drawer: one arm, one drawer, one card, counter 1. The point, 'a lookup by arithmetic is the ternary's select done 10,000 times', is then seen."
+    },
+    {
+      "where": "ch09-s06",
+      "problem": "Symbol collision: the RegExp automaton works 'at a tiny loom of thread'. The loom is the film's sign for the compiled network (ch05, ch07, ch12), so giving the browser's RegExp a loom muddles the comparison it is meant to sharpen.",
+      "fix": "Give RegExp a different object: a single spool winder or a shuttle that runs back and forth along a strip on one thread. When it backtracks, the thread overwinds into a growing tangle on the spool. Keep looms for Handwired only."
+    },
+    {
+      "where": "ch09-s04 (and ch02-s02)",
+      "problem": "Kit misuse. ch09-s04 calls for the kit's lanternNetwork to draw a 6-state automaton with lettered arrows, but lanternNetwork is an MLP painter bound to XOR training (epoch/sample/wave/back) and cannot draw a chain of states with labelled transitions. ch02-s02 asks for 'stencilLantern-style' lanterns, but stencilLantern is the convolution machine.",
+      "fix": "Build both from the shared metaphor kit: paperLantern (with its threshold ring, as the bible's §6 recipe says) plus thread and label for the edges. In ch09-s04, six paperLanterns in a row with threads lettered e r r o r and an accepting ring on the last. Name the right primitives in the visual so the shot author does not reach for the wrong painter."
+    },
+    {
+      "where": "ch08-s01",
+      "problem": "Camera instruction contradicts the set: 'a slow vertical crane down the building's face from June toward the right'. Months are side-by-side COLUMNS, so June to August is a lateral move, and a vertical crane cannot reach it.",
+      "fix": "A slow lateral track left to right at the building's mid-height (with a slight drop so the August sill and its snow sit in the lower third), past June's 72 and July's 6 to the dark August column."
+    },
+    {
+      "where": "Device 2, the Window Calendar (ch03-s01, ch08-s01/s08, ch09-s01, ch12-s01)",
+      "problem": "The building's geometry is not specified, yet it must hold June 72, July 6, August 0, September 58 and October 689 (four sub-columns of 242/200/113/128) at one pane per commit, at the same scale and placement in every appearance. If June's column sets the pane size, October is roughly 10 times taller and either leaves frame or shrinks below legibility.",
+      "fix": "Fix the grid once in cast.json or a set note. For example: every month column is 6 panes wide at a fixed pane size, so June is 12 storeys, September about 10, and October's four day-columns rise 41/34/19/22 storeys above the roofline as a tower annexe. Write the October tower's height into ch09-s01 as the image ('the building grows a tower in four days'), with the crane-up revealing it. Keep the same layout for ch12-s01's distant ridge."
+    },
+    {
+      "where": "ch02 (s01-s06 framing caption)",
+      "problem": "Layout collision: the 'context: the repo cites none of this work' caption sits small 'in the lower left corner for the whole chapter', where placeStamp sets the date stamps (bottom-left by kit default) in ch02-s01, s03 and s04. It is also a sixth text item in shots that are already overloaded.",
+      "fix": "Say it once in narration in ch02-s01 (or as a single term-style tag at upper right on its first beat) and drop the persistent caption. If it must stay, move it to the top-right margin and keep date stamps bottom-left."
+    },
+    {
+      "where": "ch06-s12",
+      "problem": "The deep dive's turn ('the network is one fixed, exact step; the host turns the crank') is crowded: Kleene dial echo, crank handle, label, a repo quote card, two chalk name cards and a framing label (5 text items) over the one image that should be clean.",
+      "fix": "Keep the crank turning, the dial settling over the loom and the handle on the host's side. Keep one text item (the lab guide's sentence, trimmed). Move Siegelmann & Sontag / Maass & Orponen to the sources card, or to a one-sentence spoken aside with no cards."
+    },
+    {
+      "where": "ch12-s01",
+      "problem": "Feasibility of legibility. Twelve tags plus a log-scale Lifespan Rule 'laid along the valley floor' (in perspective) plus a distant Window Calendar, in a 1280x720 frame with 'tag fronts legible'. At 17.4 px minimum type, twelve readable tags do not fit one frame, and a foreshortened ruler cannot be read against thread drops.",
+      "fix": "Keep the line and the Rule parallel to the picture plane (front-on, Rule at L4 under the line, never on the floor). Let the slow lateral drift carry the legibility: about 4 tags in frame at a time at about 110 px tag width. Give the Calendar a single far-ridge silhouette with its panes dark. Hold a final wide in which the tags are shapes and states (struck, riveted, frayed) rather than words."
+    },
+    {
+      "where": "ch12-s02",
+      "problem": "Twelve hand-lifts 'one tag at a time on twos' in about 13 s of narration is about one lift per second: frantic for the film's calmest act, and the dependency threads drawing back to earlier columns will not read.",
+      "fix": "The hands re-hang the first two tags (columns 0 and 1) by hand. Then the rest lift and re-hang themselves in a column-by-column cascade (one column per score beat), each landing drawing its back-threads. Keep minDuration at about 16 s so the six columns can settle before 'And the line becomes a loom'."
+    },
+    {
+      "where": "Cast: the five kinds of hand (narrator-hands, red-pencil-hand, author-hands, agent-hand, viewer-hand)",
+      "problem": "Five disembodied paper hands share one silhouette language. Three of them often appear together (ch03-s01, ch08-s02, ch08-s07), and in some shots the narrator flips while red writes, in others red flips. Without strict silhouette signatures the audience will lose track of whose hand is whose. ch08-s06 also has 'the pencil line simply draws itself', which breaks the red pencil's own rule.",
+      "fix": "Lock the signatures in cast.json and reuse the neural-net-history rig (apps/bookshelf/src/viz/films/neural-net-history/sets/narratorHands.ts). Narrator: rolled linen sleeve, always from lower LEFT, does every tie/flip/rivet. Red pencil: plain cuff, always from RIGHT, only writes, strikes or rests. Author: shirt cuff and a watch-less wrist, only at the laptop. Agent: paler (haze-lifted one step), never touches anything first. Viewer: bare, from below. In ch08-s06 bring the red-pencil hand in to draw the circle."
+    },
+    {
+      "where": "ch04-s15",
+      "problem": "An 11.4 s silent shot whose only content is a sentence typing onto a pinned plate: a text slide, not an image. The plant matters (paid in ch08-s05), but it costs a full shot of the deep dive's momentum.",
+      "fix": "Fold it into the end of ch04-s14. As the wall of 4,402 ticks completes, the camera drifts to the line where the small plate already hangs on its peg beside tag 6, and the sentence is legible for about 6 s under the hold. Or keep the shot but stage two plain paper evaluators side by side behind the plate, ticking in lockstep, so the sentence has a picture."
+    },
+    {
+      "where": "ch01-s06",
+      "problem": "The film's first machine arrives complete in one shot, with two boards, lever, two belts, two shutters, tray, marble, hands and 5 labels, before the viewer knows what any part is. 'One focal motion per moment' (§10 #19) fails in the first minute.",
+      "fix": "In the cold open show only the boards, the lever and the tray in silhouette, with the belts as dim moving shapes in the L3 haze. Keep the labels to the code line and the three results (a = 5 -> 10, a = 3 -> 12, a = 4.5 -> 11); drop 'JavaScript says 10' to narration or a later beat. ch04 then builds the full machine, and the reveal of the belts behind the boards (ch04-s04) becomes a real reveal."
+    },
+    {
+      "where": "Feasibility: the build list",
+      "problem": "Almost none of the film's 25-odd teaching machines exist in the kit. Only paperLantern, thread, knot, mistyHills and stencilLantern apply. The loom, clockwork, belts and shutters, lens train, detent ruler, valve, Huber clamp, rank board, K-slot rack, card cabinet, Window Calendar, desk, tag/line/Rule and recovery grid are all new painters. Without a shared module plan, per-shot authors will each redraw them and continuity (scale, placement, colour code) will drift.",
+      "fix": "Add a build list to the outline before film-shots, with shared set modules under apps/bookshelf/src/viz/films/handwired-explained/sets/. (1) tagLine: line, tags with states, Lifespan Rule, 28 shots. (2) windowCalendar: fixed grid, 5 shots. (3) handwiredDesk: X-ray layers as flags, 9 shots. (4) rampBench: boards, lever, belts, shutters, tray, marble, ch01 and ch04. (5) matmulLoom: driven by the real circuit export, ch05/ch07/ch12. (6) hostClockwork: escapement, ratchet, crank, arms, ch06. (7) reGluValve: ch07 plates and the X-ray. Reuse narratorHands from neural-net-history. Each painter takes real data and exposes progress params, like the kit's metaphors."
+    }
+  ],
+  "strengths": [
+    "Teaching machines bound to real numbers carry nearly every idea, and the arithmetic on them checks by hand: two hinged boards and a lever whose difference is clamp(a-4,0,1); the 2^24 ruler whose odd ticks fall through the gaps, so a-5 visibly slides to 16,777,216 and the lever bends past its stop to 2; the boolean detent with the odd start tick drawn hollow and the even tick filled, so 'ties go to even' is seen; the sign-cascade lens train magnifying a hairline to a full bar (2^14 x 2^120 x 2^15 = 2^149); the spring stamp and the squaring press with its operation counter frozen at 14 while the step dial spins; the rank board; the K-slot rack; the ReGLU sluice whose cam is cut in the shape of the Deep Dive I copper hinge; the Huber clamp's collared springs. Nothing in this film is a box and an arrow.",
+    "Strong recurring visual devices that accumulate meaning. The X-ray desk adds one silent component per chapter (234-cell source table, 2,776 ramps and 59 detents, the 130-frame loom, the 300-tooth ratchet, then one DARK valve), so the desk ends the middle of the film fully explained. The Window Calendar's one pane per commit, at exact counts (72, 6, 0, 58, 242/200/113/128), tells the project's history with no figure in any window. The log-scale Lifespan Rule measures every belief's thread.",
+    "The finale is form as content: the tags are re-hung by the compiler's own dependency-depth rule (computed from the outline, not placed by eye), the washing line becomes the same loom as ch05, and one forward wave runs through it in which struck tags are computed and then shuttered to zero, the README's select applied to the film itself. It pays the ch04 shutters, the ch05 loom and the refrain in one image.",
+    "Set-ups and payoffs in pictures, not words: the cold furnace (ch05-s06) relit serverCyan for JSON search (ch09-s03); Kleene's clock dial with its crank outside the frame (ch02-s03) settling over the loom with the host turning the crank (ch06-s12) and becoming the 'error' automaton flattening into cells (ch09-s04); the frosted weight-knob cracking free (ch07-s01); the 1943 lanterns' ghost beside the shut valve (ch07-s03); the out-of-focus Notes line racked sharp at the end (ch12-s05).",
+    "Respectful, fair casting choices that suit the silhouette language and the brief: no portraits for Kleene, Sklansky, Brent, Kung or any Hacker News commenter, only typewriters, text cards and tags; Cheng Lou as hands only; the coding agent as a paler second hand, named once and neutrally; red-pencil and narrator hands as the film's grammar of doubt and belief; equal light on both faces of every contested card (Sutton/Brooks, carry vs snap)."
+  ]
+}

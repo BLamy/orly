@@ -59,7 +59,8 @@ export const OBS_VIS: Patient[] = OBS.slice(0, 120);
 export const RCT_VIS: Patient[] = RCT.slice(0, 120);
 
 // layout: observational panel left, randomized right; two arm columns each
-export const yScale: ScaleLinear<number, number> = scaleLinear().domain([-1.4, 2.6]).range([600, 170]);
+// the top band (y < 215) is kept clear of points so the arm labels and chips read cleanly
+export const yScale: ScaleLinear<number, number> = scaleLinear().domain([-1.4, 2.6]).range([600, 215]);
 export const PANEL = {
   obs: { x0: 90, cx: 210, tx: 400, w: 480 },
   rct: { x0: 700, cx: 820, tx: 1010, w: 480 },

@@ -1,0 +1,46 @@
+{
+ "shot": "ch05-s01",
+ "at": "2026-10-28T17:39:04.785Z",
+ "step": 0.0833,
+ "sampled": 211,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "HandwiredOS",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "2,776 ReGLU gates · 59 boolean atoms",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch05-s01-plate-card"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch05-s01-plate-card",
+   "probed": true,
+   "from": 3.8,
+   "to": 16.467,
+   "minInkWhilePaper": 0.54
+  }
+ ]
+}

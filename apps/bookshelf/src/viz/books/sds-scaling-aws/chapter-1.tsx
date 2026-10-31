@@ -30,7 +30,7 @@ import type { CameraState, ChannelRef, SceneState } from '../../core';
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
-const BOX = { x: 640, y: 360 } as const;
+const BOX = { x: 640, y: 350 } as const;
 const METERS = ['CPU', 'memory', 'IO', 'network'] as const;
 
 const rand = mulberry32(20260720);
@@ -42,13 +42,13 @@ const REQS = Array.from({ length: N_REQ }, (_, i) => ({
 }));
 
 // vertical scaling: the box's size at each "bigger box" step
-const SIZES = [1, 1.25, 1.55, 1.9] as const;
+const SIZES = [1, 1.2, 1.4, 1.6] as const;
 // cost curve points (x: size step, y: cost — super-linear)
 const COST = [0.1, 0.24, 0.52, 1.0] as const;
 
-const CAM_BOX: CameraState = { x: 640, y: 360, k: 1.25 };
-const CAM_METERS: CameraState = { x: 700, y: 350, k: 1.5 };
-const CAM_COST: CameraState = { x: 950, y: 300, k: 1.25 };
+const CAM_BOX: CameraState = { x: 640, y: 350, k: 1.25 };
+const CAM_METERS: CameraState = { x: 720, y: 350, k: 1.5 };
+const CAM_COST: CameraState = { x: 790, y: 330, k: 1.25 };
 
 export interface Scene {
   tl: Timeline;
@@ -211,26 +211,34 @@ export function Render({ s }: { s: SceneState }) {
           })}
         </g>
 
+        {/* ---- users: where the dots come from ---- */}
+        <g opacity={boxU * dimAll * 0.85 * clamp01((700 - cam.x) / 60)}>
+          <text x={150} y={222} fill={colors.MUTED} fontSize={14}>
+            users
+          </text>
+          <path d="M150 236 H236 M228 230 L236 236 L228 242" fill="none" stroke={colors.MUTED} strokeWidth={1.4} />
+        </g>
+
         {/* ---- the box ---- */}
         <g opacity={boxU * dimAll}>
           <rect x={BOX.x - bw / 2} y={BOX.y - bh / 2} width={bw} height={bh} rx={16} fill={colors.PANEL} stroke={dieU > 0.4 ? colors.NEGATIVE : colors.TEXT} strokeWidth={1.8} />
-          <text x={BOX.x} y={BOX.y - bh / 2 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={BOX.x} y={BOX.y - bh / 2 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             EC2 instance {sizeK > 0.5 ? '· a bigger box' : ''}
           </text>
           {/* web server + mysql inside */}
           <rect x={BOX.x - bw / 2 + 20} y={BOX.y - bh / 2 + 24} width={bw / 2 - 32} height={bh - 48} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
-          <text x={BOX.x - bw / 4 - 6} y={BOX.y} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5 * size}>
+          <text x={BOX.x - bw / 4 - 6} y={BOX.y} textAnchor="middle" fill={colors.ACCENT} fontSize={14 * size}>
             Web Server
           </text>
           <rect x={BOX.x + 12} y={BOX.y - bh / 2 + 24} width={bw / 2 - 32} height={bh - 48} rx={10} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-          <text x={BOX.x + bw / 4 - 6} y={BOX.y} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5 * size}>
+          <text x={BOX.x + bw / 4 - 6} y={BOX.y} textAnchor="middle" fill={colors.POSITIVE} fontSize={14 * size}>
             MySQL
           </text>
           {dieU > 0.4 && (
             <g opacity={dieU}>
               <line x1={BOX.x - bw / 2} y1={BOX.y - bh / 2} x2={BOX.x + bw / 2} y2={BOX.y + bh / 2} stroke={colors.NEGATIVE} strokeWidth={5} />
               <line x1={BOX.x + bw / 2} y1={BOX.y - bh / 2} x2={BOX.x - bw / 2} y2={BOX.y + bh / 2} stroke={colors.NEGATIVE} strokeWidth={5} />
-              <text x={BOX.x} y={BOX.y + bh / 2 + 28} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
+              <text x={BOX.x} y={BOX.y - bh / 2 - 36} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
                 no redundancy · no failover
               </text>
             </g>
@@ -239,22 +247,22 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- dns + elastic ip ---- */}
         <g opacity={dnsU * dimAll * (1 - dieU * 0.7)}>
-          <rect x={90} y={120} width={180 } height={54} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-          <text x={180} y={143} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+          <rect x={310} y={112} width={210} height={56} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+          <text x={415} y={135} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
             DNS · Route 53
           </text>
-          <text x={180} y={161} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+          <text x={415} y={156} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             domain → Elastic IP
           </text>
-          <line x1={270} y1={150} x2={BOX.x - bw / 2 - 8} y2={BOX.y - bh / 2 + 10} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
+          <line x1={470} y1={168} x2={BOX.x - bw / 2 + 24} y2={BOX.y - bh / 2} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
         </g>
 
         {/* ---- ports ---- */}
         <g opacity={portU * dimAll * (1 - dieU * 0.7)}>
           {['80 HTTP', '443 HTTPS', '22 SSH·allowlist'].map((p, i) => (
             <g key={p}>
-              <rect x={BOX.x - 130 + i * 92} y={BOX.y + bh / 2 + 14} width={84} height={26} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
-              <text x={BOX.x - 88 + i * 92} y={BOX.y + bh / 2 + 31} textAnchor="middle" fill={colors.WARM} fontSize={8.5} fontFamily="ui-monospace, monospace">
+              <rect x={386 + i * 174} y={BOX.y + bh / 2 + 14} width={160} height={30} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
+              <text x={466 + i * 174} y={BOX.y + bh / 2 + 34} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
                 {p}
               </text>
             </g>
@@ -265,43 +273,45 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={meterU * dimAll}>
           {METERS.map((m, i) => {
             const v = clamp01(loadU * (0.75 + i * 0.12));
-            const x = 900;
-            const y = 210 + i * 66;
+            const x = 940;
+            const y = 176 + i * 56;
             return (
               <g key={m}>
-                <text x={x - 10} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+                <text x={x - 12} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                   {m}
                 </text>
-                <rect x={x} y={y} width={200} height={20} rx={6} fill={colors.BG} stroke={colors.GRID} />
-                <rect x={x} y={y} width={200 * v} height={20} rx={6} fill={v > 0.75 ? colors.NEGATIVE : v > 0.5 ? colors.WARM : colors.POSITIVE} opacity={0.8} />
+                <rect x={x} y={y} width={200} height={22} rx={6} fill={colors.BG} stroke={colors.GRID} />
+                <rect x={x} y={y} width={200 * v} height={22} rx={6} fill={v > 0.75 ? colors.NEGATIVE : v > 0.5 ? colors.WARM : colors.POSITIVE} opacity={0.8} />
               </g>
             );
           })}
-          <text x={900} y={182} fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+          <text x={1140} y={156} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             CloudWatch · top · statsd · graphite
           </text>
         </g>
 
         {/* ---- the cost curve ---- */}
         <g opacity={costU * dimAll}>
-          <line x1={880} y1={560} x2={1180} y2={560} stroke={colors.GRID} strokeWidth={1.4} />
-          <line x1={880} y1={560} x2={880} y2={440} stroke={colors.GRID} strokeWidth={1.4} />
+          <line x1={880} y1={470} x2={1180} y2={470} stroke={colors.GRID} strokeWidth={1.4} />
+          <line x1={880} y1={470} x2={880} y2={370} stroke={colors.GRID} strokeWidth={1.4} />
           {COST.map((c, i) => {
             if (i === 0) return null;
             const u = clamp01(costU * 3 - (i - 1));
             const x0 = 880 + (i - 1) * 95;
             const x1 = 880 + i * 95;
-            const y0 = 560 - COST[i - 1] * 110;
-            const y1 = 560 - c * 110;
+            const y0 = 470 - COST[i - 1] * 100;
+            const y1 = 470 - c * 100;
             return <line key={i} x1={x0} y1={y0} x2={lerp(x0, x1, u)} y2={lerp(y0, y1, u)} stroke={colors.NEGATIVE} strokeWidth={2.5} />;
           })}
-          <text x={1030} y={588} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
-            cost per upgrade — vertical scaling gets expensive
+          <text x={1030} y={494} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            <tspan x={1030} dy={0}>cost per upgrade —</tspan>
+            <tspan x={1030} dy={17}>vertical scaling gets expensive</tspan>
           </text>
         </g>
 
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
+          <rect x={290} y={225} width={700} height={220} rx={16} fill={colors.BG} />
           <rect x={290} y={225} width={700} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
           <text x={640} y={276} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             benchmark · profile · fix · repeat

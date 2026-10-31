@@ -1,0 +1,616 @@
+{
+  "version": 1,
+  "slug": "handwired-event-window",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Latches, Not History",
+      "claims": [
+        {
+          "id": "c1-feedforward-question",
+          "claim": "The Event Window lab asks whether multi-frame pointer behavior can be expressed and trained as a pure feedforward function.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, opening",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "11",
+              "quote": "can be expressed and trained as a pure feedforward function"
+            }
+          ],
+          "caption": 0
+        },
+        {
+          "id": "c1-one-input-per-frame",
+          "claim": "A frame carries at most one pointer event, down, move, or up, or none.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/oracle.ts, behavior spec",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/oracle.ts",
+              "lines": "7",
+              "quote": "A frame carries at most one pointer event (down, move, or up) or none."
+            }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c1-exact-equality",
+          "claim": "The oracle and the circuit are compared for exact FP32 equality, bit for bit.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/harness.ts, header comment",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/harness.ts",
+              "lines": "1-3",
+              "quote": "exact FP32 equality"
+            }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c1-press-latch",
+          "claim": "On a pointer down the circuit selects a fresh press record over the kept one, using the down bit as the select.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/circuit.ts, press latch",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "266-284",
+              "quote": "const latchOnDown = (kept: Wire, fresh: Wire) => emitSelect(circuit, down, kept, fresh)"
+            }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c1-slop-latch",
+          "claim": "The oracle sets a slop flag once the pointer's distance from the press point exceeds the slop threshold, the drag-begin latch.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/oracle.ts, slop latch",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/oracle.ts",
+              "lines": "164-170",
+              "quote": "if (distance > config.slop) state.slopExceeded = true"
+            }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c1-drag-position",
+          "claim": "While dragging, the window's left edge is its grab position plus the pointer's travel since the press.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/oracle.ts, dragged left",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/oracle.ts",
+              "lines": "251-265",
+              "quote": "state.grabLeft + state.pointerX - state.pressX,"
+            },
+            {
+              "label": "lab/event-window/boundary-probe.test.ts, sixty pixels right",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/boundary-probe.test.ts",
+              "lines": "85",
+              "quote": "expect(draggedLeft).toBe(rectangle.initialLeft + 60)"
+            }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c1-release-commits",
+          "claim": "Only a release writes the dragged left edge into the stored rectangle position.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/oracle.ts, commit on release",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/oracle.ts",
+              "lines": "174-178",
+              "quote": "state.rectangleLeft[owner] = dragged.left"
+            }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c1-focus-on-down",
+          "claim": "Focus follows pointer down: the hit rectangle becomes focused, or nothing does on empty space.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/oracle.ts, rule 9",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/oracle.ts",
+              "lines": "13-14",
+              "quote": "Focus follows pointer-down"
+            }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c1-maximize-arithmetic",
+          "claim": "The maximize toggle is computed by arithmetic: a flip direction of one plus minus two times the old maximized bit.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/circuit.ts, flip direction",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "368-372",
+              "quote": "const flipDirection = circuit.affine([[unit, 1], [maximized, -2]])"
+            }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c1-drift-back-cancels",
+          "claim": "Returning to the press point does not erase an earlier drag-threshold crossing.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/pointer-input.ts, comment",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/pointer-input.ts",
+              "lines": "9",
+              "quote": "Returning to the press point must not erase an earlier drag-threshold crossing."
+            }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c1-suffix-probe",
+          "claim": "The probe compares traces whose last 1, 4, 16, 64 and 256 inputs match, to test whether a window of raw inputs can tell a drag from no drag.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/boundary-probe.test.ts, suffix lengths",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/boundary-probe.test.ts",
+              "lines": "69",
+              "quote": "for (const suffixLength of [1, 4, 16, 64, 256]) {"
+            }
+          ],
+          "caption": 10
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "A Ramp That Narrows",
+      "claims": [
+        {
+          "id": "c2-ramp-shape",
+          "claim": "The title and slop tests use one ramp: a difference scaled by a sharpness, plus one half, clamped between zero and one.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/circuit.ts, threshold bit",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "159-164",
+              "quote": "bit = 1 while difference >= 0, where difference is an affine form"
+            }
+          ],
+          "caption": 0
+        },
+        {
+          "id": "c2-title-boundary",
+          "claim": "The title boundary is the title height minus one half, so 29.5 pixels in the shipped configuration.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/circuit.ts, title boundary",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "602",
+              "quote": "titleBoundary: config.titleHeight - 0.5,"
+            }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c2-training-rounding",
+          "claim": "The shipped circuit rounds a score to an exact bit, while the training copy keeps the score as a continuous value.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/circuit.ts, bit selection",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "152",
+              "quote": "const bit = (score: Wire) => (mode === 'exact' ? circuit.boolean(score) : score)"
+            }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c2-six-parameters",
+          "claim": "Training adjusts six behavior parameter cells: the slop and title boundaries and four relation cells.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/circuit.ts, behavior parameter cells",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "590-597",
+              "quote": "export const behaviorParameterCells = ["
+            }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c2-single-frame-pairs",
+          "claim": "Each training pair is one source table, state plus input, from oracle traces one frame at a time.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, supervision pairs",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "62",
+              "quote": "each pair is one source table (state + input)"
+            }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c2-wide-ramp-gradient",
+          "claim": "The first annealing phase uses sharpness 1/32, a 32-pixel ramp, which lets a boundary that starts far away see gradient from many examples. Reading the clamp, that ramp is unsaturated only within 16 pixels of its boundary, which means only presses that close pull on it.",
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "lab/event-window/train.ts, annealing comment",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/train.ts",
+              "lines": "142-144",
+              "quote": "lets a boundary that starts far away see gradient from"
+            },
+            {
+              "label": "lab/event-window/circuit.ts, clamp to zero and one",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "556-562",
+              "quote": "function emitClampZeroOne(circuit: Circuit, value: Wire, unit: Wire) {"
+            }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c2-three-snaps",
+          "claim": "The ramp narrows in three transitions, to 4 pixels, then 1, then a quarter pixel, with learning rate scales of 1, 1, 0.3 and 0.1 across four phases.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/train.ts, annealing phases",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/train.ts",
+              "lines": "152-157",
+              "quote": "untilProgress: 0.85, sharpness: 1, learningRateScale: 0.3"
+            }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c2-sweep-result",
+          "claim": "The sweep's first seed starts with slop 12.86 and title 85.95, learns slop 4.500 and title 29.702, and shows zero divergences over three held-out 10,000-frame traces.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, sweep table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "77",
+              "quote": "1 | 12.86 | 85.95 | 4.500 | 29.702"
+            }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c2-hardening",
+          "claim": "Hardening rounds the relation cells to exact bits and leaves the two thresholds as learned.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/train.ts, hardening",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/train.ts",
+              "lines": "263-274",
+              "quote": "// Hardening: relation cells round to exact bits; the two thresholds stay as"
+            },
+            {
+              "label": "lab/event-window/README.md, seed 1 divergences",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "77",
+              "quote": "0/30000"
+            }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c2-twenty-starts",
+          "claim": "The sweep runs twenty seeds and reports how many recover.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/training-sweep.ts, output line",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/training-sweep.ts",
+              "lines": "52",
+              "quote": "recovered ${recoveredCount}/20 seeds"
+            }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c2-fixed-ramp-drift",
+          "claim": "Held at the four-pixel ramp from the authored truth, the title boundary drifts to about 30.01 and the slop boundary to about 3.97.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, fixed ramp",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "69",
+              "quote": "drifts the title boundary"
+            },
+            {
+              "label": "lab/event-window/training.test.ts, drift assertion",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/training.test.ts",
+              "lines": "105-110",
+              "quote": "expect(drift.learned.titleBoundary).toBeGreaterThanOrEqual(30)"
+            }
+          ],
+          "caption": 10
+        },
+        {
+          "id": "c2-loss-at-thirty",
+          "claim": "With the ramp held four pixels wide, the training loss is lowest near boundary 30 (0.002590) and higher at the true 29.50 (0.002629).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, loss grid",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "69",
+              "quote": "loss 0.002590 at boundary 30.00 versus 0.002598 at 30.25 and 0.002629 at the true 29.50"
+            }
+          ],
+          "caption": 11
+        },
+        {
+          "id": "c2-drifted-divergence",
+          "claim": "The drifted circuit diverges from the oracle on 9,120 of 10,000 held-out frames.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, drifted circuit",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "69",
+              "quote": "9,120"
+            }
+          ],
+          "caption": 12
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Exact, Within Limits",
+      "claims": [
+        {
+          "id": "c3-closed-loop",
+          "claim": "The hardened circuit runs closed loop: its own outputs latch its next event window, and the oracle runs in parallel purely as a judge.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/harness.ts, closed loop",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/harness.ts",
+              "lines": "110-113",
+              "quote": "its own outputs"
+            }
+          ],
+          "caption": 0
+        },
+        {
+          "id": "c3-twelve-seeds",
+          "claim": "The exactness test loops over seeds one through twelve.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/exactness.test.ts, seed loop",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/exactness.test.ts",
+              "lines": "14",
+              "quote": "for (let seed = 1; seed <= 12; seed++) {"
+            }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c3-sixteen-relation-settings",
+          "claim": "All 16 combinations of the two-by-two relation table stay exact.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/exactness.test.ts, relation table test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/exactness.test.ts",
+              "lines": "50",
+              "quote": "all 16 combinations stay exact"
+            }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c3-recovery-floor",
+          "claim": "The committed training test asks that at least five of its starts recover.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/training.test.ts, recovery floor",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/training.test.ts",
+              "lines": "76",
+              "quote": "expect(recovered).toBeGreaterThanOrEqual(5)"
+            }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c3-cost-per-record",
+          "claim": "One press record compiles to 480 operations at depth 52, and each extra record adds 36 operations with the depth unchanged.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/window-depth.test.ts, linear cost",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/window-depth.test.ts",
+              "lines": "104-107",
+              "quote": "expect(k4.operations).toBe(k2.operations + 2 * perRecordOperations)"
+            },
+            {
+              "label": "lab/event-window/measure-cost.ts (run at this commit: 480 ops and depth 52 for one record)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/measure-cost.ts"
+            }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c3-readme-numbers-stale",
+          "claim": "The lab's readme states 502 operations and depth 38 for the circuit, which the script no longer prints at this commit.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, cost line",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "31",
+              "quote": "The circuit (`circuit.ts`, 502 ops, depth 38, 6 boolean atoms)"
+            },
+            {
+              "label": "lab/event-window/measure-cost.ts (run at this commit)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/measure-cost.ts"
+            }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c3-archive-unread",
+          "claim": "The archived press records are built for cost measurement, and the behavior never reads them.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/circuit.ts, archive comment",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "424-428",
+              "quote": "The behavior above never reads these"
+            }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c3-cells-not-structure",
+          "claim": "Training recovers parameter cells, not structure: which latches exist and which gates write them is authored.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, scope",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "132",
+              "quote": "Training recovers parameter cells, not structure."
+            }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c3-status-scope",
+          "claim": "The status file says training supplies correct internal state and decision labels, and that persistent state and temporal dependencies remain.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/status.md, event-window row",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "200",
+              "quote": "Training supplies correct internal state and decision labels."
+            }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c3-move-fix",
+          "claim": "The demo now keeps every queued pointer move, so a press followed by an outward-and-back movement cancels the click.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, September corrections",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "5",
+              "quote": "The demo now keeps every queued pointer move"
+            },
+            {
+              "label": "lab/reassessment-2026-09-03.md, the earlier defect",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reassessment-2026-09-03.md",
+              "lines": "86",
+              "quote": "The demo replaces consecutive pointer moves with the final move."
+            }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c3-open-items",
+          "claim": "Double-click and flick speed are not built: double-click would read the press archive, and flick needs a move-event archive.",
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, next steps",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "137-138",
+              "quote": "A move-event archive of the last two positions would give flick velocity at release"
+            }
+          ],
+          "caption": 10
+        },
+        {
+          "id": "c3-six-parameters",
+          "claim": "Six behavior parameter cells are trainable: the slop boundary, the title boundary, and the four relation cells.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/event-window/README.md, summary",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/README.md",
+              "lines": "62",
+              "quote": "Six behavior parameter cells are trainable"
+            },
+            {
+              "label": "lab/event-window/circuit.ts, parameter cell list",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/event-window/circuit.ts",
+              "lines": "590-597",
+              "quote": "export const behaviorParameterCells = ["
+            }
+          ],
+          "caption": 11
+        }
+      ]
+    }
+  ]
+}

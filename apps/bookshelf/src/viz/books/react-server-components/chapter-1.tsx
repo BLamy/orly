@@ -37,8 +37,8 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // ---------------------------------------------------------------------------
 
 const ONE = { x: 400, y: 120, w: 480, h: 400 } as const;
-const SERVER = { x: 48, y: 110, w: 470, h: 430 } as const;
-const CLIENT = { x: 762, y: 110, w: 470, h: 430 } as const;
+const SERVER = { x: 56, y: 110, w: 430, h: 430 } as const;
+const CLIENT = { x: 794, y: 110, w: 430, h: 430 } as const;
 const WIRE_Y = 330;
 const WIRE_X0 = SERVER.x + SERVER.w;
 const WIRE_X1 = CLIENT.x;
@@ -70,10 +70,12 @@ const nodeXY = (panel: { x: number; y: number; w: number; h: number }, n: TreeNo
 
 // camera marks
 const CAM_ONE: CameraState = { x: 640, y: 330, k: 1.12 };
-const CAM_SERVER: CameraState = { x: 340, y: 330, k: 1.35 };
-const CAM_COUNTER: CameraState = { x: 400, y: 420, k: 1.6 };
-const CAM_WIRE: CameraState = { x: 640, y: 340, k: 1.25 };
-const CAM_CLIENT: CameraState = { x: 950, y: 330, k: 1.3 };
+// server + counter marks keep the client label and cursor in frame too
+const CAM_SERVER: CameraState = { x: 560, y: 325, k: 1.2 };
+const CAM_COUNTER: CameraState = { x: 560, y: 310, k: 1.2 };
+const CAM_WIRE: CameraState = { x: 640, y: 340, k: 1.0 };
+// wide enough that the chunk's trip from the server edge to the client hole stays in frame
+const CAM_CLIENT: CameraState = { x: 640, y: 340, k: 1.0 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // byte stream across the wire: 18 dots, seeded offsets
@@ -312,7 +314,8 @@ export function Render({ s }: { s: SceneState }) {
     w: ONE.w + (SERVER.w - ONE.w) * splitU,
     h: ONE.h + (SERVER.h - ONE.h) * splitU,
   };
-  const mainOp = 1 - 0.9 * dimU;
+  // the closing beat fades the machine to near-nothing so the roadmap reads alone
+  const mainOp = 1 - 0.97 * dimU;
 
   const nodeColor = (n: TreeNode) =>
     n.kind === 'client' ? colors.ACCENT : tintU > 0 ? colors.SECONDARY : colors.TEXT;
@@ -338,7 +341,7 @@ export function Render({ s }: { s: SceneState }) {
           {splitU > 0.02 && (
             <g opacity={splitU}>
               <Zone
-                x={CLIENT.x + (1 - splitU) * 220}
+                x={CLIENT.x + (1 - splitU) * 120}
                 y={CLIENT.y}
                 w={CLIENT.w}
                 h={CLIENT.h}
@@ -354,26 +357,41 @@ export function Render({ s }: { s: SceneState }) {
           {splitU > 0.6 && (
             <g opacity={(splitU - 0.6) / 0.4}>
               <line x1={WIRE_X0} y1={WIRE_Y} x2={WIRE_X1} y2={WIRE_Y} stroke={colors.GRID} strokeWidth={2} strokeDasharray="3 6" />
-              <text x={(WIRE_X0 + WIRE_X1) / 2} y={WIRE_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={(WIRE_X0 + WIRE_X1) / 2} y={WIRE_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 the wire
               </text>
             </g>
           )}
 
+          {/* the opening question, held in the empty machine until the tree arrives */}
+          {oneU > 0.02 && treeU < 0.98 && splitU < 0.02 && (
+            <text
+              x={ONE.x + ONE.w / 2}
+              y={ONE.y + ONE.h / 2}
+              textAnchor="middle"
+              fill={colors.MUTED}
+              fontSize={22}
+              fontFamily={MONO}
+              opacity={oneU * (1 - treeU)}
+            >
+              where does the UI live?
+            </text>
+          )}
+
           {/* affordances: data next to the server, clicks next to the client */}
           <g opacity={homesU * (splitU > 0.02 ? 1 : 0.9)}>
-            {/* db cylinder near the Note */}
-            <g transform={`translate(${panel.x + 0.06 * panel.w},${panel.y + 0.86 * panel.h})`}>
+            {/* db cylinder near the Note, low enough to clear the rendered-output chip */}
+            <g transform={`translate(${panel.x + 0.06 * panel.w},${panel.y + 0.96 * panel.h})`}>
               <ellipse cx={0} cy={-12} rx={16} ry={6} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
               <path d="M -16 -12 v 18 a 16 6 0 0 0 32 0 v -18" fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-              <text x={0} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={24} y={-6} textAnchor="start" fill={colors.MUTED} fontSize={14}>
                 data
               </text>
             </g>
-            {/* cursor near the client edge */}
-            <g transform={`translate(${splitU > 0.02 ? CLIENT.x + CLIENT.w - 46 : ONE.x + ONE.w - 40},${splitU > 0.02 ? CLIENT.y + CLIENT.h - 60 : ONE.y + ONE.h - 56})`}>
+            {/* cursor inside the client panel, in view of the server and counter marks */}
+            <g transform={`translate(${splitU > 0.02 ? CLIENT.x + CLIENT.w * 0.5 : ONE.x + ONE.w - 40},${splitU > 0.02 ? CLIENT.y + CLIENT.h - 60 : ONE.y + ONE.h - 56})`}>
               <path d="M 0 0 l 0 18 l 4.6 -4.2 l 3.4 7.4 l 4 -1.9 l -3.5 -7.3 l 6.3 -0.6 z" fill={colors.ACCENT} opacity={0.95} />
-              <text x={8} y={30} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={8} y={30} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 clicks
               </text>
             </g>
@@ -420,9 +438,12 @@ export function Render({ s }: { s: SceneState }) {
                 />
                 {/* file chip under each node, only while zoomed on server */}
                 {u > 0.9 && tintU > 0.3 && !isNote && (
-                  <text x={x} y={y + 30} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO} opacity={tintU * (1 - 0.85 * (isCounter ? 0 : meltU * 0))}>
-                    {n.file}
-                  </text>
+                  <g opacity={tintU}>
+                    <rect x={x - (n.file.length * 7.9 + 8) / 2} y={y + 21} width={n.file.length * 7.9 + 8} height={19} rx={4} fill={colors.BG} />
+                    <text x={x} y={y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                      {n.file}
+                    </text>
+                  </g>
                 )}
               </g>
             );
@@ -432,15 +453,15 @@ export function Render({ s }: { s: SceneState }) {
           {meltU > 0.02 &&
             (() => {
               const { x, y } = nodeXY(panel, NODES[2]);
-              const rise = 46 * clamp01(meltU * 1.2);
+              const rise = 58 * clamp01(meltU * 1.2);
               return (
                 <g>
-                  {/* execution flash */}
-                  <circle cx={x} cy={y} r={22 * clamp01(meltU * 3) * (1 - clamp01((meltU - 0.4) / 0.6))} fill="none" stroke={colors.WARM} strokeWidth={1.6} opacity={0.8 * (1 - meltU)} />
-                  {/* the surviving output */}
+                  {/* execution flash: a ring that clears the pill's label */}
+                  <circle cx={x} cy={y} r={(36 + 30 * clamp01(meltU * 3)) * (1 - clamp01((meltU - 0.4) / 0.6))} fill="none" stroke={colors.WARM} strokeWidth={1.6} opacity={0.8 * (1 - meltU)} />
+                  {/* the surviving output, below the Note */}
                   <g opacity={clamp01((meltU - 0.35) / 0.5)} transform={`translate(${x},${y + rise})`}>
                     <rect x={-66} y={-14} width={132} height={28} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-                    <text x={0} y={5} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
+                    <text x={0} y={5} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                       rendered output
                     </text>
                   </g>
@@ -455,11 +476,14 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g opacity={sealU}>
                   <rect x={x - 56} y={y - 62} width={112} height={26} rx={7} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
-                  <text x={x} y={y - 44} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
+                  <text x={x} y={y - 44} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
                     'use client'
                   </text>
-                  <text x={x} y={y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
-                    a reference, not a function
+                  <text x={x} y={y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                    a reference,
+                  </text>
+                  <text x={x} y={y + 68} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                    not a function
                   </text>
                 </g>
               );
@@ -469,18 +493,18 @@ export function Render({ s }: { s: SceneState }) {
           {badU > 0.02 && (
             <g opacity={badU * 0.95}>
               {[
-                { x: 590, y: 150, t: 'ship ALL the code', s: 'bundle swells' },
-                { x: 590, y: 220, t: 'ship only markup', s: 'nothing is alive' },
+                { x: 640, y: 150, t: 'ship ALL the code', s: 'bundle swells with data-only code' },
+                { x: 640, y: 220, t: 'ship only markup', s: 'the counter forgets to count' },
               ].map((b, i) => (
                 <g key={i}>
-                  <rect x={b.x - 92} y={b.y - 20} width={184} height={40} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.9} />
-                  <text x={b.x} y={b.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+                  <rect x={b.x - 124} y={b.y - 20} width={248} height={40} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.9} />
+                  <text x={b.x} y={b.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     {b.t}
                   </text>
-                  <text x={b.x} y={b.y + 13} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+                  <text x={b.x} y={b.y + 13} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                     {b.s}
                   </text>
-                  <line x1={b.x - 92} y1={b.y + 12} x2={b.x + 92} y2={b.y - 12} stroke={colors.NEGATIVE} strokeWidth={2} opacity={0.85} />
+                  <line x1={b.x - 104} y1={b.y - 7} x2={b.x + 104} y2={b.y - 7} stroke={colors.NEGATIVE} strokeWidth={2} opacity={0.85} />
                 </g>
               ))}
             </g>
@@ -503,9 +527,9 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
           {streamU > 0.15 && (
-            <g opacity={clamp01((streamU - 0.15) / 0.3) * (1 - dimU)}>
+            <g opacity={clamp01((streamU - 0.15) / 0.3) * (1 - dimU) * (1 - clamp01(chunkU * 3))}>
               <rect x={(WIRE_X0 + WIRE_X1) / 2 - 42} y={WIRE_Y - 46} width={84} height={24} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.2} />
-              <text x={(WIRE_X0 + WIRE_X1) / 2} y={WIRE_Y - 29} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+              <text x={(WIRE_X0 + WIRE_X1) / 2} y={WIRE_Y - 29} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                 Flight
               </text>
             </g>
@@ -553,8 +577,8 @@ export function Render({ s }: { s: SceneState }) {
               const y = from.y + (to.y - from.y) * chunkU - 60 * Math.sin(Math.PI * chunkU);
               return (
                 <g>
-                  <rect x={x - 46} y={y - 12} width={92} height={24} rx={6} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
-                  <text x={x} y={y + 4} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+                  <rect x={x - 54} y={y - 12} width={108} height={24} rx={6} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
+                  <text x={x} y={y + 4} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
                     Counter.js
                   </text>
                 </g>
@@ -574,13 +598,13 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={r.t} opacity={u} transform={`translate(${x},${300 + 14 * (1 - u)})`}>
                   <rect x={-125} y={-46} width={250} height={100} rx={13} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
-                  <text x={0} y={-30} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={0} y={-30} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                     {`chapter ${i + 2}`}
                   </text>
                   <text x={0} y={0} textAnchor="middle" fill={i === 0 ? colors.WARM : colors.TEXT} fontSize={16} fontWeight={650}>
                     {r.t}
                   </text>
-                  <text x={0} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text x={0} y={26} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={13}>
                     {r.s}
                   </text>
                 </g>

@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "jeva-fresh-decisions",
+  "title": "Jeva: Fresh Decisions",
+  "subtitle": "Fixed options, set-aware judgment, and reusable memory",
+  "animal": "animal.webp",
+  "accent": "#e07b1a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Fixed options, changing judgments",
+      "blurb": "Watch the paper’s geometric construction reverse a preference, then survive a permutation.",
+      "scene": "books/jeva-fresh-decisions/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.306,
+        13.235,
+        20.607,
+        27.875,
+        35.851,
+        44.048,
+        51.014,
+        59.327,
+        66.212,
+        76.986
+      ],
+      "duration": 85.124
+    },
+    {
+      "number": 2,
+      "title": "Which answer, or no answer?",
+      "blurb": "Separate relative competition from answer coverage and read Choice, Noul, and Score correctly.",
+      "scene": "books/jeva-fresh-decisions/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.93,
+        16.671,
+        24.555,
+        33.97,
+        41.563,
+        50.34,
+        60.058,
+        68.475,
+        76.636,
+        85.483
+      ],
+      "duration": 93.343
+    },
+    {
+      "number": 3,
+      "title": "Reuse the options, decide again",
+      "blurb": "Follow complete-tuple and per-option caches across new requests and new candidate sets.",
+      "scene": "books/jeva-fresh-decisions/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.838,
+        15.116,
+        23.301,
+        30.383,
+        38.638,
+        47.334,
+        57.284,
+        65.307,
+        75.047
+      ],
+      "duration": 85.821
+    }
+  ],
+  "paper": {
+    "title": "Jeva: System One Models from First Principles",
+    "authors": [
+      "Qi Li",
+      "Xinchao Wang"
+    ],
+    "arxivId": "2610.18773",
+    "version": "2610.18773v1",
+    "doi": "10.48550/arXiv.2610.18773",
+    "huggingFaceUrl": "https://huggingface.co/papers/2610.18773",
+    "canonicalUrl": "https://arxiv.org/abs/2610.18773",
+    "pdfUrl": "https://arxiv.org/pdf/2610.18773",
+    "officialRepository": "https://github.com/LiQiiiii/Jeva",
+    "repositoryCommit": "f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+    "rankingDate": "2026-10-14",
+    "ranking": 1,
+    "observedUpvotes": 272,
+    "rankingEvidenceUrl": "https://huggingface.co/papers/date/2026-10-14",
+    "selectedAt": "2026-10-15T10:04:59.835839+00:00"
+  },
+  "authoring": {
+    "actualRevisionModels": [
+      "claude-fable-5-1"
+    ],
+    "planning": "gpt-6-astra",
+    "animation": "claude-fable-5-1",
+    "actualAnimationModels": [
+      "claude-fable-5-1"
+    ],
+    "pipeline": "scene-native",
+    "illustrativeData": true
+  },
+  "sources": "sources.json"
+}

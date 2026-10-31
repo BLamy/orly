@@ -76,7 +76,7 @@ jobs:
           codex-args: '["-c", "sandbox_workspace_write.network_access=true"]'
           output-file: .orly-work/sol-result.md
           prompt: |
-            Read docs/authoring-models.md and .claude/commands/tweak-book.md.
+            Read docs/authoring-models.md, docs/book-quality.md and .claude/commands/tweak-book.md.
             Plan only the requested change to these books: ${{ steps.slugs.outputs.slugs }}.
             User request: ${{ github.event.comment.body }}
             Ignore the leading @claude mention. Do not run git/gh or publish.

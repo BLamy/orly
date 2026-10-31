@@ -64,27 +64,28 @@ export function Render({ s }: { s: SceneState }) {
         <line x1={150} y1={290} x2={1130} y2={290} stroke={colors.GRID} strokeWidth={2} />
         {vals.map((v, i) => (
           <g key={i} opacity={p} transform={`translate(${sx(v)},290)`}>
-            <circle r={16} fill={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE][i]} />
-            <text y={-28} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={mono}>{['a', 'b', 'c', 'd'][i]}</text>
+            <circle r={14} fill={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE][i]} />
+            <text y={-26} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>{['a', 'b', 'c', 'd'][i]}</text>
           </g>
         ))}
         <MathLabel tex={'\\chi(a,b;c,d)=\\frac{(a+c)(b+d)}{(a+d)(b+c)}'} x={640} y={360} opacity={s.get(scene.meterU)} />
       </Panel>
       <g opacity={s.get(scene.meterU)}>
-        <Chip x={250} y={470} text="AddRoundKey" color={colors.ACCENT} width={150} />
-        <Arrow x1={330} y1={470} x2={440} y2={470} reveal={s.get(scene.translateU)} />
-        <Chip x={520} y={470} text="Inv" color={colors.SECONDARY} width={90} />
-        <Arrow x1={570} y1={470} x2={680} y2={470} reveal={s.get(scene.invertU)} />
-        <Chip x={765} y={470} text="affine" color={colors.WARM} width={100} />
-        <Chip x={1010} y={470} text="χ unchanged" opacity={s.get(scene.affineU)} color={colors.POSITIVE} width={150} />
+        <Chip x={250} y={440} text="AddRoundKey" color={colors.ACCENT} width={150} />
+        <Arrow x1={330} y1={440} x2={440} y2={440} reveal={s.get(scene.translateU)} />
+        <Chip x={520} y={440} text="Inv" color={colors.SECONDARY} width={90} />
+        <Arrow x1={570} y1={440} x2={680} y2={440} reveal={s.get(scene.invertU)} />
+        <Chip x={765} y={440} text="affine" color={colors.WARM} width={100} />
+        <Chip x={1010} y={440} text="χ unchanged" opacity={s.get(scene.affineU)} color={colors.POSITIVE} width={150} />
       </g>
+      <text x={640} y={476} textAnchor="middle" opacity={s.get(scene.affineU)} fill={colors.TEXT} fontFamily={mono} fontSize={14}>Möbius transformations · fractional-linear maps</text>
       <g opacity={s.get(scene.tripletU)}>
-        <text x={150} y={555} fill={colors.NEGATIVE} fontFamily={mono} fontSize={12}>2 or 3 points · no invariant</text>
-        <text x={960} y={555} fill={colors.POSITIVE} fontFamily={mono} fontSize={12}>4 points · one cross-ratio</text>
+        <text x={150} y={500} fill={colors.NEGATIVE} fontFamily={mono} fontSize={14}>2 or 3 points · no invariant</text>
+        <text x={960} y={500} fill={colors.POSITIVE} fontFamily={mono} fontSize={14}>4 points · one cross-ratio</text>
       </g>
       <g opacity={s.get(scene.roundsU)}>
         {['round 1 · one χ', 'round 2 · four χ', 'round 3 · mixed'].map((x, i) => (
-          <Chip key={x} x={330 + i * 310} y={595} text={x} color={i === 2 && s.get(scene.breakU) ? colors.NEGATIVE : colors.ACCENT} width={210} />
+          <Chip key={x} x={330 + i * 310} y={545} text={x} color={i === 2 && s.get(scene.breakU) ? colors.NEGATIVE : colors.ACCENT} width={210} />
         ))}
       </g>
     </Camera>

@@ -1,0 +1,109 @@
+{
+ "shot": "ch04-s01",
+ "at": "2026-10-13T04:13:15.029Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 19,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "The Cold Case",
+   "capWhileSubject": 29,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "lit?",
+   "capWhileSubject": 32.9,
+   "why": "named: \"lit\""
+  },
+  {
+   "text": "XOR (exclusive or): lit when exactly one input is on",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "in Japan, Amari had a method",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "x₁",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "x₂",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 72.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 72.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "(0, 1)",
+   "maxCap": 22.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "(0, 0)",
+   "maxCap": 22.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "(1, 1)",
+   "maxCap": 22.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "(1, 0)",
+   "maxCap": 22.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "on the wrong side:",
+   "maxCap": 22.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2",
+   "maxCap": 72.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "h₁",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "h₂",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "×2",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 15
+}

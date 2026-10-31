@@ -12,3 +12,11 @@ test('recorded and browser voices pronounce rrweb without changing the caption',
   }
   assert.equal(caption, 'An rrweb recording describes the page.');
 });
+
+test('README and camel-cased language names are respelled for the voice only', () => {
+  for (const normalize of [sanitizeSpoken, speechify]) {
+    assert.equal(normalize('The README says so.'), 'The read me says so.');
+    assert.equal(normalize('Plain JavaScript and TypeScript.'), 'Plain Javascript and Typescript.');
+    assert.equal(normalize('RegExp scans JSON.'), 'reg ex scans Jason.');
+  }
+});

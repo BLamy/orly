@@ -1,0 +1,374 @@
+{
+  "working_title": "The Long Night of the Neuron: How Machines Learned to Learn (1943-2026)",
+  "audience": "Curious general viewers (teenagers through adults) with no assumed math or CS background, plus technically literate viewers who want real mechanics; the film must be accurate enough for practitioners and clear enough for newcomers.",
+  "central_questions": [
+    "How were neural networks studied, by whom, and in which institutions, from 1943 to 2026?",
+    "In each era, what did the field believe about how to build intelligence, who dissented, and how long did that belief hold before it broke?",
+    "Which experiments actually changed minds (Perceptron Mark I, XOR, NETtalk, LeNet, ImageNet 2012, the 2017 transformer, scaling-law studies, ChatGPT), and what exactly did they show?",
+    "Why did neural networks fall out of favour twice (the AI winters), and what did classical machine learning do better in the meantime?",
+    "How does AlexNet work, and why did it end the argument about deep learning for vision?",
+    "How does the transformer work (attention, Q/K/V, multi-head, positional encoding, residual stream), and why did it take over language and then everything else?",
+    "How did ChatGPT, the founding of Anthropic and the other frontier labs, and the US-China competition over chips, talent and open-weight models reshape the field?",
+    "What is the 'current understanding' as of 2026-10-05: what is believed, what is contested, and who are today's dissenters?"
+  ],
+  "topics": [
+    {
+      "id": "logical-neuron-and-cybernetics",
+      "title": "The Logical Neuron: McCulloch-Pitts, Hebb, Cybernetics and Dartmouth",
+      "era": "1943-1956",
+      "questions": [
+        "What exactly did McCulloch and Pitts (1943) claim a network of idealized neurons could compute, and how was it received?",
+        "What was Hebb's 1949 learning postulate in his own words?",
+        "What did the cybernetics movement (Wiener, the Macy conferences) believe about brains and machines, and who in it disagreed?",
+        "What did Turing (1950) propose about learning machines ('child machine')?",
+        "Who organized the 1956 Dartmouth workshop, what did the proposal predict, and was the neural approach represented (e.g., Minsky's SNARC, 1951)?",
+        "What was the belief of the age about how quickly machine intelligence would arrive, and how long did that optimism last?"
+      ],
+      "must_cover": [
+        "Warren McCulloch and Walter Pitts, 'A Logical Calculus of the Ideas Immanent in Nervous Activity' (1943)",
+        "Donald Hebb, The Organization of Behavior (1949)",
+        "Norbert Wiener, Cybernetics (1948); Macy conferences",
+        "Alan Turing, 'Computing Machinery and Intelligence' (1950)",
+        "Marvin Minsky's SNARC (1951)",
+        "Dartmouth Summer Research Project proposal (McCarthy, Minsky, Rochester, Shannon, 1955) and the 1956 workshop; the coining of 'artificial intelligence'",
+        "Logic Theorist (Newell, Simon, Shaw) as the symbolic alternative already in play",
+        "Verbatim quotes only from the original papers/proposal"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "perceptron-first-boom",
+      "title": "Rosenblatt's Perceptron and the First Neural Boom",
+      "era": "1957-1965",
+      "questions": [
+        "What was the perceptron learning rule and what did the Mark I Perceptron hardware look like (photocells, potentiometers, motors)?",
+        "What did Rosenblatt and the press claim (the 1958 Navy/New York Times coverage), and what did Rosenblatt actually write in Principles of Neurodynamics (1962)?",
+        "What was the perceptron convergence theorem and what did it guarantee?",
+        "What parallel work existed (Widrow-Hoff ADALINE/LMS, Selfridge's Pandemonium, Bernard Widrow's MADALINE)?",
+        "Who was skeptical at the time, and how were funding and attention split between perceptrons and symbolic AI?"
+      ],
+      "must_cover": [
+        "Frank Rosenblatt; Cornell Aeronautical Laboratory; Office of Naval Research funding",
+        "Rosenblatt 1958 Psychological Review paper; Mark I Perceptron (1958-1960); Principles of Neurodynamics (1962)",
+        "July 1958 New York Times / Navy press coverage - exact wording from archival source",
+        "Perceptron convergence theorem (Block, Novikoff 1962)",
+        "Bernard Widrow and Ted Hoff, ADALINE and the LMS rule (1960)",
+        "Oliver Selfridge, Pandemonium (1959)",
+        "Rivalry with symbolic AI (Minsky, McCarthy, Newell & Simon); Minsky and Rosenblatt as Bronx Science contemporaries (verify)",
+        "Simple mechanics of a perceptron: weighted sum, threshold, error-driven update (needed for animation)"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "perceptrons-book-first-winter",
+      "title": "Perceptrons (1969), the Lighthill Report and the First AI Winter",
+      "era": "1966-1980",
+      "questions": [
+        "What did Minsky and Papert's Perceptrons (1969) actually prove (XOR/parity, connectedness, order limits), and what did it NOT prove about multi-layer networks?",
+        "How much did the book actually cause the decline of neural-net funding vs. other factors? (contested - source both sides, including Papert's and Minsky's later comments and the 1988 expanded edition prologue)",
+        "What happened to Rosenblatt (death in 1971) and to his program?",
+        "What did the ALPAC report (1966), Lighthill report (1973) and DARPA/Mansfield-amendment cuts say and do?",
+        "Who kept working on neural ideas during the winter (Grossberg, Fukushima's Neocognitron 1980, Amari, Kohonen, Werbos 1974 thesis, Ivakhnenko's GMDH, Linnainmaa 1970 reverse-mode differentiation)?",
+        "What was the belief of the age ('single-layer nets are a dead end; intelligence is symbol manipulation'), who dissented, and how long did it hold?"
+      ],
+      "must_cover": [
+        "Marvin Minsky and Seymour Papert, Perceptrons (1969) and the 1988 expanded edition",
+        "XOR / parity limitation, explained mechanically",
+        "Frank Rosenblatt's death (July 1971)",
+        "ALPAC report (1966)",
+        "Sir James Lighthill, 'Artificial Intelligence: A General Survey' (1973) and the televised 1973 Royal Institution debate (Lighthill vs. Michie, McCarthy, Gregory)",
+        "Mansfield Amendment (1969/1973) and DARPA funding shifts",
+        "Winter-era dissenters: Stephen Grossberg, Kunihiko Fukushima (Neocognitron, 1980), Shun-ichi Amari, Teuvo Kohonen, Paul Werbos (1974 thesis), Alexey Ivakhnenko, Seppo Linnainmaa",
+        "Historiography debate: Olazaran's 'A Sociological Study of the Official History of the Perceptrons Controversy' (1996)"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "connectionist-revival-backprop",
+      "title": "The Connectionist Revival: Hopfield, Boltzmann Machines and Backpropagation",
+      "era": "1979-1989",
+      "questions": [
+        "What did Hopfield's 1982 network show and why did a physicist's paper re-legitimize neural nets?",
+        "What were Boltzmann machines (Hinton, Sejnowski, Ackley 1985) and what did they learn?",
+        "What did Rumelhart, Hinton and Williams (Nature, 1986) demonstrate, and how did backpropagation work mechanically (chain rule, credit assignment, hidden representations)?",
+        "Who invented backprop? Lay out the priority dispute (Linnainmaa 1970, Werbos 1974/1982, Parker 1985, LeCun 1985, Rumelhart et al. 1986; Schmidhuber's claims) with sources for each side.",
+        "What did the PDP volumes (1986) argue, and what was the Fodor & Pylyshyn (1988) and Pinker & Prince (1988) critique? How long did the systematicity debate last?",
+        "What landmark experiments drew public attention (NETtalk, Sejnowski & Rosenberg 1987; ALVINN, Pomerleau 1989)?"
+      ],
+      "must_cover": [
+        "John Hopfield, 1982 PNAS paper",
+        "Geoffrey Hinton, Terry Sejnowski, David Ackley - Boltzmann machines (1985)",
+        "David Rumelhart, Geoffrey Hinton, Ronald Williams, 'Learning representations by back-propagating errors' (Nature, 1986)",
+        "Parallel Distributed Processing volumes (Rumelhart, McClelland and the PDP Research Group, 1986)",
+        "Backprop priority dispute: Linnainmaa, Werbos, Parker, LeCun, Schmidhuber's critique",
+        "Fodor & Pylyshyn (1988) 'Connectionism and cognitive architecture'; Pinker & Prince (1988) on past-tense learning",
+        "NETtalk (1987); ALVINN (1989)",
+        "Universal approximation theorems (Cybenko 1989; Hornik, Stinchcombe, White 1989)",
+        "Hinton's move to Carnegie Mellon then Toronto; CIFAR beginnings (verify dates)",
+        "Backprop mechanics clear enough to animate"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "expert-systems-second-winter",
+      "title": "The Expert Systems Boom and the Second AI Winter",
+      "era": "1980-1995",
+      "questions": [
+        "What were expert systems (MYCIN, XCON/R1) and what did businesses and governments believe they would deliver?",
+        "What were Japan's Fifth Generation Computer Systems project, the US Strategic Computing Initiative, the UK Alvey programme and MCC, and how did each end?",
+        "Why did the Lisp-machine market collapse around 1987, and how did 'AI winter' become a term (the 1984 AAAI panel warning by Schank and Minsky)?",
+        "Where did neural nets sit during the second winter - did the backprop revival also cool, and why (data, compute, vanishing gradients)?",
+        "What was the belief of the age (knowledge engineering, hand-coded rules; Cyc's bet), who dissented (Brooks's behavior-based robotics, Dreyfus's philosophical critique), and how long did it hold?"
+      ],
+      "must_cover": [
+        "Edward Feigenbaum and knowledge engineering; MYCIN; XCON/R1 at DEC",
+        "Japan's Fifth Generation project (1982-1992)",
+        "DARPA Strategic Computing Initiative; Alvey programme; MCC",
+        "Doug Lenat's Cyc (1984-)",
+        "Lisp machine collapse (Symbolics, LMI) ~1987",
+        "1984 AAAI 'dark ages' panel / origin of the term 'AI winter'",
+        "Hubert Dreyfus, What Computers Can't Do (1972) and What Computers Still Can't Do (1992)",
+        "Rodney Brooks, 'Elephants Don't Play Chess' (1990) and 'Intelligence without representation' (1991)"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "classical-ml-era",
+      "title": "Classical Machine Learning Ascendant: Statistics, SVMs and the Quiet Holdouts",
+      "era": "1989-2006",
+      "questions": [
+        "What were the dominant methods (SVMs and kernel methods, boosting, random forests, graphical models/Bayesian networks, HMMs, statistical NLP) and why did researchers prefer them (convexity, theory, guarantees, smaller data)?",
+        "What was the belief of the age about neural nets ('hard to train, no theory, local minima, black boxes'), and how long did it hold - roughly mid-1990s to ~2010?",
+        "What did neural-net holdouts achieve anyway: LeNet and MNIST (LeCun et al. 1989/1998), check-reading deployment, LSTM (Hochreiter & Schmidhuber 1997), Hochreiter's 1991 vanishing-gradient analysis, Bengio et al. neural language model (2003)?",
+        "What was the CIFAR Neural Computation and Adaptive Perception program (2004) and the so-called 'deep learning conspiracy' of Hinton, LeCun and Bengio? Source the phrase.",
+        "What did Deep Blue (1997) and the statistical turn in speech and translation (IBM, Jelinek) show about the field's priorities? Verify the Jelinek 'fire a linguist' quote or mark it unverified.",
+        "Which paper rejections and conference attitudes (NIPS in the 2000s) do participants document?"
+      ],
+      "must_cover": [
+        "Vladimir Vapnik and Corinna Cortes, support-vector networks (1995); statistical learning theory",
+        "Yoav Freund and Robert Schapire, AdaBoost (1995-97); Leo Breiman, random forests (2001) and 'Statistical Modeling: The Two Cultures' (2001)",
+        "Judea Pearl, Probabilistic Reasoning in Intelligent Systems (1988)",
+        "Frederick Jelinek and IBM statistical speech/translation",
+        "Yann LeCun, LeNet, MNIST, 'Gradient-based learning applied to document recognition' (1998); Bell Labs",
+        "Sepp Hochreiter (1991 thesis), Hochreiter & Schmidhuber LSTM (1997)",
+        "Yoshua Bengio et al., 'A Neural Probabilistic Language Model' (2003)",
+        "IBM Deep Blue vs. Kasparov (1997)",
+        "CIFAR NCAP program (2004) and its role keeping the field alive",
+        "The Netflix Prize (2006-2009) as a showcase of classical ensembles (optional)"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "deep-learning-renaissance",
+      "title": "The Deep Learning Renaissance: Pretraining, GPUs, ImageNet and Speech",
+      "era": "2006-2012",
+      "questions": [
+        "What did Hinton, Osindero & Teh (2006) and Hinton & Salakhutdinov (Science, 2006) show about layer-wise pretraining, and why did the 'deep learning' brand stick?",
+        "When and how did GPUs become the engine (Raina, Madhavan & Ng 2009; Ciresan et al. 2010-2012 at IDSIA; CUDA)?",
+        "How was ImageNet built (Fei-Fei Li, WordNet, Amazon Mechanical Turk) and what did skeptics say about it at the time? When did ILSVRC start (2010)?",
+        "How did deep nets break through in speech recognition first (Mohamed, Dahl, Hinton; Microsoft, Google, IBM; the 2012 joint IEEE Signal Processing Magazine paper)?",
+        "What did rectified linear units (Nair & Hinton 2010; Glorot et al. 2011) and dropout contribute?",
+        "What was Google Brain's 2012 'cat' experiment (Le, Ng, Dean et al.) and how was it covered?"
+      ],
+      "must_cover": [
+        "Hinton, Osindero & Teh, deep belief nets (2006); Hinton & Salakhutdinov (2006)",
+        "Bengio et al. greedy layer-wise training (2007); Ranzato/LeCun work",
+        "Fei-Fei Li, ImageNet (CVPR 2009), ILSVRC (2010-2017); Christiane Fellbaum / WordNet; Mechanical Turk",
+        "GPUs: Raina, Madhavan, Ng (2009); Dan Ciresan and Jurgen Schmidhuber at IDSIA",
+        "Speech: Abdel-rahman Mohamed, George Dahl, Navdeep Jaitly; Microsoft Research (Li Deng, Dong Yu); 'Deep Neural Networks for Acoustic Modeling in Speech Recognition' (2012)",
+        "ReLU; dropout (Hinton et al. 2012 arXiv)",
+        "Google Brain founding (Andrew Ng, Jeff Dean, Greg Corrado) and the 2012 unsupervised 'cat' paper",
+        "Belief of the age: 'deep nets need unsupervised pretraining' - and how quickly that belief was abandoned"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "alexnet-deep-dive",
+      "title": "AlexNet in Depth: ImageNet 2012 and the Morning After",
+      "era": "2012-2015",
+      "questions": [
+        "What exactly was the AlexNet architecture (5 conv + 3 fully connected layers, filter sizes, strides, ~60M parameters, ~650K neurons), and how was it split across two GTX 580 GPUs?",
+        "What were the key ingredients and their measured effects as reported in the paper: ReLU, dropout, data augmentation, overlapping pooling, local response normalization, SGD with momentum and weight decay, training time (~5-6 days)?",
+        "What were the exact ILSVRC-2012 results (top-5 test error ~15.3% vs ~26.2% for the runner-up) and who was the runner-up?",
+        "How did Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton build it (cuda-convnet, Krizhevsky's GPU kernels), and what do participants say about how it started?",
+        "How did the computer-vision community react at the ECCV 2012 workshop in Florence? Find first-hand accounts and distinguish verified from legend.",
+        "What followed: the DNNresearch auction and Google acquisition (2013), ZFNet, VGG, GoogLeNet, ResNet (2015, surpassing reported human-level top-5 error), and the claimed 'human-level' benchmark debates",
+        "What did AlexNet's first-layer filters learn (Gabor-like edges, color blobs) - useful for visualization"
+      ],
+      "must_cover": [
+        "Krizhevsky, Sutskever & Hinton, 'ImageNet Classification with Deep Convolutional Neural Networks' (NIPS 2012) - all numbers from the paper",
+        "Layer-by-layer architecture with tensor shapes (224/227 input discrepancy noted)",
+        "Two-GPU model parallelism on NVIDIA GTX 580 3GB",
+        "Data augmentation, dropout, ReLU, LRN, overlapping pooling - mechanics",
+        "ILSVRC 2012 results table (runner-up ISI team, Fisher vectors)",
+        "ECCV 2012 Florence workshop reaction (first-hand sources, e.g. Fei-Fei Li's The Worlds I See, interviews)",
+        "DNNresearch acquisition by Google (2013) and the bidding (Cade Metz, Genius Makers - verify details)",
+        "Lineage: LeNet -> AlexNet; successors ZFNet (2013), VGG (2014), GoogLeNet (2014), ResNet (He et al. 2015)",
+        "Computer History Museum release of AlexNet source code (2025, verify)",
+        "First-layer filter visualizations"
+      ],
+      "deep_dive": true
+    },
+    {
+      "id": "deep-learning-gold-rush",
+      "title": "The Gold Rush: Embeddings, Sequence Models, AlphaGo and the New Labs",
+      "era": "2013-2017",
+      "questions": [
+        "What did word2vec (Mikolov et al. 2013) show about learned meaning ('king - man + woman ~ queen'), and what are its caveats?",
+        "How did sequence-to-sequence models (Sutskever, Vinyals, Le 2014) and Bahdanau-Cho-Bengio attention (2014) change machine translation, culminating in Google Neural Machine Translation (2016)?",
+        "What were GANs (Goodfellow et al. 2014) and deep RL on Atari (DQN, Mnih et al. 2013/2015)?",
+        "Why did Google buy DeepMind (2014), and what did AlphaGo vs. Lee Sedol (March 2016) show, including move 37? What did experts predict about Go before the match?",
+        "Why was OpenAI founded (December 2015), by whom, with what stated mission?",
+        "What did dissenters argue during the boom (Gary Marcus 2018 'Deep Learning: A Critical Appraisal'; adversarial examples, Szegedy et al. 2013; bias concerns, Buolamwini & Gebru 2018)?",
+        "How did the 2018 Turing Award to Bengio, Hinton and LeCun mark the official vindication?"
+      ],
+      "must_cover": [
+        "Tomas Mikolov, word2vec (2013)",
+        "Sutskever, Vinyals & Le seq2seq (2014); Bahdanau, Cho & Bengio attention (2014); GNMT (2016)",
+        "Ian Goodfellow, GANs (2014)",
+        "DeepMind (Demis Hassabis, Shane Legg, Mustafa Suleyman); Google acquisition (2014); DQN; AlphaGo (2016); AlphaGo Zero (2017)",
+        "OpenAI founding (Dec 2015): Altman, Musk, Sutskever, Brockman and others",
+        "Facebook AI Research founded with LeCun (2013); Baidu (Andrew Ng) - early Chinese industrial AI",
+        "Adversarial examples (Szegedy et al. 2013; Goodfellow et al. 2014)",
+        "Gary Marcus's critiques; Joy Buolamwini & Timnit Gebru, Gender Shades (2018)",
+        "ACM Turing Award 2018 (announced March 2019)"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "transformer-deep-dive",
+      "title": "Transformers in Depth: Attention Is All You Need and the Pretraining Era",
+      "era": "2017-2019",
+      "questions": [
+        "Who were the eight authors of 'Attention Is All You Need' (Vaswani et al., 2017), what problem were they solving at Google, and how did the name and design come about (first-hand accounts)?",
+        "Mechanically: tokens and embeddings; scaled dot-product attention softmax(QK^T/sqrt(d_k))V; why the sqrt(d_k) scaling; multi-head attention; causal masking; sinusoidal positional encodings; residual connections and layer norm; feed-forward sublayers; encoder-decoder structure. Get exact hyperparameters (d_model=512, 8 heads, 6 layers, base/big models) and the WMT 2014 BLEU results from the paper.",
+        "Why did the transformer beat RNNs/LSTMs (parallelism, path length, training cost) - per the paper's own complexity table?",
+        "How did it become the substrate for pretraining: ELMo (2018), GPT-1 (June 2018), BERT (Oct 2018), GPT-2 (Feb 2019) and the staged-release controversy, T5?",
+        "What did researchers believe about attention (is attention explanation? 'Attention is not Explanation', Jain & Wallace 2019) and what later interpretability (induction heads, Olsson et al. 2022) revealed?",
+        "What happened to the authors afterwards (all left Google; companies founded)?"
+      ],
+      "must_cover": [
+        "Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan Gomez, Lukasz Kaiser, Illia Polosukhin",
+        "Exact architecture details and numbers from the paper (arXiv 1706.03762)",
+        "Q/K/V worked example suitable for animation",
+        "Comparison to RNN/LSTM and Bahdanau attention",
+        "GPT-1 (Radford et al. 2018); BERT (Devlin et al. 2018); GPT-2 and OpenAI's staged release (2019)",
+        "Decoder-only next-token prediction as the eventual dominant form",
+        "Induction heads / mechanistic interpretability as later understanding of what attention does",
+        "Wired 2024 'eight names' oral history or equivalent first-hand accounts (verify)"
+      ],
+      "deep_dive": true
+    },
+    {
+      "id": "scaling-hypothesis-alignment",
+      "title": "The Scaling Hypothesis, RLHF, the Parrot Debate and the Founding of Anthropic",
+      "era": "2018-2022",
+      "questions": [
+        "What did Kaplan et al. (2020) scaling laws and Hoffmann et al. (Chinchilla, 2022) claim, and how did the 'compute-optimal' belief change?",
+        "What did GPT-3 (2020) show about in-context / few-shot learning, and how was it received?",
+        "What was Rich Sutton's 'The Bitter Lesson' (2019) argument, verbatim?",
+        "Who believed scale alone would suffice and who dissented (Marcus, Bender & Koller 2020 'octopus', Bender, Gebru, McMillan-Major & Mitchell 'Stochastic Parrots' 2021, Gebru's and Mitchell's departures from Google)? How long did each side's view hold?",
+        "How did RLHF develop (Christiano et al. 2017; Stiennon et al. 2020; InstructGPT, Ouyang et al. 2022)?",
+        "When and why was Anthropic founded (2021), by whom (Dario and Daniela Amodei and colleagues from OpenAI), and what did it publish early (Constitutional AI, Dec 2022; HH-RLHF)? Report with the same neutral standard as other labs.",
+        "What were the 'emergent abilities' claims (Wei et al. 2022) and the counter-claim that emergence is a metric artifact (Schaeffer et al. 2023)?",
+        "Other scaling-era milestones: AlphaFold 2 (2020/2021), DALL-E/diffusion (2021-22), Google's LaMDA and the Blake Lemoine sentience episode (2022)"
+      ],
+      "must_cover": [
+        "Kaplan et al. 'Scaling Laws for Neural Language Models' (2020); Hoffmann et al. Chinchilla (2022)",
+        "GPT-3 'Language Models are Few-Shot Learners' (2020)",
+        "Rich Sutton, 'The Bitter Lesson' (2019)",
+        "Stochastic Parrots paper (2021) and the Gebru/Mitchell departures; Bender & Koller (2020)",
+        "RLHF lineage: Christiano et al. (2017) -> InstructGPT (2022)",
+        "Anthropic founding (2021): founders, stated mission, public benefit corporation; Constitutional AI paper (2022)",
+        "Emergent abilities debate (Wei et al. 2022 vs. Schaeffer et al. 2023)",
+        "AlphaFold 2 (CASP14, 2020)",
+        "LaMDA / Blake Lemoine (2022) as a public-belief moment"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "chatgpt-and-frontier-race",
+      "title": "The ChatGPT Moment and the Frontier-Lab Race",
+      "era": "2022-2024",
+      "questions": [
+        "When was ChatGPT released (30 Nov 2022), what was it built on, and how fast did it grow (verify user-count claims with primary or reputable sources)?",
+        "How did incumbents respond (Microsoft-OpenAI investment, Google 'code red' and Bard, Meta's LLaMA and its leak, Anthropic's Claude in March 2023)?",
+        "What did GPT-4 (March 2023) demonstrate and what did the 'Sparks of AGI' paper claim vs. its critics?",
+        "The safety/risk debate of 2023: the FLI pause letter (March), Hinton leaving Google (May) and what he said, the CAIS extinction-risk statement (May), LeCun's public dissent, and the 'AI ethics vs. AI safety' split - who believed what?",
+        "The OpenAI board crisis (November 2023): verified timeline",
+        "Policy responses: US Executive Order 14110 (Oct 2023), Bletchley Park summit and declaration (Nov 2023), EU AI Act (2024), China's generative-AI interim measures (2023)",
+        "2024 Nobel Prizes: Physics to Hopfield and Hinton; Chemistry to Baker, Hassabis and Jumper - and the debate over whether this was 'physics'",
+        "Anthropic in this period: Claude 1-3.5, Responsible Scaling Policy (Sept 2023), interpretability work (dictionary learning / 'Scaling Monosemanticity' 2024), funding from Amazon and Google - reported neutrally"
+      ],
+      "must_cover": [
+        "ChatGPT launch (30 Nov 2022) and adoption data from reputable sources",
+        "GPT-4 (March 2023); Google Bard/Gemini; Meta LLaMA; Anthropic Claude",
+        "FLI 'Pause Giant AI Experiments' open letter (March 2023)",
+        "Geoffrey Hinton leaves Google (May 2023) - his verbatim public statements only",
+        "CAIS Statement on AI Risk (May 2023) - verbatim text",
+        "Yann LeCun's dissent on existential risk (verbatim, sourced)",
+        "OpenAI board crisis (17-22 Nov 2023)",
+        "Executive Order 14110; Bletchley Declaration; EU AI Act; China's Interim Measures for Generative AI Services",
+        "2024 Nobel Prizes in Physics and Chemistry",
+        "Anthropic RSP (2023), Claude model releases, interpretability research"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "us-china-ai-race",
+      "title": "The US-China AI Race: Chips, Talent, Open Weights and Safety Dialogue",
+      "era": "2017-2026",
+      "questions": [
+        "What did China's 2017 New Generation Artificial Intelligence Development Plan set as goals (e.g., world leader by 2030)?",
+        "What did the US export controls of 7 October 2022, October 2023, December 2024 and the January 2025 'AI diffusion rule' restrict, and what happened to them in 2025-2026 (rescission of the diffusion rule, H20 licensing reversals, Blackwell restrictions)? Verify every step with BIS/Federal Register or major outlets.",
+        "How did Chinese labs respond: Baidu ERNIE, Alibaba Qwen, DeepSeek (V3 Dec 2024, R1 Jan 2025 and the 27 Jan 2025 Nvidia market drop), Moonshot Kimi, Zhipu, MiniMax; Huawei Ascend chips; reports on chip smuggling and 2026 US claims about DeepSeek's chips (verify with reputable outlets)?",
+        "What is the open-weight vs. closed-weight dimension of the race, and who argues each side?",
+        "What do analysts believe about the size of the gap (months vs. years), how has that belief shifted, and who dissents?",
+        "What is the talent picture (share of top researchers of Chinese origin; MacroPolo / Paulson Institute data)?",
+        "What safety dialogue exists between the two countries (Nov 2023 Biden-Xi talks, May 2024 Geneva talks, Nov 2024 agreement on human control of nuclear weapons decisions, IDAIS Beijing/Venice/Shanghai consensus statements)?",
+        "How have US labs including Anthropic positioned on export controls (e.g., Dario Amodei's January 2025 essay 'On DeepSeek and Export Controls') and how did Chinese officials/companies respond - presented even-handedly",
+        "US AI Action Plan (July 2025) and China's Global AI Governance Action Plan (July 2025)"
+      ],
+      "must_cover": [
+        "China's 2017 New Generation AI Development Plan (State Council)",
+        "BIS export controls: Oct 2022, Oct 2023, Dec 2024, Jan 2025 diffusion rule and its 2025 rescission; 2025-2026 developments up to 2026-10-05",
+        "Nvidia A800/H800/H20 China-specific chips and licensing reversals",
+        "DeepSeek V3 and R1; market reaction on 27 Jan 2025; claimed training costs and the debate over them",
+        "Alibaba Qwen, Moonshot Kimi, Zhipu GLM and other Chinese open-weight models through 2026 (verify recent releases)",
+        "Huawei Ascend; SMIC; domestic-chip training claims (verify)",
+        "Talent flows (MacroPolo Global AI Talent Tracker)",
+        "US-China official AI talks (Geneva 2024) and IDAIS scientist dialogues",
+        "US AI Action Plan (July 2025); China's Global AI Governance Action Plan (July 2025)",
+        "Even-handed framing: no caricature; sources from both US and Chinese official documents"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "reasoning-agents-current-understanding",
+      "title": "Reasoning Models, Agents and the Current Understanding (as of 2026-10-05)",
+      "era": "2024-2026",
+      "questions": [
+        "What are reasoning models (OpenAI o1, Sept 2024; DeepSeek-R1; Claude extended thinking; Gemini thinking) and the shift to test-time compute and RL on verifiable rewards? What did people believe about 'the end of pretraining scaling' (e.g., Sutskever's NeurIPS 2024 remarks) and who disagreed?",
+        "How did agents and coding agents (Claude Code, OpenAI Codex, etc.) change use of AI in 2025-2026? Use reputable sources for adoption/revenue figures.",
+        "What are the major frontier model releases and lab events in 2025 through 2026-10-05 (OpenAI, Google DeepMind, Anthropic, Meta, xAI, Chinese labs)? Verify each with primary announcements; treat newsletter aggregators as leads only.",
+        "What does mechanistic interpretability now claim to understand (Anthropic circuit tracing / 'On the Biology of a Large Language Model' 2025, others), and what remains unknown?",
+        "What is the current spread of belief about AGI timelines and risk (Hinton, Bengio, Hassabis, Amodei vs. LeCun, Marcus and others), and what are the live dissents (LLMs vs. world models; LeCun's departure from Meta to found a world-model startup - verify)?",
+        "What are the documented societal debates as of late 2026: labor, energy and data-center buildout, copyright litigation, safety incidents and government actions (including any 2026 US government actions affecting Anthropic model access - verify carefully with primary sources)?",
+        "Bring the film home: which beliefs from earlier eras look wrong now, which dissenters were vindicated, and which current beliefs are most likely to be revised?"
+      ],
+      "must_cover": [
+        "OpenAI o1 (Sept 2024), o3; DeepSeek-R1 (Jan 2025); test-time compute and RL with verifiable rewards",
+        "Ilya Sutskever's NeurIPS 2024 talk ('pretraining as we know it will end' - verify verbatim); Safe Superintelligence",
+        "Agentic coding tools and their adoption (Claude Code, Codex and others) with sourced data",
+        "Major 2025-2026 model releases from each frontier lab, verified against primary announcements",
+        "Anthropic interpretability work (circuit tracing, 2025) and its limits",
+        "Yann LeCun's world-model dissent and post-Meta venture (verify); Gary Marcus; Bengio's LawZero (verify)",
+        "AGI timeline surveys (e.g., AI Impacts expert surveys; Metaculus) and METR task-horizon measurements",
+        "International AI Safety Report (Bengio, 2025) as a consensus snapshot",
+        "Paris AI Action Summit (Feb 2025) and later summits; state of regulation as of 2026-10-05",
+        "Recap of each era's belief, its dissenters and its duration - the film's closing synthesis"
+      ],
+      "deep_dive": false
+    }
+  ]
+}

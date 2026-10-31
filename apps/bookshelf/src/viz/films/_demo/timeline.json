@@ -1,0 +1,259 @@
+{
+ "slug": "_demo",
+ "fps": 24,
+ "duration": 12,
+ "chapters": [
+  {
+   "id": "ch01",
+   "number": 1,
+   "title": "A Demonstration",
+   "start": 0,
+   "end": 12
+  }
+ ],
+ "shots": [
+  {
+   "id": "demo-s01",
+   "chapter": "ch01",
+   "start": 0,
+   "end": 6,
+   "mood": "duskRose",
+   "setting": "A panelled reading room at dusk; tall gothic windows",
+   "visual": "Slow truck right with a slight push. A scholar stands by a candle stand; the candle is the only warm light.",
+   "lines": [
+    {
+     "id": "L0001",
+     "text": "In a quiet room, a single candle kept the time.",
+     "start": 0.6,
+     "end": 3.15,
+     "words": [
+      {
+       "w": "In",
+       "start": 0.6,
+       "end": 0.748
+      },
+      {
+       "w": "a",
+       "start": 0.768,
+       "end": 0.874
+      },
+      {
+       "w": "quiet",
+       "start": 0.889,
+       "end": 1.164
+      },
+      {
+       "w": "room,",
+       "start": 1.201,
+       "end": 1.477
+      },
+      {
+       "w": "a",
+       "start": 1.514,
+       "end": 1.62
+      },
+      {
+       "w": "single",
+       "start": 1.634,
+       "end": 1.952
+      },
+      {
+       "w": "candle",
+       "start": 1.995,
+       "end": 2.313
+      },
+      {
+       "w": "kept",
+       "start": 2.356,
+       "end": 2.589
+      },
+      {
+       "w": "the",
+       "start": 2.621,
+       "end": 2.811
+      },
+      {
+       "w": "time.",
+       "start": 2.837,
+       "end": 3.112
+      }
+     ]
+    },
+    {
+     "id": "L0002",
+     "text": "Its light reached only as far as the table.",
+     "start": 3.6,
+     "end": 5.3,
+     "words": [
+      {
+       "w": "Its",
+       "start": 3.6,
+       "end": 3.739
+      },
+      {
+       "w": "light",
+       "start": 3.758,
+       "end": 3.958
+      },
+      {
+       "w": "reached",
+       "start": 3.986,
+       "end": 4.248
+      },
+      {
+       "w": "only",
+       "start": 4.284,
+       "end": 4.453
+      },
+      {
+       "w": "as",
+       "start": 4.476,
+       "end": 4.584
+      },
+      {
+       "w": "far",
+       "start": 4.599,
+       "end": 4.738
+      },
+      {
+       "w": "as",
+       "start": 4.757,
+       "end": 4.865
+      },
+      {
+       "w": "the",
+       "start": 4.879,
+       "end": 5.018
+      },
+      {
+       "w": "table.",
+       "start": 5.037,
+       "end": 5.268
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "candle": 1.9,
+    "table": 4.9
+   }
+  },
+  {
+   "id": "demo-s02",
+   "chapter": "ch01",
+   "start": 6,
+   "end": 12,
+   "mood": "winterBlue",
+   "transitionIn": "crossfade",
+   "transitionDur": 1,
+   "setting": "A frozen street outside at nightfall; gas lamps",
+   "visual": "Slow truck left. Snow falls in depth. The lamplighter lights the lamps one by one.",
+   "lines": [
+    {
+     "id": "L0003",
+     "text": "Outside, the city went on without it.",
+     "start": 0.6,
+     "end": 2.6,
+     "words": [
+      {
+       "w": "Outside,",
+       "start": 0.6,
+       "end": 1.003
+      },
+      {
+       "w": "the",
+       "start": 1.058,
+       "end": 1.249
+      },
+      {
+       "w": "city",
+       "start": 1.275,
+       "end": 1.508
+      },
+      {
+       "w": "went",
+       "start": 1.54,
+       "end": 1.773
+      },
+      {
+       "w": "on",
+       "start": 1.805,
+       "end": 1.953
+      },
+      {
+       "w": "without",
+       "start": 1.973,
+       "end": 2.334
+      },
+      {
+       "w": "it.",
+       "start": 2.383,
+       "end": 2.574
+      }
+     ]
+    },
+    {
+     "id": "L0004",
+     "text": "Lamps were lit along the frozen street, one by one.",
+     "start": 3.05,
+     "end": 5.4,
+     "words": [
+      {
+       "w": "Lamps",
+       "start": 3.05,
+       "end": 3.286
+      },
+      {
+       "w": "were",
+       "start": 3.318,
+       "end": 3.518
+      },
+      {
+       "w": "lit",
+       "start": 3.545,
+       "end": 3.708
+      },
+      {
+       "w": "along",
+       "start": 3.73,
+       "end": 3.966
+      },
+      {
+       "w": "the",
+       "start": 3.998,
+       "end": 4.162
+      },
+      {
+       "w": "frozen",
+       "start": 4.184,
+       "end": 4.456
+      },
+      {
+       "w": "street,",
+       "start": 4.493,
+       "end": 4.801
+      },
+      {
+       "w": "one",
+       "start": 4.843,
+       "end": 5.007
+      },
+      {
+       "w": "by",
+       "start": 5.029,
+       "end": 5.156
+      },
+      {
+       "w": "one.",
+       "start": 5.173,
+       "end": 5.373
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "lamps": 3.4
+   }
+  }
+ ]
+}

@@ -20,17 +20,18 @@ const ZERO_Y = 108;
 const ELEC_Y = 208;
 const BOX_H = 44;
 type Box = { x: number; w: number; label: string };
+// Every hop is the same 56px, so both pipes read as even rails.
 const ZERO_BOXES: Box[] = [
   { x: 150, w: 108, label: 'mutate()' },
-  { x: 330, w: 100, label: 'filter' },
-  { x: 480, w: 100, label: 'join' },
-  { x: 630, w: 100, label: 'sort' },
-  { x: 810, w: 128, label: 'view update' },
+  { x: 314, w: 100, label: 'filter' },
+  { x: 470, w: 100, label: 'join' },
+  { x: 626, w: 100, label: 'sort' },
+  { x: 782, w: 128, label: 'view update' },
 ];
 const ELEC_BOXES: Box[] = [
   { x: 150, w: 108, label: 'WAL' },
-  { x: 380, w: 130, label: 'shape log' },
-  { x: 660, w: 140, label: 'client apply' },
+  { x: 314, w: 130, label: 'shape log' },
+  { x: 500, w: 140, label: 'client apply' },
 ];
 // tap points: one under each hand-off between boxes
 const tapsFor = (boxes: Box[], y: number) =>
@@ -39,9 +40,9 @@ const ZERO_TAPS = tapsFor(ZERO_BOXES, ZERO_Y);
 const ELEC_TAPS = tapsFor(ELEC_BOXES, ELEC_Y);
 
 // The recording strip — the persistent object. Two tracks inside.
-const STRIP = { x: 120, y: 340, w: 1040, h: 190 };
-const RENDER_Y = STRIP.y + 58; // the existing render track
-const DELTA_Y = STRIP.y + 138; // the track we're proposing
+const STRIP = { x: 120, y: 330, w: 1040, h: 220 };
+const RENDER_Y = STRIP.y + 100; // the existing render track (its label sits above the ticks)
+const DELTA_Y = STRIP.y + 170; // the track we're proposing (its label sits below the op names)
 
 // Render-track commit ticks (deterministic; a few heavy ones, per the PR:
 // 130 commits, 5 heavy — we draw a representative window).
@@ -80,21 +81,23 @@ const NEW_CHIP = { x: STRIP.x + 678, w: 118, label: 'syncDelta' };
 // A golden path from the Zero pipeline down into the strip and up a rung.
 const CHAIN_DELTA = DELTAS[5];
 const CHAIN_COMMIT = COMMITS[9];
-const CHAIN_PATH = [
-  `M ${ZERO_BOXES[0].x + 20} ${ZERO_Y}`,
-  `L ${ZERO_BOXES[4].x + 60} ${ZERO_Y}`,
-  `C ${ZERO_BOXES[4].x + 200} ${ZERO_Y}, ${CHAIN_DELTA.x + 120} ${DELTA_Y - 90}, ${CHAIN_DELTA.x} ${DELTA_Y}`,
-  `L ${CHAIN_COMMIT.x} ${RENDER_Y}`,
-].join(' ');
+// The chain runs on the rail ABOVE the Zero boxes, so it never crosses a label.
+const CHAIN_Y = ZERO_Y - 40;
 const CHAIN_STOPS = [
-  { x: ZERO_BOXES[0].x + 54, y: ZERO_Y - 40, label: 'click' },
-  { x: ZERO_BOXES[2].x + 50, y: ZERO_Y - 40, label: 'diff' },
-  { x: CHAIN_DELTA.x, y: DELTA_Y + 34, label: 'recompute' },
-  { x: CHAIN_COMMIT.x, y: RENDER_Y - 34, label: 'render' },
+  { x: ZERO_BOXES[0].x + 54, y: CHAIN_Y, label: 'click' },
+  { x: ZERO_BOXES[2].x + 50, y: CHAIN_Y, label: 'diff' },
+  { x: CHAIN_DELTA.x, y: DELTA_Y + 44, label: 'recompute' },
+  { x: CHAIN_COMMIT.x, y: RENDER_Y - 44, label: 'render' },
 ];
+const CHAIN_PATH = [
+  `M ${CHAIN_STOPS[0].x} ${CHAIN_Y}`,
+  `L ${ZERO_BOXES[4].x + 64} ${CHAIN_Y}`,
+  `C ${ZERO_BOXES[4].x + 264} ${CHAIN_Y}, ${CHAIN_DELTA.x + 120} ${DELTA_Y - 90}, ${CHAIN_DELTA.x} ${DELTA_Y}`,
+  `L ${CHAIN_COMMIT.x} ${CHAIN_STOPS[3].y + 9}`,
+].join(' ');
 
-const CAM_ZERO: CameraState = { x: 560, y: 150, k: 1.42 };
-const CAM_ELEC: CameraState = { x: 480, y: 230, k: 1.42 };
+const CAM_ZERO: CameraState = { x: 530, y: 150, k: 1.42 };
+const CAM_ELEC: CameraState = { x: 470, y: 230, k: 1.42 };
 const CAM_STRIP: CameraState = { x: 640, y: 420, k: 1.22 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.96 };
 
@@ -141,7 +144,7 @@ export function buildScene() {
   tl.tween(tapU, 1, { at: 22.6, dur: 0.6, ease: ease.pop });
   tl.tween(stripU, 1, { at: 24.0, dur: 1.2, ease: ease.draw });
   tl.tween(renderU, 1, { at: 25.4, dur: 1.6, ease: ease.linear });
-  tl.tween(pipeFade, 0.4, { at: 25.4, dur: 1.2, ease: ease.move });
+  tl.tween(pipeFade, 0.5, { at: 25.4, dur: 1.2, ease: ease.move });
   tl.hold(28.7, 0.8);
 
   // BEAT 4 — the second track grows
@@ -181,7 +184,7 @@ function PipeBox({ b, y, u, i, n, accent }: { b: Box; y: number; u: number; i: n
   return (
     <g opacity={e} transform={`translate(0, ${(1 - e) * 8})`}>
       <rect x={b.x} y={y - BOX_H / 2} width={b.w} height={BOX_H} rx={9} fill={colors.PANEL} stroke={accent} strokeWidth={1.5} />
-      <text x={b.x + b.w / 2} y={y + 4.5} textAnchor="middle" fontSize={12.5} fill={colors.TEXT} fontFamily={mono}>
+      <text x={b.x + b.w / 2} y={y + 5} textAnchor="middle" fontSize={14} fill={colors.TEXT} fontFamily={mono}>
         {b.label}
       </text>
     </g>
@@ -193,7 +196,7 @@ function Pipeline({ boxes, y, u, accent, title, fade }: { boxes: Box[]; y: numbe
   if (uu <= 0) return null;
   return (
     <g opacity={fade}>
-      <text x={boxes[0].x} y={y - BOX_H / 2 - 12} fontSize={11.5} fill={colors.MUTED} fontFamily={mono} opacity={Math.min(1, uu * 2)}>
+      <text x={boxes[0].x} y={y - BOX_H / 2 - 12} fontSize={13} fill={colors.MUTED} fontFamily={mono} opacity={Math.min(1, uu * 2)}>
         {title}
       </text>
       {boxes.slice(0, -1).map((b, i) => {
@@ -239,6 +242,19 @@ function Taps({ taps, u, fade }: { taps: Array<{ x: number; y: number }>; u: num
   );
 }
 
+/** Each tap drops a dashed line down into the recording strip (drawn under the boxes). */
+function TapDrops({ taps, u, fade }: { taps: Array<{ x: number; y: number }>; u: number; fade: number }) {
+  const e = clamp01(u);
+  if (e <= 0) return null;
+  return (
+    <g opacity={e * fade}>
+      {taps.map((t, i) => (
+        <line key={i} x1={t.x} y1={t.y + 8} x2={t.x} y2={STRIP.y} stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="3 4" opacity={0.6} />
+      ))}
+    </g>
+  );
+}
+
 /** The recording strip: render track + the growing sync-delta track. */
 function RecordingStrip({ u, renderP, deltaP, rungP, spotlight }: { u: number; renderP: number; deltaP: number; rungP: number; spotlight: number }) {
   const e = clamp01(u);
@@ -248,14 +264,14 @@ function RecordingStrip({ u, renderP, deltaP, rungP, spotlight }: { u: number; r
   return (
     <g opacity={e}>
       <rect x={STRIP.x} y={STRIP.y} width={STRIP.w * e} height={STRIP.h} rx={14} fill="rgba(13,19,33,0.72)" stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={STRIP.x + 16} y={STRIP.y + 24} fontSize={11.5} fill={colors.MUTED} fontFamily={mono} opacity={e}>
+      <text x={STRIP.x + 16} y={STRIP.y + 26} fontSize={13} fill={colors.MUTED} fontFamily={mono} opacity={e}>
         the Replay recording
       </text>
-      {/* render track — his */}
-      <text x={STRIP.x + 16} y={RENDER_Y - 18} fontSize={10.5} fill={colors.ACCENT} fontFamily={mono} opacity={rp > 0 ? 1 : 0}>
+      {/* render track — his (its label and baseline are on the recording from the start) */}
+      <text x={STRIP.x + 16} y={RENDER_Y - 30} fontSize={12} fill={colors.ACCENT} fontFamily={mono} opacity={Math.max(0.45 * e, rp > 0 ? 1 : 0)}>
         render track — commits · phase timings
       </text>
-      <line x1={STRIP.x + 16} y1={RENDER_Y} x2={STRIP.x + STRIP.w - 16} y2={RENDER_Y} stroke={colors.GRID} strokeWidth={1} opacity={rp > 0 ? 0.6 : 0} />
+      <line x1={STRIP.x + 16} y1={RENDER_Y} x2={STRIP.x + STRIP.w - 16} y2={RENDER_Y} stroke={colors.GRID} strokeWidth={1} opacity={Math.max(0.6 * e, rp > 0 ? 0.6 : 0)} />
       {COMMITS.map((c, i) => {
         const lit = clamp01(rp * COMMITS.length - i);
         if (lit <= 0) return null;
@@ -265,7 +281,7 @@ function RecordingStrip({ u, renderP, deltaP, rungP, spotlight }: { u: number; r
       {/* sync-delta track — the proposal */}
       {dp > 0 && (
         <>
-          <text x={STRIP.x + 16} y={DELTA_Y - 18} fontSize={10.5} fill={colors.TEAL} fontFamily={mono} opacity={Math.min(1, dp * 3)}>
+          <text x={STRIP.x + 16} y={DELTA_Y + 46} fontSize={12} fill={colors.TEAL} fontFamily={mono} opacity={Math.min(1, dp * 3)}>
             sync-delta track — timestamp · operator · payload
           </text>
           <line x1={STRIP.x + 16} y1={DELTA_Y} x2={STRIP.x + 16 + (STRIP.w - 32) * dp} y2={DELTA_Y} stroke={colors.TEAL} strokeWidth={1.2} opacity={0.5} />
@@ -275,7 +291,7 @@ function RecordingStrip({ u, renderP, deltaP, rungP, spotlight }: { u: number; r
             return (
               <g key={i} opacity={lit}>
                 <rect x={d.x - 5} y={DELTA_Y - 5} width={10} height={10} rx={2} transform={`rotate(45 ${d.x} ${DELTA_Y})`} fill={colors.TEAL} />
-                <text x={d.x} y={DELTA_Y + 22} textAnchor="middle" fontSize={9} fill={colors.MUTED} fontFamily={mono}>
+                <text x={d.x} y={DELTA_Y + 22} textAnchor="middle" fontSize={12} fill={colors.MUTED} fontFamily={mono}>
                   {d.op}
                 </text>
               </g>
@@ -309,7 +325,7 @@ function TriggerChips({ u, newU, fade }: { u: number; newU: number; fade: number
   const ne = clamp01(newU);
   return (
     <g opacity={fade}>
-      <text x={STRIP.x + 16} y={CHIP_Y + 5} fontSize={10.5} fill={colors.MUTED} fontFamily={mono} opacity={e}>
+      <text x={STRIP.x + 16} y={CHIP_Y + 5} fontSize={12} fill={colors.MUTED} fontFamily={mono} opacity={e}>
         render triggers:
       </text>
       {TRIGGER_CHIPS.map((c, i) => {
@@ -317,7 +333,7 @@ function TriggerChips({ u, newU, fade }: { u: number; newU: number; fade: number
         return lit > 0 ? (
           <g key={i} opacity={lit}>
             <rect x={c.x} y={CHIP_Y - 13} width={c.w} height={24} rx={12} fill="rgba(148,163,184,0.1)" stroke={colors.GRID} strokeWidth={1} />
-            <text x={c.x + c.w / 2} y={CHIP_Y + 4} textAnchor="middle" fontSize={11} fill={colors.TEXT} fontFamily={mono}>
+            <text x={c.x + c.w / 2} y={CHIP_Y + 4.5} textAnchor="middle" fontSize={13} fill={colors.TEXT} fontFamily={mono}>
               {c.label}
             </text>
           </g>
@@ -326,7 +342,7 @@ function TriggerChips({ u, newU, fade }: { u: number; newU: number; fade: number
       {ne > 0 && (
         <g opacity={ne} transform={`scale(${0.9 + 0.1 * ne})`} style={{ transformOrigin: `${NEW_CHIP.x + NEW_CHIP.w / 2}px ${CHIP_Y}px` }}>
           <rect x={NEW_CHIP.x} y={CHIP_Y - 13} width={NEW_CHIP.w} height={24} rx={12} fill="rgba(56,189,248,0.12)" stroke={colors.TEAL} strokeWidth={1.5} />
-          <text x={NEW_CHIP.x + NEW_CHIP.w / 2} y={CHIP_Y + 4} textAnchor="middle" fontSize={11} fill={colors.TEAL} fontFamily={mono} fontWeight={700}>
+          <text x={NEW_CHIP.x + NEW_CHIP.w / 2} y={CHIP_Y + 4.5} textAnchor="middle" fontSize={13} fill={colors.TEAL} fontFamily={mono} fontWeight={700}>
             {NEW_CHIP.label}
           </text>
         </g>
@@ -346,8 +362,8 @@ function CausalChain({ u }: { u: number }) {
         const lit = clamp01(e * CHAIN_STOPS.length - i * 0.8);
         return lit > 0 ? (
           <g key={i} opacity={lit}>
-            <rect x={st.x - 38} y={st.y - 13} width={76} height={22} rx={11} fill="rgba(251,191,36,0.14)" stroke={colors.WARM} strokeWidth={1} />
-            <text x={st.x} y={st.y + 3.5} textAnchor="middle" fontSize={10.5} fill={colors.WARM} fontFamily={mono}>
+            <rect x={st.x - 40} y={st.y - 13} width={80} height={22} rx={11} fill="rgba(251,191,36,0.14)" stroke={colors.WARM} strokeWidth={1} />
+            <text x={st.x} y={st.y + 3.5} textAnchor="middle" fontSize={12.5} fill={colors.WARM} fontFamily={mono}>
               {st.label}
             </text>
           </g>
@@ -360,19 +376,31 @@ function CausalChain({ u }: { u: number }) {
 // ————— render —————
 
 export function Render({ s }: { s: SceneState }) {
+  const cam = s.get(scene.cam);
   const pipeFade = clamp01(s.get(scene.pipeFade));
   const focus = clamp01(s.get(scene.focusU));
-  const dimmed = pipeFade * (1 - 0.6 * focus); // pipelines whisper at the close
+  // Once the camera drops to the recording strip, the pipes leave the frame
+  // (unmounted, not left half-visible at the top edge).
+  const away = clamp01((cam.y - 340) / 60);
+  const dimmed = pipeFade * (1 - 0.7 * focus) * (1 - away); // pipelines fall to ~0.15 at the close
+  const pipesIn = dimmed > 0.02;
   return (
-    <Camera {...s.get(scene.cam)}>
-      <Pipeline boxes={ZERO_BOXES} y={ZERO_Y} u={s.get(scene.zeroU)} accent={colors.ACCENT} title="Zero — mutation → incremental view maintenance → view" fade={dimmed} />
-      <Pipeline boxes={ELEC_BOXES} y={ELEC_Y} u={s.get(scene.elecU)} accent={colors.SECONDARY} title="Electric — write-ahead log → shape log → apply" fade={dimmed} />
+    <Camera {...cam}>
+      {/* packets sit UNDER the boxes, so a passing dot never covers a label */}
       <PipePacket boxes={ZERO_BOXES} y={ZERO_Y} u={s.get(scene.pkt1U)} color={colors.WARM} fade={pipeFade} />
       <PipePacket boxes={ELEC_BOXES} y={ELEC_Y} u={s.get(scene.pkt2U)} color={colors.WARM} fade={pipeFade} />
-      <Taps taps={ZERO_TAPS} u={s.get(scene.tapU)} fade={dimmed + 0.3 * focus} />
-      <Taps taps={ELEC_TAPS} u={s.get(scene.tapU)} fade={dimmed} />
+      {pipesIn && (
+        <>
+          <TapDrops taps={ZERO_TAPS} u={s.get(scene.tapU)} fade={dimmed} />
+          <TapDrops taps={ELEC_TAPS} u={s.get(scene.tapU)} fade={dimmed} />
+          <Pipeline boxes={ZERO_BOXES} y={ZERO_Y} u={s.get(scene.zeroU)} accent={colors.ACCENT} title="Zero — mutation → incremental view maintenance → view" fade={dimmed} />
+          <Pipeline boxes={ELEC_BOXES} y={ELEC_Y} u={s.get(scene.elecU)} accent={colors.SECONDARY} title="Electric — write-ahead log → shape log → apply" fade={dimmed} />
+          <Taps taps={ZERO_TAPS} u={s.get(scene.tapU)} fade={dimmed} />
+          <Taps taps={ELEC_TAPS} u={s.get(scene.tapU)} fade={dimmed} />
+        </>
+      )}
       <RecordingStrip u={s.get(scene.stripU)} renderP={s.get(scene.renderU)} deltaP={s.get(scene.deltaU)} rungP={s.get(scene.rungU)} spotlight={0.4 * focus} />
-      <TriggerChips u={s.get(scene.chipsU)} newU={s.get(scene.newChipU)} fade={1 - 0.5 * focus} />
+      <TriggerChips u={s.get(scene.chipsU)} newU={s.get(scene.newChipU)} fade={1 - 0.85 * focus} />
       <CausalChain u={s.get(scene.chainU)} />
     </Camera>
   );

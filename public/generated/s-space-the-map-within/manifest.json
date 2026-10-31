@@ -1,0 +1,109 @@
+{
+  "format": 3,
+  "slug": "s-space-the-map-within",
+  "title": "The Map Within",
+  "subtitle": "Reading and editing a model's spatial workspace",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Three rulers inside a token",
+      "blurb": "Read spatial coordinates with fixed directions inside object-token representations.",
+      "scene": "books/s-space-the-map-within/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.77,
+        11.993,
+        19.098,
+        27.179,
+        35.306,
+        42.515,
+        48.796,
+        56.993
+      ],
+      "duration": 64.412
+    },
+    {
+      "number": 2,
+      "title": "Move the map, test the answer",
+      "blurb": "Test whether coordinate edits influence generated answers.",
+      "scene": "books/s-space-the-map-within/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.979,
+        12.086,
+        21.107,
+        29.072,
+        36.223,
+        44.257,
+        49.9,
+        57.934
+      ],
+      "duration": 65.759
+    },
+    {
+      "number": 3,
+      "title": "Turn the viewpoint, not the evidence",
+      "blurb": "Rotate a measured relation to separate perception from computation.",
+      "scene": "books/s-space-the-map-within/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.686,
+        16.533,
+        25.054,
+        32.844,
+        40.681,
+        48.401,
+        56.842,
+        67.511
+      ],
+      "duration": 77.368
+    }
+  ],
+  "sourcePaper": {
+    "id": "2610.13527",
+    "title": "S-Space: Exploring Spatial Workspace in Multimodal Language Models",
+    "upvotes": 269,
+    "githubRepo": "https://github.com/mirros-lab/s-space",
+    "projectPage": "https://mirros.ai/blog/s-space",
+    "authors": [
+      "Zhiyuan Shi",
+      "Xiang Li",
+      "Xingzhuo Guo",
+      "Shangchen Miao",
+      "Weiliang Chen",
+      "Qiyu Dai",
+      "Jinshan Ren",
+      "Jiangran Lyu",
+      "Fangfu Liu",
+      "Mingsheng Long",
+      "Jialong Wu"
+    ],
+    "hf_url": "https://huggingface.co/papers/2610.13527",
+    "canonical_url": "https://arxiv.org/abs/2610.13527",
+    "pdf_url": "https://arxiv.org/pdf/2610.13527",
+    "doi": "10.48550/arXiv.2610.13527",
+    "target_date": "2026-10-12",
+    "ranking": "visible #1; 269 upvotes versus DiffusionART 239 and Reflex 134",
+    "repository_aliases": [
+      "https://github.com/MirroS-Lab/S-Space",
+      "https://github.com/Manchery/s-space"
+    ],
+    "title_alias": "S-Space: Exploring Spatial Workspace in Multimodal Models",
+    "sourceCommit": "fbb09403ac21ff9a889b9a64b1b4f3f0d92140ae",
+    "sourceDate": "2026-10-12",
+    "popularityObservedAt": "2026-10-13T07:37:47.620982-04:00"
+  },
+  "authoring": {
+    "planningModel": "gpt-6-astra",
+    "initialAnimationModel": "claude-fable-5-1",
+    "revisionProvider": "Codex current session",
+    "directRevisionAuthorized": true,
+    "coverProvider": "Codex built-in ImageGen",
+    "revisionModel": "gpt-6.1-sol"
+  }
+}

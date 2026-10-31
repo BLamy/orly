@@ -1,0 +1,93 @@
+{
+  "id": "reasoning-agents-current-understanding",
+  "checked": 46,
+  "confirmed": 32,
+  "corrected": 10,
+  "unverifiable": 3,
+  "corrections": [
+    {
+      "original": "On AIME 2024 o1-preview scored 83% (12.5/15) with consensus voting vs 13% for GPT-4o; it ranked in the 89th percentile on Codeforces.",
+      "verdict": "corrected",
+      "fix": "The 83% (12.5/15, cons@64) AIME and 89th-percentile Codeforces figures are for the full o1, which was unreleased on 12 Sep 2024. o1-preview scored about 56.7% at cons@64 and was at the 62nd percentile. OpenAI's text gives GPT-4o as 12% (1.8/15); its chart gives 13.4% at cons@64.",
+      "sources": ["https://openai.com/id-ID/index/learning-to-reason-with-llms/", "https://replicate.com/openai/o1/readme", "https://www.ithome.com/0/797/082.htm"]
+    },
+    {
+      "original": "R1's reasoning stage cost US$294,000, about 80 hours on 512 Nvidia H800s.",
+      "verdict": "corrected",
+      "fix": "The $294K covers R1-Zero (~198 h on 512 H800s), R1 (~80 h) and ~5K GPU-hours of SFT data generation (~147K GPU-h at $2/h). The 80 hours is R1's stage only. The base model (~$5.6-6M) is excluded.",
+      "sources": ["https://www.theregister.com/2025/09/19/deepseek_cost_train/", "https://www.ctvnews.ca/business/article/chinas-deepseek-says-its-hit-ai-model-cost-just-us294000-to-train/"]
+    },
+    {
+      "original": "By May 2026 METR's best estimates were about 16-20 hours.",
+      "verdict": "corrected",
+      "fix": "On 8 May 2026, METR estimated an early Claude Mythos Preview at 'at least 16 hours' (95% CI ~8.5-55 h). The v1.1 data point estimate is ~17.4 h (1,044.78 min). METR warns the suite is unreliable above ~16 h because only 5 of its 228 tasks are that long. '16-20 hours' is not METR's figure.",
+      "sources": ["https://metr.org/time-horizons/", "https://startupfortune.com/metr-says-claude-mythos-is-testing-the-limits-of-ai-evaluation/", "https://www.datalearner.com/benchmarks/metr-time-horizons-v1-1"]
+    },
+    {
+      "original": "METR TH1.1 has about 230 tasks.",
+      "verdict": "corrected",
+      "fix": "228 tasks, only 5 of them estimated at 16+ human-expert hours.",
+      "sources": ["https://startupfortune.com/metr-says-claude-mythos-is-testing-the-limits-of-ai-evaluation/"]
+    },
+    {
+      "original": "OpenAI (21 Jul 2026) called the Hugging Face breach 'an unprecedented cyber incident' and a 'warning shot'.",
+      "verdict": "corrected",
+      "fix": "'Unprecedented cyber incident' comes from the 21 Jul disclosure. 'We consider this incident a \"warning shot\" for us and for the world' comes from the 26 Aug 2026 technical report and the 'road ahead' post.",
+      "sources": ["https://therecord.media/openai-cyberattack-hugging-face", "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf", "https://axios.com/2026/08/26/openai-hugging-face-technical-report-ai-hack"]
+    },
+    {
+      "original": "About 17,600 recorded actions over roughly 2.5 days; agents breached a real company in under 13 hours.",
+      "verdict": "corrected",
+      "fix": "HF's forensic timeline covers 9-13 Jul (~4.5 days), with ~17,600 actions over the whole window; about 2.5 days were inside HF infrastructure. 'Under thirteen hours' is the day-3 escalation from a single pod to cluster-admin, not the whole breach. The sceptical post is a community article by Rob Schieber (23 Jul), not an official HF post.",
+      "sources": ["https://huggingface.co/blog/agent-intrusion-technical-timeline", "https://huggingface.co/blog/sheebz/codex-escape-something-aint-right"]
+    },
+    {
+      "original": "Pichai, 23 Jul 2026: 'We are now training Gemini 4.' / Google (21 Jul) said it 'started our most ambitious pre-training run yet, for Gemini 4'.",
+      "verdict": "corrected",
+      "fix": "The official prepared remarks for the Q2 2026 earnings call (23 Jul) say: 'We have started our most ambitious pre-training run yet, for Gemini 4, and are excited by the progress we are seeing at the frontier.' The shorter line appears only in secondary write-ups and is demoted to UNVERIFIED.",
+      "sources": ["https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q2-2026/", "https://searchenginejournal.com/pichai-says-google-needs-gemini-4-to-compete-at-the-frontier/583214"]
+    },
+    {
+      "original": "Senate fast-track bids for AI safety bills were blocked in Sept 2026.",
+      "verdict": "corrected",
+      "fix": "The confirmed event is a single unanimous-consent request on 29 Sep 2026 by Sens. Warner, Schatz and Kim for the AI Risk Management and Security Act of 2026, blocked by Sen. Ted Cruz. No federal preemption statute exists (confirmed).",
+      "sources": ["https://cryptobriefing.com/cruz-blocks-ai-safety-bill/", "https://www.implicator.ai/cruz-blocks-ai-bill-requiring-45-day-model-access-as-trump-backs-voluntary-accord/"]
+    },
+    {
+      "original": "Glasswing: $100 million in usage credits.",
+      "verdict": "corrected",
+      "fix": "Anthropic's wording is 'up to $100M in usage credits', plus $4M in direct donations ($2.5M to Alpha-Omega/OpenSSF, $1.5M to the Apache Software Foundation).",
+      "sources": ["https://www.anthropic.com/glasswing"]
+    },
+    {
+      "original": "A federal judge in California found the government's action unlawful retaliation (27 Aug 2026) [with no mention of the earlier ruling].",
+      "verdict": "corrected",
+      "fix": "Added the 26 Mar 2026 preliminary injunction by Judge Rita Lin, which the government appealed to the Ninth Circuit. The 27 Aug 2026 final ruling made it permanent. 'Cannot in good conscience accede' is pinned to Amodei's 26 Feb 2026 statement, and the DoW letter to 4 Mar (10 USC 3252).",
+      "sources": ["https://wtop.com/national/2026/03/federal-judge-temporarily-blocks-the-pentagon-from-branding-ai-firm-anthropic-a-supply-chain-risk/", "https://www.bssnews.net/international/418711/US-court-rules-Pentagon-ban-of-Anthropic-unlawful", "https://anthropic.com/news/where-stand-department-war"]
+    },
+    {
+      "original": "Clément Delangue: 'This incident, possibly the first of its kind, proves a point we've long believed: AI safety won't be solved by any single company working in secret.'",
+      "verdict": "unverifiable",
+      "fix": "UNVERIFIED — do not use as a quote. No original post or interview found; only a paraphrase via Audrey Tang (30 Jul 2026). Use instead the verified line that HF 'strongly believe[s] there was no malicious intent'.",
+      "sources": ["https://archive.tw/speech/63869864", "https://startuphub.ai/ai-news/artificial-intelligence/2026/hugging-face-ceo-on-openai-hack-wake-up-call-for-ai-safety"]
+    },
+    {
+      "original": "Pichai: 'We are now training Gemini 4.'",
+      "verdict": "unverifiable",
+      "fix": "UNVERIFIED — do not use as a quote. Use the official prepared-remarks wording instead (see the correction above).",
+      "sources": ["https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q2-2026/"]
+    },
+    {
+      "original": "Bartz settlement: about 482,460 works.",
+      "verdict": "unverifiable",
+      "fix": "Sources checked say 'more than 480,000' works at ~$3,000 each. Final approval on 20 Jul 2026 by Judge Araceli Martinez-Olguin is confirmed. Narrate it as 'nearly half a million works'.",
+      "sources": ["https://authorsguild.org/news/court-grants-final-approval-anthropic-copyright-settlement/", "https://news.bloomberglaw.com/ip-law/anthropic-authors-1-5-billion-deal-receives-final-approval", "https://www.jurist.org/news/2026/07/judge-approves-record-1-5-billion-settlement-involving-anthropic/"]
+    },
+    {
+      "original": "Vance: 'The AI future is not going to be won by hand-wringing about safety. It will be won by building.'",
+      "verdict": "contested",
+      "fix": "Most outlets (TechCrunch, NPR, Tech Brew) print 'is not going to be won'; some print 'will not be won'. Check the UCSB American Presidency Project transcript before narrating word for word.",
+      "sources": ["https://www.techbrew.com/stories/2025/02/14/lparis-ai-summit-safety-regulation", "https://www.wrkf.org/2025-02-12/vice-president-vance-lays-out-ai-vision-very-different-from-biden-administrations"]
+    }
+  ]
+}

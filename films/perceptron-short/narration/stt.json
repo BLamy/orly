@@ -1,0 +1,65 @@
+{
+ "version": 1,
+ "lines": {
+  "L0104": {
+   "lineId": "L0104",
+   "model": "scribe_v1",
+   "transcript": "It was the Mark 1 Perceptron, the project of psychologist Frank Rosenblatt",
+   "expectedTerms": [
+    {
+     "term": "Mark I",
+     "accept": [
+      "Mark I",
+      "Mark One"
+     ],
+     "found": true
+    },
+    {
+     "term": "Rosenblatt",
+     "accept": [
+      "Rosenblatt"
+     ],
+     "found": true
+    }
+   ],
+   "pass": true,
+   "sig": "25c4b78dca9c",
+   "lineSig": "d06a0e643ead",
+   "clip": "narration/clips/L0104.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-06T19:23:45.261Z"
+  },
+  "L0108": {
+   "lineId": "L0108",
+   "model": "scribe_v1",
+   "transcript": "It could learn only simple patterns. In 1969, Minsky and Papert showed just how simple. For years, interest faded. Its descendants, today's neural networks, still learn from mistakes.",
+   "expectedTerms": [
+    {
+     "term": "1969",
+     "accept": [
+      "1969",
+      "nineteen sixty-nine"
+     ],
+     "found": true
+    },
+    {
+     "term": "Papert",
+     "accept": [
+      "Papert",
+      "Pappert"
+     ],
+     "found": true
+    }
+   ],
+   "pass": true,
+   "sig": "92a9e68a0017",
+   "lineSig": "7a3ed6b7a265",
+   "clip": "narration/clips/L0108.wav",
+   "wer": 0.036,
+   "requestId": null,
+   "at": "2026-10-06T19:23:47.040Z"
+  }
+ },
+ "updatedAt": "2026-10-06T19:23:47.041Z"
+}

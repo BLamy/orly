@@ -1,0 +1,144 @@
+{
+ "shot": "ch03-s05",
+ "at": "2026-10-13T04:13:11.796Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 26,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "AND IF NO STRAIGHT LINE",
+   "capWhileSubject": 37,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "EXISTS?",
+   "capWhileSubject": 37,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "w",
+   "maxCap": 64.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "t",
+   "maxCap": 64.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "x",
+   "maxCap": 64.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "weight",
+   "maxCap": 29.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "step",
+   "maxCap": 29.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "right answer × input",
+   "maxCap": 29.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IF",
+   "maxCap": 76.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 64,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 64,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 37,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 32,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 32,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 37,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 31.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 31.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 31.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 31.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 27.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 32,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 28.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 28.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "How could a net",
+   "maxCap": 51.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "rewire itself?",
+   "maxCap": 51.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 24
+}

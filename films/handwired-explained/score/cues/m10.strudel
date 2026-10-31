@@ -1,0 +1,235 @@
+// m10 · FOUR DAYS IN OCTOBER (ch09-s01 … ch09-s08) · M5, the film's only driving pulse
+// Window 1094.50-1220.70 (126.20 s, clock 1455.42 s). 112 BPM, one 4/4 bar per cycle (2.143 s).
+// G mixolydian (G major plus F natural: both branches' notes at once); plain G major only on 'toy'.
+//
+// Construction: the October machine is a set of CONTINUOUS layers locked to one grid whose downbeat is
+// 'october' (cue-local 3.19), each multiplied by a level envelope (lev) placed in cue-local seconds, so the
+// pulse never loses its phase when it thins, swells, is cut, or comes back.
+//
+// HARMONY (revision, critic round 1): the pulse now has a harmonic arc. One table, BAR[k], gives each grid bar
+// its chord, and the bass, the pizzicato, the thump and the low pedal all read it. The arc is the mixolydian
+// cadence I - bVII - IV - I (G, F, C/G, G), and the F is the LOWER BRANCH (both branches' notes, again):
+//   pass 1  October G -> through the window F -> the search map C/G -> tag 9 tied, G7 left hanging
+//   pass 2  Kleene F -> the two passes C/G -> the booth G
+//   tag 9 dies F -> D (the pencil) -> G (the drawer); the pulse is cut
+//   the go-ahead: F -> C/G -> G, and on 'toy' plain G major: the F is gone, the first resolution.
+// Under every narrated line the machine is ticks plus a sub-voice pedal: the pizzicato and the thump are
+// gated to the speech-free gaps (with a 0.3 s guard before each line), the sawtooth bass drops to 45 %, and
+// the string swells live only in the long gaps. So the harmony is HEARD in the gaps and felt under the words.
+//
+// OSTINATO (M5 develops by section): October = M5 as written (a5, accents in fours); the window = a5/e5 in
+// 3+3+2, behind glass (lpf); the search map = up a register, e6/b5, accents three-against-sixteen, with the
+// 32nd rain; tag 9 = a whisper; Kleene plugged in = the escapement's own a5/e5 at full speed; the two passes =
+// g5/c6 (the IV); the booth = a backbeat with d6 accents; after 'lab' = half time, g5/d5 eighths.
+// Machines clack, never chime: woodblock, noise, sine, sawtooth, pizzicato and soundfont strings.
+// Last strike: the plain G-major chord on 'toy' (122.92 = 1217.42). The fade is 125.00-126.20.
+setcpm(112/4)
+const CPS = 112/240, DUR = 126.20
+const Q = 960, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = Math.ceil(DUR * CPS * Q); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const hall = x => x.room(0.35).rsize(4)
+const at = (ts, d, p) => ts.map(t => [t, d, p])
+// a level envelope: [t, d, from, to?] segments (a linear ramp when to is given), 0 elsewhere
+const lev = (...segs) => { const out = []; let cur = 0
+  for (const [t, d, a, b = a] of segs) { const qa = qn(t), qb = qn(t + d); if (qa < cur) throw new Error('lev overlap at ' + t)
+    if (qa > cur) out.push([qa - cur, pure(0)]); out.push([qb - qa, a === b ? pure(a) : saw.range(a, b)]); cur = qb }
+  const end = Math.ceil(DUR * CPS * Q); if (end > cur) out.push([end - cur, pure(0)]); return stepcat(...out).slow(end / Q) }
+// the narrator's lines (cue-local): talk(vs, vg, pre) is vs under a line (from pre s before it) and vg in the gaps
+const LINES = [[2.63, 5.94], [6.64, 8.87], [11.97, 18.27], [20.68, 27.85], [28.55, 33.89], [37.31, 42.50], [45.60, 50.73],
+  [51.43, 56.64], [58.27, 62.61], [63.11, 68.77], [71.18, 80.74], [81.44, 89.53], [91.93, 96.46], [96.96, 103.46],
+  [104.16, 105.68], [106.38, 110.42], [113.65, 117.75], [118.45, 123.86]]
+const talk = (vs, vg = 1, pre = 0) => { const segs = []; let cur = 0
+  for (const [a, b] of LINES) { const qa = qn(a - pre), qb = qn(b); if (qa > cur) segs.push([qa - cur, pure(vg)]); segs.push([qb - Math.max(qa, cur), pure(vs)]); cur = qb }
+  const end = Math.ceil(DUR * CPS * Q); if (end > cur) segs.push([end - cur, pure(vg)]); return stepcat(...segs).slow(end / Q) }
+const gap = () => talk(0, 1, 0.3)
+// the October grid: bar k of a <...> sequence starts at 'october' (3.19) + (k - 1) x 2.143
+const grid = p => p.late((3.19 * CPS) % 1)
+// n events, each gap k times the last (min 0.035 s), cycling through the given notes, then rest
+const accel = (ns, n, total, d0, k) => { const out = []; let t = 0, d = d0
+  for (let i = 0; i < n && t + d < total - 1e-6; i++) { out.push(ns[i % ns.length] + '@' + d.toFixed(3)); t += d; d = Math.max(0.035, d * k) }
+  out.push('~@' + Math.max(0.001, total - t).toFixed(3)); return out.join(' ') }
+
+// ================================================================ THE HARMONY TABLE (one entry per grid bar)
+// G = I, F = bVII (the lower branch), C = IV over the G pedal, Q = G7 left hanging (tag 9's question),
+// lower case = the light, half-time pulse after 'lab'; '-' = no machine harmony.
+//            0    1-4 October      5-8 window       9-16 search map (C/G)              17-20 tag 9
+const BAR = ['-', 'G','G','G','G', 'F','F','F','F', 'C','C','C','C','C','C','C','C', 'Q','Q','Q','Q',
+//            21-25 Kleene F        26-32 two passes C/G          33-41 the booth G
+             'F','F','F','F','F', 'C','C','C','C','C','C','C', 'G','G','G','G','G','G','G','G','G',
+//            42-44 review   45-47 workers F  48 cut  49-51 lab  52 card  53-54   55-57 go-ahead   58-59
+             'G','G','G', 'F','F','F', '-', 'g','g','g', 'f', 'c','c', 'g','g','-', '-','-']
+const seq = m => '<' + BAR.map(c => m[c] ?? '~').join(' ') + '>'
+// the filtered sawtooth bass pulse (8ths): driving in the machine, half time after 'lab'
+const BASSP = { G: '[g1 g1 f1 g1 g1 d2 f1 g1]', F: '[f1 f1 c2 f1 f1 a1 c2 f1]', C: '[g1 g1 c2 g1 g1 e2 c2 g1]',
+  Q: '[g1 ~ g1 ~ f1 ~ d2 ~]', g: '[g1 ~ ~ ~ f1 ~ d2 ~]', f: '[f1 ~ ~ ~ c2 ~ a1 ~]', c: '[g1 ~ ~ ~ c2 ~ e2 ~]' }
+// the pizzicato chord figure (8ths, 3+3+2), heard only in the gaps
+const PIZZP = { G: '[g2 ~ ~ d3 ~ ~ g3 ~]', F: '[f2 ~ ~ c3 ~ ~ a2 ~]', C: '[g2 ~ ~ c3 ~ ~ e3 ~]', Q: '[g2 ~ ~ d3 ~ ~ f3 ~]',
+  g: '[g2 ~ ~ d3 ~ ~ ~ ~]', f: '[f2 ~ ~ c3 ~ ~ ~ ~]', c: '[g2 ~ ~ c3 ~ ~ ~ ~]' }
+// the thump's pitch (beats one and three in the machine, one only after 'lab')
+const THUMPP = { G: '[g1 g1]', F: '[f1 f1]', C: '[g1 c2]', Q: '[g1 ~]', g: 'g1', f: 'f1', c: 'g1' }
+// the low pedal under the words: the chord's root, held, below the voice (one long note per chord run)
+const ROOT = { G: 'g1', F: 'f1', C: 'g1', Q: 'g1', g: 'g1', f: 'f1', c: 'g1' }
+const barT = k => 3.19 + (k - 1) / CPS
+const pedal = []
+for (let k = 1; k < BAR.length; k++) { const r = ROOT[BAR[k]]; if (!r) continue
+  let j = k; while (j + 1 < BAR.length && ROOT[BAR[j + 1]] === r) j++
+  const t0 = barT(k), t1 = Math.min(barT(j + 1), 122.80); if (t1 - t0 > 0.5) pedal.push([t0, t1 - t0 - 0.05, note(r)]); k = j }
+
+// ================================================================ THE MACHINE (continuous, enveloped)
+// the bass and the pizzicato read the table; the bass is 45 % under speech, the pizzicato only in the gaps
+const BASS = lev([3.19, 8.19, 1.0], [11.38, 6.9, 0.55, 0.4], [20.33, 8.83, 0.5, 0.7], [29.16, 7.55, 0.7], [36.71, 9.0, 0.4, 0.3],
+  [51.77, 5.9, 0.7], [57.67, 12.91, 0.75], [70.58, 33.18, 0.95], [106.57, 8.05, 0.8, 0.9], [114.62, 4.87, 0.9], [119.49, 2.4, 0.8, 0.0])
+$: grid(note(mini(seq(BASSP))).s("sawtooth")).lpf(280).decay(0.15).sustain(0).gain(0.17)
+  .mul(gain(BASS)).mul(gain(talk(0.45)))
+const PZ = lev([3.19, 100.57, 1.0], [106.57, 16.2, 1.0])
+$: grid(note(mini(seq(PIZZP))).s("gm_pizzicato_strings")).velocity("[0.32 0.22 0.26]").lpf(1300).room(0.2).rsize(3)
+  .mul(velocity(PZ)).mul(velocity(gap())).pan(0.38)
+// the contrabass doubles the bar's root an octave below, on the downbeat only
+const CBP = Object.fromEntries(Object.entries(ROOT).map(([c, r]) => [c, '[' + r + ' ~ ~ ~ ~ ~ ~ ~]']))
+$: grid(note(mini(seq(CBP))).s("gm_contrabass")).velocity(0.15).attack(0.01).release(0.5).lpf(420)
+  .mul(velocity(PZ)).mul(velocity(gap()))
+// the restrained modern weight: a soft sine thump on the chord's root, ONLY in the gaps
+const THUMP = lev([3.19, 8.19, 1.0], [11.38, 6.6, 0.5], [20.33, 16.38, 0.85], [36.71, 9.0, 0.5], [51.77, 5.9, 0.85],
+  [57.67, 12.91, 0.9], [70.58, 33.18, 1.0], [106.57, 16.2, 0.9])
+$: grid(note(mini(seq(THUMPP))).s("sine")).decay(0.24).sustain(0).gain(0.13).mul(gain(THUMP)).mul(gain(gap()))
+// the low pedal under the words (contrabass, lpf 300): the arc is felt even where it cannot be heard
+$: tl(...pedal).s("gm_contrabass").velocity(0.06).attack(0.6).release(1.0).lpf(300)
+
+// ---------------------------------------------------------------- the ostinato, one variant per section
+const tick = (pat, vel, env) => grid(s("gm_woodblock*16").note(pat).velocity(vel)).attack(0.002).decay(0.035).sustain(0).mul(velocity(env)).mul(velocity(0.8))
+// October: M5 as written (a5, accents in fours); tag 9's whisper; the review; the commit card
+$: tick("a5", "[0.66 0.3 0.42 0.3]*4", lev([3.19, 8.19, 0.8], [36.71, 1.0, 0.6, 0.3], [37.71, 7.29, 0.3],
+  [91.05, 12.71, 0.8], [114.62, 4.87, 0.6, 0.9], [119.49, 3.2, 0.8, 0.0])).pan(0.46)
+// through the window: a5/e5 in 3+3+2, behind glass
+$: tick("[a5 e5 e5 a5 e5 e5 a5 e5]*2", "[0.62 0.24 0.24 0.5 0.24 0.24 0.46 0.24]*2", lev([11.38, 6.9, 0.85, 0.5], [18.28, 0.4, 0.3, 0.0]))
+  .lpf(1500).pan(0.5)
+// the search map: up a register (e6/b5), accents three-against-sixteen
+$: tick("[e6 b5]*8", "{0.64 0.26 0.32}%16", lev([20.40, 5.43, 0.3, 0.75], [25.83, 10.88, 0.8])).pan(0.4)
+// Kleene plugged into the new machine ('table'): the escapement's own a5/e5, at full speed
+$: tick("[a5 e5]*8", "[0.66 0.3 0.42 0.3]*4", lev([51.77, 5.9, 0.8])).pan(0.46)
+// the two passes: g5/c6 (the IV), accent on the third sixteenth
+$: tick("[g5 g5 c6 g5]*4", "[0.6 0.26 0.48 0.28]*4", lev([57.67, 12.91, 0.7])).pan(0.5)
+// the booth: a backbeat, d6 on two and four
+$: tick("[a5 a5 a5 a5 d6 a5 a5 a5]*2", "[0.68 0.28 0.4 0.28 0.6 0.28 0.4 0.32]*2", lev([70.58, 20.47, 0.85], [91.05, 0.6, 0.85, 0.0])).pan(0.46)
+// the relay contacts: a whisper of white noise on the same 16ths
+const RELAY = lev([3.19, 8.19, 1.0], [25.83, 10.88, 0.6], [51.77, 5.9, 0.7], [70.58, 33.18, 0.85], [114.62, 4.87, 0.5, 0.8], [119.49, 2.5, 0.6, 0.0])
+$: grid(s("white*16")).hpf(4000).decay(0.012).sustain(0).gain("[0.17 0.07]*8").mul(gain(RELAY)).pan(0.56)
+// the high, fast tick of the search map: the 16ths doubled to 32nds (one click per slot as the bead steps,
+// 'oneThread' 25.83), then thinned to the tick alone in ch09-s04
+const HI = lev([25.83, 10.88, 0.9], [36.71, 1.2, 0.5, 0.0], [45.00, 2.2, 0.9], [47.20, 1.0, 0.9, 0.3], [48.20, 3.57, 0.3], [51.77, 5.9, 0.7], [57.67, 4.0, 0.4, 0.0])
+$: grid(s("gm_woodblock*16").note("e6").late(1/32)).velocity(0.3).decay(0.018).sustain(0).mul(velocity(HI)).pan(0.62)
+// rain on paper: in the pull-back ('pullBack' 27.53) the ticks multiply into a fine random shimmer
+const RAIN = lev([27.53, 1.6, 0.0, 1.0], [29.13, 4.8, 1.0], [33.93, 2.8, 1.0, 0.0])
+$: s("white*48").degradeBy(0.55).hpf(5500).lpf(12000).decay(0.01).sustain(0).gain(0.2).mul(gain(RAIN))
+  .pan(rand.range(0.25, 0.75))
+// after 'lab' (106.57): the pulse comes back lighter, at half its old tempo feel (g5/d5 8ths, no relay)
+// and gathers once more under the commit card
+const LIGHT = lev([106.57, 8.05, 0.55, 0.75], [114.62, 4.87, 0.75], [119.49, 3.2, 0.7, 0.0])
+$: grid(s("gm_woodblock*8").note("[g5 d5 d5 d5 g5 d5 d5 d5]").velocity("[0.85 0.4 0.58 0.4]*2")).decay(0.035).sustain(0).mul(velocity(LIGHT)).pan(0.46)
+
+// ================================================================ the string swells (the long gaps only)
+const sw = (t, d, ch, v = 0.15, lp = 1200) => [t, d, note(ch).velocity(v * 1.25).lpf(lp)]
+$: hall(tl(
+  sw(9.00, 2.45, "[g2,d3,g3,b3]", 0.15),                 // after 'four days': October's G, under M1
+  sw(34.00, 2.75, "[g2,c3,e3,g3]", 0.2),                // the one-pass sweep lands: C/G
+  sw(42.62, 2.70, "[g2,d3,f3]", 0.15, 800),             // tag 9: G7, left hanging under M1's held E
+  sw(56.76, 1.10, "[f2,c3,a3]", 0.15, 900),             // Kleene's F, before the passes
+  sw(68.85, 1.95, "[g2,c3,e3,g3]", 0.2),                // the copper matches: C/G
+  sw(89.60, 2.00, "[g2,d3,g3,b3]", 0.16),                // after the trapdoor: the booth's G
+  sw(110.50, 1.98, "[g2,d3,g3]", 0.16, 1000),            // the light pulse gathers: G ...
+  sw(112.48, 2.14, "[f2,c3,a3]", 0.10, 700),             // ... F under the commit card (soft, under the line)
+  sw(114.62, 4.20, "[g2,c3,e3]", 0.08, 700),             // C/G
+  sw(118.90, 3.90, "[g2,d3,a3]", 0.06, 700)              // G, no third yet, no F
+).s("gm_string_ensemble_1").attack(0.55).release(0.8))
+
+// ================================================================ ch09-s01 · OCTOBER
+// the chapter card in near-silence: the low G alone (m09's G-major drawer still ringing into it)
+$: tl([0.0, 4.2, note("g1").velocity(0.26)], [104.08, 2.9, note("g1").velocity(0.17)]).s("gm_contrabass").attack(0.9).release(1.8).lpf(380)
+$: tl([0.0, 3.6, note("[g2,d3]").velocity(0.14)], [104.08, 2.6, note("g2").velocity(0.08)]).s("gm_pad_bowed").attack(1.2).release(2).lpf(420)
+// the sub-columns' cascades: runs of tiny detent clicks from 'count' (5.46), densest on 'fourDays' (8.02)
+$: tl([5.46, 4.4, s("gm_woodblock*48").note("f6").degradeBy(0.35).velocity(0.16).mul(velocity(tri.range(0.2, 1.4)))])
+  .decay(0.01).sustain(0).pan(rand.range(0.3, 0.7))
+// M1 rides above the machine, gate wide open on U (one cell per bar on the October grid): softly under
+// 'Nearly all of them', full in the gap after 'four days', and left on the sixth (E): no resolution yet
+$: hall(tl([7.48, 2.14, note("b4@1 d5@1 e5@2").velocity(0.18)], [9.62, 2.14, note("b4@1 d5@1 g5@2").velocity(0.21)],
+          [11.76, 2.6, note("e5").velocity(0.18)]).s("piano").lpf(1700).pan(0.58).release(0.8))
+
+// ================================================================ ch09-s02 · through the window
+// (the machine drops to the window's tick, then to nothing); on 'motto' (18.87) M1's upper line, once, alone,
+// unhurried, over the window's F (F lydian: the upper line over the lower branch); one detent click after it
+$: hall(tl([18.87, 1.75, note("b4@0.54 d5@0.54 e5@0.67")]).s("piano").velocity(0.28).lpf(1700).pan(0.58).release(1.0))
+$: tl([20.55, 0.2, note("e6")]).s("gm_woodblock").velocity(0.16).decay(0.03).sustain(0)
+
+// ================================================================ ch09-s03 · the search map (serverCyan)
+// the furnace from ch05, now at ease: a warm low G under 'GPU' ('furnace' 29.16), the pedal of C/G
+$: tl([29.16, 7.4, note("[g1,g2]")]).s("sawtooth").gain(0.035).attack(1.5).release(2).lpf(200)
+// the one-pass sweep ('onePass' 34.09): a single dry rising scrape (noise grains climbing 700 -> 6000 Hz)
+$: tl([34.09, 0.75, s("white*20").bpf(saw.range(700, 6000)).gain(saw.range(0.03, 0.09))]).bpq(3).decay(0.03).sustain(0)
+// the copper marks land: a small catch at the top of the scrape
+$: tl([34.86, 0.2, note("c6")]).s("gm_woodblock").velocity(0.22).decay(0.025).sustain(0)
+
+// ================================================================ ch09-s03b · tag 9 is tied on
+// the detent's TIE on 'tied' (39.48), the tonic barely touched below
+$: tl([39.48, 0.2, note("e6")]).s("gm_woodblock").velocity(0.18).decay(0.03).sustain(0)
+$: tl([39.48, 1.2, note("g2")]).s("gm_pizzicato_strings").velocity(0.10).lpf(900)
+// then M1's upper line in the gap after the line, held on the sixth over G7: a question left hanging
+$: hall(tl([42.62, 2.9, note("b4@0.54 d5@0.54 e5@1.82")]).s("piano").velocity(0.27).lpf(1700).pan(0.58).release(1.4))
+
+// ================================================================ ch09-s04 · Kleene, 1951
+// under the page ('kleene' 47.38): M3's escapement from ch02 returns, slowed and low (four ticks and a
+// rest), its pizzicato frame now on the lower branch's F; on 'table' (51.77) the October tick takes over
+$: tl([47.38, 0.5, note("a4")], [48.28, 0.5, note("e4")], [49.18, 0.5, note("a4")], [50.08, 0.5, note("e4")]).s("gm_woodblock").velocity(0.34).decay(0.05).sustain(0).pan(0.45)
+$: tl([47.38, 4.39, note("f2@0.9 c3@0.9 a2@0.9 c3@0.9 ~@0.79")]).s("gm_pizzicato_strings").velocity(0.14).lpf(800)
+
+// ================================================================ ch09-s05 · the two passes
+// pass one ('backward' 60.82): a descending woodblock line, M1's LOWER line with it; pass two ('forward'
+// 64.39): the same line rising, the UPPER line with it: one pass each, a whole tone apart
+$: tl([60.82, 2.14, note("g5 f5 e5 d5 c5 b4 a4 g4")], [64.39, 2.14, note("g4 a4 b4 c5 d5 e5 f5 g5")])
+  .s("gm_woodblock").velocity(0.32).decay(0.035).sustain(0)
+$: hall(tl([60.82, 2.3, note("a4@1 c5@1 d5@2")]).s("piano").velocity(0.15).lpf(1400).release(0.6).pan(0.42))
+$: hall(tl([64.39, 2.3, note("b4@1 d5@1 e5@2")]).s("piano").velocity(0.15).lpf(1400).release(0.6).pan(0.58))
+// the copper matches land as small ratchet catches (gap after 'end', 68.77-71.18)
+$: tl(...at([68.95, 69.35, 69.80], 0.2, note("c6"))).s("gm_woodblock").velocity(0.42).decay(0.03).sustain(0)
+$: tl(...at([68.95, 69.35, 69.80], 0.2, s("white"))).hpf(3500).decay(0.012).sustain(0).gain(0.05)
+
+// ================================================================ ch09-s06 · the booth
+// the backtracking shuttle ('backtrack' 81.74): back and forth, faster and faster, a little comic,
+// until the trapdoor (90.13); the hourglass: a soft continuous rasp of sand
+$: tl([81.74, 8.39, note(mini(accel(['c5', 'g4'], 200, 8.39, 0.30, 0.955)))]).s("gm_woodblock").velocity(0.24).decay(0.03).sustain(0)
+  .pan(perlin.range(0.3, 0.7).fast(6))
+$: tl([82.40, 6.2, s("pink")]).bpf(6500).bpq(0.8).gain(0.012).attack(1).release(0.8)
+// the program's needle stops ('program' 88.34): one clean clack against the clatter
+$: tl([88.34, 0.25, note("g5")]).s("gm_woodblock").velocity(0.6).decay(0.04).sustain(0)
+// the trapdoor ('trapdoor' 90.13, in the gap): a dull wooden thunk
+$: tl([90.13, 0.5, note("c2")]).s("gm_taiko_drum").velocity(0.3).decay(0.3).sustain(0).lpf(500)
+$: tl([90.13, 0.3, s("brown")]).lpf(250).decay(0.18).sustain(0).gain(0.17)
+
+// ================================================================ ch09-s07 · tag 9 dies in seconds
+// FLIP on 'review' (93.26): the paper snap over the dominant
+$: tl([93.26, 0.2, s("white")]).hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(0.12)
+$: tl([93.26, 1.2, note("d3")]).s("gm_pizzicato_strings").velocity(0.12).lpf(900)
+// eight workers ('workers' 97.43): a light patter of eight shuttles (the harmony sinks to the lower branch, F)
+$: tl([97.43, 1.1, note("c5 g4 c5 g4 c5 g4 c5 g4 ~@0.6")]).s("gm_woodblock").velocity(0.22).decay(0.03).sustain(0).pan(0.6)
+// STRIKE on 'struck' (103.76): the pencil scratch over D, resolving into the wooden drawer on G ...
+$: tl([103.76, 0.4, s("white")]).bpf(3000).bpq(2).attack(0.02).decay(0.30).sustain(0).gain(0.07)
+$: tl([103.76, 0.32, note("d2")]).s("gm_contrabass").velocity(0.3).attack(0.03).release(0.2).lpf(400)
+$: tl([104.08, 0.5, note("c2")]).s("gm_taiko_drum").velocity(0.32).decay(0.25).sustain(0).lpf(600)
+$: tl([104.08, 0.3, s("brown")]).lpf(300).decay(0.15).sustain(0).gain(0.22)
+// ... and ON THE STRIKE the October pulse is cut: room tone and one sustained low G (above) through
+// 'That tag held for hours'; the lighter pulse comes back on 'lab' (106.57)
+$: tl([103.76, 2.9, s("pink")]).hpf(400).lpf(1500).gain(0.004).attack(0.3).release(0.6)
+
+// ================================================================ ch09-s08 · the go-ahead
+// the last pass of the arc: F under the commit card, C/G, then G (strings above, no third, no F); M1 settles
+// onto U, gate fully open, as the shutter rolls up ('public' 119.49), and RESOLVES for the first time in the
+// chapter: a plain G-major chord on 'toy' (122.92), the F gone at last: the last strike
+$: hall(tl([118.90, 2.15, note("b4@1 d5@1 e5@2").velocity(0.20)], [121.05, 1.87, note("d5").velocity(0.17)]).s("piano").lpf(1600).pan(0.58).release(0.8))
+$: hall(tl([122.92, 3.2, note("[g2,d3,g3,b3,d4]")]).s("gm_string_ensemble_1").velocity(0.12).attack(0.3).release(3).lpf(1300))
+$: hall(tl([122.92, 3.2, note("[g1,g2,d3,b3,g4]")]).s("piano").velocity(0.14).lpf(1500).release(3))
+$: tl([122.92, 3.2, note("g1")]).s("gm_contrabass").velocity(0.24).attack(0.2).release(2.5).lpf(380)
+
+all(x => x.postgain(2.75))

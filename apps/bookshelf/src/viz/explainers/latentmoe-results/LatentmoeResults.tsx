@@ -44,7 +44,7 @@ const ROW_H = 62;
 const BAR_MAX = 560;
 
 const CAM_TABLE: CameraState = { x: 620, y: 300, k: 1.2 };
-const CAM_SCALE: CameraState = { x: 700, y: 480, k: 1.25 };
+const CAM_SCALE: CameraState = { x: 735, y: 556, k: 1.25 };
 
 interface Scene {
   tl: Timeline;
@@ -158,7 +158,9 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
+  // The results table gives way to the model cards when the camera zooms in on them.
+  const tableOp = 1 - hybridU;
 
   return (
     <>
@@ -166,50 +168,52 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          <text x={CH_X} y={CH_Y - 36} fill={colors.TEXT} fontSize={16} opacity={rowsU}>
-            95B / 8B-active · 300B tokens · matched budget
-          </text>
-          <text x={CH_X + 430} y={CH_Y - 36} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={rowsU}>
-            reported — replotted, not re-run
-          </text>
-          {BENCH.map((b, i) => {
-            const u = clamp01(rowsU * BENCH.length - i);
-            if (u <= 0) return null;
-            const y = CH_Y + i * ROW_H;
-            const wb = (b.base / 80) * BAR_MAX * fillU;
-            const wa = (b.acc / 80) * BAR_MAX * fillU;
-            return (
-              <g key={b.name} opacity={u}>
-                <text x={CH_X - 14} y={y + 18} textAnchor="end" fill={colors.TEXT} fontSize={14}>
-                  {b.name}
+          <g opacity={tableOp}>
+            <text x={CH_X} y={CH_Y - 36} fill={colors.TEXT} fontSize={16} opacity={rowsU}>
+              95B / 8B-active · 300B tokens · matched budget
+            </text>
+            <text x={CH_X + 430} y={CH_Y - 36} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={rowsU}>
+              reported — replotted, not re-run
+            </text>
+            {BENCH.map((b, i) => {
+              const u = clamp01(rowsU * BENCH.length - i);
+              if (u <= 0) return null;
+              const y = CH_Y + i * ROW_H;
+              const wb = (b.base / 80) * BAR_MAX * fillU;
+              const wa = (b.acc / 80) * BAR_MAX * fillU;
+              return (
+                <g key={b.name} opacity={u}>
+                  <text x={CH_X - 14} y={y + 22} textAnchor="end" fill={colors.TEXT} fontSize={14}>
+                    {b.name}
+                  </text>
+                  <rect x={CH_X} y={y} width={Math.max(wb, 2)} height={15} rx={3} fill={colors.MUTED} opacity={0.7} />
+                  <text x={CH_X + wb + 8} y={y + 12} fill={colors.TEXT} opacity={0.85} fontSize={13} fontFamily={MONO}>
+                    {b.base.toFixed(2)} baseline
+                  </text>
+                  <rect x={CH_X} y={y + 19} width={Math.max(wa, 2)} height={15} rx={3} fill={colors.POSITIVE} opacity={0.85} />
+                  <text x={CH_X + wa + 8} y={y + 31} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+                    {b.acc.toFixed(2)} ℓ-MoE_acc
+                  </text>
+                </g>
+              );
+            })}
+
+            {/* efficiency variant chip */}
+            {effU > 0 && (
+              <g opacity={effU}>
+                <rect x={860} y={CH_Y + 10} width={270} height={96} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} />
+                <text x={882} y={CH_Y + 40} fill={colors.ACCENT} fontSize={14} fontWeight={600} fontFamily={MONO}>
+                  ℓ-MoE_eff
                 </text>
-                <rect x={CH_X} y={y} width={Math.max(wb, 2)} height={15} rx={3} fill={colors.MUTED} opacity={0.5} />
-                <text x={CH_X + wb + 8} y={y + 12} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
-                  {b.base.toFixed(2)} baseline
+                <text x={882} y={CH_Y + 66} fill={colors.TEXT} fontSize={13}>
+                  matches baseline accuracy with
                 </text>
-                <rect x={CH_X} y={y + 19} width={Math.max(wa, 2)} height={15} rx={3} fill={colors.POSITIVE} opacity={0.85} />
-                <text x={CH_X + wa + 8} y={y + 31} fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
-                  {b.acc.toFixed(2)} ℓ-MoE_acc
+                <text x={882} y={CH_Y + 88} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+                  5.62B vs 8.47B active (−34%)
                 </text>
               </g>
-            );
-          })}
-
-          {/* efficiency variant chip */}
-          {effU > 0 && (
-            <g opacity={effU}>
-              <rect x={890} y={CH_Y + 10} width={310} height={96} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={912} y={CH_Y + 40} fill={colors.ACCENT} fontSize={14} fontWeight={600} fontFamily={MONO}>
-                ℓ-MoE_eff
-              </text>
-              <text x={912} y={CH_Y + 66} fill={colors.TEXT} fontSize={13}>
-                matches baseline accuracy with
-              </text>
-              <text x={912} y={CH_Y + 88} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
-                5.62B vs 8.47B active (−34%)
-              </text>
-            </g>
-          )}
+            )}
+          </g>
 
           {/* scale panel */}
           {hybridU > 0 && (
@@ -260,7 +264,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Wins every row at matched cost
           </text>

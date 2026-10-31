@@ -1,6 +1,1265 @@
 {
   "books": [
     {
+      "slug": "handwired-explained",
+      "title": "Promises, Not Proofs",
+      "subtitle": "How a program becomes a hand-wired neural network, told in the things people were sure of",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "href": "?film=handwired-explained",
+      "sources": "generated/handwired-explained/sources/",
+      "kind": "film",
+      "runtime": 1455.42,
+      "vhs": {
+        "subject": "Computer Science",
+        "theme": "grid",
+        "icons": [
+          "neuron",
+          "gear",
+          "chip",
+          "lightbulb"
+        ],
+        "tagline": "Every weight wired by hand!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Four and a Half",
+          "duration": 101.792
+        },
+        {
+          "number": 2,
+          "title": "The Oldest Tags",
+          "duration": 90.208
+        },
+        {
+          "number": 3,
+          "title": "A Recipe Read Every Frame",
+          "duration": 92
+        },
+        {
+          "number": 4,
+          "title": "Deep Dive I: Two Ramps and a Lever",
+          "duration": 214.542
+        },
+        {
+          "number": 5,
+          "title": "One Big Matmul",
+          "duration": 92.583
+        },
+        {
+          "number": 6,
+          "title": "Deep Dive II: The Clockwork That Cannot Stop",
+          "duration": 199.792
+        },
+        {
+          "number": 7,
+          "title": "Deep Dive III: Unfreezing",
+          "duration": 192.167
+        },
+        {
+          "number": 8,
+          "title": "The Summer's Certainties",
+          "duration": 111.042
+        },
+        {
+          "number": 9,
+          "title": "Four Days in October",
+          "duration": 126.75
+        },
+        {
+          "number": 10,
+          "title": "Strangers with Pencils",
+          "duration": 54.125
+        },
+        {
+          "number": 11,
+          "title": "The Rule Written First",
+          "duration": 93.5
+        },
+        {
+          "number": 12,
+          "title": "One More Neuron",
+          "duration": 86.917
+        }
+      ],
+      "createdAt": "2026-10-28T17:42:51.285Z"
+    },
+    {
+      "slug": "herding-the-swarm",
+      "title": "Herding the Swarm",
+      "subtitle": "Population control for AI agents",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#0f766e",
+      "href": "?bundle=herding-the-swarm",
+      "series": "Who Survives",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Swarm Is a Population",
+          "duration": 125.389
+        },
+        {
+          "number": 2,
+          "title": "Anatomy of a Breakout",
+          "duration": 157.895
+        },
+        {
+          "number": 3,
+          "title": "The Hive and the Monoculture",
+          "duration": 114.103
+        },
+        {
+          "number": 4,
+          "title": "The Cuckoo and the Outside Killer",
+          "duration": 125.202
+        }
+      ],
+      "createdAt": "2026-10-28T04:30:20.831Z"
+    },
+    {
+      "slug": "wolf-dog-model",
+      "title": "Wolf, Dog, Model",
+      "subtitle": "Domestication vs breeding in AI training",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#7c3aed",
+      "href": "?bundle=wolf-dog-model",
+      "series": "Who Survives",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Kinds of Choosing",
+          "duration": 103.329
+        },
+        {
+          "number": 2,
+          "title": "The Fox Farm",
+          "duration": 110.249
+        },
+        {
+          "number": 3,
+          "title": "Three Layers of a Model",
+          "duration": 118.096
+        },
+        {
+          "number": 4,
+          "title": "Leash or Colleague",
+          "duration": 94.969
+        }
+      ],
+      "createdAt": "2026-10-28T04:26:04.148Z"
+    },
+    {
+      "slug": "let-theories-die",
+      "title": "Let Theories Die",
+      "subtitle": "Selection, proxies and readable minds",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c2410c",
+      "href": "?bundle=let-theories-die",
+      "series": "Who Survives",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Score Is the Outcome",
+          "duration": 82.802
+        },
+        {
+          "number": 2,
+          "title": "Every Proxy Gets Hacked",
+          "duration": 108.576
+        },
+        {
+          "number": 3,
+          "title": "Who Decides What's Kept",
+          "duration": 110.249
+        },
+        {
+          "number": 4,
+          "title": "Fit Isn't Good",
+          "duration": 105.141
+        },
+        {
+          "number": 5,
+          "title": "Readable Minds",
+          "duration": 116.053
+        }
+      ],
+      "createdAt": "2026-10-28T04:23:42.283Z"
+    },
+    {
+      "slug": "handwired-bitonic-sorter",
+      "title": "Bitonic Sorter",
+      "subtitle": "Ken Batcher's fixed wiring of comparators, and what a circuit of sums and relu pays to run it.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3e9b73",
+      "href": "?bundle=handwired-bitonic-sorter",
+      "series": "Handwired",
+      "seriesOrder": 11,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Wires and a Fold",
+          "duration": 136.673
+        },
+        {
+          "number": 2,
+          "title": "Building the Mountains",
+          "duration": 120.373
+        },
+        {
+          "number": 3,
+          "title": "The Staircase",
+          "duration": 132.122
+        },
+        {
+          "number": 4,
+          "title": "What Handwired Pays",
+          "duration": 171.085
+        }
+      ],
+      "createdAt": "2026-10-21T20:32:29.736Z"
+    },
+    {
+      "slug": "handwired-user-effort",
+      "title": "User Effort",
+      "subtitle": "A tiny circuit learns how long a click takes, then picks the faster layout",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#8a9a5b",
+      "href": "?bundle=handwired-user-effort",
+      "series": "Handwired",
+      "seriesOrder": 14,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Law We Wrote",
+          "duration": 118.933
+        },
+        {
+          "number": 2,
+          "title": "Fitting It, Then Testing It",
+          "duration": 114.197
+        },
+        {
+          "number": 3,
+          "title": "Choosing a Layout",
+          "duration": 151.674
+        }
+      ],
+      "createdAt": "2026-10-21T07:47:30.457Z"
+    },
+    {
+      "slug": "handwired-json-search",
+      "title": "JSON Search",
+      "subtitle": "Can a GPU search a hundred thousand JSON documents faster, one thread each, with the lab's own weighted-sum program?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b23a48",
+      "href": "?bundle=handwired-json-search",
+      "series": "Handwired",
+      "seriesOrder": 17,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Thread Per Document",
+          "duration": 131.007
+        },
+        {
+          "number": 2,
+          "title": "Search Is a Matrix Product",
+          "duration": 125.527
+        },
+        {
+          "number": 3,
+          "title": "Packing the Bits",
+          "duration": 138.438
+        },
+        {
+          "number": 4,
+          "title": "Who Does It Beat",
+          "duration": 135.419
+        }
+      ],
+      "createdAt": "2026-10-21T07:46:08.898Z"
+    },
+    {
+      "slug": "handwired-runtime-cost",
+      "title": "Runtime Cost",
+      "subtitle": "What a CPU pays to run a handwired circuit: allocation, copying, and layers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e0457b",
+      "href": "?bundle=handwired-runtime-cost",
+      "series": "Handwired",
+      "seriesOrder": 15,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three ways to run one circuit",
+          "duration": 113.08
+        },
+        {
+          "number": 2,
+          "title": "What a layer costs by itself",
+          "duration": 128.128
+        },
+        {
+          "number": 3,
+          "title": "Real circuits, honest limits",
+          "duration": 127.012
+        }
+      ],
+      "createdAt": "2026-10-21T07:44:19.005Z"
+    },
+    {
+      "slug": "handwired-trace-compiler",
+      "title": "Trace Compiler",
+      "subtitle": "Can a real gallery's layout code become exact circuits?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b5532f",
+      "href": "?bundle=handwired-trace-compiler",
+      "series": "Handwired",
+      "seriesOrder": 7,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Source Becomes Wires",
+          "duration": 125.388
+        },
+        {
+          "number": 2,
+          "title": "One Step Below Seven",
+          "duration": 129.381
+        },
+        {
+          "number": 3,
+          "title": "Five Calculations",
+          "duration": 138.902
+        },
+        {
+          "number": 4,
+          "title": "How Much Is Covered",
+          "duration": 138.949
+        }
+      ],
+      "createdAt": "2026-10-21T07:43:00.637Z"
+    },
+    {
+      "slug": "handwired-reusable-layout",
+      "title": "Reusable Layout",
+      "subtitle": "One 121-parameter rule picks every photo's width, taught by a slow search, close on short captions and behind on long ones.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6b82e",
+      "href": "?bundle=handwired-reusable-layout",
+      "series": "Handwired",
+      "seriesOrder": 12,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Rule for Every Photo",
+          "duration": 121.346
+        },
+        {
+          "number": 2,
+          "title": "A Teacher That Searches",
+          "duration": 140.991
+        },
+        {
+          "number": 3,
+          "title": "Close, and Where It Slips",
+          "duration": 166.533
+        }
+      ],
+      "createdAt": "2026-10-21T07:41:10.038Z"
+    },
+    {
+      "slug": "handwired-ui-exploration",
+      "title": "UI Exploration",
+      "subtitle": "One night, one question: how far can a fixed circuit write a user interface?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#4f7fd8",
+      "href": "?bundle=handwired-ui-exploration",
+      "series": "Handwired",
+      "seriesOrder": 10,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Count, Don't Search",
+          "duration": 141.735
+        },
+        {
+          "number": 2,
+          "title": "One Program, Many Photos",
+          "duration": 137.461
+        },
+        {
+          "number": 3,
+          "title": "What Held, What Narrowed",
+          "duration": 151.534
+        }
+      ],
+      "createdAt": "2026-10-21T07:39:51.313Z"
+    },
+    {
+      "slug": "handwired-knuth-plass",
+      "title": "Knuth-Plass",
+      "subtitle": "Optimal line breaks as a tree of min-plus matrices: one paragraph loses, many can win.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#5b8bd6",
+      "href": "?bundle=handwired-knuth-plass",
+      "series": "Handwired",
+      "seriesOrder": 16,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Cheapest Breaks",
+          "duration": 168.623
+        },
+        {
+          "number": 2,
+          "title": "Chain Or Tree",
+          "duration": 144.381
+        },
+        {
+          "number": 3,
+          "title": "Many At Once",
+          "duration": 158.081
+        }
+      ],
+      "createdAt": "2026-10-21T07:33:42.398Z"
+    },
+    {
+      "slug": "handwired-learned-gallery",
+      "title": "Learned Gallery",
+      "subtitle": "A 244-weight network that lays photos out on your sketch and lines them up with a penalty, not a snap.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#4f7cc8",
+      "href": "?bundle=handwired-learned-gallery",
+      "series": "Handwired",
+      "seriesOrder": 13,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Photos from a sketch",
+          "duration": 135.139
+        },
+        {
+          "number": 2,
+          "title": "Lining up without snapping",
+          "duration": 134.862
+        },
+        {
+          "number": 3,
+          "title": "Taking steps back",
+          "duration": 155.572
+        },
+        {
+          "number": 4,
+          "title": "What held, what didn't",
+          "duration": 155.944
+        }
+      ],
+      "createdAt": "2026-10-21T07:17:45.781Z"
+    },
+    {
+      "slug": "handwired-event-window",
+      "title": "Event Window",
+      "subtitle": "Drag, click and focus as latches and one narrowing ramp, checked against plain code",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#7b61d1",
+      "href": "?bundle=handwired-event-window",
+      "series": "Handwired",
+      "seriesOrder": 8,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Latches, Not History",
+          "duration": 143.221
+        },
+        {
+          "number": 2,
+          "title": "A Ramp That Narrows",
+          "duration": 161.426
+        },
+        {
+          "number": 3,
+          "title": "Exact, Within Limits",
+          "duration": 151.533
+        }
+      ],
+      "createdAt": "2026-10-21T07:01:33.377Z"
+    },
+    {
+      "slug": "handwired-learned-interpreter",
+      "title": "Learned Program",
+      "subtitle": "Training two instructions of a tiny interpreter, what a fixed epsilon broke, and what integer examples cannot say.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#8d5fd3",
+      "href": "?bundle=handwired-learned-interpreter",
+      "series": "Handwired",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Program in 123 Cells",
+          "duration": 121.718
+        },
+        {
+          "number": 2,
+          "title": "Cooling the Reels",
+          "duration": 139.971
+        },
+        {
+          "number": 3,
+          "title": "What Integers Cannot Say",
+          "duration": 149.212
+        }
+      ],
+      "createdAt": "2026-10-21T06:47:53.407Z"
+    },
+    {
+      "slug": "handwired-generative-fields",
+      "title": "Generative Fields",
+      "subtitle": "One fixed layout program, seventy-two numbers, and what searching, climbing and repairing really showed.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#7fb33a",
+      "href": "?bundle=handwired-generative-fields",
+      "series": "Handwired",
+      "seriesOrder": 9,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Seventy-Two Numbers, One Program",
+          "duration": 124.32
+        },
+        {
+          "number": 2,
+          "title": "Scored, Searched, Climbed",
+          "duration": 146.146
+        },
+        {
+          "number": 3,
+          "title": "The Path Between",
+          "duration": 147.54
+        }
+      ],
+      "createdAt": "2026-10-21T06:24:26.596Z"
+    },
+    {
+      "slug": "handwired-data-adapter",
+      "title": "Data Adapter",
+      "subtitle": "Eight rectangle lookups recovered by searching 868 tiny programs",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b5653a",
+      "href": "?bundle=handwired-data-adapter",
+      "series": "Handwired",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Lookup Circuit",
+          "duration": 127.756
+        },
+        {
+          "number": 2,
+          "title": "868 Programs, Twelve Scenes",
+          "duration": 132.446
+        },
+        {
+          "number": 3,
+          "title": "What the Check Shows",
+          "duration": 133.098
+        }
+      ],
+      "createdAt": "2026-10-21T06:16:59.823Z"
+    },
+    {
+      "slug": "handwired-candidate-gallery",
+      "title": "Three Layouts",
+      "subtitle": "One program builds every gallery layout at once, and the worst quality gauge picks the winner",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3fb6a8",
+      "href": "?bundle=handwired-candidate-gallery",
+      "series": "Handwired",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three Layouts at Once",
+          "duration": 99.567
+        },
+        {
+          "number": 2,
+          "title": "The Worst Gauge Wins",
+          "duration": 105.79
+        },
+        {
+          "number": 3,
+          "title": "Everyone Reads the Winner",
+          "duration": 110.573
+        }
+      ],
+      "createdAt": "2026-10-21T05:36:21.675Z"
+    },
+    {
+      "slug": "handwired-cascade-argmax",
+      "title": "Picking Exactly",
+      "subtitle": "An exact sign cascade for argmax on 32-bit floats, its cost, and what training it really shows.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1fa3a8",
+      "href": "?bundle=handwired-cascade-argmax",
+      "series": "Handwired",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Sign Cascade",
+          "duration": 119.674
+        },
+        {
+          "number": 2,
+          "title": "Eight Candidates, One Winner",
+          "duration": 122.043
+        },
+        {
+          "number": 3,
+          "title": "Training It Soft",
+          "duration": 109.598
+        }
+      ],
+      "createdAt": "2026-10-21T05:35:23.971Z"
+    },
+    {
+      "slug": "handwired-hard-attend",
+      "title": "Hard Attend",
+      "subtitle": "Score three items, pick the highest exactly, and read its value two ways that agree.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c58a3d",
+      "href": "?bundle=handwired-hard-attend",
+      "series": "Handwired",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Closer Wins",
+          "duration": 97.616
+        },
+        {
+          "number": 2,
+          "title": "One Winner, Two Reads",
+          "duration": 98.452
+        },
+        {
+          "number": 3,
+          "title": "Soft Versus Exact",
+          "duration": 105.743
+        }
+      ],
+      "createdAt": "2026-10-21T05:34:12.079Z"
+    },
+    {
+      "slug": "handwired",
+      "title": "Handwired",
+      "subtitle": "If-else, loops and state as matrix multiply and relu",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "href": "?bundle=handwired",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Both Branches Run",
+          "duration": 108.623
+        },
+        {
+          "number": 2,
+          "title": "A Switch of Arithmetic",
+          "duration": 106.439
+        },
+        {
+          "number": 3,
+          "title": "The Host Loop",
+          "duration": 113.87
+        },
+        {
+          "number": 4,
+          "title": "Loops That Cannot Stop",
+          "duration": 119.071
+        },
+        {
+          "number": 5,
+          "title": "Exact, Trainable, Wide",
+          "duration": 122.276
+        }
+      ],
+      "createdAt": "2026-10-15T21:39:17.372Z",
+      "series": "Handwired",
+      "seriesOrder": 1
+    },
+    {
+      "slug": "neural-networks-already-clean",
+      "title": "Already Clean",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=neural-networks-already-clean",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Refocus the Microscope",
+          "duration": 101.75
+        },
+        {
+          "number": 2,
+          "title": "Read the Gate",
+          "duration": 114.754
+        },
+        {
+          "number": 3,
+          "title": "Follow the Branch",
+          "duration": 89.815
+        },
+        {
+          "number": 4,
+          "title": "Squeeze the Layer",
+          "duration": 121.208
+        },
+        {
+          "number": 5,
+          "title": "Scale the Investigation",
+          "duration": 126.595
+        }
+      ],
+      "createdAt": "2026-10-15T18:00:31.597Z"
+    },
+    {
+      "slug": "jeva-fresh-decisions",
+      "title": "Jeva: Fresh Decisions",
+      "subtitle": "Fixed options, set-aware judgment, and reusable memory",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/jeva-fresh-decisions/animal.webp",
+      "href": "?bundle=jeva-fresh-decisions",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Fixed options, changing judgments",
+          "duration": 85.124
+        },
+        {
+          "number": 2,
+          "title": "Which answer, or no answer?",
+          "duration": 93.343
+        },
+        {
+          "number": 3,
+          "title": "Reuse the options, decide again",
+          "duration": 85.821
+        }
+      ],
+      "createdAt": "2026-10-15T11:16:18.125Z"
+    },
+    {
+      "slug": "replay-qa-promo",
+      "title": "Replay QA: { fully managed }",
+      "subtitle": "End-to-end testing that explores, runs and records on its own",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?film=replay-qa-promo",
+      "sources": "generated/replay-qa-promo/sources/",
+      "kind": "film",
+      "runtime": 82.71,
+      "vhs": {
+        "subject": "Software Testing",
+        "theme": "grid",
+        "icons": [
+          "magnifier",
+          "crt",
+          "robot",
+          "gear"
+        ],
+        "tagline": "Catch the bugs that hide in time!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "{ introducing }",
+          "duration": 7.5
+        },
+        {
+          "number": 2,
+          "title": "One URL",
+          "duration": 6.417
+        },
+        {
+          "number": 3,
+          "title": "The loop",
+          "duration": 6.792
+        },
+        {
+          "number": 4,
+          "title": "Always on",
+          "duration": 15.667
+        },
+        {
+          "number": 5,
+          "title": "Bugs that only exist in time",
+          "duration": 30.708
+        },
+        {
+          "number": 6,
+          "title": "{ fully managed · always on }",
+          "duration": 15.625
+        }
+      ],
+      "createdAt": "2026-10-14T21:11:13.945Z"
+    },
+    {
+      "slug": "groundingpi-speaking-in-coordinates",
+      "title": "Speaking in Coordinates",
+      "subtitle": "How GroundingPI turns images and phrases into structured visual primitives",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/groundingpi-speaking-in-coordinates/animal.webp",
+      "href": "?bundle=groundingpi-speaking-in-coordinates",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The thousand-step ruler",
+          "duration": 52.802
+        },
+        {
+          "number": 2,
+          "title": "An image becomes a sentence",
+          "duration": 56.657
+        },
+        {
+          "number": 3,
+          "title": "A box must survive the parser",
+          "duration": 54.613
+        }
+      ],
+      "createdAt": "2026-10-14T11:20:20.905Z",
+      "paper": {
+        "title": "GroundingPI: A Grounding Foundation Model towards Physical Intelligence with Visual Primitives",
+        "authors": [
+          "Qize Yu",
+          "Lianrui Fan",
+          "Boyu Chen",
+          "Jiaqi Liang",
+          "Xini Ding",
+          "Yue Chen",
+          "Zetian Song",
+          "Yuran Wang",
+          "Yi Zou",
+          "Kaixuan Wang",
+          "Tianxing Chen",
+          "Wenxuan Song",
+          "Bohan Zhou",
+          "Mingleyang Li",
+          "Siqiao Huang",
+          "Yuqi Ye",
+          "Caigao Jiang",
+          "Wei Wei",
+          "Ruihai Wu",
+          "Hang Zhang",
+          "Yixiao Ge",
+          "Shuchang Zhou",
+          "Shilong Liu",
+          "Xianming Liu",
+          "Ping Luo",
+          "Shiyu Huang"
+        ],
+        "arxivId": "2609.39601",
+        "version": "2609.39601v1",
+        "doi": "10.48550/arXiv.2609.39601",
+        "huggingFaceUrl": "https://huggingface.co/papers/2609.39601",
+        "canonicalUrl": "https://arxiv.org/abs/2609.39601",
+        "pdfUrl": "https://arxiv.org/pdf/2609.39601",
+        "officialRepository": "https://github.com/groundingpi/GroundingPI",
+        "repositoryCommit": "0047d4510e201fecfd77126f6036088638aa85d2",
+        "rankingDate": "2026-10-13",
+        "ranking": 1,
+        "observedUpvotes": 259,
+        "rankingEvidenceUrl": "https://huggingface.co/papers/date/2026-10-13",
+        "selectedAt": "2026-10-14T10:04:51.591467+00:00"
+      }
+    },
+    {
+      "slug": "neural-net-history",
+      "title": "Who Taught the Machine?",
+      "subtitle": "A case history of neural networks, 1943–2026",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?film=neural-net-history",
+      "kind": "film",
+      "runtime": 2168.42,
+      "vhs": {
+        "subject": "Computer Science",
+        "theme": "sunset",
+        "icons": [
+          "neuron",
+          "magnifier",
+          "lightbulb",
+          "chip"
+        ],
+        "tagline": "Crack the case of the thinking machine!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Wonder in the Dark Room",
+          "duration": 77.417
+        },
+        {
+          "number": 2,
+          "title": "Clue One: A Switch That Fires",
+          "duration": 121.208
+        },
+        {
+          "number": 3,
+          "title": "Clue Two: A Knob That Turns",
+          "duration": 125.75
+        },
+        {
+          "number": 4,
+          "title": "The Cold Case",
+          "duration": 129.542
+        },
+        {
+          "number": 5,
+          "title": "Clue Three: The Messenger Who Runs Backward",
+          "duration": 190.125
+        },
+        {
+          "number": 6,
+          "title": "The Quiet Years",
+          "duration": 149.125
+        },
+        {
+          "number": 7,
+          "title": "Two Accomplices: Data and Fire",
+          "duration": 95.208
+        },
+        {
+          "number": 8,
+          "title": "DEEP DIVE — The Night in Florence",
+          "duration": 260.208
+        },
+        {
+          "number": 9,
+          "title": "The Gold Rush",
+          "duration": 98.042
+        },
+        {
+          "number": 10,
+          "title": "DEEP DIVE — Everything Looks at Everything",
+          "duration": 211.875
+        },
+        {
+          "number": 11,
+          "title": "Read Everything",
+          "duration": 105.667
+        },
+        {
+          "number": 12,
+          "title": "The Last Accomplice, and the Return to the Scene",
+          "duration": 107.042
+        },
+        {
+          "number": 13,
+          "title": "The Case Reopened",
+          "duration": 98.917
+        },
+        {
+          "number": 14,
+          "title": "Two Shores",
+          "duration": 146.042
+        },
+        {
+          "number": 15,
+          "title": "Case Status: Open",
+          "duration": 252.25
+        }
+      ],
+      "createdAt": "2026-10-14T02:14:12.573Z",
+      "sources": "generated/neural-net-history/sources/"
+    },
+    {
+      "slug": "s-space-the-map-within",
+      "title": "The Map Within",
+      "subtitle": "Reading and editing a model's spatial workspace",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/s-space-the-map-within/animal.webp",
+      "href": "?bundle=s-space-the-map-within",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three rulers inside a token",
+          "duration": 64.412
+        },
+        {
+          "number": 2,
+          "title": "Move the map, test the answer",
+          "duration": 65.759
+        },
+        {
+          "number": 3,
+          "title": "Turn the viewpoint, not the evidence",
+          "duration": 77.368
+        }
+      ],
+      "createdAt": "2026-10-13T12:43:40.891Z"
+    },
+    {
+      "slug": "agentgarten-rendering-the-rules",
+      "title": "Rendering the Rules",
+      "subtitle": "Inside AgentGarten’s released neural renderer",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/agentgarten-rendering-the-rules/animal.webp",
+      "href": "?bundle=agentgarten-rendering-the-rules",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Geometry becomes tokens",
+          "duration": 67.384
+        },
+        {
+          "number": 2,
+          "title": "Replay restores the history gradient",
+          "duration": 73.189
+        },
+        {
+          "number": 3,
+          "title": "A bounded memory for a long stream",
+          "duration": 65.203
+        }
+      ],
+      "createdAt": "2026-10-10T13:42:48.403Z"
+    },
+    {
+      "slug": "cross-tokenizer-sixteen-shared-words",
+      "title": "Sixteen Shared Words",
+      "subtitle": "Reliable supervision across different tokenizers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/cross-tokenizer-sixteen-shared-words/animal.webp",
+      "href": "?bundle=cross-tokenizer-sixteen-shared-words",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Response, Two Rulers",
+          "duration": 71.146
+        },
+        {
+          "number": 2,
+          "title": "The Student Chooses Sixteen",
+          "duration": 77.323
+        },
+        {
+          "number": 3,
+          "title": "More Coverage, Less Learning",
+          "duration": 77.648
+        }
+      ],
+      "createdAt": "2026-10-08T11:34:15.051Z"
+    },
+    {
+      "slug": "when-memory-matters",
+      "title": "When Memory Matters",
+      "subtitle": "A traceable test of when the past belongs in the reply",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/when-memory-matters/animal.webp",
+      "href": "?bundle=when-memory-matters",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A conversation becomes a test",
+          "duration": 55.913
+        },
+        {
+          "number": 2,
+          "title": "Rare does not mean nearby",
+          "duration": 56.099
+        },
+        {
+          "number": 3,
+          "title": "The probe earns its label",
+          "duration": 54.66
+        },
+        {
+          "number": 4,
+          "title": "What the public audit can prove",
+          "duration": 58.607
+        },
+        {
+          "number": 5,
+          "title": "Score the decision, not just the average",
+          "duration": 66.27
+        }
+      ],
+      "createdAt": "2026-10-06T10:57:36.369Z"
+    },
+    {
+      "slug": "perceptron-short",
+      "title": "The Machine That Learned to See",
+      "subtitle": "a one-minute silhouette short",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "href": "?film=perceptron-short",
+      "kind": "film",
+      "runtime": 67.75,
+      "vhs": {
+        "subject": "Computer Science",
+        "theme": "cosmos",
+        "icons": [
+          "crt",
+          "lightbulb",
+          "neuron",
+          "gear"
+        ],
+        "tagline": "Watch a machine learn to see!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Machine That Learned to See",
+          "duration": 67.75
+        }
+      ],
+      "createdAt": "2026-10-05T15:42:41.793Z",
+      "sources": "generated/perceptron-short/sources/"
+    },
+    {
+      "slug": "tab-into-the-future",
+      "title": "Tab Into the Future",
+      "subtitle": "A browser that meets you halfway",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#2dd4bf",
+      "animal": "generated/tab-into-the-future/animal.webp",
+      "href": "?bundle=tab-into-the-future",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Anticipation without taking over",
+          "duration": 69.101
+        },
+        {
+          "number": 2,
+          "title": "Learn from the person, not the echo",
+          "duration": 75.465
+        },
+        {
+          "number": 3,
+          "title": "The first useful version",
+          "duration": 76.905
+        }
+      ],
+      "createdAt": "2026-09-30T06:21:16.872Z"
+    },
+    {
+      "slug": "fast-path-thoughtful-fallback",
+      "title": "A Fast Path with a Thoughtful Fallback",
+      "subtitle": "How a small policy and GLM can work together",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fb7185",
+      "animal": "generated/fast-path-thoughtful-fallback/animal.webp",
+      "href": "?bundle=fast-path-thoughtful-fallback",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Learn the familiar, escalate the unfamiliar",
+          "duration": 74.767
+        },
+        {
+          "number": 2,
+          "title": "Can constrained decoding scale up?",
+          "duration": 77.833
+        },
+        {
+          "number": 3,
+          "title": "Measure the whole trip",
+          "duration": 83.639
+        }
+      ],
+      "createdAt": "2026-09-30T06:10:20.299Z"
+    },
+    {
+      "slug": "recordings-become-practice",
+      "title": "Recordings Become Practice",
+      "subtitle": "How browser history becomes a training dataset",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fbbf24",
+      "animal": "generated/recordings-become-practice/animal.webp",
+      "href": "?bundle=recordings-become-practice",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A recording is evidence of what happened",
+          "duration": 77.275
+        },
+        {
+          "number": 2,
+          "title": "A local workshop for examples",
+          "duration": 77.694
+        },
+        {
+          "number": 3,
+          "title": "Teach a small model a small job",
+          "duration": 71.657
+        }
+      ],
+      "createdAt": "2026-09-30T05:54:48.619Z"
+    },
+    {
       "slug": "confidence-before-words",
       "title": "Confidence Before Words",
       "subtitle": "Three signals, four routes, and the limits of confidence",
@@ -1057,44 +2316,6 @@
         }
       ],
       "createdAt": "2026-08-10T19:14:43.080Z"
-    },
-    {
-      "slug": "coherence-theater",
-      "title": "Coherence Theater",
-      "subtitle": "How correction gets priced out of socio-technical systems",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#3a8b3a",
-      "animal": "generated/coherence-theater/animal.webp",
-      "href": "?bundle=coherence-theater",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "The Orderly Failure",
-          "duration": 66.826
-        },
-        {
-          "number": 2,
-          "title": "Five Forces, One Balance",
-          "duration": 77.508
-        },
-        {
-          "number": 3,
-          "title": "When the Summary Becomes the Chart",
-          "duration": 82.106
-        },
-        {
-          "number": 4,
-          "title": "The Threshold Has Memory",
-          "duration": 80.712
-        },
-        {
-          "number": 5,
-          "title": "The Intervention Test",
-          "duration": 78.485
-        }
-      ],
-      "createdAt": "2026-08-10T11:22:08.792Z"
     },
     {
       "slug": "kitchen-side-table",

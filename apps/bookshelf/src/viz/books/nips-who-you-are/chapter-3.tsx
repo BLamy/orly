@@ -158,23 +158,25 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the main diagram dims, then cross-fades into the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* the identifier */}
-          {nameU > 0 && (
-            <g opacity={nameU * (1 - 0.7 * clamp01(matchU))}>
-              <text x={400} y={100} fontSize={26} fontFamily="monospace">
+          {/* the identifier: it clears the stage as the client and server come in */}
+          {nameU > 0 && nodesU < 1 && (
+            <g opacity={nameU * (1 - clamp01(nodesU))}>
+              <text x={640} y={330} textAnchor="middle" fontSize={44} fontFamily="monospace">
                 <tspan fill={colors.POSITIVE} fontWeight={600}>bob</tspan>
                 <tspan fill={colors.MUTED}>@</tspan>
                 <tspan fill={colors.ACCENT} fontWeight={600}>bob.example</tspan>
               </text>
-              <text x={400} y={126} fill={colors.MUTED} fontSize={12}>
+              <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
                 local part · domain — NIP-05 identifier
               </text>
             </g>
@@ -197,31 +199,38 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* response document */}
-          {respU > 0 && (
-            <g opacity={1 - 0.8 * clamp01(swingU * 2)}>
-              <text x={RESP_LAYOUT.x} y={286} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={respU}>
+          {/* the document leaves the stage once the swing begins */}
+          {respU > 0 && swingU <= 0 && (
+            <g>
+              <text x={RESP_LAYOUT.x} y={286} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={respU}>
                 200 OK — nostr.json
               </text>
-              <JsonDoc layout={RESP_LAYOUT} reveal={respU} focus={matchU > 0 ? ['names.bob'] : undefined} focusU={matchU > 0 ? 0.8 : 0} />
+              <JsonDoc
+                layout={RESP_LAYOUT}
+                reveal={respU}
+                focus={matchU > 0 ? ['names.bob'] : undefined}
+                dim={0.55}
+                focusU={matchU > 0 ? 0.8 : 0}
+              />
             </g>
           )}
 
           {/* the match */}
-          {matchU > 0 && (
+          {matchU > 0 && swingU <= 0 && (
             <g>
               <g opacity={Math.min(1, matchU * 2)}>
-                <rect x={180 + matchU * 120} y={470} width={310} height={40} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} />
-                <text x={196 + matchU * 120} y={488} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">from the domain</text>
-                <text x={196 + matchU * 120} y={503} fill={colors.ACCENT} fontSize={13} fontFamily="monospace">{shortHex(PUBKEY, 14, 6)}</text>
-                <rect x={790 - matchU * 120} y={470} width={310} height={40} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
-                <text x={806 - matchU * 120} y={488} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">from the signed profile</text>
-                <text x={806 - matchU * 120} y={503} fill={colors.WARM} fontSize={13} fontFamily="monospace">{shortHex(PUBKEY, 14, 6)}</text>
+                <rect x={180 + matchU * 120} y={504} width={310} height={48} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} />
+                <text x={196 + matchU * 120} y={523} fill={colors.MUTED} fontSize={14} fontFamily="monospace">from the domain</text>
+                <text x={196 + matchU * 120} y={543} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">{shortHex(PUBKEY, 14, 6)}</text>
+                <rect x={790 - matchU * 120} y={504} width={310} height={48} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
+                <text x={806 - matchU * 120} y={523} fill={colors.MUTED} fontSize={14} fontFamily="monospace">from the signed profile</text>
+                <text x={806 - matchU * 120} y={543} fill={colors.WARM} fontSize={14} fontFamily="monospace">{shortHex(PUBKEY, 14, 6)}</text>
               </g>
               {checkU > 0 && (
                 <g opacity={checkU}>
-                  <circle cx={640} cy={555} r={15} fill="none" stroke={colors.POSITIVE} strokeWidth={2.4} />
-                  <path d="M632 555 l6 6 l11 -13" fill="none" stroke={colors.POSITIVE} strokeWidth={2.6} strokeLinecap="round" />
-                  <text x={664} y={560} fill={colors.POSITIVE} fontSize={14}>same bytes — verified</text>
+                  <circle cx={640} cy={584} r={15} fill="none" stroke={colors.POSITIVE} strokeWidth={2.4} />
+                  <path d="M632 584 l6 6 l11 -13" fill="none" stroke={colors.POSITIVE} strokeWidth={2.6} strokeLinecap="round" />
+                  <text x={664} y={589} fill={colors.POSITIVE} fontSize={14}>same bytes — verified</text>
                 </g>
               )}
             </g>
@@ -230,8 +239,8 @@ function Frame({ s }: { s: SceneState }) {
           {/* root identity */}
           {rootU > 0 && swingU <= 0 && (
             <g opacity={rootU}>
-              <text x={120} y={330} fill={colors.SECONDARY} fontSize={15} fontFamily="monospace">_@bob.example</text>
-              <text x={120} y={356} fill={colors.MUTED} fontSize={13}>displays as just “bob.example”</text>
+              <text x={120} y={330} fill={colors.SECONDARY} fontSize={16} fontFamily="monospace">_@bob.example</text>
+              <text x={120} y={356} fill={colors.MUTED} fontSize={14}>displays as just “bob.example”</text>
             </g>
           )}
 
@@ -241,39 +250,53 @@ function Frame({ s }: { s: SceneState }) {
               <text x={210} y={330} fill={colors.POSITIVE} fontSize={18} fontFamily="monospace">bob@bob.example</text>
               <g>
                 <rect x={820} y={250} width={300} height={40} rx={9} fill={colors.PANEL} stroke={colors.WARM} opacity={1 - 0.5 * swingU} />
-                <text x={836} y={275} fill={colors.WARM} fontSize={13} fontFamily="monospace" opacity={1 - 0.5 * swingU}>
+                <text x={836} y={275} fill={colors.WARM} fontSize={14} fontFamily="monospace" opacity={1 - 0.5 * swingU}>
                   {shortHex(PUBKEY, 14, 6)}
                 </text>
                 <rect x={820} y={380} width={300} height={40} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-                <text x={836} y={405} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+                <text x={836} y={405} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                   {shortHex(OTHER_KEY, 14, 6)}
                 </text>
               </g>
               {(() => {
                 const ang = swingU; // 0 → old key, 1 → new key
                 const y2 = 270 + (400 - 270) * ang;
-                return <line x1={520} y1={324} x2={812} y2={y2} stroke={colors.MUTED} strokeWidth={2} strokeDasharray="7 5" />;
+                return <line x1={385} y1={324} x2={812} y2={y2} stroke={colors.MUTED} strokeWidth={2} strokeDasharray="7 5" />;
               })()}
-              <text x={560} y={470} fill={colors.MUTED} fontSize={13} opacity={clamp01(swingU * 2 - 1)}>
+              <text x={560} y={520} fill={colors.MUTED} fontSize={14} opacity={clamp01(swingU * 2 - 1)}>
                 the domain re-pointed the name — the old key didn’t change, the claim did
               </text>
             </g>
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
+          <rect x={220} y={200} width={840} height={254} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <text x={640} y={262} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The name is a claim; the key is the identity
           </text>
-          <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={306} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             one GET, one comparison — verification without a platform
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={344} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-05 · /.well-known/nostr.json · hex only
           </text>
+          {/* the three coats the caption names */}
+          {[
+            { cx: 415, label: 'a profile' },
+            { cx: 640, label: 'an alphabet' },
+            { cx: 865, label: 'a name at a domain' },
+          ].map((c) => (
+            <g key={c.label}>
+              <rect x={c.cx - 110} y={384} width={220} height={40} rx={20} fill="none" stroke={colors.ACCENT} strokeOpacity={0.7} />
+              <text x={c.cx} y={409} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
+                {c.label}
+              </text>
+            </g>
+          ))}
         </g>
       )}
     </>

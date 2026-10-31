@@ -1,0 +1,2386 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-13T02:37:15.041Z",
+ "summary": {
+  "pass": 30,
+  "warn": 8,
+  "fail": 5,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "232 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "wordMap",
+   "status": "warn",
+   "detail": "66 lines anchor on spoken words (explicit spoken text with a different word count)"
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "warn",
+   "detail": "150 wpm overall; fast: L0104 187, L0105 191, L0220 196, L0309 189, L0310 186, L0320 194, L0402 197, L0524 187",
+   "wpm": 150,
+   "tooFast": [],
+   "fast": [
+    "L0104 187",
+    "L0105 191",
+    "L0220 196",
+    "L0309 189",
+    "L0310 186",
+    "L0320 194",
+    "L0402 197",
+    "L0524 187",
+    "L0505b 190",
+    "L0519 186",
+    "L0616 185",
+    "L0806 195",
+    "L0816 195",
+    "L0830 199",
+    "L0817 192",
+    "L0825 198",
+    "L0827 185",
+    "L1014 193",
+    "L1517 191"
+   ],
+   "perShot": {
+    "ch01-s01": 162.5,
+    "ch01-s02": 151.6,
+    "ch01-s03": 188.7,
+    "ch01-s04": 143.5,
+    "ch01-s05": 130.2,
+    "ch01-s06": 182.4,
+    "ch02-s01": 149.4,
+    "ch02-s02": 147.8,
+    "ch02-s03": 189.3,
+    "ch02-s04": 155.3,
+    "ch02-s05": 151.3,
+    "ch02-s05b": 155,
+    "ch02-s07": 150.2,
+    "ch02-s08": 175.4,
+    "ch03-s01": 153.8,
+    "ch03-s02": 152.4,
+    "ch03-s03": 168.6,
+    "ch03-s04": 155.4,
+    "ch03-s05": 151.6,
+    "ch03-s06": 134.6,
+    "ch03-s08": 136,
+    "ch03-s09": 188.5,
+    "ch04-s01": 154.1,
+    "ch04-s02": 149,
+    "ch04-s03": 148.4,
+    "ch04-s04": 135,
+    "ch04-s05": 131.1,
+    "ch04-s06": 133.9,
+    "ch04-s07": 153.8,
+    "ch04-s08": 161.3,
+    "ch05-s01": 161.6,
+    "ch05-s03": 176.6,
+    "ch05-s04": 132.6,
+    "ch05-s05": 177.6,
+    "ch05-s06": 133.4,
+    "ch05-s07": 127.1,
+    "ch05-s08": 154.7,
+    "ch05-s09b": 151.9,
+    "ch05-s10": 185,
+    "ch06-s01": 151.7,
+    "ch06-s02": 138.5,
+    "ch06-s03": 135.9,
+    "ch06-s03b": 177.5,
+    "ch06-s04": 149.8,
+    "ch06-s05": 165.6,
+    "ch06-s06": 147.3,
+    "ch06-s07": 149.3,
+    "ch06-s08": 185.2,
+    "ch07-s01": 142.8,
+    "ch07-s02": 153.1,
+    "ch07-s03": 141.1,
+    "ch07-s04": 120.6,
+    "ch07-s06": 157.2,
+    "ch08-s01": 143.2,
+    "ch08-s02": 139.9,
+    "ch08-s03": 132.6,
+    "ch08-s04": 157.6,
+    "ch08-s05": 135.4,
+    "ch08-s06": 146.3,
+    "ch08-s07": 125.8,
+    "ch08-s08": 150,
+    "ch08-s08b": 199.3,
+    "ch08-s09": 171.3,
+    "ch08-s10": 184.6,
+    "ch08-s11": 144.1,
+    "ch08-s12": 119.8,
+    "ch08-s13": 164,
+    "ch08-s13b": 155.7,
+    "ch08-s14": 173.3,
+    "ch09-s01": 131.9,
+    "ch09-s03a": 155.6,
+    "ch09-s03": 132.5,
+    "ch09-s04": 139,
+    "ch09-s05": 130.5,
+    "ch10-s01": 150.9,
+    "ch10-s02": 150.5,
+    "ch10-s03": 151.4,
+    "ch10-s04": 141.1,
+    "ch10-s05": 165.3,
+    "ch10-s06": 154.2,
+    "ch10-s07": 149.9,
+    "ch10-s08": 182,
+    "ch10-s09": 174.9,
+    "ch10-s10": 171.3,
+    "ch10-s12": 146.7,
+    "ch10-s13b": 159.2,
+    "ch10-s14": 149.7,
+    "ch11-s02": 140.5,
+    "ch11-s03": 135.6,
+    "ch11-s05": 138.4,
+    "ch11-s08": 132.1,
+    "ch12-s01": 167.1,
+    "ch12-s02": 171.6,
+    "ch12-s06": 159.1,
+    "ch12-s07": 132.2,
+    "ch12-s08": 146.2,
+    "ch12-s03": 142.5,
+    "ch13-s01": 149.2,
+    "ch13-s02": 153.9,
+    "ch13-s03": 137.2,
+    "ch13-s04": 145.2,
+    "ch13-s06": 145.3,
+    "ch14-s01": 152,
+    "ch14-s02": 138.1,
+    "ch14-s03": 171.4,
+    "ch14-s04": 163.9,
+    "ch14-s04b": 150.4,
+    "ch14-s05": 157.5,
+    "ch14-s06": 122.6,
+    "ch14-s07": 161,
+    "ch15-s01": 148.4,
+    "ch15-s03": 151.5,
+    "ch15-s04": 165.9,
+    "ch15-s05": 156.5,
+    "ch15-s06": 171.9,
+    "ch15-s07": 155.2,
+    "ch15-s08": 142.7,
+    "ch15-s09": 169
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all 169 cut edges under -50 dBFS",
+   "loud": [],
+   "warm": [],
+   "dirty": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "warn",
+   "detail": "stem -18 LUFS (target -18), TP -1.9 dBTP, limiter 3.01 dB, compressor 3.41 dB GR, line rides ≤ 5.0 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "pass",
+   "detail": "74 lines round-tripped on the current clips (scribe_v1): L0107 (ChatGPT); L0202 (McCulloch, Pitts); L0210 (Gerard); L0211 (Hebb); L0212 (Turing); L0215b (Minsky); L0216 (Widrow); L0220 (Pitts); L0302 (Rosenblatt); L0304 (Rosenblatt); L0306 (Minsky); L0307 (Rosenblatt); L0312 (Rosenblatt); L0404 (Minsky, Papert); L0406 (AI); L0408 (McCulloch, Pitts); L0409 (Rosenblatt); L0410 (Lighthill); L0415 (Hinton); L0501 (Hopfield); L0505 (Hinton); L0507 (Hinton, Rumelhart); L0512 (Hinton); L0514b (Dreyfus); L0515 (AI, Lenat); L0601 (LeCun); L0606 (Vapnik); L0609 (LeCun, Hinton, Bengio); L0610 (Vapnik, Jackel); L0614 (Hochreiter, Schmidhuber); L0703 (Hinton); L0704 (Fei-Fei Li); L0712 (ImageNet); L0803 (Sutskever, Krizhevsky, Hinton); L0817 (GPUs); L0821 (LeCun, Hinton); L0822 (AlexNet); L0832b (Hinton); L0827 (GPUs); L0902 (Hinton); L0905b (AlphaGo); L0906 (AlphaGo, move thirty-seven); L0907 (Lee Sedol); L0909 (OpenAI, AI, Altman); L0910 (Buolamwini, Gebru); L1006 (Uszkoreit); L1032 (OpenAI, GPT); L1103 (GPT, GPT-2); L1104 (Lenat); L1110 (GPT, GPT-3); L1118 (Gebru); L1217 (Rosenblatt); L1206 (OpenAI, Amodei); L1207 (AI); L1219b (GPT, GPT-4); L1302 (Hinton); L1308 (Hinton, Bengio); L1310 (AI, Gebru); L1311 (LeCun); L1312 (LeCun, Turing, Hinton, Bengio); L1316 (Lenat); L1401 (AI); L1406 (DeepSeek); L1408 (OpenAI); L1408b (DeepSeek); L1415 (AI); L1501 (Hinton); L1502 (Hinton, Hopfield); L1529 (Demis Hassabis); L1530 (AI); L1531 (AI); L1522b (OpenAI); L1525 (OpenAI); L1511 (Widrow)",
+   "targets": [
+    "L0107",
+    "L0202",
+    "L0210",
+    "L0211",
+    "L0212",
+    "L0215b",
+    "L0216",
+    "L0220",
+    "L0302",
+    "L0304",
+    "L0306",
+    "L0307",
+    "L0312",
+    "L0404",
+    "L0406",
+    "L0408",
+    "L0409",
+    "L0410",
+    "L0415",
+    "L0501",
+    "L0505",
+    "L0507",
+    "L0512",
+    "L0514b",
+    "L0515",
+    "L0601",
+    "L0606",
+    "L0609",
+    "L0610",
+    "L0614",
+    "L0703",
+    "L0704",
+    "L0712",
+    "L0803",
+    "L0817",
+    "L0821",
+    "L0822",
+    "L0832b",
+    "L0827",
+    "L0902",
+    "L0905b",
+    "L0906",
+    "L0907",
+    "L0909",
+    "L0910",
+    "L1006",
+    "L1032",
+    "L1103",
+    "L1104",
+    "L1110",
+    "L1118",
+    "L1217",
+    "L1206",
+    "L1207",
+    "L1219b",
+    "L1302",
+    "L1308",
+    "L1310",
+    "L1311",
+    "L1312",
+    "L1316",
+    "L1401",
+    "L1406",
+    "L1408",
+    "L1408b",
+    "L1415",
+    "L1501",
+    "L1502",
+    "L1529",
+    "L1530",
+    "L1531",
+    "L1522b",
+    "L1525",
+    "L1511"
+   ]
+  },
+  {
+   "stage": "narration",
+   "id": "listening",
+   "status": "warn",
+   "detail": "Uszkoreit pending; Amodei pending; Hochreiter pending; Schmidhuber pending; Rumelhart pending — a human listens and runs film:voice signoff --slug neural-net-history --term <term> --by <name>"
+  },
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "781 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "pass",
+   "detail": "36.0 min vs target 32.0 min (112%)"
+  },
+  {
+   "stage": "timeline",
+   "id": "ceiling",
+   "status": "pass",
+   "detail": "2159.96 s vs ceiling 2160 s (story/meta.json runtimeCeilingSec)"
+  },
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "pass",
+   "detail": "21 cues rendered at exact length",
+   "problems": [],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "fail",
+   "detail": "films/neural-net-history/score/analysis/summary.json is stale (measured on a 2139.5417 s clock, timeline is 2159.9583 s): re-run film:score analyze --slug neural-net-history",
+   "problems": [
+    "measured on a 2139.5417 s clock, timeline is 2159.9583 s"
+   ]
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "fail",
+   "detail": "cue changes under narration (move the incoming cue earlier, or the clock needs a head-hold): m07→m08 624.52–626.52 s under L0523; m08→m09 774.57–776.97 s under L0615; m09→m10 869.68–871.08 s under L0707; m10→m11 1042.48–1043.98 s under L0818; m11→m12 1128.39–1129.89 s under L0832b; m12→m13 1221.35–1222.39 s under L0910; m13→m14 1434.85–1437.35 s under L1032; m14→m15 1489.50–1491.00 s under L1104; m15→m16 1561.75–1563.95 s under L1201; m16→m17 1652.15–1654.65 s under L1207; m17→m18 1750.65–1752.15 s under L1312; m18→m19 1894.60–1896.85 s under L1420; m19→m20 2009.65–2011.15 s under L1522d; m20→m21 2037.15–2039.42 s under L1509; tight: m04→m05 364.95–365.70 s: 1.48 s before L0406; m05→m06 447.56–450.48 s: 1.50 s before L0501",
+   "under": [
+    "m07→m08 624.52–626.52 s under L0523",
+    "m08→m09 774.57–776.97 s under L0615",
+    "m09→m10 869.68–871.08 s under L0707",
+    "m10→m11 1042.48–1043.98 s under L0818",
+    "m11→m12 1128.39–1129.89 s under L0832b",
+    "m12→m13 1221.35–1222.39 s under L0910",
+    "m13→m14 1434.85–1437.35 s under L1032",
+    "m14→m15 1489.50–1491.00 s under L1104",
+    "m15→m16 1561.75–1563.95 s under L1201",
+    "m16→m17 1652.15–1654.65 s under L1207",
+    "m17→m18 1750.65–1752.15 s under L1312",
+    "m18→m19 1894.60–1896.85 s under L1420",
+    "m19→m20 2009.65–2011.15 s under L1522d",
+    "m20→m21 2037.15–2039.42 s under L1509"
+   ],
+   "tight": [
+    "m04→m05 364.95–365.70 s: 1.48 s before L0406",
+    "m05→m06 447.56–450.48 s: 1.50 s before L0501"
+   ]
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "36.1 min of music over 36.0 min (100%)"
+  },
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-16 LUFS (target -16), LRA 7.2, linear+limit normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-2.1 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "pass",
+   "detail": "2159.9583s vs film 2159.9583s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "pass",
+   "detail": "music ducks 3.32 dB (target 3, ceiling; warn beyond ±1.5) under 1510.8s of narration; calibrated to threshold -23.04 dBFS, ratio 3"
+  },
+  {
+   "stage": "mix",
+   "id": "moments",
+   "status": "pass",
+   "detail": "L0101 peaks -14.2 LUFS momentary; loudest music-only windows: -13.9 LUFS @ 1392.3s, -14.1 LUFS @ 1391.2s, -14.1 LUFS @ 2060.8s"
+  },
+  {
+   "stage": "mix",
+   "id": "preLimit",
+   "status": "pass",
+   "detail": "master limiter takes 0.97 dB off the peaks before the final gain; over the ceiling: speech 0.2 s (max 0.94 dB), music-only 0.01 s (max 0.06 dB)",
+   "reductionDb": 0.97
+  },
+  {
+   "stage": "mix",
+   "id": "stemLimit",
+   "status": "warn",
+   "detail": "narration stem limiter 3.01 dB; speech compressor 3.41 dB GR"
+  },
+  {
+   "stage": "mix",
+   "id": "lineLevels",
+   "status": "fail",
+   "detail": "off their intended level: L0109 -2.81 dB, want -1 — re-run film:timeline or re-narrate; more than 1.5 dB from lineLufs + hint (capped leveling keeps the take's level): L0217 -2.48, L1522c -2.02; requested: L0101 -1.85 (want -3), L0109 -2.81 (want -1), L1501 -2 (want -2), L1520 -2 (want -2); spread of the rest -2.48..1.14 dB",
+   "lines": {
+    "L0101": {
+     "M": -19.68,
+     "offsetDb": -1.85,
+     "requestedDb": -3,
+     "errorDb": 1.15,
+     "hintDb": -2,
+     "driftDb": 0.15
+    },
+    "L0102": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0103": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0104": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0105": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0106": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0107": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0108": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0109": {
+     "M": -20.64,
+     "offsetDb": -2.81,
+     "requestedDb": -1,
+     "errorDb": -1.81,
+     "hintDb": -2,
+     "driftDb": -0.81
+    },
+    "L0110": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0114": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0201": {
+     "M": -17.79,
+     "offsetDb": 0.04,
+     "requestedDb": 0,
+     "errorDb": 0.04,
+     "driftDb": 0.04
+    },
+    "L0202": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0203": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0204": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0206": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0207": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0209": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0210": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0211": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0212": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0215": {
+     "M": -19.12,
+     "offsetDb": -1.29,
+     "requestedDb": 0,
+     "errorDb": -1.29,
+     "driftDb": -1.29
+    },
+    "L0215b": {
+     "M": -18.33,
+     "offsetDb": -0.5,
+     "requestedDb": 0,
+     "errorDb": -0.5,
+     "driftDb": -0.5
+    },
+    "L0216": {
+     "M": -18.52,
+     "offsetDb": -0.69,
+     "requestedDb": 0,
+     "errorDb": -0.69,
+     "driftDb": -0.69
+    },
+    "L0217": {
+     "M": -20.31,
+     "offsetDb": -2.48,
+     "requestedDb": 0,
+     "errorDb": -2.48,
+     "driftDb": -2.48
+    },
+    "L0218": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0219": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0220": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0301": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0302": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0303": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0304": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0305": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0306": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0307": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0308": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0309": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0310": {
+     "M": -16.69,
+     "offsetDb": 1.14,
+     "requestedDb": 0,
+     "errorDb": 1.14,
+     "driftDb": 1.14
+    },
+    "L0311": {
+     "M": -17.85,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L0312": {
+     "M": -17.99,
+     "offsetDb": -0.16,
+     "requestedDb": 0,
+     "errorDb": -0.16,
+     "driftDb": -0.16
+    },
+    "L0318": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0319": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0320": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0401": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0402": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0403": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0404": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0405": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0406": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0408": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0409": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0410": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0411": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0412": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0415": {
+     "M": -17.89,
+     "offsetDb": -0.06,
+     "requestedDb": 0,
+     "errorDb": -0.06,
+     "driftDb": -0.06
+    },
+    "L0416": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0501": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0524": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0524b": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0505": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0505b": {
+     "M": -17.85,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L0507": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0508": {
+     "M": -17.85,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L0509": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0521": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0510": {
+     "M": -18.53,
+     "offsetDb": -0.7,
+     "requestedDb": 0,
+     "errorDb": -0.7,
+     "driftDb": -0.7
+    },
+    "L0511": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0512": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0513": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0514": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0514b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0515": {
+     "M": -17.85,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L0522a": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0522": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0523": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0519": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0601": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0603": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0604": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0605": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0606": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0607": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0607b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0607c": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0608": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0609": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0610": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0612": {
+     "M": -19.13,
+     "offsetDb": -1.3,
+     "requestedDb": 0,
+     "errorDb": -1.3,
+     "driftDb": -1.3
+    },
+    "L0613": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0614": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0615": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0616": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0701": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0702": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0703": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0704": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0705": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0712": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0706": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0707": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0710": {
+     "M": -19.24,
+     "offsetDb": -1.41,
+     "requestedDb": 0,
+     "errorDb": -1.41,
+     "driftDb": -1.41
+    },
+    "L0802": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0803": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0805": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0806": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0807": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0808": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0809": {
+     "M": -17.64,
+     "offsetDb": 0.19,
+     "requestedDb": 0,
+     "errorDb": 0.19,
+     "driftDb": 0.19
+    },
+    "L0810": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0811": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0812": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0813": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0815": {
+     "M": -16.98,
+     "offsetDb": 0.85,
+     "requestedDb": 0,
+     "errorDb": 0.85,
+     "driftDb": 0.85
+    },
+    "L0816": {
+     "M": -18.62,
+     "offsetDb": -0.79,
+     "requestedDb": 0,
+     "errorDb": -0.79,
+     "driftDb": -0.79
+    },
+    "L0830": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0817": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0818": {
+     "M": -18.42,
+     "offsetDb": -0.59,
+     "requestedDb": 0,
+     "errorDb": -0.59,
+     "driftDb": -0.59
+    },
+    "L0819": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0820": {
+     "M": -17.95,
+     "offsetDb": -0.12,
+     "requestedDb": 0,
+     "errorDb": -0.12,
+     "driftDb": -0.12
+    },
+    "L0821": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0822": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0823": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0834": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0825": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0826": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0831": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0832": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0832b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0827": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0828": {
+     "M": -17.93,
+     "offsetDb": -0.1,
+     "requestedDb": 0,
+     "errorDb": -0.1,
+     "driftDb": -0.1
+    },
+    "L0901": {
+     "M": -17.86,
+     "offsetDb": -0.03,
+     "requestedDb": 0,
+     "errorDb": -0.03,
+     "driftDb": -0.03
+    },
+    "L0902": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0905": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0905b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0906": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0907": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0909": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0909b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0910": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1002": {
+     "M": -17.85,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L1005": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1006": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1007": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1009": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1024": {
+     "M": -17.86,
+     "offsetDb": -0.03,
+     "requestedDb": 0,
+     "errorDb": -0.03,
+     "driftDb": -0.03
+    },
+    "L1010": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1011": {
+     "M": -17.85,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L1012": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1013": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1014": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1015": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1016": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1017": {
+     "M": -17.98,
+     "offsetDb": -0.15,
+     "requestedDb": 0,
+     "errorDb": -0.15,
+     "driftDb": -0.15
+    },
+    "L1019": {
+     "M": -17.86,
+     "offsetDb": -0.03,
+     "requestedDb": 0,
+     "errorDb": -0.03,
+     "driftDb": -0.03
+    },
+    "L1020": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1020b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1021": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1025": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1027": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1030": {
+     "M": -17.75,
+     "offsetDb": 0.08,
+     "requestedDb": 0,
+     "errorDb": 0.08,
+     "driftDb": 0.08
+    },
+    "L1032": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1033": {
+     "M": -17.9,
+     "offsetDb": -0.07,
+     "requestedDb": 0,
+     "errorDb": -0.07,
+     "driftDb": -0.07
+    },
+    "L1103": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1104": {
+     "M": -18.99,
+     "offsetDb": -1.16,
+     "requestedDb": 0,
+     "errorDb": -1.16,
+     "driftDb": -1.16
+    },
+    "L1107": {
+     "M": -17.82,
+     "offsetDb": 0.01,
+     "requestedDb": 0,
+     "errorDb": 0.01,
+     "driftDb": 0.01
+    },
+    "L1110": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1112": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1117": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1118": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1201": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1204": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1205": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1212": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1215": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1216": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1217": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1219": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1206": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1207": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1219b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1302": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1303": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1303b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1304": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1307": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1307b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1308": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1309": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1310": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1311": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1312": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1316": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1401": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1402": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1403": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1405": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1406": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1407": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1408": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1408b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1409": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1410": {
+     "M": -17.94,
+     "offsetDb": -0.11,
+     "requestedDb": 0,
+     "errorDb": -0.11,
+     "driftDb": -0.11
+    },
+    "L1410b": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1416": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1414": {
+     "M": -17.86,
+     "offsetDb": -0.03,
+     "requestedDb": 0,
+     "errorDb": -0.03,
+     "driftDb": -0.03
+    },
+    "L1415": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1417": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1420": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1418": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1501": {
+     "M": -19.83,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    },
+    "L1502": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1528": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1529": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1504": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1505": {
+     "M": -18.21,
+     "offsetDb": -0.38,
+     "requestedDb": 0,
+     "errorDb": -0.38,
+     "driftDb": -0.38
+    },
+    "L1530": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1531": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1522": {
+     "M": -18.36,
+     "offsetDb": -0.53,
+     "requestedDb": 0,
+     "errorDb": -0.53,
+     "driftDb": -0.53
+    },
+    "L1522b": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1522c": {
+     "M": -19.85,
+     "offsetDb": -2.02,
+     "requestedDb": 0,
+     "errorDb": -2.02,
+     "driftDb": -2.02
+    },
+    "L1522d": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1525": {
+     "M": -17.85,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L1509": {
+     "M": -17.49,
+     "offsetDb": 0.34,
+     "requestedDb": 0,
+     "errorDb": 0.34,
+     "driftDb": 0.34
+    },
+    "L1511": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1527": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1514": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1515": {
+     "M": -17.83,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L1516": {
+     "M": -17.87,
+     "offsetDb": -0.04,
+     "requestedDb": 0,
+     "errorDb": -0.04,
+     "driftDb": -0.04
+    },
+    "L1516b": {
+     "M": -19.05,
+     "offsetDb": -1.22,
+     "requestedDb": 0,
+     "errorDb": -1.22,
+     "driftDb": -1.22
+    },
+    "L1517": {
+     "M": -19.15,
+     "offsetDb": -1.32,
+     "requestedDb": 0,
+     "errorDb": -1.32,
+     "driftDb": -1.32
+    },
+    "L1518": {
+     "M": -17.84,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L1520": {
+     "M": -19.83,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    }
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "linePeaks",
+   "status": "pass",
+   "detail": "narration momentary peaks: p95 -10.7 LUFS, max -9 (none over p95 + 2 dB)",
+   "p95": -10.7,
+   "hot": []
+  },
+  {
+   "stage": "mix",
+   "id": "foley",
+   "status": "pass",
+   "detail": "5 foley events (max 10): fx-lamp-on 30.0833s -31 LUFS S, fx-stamp 2117.7747s -29 LUFS S, fx-lamp-off 2120.2747s -30 LUFS S, fx-match-strike 2126.8657s -31 LUFS S, fx-match-flare 2127.0867s -31 LUFS S"
+  },
+  {
+   "stage": "mix",
+   "id": "swells",
+   "status": "pass",
+   "detail": "music-only ceiling -16.56 LUFS M (line p50 -14.56 − 2); 1 swells trimmed: 2060.8s −1.67 dB"
+  },
+  {
+   "stage": "mix",
+   "id": "fadeAfterStrike",
+   "status": "pass",
+   "detail": "m01: fade 71.85–74.35 s starts 4.15 s after the last strike (67.7 s; min 1.6); m02: fade 194.43–196.03 s starts 2.12 s after the last strike (192.31 s; min 1.6); m03: fade 317.93–320.93 s starts 3.34 s after the last strike (314.59 s; min 1.6); m04: fade 364.95–365.7 s starts 3.98 s after the last strike (360.97 s; min 1.6); m05: fade 447.56–450.31 s starts 2.72 s after the last strike (444.84 s; min 1.6); m06: fade 554.85–555.65 s starts 10.093 s after the last strike (544.757 s; min 1.6); m07: fade 625.02–626.52 s starts 13.41 s after the last strike (611.61 s; min 1.6); m08: fade 774.57–776.97 s starts 2.19 s after the last strike (772.38 s; min 1.6); m09: fade 869.883–871.08 s starts 5.475 s after the last strike (864.408 s; min 1.6); m10: fade 1043.383–1043.98 s starts 1.64 s after the last strike (1041.743 s; min 1.6); m11: fade 1129.091–1129.89 s starts 15.708 s after the last strike (1113.383 s; min 1.6); m12: fade 1221.35–1222.35 s starts 20.158 s after the last strike (1201.192 s; min 1.6); m13: fade 1434.85–1437.35 s starts 2.22 s after the last strike (1432.63 s; min 1.6); m14: fade 1490.35–1491 s starts 1.64 s after the last strike (1488.71 s; min 1.6); m15: fade 1561.75–1563.95 s starts 3.87 s after the last strike (1557.88 s; min 1.6); m16: fade 1652.15–1654.65 s starts 1.78 s after the last strike (1650.37 s; min 1.6); m17: fade 1751.21–1752.15 s starts 1.6 s after the last strike (1749.61 s; min 1.6); m18: fade 1895.87–1896.85 s starts 1.6 s after the last strike (1894.27 s; min 1.6); m19: fade 2009.85–2011.15 s starts 3.32 s after the last strike (2006.53 s; min 1.6); m20: fade 2037.15–2038.15 s starts 4.48 s after the last strike (2032.67 s; min 1.6)"
+  },
+  {
+   "stage": "mix",
+   "id": "floor",
+   "status": "pass",
+   "detail": "room tone -58 LUFS (target -58); quietest 400 ms of the master -58.1 LUFS"
+  },
+  {
+   "stage": "mix",
+   "id": "musicEq",
+   "status": "pass",
+   "detail": "music bus: 35 Hz high-pass (24 dB/oct), low band under 120 Hz keyed down 1.88 dB more under speech"
+  },
+  {
+   "stage": "mix",
+   "id": "lineMasking",
+   "status": "fail",
+   "detail": "music within 6 dB of the voice: L1016 3.3 dB, L1517 4.8 dB, L1212 5.8 dB; under 10 dB: L0821 7.3, L0831 7.4, L0810 8, L1021 8.3, L0816 9.4, L1522c 9.4, L0707 9.6, L0101 9.8, L0905b 9.8, L0710 9.9",
+   "lines": {
+    "L0101": 9.8,
+    "L0102": 99,
+    "L0103": 99,
+    "L0104": 16.8,
+    "L0105": 15.2,
+    "L0106": 99,
+    "L0107": 17.3,
+    "L0108": 14,
+    "L0109": 10.4,
+    "L0110": 16.8,
+    "L0114": 99,
+    "L0201": 12.5,
+    "L0202": 12.8,
+    "L0203": 99,
+    "L0204": 99,
+    "L0206": 13.5,
+    "L0207": 20.3,
+    "L0209": 23.4,
+    "L0210": 15.5,
+    "L0211": 99,
+    "L0212": 17.3,
+    "L0215": 15.5,
+    "L0215b": 23.4,
+    "L0216": 21.6,
+    "L0217": 14.5,
+    "L0218": 17.9,
+    "L0219": 13.3,
+    "L0220": 99,
+    "L0301": 13.7,
+    "L0302": 13.7,
+    "L0303": 14.3,
+    "L0304": 18.6,
+    "L0305": 15.5,
+    "L0306": 12.3,
+    "L0307": 14.8,
+    "L0308": 99,
+    "L0309": 23.4,
+    "L0310": 99,
+    "L0311": 17.9,
+    "L0312": 99,
+    "L0318": 18.6,
+    "L0319": 16.3,
+    "L0320": 15.2,
+    "L0401": 99,
+    "L0402": 17.9,
+    "L0403": 23.4,
+    "L0404": 12.6,
+    "L0405": 99,
+    "L0406": 19.4,
+    "L0408": 26.4,
+    "L0409": 99,
+    "L0410": 16.8,
+    "L0411": 99,
+    "L0412": 18.6,
+    "L0415": 17.9,
+    "L0416": 14.8,
+    "L0501": 21.6,
+    "L0524": 17.9,
+    "L0524b": 21.6,
+    "L0505": 16.8,
+    "L0505b": 12.5,
+    "L0507": 21.6,
+    "L0508": 16.3,
+    "L0509": 99,
+    "L0521": 15.5,
+    "L0510": 12.6,
+    "L0511": 17.3,
+    "L0512": 26.4,
+    "L0513": 26.4,
+    "L0514": 17.9,
+    "L0514b": 13.3,
+    "L0515": 13.1,
+    "L0522a": 12.1,
+    "L0522": 99,
+    "L0523": 16.8,
+    "L0519": 18.6,
+    "L0601": 10.5,
+    "L0603": 14,
+    "L0604": 11.5,
+    "L0605": 26.4,
+    "L0606": 18.6,
+    "L0607": 13.3,
+    "L0607b": 23.4,
+    "L0607c": 14.5,
+    "L0608": 15.5,
+    "L0609": 99,
+    "L0610": 17.9,
+    "L0612": 15.9,
+    "L0613": 13.3,
+    "L0614": 21.6,
+    "L0615": 20.3,
+    "L0616": 21.6,
+    "L0701": 99,
+    "L0702": 16.3,
+    "L0703": 99,
+    "L0704": 99,
+    "L0705": 10.9,
+    "L0712": 13.5,
+    "L0706": 13.3,
+    "L0707": 9.6,
+    "L0710": 9.9,
+    "L0802": 17.3,
+    "L0803": 99,
+    "L0805": 99,
+    "L0806": 17.9,
+    "L0807": 17.9,
+    "L0808": 99,
+    "L0809": 10.2,
+    "L0810": 8,
+    "L0811": 13.7,
+    "L0812": 12.8,
+    "L0813": 21.6,
+    "L0815": 16.8,
+    "L0816": 9.4,
+    "L0830": 14.5,
+    "L0817": 11.3,
+    "L0818": 99,
+    "L0819": 14,
+    "L0820": 17.3,
+    "L0821": 7.3,
+    "L0822": 99,
+    "L0823": 26.4,
+    "L0834": 99,
+    "L0825": 14.5,
+    "L0826": 99,
+    "L0831": 7.4,
+    "L0832": 99,
+    "L0832b": 19.4,
+    "L0827": 12.8,
+    "L0828": 99,
+    "L0901": 99,
+    "L0902": 99,
+    "L0905": 12.6,
+    "L0905b": 9.8,
+    "L0906": 99,
+    "L0907": 99,
+    "L0909": 26.4,
+    "L0909b": 18.6,
+    "L0910": 13.5,
+    "L1002": 10.8,
+    "L1005": 99,
+    "L1006": 20.3,
+    "L1007": 23.4,
+    "L1009": 19.4,
+    "L1024": 15.2,
+    "L1010": 20.3,
+    "L1011": 10.9,
+    "L1012": 12.5,
+    "L1013": 18.6,
+    "L1014": 14.3,
+    "L1015": 21.6,
+    "L1016": 3.3,
+    "L1017": 17.9,
+    "L1019": 16.8,
+    "L1020": 10.5,
+    "L1020b": 15.5,
+    "L1021": 8.3,
+    "L1025": 17.3,
+    "L1027": 26.4,
+    "L1030": 18.6,
+    "L1032": 12.1,
+    "L1033": 99,
+    "L1103": 99,
+    "L1104": 14.8,
+    "L1107": 99,
+    "L1110": 21.6,
+    "L1112": 99,
+    "L1117": 12.1,
+    "L1118": 21.6,
+    "L1201": 99,
+    "L1204": 21.6,
+    "L1205": 15.2,
+    "L1212": 5.8,
+    "L1215": 17.9,
+    "L1216": 99,
+    "L1217": 15.5,
+    "L1219": 26.4,
+    "L1206": 21.6,
+    "L1207": 20.3,
+    "L1219b": 15.9,
+    "L1302": 99,
+    "L1303": 16.3,
+    "L1303b": 99,
+    "L1304": 15.9,
+    "L1307": 17.9,
+    "L1307b": 20.3,
+    "L1308": 99,
+    "L1309": 14.5,
+    "L1310": 99,
+    "L1311": 19.4,
+    "L1312": 99,
+    "L1316": 13.5,
+    "L1401": 23.4,
+    "L1402": 14.5,
+    "L1403": 17.9,
+    "L1405": 99,
+    "L1406": 26.4,
+    "L1407": 17.9,
+    "L1408": 17.9,
+    "L1408b": 20.3,
+    "L1409": 16.8,
+    "L1410": 17.9,
+    "L1410b": 15.2,
+    "L1416": 17.9,
+    "L1414": 99,
+    "L1415": 18.6,
+    "L1417": 99,
+    "L1420": 99,
+    "L1418": 99,
+    "L1501": 20.3,
+    "L1502": 18.6,
+    "L1528": 99,
+    "L1529": 21.6,
+    "L1504": 18.6,
+    "L1505": 15.9,
+    "L1530": 99,
+    "L1531": 21.6,
+    "L1522": 14.5,
+    "L1522b": 17.9,
+    "L1522c": 9.4,
+    "L1522d": 17.3,
+    "L1525": 13.1,
+    "L1509": 17.9,
+    "L1511": 16.8,
+    "L1527": 18.6,
+    "L1514": 17.9,
+    "L1515": 21.6,
+    "L1516": 23.4,
+    "L1516b": 26.4,
+    "L1517": 4.8,
+    "L1518": 13.7,
+    "L1520": 14
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "15 slices"
+  },
+  {
+   "stage": "render",
+   "id": "frames",
+   "status": "fail",
+   "detail": "51349 frames (expected 51839 = round(2159.9583 × 24))"
+  },
+  {
+   "stage": "render",
+   "id": "format",
+   "status": "pass",
+   "detail": "1920×1080 @ 24 fps yuv420p"
+  },
+  {
+   "stage": "render",
+   "id": "av",
+   "status": "pass",
+   "detail": "video 2139.542s, audio 2139.541667s (aac)"
+  },
+  {
+   "stage": "render",
+   "id": "extras",
+   "status": "pass",
+   "detail": "captions muxed"
+  },
+  {
+   "stage": "render",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "15 chapters muxed (timeline has 15)"
+  },
+  {
+   "stage": "render",
+   "id": "fresh",
+   "status": "warn",
+   "detail": "film.mp4 is older than the master or the timeline — re-render"
+  },
+  {
+   "stage": "sheets",
+   "id": "coverage",
+   "status": "warn",
+   "detail": "older than the timeline: ch01-s01,ch01-s02,ch01-s03,ch01-s04,ch01-s05,ch01-s06,ch01-s07,ch02-s01,ch02-s02,ch02-s03"
+  },
+  {
+   "stage": "publish",
+   "id": "manifest",
+   "status": "pass",
+   "detail": "15 chapters, kind film"
+  },
+  {
+   "stage": "publish",
+   "id": "current",
+   "status": "warn",
+   "detail": "shelf copy is stale (runtime 2139.5417 s ≠ timeline 2159.9583 s; manifest older than mix/master.wav): re-run film:publish"
+  }
+ ]
+}

@@ -1,6 +1,6 @@
 // Source: hawk_key_recovery.pdf, Proposition 4.5 and Theorem 5.1.
 // Persistent object: the public cocycle lattice morphs into its near-hypercubic isometry class.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { Chip, Panel, ResearchTitle, clamp01, mono } from '../../book-components/research';
 
@@ -58,28 +58,32 @@ export function Render({ s }: { s: SceneState }) {
             const y0 = 350 + p.y * 46;
             const x1 = 410 + p.x * 52;
             const y1 = 350 + p.y * (46 + 18 * cube);
-            return <circle key={i} cx={x0 + (x1 - x0) * map} cy={y0 + (y1 - y0) * map} r={3.5} fill={Math.abs(p.y) <= 1 ? colors.ACCENT : colors.MUTED} opacity={0.25 + 0.7 * s.get(scene.latticeU)} />;
+            return <circle key={i} cx={x0 + (x1 - x0) * map} cy={y0 + (y1 - y0) * map} r={3.5} fill={Math.abs(p.y) <= 1 ? colors.ACCENT : colors.TEXT} opacity={0.4 + 0.5 * s.get(scene.latticeU)} />;
           })}
         </g>
         <g opacity={s.get(scene.blocksU)}>
           <rect x={110} y={285} width={600} height={130} rx={16} fill={colors.ACCENT} fillOpacity={0.06} stroke={colors.ACCENT} />
-          <text x={730} y={355} fill={colors.ACCENT} fontFamily={mono} fontSize={12}>p = n/2 + 1</text>
-          <text x={730} y={485} fill={colors.MUTED} fontFamily={mono} fontSize={12}>q = n/2 − 1</text>
+          <text x={730} y={355} fill={colors.ACCENT} fontFamily={mono} fontSize={14}>p = n/2 + 1</text>
+          <text x={730} y={485} fill={colors.TEXT} fontFamily={mono} fontSize={14}>q = n/2 − 1</text>
         </g>
         <g opacity={short}>
           {[-2, -1, 0, 1, 2].map((x) => <circle key={x} cx={410 + x * 52} cy={350} r={14} fill={colors.POSITIVE} fillOpacity={0.25} stroke={colors.POSITIVE} />)}
         </g>
       </Panel>
-      <Panel x={875} y={135} w={335} h={440} opacity={0.15 + 0.85 * s.get(scene.reduceU)} accent={colors.WARM}>
-        <MathLabel tex={'\\sqrt{n/4}\\,\\mathbb Z^{n/2+1}'} x={1015} y={230} opacity={s.get(scene.blocksU)} />
-        <MathLabel tex={'\\oplus\\sqrt{n/2}\\,\\mathbb Z^{n/2-1}'} x={1015} y={305} opacity={s.get(scene.blocksU)} />
+      <Panel x={875} y={135} w={335} h={440} opacity={0.35 + 0.65 * Math.max(s.get(scene.blocksU), s.get(scene.reduceU))} accent={colors.WARM}>
+        <text x={1042} y={180} textAnchor="middle" fill={colors.TEXT} fontFamily={mono} fontSize={14}>scaled basis</text>
+        <text x={1042} y={230} textAnchor="middle" fill={colors.TEXT} fontFamily={mono} fontSize={20} opacity={s.get(scene.blocksU)}>√(n/4) · ℤ^(n/2+1)</text>
+        <text x={1042} y={268} textAnchor="middle" fill={colors.ACCENT} fontFamily={mono} fontSize={14} opacity={s.get(scene.blocksU)}>p-block</text>
+        <text x={1042} y={305} textAnchor="middle" fill={colors.TEXT} fontFamily={mono} fontSize={20} opacity={s.get(scene.blocksU)}>⊕ √(n/2) · ℤ^(n/2−1)</text>
+        <text x={1042} y={343} textAnchor="middle" fill={colors.TEXT} fontFamily={mono} fontSize={14} opacity={s.get(scene.blocksU)}>q-block, √2 longer</text>
+        <Chip x={1042} y={400} text="scale = √(n/4)" color={colors.ACCENT} width={210} opacity={s.get(scene.blocksU) * (1 - s.get(scene.reduceU))} />
         <g opacity={s.get(scene.reduceU)}>
-          {Array.from({ length: 6 }, (_, i) => <rect key={i} x={930 + i * 34} y={385 - i * 16} width={26} height={115 + i * 16} rx={6} fill={colors.WARM} opacity={0.25 + i * 0.1} />)}
+          {Array.from({ length: 6 }, (_, i) => <rect key={i} x={930 + i * 34} y={490 - (44 + i * 16)} width={26} height={44 + i * 16} rx={6} fill={colors.WARM} opacity={0.25 + i * 0.1} />)}
           <Chip x={1040} y={510} text="exact SVP · dim p" color={colors.POSITIVE} width={190} />
         </g>
       </Panel>
       <g opacity={s.get(scene.dimensionU)}>
-        <text x={640} y={620} textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={800}>rank n → oracle dimension n/2 + 1</text>
+        <text x={640} y={600}textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={800}>rank n → oracle dimension n/2 + 1</text>
       </g>
     </Camera>
   );

@@ -1,0 +1,274 @@
+{
+ "shot": "ch05-s04",
+ "at": "2026-10-13T14:43:47.847Z",
+ "minCapPx": 22,
+ "sampled": 56,
+ "texts": 52,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "NATURE",
+   "capWhileSubject": 23.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "NATURE · 9",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "NATURE · 9 OCT 1986",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "david rumelhart",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "with Hinton & Williams",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "blame(i) = slope(i) ·",
+   "capWhileSubject": 47,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "blame(j) · w",
+   "capWhileSubject": 47,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "= −ε · blame(j) · y",
+   "capWhileSubject": 47,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "THE 1986 METHOD, ON EXCLUSIVE-OR",
+   "capWhileSubject": 32.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "·  A DEMONSTRATION  ·",
+   "capWhileSubject": 32.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…come to represent important",
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "features of the task domain”",
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "nature, 1986",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "1969",
+   "maxCap": 31.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 29,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "0 0",
+   "maxCap": 32.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 41.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0 1",
+   "maxCap": 32.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 41.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1 0",
+   "maxCap": 32.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1 1",
+   "maxCap": 32.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "x₁ = 1",
+   "maxCap": 34.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "x₂ = 0",
+   "maxCap": 34.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "OUTPUT",
+   "maxCap": 28.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HIDDEN",
+   "maxCap": 28.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "INPUT",
+   "maxCap": 28.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ŷ = 0.36",
+   "maxCap": 37.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "j",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ji",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Δw",
+   "maxCap": 47,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "i",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "x₁ = 0",
+   "maxCap": 34.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ŷ = 0.55",
+   "maxCap": 37.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "epoch 6   ·   loss 0.706",
+   "maxCap": 32.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ŷ = 0.53",
+   "maxCap": 37.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "epoch 15   ·   loss 0.697",
+   "maxCap": 32.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ŷ = 0.64",
+   "maxCap": 33.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "epoch 173   ·   loss 0.501",
+   "maxCap": 29.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ŷ = 0.99",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "epoch 549   ·   loss 0.016",
+   "maxCap": 25.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "x₂ = 1",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ŷ = 1.00",
+   "maxCap": 28.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "epoch 1179   ·   loss 0.005",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ŷ = 0.00",
+   "maxCap": 28.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "epoch 1500   ·   loss 0.004",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1985",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MANY-LAYERED NETS",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ARE A STERILE",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXTENSION",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit 1969",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "lit 1969 · out 1986 · 17 years",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 39
+}

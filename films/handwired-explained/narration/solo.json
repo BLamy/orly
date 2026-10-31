@@ -1,0 +1,85 @@
+{
+ "version": 1,
+ "lines": {
+  "L0110": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head gap -52.6 / tail min-energy -49.1 dBFS)",
+   "fromChunk": "3b2efab779487b44"
+  },
+  "L0111": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head min-energy -50 / tail take-tail -55 dBFS)",
+   "fromChunk": "3b2efab779487b44"
+  },
+  "L0401": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head take-head -61.3 / tail min-energy -45.4 dBFS)",
+   "fromChunk": "649b1155daa58d44"
+  },
+  "L0402": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head min-energy -46.6 / tail take-tail -75 dBFS)",
+   "fromChunk": "649b1155daa58d44"
+  },
+  "L0414": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head take-start -40.3 / tail min-energy -47.4 dBFS)",
+   "fromChunk": "8d56a7f9c7b00cd8"
+  },
+  "L0415": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head min-energy -56.3 / tail take-tail -67.7 dBFS)",
+   "fromChunk": "8d56a7f9c7b00cd8"
+  },
+  "L0420": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head take-start -48.5 / tail min-energy -49.1 dBFS)",
+   "fromChunk": "fffbbe097df2f277"
+  },
+  "L0421": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head min-energy -49.9 / tail take-tail -65.6 dBFS)",
+   "fromChunk": "fffbbe097df2f277"
+  },
+  "L0508": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head take-start -36.8 / tail min-energy -45 dBFS)",
+   "fromChunk": "cf925714f6ac2a25"
+  },
+  "L0510": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head min-energy -49.9 / tail take-tail -52.8 dBFS)",
+   "fromChunk": "cf925714f6ac2a25"
+  },
+  "L0605": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head gap -66.9 / tail min-energy -46.4 dBFS)",
+   "fromChunk": "c842282a95a88888"
+  },
+  "L0606": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head min-energy -46.4 / tail take-tail -65.5 dBFS)",
+   "fromChunk": "c842282a95a88888"
+  },
+  "L0920": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head gap -55.2 / tail min-energy -54.2 dBFS)",
+   "fromChunk": "2daf6145573945fd"
+  },
+  "L0916": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head min-energy -51.1 / tail gap -60.4 dBFS)",
+   "fromChunk": "2daf6145573945fd"
+  },
+  "L1209": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head take-start -48.9 / tail min-energy -27 dBFS)",
+   "fromChunk": "9630b82704602293"
+  },
+  "L1210": {
+   "at": "2026-10-28T07:05:00.023Z",
+   "reason": "no clean edge in a multi-line take (head min-energy -14.2 / tail take-end -40.7 dBFS)",
+   "fromChunk": "9630b82704602293"
+  }
+ }
+}

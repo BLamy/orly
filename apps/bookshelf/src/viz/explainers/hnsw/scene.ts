@@ -108,8 +108,10 @@ export const qX = QUERY.x;
 export const qY = (explode: number): number =>
   QUERY.y * (1 - explode * (1 - SQUASH)) + explode * (LAYER_DY[0] + 240 * (1 - SQUASH));
 
-export const CAM_STACK: CameraState = { x: 640, y: 340, k: 1.05 };
-export const CAM_TOP: CameraState = { x: 700, y: 190, k: 1.3 };
+// Full-width framing: the layer labels live in the left margin and the query
+// stays above the caption pill while the camera rides up to the top floor.
+export const CAM_STACK: CameraState = { x: 640, y: 340, k: 1 };
+export const CAM_TOP: CameraState = { x: 640, y: 270, k: 1 };
 
 export interface Scene {
   tl: Timeline;

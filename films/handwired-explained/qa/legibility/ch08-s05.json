@@ -1,0 +1,68 @@
+{
+ "shot": "ch08-s05",
+ "at": "2026-10-28T14:37:57.067Z",
+ "minCapPx": 22,
+ "sampled": 24,
+ "texts": 11,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "if (true) { return x + 1 } return x + 2",
+   "capWhileSubject": 42.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "x = 2",
+   "capWhileSubject": 37.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "JavaScript",
+   "capWhileSubject": 37,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 81,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "compiled",
+   "capWhileSubject": 37,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 81,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "checker",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0",
+   "capWhileSubject": 25.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "mismatches",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“two evaluators agree”",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— the docs",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

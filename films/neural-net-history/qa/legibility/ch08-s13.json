@@ -1,0 +1,99 @@
+{
+ "shot": "ch08-s13",
+ "at": "2026-10-13T04:13:52.026Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 17,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "7 networks voting (2 pre-trained on extra data)",
+   "capWhileSubject": 25.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "18.2%",
+   "capWhileSubject": 44.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "one network alone 18.2% (validation)",
+   "capWhileSubject": 25.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "IDSIA",
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "IDSIA, 2011:",
+   "capWhileSubject": 25.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "road signs 99.46%",
+   "capWhileSubject": 25.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "best human 99.22%",
+   "capWhileSubject": 25.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "35%",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "30%",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "25%",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "20%",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "15%",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SuperVision ·",
+   "maxCap": 35.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Toronto",
+   "maxCap": 35.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "16.4%",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2010",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2011",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 10
+}

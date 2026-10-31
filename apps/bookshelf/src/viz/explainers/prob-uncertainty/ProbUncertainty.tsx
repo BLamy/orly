@@ -47,8 +47,12 @@ function renderFrame(s: SceneState) {
   const noteU = s.get(scene.noteU);
   const closeU = s.get(scene.closeU);
 
+  // the closing card takes over: the chart fades back so its text reads on a clean stage
+  const chartOpacity = 1 - 0.85 * closeU;
+
   return (
     <Camera {...s.get(scene.cam)}>
+      <g opacity={chartOpacity}>
       <Axes x={sx} y={sy} reveal={axU} grid xTicks={5} yTicks={5} xLabel="input x" yLabel="output y" />
 
       {/* aleatoric band */}
@@ -87,42 +91,50 @@ function renderFrame(s: SceneState) {
       {/* the fan-width marker at the edge */}
       <g opacity={edgeU}>
         <line x1={sx(3.4)} y1={sy(meanFit(3.4) - spreadAt(3.4))} x2={sx(3.4)} y2={sy(meanFit(3.4) + spreadAt(3.4))} stroke={colors.SECONDARY} strokeWidth={3} />
-        <text x={sx(3.4) - 14} y={sy(meanFit(3.4)) + 5} textAnchor="end" fill={colors.SECONDARY} fontSize={15}>
-          19.6× wider than in-data
+        {/* label sits in the clear space right of the fan's end, beside the bracket */}
+        <line x1={sx(3.4) + 6} y1={sy(meanFit(3.4))} x2={sx(3.4) + 16} y2={sy(meanFit(3.4))} stroke={colors.SECONDARY} strokeWidth={1.5} />
+        <text x={sx(3.4) + 20} y={sy(meanFit(3.4)) - 2} textAnchor="start" fill={colors.SECONDARY} fontSize={15}>
+          19.6× wider
+        </text>
+        <text x={sx(3.4) + 20} y={sy(meanFit(3.4)) + 16} textAnchor="start" fill={colors.SECONDARY} fontSize={15}>
+          than in-data
         </text>
       </g>
 
-      {/* labels */}
+      {/* labels: set above the bands and clear of the dots */}
       <g opacity={epiU}>
         <text x={sx(3.1)} y={140} textAnchor="middle" fill={colors.SECONDARY} fontSize={17}>
           epistemic · ignorance
         </text>
-        <text x={sx(3.1)} y={162} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+        <text x={sx(3.1)} y={162} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
           shrinks with data
         </text>
       </g>
       <g opacity={aleU}>
-        <text x={sx(0.7)} y={140} textAnchor="middle" fill={colors.WARM} fontSize={17}>
+        <text x={sx(0.7)} y={84} textAnchor="middle" fill={colors.WARM} fontSize={17}>
           aleatoric · noise
         </text>
-        <text x={sx(0.7)} y={162} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+        <text x={sx(0.7)} y={106} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
           never shrinks
         </text>
       </g>
 
       {/* the two-responses note */}
+      {/* the two-responses note: parked in the empty upper-right, clear of the curves */}
       <g opacity={noteU}>
-        <rect x={370} y={92} width={540} height={72} rx={12} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.GRID} />
-        <text x={640} y={122} textAnchor="middle" fill={colors.SECONDARY} fontSize={15}>
+        <rect x={840} y={100} width={370} height={76} rx={12} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.GRID} />
+        <text x={1025} y={130} textAnchor="middle" fill={colors.SECONDARY} fontSize={15}>
           ignorance → gather data, or abstain
         </text>
-        <text x={640} y={148} textAnchor="middle" fill={colors.WARM} fontSize={15}>
+        <text x={1025} y={158} textAnchor="middle" fill={colors.WARM} fontSize={15}>
           noise → plan for the spread
         </text>
       </g>
+      </g>
 
       <g opacity={closeU}>
-        <text x={640} y={80} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+        <rect x={440} y={50} width={400} height={52} rx={12} fill={colors.PANEL} fillOpacity={0.96} stroke={colors.GRID} />
+        <text x={640} y={82} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
           two doubts, two responses
         </text>
       </g>

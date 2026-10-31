@@ -34,20 +34,23 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Layout.
 // ---------------------------------------------------------------------------
 
-const F2 = { x: 62, y: 150, w: 252, h: 108 } as const;
-const PANEL = { x: 400, y: 96, w: 430, h: 452 } as const;
+// Camera maths: stage = (p - center) * k + (640, 360). The caption pill starts
+// at stage y 630, so content must stay above cy + 270 / k; fiber two's left
+// edge (x 96) and the latch's right edge (x 1196) must both stay inside view.
+const F2 = { x: 96, y: 150, w: 236, h: 108 } as const;
+const PANEL = { x: 400, y: 96, w: 430, h: 404 } as const;
 const SLOT = { x: 432, y: 180, w: 214, h: 74 } as const;
 const SLOT_C = { x: SLOT.x + SLOT.w / 2, y: SLOT.y + SLOT.h / 2 } as const;
-const STACK_X = 684;
-const STACK_W = 134;
+const STACK_X = 664;
+const STACK_W = 150;
 const STACK_H = 46;
-const stackY = (i: number): number => 470 - i * 54;
+const stackY = (i: number): number => 440 - i * 54;
 const LATCH = { x: 880, y: 206, w: 316, h: 96 } as const;
-const FLAG = { x: PANEL.x + 24, y: PANEL.y + 396 } as const;
+const FLAG = { x: PANEL.x + 24, y: PANEL.y + 340 } as const;
 
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.02 };
-const CAM_MACHINE: CameraState = { x: 640, y: 330, k: 1.2 };
-const CAM_LATCH: CameraState = { x: 840, y: 300, k: 1.22 };
+const CAM_MACHINE: CameraState = { x: 650, y: 300, k: 1.1 };
+const CAM_LATCH: CameraState = { x: 660, y: 290, k: 1.12 };
 
 function along(pts: ReadonlyArray<{ x: number; y: number }>, u: number): { x: number; y: number } {
   const f = clamp01(u) * (pts.length - 1);

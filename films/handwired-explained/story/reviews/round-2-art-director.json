@@ -1,0 +1,133 @@
+{
+  "reviewer": "art-director",
+  "round": 2,
+  "lens": "visual direction",
+  "method": "Read all 103 shots (12 chapters) of story/script.json, including the staging appendix (tagLine map, hand signatures, text rule, buildList), against docs/film/kit-catalog.md, the style bible (sec. 6 binding rule, sec. 9 pacing: 'roughly one transition device per 60-120 s; signature transitions mark chapter and era boundaries only') and the round-1 art-director card. Ran `node generator/film/script.mjs assemble --slug handwired-explained --check`: 0 errors, 1 warning, 'estimated 26.1 min (1568.6 s, at 140 wpm) against a 24.0 min target'. 2,748 words, 185 lines. There is no voice/voice.json yet, so the house 140 wpm applies. The reading-time warnings from round 1 (70) are now 0, and every shot obeys the two-item text rule. Transition census: 40 crossfade, 32 cut, 14 lampChange, 8 paperWipe, 6 inkBleed, 3 fadeBlack, so 31 signature devices in 26 min. Kinds: 74 scene, 21 plate, 8 card. Re-checked arithmetic on screen: ramp ledgers 0 0 1 2 96 and 0 0 0 1 95; shutters 5 + 6 = 11, 2.5 + 9 = 11.5, 20 + (-12) = 8; spring stamp (-300, 0) -> (-298.608, 348); prefix totals 3 4 8 9 14 23 25 31 (Brent-Kung 4 levels, Sklansky 3 [PT15]); ranks 2 0 3 1; K-slot counts 0 1 2 2 3 3 4 5 -> items 1, 2, 4; grid-1 rig at 3/4/5. All check. Confirmed that 'every hour of the clock' (ch09-s01) is PJ09 and that tag 6's small print is dated 2026-10-14 (Q003). tools/export-handwiredos-circuit.ts exists, but research/exports/ does not: the circuit export has not been run.",
+  "scores": {
+    "accuracy": 7.5,
+    "depth": 8.5,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 7.5,
+    "voice": 7.5
+  },
+  "critical": [
+    "RUNTIME OUTSIDE THE BRIEF'S RANGE. The check estimates 26.1 min (1,568.6 s at 140 wpm; no voice.json is locked) against a brief range of 22-26 min and a 24-min target (2,748 words against about 2,280). FIX: first trim the long silent holds the check itself points to (holdAfter 5.7 on ch08-s06, 5.2 on ch07-s09, 4.8 on ch05-s07 and ch06-s13, 4.1 on ch05-s04, ch06-s03, ch07-s08 and ch08-s08; take each to about 2.5 s, saving about 20 s). Then cut about 120-150 words from lines that carry no unique claim. The three biggest chapters are ch04 (426), ch06 (404) and ch07 (386). Candidates: compress ch06-s05 L0613 (the replay set-up, 30 words) to about 15; trim ch07-s11 L0720 once its numbers are drawn (see the issue below); shorten ch11-s05 L0110a's spoken list; make ch05-s02 L0503 a single sentence. Re-run --check until the estimate is at most about 25.0 min, so the locked voice's real pace has margin.",
+    "THE LIFESPAN RULE MISREPORTS THE DATA IT EXISTS TO SHOW. It is the film's measuring device: in ch12-s01, 'every belief in the film hangs over the time it held'. Yet 'still held' is drawn as 'the thread runs off the end of the rule', past 'a lifetime', whatever the belief's real age. Tag 2 (March 2019, about 7.6 years) runs off the end in ch02-s05 and ch12-s01. So do tag 6 (README small print, 14 Oct 2026 [Q003], 13 days) in ch10-s02 and ch12-s01, and tag 10 (14 Oct 2026, 13 days) in ch07-s05 and ch12-s01. Only tag 1's engineering strand (83 years) really passes a lifetime. ch02-s06 also places tag 1's frayed biology strand 'near sixteen years', which contradicts ch02-s04 and ch12-s01 (1943 to 2020, about seventy-seven years). Style bible sec. 6: a bound variable drawn wrongly is a lie. At the finale's wide, a 13-day-old belief would read the same as an 83-year-old one. FIX: write one encoding into staging.tagLine and use it in every shot. A struck or ended thread drops to the rule at its measured lifespan. A still-held thread drops to its age as of 27 Oct 2026 and ends in a glowing open tip with a short copper arrow pointing right (still growing). Tag 2 sits between a year and a lifetime (on the unlabelled decade tick side), tags 6 and 10 between a week and a month, and tag 1's engineering strand alone runs past a lifetime. Fix 'near sixteen years' in ch02-s06 to 'at about seventy-seven years'. Rewrite the six affected visual fields (ch02-s05, ch02-s06, ch07-s05, ch10-s02, ch12-s01, ch12-s04) so they state each tag's tip position."
+  ],
+  "issues": [
+    {
+      "where": "ch02-s03, ch03-s06, ch05-s06, staging.tagLine.tags, ch12-s01, ch12-s02",
+      "problem": "The refrain 'Hang that on the line' makes promises the picture does not keep. In ch02-s03 a Kleene dial card is tied on beside tag 1. In ch03-s06 a fresh 'holds no text' tag is tied on. In ch05-s06 the narrator says 'Hang that on the line' while the visual says 'nothing is tied yet: the question is spoken, not written'. None of these three objects is in the canonical tag list (1-11 + why). None is shown being paid (ch06-s12 Kleene, ch05-s05 Notes, ch09-s03 GPU). None has a place in the ch12-s01 wide or in the ch12-s02 re-hang, whose layout is computed from finaleDepthMap. Shot authors will either drop them silently or draw tags the map cannot place.",
+      "fix": "Make them a fourth tag kind, the QUESTION CARD: a small square card on a plain loop of thread, no knot card, no Lifespan drop. Add qK (ch02-s03), qNotes (ch03-s06) and qGPU (ch05-s06) to staging.tagLine.tags. In ch05-s06, have the narrator's hands actually hang qGPU on 'Hang' (a card with a cut chip silhouette, no words). Pay each one visibly: in ch06-s12, ch05-s05 and ch09-s03 the narrator's hands untie the card and pin it to the machine that answers it (the dial over the loom, the native text box, the relit furnace), so it leaves the line answered. ch12-s01 then shows those three empty loops on the line, and finaleDepthMap needs no entry for them. Otherwise add them to the map explicitly."
+    },
+    {
+      "where": "ch05-s05",
+      "problem": "The Notes payoff turns the data-bound loom into a time machine without telling the eye. ch05-s01, s04 and s07 bind the loom to the PINNED export (4,646 live operations). s05 then shows the same loom 'dense' at 19,851 and shedding to 4,251 on 13 October, which is not 4,646. With no visual cue, the viewer sees the loom grow fourfold, shrink below its own label, and then (s07) return to 4,646. It also breaks the 'every thread is one real stored weight' claim, because no export of the 13 Oct build is planned.",
+      "fix": "Stage it as a flashback. Crossfade to a ghost loom in a cooler serverCyan tint with a '13 OCT 2026' stamp and a Window Calendar inset with 13 Oct's pane lit. Draw that loom's thread density in proportion to the operation counts (19,851 then 4,251), labelled small 'density ~ operations' and claiming no single weight. Then dissolve back to the pinned loom, and let its end-post counter tick from 4,251 to 4,646 with a small 'by 27 Oct' tab, so the three figures read as one timeline."
+    },
+    {
+      "where": "ch01-s05, ch03-s03, ch03-s06, ch05-s03, ch06-s05b, ch09-s03b, ch10-s01",
+      "problem": "Tag fronts change wording and case between appearances. ch01-s05 inks 'Somebody trained it' / 'A tool turned ordinary JavaScript into it' / 'It isn't really a network'. ch03-s06 says tag 3 'still reads Suspect: somebody trained it ... as inked in ch01', which it never did. ch03-s03 and ch10-s01 have 'Suspect: a tool...', and ch05-s03 has 'SUSPECT: IT ISN'T REALLY A NETWORK' in capitals. Tags 7 and 9 are in capitals while tags 1, 2, 6, 8, 10 and 11 are in sentence case. A prop that re-letters itself between shots breaks the device's credibility.",
+      "fix": "Put the exact front text of every tag into staging.tagLine.tags. Recommended: the ch01 wording in sentence case, with a small separate 'suspect' stamp printed at the top of tags 3-5 in ch01-s05. Then make every visual field and onScreenText item quote that canonical string verbatim."
+    },
+    {
+      "where": "ch09-s01 (and staging.buildList.windowCalendar)",
+      "problem": "The Window Calendar's fixed grid makes October's four-day annexe 41/34/19/22 storeys on top of a 12-storey main block, so the building's top is about 53 storeys and 4.4 times the block. ch09-s01 opens 'wide and still on the whole building' and then makes 'a slow crane up and to the right ... about 8% push'. That frame cannot contain the tower: either the block is tiny from the first frame, or the cascade fills panes far above frame. The 24-hour clock face 'on the building's tower' has no specified position either.",
+      "fix": "Choreograph the reveal around the geometry. Open on the 12-storey block at about 45% of frame height, then crane UP about three frame-heights following the cascade's leading edge as 13 Oct fills (one storey per score tick), and end on a wide pull-back where the full 53-storey silhouette fills frame height and the main block is a low plinth. Mount the clock face on the 13 Oct column's crown, so it is the last thing reached. State in the buildList the pane size this implies at 1280x720 (about 13 px per storey at the final wide)."
+    },
+    {
+      "where": "ch09-s05",
+      "problem": "The round-1 contradiction (a one-way ratchet with a clerk walking backwards) is only half fixed. Pass 1 feeds the strip 'sliding rightward' through the fixed head; pass 2 has it 'enter from its LEFT end ... sliding leftward'. After pass 1 the strip lies to the right of the head, so pass 2 is the same strip reversing back through the slot. On screen that reads exactly as 'going back', the thing the line says a program cannot do.",
+      "fix": "Keep the strip moving in ONE direction, left to right, in both passes. Pass 1: the strip is fed reversed (its letters mirrored, last character leading) and slides right through the head, leaving notes. Between passes it is lifted clear, turned end for end in the air (a half-rotation on twos, notes riding along) and carried back to the left off the head. Pass 2: it slides right again, first character leading. Head, ratchet and strip all go forward both times; only the strip's orientation changes."
+    },
+    {
+      "where": "ch06-s01",
+      "problem": "Mixed metaphor at the thesis of Deep Dive II. 'A loop becomes a count, a tree, a table...' is illustrated by a bead circling a closed racing oval, with a socket labelled 'no repeat' on a track whose whole nature is repeating. The image says 'this loops forever' while the line says the program cannot loop. One lap is meant to be one frame (the host), but the host clockwork is introduced in the same shot, so two different machines both stand for the host loop.",
+      "fix": "Make the program a STRAIGHT one-way track that crosses the plate. The bead must pass every station in order (stations lit as it passes, no sidings), and at the right edge the bead drops into the clockwork's tray. The empty sockets (jump, break, repeat) sit as vacant points along the straight track. The clockwork's escapement ticks, a new bead is placed at the left end, and the same run repeats: the repetition belongs visibly to the host, never to the track."
+    },
+    {
+      "where": "film-wide transitions; ch07-s03 and ch11-s04 in particular",
+      "problem": "Lamp changes are down from 18 to 14, but 10 are still mid-chapter (ch05-s04, ch05-s06, ch06-s06, ch07-s03, ch08-s03, ch08-s06, ch09-s03, ch09-s08, ch11-s04, ch12-s05), and 31 signature devices in 26 min is one every 50 s, against the bible's one per 60-120 s at chapter and era boundaries. Worst: ch07-s03 ('Same plate, same valve') and ch11-s04 ('Lamp change across the same plate') black the frame out for 3 s between two states of ONE plate. That breaks the cause-and-effect continuity the plate exists to show (lowering b shuts the valve; the JSON half riveted, the TOML half struck).",
+      "fix": "Keep lampChange for ch03-s01, ch05-s06 (the furnace), ch07-s01, ch09-s01, ch11-s01 and ch12-s05: 6 in all. Turn ch05-s04, ch06-s06, ch07-s03, ch08-s03, ch08-s06, ch09-s03, ch09-s08 and ch11-s04 into transitionIn 'crossfade' (or 'cut' on the same plate), with the mood change done in-shot as a 2-4 s tint interpolation, as ch04-s06, s07 and s09 already do. Also change ch05-s01's and ch07-s04's chapter-internal paperWipes to plain cuts if the count is still above about 20 devices."
+    },
+    {
+      "where": "ch02-s06",
+      "problem": "Axis collision. The Lifespan Rule is a log scale of DURATION (an hour, a day, a year, a lifetime), yet this shot hangs a card 'on the line between 1992 and the present' and tracks right 'toward the present' as if the line or rule were a calendar. Viewers taught in ch01-s07 that left-to-right on the rule means 'lasted longer' are now told it means 'later'.",
+      "fix": "Keep dates off the rule. Hang the 1992-2026 card at its tie-order position on the LINE (after tag 2, before the present). Present the track to the right as moving along the line's tie order (bronze ageing into copper), never along the rule. If the bracket animation of 'each mark a far bigger jump' is kept, run it on the rule's ticks only, with no years."
+    },
+    {
+      "where": "ch07-s11",
+      "problem": "The densest sentence in Deep Dive III (five design numbers unfrozen; 'nearly two drag frames in three' solved in one step; 'in one in four, every slope started at zero' [DG20: 63.6%, 24.6%]) gets a five-knob panel whose flags 'lift or stay down', bound to nothing. The numbers fly by in the voice with no picture to hold them.",
+      "fix": "Bind the panel to DG20. Next to the five knobs, a strip of 25 small drag-frame cards: on 'unfreeze', one gradient step flips 16 of them (64%) to a solved copper face, and 6 (24%) stay grey with a tiny flat slope gauge reading 0 from the start. Keep 'no figures on screen' (the voice says them) or set a single 63.6% · 24.6% tab. Then cut the spoken numbers to one clause, which also helps the runtime."
+    },
+    {
+      "where": "ch05-s03",
+      "problem": "Four hand actions are stacked on the single word 'plain' in about 1.5 s: flip, the red pencil drawing a pictogram on the back, flip back, and a strike shot as a tight insert. The pictogram (a frame with a ramp after it) is the shot's teaching image and will not read.",
+      "fix": "Spread the beats: flip on 'network' (L0504), pictogram drawn across 'weighted sums, with ReLU gates between' (anchor the start on 'weighted', the end on 'between'), flip back and strike on L0504's end with a 0.3 s offset, then 'ours' holds on the empty knot as now."
+    },
+    {
+      "where": "ch12-s02",
+      "problem": "Q039 ('Independent instructions at the same dependency depth share a layer.', 70 characters) is set in full at the top of frame, but it is not spoken. It lands on 'loom', exactly as the cascade (the shot's main event) begins, so the viewer must read a sentence while six frames of tags drop and draw back-threads.",
+      "fix": "Either set the quote on a parchment slip in the 2-3 s before the hands enter (a music-only window of at least 7.3 s by the house rule, which the 15 s minDuration can carry if the cascade starts after it), or reduce it to a verbatim fragment, 'same dependency depth share a layer', with attribution, and let the cascade carry the idea."
+    },
+    {
+      "where": "ch12-s02, ch12-s03, ch12-s06",
+      "problem": "Frame 5's empty copper hook (the blank's frame, needing 9 and 11) is planted, and the forward wave even 'rests there, a faint copper glow on bare wire'. But ch12-s06 makes its blank tag from the desk's dock wire, unrelated to the hook. The finale's best visual rhyme is left hanging.",
+      "fix": "Close the rhyme. Either end ch12-s04 on the glowing bare hook and match-cut (shape for shape) to the bent copper hinge in ch12-s06, or, in ch12-s06, have the hinge the narrator's hands bend carry the same small hook profile as frame 5's, with the blank tag tied to it. One line of staging in ch12-s03's visual ('this hook becomes the hinge in s06') is enough for the shot author."
+    },
+    {
+      "where": "ch01-s04, ch05-s01, ch05-s04, ch05-s07, ch07-s04 (staging.buildList.matmulLoom)",
+      "problem": "The loom-wallpaper binding is still conditional. Each shot carries two versions ('if the export cannot be made...'), and ch01-s04 sets '9,909 arcs · one per weight' on screen, which is only true in one of them. tools/export-handwiredos-circuit.ts exists, but no research/exports/handwiredos-circuit.json has been produced, so the film's central identity image (the loom IS the wallpaper) is still undecided at the story lock.",
+      "fix": "Run the export now, before film-shots, and check its totals against OS02/CM07. Then collapse every visual field to the single branch that is true. If it fails, remove '9,909 arcs · one per weight' from ch01-s04's onScreenText (keep the number in narration only) and rewrite ch05-s04 as the side-by-side version."
+    },
+    {
+      "where": "ch02-s02",
+      "problem": "The round-1 kit fix was applied in ch09-s04 but not here: the 1943 net is still 'stencilLantern-style card lanterns'. stencilLantern is a convolution painter, and the threshold ring the shot depends on belongs to paperLantern.",
+      "fix": "Name the primitives: three paperLanterns with brass threshold rings (two notches on the output ring), joined by thread() with knot() at each end. Reuse exactly these three in the ch07-s03 ghost, so the 1943 echo is literally the same object."
+    },
+    {
+      "where": "ch09-s03b, ch11-s02",
+      "problem": "The Lifespan Rule's tick labels are listed as seven (an hour · a day · a week · a month · a year · a decade · a lifetime), against the canonical four labelled ticks (staging.tagLine, ch01-s07, ch12-s01).",
+      "fix": "Replace both with the canonical four labels plus unlabelled week, month and decade ticks; the tagLine module should own the rule's drawing so that shots cannot restate it."
+    },
+    {
+      "where": "ch08-s05",
+      "problem": "The shared bug is drawn as 'a matching red-pencil mark on both' cards. Red pencil is the film's grammar of doubt (it only writes, strikes or rests, per staging.hands), so a red smudge on the compiled program and on the checker reads as the doubter's mark, not as the bug.",
+      "fix": "Draw the bug as an identical INK BLOT (black, slightly glossy) in the same spot on both cards. Keep red for the doubter's hand alone."
+    },
+    {
+      "where": "ch06-s05b, ch12-s01",
+      "problem": "Tag 7's thread 'starts frayed', with no explanation. Fraying is already the film's sign for 'refuted as biology' (tag 1, ch02-s04), so on the finale wide tag 7 will read as partly refuted before it was tied.",
+      "fix": "Drop the fray from tag 7 (a plain thread that drops to the rule at its struck date) or give it a distinct, explained sign. Update ch12-s01's 'frayed start' to match."
+    },
+    {
+      "where": "ch08-s08 (and other shots where the TAG-LINE STAGING block is appended mechanically)",
+      "problem": "The assembler appends each chapter's tagLine variant verbatim. ch08-s08 is a dawnGold morning shot whose own text relights September, but it inherits 'THE COLD WINDOW: the workshop in winterBlue ... frost on the posts'. ch02-s05 (a 2019 duskRose card) inherits 'PERIOD ROOMS ... the 1951 office'. These contradictions go straight to the shot author.",
+      "fix": "Let a shot override its variant (for example, staging.tagLine.variants 'ch08-late': the cold window thawing at dawn, frost melting off the posts) and use it in ch08-s07/s08. For ch02-s05/s06, add a 'present-ward' sub-variant where the bronze line runs out of the period rooms into plain haze."
+    },
+    {
+      "where": "ch04-s14",
+      "problem": "'A grid of tiny percentage labels' that 'nearly all flip to red' is the only picture of the September study's number (18,820 of 20,000 wrong, 94.1%), and it is unbound. The shot author has to guess a grid size and a red fraction.",
+      "fix": "Specify a 20 x 50 grid of 1,000 tiny label cells, each standing for 20 labels: 941 turn red on 'wrong' and all 941 return to ink on 'Kept'. State the 1 cell = 20 labels rule in the visual, not on screen."
+    },
+    {
+      "where": "ch11-s03",
+      "problem": "The tally strip is drawn as bars 'exact to the numbers', but the second text item repeats all six percentages in one 120-character line, so the plate is read twice.",
+      "fix": "Print each bar's figure at its tip (as part of the bar object) and shorten the label to 'entirely right · trained vs hand rules'."
+    },
+    {
+      "where": "staging.hands ('No line, stroke or tag ever draws or moves itself')",
+      "problem": "The rule is broken by design in ch01-s01 (the copper thread draws itself), ch07-s10 (the ruler slides in by itself), ch08-s04 (a hand-less crank) and ch12-s02 (the tags cascade on their own), all for good reasons. A rule that the script itself contradicts invites shot authors to ignore it.",
+      "fix": "Narrow the rule to what is meant: 'No tag is tied, flipped, written, struck or riveted without a hand.' Machines and the opening fuse may move by themselves."
+    }
+  ],
+  "strengths": [
+    "Round 1's two biggest visual problems are fixed. The text rule holds in every shot and the reading-time warnings went from 70 to 0. The shutters now scale the tiles they pass, so 0.5 x 10 + 0.5 x 12 = 5 + 6 = 11, the 4.25 case's 2.5 + 9 = 11.5 and the far edge's copper 20 plus indigo -12 = 8 are visible sums, not tricks. The Deep Dive I signature is now arithmetic you can watch.",
+    "The teaching machines are bound to real, checkable numbers and are mostly true silhouette theatre, not diagrams. The ramp ledger (0 0 1 2 96), the 2^24 ruler where 16,777,217 has no tick, the 8,388,609 detent with hollow-odd and filled-even ticks, the lens train winding to 2^149, the spring stamp (-300, 0) -> (-298.608, 348) and the frozen 14-operation counter while the step dial spins, the counting rail, the prefix loom, the rank board, the 10,000-drawer cabinet reusing the ch04 shutters (30,002 against 1), the ReGLU valve's 0.15 / 0.225 / 0.45 / 1.5, the Huber clamp's collared springs. Everything I checked adds up.",
+    "The staging appendix turns recurring devices into buildable, consistent sets. There is a canonical workshop for the copper line with a per-chapter variant (period rooms, through the loom, above the clockwork, the cyan grain, out of doors), locked hand signatures (narrator lower left, red pencil from the right), a fixed Window Calendar grid at one pane per commit, and a shared buildList with real parameters. That answers round 1's feasibility worry.",
+    "Strong rhymes in pictures. The cold furnace (ch05-s06) is relit serverCyan in ch09-s03. Kleene's dial with its crank outside the frame (ch02-s03) settles over the loom with the host turning the crank (ch06-s12). The frosted weight-knob cracks free (ch07-s01). The 1943 lanterns' ghost hangs beside the shut valve (ch07-s03). The search strip is fed through a one-way ratchet head. RegExp gets its own spool winder (no loom), with eight winders when given eight workers, in equal light. ch10's far ridge of lit bayArea windows paying out each stranger's thread now gives 'the world' an image.",
+    "The finale is form as content. The tags are re-hung by the compiler's own dependency-depth rule, computed from finaleDepthMap; the washing line becomes the ch05 loom; and one forward wave runs through it, with struck tags computed and then shuttered to zero, so the select is applied to the film itself. It ends on a blank tag on a copper ReLU hinge placed in the viewer's open palm."
+  ]
+}

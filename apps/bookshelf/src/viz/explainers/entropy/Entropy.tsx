@@ -47,15 +47,14 @@ function renderFrame(s: SceneState) {
   return (
     <g>
       {/* ------- left: the surprise curve I(p) ------- */}
-      <Axes
-        x={sx}
-        y={sy}
-        reveal={axesU}
-        xTicks={5}
-        yTicks={6}
-        xLabel="p — how likely"
-        yLabel="surprise (bits)"
-      />
+      <Axes x={sx} y={sy} reveal={axesU} xTicks={5} yTicks={6} />
+      {/* axis titles sit outside the plot so the curve never runs through them */}
+      <text x={sx(1)} y={sy(0) + 46} textAnchor="end" fill={colors.MUTED} fontSize={17} opacity={clamp01(axesU * 2 - 1)}>
+        p — how likely
+      </text>
+      <text x={sx(0)} y={sy(CURVE.iMax) - 16} fill={colors.MUTED} fontSize={17} opacity={clamp01(axesU * 2 - 1)}>
+        surprise (bits)
+      </text>
       <FunctionPlot
         x={sx}
         y={sy}
@@ -106,6 +105,33 @@ function renderFrame(s: SceneState) {
             fontWeight={600}
           >
             {iOf(p).toFixed(1)} bits
+          </text>
+        </g>
+      )}
+
+      {/* beat 1's two headlines, read off the same curve: common = few bits, rare = many */}
+      {dotU > 0.002 && (
+        <g opacity={dotU}>
+          <text x={METER.x} y={220} fill={colors.MUTED} fontSize={16}>
+            the same curve, two headlines
+          </text>
+          <text x={METER.x} y={262} fill={colors.TEXT} fontSize={20} fontWeight={600}>
+            'The sun rose'
+          </text>
+          <text x={METER.x + 240} y={262} fill={colors.MUTED} fontSize={20}>
+            p ≈ 0.95
+          </text>
+          <text x={METER.x + METER.w} y={262} textAnchor="end" fill={colors.POSITIVE} fontSize={20} fontWeight={600}>
+            0.1 bits
+          </text>
+          <text x={METER.x} y={306} fill={colors.TEXT} fontSize={20} fontWeight={600}>
+            'Snow in July'
+          </text>
+          <text x={METER.x + 240} y={306} fill={colors.MUTED} fontSize={20}>
+            p ≈ 0.06
+          </text>
+          <text x={METER.x + METER.w} y={306} textAnchor="end" fill={colors.WARM} fontSize={20} fontWeight={600}>
+            4.1 bits
           </text>
         </g>
       )}

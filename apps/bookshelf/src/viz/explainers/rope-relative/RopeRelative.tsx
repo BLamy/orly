@@ -78,6 +78,17 @@ const CAM_KER: CameraState = { x: 430, y: 500, k: 1.3 };
 
 const PAIR_COLORS = [colors.ACCENT, colors.TEAL, colors.POSITIVE, colors.SECONDARY];
 
+// Beat 1 shows the same tokens twice: in order, then shuffled.
+const WORDS = ['I', 'saw', 'a', 'red', 'fox', 'run'];
+const SHUFFLED = [3, 0, 5, 1, 4, 2];
+const CHIP_W = 96;
+const CHIP_GAP = 12;
+const CHIP_X0 = 640 - (WORDS.length * CHIP_W + (WORDS.length - 1) * CHIP_GAP) / 2;
+const CHIP_ROWS = [
+  { label: 'original order', y: 250, order: WORDS.map((_, i) => i) },
+  { label: 'shuffled: same tokens, new order', y: 356, order: SHUFFLED },
+];
+
 // ---------------------------------------------------------------------------
 // Timeline.
 // ---------------------------------------------------------------------------
@@ -218,18 +229,44 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
   const airT = s.get(scene.airT);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.95 * dimU;
   const liveScore = score(posQ, posK);
   const sweepOff = kerSweep * 24;
+  // the kernel takes over the stage: the dials, score and algebra leave it
+  const dialsGone = kerU >= 0.98;
+  const chipOp = titleU * (1 - Math.min(1, dialsU * 3)) * mainOp;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {/* beat 1: the same tokens, in order and shuffled */}
+      <g opacity={chipOp}>
+        {CHIP_ROWS.map((row) => (
+          <g key={row.label}>
+            <text x={CHIP_X0} y={row.y - 10} fill={colors.MUTED} fontSize={14}>
+              {row.label}
+            </text>
+            {row.order.map((w, i) => {
+              const x = CHIP_X0 + i * (CHIP_W + CHIP_GAP);
+              return (
+                <g key={i}>
+                  <rect x={x} y={row.y} width={CHIP_W} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+                  <text x={x + CHIP_W / 2} y={row.y + 29} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontFamily="monospace">
+                    {WORDS[w]}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+        ))}
+      </g>
+
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the four dials */}
-          <g opacity={dialsU * (1 - 0.8 * kerU)}>
+          {!dialsGone && (
+          <g opacity={dialsU * (1 - kerU)}>
             <text x={DIAL_XS[0] - DIAL_R} y={DIAL_Y - DIAL_R - 42} fill={colors.TEXT} fontSize={18}>
               four frequency pairs — four clock hands
             </text>
@@ -268,39 +305,42 @@ function Frame({ s }: { s: SceneState }) {
                     strokeLinecap="round"
                     opacity={0.9}
                   />
-                  <text x={DIAL_XS[j]} y={DIAL_Y + DIAL_R + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                  <text x={DIAL_XS[j]} y={DIAL_Y + DIAL_R + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                     θ = {th.toFixed(th < 0.05 ? 4 : th < 0.6 ? 3 : 1)}
                   </text>
                 </g>
               );
             })}
-            <text x={DIAL_XS[0] - DIAL_R} y={DIAL_Y + DIAL_R + 52} fill={colors.MUTED} fontSize={13}>
+            <text x={DIAL_XS[0] - DIAL_R} y={DIAL_Y + DIAL_R + 52} fill={colors.MUTED} fontSize={14}>
               long hand: query at position {posQ.toFixed(0)} · short hand: key at position {posK.toFixed(0)}
             </text>
           </g>
+          )}
 
           {/* the live score */}
-          {scoreU > 0 && (
-            <g opacity={scoreU * (1 - 0.8 * kerU)}>
-              <rect x={700} y={DIAL_Y + 96} width={230} height={92} rx={12} fill={colors.PANEL} opacity={0.85} stroke={colors.GRID} />
-              <text x={815} y={DIAL_Y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          {scoreU > 0 && !dialsGone && (
+            <g opacity={scoreU * (1 - kerU)}>
+              <rect x={640} y={DIAL_Y + 96} width={240} height={92} rx={12} fill={colors.PANEL} opacity={0.85} stroke={colors.GRID} />
+              <text x={760} y={DIAL_Y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 dot product of rotated q and k
               </text>
-              <text x={815} y={DIAL_Y + 166} textAnchor="middle" fill={colors.WARM} fontSize={30} fontWeight={700} fontFamily="monospace">
+              <text x={760} y={DIAL_Y + 166} textAnchor="middle" fill={colors.WARM} fontSize={30} fontWeight={700} fontFamily="monospace">
                 {liveScore.toFixed(3)}
               </text>
             </g>
           )}
 
           {/* the algebra */}
+          {!dialsGone && (
           <MathLabel
             tex="(R_{m}q)^{\top}(R_{n}k) = q^{\top}R_{\theta(n-m)}\,k"
             x={330}
             y={392}
             fontSize={21}
             color={colors.SECONDARY}
-            opacity={eqU * (1 - 0.8 * kerU)}
+            opacity={eqU * (1 - kerU)}
           />
+          )}
 
           {/* the kernel */}
           {kerU > 0 && (
@@ -308,7 +348,10 @@ function Frame({ s }: { s: SceneState }) {
               <text x={160} y={KER_Y(1.05) - 14} fill={colors.TEXT} fontSize={17}>
                 score of identical tokens vs offset
               </text>
-              <Axes x={KER_X} y={KER_Y} reveal={kerU} xTicks={6} yTicks={3} xLabel="offset (tokens)" fontSize={11} />
+              <Axes x={KER_X} y={KER_Y} reveal={kerU} xTicks={6} yTicks={3} fontSize={13} />
+              <text x={KER_X(12)} y={KER_Y(0) + 38} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                offset (tokens)
+              </text>
               <FunctionPlot
                 x={KER_X}
                 y={KER_Y}
@@ -322,12 +365,12 @@ function Frame({ s }: { s: SceneState }) {
               {kerSweep > 0.02 && (
                 <>
                   <circle cx={KER_X(sweepOff)} cy={KER_Y(gOff(sweepOff))} r={5} fill={colors.WARM} />
-                  <text x={KER_X(sweepOff) + 10} y={KER_Y(gOff(sweepOff)) - 10} fill={colors.WARM} fontSize={13} fontWeight={600}>
+                  <text x={KER_X(sweepOff) + 10} y={KER_Y(gOff(sweepOff)) - 10} fill={colors.WARM} fontSize={14} fontWeight={600}>
                     {gOff(sweepOff).toFixed(2)}
                   </text>
                 </>
               )}
-              <text x={KER_X(24)} y={KER_Y(0.12)} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              <text x={KER_X(24)} y={KER_Y(0.85)} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 fast hands: sharp nearby · slow hands: faint far
               </text>
             </g>
@@ -345,14 +388,14 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
+          <rect x={200} y={210} width={880} height={220} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={282} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Only the offset survives.
           </text>
-          <text x={640} y={330} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={330} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
             0.386 at positions five and two — 0.386 at eighty and seventy seven.
           </text>
-          <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
             A relative ruler, built from nothing but rotations.
           </text>
         </g>

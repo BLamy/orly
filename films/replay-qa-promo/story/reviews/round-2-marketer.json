@@ -1,0 +1,78 @@
+{
+  "reviewer": "marketer",
+  "round": 2,
+  "lens": "message clarity and specificity",
+  "runtimeCheck": "script.mjs assemble --check: 0 errors, 7 warnings; 165 words, estimated 96.1 s at 140 wpm against the 90 s target, inside the 100 s hard ceiling (not critical; ~4 s headroom for the word changes below)",
+  "round1Followup": "Fixed: time-travel 'why' (L0505 + L0506 now speak 25-of-27 and name the time-travel recording), L0404 now says 'reviewed ... for slow', 'fully managed' made concrete ('Replay runs the browsers' + 'hosted by Replay' pill), ch01-s02 cut, ch04-s01 simplified, '{ root cause }' label over the real Root Cause crop. Not fixed: PR #3 badge still 'purple' in ch04-s03; the 258-bug lines still lack the 'nobody asked for it / over minutes' clause; the agent beat is still under 6 s and still disconnected from 'rerun to confirm'; L0502 unchanged.",
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 7, "story": 7, "curiosity": 7, "visual": 8, "voice": 7 },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch05-s05 (agent pair vs the 'Fixed' chip)",
+      "problem": "The pull-back reveals bug-sync's real 'Fixed' chip at 5.4 s, but the developer/critic pair stays on screen until 5.9 s. For about half a second the critic's green '✓ good' sits beside a 'Fixed' bug, which is exactly the implication the shot says it must avoid (the agents are 'never linked to any specific bug' [AGENT-15]; who fixed bug-sync is not in the bible [PROOF-06]). The pair is also on screen only about 5.8 s, still under the brief's 6-8 s.",
+      "fix": "Raise minDuration to about 7.0 s. Keep the exchanges at 0.5/1.3 s and 3.0/3.8 s, hold the pair until 6.2 s, and have it fully gone by 6.4 s (about 6.3 s on screen). Move 'pullback' (the Fixed chips row) to 6.5 s and 'fan' to 6.8 s, so the 'Fixed' chip never shares a frame with the pair. If the 0.8 s can't be spared, keep the timing and instead hide the bug-sync chips row until ch06-s01."
+    },
+    {
+      "where": "L0101 / L0102 (category named only at the end)",
+      "problem": "A first-time viewer is not told what kind of product this is until the last line ('End-to-end testing, fully managed', about 90 s in). 'Imagine tests you never write' could mean unit tests, test generation or a copilot, and the end-to-end / browser category only arrives by inference in ch03. The brief's headline is 'fully managed end-to-end testing platform'.",
+      "fix": "Name the category in the hook (+1 word): L0101 'Imagine end-to-end tests you never write. Or remember to run.' [SET-15][SET-16]. Leave the on-screen kinetic line as it is, or add 'end-to-end' if it still fits on one line under 1100 px."
+    },
+    {
+      "where": "ch05-s03 / L0506",
+      "problem": "'A screenshot can't see that.' sets up a weak contrast. Nobody debugs perf bugs from screenshots. The viewer's real question is 'I already record sessions or videos, so why is this different?' Both sides are 'recordings', and the line misses the chance to say why Replay's recording is different. TIME-17 states exactly that: a DOM/screen recording has nothing to show for 25 renders that changed nothing on screen.",
+      "fix": "L0506 'A screen recording can't see that. Replay's time-travel recording can.' (+1 word; generic, no competitor named; TIME-17 is a labelled inference, so keep it unattributed and plain). On screen, change the drawn 'screenshot' frame to a small video-frame outline with a ▶ glyph so it matches."
+    },
+    {
+      "where": "ch05-s04 / L0507-L0508 (the 258 bug)",
+      "problem": "This is the weaker of the two time bugs. As spoken, 'a loop fetched one list two hundred fifty-eight times' sounds like an ordinary network bug that any log would show. The detail that makes it a bug in TIME is not in the narration: it ran for minutes in the background (requests from 15 s to 176 s, 2 clicks, no keypresses [TIME-11]). That detail is only in a small grey on-screen label. 'It never saved its place' is a nice image but abstract on first hearing.",
+      "fix": "L0507 'Another: one list, fetched two hundred fifty-eight times in under three minutes.' (160 s of requests [TIME-11]). L0508 'It never saved its place, so it kept starting over.' (checkpoint −1 [TIME-11]). That is about +4 words. Do NOT say 'nobody touched it': the take records 2 clicks. Keep '2 clicks · no keypresses' on screen."
+    },
+    {
+      "where": "ch05-s02 / L0503",
+      "problem": "'Sixty-seven milliseconds. Four dropped frames.' has no subject for the ear. The viewer hears a duration before learning what took that long, and 'React commit' is only in the on-screen title, which few will read in the tilt. L0504 then explains the trigger, so the strongest concrete fact lands before its noun.",
+      "fix": "L0503 'One update. Sixty-seven milliseconds. Four dropped frames.' (+2 words [TIME-08]). Put the brace snap on 'update' → '67ms', then the ribbon on 'milliseconds' as now. Keep the music drop on 'Four'."
+    },
+    {
+      "where": "ch05-s05 → ch06-s01 (agent beat's meaning)",
+      "problem": "The beat is properly subtle, but it ends a full shot before 'Every fix, rerun to confirm.', the only line that gives it meaning [AGENT-02][PROOF-07]. A first-time viewer is likely to read the two cards as decoration, not as 'your coding agent and Replay QA work in a loop'.",
+      "fix": "Optional and cheap: when the pair fades, leave one small green '✓' chip that drifts into the collage and lands beside 'rerun to confirm' on 'confirm' (w6). This makes a visual rhyme with no new words. Keep the pair itself out of ch06 so it never becomes a headline."
+    },
+    {
+      "where": "ch04-s03 visual + beat b-pr",
+      "problem": "The badge is still called 'the first purple PR #3 badge' (twice). The bible (§ runs take, LOOP-12 row) and ch01-s03 / ch06-s01 say blue. Round 1 flagged this and it was not fixed. A shot author who trusts this text may recolour or misidentify the target.",
+      "fix": "Replace 'purple' with 'blue' in the ch04-s03 visual and in beat b-pr."
+    },
+    {
+      "where": "L0401",
+      "problem": "'Replay runs the browsers' comes right after 'and runs them' (L0302), and the ear can parse 'Replay runs' as one word ('replay-runs'). It is also less direct about 'managed' than the bible's own wording (Replay hosts the browsers, containers and recordings).",
+      "fix": "'On a schedule, while you sleep, Replay hosts the browsers.' This matches the 'hosted by Replay' pill under it [CONT-19 / bible 'fully managed' honesty note], with no word change."
+    },
+    {
+      "where": "L0404",
+      "problem": "'Not just for broken. For slow.' is punchy but the grammar trips: 'broken' and 'slow' are adjectives used as nouns. Some listeners will hear it as a stumble right at the hand-off into the film's most important chapter.",
+      "fix": "'Each run is recorded, then reviewed. Not just for what breaks. For what's slow.' (+2 words [TIME-07]). If the runtime budget can't take that, keep the current line."
+    },
+    {
+      "where": "ch03-s01 (explore / journeys are abstract)",
+      "problem": "'Explores' and 'journeys' are two of the brief's headline capabilities, yet they are shown only as a type card with no number and no product. The explore take is unusable (an empty player and a caption), so footage is not the fix, but the beat could still be specific.",
+      "fix": "Under the 'Done' swap, add a small grey label taken from the Insights take: '89 explorations · 1151 journeys' [LOOP-13][PROOF-13]. Keep it unspoken (it reappears on tile A in ch06-s01), or move that tile reference here. It gives the loop real numbers at no cost in words."
+    },
+    {
+      "where": "runtime (assemble --check)",
+      "problem": "At 96.1 s the film is already 6 s over the 90 s target. The changes above add about 10 words (about 4.3 s) and would take it to about 100 s, right at the ceiling.",
+      "fix": "Pay for them with holds, not words: cut ch01-s03's lock-up hold from 1.2 to 0.8 s, ch05-s03 holdAfter from 0.8 to 0.5 s, ch06-s01 holdAfter from 0.8 to 0.5 s, and ch03-s01 holdAfter from 1.1 to 0.8 s (about 1.3 s). Drop 'Another bug:' to 'Another:' in L0507. Then re-run the check and aim for 97 s or less."
+    },
+    {
+      "where": "reading-time warnings (ch01-s01, ch01-s03, ch02-s01, ch04-s02)",
+      "problem": "Four on-screen strings fall short of reading time by 0.1-0.7 s, including the opening line, the first thing a viewer reads.",
+      "fix": "Give ch01-s01 0.7 s more hold (take it from the ch01-s03 hold cut above). Let ch04-s02's pill row land 0.1 s earlier (at 0.0 s, as the strip settles)."
+    }
+  ],
+  "strengths": [
+    "The primary message is now complete and in a clean, memorable order: one URL with no suite needed, then explore → journeys → runs, then schedule (a real 'Tue at 3:00 AM' chip and six real Tuesdays) / staging, preview, localhost / every pull request, then each run recorded and reviewed, then every bug with a root cause and every fix rerun. 'Fully managed' is made honest and concrete with 'Replay runs the browsers' and the 'hosted by Replay' pill.",
+    "The time-travel argument now works out loud. 'Some bugs only exist in time' leads to a real 67 ms / four-dropped-frames bug with no click, then 'Twenty-five of twenty-seven renders changed nothing on screen', then a named 'time-travel recording', then a match cut to the real Root Cause line. The four beats of silence on 'Four dropped frames' make the lost time felt.",
+    "Everything stays real and specific: the bug titles, chips, schedule chip, PR badges and Insights tiles are actual recording frames with verified crops and marks, and the open/fixed status is kept honest (the 'Open' chip is pinned on the 67 ms bug).",
+    "L0404's 'Not just for broken. For slow.' is a smart bridge. It ties the functional-testing pitch to the performance hook and grounds it in the polish passes that really filed both featured bugs.",
+    "The developer/critic beat is correctly subtle: unnarrated, at 0.7 scale in a corner, generic and unbranded, never called the page's judges, and placed just before 'Every fix, rerun to confirm'."
+  ]
+}

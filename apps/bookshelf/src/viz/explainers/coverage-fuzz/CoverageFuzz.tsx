@@ -14,7 +14,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -97,11 +96,17 @@ const SPACE = Math.pow(26, L); // ≈ 3.09e8
 // Layout.
 // ---------------------------------------------------------------------------
 
-const GUARD_X = 200;
-const GUARD_Y = 210;
+// The corridor spans x 130–1130 and y 150–220 at home; the side panels sit in
+// the right-hand column (x 760–1130) so they never sit on the corridor, and the
+// corpus ladder sits in the left column below it.
+const GUARD_X = 130;
+const GUARD_Y = 150;
 const GUARD_DX = 150;
-const CAM_GUARDS: CameraState = { x: 620, y: 300, k: 1.15 };
-const CAM_CORPUS: CameraState = { x: 560, y: 420, k: 1.15 };
+const PANEL_X = 760;
+const PANEL_Y = 300;
+const LADDER_Y = 330;
+const CAM_GUARDS: CameraState = { x: 600, y: 300, k: 1.1 };
+const CAM_CORPUS: CameraState = { x: 600, y: 400, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -242,8 +247,16 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
-  const randFade = 1 - 0.8 * clamp01(corpusU * 3);
+  // the finale fades everything under the closing panel down to 0.1
+  const mainOp = 1 - 0.9 * dimU;
+  const showMain = mainOp > 0.12;
+  // random attempts give way completely to the corpus (no ghost labels)
+  const randFade = 1 - clamp01(corpusU * 3);
+  // 0 until the camera is back home after the corpus, 1 once it has settled
+  const harnessP = crashU * clamp01((CAM_CORPUS.k - cam.k) / (CAM_CORPUS.k - 1));
+  const statOp = statU * (1 - harnessP) * mainOp;
+  const mathOp = mathU * (1 - harnessP) * mainOp;
+  const noteOp = covU * mainOp * (1 - clamp01(statU * 4));
 
   // corpus ladder rows (unique depths from the real seed-200 corpus)
   const ladder: Array<{ s: string; d: number }> = [];
@@ -256,143 +269,173 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
-        <Camera {...cam}>
-          {/* the guard corridor */}
-          {guardsU > 0 && (
-            <g>
-              {SECRET.split('').map((ch, i) => {
-                const u = clamp01(guardsU * L - i);
-                if (u <= 0) return null;
-                return (
-                  <g key={i} opacity={u}>
-                    <rect x={GUARD_X + i * GUARD_DX} y={GUARD_Y} width={110} height={70} rx={10} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
-                    <text x={GUARD_X + i * GUARD_DX + 55} y={GUARD_Y + 30} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
-                      guard {i + 1}
+      {showMain && (
+        <g opacity={mainOp}>
+          <Camera {...cam}>
+            {/* the guard corridor, one letter per guard */}
+            {guardsU > 0 && (
+              <g>
+                {SECRET.split('').map((ch, i) => {
+                  const u = clamp01(guardsU * L - i);
+                  if (u <= 0) return null;
+                  return (
+                    <g key={i} opacity={u}>
+                      <text x={GUARD_X + i * GUARD_DX + 55} y={GUARD_Y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                        letter {i + 1}
+                      </text>
+                      <rect x={GUARD_X + i * GUARD_DX} y={GUARD_Y} width={110} height={70} rx={10} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+                      <text x={GUARD_X + i * GUARD_DX + 55} y={GUARD_Y + 30} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+                        guard {i + 1}
+                      </text>
+                      <text x={GUARD_X + i * GUARD_DX + 55} y={GUARD_Y + 54} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
+                        s[{i}] = ‘{ch}’ ?
+                      </text>
+                      {i < L - 1 && <line x1={GUARD_X + i * GUARD_DX + 110} y1={GUARD_Y + 35} x2={GUARD_X + (i + 1) * GUARD_DX} y2={GUARD_Y + 35} stroke={colors.GRID} strokeWidth={2} />}
+                    </g>
+                  );
+                })}
+                {guardsU >= 1 && (
+                  <g opacity={crashU > 0 ? 1 : 0.55}>
+                    <rect x={GUARD_X + L * GUARD_DX} y={GUARD_Y} width={100} height={70} rx={10} fill={crashU > 0 ? colors.NEGATIVE : colors.PANEL} opacity={crashU > 0 ? 0.9 : 0.6} stroke={colors.NEGATIVE} />
+                    <text x={GUARD_X + L * GUARD_DX + 50} y={GUARD_Y + 42} textAnchor="middle" fill={crashU > 0 ? colors.BG : colors.NEGATIVE} fontSize={14} fontWeight={700}>
+                      crash
                     </text>
-                    <text x={GUARD_X + i * GUARD_DX + 55} y={GUARD_Y + 54} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
-                      s[{i}] = ‘{ch}’ ?
+                    <text x={GUARD_X + L * GUARD_DX + 50} y={GUARD_Y + 96} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                      only “hidden”
                     </text>
-                    {i < L - 1 && <line x1={GUARD_X + i * GUARD_DX + 110} y1={GUARD_Y + 35} x2={GUARD_X + (i + 1) * GUARD_DX} y2={GUARD_Y + 35} stroke={colors.GRID} strokeWidth={2} />}
+                    <text x={GUARD_X + L * GUARD_DX + 50} y={GUARD_Y + 114} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                      1 of 309 million
+                    </text>
                   </g>
-                );
-              })}
-              {guardsU >= 1 && (
-                <g opacity={crashU > 0 ? 1 : 0.55}>
-                  <rect x={GUARD_X + L * GUARD_DX} y={GUARD_Y} width={100} height={70} rx={10} fill={crashU > 0 ? colors.NEGATIVE : colors.PANEL} opacity={crashU > 0 ? 0.9 : 0.6} stroke={colors.NEGATIVE} />
-                  <text x={GUARD_X + L * GUARD_DX + 50} y={GUARD_Y + 42} textAnchor="middle" fill={crashU > 0 ? colors.BG : colors.NEGATIVE} fontSize={14} fontWeight={700}>
-                    crash
+                )}
+              </g>
+            )}
+
+            {/* random deaths: bars under the first guards */}
+            {randU > 0 && (
+              <g opacity={randFade}>
+                {DEATHS.map((f, i) => {
+                  const h = 120 * Math.pow(f, 0.35) * clamp01(randU * 3 - i);
+                  return (
+                    <g key={i}>
+                      <rect x={GUARD_X + i * GUARD_DX + 20} y={GUARD_Y + 90} width={70} height={h} rx={5} fill={colors.NEGATIVE} opacity={0.6} />
+                      <text x={GUARD_X + i * GUARD_DX + 55} y={GUARD_Y + 110 + h} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                        {i === 0 ? 'died at 1' : i === 1 ? 'died at 2' : 'died at 3'}
+                      </text>
+                    </g>
+                  );
+                })}
+                {/* the cruel arithmetic: each guard multiplies the cost by 26 */}
+                {randStatU > 0 && Array.from({ length: L - 1 }, (_, i) => (
+                  <text key={i} x={GUARD_X + i * GUARD_DX + 130} y={GUARD_Y + 26} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace" fontWeight={700} opacity={randStatU}>
+                    ×26
                   </text>
-                </g>
-              )}
-            </g>
-          )}
+                ))}
+                {randStatU > 0 && (
+                  <text x={GUARD_X} y={GUARD_Y + 260} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={randStatU}>
+                    random: {RAND_BUDGET.toLocaleString()} executions · deepest prefix: {RAND_BEST}/{L} · crashes: {RAND_HIT < 0 ? 0 : 1}
+                  </text>
+                )}
+              </g>
+            )}
 
-          {/* random deaths: bars under the first guards */}
-          {randU > 0 && (
-            <g opacity={randFade}>
-              {DEATHS.map((f, i) => {
-                const h = 120 * Math.pow(f, 0.35) * clamp01(randU * 3 - i);
-                return (
-                  <g key={i}>
-                    <rect x={GUARD_X + i * GUARD_DX + 20} y={GUARD_Y + 90} width={70} height={h} rx={5} fill={colors.NEGATIVE} opacity={0.6} />
-                    <text x={GUARD_X + i * GUARD_DX + 55} y={GUARD_Y + 110 + h} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
-                      {i === 0 ? 'died at 1' : i === 1 ? 'died at 2' : 'died at 3'}
-                    </text>
-                  </g>
-                );
-              })}
-              {randStatU > 0 && (
-                <text x={GUARD_X} y={GUARD_Y + 260} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={randStatU}>
-                  random: {RAND_BUDGET.toLocaleString()} executions · deepest prefix: {RAND_BEST}/{L} · crashes: {RAND_HIT < 0 ? 0 : 1}
+            {/* the corpus ladder */}
+            {corpusU > 0 && (
+              <g>
+                <text x={GUARD_X} y={LADDER_Y - 18} fill={colors.TEXT} fontSize={14} fontWeight={600} opacity={corpusU}>
+                  the kept corpus (seeded campaign, real inputs)
                 </text>
-              )}
-            </g>
-          )}
+                {ladder.map((c, i) => {
+                  const u = clamp01(corpusU * ladder.length - i);
+                  if (u <= 0) return null;
+                  const y = LADDER_Y + i * 32;
+                  return (
+                    <g key={i} opacity={u}>
+                      <rect x={GUARD_X} y={y} width={430} height={26} rx={5} fill={colors.PANEL} opacity={0.92} stroke={c.d === L ? colors.NEGATIVE : colors.POSITIVE} />
+                      <text x={GUARD_X + 14} y={y + 18} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+                        “{c.s}”
+                      </text>
+                      <text x={GUARD_X + 160} y={y + 18} fill={c.d === L ? colors.NEGATIVE : colors.POSITIVE} fontSize={12} fontFamily="monospace" fontWeight={700}>
+                        depth {c.d}/{L} {c.d === L ? '→ CRASH' : 'kept'}
+                      </text>
+                    </g>
+                  );
+                })}
+              </g>
+            )}
+          </Camera>
+        </g>
+      )}
 
-          {/* the corpus ladder */}
-          {corpusU > 0 && (
-            <g>
-              <text x={200} y={392} fill={colors.TEXT} fontSize={14} fontWeight={600} opacity={corpusU}>
-                the kept corpus (seeded campaign, real inputs)
-              </text>
-              {ladder.map((c, i) => {
-                const u = clamp01(corpusU * ladder.length - i);
-                if (u <= 0) return null;
-                const y = 410 + i * 32;
-                return (
-                  <g key={i} opacity={u}>
-                    <rect x={200} y={y} width={430} height={26} rx={5} fill={colors.PANEL} opacity={0.92} stroke={c.d === L ? colors.NEGATIVE : colors.POSITIVE} />
-                    <text x={214} y={y + 18} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
-                      “{c.s}”
-                    </text>
-                    <text x={360} y={y + 18} fill={c.d === L ? colors.NEGATIVE : colors.POSITIVE} fontSize={12} fontFamily="monospace" fontWeight={700}>
-                      depth {c.d}/{L} {c.d === L ? '→ CRASH' : 'kept'}
-                    </text>
-                  </g>
-                );
-              })}
-            </g>
-          )}
-        </Camera>
-      </g>
-
-      {/* coverage note + guided stats — screen space */}
-      {covU > 0 && (
-        <g opacity={covU * mainOp * (1 - 0.7 * clamp01(statU * 2))}>
-          <rect x={880} y={100} width={360} height={104} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.SECONDARY} />
-          <text x={904} y={130} fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
+      {/* coverage note, guided stats and harness panel — screen space, one column */}
+      {showMain && covU > 0 && (
+        <g opacity={noteOp}>
+          <rect x={PANEL_X} y={PANEL_Y} width={360} height={104} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.SECONDARY} />
+          <text x={PANEL_X + 24} y={PANEL_Y + 30} fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
             the one-bit upgrade
           </text>
-          <text x={904} y={156} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+          <text x={PANEL_X + 24} y={PANEL_Y + 56} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
             not “did it fail?” but “how deep?”
           </text>
-          <text x={904} y={180} fill={colors.MUTED} fontSize={12}>
-            depth is a gradient; keep what climbs
+          <text x={PANEL_X + 24} y={PANEL_Y + 80} fill={colors.MUTED} fontSize={12}>
+            depth = guards passed; keep what climbs
           </text>
         </g>
       )}
-      {statU > 0 && (
-        <g opacity={statU * mainOp}>
-          <rect x={880} y={100} width={370} height={148} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={904} y={130} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+      {showMain && statU > 0 && (
+        <g opacity={statOp}>
+          <rect x={PANEL_X} y={PANEL_Y} width={370} height={148} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <text x={PANEL_X + 24} y={PANEL_Y + 30} fill={colors.TEXT} fontSize={14} fontWeight={600}>
             50 seeded guided campaigns
           </text>
-          <text x={904} y={158} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
+          <text x={PANEL_X + 24} y={PANEL_Y + 58} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
             crashes found: {G_FOUND}/50
           </text>
-          <text x={904} y={182} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
+          <text x={PANEL_X + 24} y={PANEL_Y + 82} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
             median {G_MEDIAN.toLocaleString()} execs · max {G_MAX.toLocaleString()}
           </text>
-          <text x={904} y={206} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
+          <text x={PANEL_X + 24} y={PANEL_Y + 106} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
             random: 0 crashes in {RAND_BUDGET.toLocaleString()}
           </text>
-          <text x={904} y={230} fill={colors.MUTED} fontSize={11.5}>
+          <text x={PANEL_X + 24} y={PANEL_Y + 130} fill={colors.MUTED} fontSize={12}>
             space: 26⁶ ≈ {(SPACE / 1e6).toFixed(0)} million strings
           </text>
         </g>
       )}
-      {mathU > 0 && (
-        <MathLabel
-          tex="26^6 \;\longrightarrow\; 6 \times 26 \quad \text{(guess, bank, repeat)}"
-          x={880}
-          y={280}
-          fontSize={16}
-          color={colors.WARM}
-          opacity={mathU * mainOp}
-        />
+      {showMain && harnessP > 0 && (
+        <g opacity={harnessP * mainOp}>
+          <rect x={PANEL_X} y={PANEL_Y} width={370} height={180} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <text x={PANEL_X + 24} y={PANEL_Y + 30} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+            the harness around the model
+          </text>
+          {['tool call parser', 'prompt template', 'retry logic', 'sandbox boundary'].map((item, i) => (
+            <text key={item} x={PANEL_X + 24} y={PANEL_Y + 58 + i * 24} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+              ▸ {item}
+            </text>
+          ))}
+          <text x={PANEL_X + 24} y={PANEL_Y + 156} fill={colors.MUTED} fontSize={12}>
+            the model itself: no coverage map
+          </text>
+        </g>
+      )}
+      {showMain && mathU > 0 && (
+        <text x={PANEL_X + 185} y={PANEL_Y + 190} textAnchor="middle" fill={colors.WARM} fontSize={15} fontFamily="monospace" opacity={mathOp}>
+          26⁶ → 6 × 26 (guess, bank, repeat)
+        </text>
       )}
 
-      <g opacity={titleU * mainOp}>
-        <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
-          Fuzzing the harness
-        </text>
-      </g>
+      {showMain && (
+        <g opacity={titleU * mainOp}>
+          <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+            Fuzzing the harness
+          </text>
+        </g>
+      )}
 
-      {/* close */}
+      {/* close: a solid panel over the faded scene */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
           <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Random forgets. Coverage remembers.
           </text>

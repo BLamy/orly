@@ -1,0 +1,278 @@
+{
+ "shot": "ch12-s02",
+ "at": "2026-10-13T20:03:52.475Z",
+ "step": 0.0833,
+ "sampled": 178,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "fillRect@623,549",
+   "probed": false,
+   "from": 0.55,
+   "to": 5.13,
+   "seconds": 4.58,
+   "rect": {
+    "x": 517,
+    "y": 489,
+    "w": 104,
+    "h": 226
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@767,549",
+   "probed": false,
+   "from": 0.55,
+   "to": 5.13,
+   "seconds": 4.58,
+   "rect": {
+    "x": 668,
+    "y": 536,
+    "w": 104,
+    "h": 226
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@1112,120",
+   "probed": false,
+   "from": 3.05,
+   "to": 15.38,
+   "seconds": 12.33,
+   "rect": {
+    "x": 1056,
+    "y": 92,
+    "w": 142,
+    "h": 184
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@510,536",
+   "probed": false,
+   "from": 5.3,
+   "to": 5.8,
+   "seconds": 0.5,
+   "rect": {
+    "x": 498,
+    "y": 535,
+    "w": 105,
+    "h": 221
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@661,536",
+   "probed": false,
+   "from": 5.3,
+   "to": 5.8,
+   "seconds": 0.5,
+   "rect": {
+    "x": 650,
+    "y": 487,
+    "w": 105,
+    "h": 221
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@491,534",
+   "probed": false,
+   "from": 5.97,
+   "to": 6.47,
+   "seconds": 0.5,
+   "rect": {
+    "x": 481,
+    "y": 485,
+    "w": 105,
+    "h": 195
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@644,534",
+   "probed": false,
+   "from": 5.97,
+   "to": 6.47,
+   "seconds": 0.5,
+   "rect": {
+    "x": 634,
+    "y": 533,
+    "w": 105,
+    "h": 195
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@476,533",
+   "probed": false,
+   "from": 6.63,
+   "to": 7.05,
+   "seconds": 0.42,
+   "rect": {
+    "x": 469,
+    "y": 484,
+    "w": 106,
+    "h": 235
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@629,533",
+   "probed": false,
+   "from": 6.63,
+   "to": 7.05,
+   "seconds": 0.42,
+   "rect": {
+    "x": 623,
+    "y": 532,
+    "w": 106,
+    "h": 235
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@465,532",
+   "probed": false,
+   "from": 7.22,
+   "to": 15.38,
+   "seconds": 8.17,
+   "rect": {
+    "x": 481,
+    "y": 546,
+    "w": 109,
+    "h": 247
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@619,532",
+   "probed": false,
+   "from": 7.22,
+   "to": 15.38,
+   "seconds": 8.17,
+   "rect": {
+    "x": 639,
+    "y": 497,
+    "w": 109,
+    "h": 247
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@623,549",
+   "probed": false,
+   "from": 0.55,
+   "to": 5.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@767,549",
+   "probed": false,
+   "from": 0.55,
+   "to": 5.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1112,120",
+   "probed": false,
+   "from": 3.05,
+   "to": 15.3,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@510,536",
+   "probed": false,
+   "from": 5.3,
+   "to": 5.717,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@661,536",
+   "probed": false,
+   "from": 5.3,
+   "to": 5.717,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@491,534",
+   "probed": false,
+   "from": 5.967,
+   "to": 6.383,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@644,534",
+   "probed": false,
+   "from": 5.967,
+   "to": 6.383,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@476,533",
+   "probed": false,
+   "from": 6.633,
+   "to": 6.967,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@629,533",
+   "probed": false,
+   "from": 6.633,
+   "to": 6.967,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@465,532",
+   "probed": false,
+   "from": 7.217,
+   "to": 15.3,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@619,532",
+   "probed": false,
+   "from": 7.217,
+   "to": 15.3,
+   "minInkWhilePaper": 0
+  }
+ ],
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "JUNE 2017",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "Christiano et al. · OpenAI and DeepMind",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "1.3B",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   }
+  ]
+ },
+ "transAt": "2026-10-13T22:54:48.767Z"
+}

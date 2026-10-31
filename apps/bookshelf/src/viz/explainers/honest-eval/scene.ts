@@ -97,9 +97,10 @@ export const cardX = (u: number): number => RAIL_X0 + u * (RAIL_X1 - RAIL_X0 - 6
 
 export const PANEL_Y = 270;
 export const PANEL_H = 250;
-export const PANEL_W = 320;
+export const PANEL_W = 300; // 60 units of gap between neighbours
 
-export const CAM_ST = (i: number): CameraState => ({ x: ST_X[i], y: 360, k: 1.32 });
+// At k 1.2 a station camera still frames the neighbouring card's edge.
+export const CAM_ST = (i: number): CameraState => ({ x: ST_X[i], y: 360, k: 1.2 });
 export const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -121,7 +122,7 @@ export function buildScene(): Scene {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const railU = tl.channel('railU', 0);
-  const cardU = tl.channel('cardU', 0);
+  const cardU = tl.channel('cardU', 0.16); // claim starts at the rail's entry, fades in with the rail
   const st1U = tl.channel('st1U', 0);
   const st2U = tl.channel('st2U', 0);
   const st3U = tl.channel('st3U', 0);
@@ -148,7 +149,7 @@ export function buildScene(): Scene {
 
   // — Beat 2 · station one: resample ————————————————————————————————————
   tl.tween(cam, CAM_ST(0), { at: 12.2, dur: 1.5, ease: ease.move });
-  tl.tween(cardU, 0.24, { at: 12.4, dur: 1.2, ease: ease.move });
+  tl.tween(cardU, 0.23, { at: 12.4, dur: 1.2, ease: ease.move });
   tl.caption({
     at: 12.6,
     dur: 5.6,
@@ -160,7 +161,7 @@ export function buildScene(): Scene {
 
   // — Beat 3 · station two: fresh questions ————————————————————————————
   tl.tween(cam, CAM_ST(1), { at: 19.0, dur: 1.5, ease: ease.move });
-  tl.tween(cardU, 0.53, { at: 19.2, dur: 1.4, ease: ease.move });
+  tl.tween(cardU, 0.59, { at: 19.2, dur: 1.4, ease: ease.move });
   tl.caption({
     at: 19.6,
     dur: 5.8,
@@ -172,7 +173,7 @@ export function buildScene(): Scene {
 
   // — Beat 4 · station three: pressure ——————————————————————————————————
   tl.tween(cam, CAM_ST(2), { at: 26.4, dur: 1.5, ease: ease.move });
-  tl.tween(cardU, 0.86, { at: 26.6, dur: 1.4, ease: ease.move });
+  tl.tween(cardU, 0.95, { at: 26.6, dur: 1.4, ease: ease.move });
   tl.caption({
     at: 27.0,
     dur: 5.8,

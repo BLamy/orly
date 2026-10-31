@@ -1,0 +1,79 @@
+{
+ "shot": "ch07-s09",
+ "at": "2026-10-28T13:18:00.213Z",
+ "minCapPx": 22,
+ "sampled": 12,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "step",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "600 steps a second",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Story: first fit in 630–750 steps",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "1",
+   "maxCap": 30.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3",
+   "maxCap": 30.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "5",
+   "maxCap": 28.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 28.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "8",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 25.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 23.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2",
+   "maxCap": 23.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "4",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "7",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 10
+}

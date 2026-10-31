@@ -1,0 +1,179 @@
+{
+ "shot": "ch04-s06",
+ "at": "2026-10-13T04:13:19.326Z",
+ "minCapPx": 22,
+ "sampled": 28,
+ "texts": 33,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "sir james lighthill",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "applied mathematician, Cambridge",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "A",
+   "capWhileSubject": 46.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "donald michie",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "R",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "O",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Y",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "L",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "I",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "N",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "S",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "T",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Edinburgh",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "U",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "D",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "E",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "We did not think of our work as killing",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Snow White; we saw it as a way to",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "understand her.”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "papert, 1988",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "TRANSLATION",
+   "capWhileSubject": 35.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "MANSFIELD",
+   "capWhileSubject": 35.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "PERCEPTRONS",
+   "capWhileSubject": 35.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "LIGHTHILL",
+   "capWhileSubject": 35.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "B",
+   "maxCap": 46.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "C",
+   "maxCap": 46.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1966",
+   "maxCap": 39.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 39.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1973",
+   "maxCap": 39.6,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 5
+}

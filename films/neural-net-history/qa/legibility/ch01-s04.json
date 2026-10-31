@@ -1,0 +1,79 @@
+{
+ "shot": "ch01-s04",
+ "at": "2026-10-13T04:56:04.773Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "TAUGHT IT?",
+   "capWhileSubject": 35.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "“ChatGPT sometimes writes",
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "plausible-sounding but incorrect",
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "or nonsensical answers.”",
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "— OpenAI, 30 Nov 2022",
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "sometimes",
+   "capWhileSubject": 32,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "writes",
+   "capWhileSubject": 32,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "plausible-sounding",
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "incorrect",
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "nonsensical",
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "answers",
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WHO",
+   "maxCap": 35.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "or",
+   "maxCap": 32.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 2
+}

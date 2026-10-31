@@ -35,6 +35,15 @@ const RECORDING_POINTS = [
   { at: 0.9, kind: 'render' as const },
 ];
 
+// Page labels sit below their node, except /product/:id, which goes lower-left so the
+// outgoing edge to /cart (down-right) never runs through the word.
+const LABEL = '#a9bcd6';
+function labelAt(p: (typeof PAGES)[number]) {
+  return p.id === 'product'
+    ? { x: p.x - 26, y: p.y + 34, anchor: 'end' as const }
+    : { x: p.x, y: p.y + 40, anchor: 'middle' as const };
+}
+
 function pathPoint(order: number[], u: number) {
   const segs = order.length - 1;
   const t = clamp01(u) * segs;
@@ -85,7 +94,7 @@ export function buildScene() {
   // BEAT 5 — the failing step and the bug with a recording
   tl.caption({ at: 26.8, dur: 6.8, text: 'When a step fails, you get a bug with a recording behind it, so believing the report costs a look, not a debate.' });
   tl.tween(failU, 1, { at: 26.9, dur: 0.5, ease: ease.pop });
-  tl.tween(cam, { x: 720, y: 360, k: 1.06 }, { at: 27.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 672, y: 360, k: 1.06 }, { at: 27.2, dur: 1.2, ease: ease.move });
   tl.tween(bugU, 1, { at: 28.2, dur: 0.8, ease: ease.enter });
   tl.tween(recU, 0.82, { at: 29.2, dur: 3.6, ease: ease.linear });
   tl.hold(33.6, 0.4);
@@ -133,7 +142,8 @@ export function Render({ s }: { s: SceneState }) {
   const visited = new Set<number>();
   VISIT.slice(0, walker.reached + 1).forEach((i) => visited.add(i));
   const replayer = pathPoint(JOURNEY, replay);
-  const stageDim = 1 - close * 0.9;
+  // Fully clear the stage under the closing panel, so no faded ghosts show past its edges.
+  const stageDim = 1 - close;
 
   return <Camera {...s.get(scene.cam)}>
     <g opacity={stageDim}>
@@ -141,9 +151,9 @@ export function Render({ s }: { s: SceneState }) {
 
       {/* The production door */}
       <g opacity={door} transform={`translate(${lerp(-60, 0, door)} 0)`}>
-        <rect x="76" y="110" width="176" height="52" rx="14" fill="#102033" stroke={colors.POSITIVE} strokeWidth="2.5" />
-        <text x="164" y="132" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontWeight="700" letterSpacing="1.5">PRODUCTION</text>
-        <text x="164" y="151" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>app.example.com</text>
+        <rect x="76" y="110" width="220" height="52" rx="14" fill="#102033" stroke={colors.POSITIVE} strokeWidth="2.5" />
+        <text x="186" y="132" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="700" letterSpacing="1.5">PRODUCTION</text>
+        <text x="186" y="151" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>app.example.com · weekly</text>
       </g>
 
       {/* App map */}
@@ -164,7 +174,6 @@ export function Render({ s }: { s: SceneState }) {
           return <g key={p.id} opacity={clamp01(map * PAGES.length - i * 0.5)}>
             <circle cx={p.x} cy={p.y} r={22 + failing * 6} fill={lit ? '#1b2f4a' : '#0d1727'} stroke={lit && !(onJourney && journey > 0) ? colors.WARM : stroke} strokeWidth={onJourney && journey > 0 ? 3 : lit ? 2.2 : 1.6} />
             <circle cx={p.x} cy={p.y} r="6" fill={lit ? colors.WARM : '#2a3650'} opacity={0.4 + lit * 0.6} />
-            <text x={p.x} y={p.y + 40} textAnchor="middle" fill={lit ? colors.TEXT : colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>{p.label}</text>
           </g>;
         })}
         {/* the exploring browser */}
@@ -177,6 +186,12 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx={replayer.x} cy={replayer.y} r="10" fill={colors.ACCENT} />
           <circle cx={replayer.x} cy={replayer.y} r="17" fill="none" stroke={colors.ACCENT} strokeWidth="2" opacity="0.5" />
         </g>}
+        {/* labels draw over the browser dots, so a walking dot never covers a page name */}
+        {PAGES.map((p, i) => {
+          const at = labelAt(p);
+          return <text key={p.id} x={at.x} y={at.y} textAnchor={at.anchor} opacity={clamp01(map * PAGES.length - i * 0.5)}
+            fill={visited.has(i) ? colors.TEXT : LABEL} fontSize="14" fontFamily={colors.font.mono}>{p.label}</text>;
+        })}
         {/* step badges along the kept journey */}
         {JOURNEY.map((idx, k) => {
           const p = PAGES[idx]!;
@@ -184,44 +199,45 @@ export function Render({ s }: { s: SceneState }) {
           const passed = replay * (JOURNEY.length - 1) >= k && k < FAIL_STEP ? 1 : 0;
           return <g key={k} opacity={u} transform={`translate(${p.x + 18} ${p.y - 30})`}>
             <circle r="10" fill={k === FAIL_STEP && fail > 0 ? colors.NEGATIVE : passed ? colors.POSITIVE : '#1b2a44'} stroke={colors.ACCENT} strokeWidth="1.5" />
-            <text textAnchor="middle" y="4" fill={colors.TEXT} fontSize="10" fontWeight="700">{k + 1}</text>
+            <text textAnchor="middle" y="4" fill={colors.TEXT} fontSize="12" fontWeight="700">{k + 1}</text>
           </g>;
         })}
       </g>
 
       {/* Bug card with recording */}
       <g opacity={bug} transform={`translate(0 ${(1 - bug) * 20})`}>
-        <rect x="846" y="268" width="374" height="196" rx="18" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2.5" />
-        <text x="866" y="296" fill={colors.NEGATIVE} fontSize="11" fontWeight="700" letterSpacing="1.5">BUG · HIGH · PRODUCTION</text>
-        <text x="866" y="322" fill={colors.TEXT} fontSize="15" fontWeight="700">Checkout button does nothing</text>
-        <text x="866" y="342" fill={colors.MUTED} fontSize="12">Expected: order confirmation. Actual: a thrown error, no navigation.</text>
-        <RecordingStrip x={866} y={362} w={334} h={28} points={RECORDING_POINTS} u={rec} title="replay recording" />
-        <text x="866" y="444" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>evidence: recording · console · network</text>
+        <rect x="846" y="268" width="374" height="200" rx="18" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2.5" />
+        <text x="866" y="296" fill={colors.NEGATIVE} fontSize="14" fontWeight="700" letterSpacing="1.5">BUG · HIGH · PRODUCTION</text>
+        <text x="866" y="324" fill={colors.TEXT} fontSize="16" fontWeight="700">Checkout button does nothing</text>
+        <text x="866" y="346" fill={colors.MUTED} fontSize="14">Expected: order confirmation.</text>
+        <text x="866" y="366" fill={colors.MUTED} fontSize="14">Actual: a thrown error, no navigation.</text>
+        <RecordingStrip x={866} y={390} w={334} h={28} points={RECORDING_POINTS} u={rec} title="replay recording" />
+        <text x="866" y="446" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>evidence: recording · console · network</text>
       </g>
 
       {/* Dials: budget and bug limit */}
       <g opacity={dials}>
         <g transform="translate(900 96)">
-          <text x="0" y="0" fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">BUDGET</text>
+          <text x="0" y="0" fill={colors.MUTED} fontSize="14" fontWeight="700" letterSpacing="1.5">BUDGET</text>
           <rect x="0" y="10" width="300" height="14" rx="7" fill="#1b2a44" />
           <rect x="0" y="10" width={300 * clamp01(spent / 50)} height="14" rx="7" fill={colors.WARM} />
-          <text x="0" y="44" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{spent.toFixed(0)} of 50 credits spent</text>
+          <text x="0" y="44" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{spent.toFixed(0)} of 50 credits spent</text>
         </g>
         <g transform="translate(900 164)">
-          <text x="0" y="0" fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">BUG LIMIT</text>
+          <text x="0" y="0" fill={colors.MUTED} fontSize="14" fontWeight="700" letterSpacing="1.5">BUG LIMIT</text>
           <rect x="0" y="10" width="300" height="14" rx="7" fill="#1b2a44" />
           <rect x="0" y="10" width={300 * (fail > 0 ? 1 / 25 : 0)} height="14" rx="7" fill={colors.NEGATIVE} />
-          <text x="0" y="44" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{fail > 0 ? 1 : 0} of 25 bugs filed</text>
+          <text x="0" y="44" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{fail > 0 ? 1 : 0} of 25 bugs filed</text>
         </g>
       </g>
 
       {/* Design document */}
       <g opacity={design} transform={`translate(0 ${(1 - design) * 16})`}>
-        <rect x="76" y="450" width="300" height="120" rx="16" fill="#102033" stroke={colors.SECONDARY} strokeWidth="2" />
-        <text x="96" y="476" fill={colors.SECONDARY} fontSize="11" fontWeight="700" letterSpacing="1.5">DESIGN DOCUMENT</text>
-        <text x="96" y="500" fill={colors.TEXT} fontSize="12">Guests can check out without an account.</text>
-        <text x="96" y="520" fill={colors.TEXT} fontSize="12">Tax is shown before payment.</text>
-        <text x="96" y="540" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>read when judging: is this a bug?</text>
+        <rect x="76" y="450" width="320" height="120" rx="16" fill="#102033" stroke={colors.SECONDARY} strokeWidth="2" />
+        <text x="96" y="476" fill={colors.SECONDARY} fontSize="14" fontWeight="700" letterSpacing="1.5">DESIGN DOCUMENT</text>
+        <text x="96" y="502" fill={colors.TEXT} fontSize="14">Guests can check out without an account.</text>
+        <text x="96" y="522" fill={colors.TEXT} fontSize="14">Tax is shown before payment.</text>
+        <text x="96" y="544" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>read when judging: is this a bug?</text>
       </g>
     </g>
 

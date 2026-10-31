@@ -165,12 +165,19 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The main layer (page, snippet, run path) fades to a ghost for the closing
+  // panel, and is not drawn at all once it is too faint to read.
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
+  const showMain = mainOp > 0.08;
+  // The snippet stays on screen as a dimmed reference while it runs, so the six
+  // lines are still visible through the middle of the chapter.
+  const snippetOp = codeU * (1 - 0.65 * clamp01(runU)) * (1 - warnU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {showMain && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the host page */}
@@ -186,10 +193,10 @@ function Frame({ s }: { s: SceneState }) {
                 return (
                   <g key={r.target}>
                     <rect x={584} y={y} width={312} height={44} rx={8} fill={colors.PANEL} opacity={0.9} stroke={lit > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={lit > 0.5 ? 2 : 1} />
-                    <text x={602} y={y + 20} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+                    <text x={602} y={y + 19} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                       {r.target}
                     </text>
-                    <text x={602} y={y + 37} fill={colors.MUTED} fontSize={10.5}>
+                    <text x={602} y={y + 36} fill={colors.MUTED} fontSize={12}>
                       {r.note}
                     </text>
                     {lit > 0.5 && (
@@ -203,18 +210,18 @@ function Frame({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* the attack snippet */}
-          {codeU > 0 && runU < 0.5 && (
-            <g opacity={codeU * (1 - clamp01(runU * 2))}>
-              <rect x={180} y={200} width={470} height={200} rx={12} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} />
-              <text x={204} y={230} fill={colors.NEGATIVE} fontSize={13} fontWeight={700}>
+          {/* the attack snippet: left of the page, clear of it */}
+          {codeU > 0 && snippetOp > 0 && (
+            <g opacity={snippetOp}>
+              <rect x={150} y={200} width={380} height={200} rx={12} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} />
+              <text x={170} y={230} fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
                 untrusted snippet
               </text>
               {ATTACK.map((ln, i) => {
                 const u = clamp01(codeU * ATTACK.length - i);
                 if (u <= 0) return null;
                 return (
-                  <text key={i} x={204} y={258 + i * 24} fill={i === 0 ? colors.MUTED : colors.TEXT} fontSize={12} fontFamily="monospace" opacity={u}>
+                  <text key={i} x={170} y={258 + i * 24} fill={i === 0 ? colors.MUTED : colors.TEXT} fontSize={13} fontFamily="monospace" opacity={u}>
                     {ln}
                   </text>
                 );
@@ -222,34 +229,41 @@ function Frame({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* the run path */}
+          {/* the run path: under the snippet, clear of the page */}
           {runU > 0 && (
             <g opacity={runU}>
-              <rect x={180} y={470} width={430} height={62} rx={10} fill={colors.PANEL} opacity={0.95} stroke={colors.WARM} />
-              <text x={204} y={498} fill={colors.WARM} fontSize={12.5} fontFamily="monospace" fontWeight={700}>
+              <rect x={150} y={470} width={380} height={62} rx={10} fill={colors.PANEL} opacity={0.95} stroke={colors.WARM} />
+              <text x={170} y={498} fill={colors.WARM} fontSize={13} fontFamily="monospace" fontWeight={700}>
                 createContainer().execute(snippet)
               </text>
-              <text x={204} y={519} fill={colors.MUTED} fontSize={11.5}>
+              <text x={170} y={519} fill={colors.MUTED} fontSize={12}>
                 main thread · same origin · full page access
               </text>
-              <line x1={610} y1={500} x2={556} y2={360} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="6 5" opacity={0.7} />
+              <line x1={530} y1={500} x2={584} y2={490} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="6 5" opacity={0.7} />
             </g>
           )}
         </Camera>
       </g>
+      )}
 
-      {/* the README warning — screen space */}
+      {/* the README warning — screen space, left of the page */}
       {warnU > 0 && (
         <g opacity={warnU * mainOp}>
-          <rect x={210} y={200} width={860} height={130} rx={14} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} strokeWidth={2} />
-          <text x={240} y={240} fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>
+          <rect x={40} y={200} width={500} height={190} rx={14} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} strokeWidth={2} />
+          <text x={64} y={236} fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>
             ⚠ from almostnode’s own README
           </text>
-          <text x={240} y={274} fill={colors.TEXT} fontSize={14.5} fontFamily="monospace">
-            “Do not use createContainer() or container.execute() with untrusted code.”
+          <text x={64} y={272} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+            “Do not use createContainer() or container.execute()
           </text>
-          <text x={240} y={304} fill={colors.MUTED} fontSize={13}>
-            “The example runs code on the main thread with full access to your page.”
+          <text x={64} y={296} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+            with untrusted code.”
+          </text>
+          <text x={64} y={340} fill={colors.MUTED} fontSize={13}>
+            “The example runs code on the main thread
+          </text>
+          <text x={64} y={362} fill={colors.MUTED} fontSize={13}>
+            with full access to your page.”
           </text>
         </g>
       )}

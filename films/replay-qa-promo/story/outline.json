@@ -1,0 +1,886 @@
+{
+  "slug": "replay-qa-promo",
+  "look": "promo",
+  "title": "Replay QA: { fully managed }",
+  "subtitle": "End-to-end testing that explores, runs and records on its own",
+  "runtimeTargetSec": 90,
+  "wordsTarget": 177,
+  "totals": {
+    "minutes": 1.54,
+    "plannedSec": 92.5,
+    "words": 176,
+    "shots": 17
+  },
+  "devices": [
+    "Haze progression: dawn → paper → brand (ch05 only) → ember; blur on every register change; one whip (ch01-s03 → ch02-s01)",
+    "Braces as the magnifier: kit bracket + squareDots snap around the one detail in each product close-up (Tue at 3:00 AM chip, PR #3, 67ms, 258 times, checkpoint −1)",
+    "Red-pink underline under each exact UI value as the narrator says it (Tue at 3:00 AM, staging, PR #3, 67ms, 258, −1)",
+    "The ▶ recording chip, one object: popped by each run row (ch04-s03) → the ribbon (ch05-s01) → handed to the critic (ch05-s05) → beside the Replay mark (end card)",
+    "The caret: born on the URL typed full-frame (ch02-s01), back on qa.replay.io (end card)",
+    "'Every ___.' refrain: every run, every recording, every pull request, every bug, every fix",
+    "Discovered provenance labels on both bug pages (Sep 23 · 5:56 PM · PR preview; Sep 4 · 2:16 AM · Local); never attributed to the 3 AM schedule",
+    "Frame ribbon + backwards rewind scrubber, ch05 only, labelled as illustration",
+    "The ✓ clack (machines clack, never chime); four beats of silence for four dropped frames"
+  ],
+  "moods": [
+    "dawnGold",
+    "parchment",
+    "duskRose",
+    "emberRed"
+  ],
+  "music": [
+    {
+      "cue": "M1 haze",
+      "span": [
+        0,
+        11
+      ]
+    },
+    {
+      "cue": "M2 build",
+      "span": [
+        11,
+        33
+      ]
+    },
+    {
+      "cue": "M3 drive",
+      "span": [
+        33,
+        47
+      ]
+    },
+    {
+      "cue": "M4 rewind",
+      "span": [
+        47,
+        80.5
+      ]
+    },
+    {
+      "cue": "M5 lift",
+      "span": [
+        80.5,
+        92.5
+      ]
+    }
+  ],
+  "chapters": [
+    {
+      "id": "ch01",
+      "number": 1,
+      "title": "{ introducing }",
+      "minutes": 0.18,
+      "words": 15,
+      "shots": 3,
+      "summary": "Dawn haze and the half-finished thought ('Imagine end-to-end tests you never had to write, or remember to run.'), the bracket { running on their own }, then { intro▢▢▢ducing } with three postage-stamp frames of the film's own footage flickering in the gap, closing into the Replay mark and 'Replay QA'. One whip out.",
+      "shotList": [
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch01-s01",
+          "kind": "plate",
+          "setting": "dawn haze (lilac → peach, rose glow), drifting hairlines, light grain",
+          "mood": "dawnGold",
+          "haze": "dawn",
+          "plannedSec": [
+            0,
+            5
+          ],
+          "purpose": "Plant the promise: the half-finished thought in kinetic type with the colour sweep on \"remember to run\".",
+          "take": null,
+          "lines": [
+            {
+              "id": "L0101",
+              "text": "Imagine end-to-end tests you never had to write, or remember to run.",
+              "words": 12
+            }
+          ],
+          "claims": [
+            "SET-08",
+            "LOOP-03",
+            "CONT-19"
+          ],
+          "music": "M1 haze: pads, swell into the cut",
+          "transitionIn": "cut"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch01-s02",
+          "kind": "card",
+          "setting": "studio paper #e9e8ea, four registration dots",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            5,
+            7.5
+          ],
+          "purpose": "Music beat: braces part to { running on their own }, finishing the thought in type.",
+          "take": null,
+          "lines": [],
+          "claims": [
+            "CONT-19"
+          ],
+          "music": "M1 swell crests on the brace opening",
+          "transitionIn": "blur"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch01-s03",
+          "kind": "card",
+          "setting": "studio paper, corner dots",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            7.5,
+            11
+          ],
+          "purpose": "{ intro▢▢▢ducing } with three flickering postage-stamp frames, closing into the Replay mark + Replay QA.",
+          "take": {
+            "stamps": [
+              {
+                "take": "runs",
+                "at": 3668,
+                "mark": "list"
+              },
+              {
+                "take": "schedule",
+                "at": 8808,
+                "mark": "schedule"
+              },
+              {
+                "take": "bug-react",
+                "at": 3100,
+                "mark": "report (seek 3040-3200)"
+              }
+            ]
+          },
+          "lines": [
+            {
+              "id": "L0102",
+              "text": "Introducing Replay QA.",
+              "words": 3
+            }
+          ],
+          "claims": [
+            "SET-15",
+            "SET-16"
+          ],
+          "music": "muted downbeat on \"Introducing\"; sub drop on \"Replay QA\"",
+          "transitionIn": "cut",
+          "transitionOut": "whip"
+        }
+      ]
+    },
+    {
+      "id": "ch02",
+      "number": 2,
+      "title": "One URL",
+      "minutes": 0.17,
+      "words": 16,
+      "shots": 2,
+      "summary": "The URL typed full-frame with a caret over a blurred ghost of the real new-project input (the kick enters on the caret's first blink), then the pull-back into the real floating New Project card: braces on the input, cursor hovering Start setup, the 'Want your coding agent to handle it?' callout left in frame unzoomed, and the grey caption 'No test suite required. Complements the one you have.'",
+      "shotList": [
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch02-s01",
+          "kind": "scene",
+          "setting": "dawn haze over the new-project take, enormous and blurred, as a ghost",
+          "mood": "dawnGold",
+          "haze": "dawn",
+          "plannedSec": [
+            11,
+            15
+          ],
+          "purpose": "One address is the whole setup: https://staging.your-app.dev typed full-frame at ≈14.4 cps; the caret is born here.",
+          "take": {
+            "take": "new-project",
+            "marks": [
+              "typing 1100",
+              "typed 2966"
+            ],
+            "tape": "1100 → 2966 at real speed, then held (blurred ghost)"
+          },
+          "lines": [
+            {
+              "id": "L0201",
+              "text": "Point it at your app.",
+              "words": 5
+            }
+          ],
+          "claims": [
+            "SET-01",
+            "SET-04",
+            "SET-05"
+          ],
+          "music": "M2: the kick enters on the caret's first blink",
+          "transitionIn": "whip"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch02-s02",
+          "kind": "scene",
+          "setting": "paper, floating tilted screen settling flat",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            15,
+            21
+          ],
+          "purpose": "Setup is a URL and a chat: the typed line shrinks into the real input; braces on the input at \"URL\"; hover Start setup, never click; callout in frame; SET-08 caption.",
+          "take": {
+            "take": "new-project",
+            "marks": [
+              "typed 2966",
+              "hover-start 4737"
+            ],
+            "tape": "2966 → 4737, cut before end 5537",
+            "crop": {
+              "x": 470,
+              "y": 70,
+              "w": 760,
+              "h": 420
+            },
+            "zoom": "1.0 → 1.4 on the input at hover-start"
+          },
+          "lines": [
+            {
+              "id": "L0202",
+              "text": "No test suite needed. Just your URL, and a quick chat.",
+              "words": 11
+            }
+          ],
+          "claims": [
+            "SET-01",
+            "SET-02",
+            "SET-03",
+            "SET-04",
+            "SET-08"
+          ],
+          "music": "hats enter",
+          "transitionIn": "cut"
+        }
+      ]
+    },
+    {
+      "id": "ch03",
+      "number": 3,
+      "title": "The loop",
+      "minutes": 0.2,
+      "words": 27,
+      "shots": 2,
+      "summary": "The reference's 'Building Image' list as 'Testing your app' with the home page's three steps verbatim (Explore / Test & Record / Investigate & Report), a green ✓ clacking in on 'explores', 'records' and 'root cause' while 'Working' shimmers; then the rows collapse into square dots that resolve into the real Exploration card, zoomed on the agent's own subtitle (never called a recording).",
+      "shotList": [
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch03-s01",
+          "kind": "card",
+          "setting": "studio paper, kit steps with hairline spine",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            21,
+            31
+          ],
+          "purpose": "The managed loop in three verbatim steps, each ✓ on the word that names it.",
+          "take": null,
+          "lines": [
+            {
+              "id": "L0301",
+              "text": "It explores your app in a real browser.",
+              "words": 8
+            },
+            {
+              "id": "L0302",
+              "text": "Turns what it finds into journeys, runs them, and records every run.",
+              "words": 12
+            },
+            {
+              "id": "L0303",
+              "text": "And every bug, with its root cause.",
+              "words": 7
+            }
+          ],
+          "claims": [
+            "LOOP-01",
+            "LOOP-02",
+            "LOOP-03",
+            "LOOP-05",
+            "LOOP-07",
+            "PROOF-01",
+            "PROOF-02",
+            "SET-16"
+          ],
+          "music": "a clack per ✓",
+          "transitionIn": "blur"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch03-s02",
+          "kind": "scene",
+          "setting": "paper → floating screen via a square-dot resolve",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            31,
+            33
+          ],
+          "purpose": "Music beat: the product at work, the exploration card resolving from dots, zoom on the agent subtitle.",
+          "take": {
+            "take": "explore",
+            "marks": [
+              "play 2821",
+              "subtitle at 6868 (not a named mark)"
+            ],
+            "tape": "≈5200 → 7400",
+            "crop": {
+              "x": 500,
+              "y": 240,
+              "w": 940,
+              "h": 640
+            },
+            "zoom": "≥1.8 on the subtitle; empty picture covered by a paper plate"
+          },
+          "lines": [],
+          "claims": [
+            "LOOP-10",
+            "LOOP-11"
+          ],
+          "music": "M2 fill into ch04",
+          "transitionIn": "cut"
+        }
+      ]
+    },
+    {
+      "id": "ch04",
+      "number": 4,
+      "title": "Always on",
+      "minutes": 0.23,
+      "words": 28,
+      "shots": 3,
+      "summary": "One rhythmic triplet, each proof on a downbeat with a filtered stab and a brace snap: the real 'Tue at 3:00 AM · America/New_York' chip lifted under a large thin 3:00 AM like a name tag, over the six real Tuesdays it fired; the five environment words lifting off the Add environment row as pills (staging, preview, local in red-pink); the Reminders · CI runs table with the PR #3 badge and a 'Replay QA check · on the PR' pill, each run row popping a ▶ recording chip as 'Every recording gets reviewed.'",
+      "shotList": [
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch04-s01",
+          "kind": "scene",
+          "setting": "paper; large thin 3:00 AM with the real chip as a name tag; six-tick Tuesday strip",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            33,
+            38
+          ],
+          "purpose": "Proof 1, on a schedule: the real chip, braces + underline on \"schedule\", the six Tuesdays it fired, the product status line.",
+          "take": {
+            "take": "schedule",
+            "marks": [
+              "schedule 8808 (frozen)",
+              "status row ≈1200 (before polish 2226)"
+            ],
+            "crop": {
+              "badge": {
+                "x": 315,
+                "y": 166,
+                "w": 95,
+                "h": 26
+              },
+              "chip": {
+                "x": 1050,
+                "y": 166,
+                "w": 245,
+                "h": 26
+              },
+              "status": {
+                "x": 300,
+                "y": 230,
+                "w": 1140,
+                "h": 70
+              }
+            },
+            "note": "the owner-named project URL below the badge stays out"
+          },
+          "lines": [
+            {
+              "id": "L0401",
+              "text": "Then it keeps going. On a schedule, while you sleep.",
+              "words": 10
+            }
+          ],
+          "claims": [
+            "CONT-02",
+            "CONT-03",
+            "CONT-04",
+            "CONT-19"
+          ],
+          "music": "M3 downbeat: filtered stab + brace snap",
+          "transitionIn": "cut"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch04-s02",
+          "kind": "scene",
+          "setting": "paper, floating screen + five kit pills",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            38,
+            41.5
+          ],
+          "purpose": "Proof 2, against staging, a preview, even localhost: five env words lift off the real row; three light red-pink.",
+          "take": {
+            "take": "schedule",
+            "marks": [
+              "add-env 11458"
+            ],
+            "tape": "11000 → 11458, held",
+            "crop": {
+              "x": 300,
+              "y": 150,
+              "w": 1140,
+              "h": 90
+            }
+          },
+          "lines": [
+            {
+              "id": "L0402",
+              "text": "Against staging, a preview, even localhost.",
+              "words": 6
+            }
+          ],
+          "claims": [
+            "CONT-01",
+            "CONT-14",
+            "SET-05",
+            "SET-06"
+          ],
+          "music": "downbeat: filtered stab + brace snap",
+          "transitionIn": "cut"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch04-s03",
+          "kind": "scene",
+          "setting": "paper, floating runs table + kit pill + ▶ recording chips",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            41.5,
+            47
+          ],
+          "purpose": "Proof 3, every pull request: braces + underline on PR #3, check pill; every run row pops a ▶ recording chip.",
+          "take": {
+            "take": "runs",
+            "marks": [
+              "list 3668"
+            ],
+            "tape": "2900 → 3668, held (no scroll)",
+            "crop": {
+              "x": 500,
+              "y": 90,
+              "w": 940,
+              "h": 560
+            },
+            "zoom": "1.0 → 1.5 on the PR badges"
+          },
+          "lines": [
+            {
+              "id": "L0403",
+              "text": "And on every pull request, results posted back.",
+              "words": 8
+            },
+            {
+              "id": "L0404",
+              "text": "Every recording gets reviewed.",
+              "words": 4
+            }
+          ],
+          "claims": [
+            "CONT-05",
+            "CONT-07",
+            "CONT-08",
+            "CONT-15",
+            "LOOP-07",
+            "LOOP-08",
+            "LOOP-12",
+            "TIME-06",
+            "TIME-C1"
+          ],
+          "music": "downbeat stab + brace snap; off-beat clack per chip; tape-stop out",
+          "transitionIn": "cut"
+        }
+      ]
+    },
+    {
+      "id": "ch05",
+      "number": 5,
+      "title": "Bugs that only exist in time",
+      "minutes": 0.56,
+      "words": 62,
+      "shots": 5,
+      "summary": "The one plum register. The stacked recording chips flatten into a frame ribbon and the scrubber runs backwards: 'Some bugs only exist in time.' Replay QA's own Projects page: a 67 ms commit (Open; Discovered · Sep 23 · 5:56 PM · PR preview) crosses four 16.7 ms slots while the music stops for four beats; no click, a background refresh re-rendered the whole list; 27 fiber squares, 25 hollow; 'A screenshot can't see that. A Replay recording can.' on a match cut to the real Root Cause. Then the live-sync page (Fixed; Discovered · Sep 4 · 2:16 AM · Local): the user does nothing, a counter races to 258 while checkpoint −1 never moves, the hats stop dead, the scrubber rewinds. In the corner, unnarrated, a developer hands a ▶ recording to a critic: not yet, then good. The page pulls back into a tile captioned 'Replay QA's own Projects page'.",
+      "shotList": [
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch05-s01",
+          "kind": "plate",
+          "setting": "brand haze (deep plum, Replay red-pink, violet); frame ribbon + rewind scrubber",
+          "mood": "duskRose",
+          "haze": "brand",
+          "plannedSec": [
+            47,
+            50
+          ],
+          "purpose": "Turn to the hook: the chip stack becomes a ribbon, the scrubber runs backwards, \"Some bugs only exist { in time }.\"",
+          "take": null,
+          "lines": [
+            {
+              "id": "L0501",
+              "text": "Some bugs only exist in time.",
+              "words": 6
+            }
+          ],
+          "claims": [
+            "TIME-05",
+            "TIME-01"
+          ],
+          "music": "M4: half time, reversed pad swell",
+          "transitionIn": "blur"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch05-s02",
+          "kind": "scene",
+          "setting": "brand haze, floating bug page + frame-budget overlay in the dark player panel",
+          "mood": "duskRose",
+          "haze": "brand",
+          "plannedSec": [
+            50,
+            60.5
+          ],
+          "purpose": "The 67 ms commit on Replay QA's own Projects page: braces + underline on 67ms, four slots go hollow in four beats of silence, struck-through cursor on \"No click.\"",
+          "take": {
+            "take": "bug-react",
+            "marks": [
+              "open/report 3032 (seek 3040 → 3200; never 3032)"
+            ],
+            "tape": "3040 → 3200, held",
+            "crop": {
+              "x": 500,
+              "y": 80,
+              "w": 940,
+              "h": 760
+            },
+            "zoom": "1.0 → 2.0 on the title at \"sixty-seven\"",
+            "label": "Discovered · Sep 23 · 5:56 PM · PR preview"
+          },
+          "lines": [
+            {
+              "id": "L0502",
+              "text": "Replay QA caught one on its own Projects page.",
+              "words": 9
+            },
+            {
+              "id": "L0503",
+              "text": "Sixty-seven milliseconds. Four dropped frames.",
+              "words": 5
+            },
+            {
+              "id": "L0504",
+              "text": "No click. A background refresh re-rendered the whole list.",
+              "words": 9
+            }
+          ],
+          "claims": [
+            "TIME-08",
+            "TIME-09",
+            "TIME-15",
+            "TIME-18",
+            "PROOF-16"
+          ],
+          "music": "frame clacks, then four beats of silence; kick returns",
+          "transitionIn": "cut"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch05-s03",
+          "kind": "scene",
+          "setting": "brand haze, 27 fiber squares, match cut to the real Root Cause block",
+          "mood": "duskRose",
+          "haze": "brand",
+          "plannedSec": [
+            60.5,
+            67
+          ],
+          "purpose": "25 of 27 renders changed nothing on screen; the screenshot/recording pivot lands on the real Root Cause (Open chip pinned).",
+          "take": {
+            "take": "bug-react",
+            "marks": [
+              "rootcause 12008"
+            ],
+            "tape": "11600 → 12008, held",
+            "crop": {
+              "x": 500,
+              "y": 60,
+              "w": 940,
+              "h": 260
+            }
+          },
+          "lines": [
+            {
+              "id": "L0505",
+              "text": "Twenty-five of twenty-seven renders changed nothing on screen.",
+              "words": 8
+            },
+            {
+              "id": "L0506",
+              "text": "A screenshot can't see that. A Replay recording can.",
+              "words": 9
+            }
+          ],
+          "claims": [
+            "TIME-08",
+            "TIME-17",
+            "TIME-01",
+            "LOOP-19",
+            "PROOF-01",
+            "PROOF-02"
+          ],
+          "music": "hush under \"A screenshot can't see that\"; kick on \"can\"",
+          "transitionIn": "cut"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch05-s04",
+          "kind": "scene",
+          "setting": "brand haze, floating live-sync bug page → request-ribbon overlay",
+          "mood": "duskRose",
+          "haze": "brand",
+          "plannedSec": [
+            67,
+            73.5
+          ],
+          "purpose": "The bookmark that never moved: braces + underline on 258, the page's own \"user does nothing\" highlighted, counter to 258 while checkpoint −1 stays still, scrubber rewinds.",
+          "take": {
+            "take": "bug-sync",
+            "marks": [
+              "report 1603",
+              "actual 5402"
+            ],
+            "tape": "1300 → 1603 held; 5000 → 5402 held",
+            "crop": {
+              "title": {
+                "x": 500,
+                "y": 80,
+                "w": 940,
+                "h": 700
+              },
+              "actual": {
+                "x": 540,
+                "y": 130,
+                "w": 860,
+                "h": 180
+              }
+            },
+            "zoom": "1.0 → 1.8 on the title",
+            "label": "Discovered · Sep 4 · 2:16 AM · Local"
+          },
+          "lines": [
+            {
+              "id": "L0507",
+              "text": "Another: one pull-request list, fetched two hundred fifty-eight times.",
+              "words": 9
+            },
+            {
+              "id": "L0508",
+              "text": "The bookmark never moved past minus one.",
+              "words": 7
+            }
+          ],
+          "claims": [
+            "TIME-11",
+            "TIME-13",
+            "TIME-16",
+            "PROOF-16"
+          ],
+          "music": "16th-note hats that stop dead with the counter; a muted pluck stuck on one note",
+          "transitionIn": "cut"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch05-s05",
+          "kind": "scene",
+          "setting": "plum fading toward paper; Root Cause to Actual Behavior chain; agentPair bottom-right at scale ≈0.6",
+          "mood": "duskRose",
+          "haze": "brand → paper",
+          "plannedSec": [
+            73.5,
+            80.5
+          ],
+          "purpose": "The subtle beat, unnarrated: developer hands the ▶ recording chip to the critic, \"✕ not yet\", then \"✓ good\"; then the pull-back into tiles captioned \"Replay QA's own Projects page\".",
+          "take": {
+            "take": "bug-sync",
+            "marks": [
+              "rootcause 8154"
+            ],
+            "tape": "7800 → 8154, held",
+            "crop": {
+              "x": 500,
+              "y": 60,
+              "w": 940,
+              "h": 240
+            },
+            "tile": {
+              "take": "bug-react",
+              "at": 3150,
+              "crop": "title"
+            },
+            "note": "judge links cropped out"
+          },
+          "lines": [],
+          "claims": [
+            "AGENT-02",
+            "AGENT-11",
+            "AGENT-15",
+            "PROOF-07",
+            "TIME-09",
+            "TIME-11"
+          ],
+          "music": "felt-piano two-note figure: unresolved \"not yet\", resolved \"good\"; rim tick",
+          "transitionIn": "cut"
+        }
+      ]
+    },
+    {
+      "id": "ch06",
+      "number": 6,
+      "title": "{ fully managed · always on }",
+      "minutes": 0.2,
+      "words": 28,
+      "shots": 2,
+      "summary": "The collage of proof: frozen product tiles fan out (Insights tiles labelled 'Insights' and unspoken, the Tuesday chip, the PR #3 badge, the PR-preview projects, both bug titles) with 'every run / a recording / every bug / a root cause / every fix / rerun to confirm' woven through on downbeats. Ember end card: { End-to-end testing } grows to { fully managed · always on }, the Replay mark with a ▶ recording chip beside it, the subline 'on a schedule · on every PR · every run a recording', and qa.replay.io typed with the caret from ch02.",
+      "shotList": [
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch06-s01",
+          "kind": "montage",
+          "setting": "studio paper, fanned floating tiles at different depths",
+          "mood": "parchment",
+          "haze": null,
+          "plannedSec": [
+            80.5,
+            86.5
+          ],
+          "purpose": "The line to remember over the collage of proof.",
+          "take": {
+            "tiles": [
+              {
+                "take": "insights",
+                "at": 2926,
+                "mark": "stats",
+                "crop": {
+                  "x": 330,
+                  "y": 160,
+                  "w": 860,
+                  "h": 100
+                },
+                "note": "tiles only, label Insights, never the Discovery Source card"
+              },
+              {
+                "take": "schedule",
+                "at": 8808,
+                "mark": "schedule",
+                "crop": "chip"
+              },
+              {
+                "take": "runs",
+                "at": 3668,
+                "mark": "list",
+                "crop": "PR #3 badge row"
+              },
+              {
+                "take": "projects",
+                "at": 6306,
+                "mark": "filtered",
+                "crop": {
+                  "x": 0,
+                  "y": 370,
+                  "w": 240,
+                  "h": 420
+                },
+                "note": "above the owner footer; no caption about how they were made"
+              },
+              {
+                "take": "bug-react",
+                "at": 3150,
+                "crop": "title + Open chip",
+                "caption": "Replay QA's own Projects page"
+              },
+              {
+                "take": "bug-sync",
+                "at": 1603,
+                "mark": "report",
+                "crop": "title + Fixed chip"
+              }
+            ]
+          },
+          "lines": [
+            {
+              "id": "L0601",
+              "text": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.",
+              "words": 14
+            }
+          ],
+          "claims": [
+            "PROOF-01",
+            "PROOF-07",
+            "PROOF-08",
+            "PROOF-09",
+            "PROOF-13",
+            "LOOP-07",
+            "LOOP-12",
+            "LOOP-13",
+            "CONT-02",
+            "CONT-16",
+            "TIME-08",
+            "TIME-11",
+            "TIME-14"
+          ],
+          "music": "M5 lift; a downbeat per woven word",
+          "transitionIn": "cut"
+        },
+        {
+          "era": "product, as of 2026-10-14",
+          "id": "ch06-s02",
+          "kind": "card",
+          "setting": "ember haze (grey paper over a coral/orange/pink fire rising from the bottom)",
+          "mood": "emberRed",
+          "haze": "ember",
+          "plannedSec": [
+            86.5,
+            92.5
+          ],
+          "purpose": "End card: the primary message said and shown; the chip and the caret return; hold ≥1.5 s.",
+          "take": null,
+          "lines": [
+            {
+              "id": "L0602",
+              "text": "Replay QA. Fully managed end-to-end testing, for the bugs that only exist in time.",
+              "words": 14
+            }
+          ],
+          "claims": [
+            "SET-15",
+            "SET-16",
+            "CONT-05",
+            "CONT-07",
+            "CONT-19",
+            "CONT-22",
+            "LOOP-07"
+          ],
+          "music": "resolve to the tonic; ring-out",
+          "transitionIn": "blur"
+        }
+      ]
+    }
+  ]
+}

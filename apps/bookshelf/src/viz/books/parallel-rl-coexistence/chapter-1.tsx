@@ -41,7 +41,7 @@ export function buildScene() {
   tl.caption({ at: 14.9, dur: 6.8, text: 'With supervised fine-tuning, the final profile sinks. Logic falls from thirty-one percent to nine.' });
   tl.tween(sftU, 1, { at: 15.5, dur: 2.2, ease: ease.move });
   tl.tween(sftFocus, 1, { at: 18.0, dur: 0.6, ease: ease.pop });
-  tl.tween(cam, { x: 690, y: 386, k: 1.18 }, { at: 18.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.16 }, { at: 18.1, dur: 1.3, ease: ease.move });
   tl.hold(21.7, 0.8);
 
   tl.caption({ at: 22.5, dur: 6.5, text: 'The paper calls this conflict: learning the current task can overwrite abilities the model already had.' });
@@ -90,7 +90,7 @@ function Rail({ task, index, value, baseline, opacity, focus }: { task: string; 
     <line x1={scale(baseline)} y1={y - 18} x2={scale(baseline)} y2={y + 18} stroke={colors.TEXT} strokeWidth={2} opacity={0.7} />
     <circle cx={scale(value)} cy={y} r={10 + focus * 5} fill={color} />
     <text x={scale(value)} y={y - 23} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>{value.toFixed(1)}</text>
-    <text x={scale(baseline)} y={y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>base {baseline.toFixed(1)}</text>
+    <text x={scale(baseline)} y={y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>base {baseline.toFixed(1)}</text>
   </g>;
 }
 
@@ -99,29 +99,39 @@ export function Render({ s }: { s: SceneState }) {
   const rl = s.get(scene.rlU);
   const values = BASE.map((v, i) => lerp(lerp(v, SFT[i], sft), RL[i], rl));
   const dim = 1 - 0.9 * s.get(scene.dimU);
-  const cursor = clamp01(s.get(scene.stageCursor) / 4);
+  const stage = s.get(scene.stageCursor);
+  const cursor = clamp01(stage / 4);
   const cursorX = 250 + cursor * 760;
+  // Closing card: the chart fades to a faint backdrop so the panel reads cleanly.
+  const fade = 1 - 0.92 * s.get(scene.endU);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
-    <g opacity={dim}>
+    <g opacity={dim * fade}>
       <text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={850}>One checkpoint, four capabilities</text>
-      <text x={640} y={82} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>Table 1 · DeepSeek-R1-Distill-Qwen-1.5B</text>
+      <text x={640} y={82} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>Table 1 · DeepSeek-R1-Distill-Qwen-1.5B</text>
     </g>
+    <g opacity={fade}>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim * s.get(scene.railsU)}>
         <line x1={250} y1={142} x2={1010} y2={142} stroke={colors.GRID} strokeWidth={3} />
-        {TASKS.map((task, i) => <text key={task} x={250 + (i + 0.5) * 190} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>stage {i + 1} · {task.toLowerCase()}</text>)}
+        {TASKS.map((task, i) => {
+          // The stage the sweep is passing through lights up its column header.
+          const active = clamp01(1 - Math.abs(stage - (i + 0.5)));
+          return <text key={task} x={250 + (i + 0.5) * 190} y={130} textAnchor="middle" fill={colors.TEXT} opacity={0.45 + 0.5 * active} fontSize={14} fontFamily={MONO}>stage {i + 1} · {task.toLowerCase()}</text>;
+        })}
         <path d={`M${cursorX} 135 V565`} stroke={colors.TEXT} strokeWidth={2} opacity={cursor > 0 && cursor < 1 ? 0.65 : 0} strokeDasharray="6 8" />
         {TASKS.map((task, i) => <Rail key={task} task={task} index={i} value={values[i]} baseline={BASE[i]} opacity={1} focus={i === 2 ? s.get(scene.sftFocus) : s.get(scene.rlFocus) * 0.35} />)}
         <g opacity={s.get(scene.compareU)}>
-          <rect x={258} y={574} width={354} height={42} rx={12} fill={colors.NEGATIVE} opacity={0.13} />
+          <rect x={250} y={574} width={370} height={42} rx={12} fill={colors.NEGATIVE} opacity={0.18} />
           <text x={435} y={600} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontFamily={MONO}>multi-stage SFT · average −23.1%</text>
-          <rect x={668} y={574} width={354} height={42} rx={12} fill={colors.POSITIVE} opacity={0.13} />
-          <text x={845} y={600} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontFamily={MONO}>multi-stage RL · average +24.9%</text>
+          <rect x={640} y={574} width={370} height={42} rx={12} fill={colors.POSITIVE} opacity={0.18} />
+          <text x={825} y={600} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontFamily={MONO}>multi-stage RL · average +24.9%</text>
         </g>
       </g>
     </Camera>
+    </g>
     <g opacity={s.get(scene.endU)}>
+      <rect x={180} y={220} width={920} height={224} rx={28} fill={colors.BG} />
       <rect x={180} y={220} width={920} height={224} rx={28} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2.5} />
       <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={850}>Same tasks. Different geometry.</text>
       <text x={640} y={346} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20}>supervision collides</text>

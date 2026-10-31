@@ -16,13 +16,16 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const PANEL = { x: 80, y: 110, w: 500, h: 470 }; // the warping grid
 const CARD = { x: 640, y: 120, w: 540, h: 170 }; // Keller's question
-const LADDER = { x: 640, y: 310, w: 540, rowH: 44, gap: 8 };
+const LADDER = { x: 640, y: 306, w: 540, rowH: 36, gap: 6 };
+const LADDER_END = LADDER.y + 6 * (LADDER.rowH + LADDER.gap) - LADDER.gap;
 const TWEET = { x: 320, y: 170, w: 640, h: 300 };
 
+// Each camera keeps the grid's label (x ≈ 84) and the card's right edge (x ≈ 1180)
+// on the 1280×720 stage whenever it is the subject, and the ladder clears the caption band.
 const CAM_HOME: CameraState = CAMERA_HOME;
-const CAM_GRID: CameraState = { x: 400, y: 340, k: 1.12 };
-const CAM_CARD: CameraState = { x: 800, y: 300, k: 1.05 };
-const CAM_LADDER: CameraState = { x: 840, y: 420, k: 1.08 };
+const CAM_GRID: CameraState = { x: 630, y: 360, k: 1.0 }; // grid and card both in frame during the shear
+const CAM_CARD: CameraState = { x: 630, y: 380, k: 1.1 }; // keeps the grid's formula above the caption pill
+const CAM_LADDER: CameraState = { x: 700, y: 360, k: 1.0 };
 const CAM_TWEET: CameraState = { x: 640, y: 330, k: 1.06 };
 
 /* ------------------------------------------------- the planar Keller warp */
@@ -62,6 +65,8 @@ const CELLS: [number, number][] = [
   [0.75, -0.35],
 ];
 const CELL_SIDE = 0.42;
+// The planar map written out under the grid, so the picture names the function.
+const WARP_TEX = 'h(x,y) = (x + \\tfrac{y^2}{2},\\ y), \\quad \\det Dh \\equiv 1';
 
 const HISTORY: [string, string, string][] = [
   ['1939', 'Keller asks the question', colors.TEXT],
@@ -70,6 +75,13 @@ const HISTORY: [string, string, string][] = [
   ['1983', 'Moh: the plane, through degree one hundred', colors.TEXT],
   ['1994', 'Pinchuk: the REAL analogue falls', colors.WARM],
   ['1998', 'Smale lists it: problem sixteen', colors.TEXT],
+];
+// Bibliographic sources for the ladder (cited from the original papers, not from the book metadata).
+const SOURCES = [
+  'Sources: Keller, Monatsh. Math. Phys. 47 (1939)',
+  'Wang, J. Algebra 65 (1980) · Moh, J. reine angew. Math. 340 (1983)',
+  'Bass, Connell & Wright, Bull. AMS 7 (1982) · Pinchuk, Math. Z. 217 (1994)',
+  'Smale, Math. Intelligencer 20 (1998)',
 ];
 
 /* -------------------------------------------------------------- timeline */
@@ -171,7 +183,7 @@ export function buildScene() {
     dur: 7.0,
     text: 'Then, on the day of the twenty twenty-six World Cup final, a three-line map of complex three-space appeared, with a constant determinant and a very short story to tell.',
   });
-  tl.tween(dimU, 0.9, { at: t - 6.6, dur: 1.0, ease: ease.move });
+  tl.tween(dimU, 1, { at: t - 6.6, dur: 1.0, ease: ease.move }); // full fade: old content at 0.12 opacity
   tl.tween(cam, CAM_TWEET, { at: t - 6.6, dur: 1.5, ease: ease.move });
   tl.tween(tweetU, 1, { at: t - 5.4, dur: 1.0, ease: ease.enter });
   t = tl.hold(t, 0.5);
@@ -195,31 +207,34 @@ const scene = buildScene();
 function WarpGrid({ u, w, cells, area, dim }: { u: number; w: number; cells: number; area: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  const a = uu * (1 - clamp01(dim));
   const pt = (mx: number, my: number): [number, number] => {
     const [wx, wy] = warp(mx, my);
     return [sx(mx + (wx - mx) * w), sy(my + (wy - my) * w)];
   };
+  // the cells ride the warp: they appear as the shear takes hold, not a beat later
+  const grow = Math.max(cells, w);
   return (
     <g opacity={a}>
       <clipPath id="jc1-clip">
         <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} />
       </clipPath>
-      <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} opacity={0.7} />
-      <text x={PANEL.x + 4} y={PANEL.y - 12} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={12} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.2} opacity={0.6} />
+      <text x={PANEL.x + 4} y={PANEL.y - 12} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         det ≡ 1 everywhere — the local test at its best
       </text>
+      <MathLabel anchor="start" tex={WARP_TEX} x={PANEL.x + 4} y={PANEL.y + PANEL.h + 26} fontSize={16} color={colors.MUTED} opacity={uu} />
       <g clipPath="url(#jc1-clip)">
         {LINES.map((line, li) => {
           const draw = clamp01(uu * 2.2 - (li / LINES.length) * 1.2);
           if (draw <= 0) return null;
           const pts = line.map(([mx, my]) => pt(mx, my));
           const d = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ');
-          return <path key={li} d={d} fill="none" stroke={colors.GRID} strokeWidth={1} opacity={0.85 * draw} />;
+          return <path key={li} d={d} fill="none" stroke={colors.MUTED} strokeWidth={1} opacity={0.3 * draw} />;
         })}
-        {cells > 0 &&
+        {grow > 0 &&
           CELLS.map(([cx, cy], i) => {
-            const e = clamp01(cells * 3 - i);
+            const e = clamp01(grow * 3 - i);
             if (e <= 0) return null;
             const h = CELL_SIDE / 2;
             const corners: [number, number][] = [
@@ -236,7 +251,7 @@ function WarpGrid({ u, w, cells, area, dim }: { u: number; w: number; cells: num
               <g key={i} opacity={e}>
                 <path d={d} fill={colors.WARM} fillOpacity={0.16} stroke={colors.WARM} strokeWidth={1.8} />
                 {area > 0 && (
-                  <text x={midX} y={midY + 4} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={mono} opacity={area}>
+                  <text x={midX} y={midY + 5} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily={mono} opacity={area}>
                     ×1
                   </text>
                 )}
@@ -252,15 +267,16 @@ function WarpGrid({ u, w, cells, area, dim }: { u: number; w: number; cells: num
 function QuestionCard({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  const a = uu * (1 - clamp01(dim));
   return (
     <g transform={`translate(${CARD.x}, ${CARD.y + (1 - uu) * 12})`} opacity={a}>
       <rect width={CARD.w} height={CARD.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-      <text x={22} y={32} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+      <text x={22} y={32} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
         the Jacobian conjecture · Keller 1939
       </text>
-      <MathLabel anchor="start" tex={'F:\\ \\mathbb{C}^n \\to \\mathbb{C}^n \\ \\text{polynomial}'} x={24} y={62} fontSize={17} color={colors.TEXT} opacity={uu} />
-      <MathLabel anchor="start" tex={'\\det DF \\equiv \\text{const} \\neq 0 \\ \\overset{?}{\\Longrightarrow}\\ F \\ \\text{invertible}'} x={24} y={104} fontSize={17} color={colors.WARM} opacity={uu} />
+      <MathLabel anchor="start" tex={'F:\\ \\mathbb{C}^n \\to \\mathbb{C}^n \\ \\text{polynomial}'} x={24} y={68} fontSize={17} color={colors.TEXT} opacity={uu} />
+      <MathLabel anchor="start" tex={'\\det DF \\equiv \\text{const} \\neq 0'} x={24} y={110} fontSize={17} color={colors.WARM} opacity={uu} />
+      <MathLabel anchor="start" tex={'\\overset{?}{\\Longrightarrow}\\ F \\ \\text{invertible}'} x={24} y={148} fontSize={17} color={colors.WARM} opacity={uu} />
     </g>
   );
 }
@@ -268,7 +284,8 @@ function QuestionCard({ u, dim }: { u: number; dim: number }) {
 /** Eighty-seven years of partial credit, one row per landmark. */
 function HistoryLadder({ n, dim }: { n: number; dim: number }) {
   if (n <= 0) return null;
-  const a = 1 - 0.88 * clamp01(dim);
+  const a = 1 - clamp01(dim);
+  const src = clamp01(n - 5); // the sources strip arrives with the last row
   return (
     <g opacity={a}>
       {HISTORY.map(([year, line, c], i) => {
@@ -277,16 +294,25 @@ function HistoryLadder({ n, dim }: { n: number; dim: number }) {
         const ry = LADDER.y + i * (LADDER.rowH + LADDER.gap);
         return (
           <g key={year} transform={`translate(${LADDER.x}, ${ry + (1 - u) * 8})`} opacity={u}>
-            <rect width={LADDER.w} height={LADDER.rowH} rx={9} fill={colors.PANEL} stroke={c === colors.WARM ? colors.WARM : colors.GRID} strokeWidth={c === colors.WARM ? 1.8 : 1.3} />
-            <text x={16} y={LADDER.rowH / 2 + 4.5} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+            <rect width={LADDER.w} height={LADDER.rowH} rx={9} fill={colors.PANEL} stroke={c === colors.WARM ? colors.WARM : colors.MUTED} strokeWidth={c === colors.WARM ? 1.8 : 1.1} />
+            <text x={16} y={LADDER.rowH / 2 + 5} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
               {year}
             </text>
-            <text x={72} y={LADDER.rowH / 2 + 4.5} fill={c} fontSize={12.5} fontFamily={mono}>
+            <text x={72} y={LADDER.rowH / 2 + 5} fill={c} fontSize={14} fontFamily={mono}>
               {line}
             </text>
           </g>
         );
       })}
+      {src > 0 && (
+        <g opacity={src} fontFamily={mono} fontSize={12} fill={colors.MUTED}>
+          {SOURCES.map((line, j) => (
+            <text key={j} x={LADDER.x} y={LADDER_END + 26 + j * 15}>
+              {line}
+            </text>
+          ))}
+        </g>
+      )}
     </g>
   );
 }

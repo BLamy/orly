@@ -1,0 +1,1177 @@
+{
+  "id": "ch07",
+  "number": 7,
+  "title": "Deep Dive III: Unfreezing",
+  "blurb": "Gradients through a handwritten program. The README asks what happens if its frozen weights are let go. One ReGLU valve worked by hand, forward and backward: open at 0.15, out comes 0.225, slopes 0.45 and 1.5; lower one bias and the valve shuts, and every slope behind it goes dark. Almost every operation in the program runs backwards by a rule, on the real arithmetic, not the rounding. Tag 10, fully differentiable, is doubted from inside the repo: the decisions are flat. Then the one demo that really learns, the learned gallery: you sketch rectangles and 244 weights, from a seeded random start, learn to place the photos on them; a plain-JavaScript clerk deciding who goes where, every pull capped so that far-off photos vote rather than shout, 600 steps a second. A shortcut that snapped the sketch to a grid in ordinary code is refused. Honest scope: a small generic network, not a hand-written program unfrozen; the lab did unfreeze five design numbers (one gradient step solved nearly two moving drag frames in three; about one in four started with every slope at zero); the nanoGPT dream hangs as a question. And the desk's X-ray shows a single valve, dark.",
+  "shots": [
+    {
+      "id": "ch07-s01",
+      "kind": "scene",
+      "setting": "the copper line and a paper control panel · the README's use-cases, 14 October 2026 · dawn",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 1,
+      "holdAfter": 1,
+      "transitionIn": "lampChange",
+      "visual": "THIS SHOT: the offer. A frozen weight is let go, and the README asks its own question. CAMERA: opens wide in dawn haze (lamp change out of ch06's labGreen X-ray: the backlight warms to dawnGold over 1 s), the copper line strung across the frame at 58% height, the Lifespan Rule faint along the bottom. Below the line on a plank stands a small paper control panel (L3), and on it one round brass weight-knob with a tiny inked label 'w' and a pointer at a fixed setting. The knob is rimed in paper-cut frost: white cut-out crystals on its black body, catching the rim light. A slow push in (about 15% over the shot) to the knob. On 'hand', the narrator's hands enter from the lower left on twos (a 'lift' variant: thumb and finger close on the knob) and hold still. On the quotation, a small parchment card unrolls from the copper line above the panel carrying only the README's last three words, verbatim, in a book face, attributed small beneath (the full line is spoken, never set in full on screen). On 'find', the hands turn the knob a quarter turn: the frost cracks into a dozen paper shards that fall and spin out of the haze; the pointer is free. No number changes yet: this is the invitation, not the experiment. The card stays up as the camera settles. (Planted for ch12-s04, where this same card answers the 'why?' tag.) TAG-LINE STAGING (meta staging.tagLine): BY THE GALLERY: the line crosses in front of the learned gallery's stage at 56%, the valves' dark shapes below it; the pencil rests on the stage's proscenium post.",
+      "lines": [
+        {
+          "id": "L0701",
+          "text": "Every weight so far was written by hand. The README's first funny use-case:",
+          "direction": "warm, a little conspiratorial, as if opening a door that has been locked all film; a light smile on 'funny'; lift slightly into the colon so the quotation follows",
+          "pauseAfter": 0.4
+        },
+        {
+          "id": "L0702",
+          "text": "“unfreezing the weights and train them (what does that even do? Let's find out!)”",
+          "spoken": "“unfreezing the weights and train them (what does that even do? Let's find out!)”",
+          "direction": "read as a quotation, in the README's own breezy voice: the parenthesis a touch faster and lighter, a real question on 'what does that even do?', an amused lift on 'Let's find out!'. Keep the grammar exactly as written ('train them'); do not correct it",
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "frost",
+          "at": {
+            "shotTime": 0.5
+          },
+          "what": "lamp warms to dawnGold; frost on the knob catches the rim light"
+        },
+        {
+          "id": "hands",
+          "at": {
+            "line": "L0701",
+            "word": "hand",
+            "edge": "start"
+          },
+          "what": "the narrator's hands enter from lower left and close on the frozen knob"
+        },
+        {
+          "id": "card",
+          "at": {
+            "line": "L0702",
+            "edge": "start"
+          },
+          "what": "the README card unrolls from the copper line above the panel"
+        },
+        {
+          "id": "crack",
+          "at": {
+            "line": "L0702",
+            "word": "find",
+            "edge": "start"
+          },
+          "what": "a quarter turn: the frost cracks off in paper shards; the pointer swings free"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "copper line",
+        "Lifespan Rule (faint)",
+        "paper control panel on a plank",
+        "brass weight-knob labelled w, rimed in paper-cut frost",
+        "README parchment card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "Let's find out! — Handwired README",
+          "beat": "card"
+        }
+      ],
+      "music": {
+        "cue": "ch07-unfreezing",
+        "note": "Deep Dive III opens in a new colour: dawn, the first warm cue since the clockwork. The both-branches motif returns softly, gate fully open on the upper line. On the crack, a small dry wooden snap (ice as paper), then a rising two-note figure left unresolved: a question, matching 'Let's find out!'. No chimes. Intensity 2."
+      },
+      "claims": [
+        "PJ04"
+      ]
+    },
+    {
+      "id": "ch07-s02",
+      "kind": "plate",
+      "setting": "the ReGLU valve on a parchment plate · a worked example, derived by hand from the runtime's backward rule · lamplight",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: one ReGLU unit worked by hand, forward then backward, every number real (derived from the runtime's backward rule; labelled 'derived'). TEACHING MACHINE: the ReGLU valve (art department 23), first seen as a black silhouette against the backlight, then inked onto a parchment plate as the arithmetic starts (style bible §6). Construction: a horizontal copper channel enters from the left (the left value, 3w); it passes a vertical paper sluice gate whose opening height is bound to max(0, gate), drawn to scale on a small ruler beside it; the gate is lifted by a cam cut in the shape of the copper hinge from Deep Dive I (flat, then a 45° climb). Three brass dials sit below: w, g, b, each with a hanging number tag (the forward values live on these tags and on the tray, not in a caption). Out of the right side a tray fills to the output's level. FORWARD: on 'valve' the silhouette inks onto parchment; on 'flows' light runs left to right along the channel, its thickness reading 3w; on 'opening' the cam turns and the sluice rises. On 'half' the dials click to their values in turn (w 0.5, g 0.25, b −0.1; one detent click each); on 'opens' the gate stops at exactly 0.15 on its ruler; on 'comes' the tray fills to 0.225 (1.5 × 0.15), with the product inked beside it. On 'nudge' the w dial twitches a hair and the tray's level twitches with it, then both settle: what a slope measures. BACKWARD: on 'Backwards' the light reverses: a lantern glow travels right to left from the tray back through the open gate. It splits: on 'three' one arrow runs back along the channel to the w dial and inks '0.45' (3 × 0.15: the opening, times three); on 'channel' a second arrow climbs the cam to the g dial and inks '1.5' (the channel's value, 3w, because the gate is open). The b dial glows with the same 1.5 (small, unlabelled in narration). Hold on the lit backward arrows; the machine clacks once per settled number. CAMERA: locked on the plate with a gentle 5% push during the backward pass.",
+      "lines": [
+        {
+          "id": "L0703",
+          "text": "Take one gated product: a valve. Along its channel flows an input, three, times a weight, w. The opening is g plus b, never below nought.",
+          "direction": "slow and plain, one clause per moving part; 'an input, three,' set off lightly so 'three' is heard as the input's value; let 'w', 'g' and 'b' sound like names of dials, not letters spelled out; small beat after 'a valve'",
+          "pauseAfter": 0.6
+        },
+        {
+          "id": "L0704",
+          "text": "With w a half, g a quarter, b minus a tenth: it opens nought point one five, and out comes nought point two two five.",
+          "direction": "counting, unhurried; a click of satisfaction on the last number; each value lands on its dial",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0704a",
+          "text": "Learning needs each number's slope, or gradient: nudge it, and how far does the output move?",
+          "direction": "the teacher's aside, plain and friendly, for someone who has never heard the word; a small lift on 'nudge it'; land 'slope, or gradient' as a definition, gently",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0705",
+          "text": "Backwards, w's slope is three times the opening: nought point four five. g's is the channel itself: one and a half.",
+          "direction": "the turn of the chapter: quieter, as if watching the light reverse; 'Backwards' given its own breath; each reason plain, each number landing on its dial"
+        }
+      ],
+      "beats": [
+        {
+          "id": "valve",
+          "at": {
+            "line": "L0703",
+            "word": "valve",
+            "edge": "start"
+          },
+          "what": "the valve silhouette inks onto the parchment plate"
+        },
+        {
+          "id": "flow",
+          "at": {
+            "line": "L0703",
+            "word": "flows",
+            "edge": "start"
+          },
+          "what": "light runs left to right along the channel; its thickness reads 3w"
+        },
+        {
+          "id": "opening",
+          "at": {
+            "line": "L0703",
+            "word": "opening",
+            "edge": "start"
+          },
+          "what": "the hinge-shaped cam turns; the sluice gate rises against its ruler"
+        },
+        {
+          "id": "dials",
+          "at": {
+            "line": "L0704",
+            "word": "half",
+            "edge": "start"
+          },
+          "what": "dials click to w 0.5, g 0.25, b −0.1, one detent each"
+        },
+        {
+          "id": "open",
+          "at": {
+            "line": "L0704",
+            "word": "opens",
+            "edge": "start"
+          },
+          "what": "gate stops at 0.15 on its ruler"
+        },
+        {
+          "id": "out",
+          "at": {
+            "line": "L0704",
+            "word": "comes",
+            "edge": "start"
+          },
+          "what": "the tray fills to 0.225; the product inks beside it"
+        },
+        {
+          "id": "nudge",
+          "at": {
+            "line": "L0704a",
+            "word": "nudge",
+            "edge": "start"
+          },
+          "what": "the w dial twitches a hair; the tray's level twitches with it"
+        },
+        {
+          "id": "back",
+          "at": {
+            "line": "L0705",
+            "word": "Backwards",
+            "edge": "start"
+          },
+          "what": "the light reverses, right to left, back through the open gate"
+        },
+        {
+          "id": "slopeW",
+          "at": {
+            "line": "L0705",
+            "word": "three",
+            "edge": "start"
+          },
+          "what": "an arrow reaches the w dial and inks 0.45"
+        },
+        {
+          "id": "slopeG",
+          "at": {
+            "line": "L0705",
+            "word": "channel",
+            "edge": "start"
+          },
+          "what": "an arrow climbs the cam to the g dial and inks 1.5; the b dial glows 1.5 too"
+        }
+      ],
+      "props": [
+        "ReGLU valve: copper channel, paper sluice gate with ruler, hinge-shaped cam",
+        "three brass dials w, g, b with number tags",
+        "output tray",
+        "parchment plate"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "y = 3w · max(0, g + b)",
+          "beat": "valve"
+        },
+        {
+          "kind": "equation",
+          "text": "∂y/∂w = 3 × 0.15 = 0.45 · ∂y/∂g = 3w = 1.5 (derived)",
+          "beat": "back"
+        }
+      ],
+      "music": {
+        "cue": "ch07-unfreezing",
+        "note": "A small mechanical ostinato tied to the valve: a rising three-note woodblock figure for the forward flow, one detent click per dial, a soft low pedal under the open gate. On 'Backwards' the figure plays in reverse, descending, a step slower, as the lantern light runs back. Clacks, never chimes. Intensity 3."
+      },
+      "claims": [
+        "DG01",
+        "PR04"
+      ]
+    },
+    {
+      "id": "ch07-s03",
+      "kind": "plate",
+      "setting": "the same valve, shutting · the gallery's own lesson about closed gates · evening light",
+      "era": "2020s",
+      "mood": "duskRose",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: the chapter's quiet moment: a valve shuts and learning dies behind it. A crossfade, not a blackout: the same plate and the same valve stay continuously on screen from s02, so the open valve visibly becomes the shut one. The mood change is played in-shot, as ch04-s06/s07/s09 do: a 3 s tint across the shot's opening, the backlight cooling from dawnGold to duskRose while the plate holds. On 'Lower' the b dial turns from −0.1 to −0.4 (one heavy detent); the cam rolls back down its hinge to the flat part; on 'shuts' the sluice drops closed with a dry wooden clack: the gate's ruler reads −0.15, below its zero mark, so the opening is nothing; the tray drains to 0. On 'dark' the backward arrows from the previous shot fade out on twos, one after another, right to left, until no light runs anywhere behind the gate: every gradient 0. Then 1.8 s of no narration: only haze moving, the dark arrows, the closed gate. On the quotation, a small paper card drops onto the plate bearing only its source and the gallery's cure (the README's sentence is spoken, not set on screen). On 'decay', beside it, a hair-thin paper spring appears at the corner of the plate: weight decay, the gallery's own fix (the toy valve itself does not reopen; no tally is drawn). On 'neurons', far back in the haze, a ghost of ch02's 1943 paper lanterns (two lanterns feeding a third, wiring fixed) fades up at 30% and hangs beside the valve; on 'can', the valve's channel catches the warm rim light again, and the lanterns fade. CAMERA: locked, then a very slow pull back on the last line so the 1943 ghost and the valve share the frame.",
+      "lines": [
+        {
+          "id": "L0706",
+          "text": "Lower b to minus four tenths. The valve shuts, and every slope behind it goes dark.",
+          "direction": "gentle, quietly sad; slow down through 'every slope behind it goes dark', and let the last word fall",
+          "pauseAfter": 1.6
+        },
+        {
+          "id": "L0707",
+          "text": "A README in the project warns: “Without any decay, a unit whose gate has closed gets no gradient and stays shut”.",
+          "direction": "read as a quotation from the gallery's README, level and factual",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0708",
+          "text": "The neurons of 1943 couldn't learn. These can, if you let them.",
+          "direction": "the payoff of chapter two: tender, a small smile on 'if you let them'; a little weight on 'nineteen forty-three', the year the film began",
+          "spoken": "The neurons of nineteen forty-three couldn't learn. These can, if you let them."
+        }
+      ],
+      "beats": [
+        {
+          "id": "lower",
+          "at": {
+            "line": "L0706",
+            "word": "Lower",
+            "edge": "start"
+          },
+          "what": "b dial turns to −0.4; cam rolls back to the flat"
+        },
+        {
+          "id": "shut",
+          "at": {
+            "line": "L0706",
+            "word": "shuts",
+            "edge": "start"
+          },
+          "what": "sluice drops closed (dry clack); gate reads −0.15; tray drains to 0"
+        },
+        {
+          "id": "dark",
+          "at": {
+            "line": "L0706",
+            "word": "dark",
+            "edge": "start"
+          },
+          "what": "backward arrows fade on twos, right to left; nothing lit behind the gate"
+        },
+        {
+          "id": "quote",
+          "at": {
+            "line": "L0707",
+            "word": "Without",
+            "edge": "start"
+          },
+          "what": "the gallery README card drops onto the plate"
+        },
+        {
+          "id": "decay",
+          "at": {
+            "line": "L0707",
+            "word": "decay",
+            "edge": "start"
+          },
+          "what": "a hair-thin decay spring appears at the plate's corner"
+        },
+        {
+          "id": "lanterns",
+          "at": {
+            "line": "L0708",
+            "word": "neurons",
+            "edge": "start"
+          },
+          "what": "ghost of the 1943 fixed-wiring lanterns fades up far back"
+        },
+        {
+          "id": "can",
+          "at": {
+            "line": "L0708",
+            "word": "can",
+            "edge": "start"
+          },
+          "what": "the valve's channel catches the warm rim light again; the 1943 ghost fades"
+        }
+      ],
+      "props": [
+        "ReGLU valve (closed)",
+        "b dial",
+        "dark backward arrows",
+        "gallery README card",
+        "hair-thin paper decay spring",
+        "ghost of the 1943 paper lanterns"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "b = −0.4 → gate −0.15 · y = 0 · every slope 0",
+          "beat": "shut"
+        },
+        {
+          "kind": "label",
+          "text": "the learned gallery's README · its cure: weight decay",
+          "beat": "quote"
+        }
+      ],
+      "music": {
+        "cue": "ch07-unfreezing",
+        "note": "The ostinato stops dead on the closing gate (one dry wooden clack, no reverb tail). Under the fading arrows, near-silence: room tone and a single low sustained note, the coldest moment of the dive. On 'neurons', the lantern motif from ch02 as a faint echo; on 'These can', the both-branches upper line re-enters warmly at low level. Intensity 1, rising to 2."
+      },
+      "claims": [
+        "DG01",
+        "DG11",
+        "DG08",
+        "FR05"
+      ]
+    },
+    {
+      "id": "ch07-s04",
+      "kind": "scene",
+      "setting": "the matmul loom from chapter five, run backwards · HandwiredOS's 130 frames · dawn",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 2.6,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: every operation has a backward rule; the whole loom runs in reverse. TEACHING MACHINE: ch05's matmul loom (art department 10), the same 130 thin frames in dependency order, copper threads adding and indigo subtracting, ReGLU ramps and detent wheels behind the frames, mostly empty air. DATA BINDING (style bible §6): each frame's thread count and thread signs, which frames carry ReGLU gates and which carry the 59 boolean wheels, all come from the same export of the compiled HandwiredOS circuit that ch05 uses (made from the clone pinned at 257856e, command recorded in sources.json). If that export does not exist, the threads are drawn at a uniform, plainly schematic density with no per-weight glow, and this shot makes no claim that they are the wallpaper. The real backward pass walks the program's operations from last to first (not the compiled frames); the frames stand in for that order. CAMERA: a slow lateral track right to left along the loom, at frame height, against the backlight. On 'backwards' a band of lantern light enters at the loom's right end (the outputs) and runs leftward frame by frame: at each sum frame the light divides along every thread back to its inputs, each thread's glow scaled by its exported weight (copper threads pass it, indigo threads pass it inverted); on 'rule' the camera passes the gate frames: open valves (shutters raised) let the light through, closed ones stop it cold. At the loom's 59 detent wheels (boolean rounding) the light halts against a small red-edged stop tag: no backward rule unless asked (the same holds for index reads; HandwiredOS has none). On 'arithmetic' the light reaches the far left end and pools at the source table's pigeonholes; on 'rounding' the camera settles beside a detent wheel and its red-edged stop tag (the docs: backpropagation differentiates the intended real arithmetic, not literal floating-point rounding). Hold on the lit, reversed loom.",
+      "lines": [
+        {
+          "id": "L0709",
+          "text": "Almost every operation runs backwards by a rule like that: on the real arithmetic, not the rounding.",
+          "direction": "broadening out: wonder at scale, but still plain; after the colon, careful and precise, a slight weight on 'real' and 'not'"
+        }
+      ],
+      "beats": [
+        {
+          "id": "reverse",
+          "at": {
+            "line": "L0709",
+            "word": "backwards",
+            "edge": "start"
+          },
+          "what": "lantern light enters at the loom's output end and runs leftward frame by frame"
+        },
+        {
+          "id": "gates",
+          "at": {
+            "line": "L0709",
+            "word": "rule",
+            "edge": "start"
+          },
+          "what": "camera passes gate frames: open valves pass the light, closed ones stop it; detent wheels show red-edged stop tags"
+        },
+        {
+          "id": "docs",
+          "at": {
+            "line": "L0709",
+            "word": "arithmetic",
+            "edge": "start"
+          },
+          "what": "light pools at the source table's pigeonholes"
+        },
+        {
+          "id": "rounding",
+          "at": {
+            "line": "L0709",
+            "word": "rounding",
+            "edge": "start"
+          },
+          "what": "the camera settles beside a detent wheel and its stop tag; the reversed loom holds, lit"
+        }
+      ],
+      "props": [
+        "matmul loom, 130 frames",
+        "copper and indigo threads",
+        "ReGLU shutters",
+        "59 detent wheels with red-edged stop tags",
+        "source table pigeonholes"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "sums: slope × weight · valves: only while open · rounding: no rule unless asked",
+          "beat": "reverse"
+        }
+      ],
+      "music": {
+        "cue": "ch07-unfreezing",
+        "note": "The valve ostinato returns, descending, spread across the loom: a soft clatter of reversed woodblock figures, thinning where the light is stopped at the detent wheels (a single muted ratchet tick there). On 'rounding' it settles onto one held chord. Intensity 3."
+      },
+      "claims": [
+        "DG01",
+        "DG03",
+        "OS02",
+        "CM01"
+      ]
+    },
+    {
+      "id": "ch07-s05",
+      "kind": "scene",
+      "setting": "the copper line over the Lifespan Rule · tag 10, tied on 14 October 2026 · dawn",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: Tag 10 is tied on, and doubted from inside the repo. DEVICE 1 (Promise Tags). CAMERA: on the copper line, mid-shot, Lifespan Rule along the bottom. On 'differentiable' the narrator's hands tie on tag 10 (detent 'tie' stroke): its front inked with the README's two words as a verbatim span of Q001; its knot card reads the README's tagline and its date. On 'doubts' the hands flip it (paper snap): the red-pencil hand enters from frame right and writes on the back 'the lab's own guide · slope 0'. On 'ramps' the camera tilts down past the tag: Deep Dive I's two hinged boards (art department 1), flat, then a 45° climb, corners at 4 and 5, rise in silhouette under the line, with a small brass slope gauge riding the marble. The marble visits a = 3, 6, 100: the gauge needle reads 0 each time (flat boards); then the marble rolls to 4.5, mid-climb, and the needle reads 1. (Show only these four positions: never a whole number at a corner.) On 'nowhere' the gauge reads 0 again at 6 (no card is pinned: the pencil's note on the tag's back is the only text). On the last line the camera tilts back up: the tag does NOT get struck. Its thread drops to the Lifespan Rule at its age as of 27 Oct 2026, thirteen days since 14 Oct 2026: between the unlabelled week and month ticks, nowhere near a lifetime. Because it is still held, the thread does not end in a knot: it ends in a glowing open copper tip with a short copper arrow pointing right (the film's single still-held encoding, meta staging.tagLine), faint and contested. On 'follow' the red pencil is laid on the line's post beside the tag ('rest'), and the hand withdraws. The signature grommet is not drawn. TAG-LINE STAGING (meta staging.tagLine): BY THE GALLERY: the line crosses in front of the learned gallery's stage at 56%, the valves' dark shapes below it; the pencil rests on the stage's proscenium post.",
+      "lines": [
+        {
+          "id": "L0711",
+          "text": "The README calls it fully differentiable: a slope everywhere. The project itself has doubts.",
+          "direction": "a fair question, not a gotcha; small lift on 'itself'",
+          "pauseAfter": 0.6
+        },
+        {
+          "id": "L0712",
+          "text": "Ask the ramps which way to nudge the input. At almost every whole number: nowhere.",
+          "direction": "dry, a little wry; a beat before 'nowhere', then let it sit",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0713",
+          "text": "Differentiable as real arithmetic. But a decision has no slope to follow.",
+          "direction": "even-handed, both halves given equal weight; the house framing of a contested claim, said plainly"
+        }
+      ],
+      "beats": [
+        {
+          "id": "tie",
+          "at": {
+            "line": "L0711",
+            "word": "differentiable",
+            "edge": "start"
+          },
+          "what": "narrator's hands tie tag 10 on the line (tie stroke)"
+        },
+        {
+          "id": "flip",
+          "at": {
+            "line": "L0711",
+            "word": "doubts",
+            "edge": "start"
+          },
+          "what": "the tag flips; the red pencil writes 'the lab's own guide · slope 0' on its back"
+        },
+        {
+          "id": "ramps",
+          "at": {
+            "line": "L0712",
+            "word": "ramps",
+            "edge": "start"
+          },
+          "what": "tilt down: Deep Dive I's two ramps rise with a slope gauge on the marble; a = 3, 6, 100 read 0; 4.5 reads 1"
+        },
+        {
+          "id": "gauge",
+          "at": {
+            "line": "L0712",
+            "word": "nowhere",
+            "edge": "start"
+          },
+          "what": "the gauge reads 0 again at 6"
+        },
+        {
+          "id": "rest",
+          "at": {
+            "line": "L0713",
+            "word": "follow",
+            "edge": "start"
+          },
+          "what": "tilt back up; the red pencil is laid on the post beside the unstruck tag; its thread drops to the rule between a week and a month, ending in a glowing open tip and a short copper arrow pointing right"
+        }
+      ],
+      "cast": [
+        "narrator-hands",
+        "red-pencil-hand"
+      ],
+      "props": [
+        "copper line",
+        "tag 10 with knot card",
+        "red pencil",
+        "Lifespan Rule",
+        "Deep Dive I's two hinged ramps",
+        "brass slope gauge on the marble"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "fully differentiable! — Handwired README",
+          "beat": "tie"
+        },
+        {
+          "kind": "nameCard",
+          "text": "tied on by: the README's tagline · 14 Oct 2026",
+          "beat": "tie"
+        },
+        {
+          "kind": "label",
+          "text": "the lab's own guide · slope 0",
+          "beat": "flip"
+        }
+      ],
+      "music": {
+        "cue": "ch07-unfreezing",
+        "note": "Device 4: the detent figure plays 'tie' (soft detent click) and 'flip' (paper snap). The third stroke is never played: tag 10 is one of the two beliefs still contested at the end, so in its place the both-branches gate settles at 0.5, both lines at half level, the slightly wrong interval held undecided under the last line and the pencil's rest. Intensity 2."
+      },
+      "claims": [
+        "DG03",
+        "DG15",
+        "PJ01",
+        "TE03"
+      ]
+    },
+    {
+      "id": "ch07-s06",
+      "kind": "scene",
+      "setting": "the learned gallery's 5:4 stage among misty hills · the demo as shipped, 14 October 2026 · dawn",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "transitionIn": "paperWipe",
+      "visual": "THIS SHOT: the one demo whose weights are trained. The landscape changes for the first time in the film: a paper wipe opens onto misty hills at dawn (kit mistyHills as the backdrop only: fog 0.7, layered ridges, no traveller). In the middle distance stands a paper stage in a 5:4 frame on two trestles (art department 22), like a puppet booth. On 'sketch' the narrator's hands place ten cut-paper rectangles on the stage, one by one (a 'place' action, quick, on twos) in the Story preset's real layout: one large rectangle 0.6 × 0.52 of the stage, two beside it, and a 4 × 2 grid below with 7 of its 8 cells filled. On 'learned' three small brass counters on the booth's apron click up to their values. On 'random', ten small photo squares (0.18 × 0.18 of the stage each, simple paper landscapes) settle into a pile near the stage's centre, stacked and overlapping, exactly where the seeded weights put them. Nothing moves to the rectangles yet. CAMERA: a slow push from the hills to the stage, ending with the stage filling the middle of frame and the hills misty behind it.",
+      "lines": [
+        {
+          "id": "L0714",
+          "text": "Only one demo learns: the learned gallery. From random weights, it learns to place the photos on rectangles you sketch.",
+          "direction": "brighter, the mood lifting with the landscape; a small amused lift on 'random weights'; 'rectangles you sketch' warm, an invitation"
+        }
+      ],
+      "beats": [
+        {
+          "id": "stage",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "the paper wipe completes; misty hills and the stage"
+        },
+        {
+          "id": "counters",
+          "at": {
+            "line": "L0714",
+            "word": "learned",
+            "edge": "start"
+          },
+          "what": "three brass counters click up on the booth's apron"
+        },
+        {
+          "id": "rects",
+          "at": {
+            "line": "L0714",
+            "word": "sketch",
+            "edge": "start"
+          },
+          "what": "the narrator's hands place the ten Story-preset rectangles"
+        },
+        {
+          "id": "pile",
+          "at": {
+            "line": "L0714",
+            "word": "random",
+            "edge": "start"
+          },
+          "what": "ten 0.18 × 0.18 photo squares settle in a pile near the centre"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "misty hills (kit mistyHills, backdrop only)",
+        "5:4 paper stage on trestles",
+        "ten cut-paper rectangles (Story preset)",
+        "ten small photo squares",
+        "three brass counters"
+      ],
+      "onScreenText": [
+        {
+          "kind": "place",
+          "text": "THE LEARNED GALLERY · 14 OCT 2026",
+          "beat": "stage"
+        },
+        {
+          "kind": "label",
+          "text": "244 weights · 6,320 operations · 8 layers",
+          "beat": "counters"
+        },
+        {
+          "kind": "label",
+          "text": "seeded random start: every photo a small square",
+          "beat": "pile"
+        }
+      ],
+      "music": {
+        "cue": "ch07-gallery",
+        "note": "A new, lighter figure for the gallery: an open, pastoral texture over a soft pulse, still wooden and paper (marimba-like, muted), never bells. Three small detent clicks for the counters; a soft settling cluster for the pile. Intensity 3."
+      },
+      "claims": [
+        "DG04",
+        "DG05",
+        "DG06",
+        "DG14",
+        "DG09"
+      ]
+    },
+    {
+      "id": "ch07-s07",
+      "kind": "scene",
+      "setting": "beside the gallery stage · a small clerk with a seating chart · dawn",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 1.1,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: who goes where is not learned. At the stage's left edge stands the seating clerk (cast seating-clerk: small, sleeve garters, round spectacles, clipboard as the seating chart), drawn smaller than any human figure so he reads as part of the machine, in plain black ink with no glow at all (ordinary JavaScript, outside the network). On 'Before' he lifts his clipboard; on 'pairs' he runs his pencil down the chart and a fine dotted thread springs from each of the ten rectangles to one photo in the pile, each pairing drawn in turn (a min-cost assignment; the big hero rectangle is paired like any other). On 'where' the network's copper threads behind the stage glow faintly: the photos are tugged a hair toward their paired rectangles. On 'who' the clerk taps the chart once and the dotted threads hold. CAMERA: a two-shot, the clerk in the foreground left, the stage behind and right; a small rack focus from clerk to stage on 'where', and back on 'who'.",
+      "lines": [
+        {
+          "id": "L0715",
+          "text": "Before each step, plain JavaScript pairs each photo with a rectangle. The network learns where. JavaScript decides who.",
+          "direction": "neat and crisp, a teacher drawing a clean line; stress 'where' and 'who' as a pair"
+        }
+      ],
+      "beats": [
+        {
+          "id": "clerk",
+          "at": {
+            "line": "L0715",
+            "word": "Before",
+            "edge": "start"
+          },
+          "what": "the clerk lifts his clipboard"
+        },
+        {
+          "id": "pair",
+          "at": {
+            "line": "L0715",
+            "word": "pairs",
+            "edge": "start"
+          },
+          "what": "dotted threads spring from each rectangle to one photo, in turn"
+        },
+        {
+          "id": "where",
+          "at": {
+            "line": "L0715",
+            "word": "where",
+            "edge": "start"
+          },
+          "what": "rack focus to the stage; copper threads glow; photos tugged a hair toward their rectangles"
+        },
+        {
+          "id": "who",
+          "at": {
+            "line": "L0715",
+            "word": "who",
+            "edge": "start"
+          },
+          "what": "rack back; the clerk taps the chart; the dotted pairings hold"
+        }
+      ],
+      "cast": [
+        "seating-clerk"
+      ],
+      "props": [
+        "clipboard seating chart",
+        "dotted pairing threads",
+        "gallery stage",
+        "network threads behind the stage"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "min-cost assignment · ordinary JavaScript · before every step",
+          "beat": "pair"
+        }
+      ],
+      "music": {
+        "cue": "ch07-gallery",
+        "note": "The gallery figure continues; a dry pencil-tick for each pairing (ten quick ticks, quiet), then a small two-chord cadence on 'where' / 'who'. Intensity 3."
+      },
+      "claims": [
+        "DG09"
+      ]
+    },
+    {
+      "id": "ch07-s08",
+      "kind": "plate",
+      "setting": "the Huber clamp on a parchment plate · the gallery's gradient for one output bias · dawn",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 0.6,
+      "holdAfter": 2.9,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: far-off photos vote; they don't shout. TEACHING MACHINE: the Huber clamp (art department 24), inked on parchment. A horizontal brass bar across the plate is the 'left' output bias, b, with a pointer on a scale reading 0.5. Below it hang twenty small springs, two per rectangle (each rectangle's left edge and right edge, because this one bias moves both): each spring runs from the bar down to a tiny photo edge, and its stretch is that edge's error. On 'pull' the springs tension; each has a brass collar that stops its pull at 0.08. On 'capped' the long springs (the photos far from their sketches) hit their collars with a click and stop pulling harder, however far they stretch: a spring three times longer pulls no harder than one barely past 0.08. The formula plate inks in beneath on the same beat. On 'vote' the pulls add on the bar like votes on a tally: a small net tug to one side. Then (beat 'adam', on 'shout') a single step: the pointer moves from 0.5 to about 0.492, one notch, the size of Adam's first step whatever the pull's size; the step is inked on the plate, labelled derived. CAMERA: locked on the plate, a slight push on the springs at 'capped'.",
+      "lines": [
+        {
+          "id": "L0716",
+          "text": "Each photo's edges pull toward its rectangle, but every pull is capped.",
+          "direction": "measured, explaining the spring collars",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0717",
+          "text": "Far-off photos vote. They don't shout.",
+          "direction": "the chapter's aphorism: dry and warm, a beat between the two sentences"
+        }
+      ],
+      "beats": [
+        {
+          "id": "springs",
+          "at": {
+            "line": "L0716",
+            "word": "pull",
+            "edge": "start"
+          },
+          "what": "twenty edge springs tension under the bias bar"
+        },
+        {
+          "id": "cap",
+          "at": {
+            "line": "L0716",
+            "word": "capped",
+            "edge": "start"
+          },
+          "what": "long springs hit their 0.08 collars (click) and pull no harder; formula inks in"
+        },
+        {
+          "id": "vote",
+          "at": {
+            "line": "L0717",
+            "word": "vote",
+            "edge": "start"
+          },
+          "what": "the capped pulls add on the bar like votes; a small net tug"
+        },
+        {
+          "id": "adam",
+          "at": {
+            "line": "L0717",
+            "word": "vote",
+            "edge": "start",
+            "offset": 0.3
+          },
+          "what": "one step: the bias pointer moves from 0.5 to about 0.492"
+        }
+      ],
+      "props": [
+        "brass bias bar with scale (b = 0.5)",
+        "twenty edge springs with 0.08 collars",
+        "tiny photo edges",
+        "parchment plate"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "∂L/∂b = (1/40) Σ [clip(e_left) + clip(e_right)] · clip ±0.08",
+          "beat": "cap"
+        },
+        {
+          "kind": "equation",
+          "text": "Adam: b 0.5 → ≈ 0.492 (derived)",
+          "beat": "adam"
+        }
+      ],
+      "music": {
+        "cue": "ch07-gallery",
+        "note": "Spring creaks as soft paper-and-wire sounds; each collar stop a small dry click (eight or so in a cluster). On 'vote' a gentle tally of woodblock taps; on the step, a single ratchet click. Intensity 3."
+      },
+      "claims": [
+        "DG07",
+        "DG26",
+        "DG27",
+        "DG08"
+      ]
+    },
+    {
+      "id": "ch07-s09",
+      "kind": "scene",
+      "setting": "the gallery stage among misty hills, training live · dawn",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "leadIn": 2,
+      "holdAfter": 2.5,
+      "minDuration": 9.5,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: learning, seen as unfolding; mostly music. Back to the stage among the misty hills. At 0.5 s the ten photos begin to fan out of the pile toward their paired rectangles, growing and sliding, over about two seconds (the real first fit for the Story preset is 630 to 750 steps at 600 steps a second), then settling into place with small corrections. Under the stage, on the booth's apron, a paper loss chart draws its curve left to right as the photos move. The curve's shape must be the real one: computed by running the gallery's own trainer in the clone (Story preset, default settings, seed 0x517a9e; record the command and output as the source); if it cannot be run, draw the chart with no values on it. Behind the stage, the front ridge of the mistyHills kit IS that same measured loss curve, cut in paper (training step left to right, loss as height; not the kit's closed-form ridge), and the kit's lantern-bearing traveller walks it in step with the step counter, so his descent is the gallery's own descent, the lantern clearing a pool in the fog. If the trainer cannot be run, there is no traveller and the hills are backdrop only. The step counter on the apron runs up. CAMERA: a slow, steady pull back from the stage until the hills, the traveller (if drawn) and the stage share the frame. Hold on the settled gallery.",
+      "lines": [
+        {
+          "id": "L0718",
+          "text": "Six hundred steps a second, through the program's own backward pass.",
+          "direction": "quiet, letting the picture do the work; spoken over the photos in motion"
+        }
+      ],
+      "beats": [
+        {
+          "id": "train",
+          "at": {
+            "shotTime": 0.5
+          },
+          "what": "photos begin to fan out of the pile; the loss chart starts drawing"
+        },
+        {
+          "id": "traveller",
+          "at": {
+            "line": "L0718",
+            "word": "steps",
+            "edge": "start"
+          },
+          "what": "the traveller, on the loss-curve ridge, keeps pace with the step counter (only if the trainer run exists)"
+        },
+        {
+          "id": "settle",
+          "at": {
+            "line": "L0718",
+            "edge": "end",
+            "offset": 1.2
+          },
+          "what": "photos settle into their rectangles; the chart flattens; the pull back completes"
+        }
+      ],
+      "props": [
+        "gallery stage",
+        "ten photos fanning to their rectangles",
+        "paper loss chart (real curve)",
+        "step counter",
+        "misty hills: front ridge cut to the measured loss curve, lantern-bearing traveller walking it (only if the trainer run exists)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "600 steps a second · Story: first fit in 630–750 steps",
+          "beat": "train"
+        }
+      ],
+      "music": {
+        "cue": "ch07-gallery",
+        "note": "The film's most open stretch so far: about ten seconds of music carrying the unfolding. The gallery figure blossoms, its soft pulse quickening slightly as the photos fan out, then easing as they settle; a small resolved cadence as the chart flattens. Wooden and paper timbres only. Intensity 4, easing to 3."
+      },
+      "claims": [
+        "DG06",
+        "DG10",
+        "DG01"
+      ]
+    },
+    {
+      "id": "ch07-s10",
+      "kind": "scene",
+      "setting": "the gallery at a desk lamp · the snapping fix, 13 to 14 October 2026 · evening",
+      "era": "2020s",
+      "mood": "duskRose",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: the rejected shortcut. The light cools to duskRose. A plain desk under a lamp, the gallery stage in miniature on it; Cheng's hands (cast author-hands, framed at the wrists, at a logo-less laptop) rest at the keyboard. On 'fix' a brass ruler with a row of notches slides in by itself along a paper groove from frame right, labelled in small cut letters 'snap to grid · ordinary code' (no hand holds it; the first answer's author is not shown). On 'snapped' the ruler presses down on the sketch: the ten cut-paper rectangles (the sketch, not the photos) clack onto the ruler's notches, a perfect grid in one stroke, with no learning involved. On 'Cheng' one of his hands lifts from the keys and rests flat on the ruler (the rig's 'pause' action); on 'spirit' the ruler slides back out along its groove, and the sketched rectangles loosen back to where the hand drew them. Beside the laptop a small lamplit name card appears, attribution only (his words are spoken, not set on screen). After the line (beat 'slider') a small paper slider labelled 'Misalignment penalty' rises beside the stage and is set to 4%; the photos drift into line on their own, slowly, over two seconds: no code moves them (DG13); training lowers the penalty. CAMERA: a close two-shot of the hands and the stage; a gentle push to the slider at the end.",
+      "lines": [
+        {
+          "id": "L0719",
+          "text": "An early fix snapped the sketch to a grid, in ordinary code. Cheng turned it down: “the spirit of the gallery is to learn something.”",
+          "direction": "affectionate; a light touch on 'in ordinary code'; a small pause after 'turned it down', then read the quotation in a plain, unforced voice, no imitation of anyone"
+        }
+      ],
+      "beats": [
+        {
+          "id": "ruler",
+          "at": {
+            "line": "L0719",
+            "word": "fix",
+            "edge": "start"
+          },
+          "what": "a notched brass ruler slides in along a groove, unheld"
+        },
+        {
+          "id": "snap",
+          "at": {
+            "line": "L0719",
+            "word": "snapped",
+            "edge": "start"
+          },
+          "what": "the ruler presses down on the sketch; the rectangles clack onto its notches"
+        },
+        {
+          "id": "decline",
+          "at": {
+            "line": "L0719",
+            "word": "Cheng",
+            "edge": "start"
+          },
+          "what": "one of Cheng's hands lifts from the keys and rests on the ruler"
+        },
+        {
+          "id": "card",
+          "at": {
+            "line": "L0719",
+            "word": "spirit",
+            "edge": "start"
+          },
+          "what": "the ruler withdraws; the sketched rectangles loosen; his lamplit card appears"
+        },
+        {
+          "id": "slider",
+          "at": {
+            "line": "L0719",
+            "edge": "end",
+            "offset": 0.2
+          },
+          "what": "the Misalignment penalty slider rises, set to 4%; photos drift into line on their own; the README card inks"
+        }
+      ],
+      "cast": [
+        "author-hands"
+      ],
+      "props": [
+        "desk lamp",
+        "logo-less laptop",
+        "miniature gallery stage",
+        "notched brass ruler in a paper groove, 'snap to grid · ordinary code'",
+        "lamplit name card",
+        "Misalignment penalty slider"
+      ],
+      "onScreenText": [
+        {
+          "kind": "nameCard",
+          "text": "Cheng Lou · in the lab's gallery notes",
+          "beat": "card"
+        }
+      ],
+      "music": {
+        "cue": "ch07-gallery",
+        "note": "The gallery figure turns tender and slows. The ruler's snap is a hard, too-neat clack; when it withdraws, the music loosens with the photos. Under the slider the figure climbs back gently as the photos find their line by themselves. Intensity 2."
+      },
+      "claims": [
+        "DG13",
+        "DG07"
+      ]
+    },
+    {
+      "id": "ch07-s11",
+      "kind": "scene",
+      "setting": "the copper line, tag 10 still hanging · what learns, and what is still a dream · dusk",
+      "era": "2020s",
+      "mood": "duskRose",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: honest scope. Back on the copper line at dusk, tag 10 hanging unstruck from s05, the red pencil resting on the post. On 'fair' the gallery stage, now small at frame left, is shown plain, with no card (the narration says what it is). On 'unfreeze' a small brass panel of five knobs drops in on threads beside it (lab/drag-knobs: five hand-written design numbers of an app shell lifted into cells); each knob turns once. On 'drag' a strip of 25 small drag-frame cards slides out beneath the knobs, all grey: a stand-in for the frames that moved, drawn to scale (one card per 4%). On 'step' every knob turns one notch together (a single gradient step) and 16 of the cards flip, left to right on twos, to a solved copper face (63.6%); 6 cards stay grey, each with a tiny brass slope gauge whose needle lies flat at 0 (24.6%, every slope zero from the start); the last 3 stay plain grey, moved but not solved. The label sets beneath the strip on the flip. The narration speaks only the two-in-three; the strip and its label carry the rest. On 'network' a small question-mark tag swings in on a slack thread hanging from tag 10 itself (Device 1: a slack thread with a question mark = an aspiration nobody has tested), carrying a plain label: the README's second use-case, not attempted in the repo. On 'attempted' the red-pencil hand lifts the pencil from the post, hovers over the question tag, and lowers it again without writing: nothing to doubt yet, because it has not been tried. On 'question' the slack thread sways once and stills. CAMERA: a slow drift left to right along the line, from the gallery and knobs to the question tag. TAG-LINE STAGING (meta staging.tagLine): BY THE GALLERY: the line crosses in front of the learned gallery's stage at 56%, the valves' dark shapes below it; the pencil rests on the stage's proscenium post.",
+      "lines": [
+        {
+          "id": "L0720",
+          "text": "To be fair, that's a small generic network, not a hand-written program unfrozen.",
+          "direction": "candid, no apology in it; 'To be fair' as the narrator's own honesty",
+          "pauseAfter": 0.5
+        },
+        {
+          "id": "L0720a",
+          "text": "The lab did unfreeze one app's five design numbers to follow a drag. One gradient step solved nearly two in three moving frames.",
+          "direction": "brighter, a small turn toward the good news; plain on 'five design numbers'; let 'nearly two in three' land on the copper cards",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0721",
+          "text": "A frozen program trained end to end inside a text-writing network, like nanoGPT? Not attempted. It hangs as a question.",
+          "spoken": "A frozen program trained end to end inside a text-writing network, like nano G P T? Not attempted. It hangs as a question.",
+          "direction": "curious, open; 'Not attempted' plain and unembarrassed; the last sentence soft"
+        }
+      ],
+      "beats": [
+        {
+          "id": "scope",
+          "at": {
+            "line": "L0720",
+            "word": "fair",
+            "edge": "start"
+          },
+          "what": "the small gallery stage at frame left, plain"
+        },
+        {
+          "id": "knobs",
+          "at": {
+            "line": "L0720a",
+            "word": "unfreeze",
+            "edge": "start"
+          },
+          "what": "the five-knob drag-knobs panel drops in; each knob turns once"
+        },
+        {
+          "id": "strip",
+          "at": {
+            "line": "L0720a",
+            "word": "drag",
+            "edge": "start"
+          },
+          "what": "a strip of 25 grey drag-frame cards slides out beneath the knobs"
+        },
+        {
+          "id": "flip",
+          "at": {
+            "line": "L0720a",
+            "word": "step",
+            "edge": "start"
+          },
+          "what": "one notch on every knob: 16 cards flip to solved copper; 6 stay grey with flat slope gauges reading 0; the label sets"
+        },
+        {
+          "id": "qtag",
+          "at": {
+            "line": "L0721",
+            "word": "network",
+            "edge": "start"
+          },
+          "what": "a question-mark tag on a slack thread swings in from tag 10, with its plain label"
+        },
+        {
+          "id": "pencil",
+          "at": {
+            "line": "L0721",
+            "word": "attempted",
+            "edge": "start"
+          },
+          "what": "the red pencil hovers over the question tag and lowers without writing"
+        },
+        {
+          "id": "hang",
+          "at": {
+            "line": "L0721",
+            "word": "question",
+            "edge": "start"
+          },
+          "what": "the slack thread sways once and stills"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand"
+      ],
+      "props": [
+        "copper line",
+        "tag 10 (unstruck)",
+        "red pencil",
+        "small gallery stage",
+        "five-knob brass panel (drag-knobs)",
+        "strip of 25 drag-frame cards (16 solved copper, 6 grey with flat slope gauges, 3 plain grey)",
+        "question-mark tag on a slack thread"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "one step: 63.6% of moving frames solved · 24.6% began with every slope 0",
+          "beat": "flip"
+        },
+        {
+          "kind": "label",
+          "text": "the README's second use-case · not attempted in the repo",
+          "beat": "qtag"
+        }
+      ],
+      "music": {
+        "cue": "ch07-gallery",
+        "note": "The gallery figure thins to two voices. Under the question tag, the both-branches gate drifts back to 0.5 (the unresolved interval of the contested tag) and holds; the pencil's hover gets one held breath of silence, no stroke. Intensity 2."
+      },
+      "claims": [
+        "DG06",
+        "DG20",
+        "DG22",
+        "PJ04"
+      ]
+    },
+    {
+      "id": "ch07-s12",
+      "kind": "scene",
+      "setting": "the X-ray desk · HandwiredOS, translucent · a single valve drawn dark inside it",
+      "era": "2020s",
+      "mood": "duskRose",
+      "leadIn": 1.4,
+      "holdAfter": 1.2,
+      "minDuration": 4.2,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: X-ray desk (Device 3, component 5 of 5), silent, like the other four. CAMERA: locked-off wide on the HandwiredOS desk, more translucent than at the end of ch06: inside it the source table's 234 pigeonholes, the ReGLU ramps and 0/1 shutters, the 130-frame loom and the host clockwork's ratchet all glow faintly. At 0.6 s, with one relay clack, the fifth component appears at the desk's centre: a single ReGLU valve, the same one from this chapter's plates, but drawn DARK, black ink with no rim light, its backward channel unlit. At 2.0 s (beat none) the faint backward glow that had begun to gather at the valve goes out. At 3.0 s (beat still) the camera holds; nothing in the desk moves except the haze. No new on-screen text.",
+      "lines": [],
+      "beats": [
+        {
+          "id": "valve",
+          "at": {
+            "shotTime": 0.6
+          },
+          "what": "relay clack; a single dark valve appears inside the translucent desk"
+        },
+        {
+          "id": "none",
+          "at": {
+            "shotTime": 2
+          },
+          "what": "the faint backward glow at the valve goes out"
+        },
+        {
+          "id": "still",
+          "at": {
+            "shotTime": 3
+          },
+          "what": "hold; only the haze moves"
+        }
+      ],
+      "props": [
+        "HandwiredOS desk (X-ray)",
+        "source table (lit)",
+        "ReGLU ramps and shutters (lit)",
+        "the loom's 130 frames (lit)",
+        "host clockwork ratchet (lit)",
+        "a single valve drawn dark (newly placed)"
+      ],
+      "onScreenText": [],
+      "music": {
+        "cue": "ch07-xray",
+        "note": "Room tone and a single dry relay clack on the valve; the both-branches lines at a whisper, the gate fully closed on the upper line (the struck branch still playing underneath, inaudibly low), then fade to the cold opening of ch08. Intensity 1."
+      },
+      "claims": [
+        "OS01",
+        "PJ20"
+      ]
+    }
+  ]
+}

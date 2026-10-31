@@ -1,0 +1,58 @@
+{
+  "lens": "sound",
+  "round": 4,
+  "scores": { "accuracy": 8.5, "depth": 7.5, "clarity": 8, "story": 8, "visual": 8, "sync": 8.5, "sound": 8.5, "curiosity": 7.5 },
+  "round3_followup": {
+    "ending-no-clear-air": "FIXED. 'mistakes' ends at 64.62. The last chord strikes at 64.77 and the music-box D6 answers at 65.67 (master -22.9 LUFS M at 65.5). The cue decays to -39.6 M by 66.5, and the 0.8 s fadeOut starts at 66.95, 2.18 s after the strike (QA fadeAfterStrike passes, min 1.6). The film ends at 67.75 on a held title card. The last word, the last chord and the fade are now three separate events, about 3.1 s apart in total.",
+    "m01": "FIXED. (1) The chord now rings with a 2.2 s release and gets its single answer. (2) The nudge plucks: at 36.0-36.5 the raw cue is about -22 M, so the ducked music in the master is about -25.5 against speech at about -13.7, roughly 11-12 dB under. That is in the requested 10-11 dB band within measuring error, where round 3 measured 15-16 dB.",
+    "level-offsets-compressed": "FIXED. Master peaks per line (LUFS M): L0101 -17.0, L0102 to L0107 -11.9 to -12.0, L0108 -13.4. The quiet opening sits 5 dB under and the reflective close sits 1.4 dB under, as directed. The new QA lineLevels check passes within 0.5 dB.",
+    "L0107": "FIXED. The pre-gap is 0.95 s (0.99 s of measured silence). The M1 A5 lands at 40.57, 0.54 s before 'Wrong'. The held breath before 'right' is 1.03 s, filled by the A7 and the cello at about -28 M, so it never goes dead.",
+    "L0105b": "FIXED, by editorial gap trims rather than a new take. No gap inside 'Each lit cell tugs' is over 0.12 s (0.12/0.08/0.12). The 0.34 s pause before 'the total decides' is kept. QA clipEdges passes, so the trims do not click.",
+    "stt-qa-blind": "FIXED as data. narration/stt.json holds scribe_v1 records for L0104 and L0108, with sigs, and QA stt passes. The human stress sign-off is still pending (QA 'listening' warns), see below.",
+    "no-diegetic-sound": "Still absent. It was optional and deferred twice, and is carried forward as optional."
+  },
+  "measurements": {
+    "master": "-15.9 LUFS I, -2.4 dBTP, LRA 4.2, linear gain only. Sub-40 Hz at -52.2 dB RMS. 40-120 Hz at -33.9 against the 250-3500 Hz band at -22.6, so the contrabass and piano weight is clean.",
+    "duck": "3.12 dB, calibrated against a 3 dB target.",
+    "speechBandMargin": "Estimated per word as voice minus music in 250 Hz-3.5 kHz, with the music at the cue's -3 dB gain and a 3 dB duck. Median 21.7 dB. Minimum 8.8 dB, on the unstressed 'it' at 25.88 and 31.53. Every stressed word is at least 11 dB clear ('right' 14.5, 'mistakes' 15.3).",
+    "dynamicArc": "Loudest non-speech moment: the 'right' bloom, -16.7 M at 46.9. The opening swell is now second at -18.1 at 4.6, so the arrival outranks the overture, which round 1's critic had asked for.",
+    "pauses": "Silences in the narration stem: after 'rule' 0.80 s; before 'Wrong' 0.99 s; before 'right' 0.95 s; try-5 air 2.19 s; tail 3.08 s."
+  },
+  "issues": [
+    {
+      "id": "L0105",
+      "owner": "line",
+      "severity": "minor",
+      "problem": "Round 3's line fix for L0105 did not land. The planted question still gets only a 0.74 s word gap (0.80 s of silence at -45 dB) between 'rule' (ends 24.88) and 'Show' (25.62). The direction and the round-3 verdict asked for 1.1-1.2 s. insertGaps.rule is 0.32, but the clip's own gap is only about 0.42 s, so the total falls short, and it is now slightly shorter than round 3's 0.84 s.",
+      "fix": "Raise story/script.json L0105 insertGaps.rule from 0.32 to about 0.68, for about a 1.1 s gap, and re-lock. This adds about 0.36 s, which would put the film at about 68.1 s, over the 68 s cap. Pay for it by taking L0108's preGap from 2.2 to 2.0 s (the verdict's stated floor for the try-5 air) and about 0.16 s from the bookend hold. After the trim the fade still starts about 2.0 s after the last strike, against a 1.6 s minimum. Then shift m01's s03 onsets after 25.6 s by the new offset; the celesta A5 at 25.17 stays inside the widened gap. Also re-anchor ch01-s03's beats. Do not re-narrate."
+    },
+    {
+      "id": "listening-signoff",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "STT confirms the words but not the stress. voice/voice.json listening entries for Rosenblatt (ROH-zen-blat) and Papert (PAP-ert, from the 'Pappert' respelling) are still 'pending', and QA 'listening' warns. This is the last unverified pronunciation risk in a film that names two real people.",
+      "fix": "A human plays narration/clips/L0104.wav and narration/clips/L0108.wav and runs npm run film:voice -- signoff --slug perceptron-short --term Rosenblatt --by <name>, then the same with --term Papert. If either is stressed wrong, re-narrate only that line with a new seed and repeat the STT round trip. The pipeline cannot do this alone, so surface it to the user at the end of the loop rather than blocking on it."
+    },
+    {
+      "id": "score-analysis-stale",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "score/analysis/summary.json is from the old clock (cueSeconds 65.8333, duration 71.8333, -24.3 LUFS). score/analysis/m01.json and the render are current (67.75 + 6 s, -25.6 LUFS). The revision-9 note in cues.json gives -25.0 LUFS I. Nothing audible is affected, but a reviewer or the critic reading the summary is looking at the wrong cue.",
+      "fix": "Have film-score's analyze step rewrite summary.json whenever it rewrites a cue's analysis json, and copy the measured I/LRA/TP into cues.json notes from the analysis output instead of hand-typing them. Add a QA check that summary.json cueSeconds equals the timeline duration."
+    },
+    {
+      "id": "no-diegetic-sound",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Carried forward, optional. The soundtrack is still voice plus score while the picture shows fluorescent tubes, motors turning dials and a needle crossing a threshold. The score's pizz figures stand in well for the mechanism, so this is polish, not a defect.",
+      "fix": "Optional. Add a sparse foley stem at -30 LUFS or below. Use a faint tube hum under ch01-s02 from about 6 s, ducked under speech, and 2-3 soft servo ticks on the ch01-s03 nudge updates, placed in word gaps (about 35.45, 41.65 and 42.55). Keep 'right' and the try-5 flare purely musical."
+    }
+  ],
+  "best_moments": [
+    "The ending: 'mistakes' ends at 64.62, the D-major chord strikes 0.15 s later, a lone music-box D6 answers at 65.67, and the cue sinks to about -40 dB before a 0.8 s fade over the held title card. It now resolves rather than cuts off.",
+    "The turn in L0107. A 0.99 s breath before 'Wrong' carries M1's rising D5-A5. The low end drops out across 40.5-45.5 in the spectrogram, so the room thins. Then comes a 1.03 s held breath on A7, and 'right' arrives at the same weight as 'Wrong' (-17.3 against -17.5 dB RMS), with the bloom opening exactly as the word ends. This is the film's loudest non-speech moment, as it should be.",
+    "Line dynamics finally land: the storyteller opening sits 5 dB under the body, and the reflective close 1.4 dB under. The mix keeps a calibrated 3.1 dB duck, linear gain with no master limiting, -15.9 LUFS I and -2.4 dBTP.",
+    "The harmony carries the history. The withheld third gives way to F# only on 'right'. The 'wrong' E6-F6 cell is quoted once under the XOR plate over a held Bb. Bb opens to D on 'Its descendants'.",
+    "Rhythmic anchoring: the 'tugs' pizz D2 lands on the word at 29.52, the sum climbs to A3 on 'total', and the nudge plucks are now audible at about 11 dB under the voice."
+  ]
+}

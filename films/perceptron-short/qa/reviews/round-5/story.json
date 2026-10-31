@@ -1,0 +1,60 @@
+{
+  "reviewer": "story",
+  "lens": "STORY & CURIOSITY: arc, stakes, emotion, pacing, memorable images, questions planted and paid off",
+  "round": 5,
+  "previousRounds": "I checked the round-4 issues against render/film.mp4 (67.75 s; frames pulled at 2.8, 22.4, 22.7, 25.2, 55.4, 56.5, 57.2, 57.9, 58.6, 59.4, 60.0, 60.3, 60.6, 61.0, 61.5, 61.8, 62.3, 62.8, 63.2, 63.3, 63.8 and 64.5 s), the three sheets and narration/timeline.json. FIXED: (1) The L0105 silence after 'rule' is now 1.11 s ('rule' ends 24.88, 'Show' starts 25.99). The empty retina and celesta A5 hold it, and the planted question finally lands. (2) On 'Frank' (20.83 s), Rosenblatt faces camera-left with his near arm open toward the glowing eye, and the name card sits by the eye stand. Man and machine now share the frame. (3) The XOR plate is larger, about 38% of the frame width, the gauge labels no longer collide with it, and every try box has a two-dot case glyph. (4) The iris now starts after 'faded'. PARTLY FIXED: (5) Lineage. The wall plaques are gone, and a 1-to-3-layer node-and-dial silhouette now threads into the eye from the left window. During 'descendants' (60.26-61.8 s), though, the camera is in close-up, so only a sliver of dials shows at the left frame edge. The full diagram reads only at about 62.3 s, during the pull-back, as a thin line drawing in the window that is gone by 63.2 s. (6) s01 now has the diagonal glint across the eye on 'see'. The stand, desk, lamp and all three racks still read clearly at 2.8 s (fifth round). (7) The 'years' key-light dim is about 10-13% (Y-avg 39.3 at 57.2 s, 35.6 at 57.9 s, 34.2 at 58.6 s). Round 4 asked for 25-30%. REGRESSED: the XOR plate has lost every caption. The round-1 shot critic removed 'one lit, not both', 'never settles' and '→ the 1970s' as text not in the script (see ch01-s03.tsx:66 and :1023). The payoff of the film's second question now shows only the bare word 'XOR', and that rule is never defined. NOT FIXED: the s03 iris still clips the name card to 'SENBLATT' at 22.7 s.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8.5,
+    "visual": 8,
+    "sync": 8.5,
+    "sound": 8,
+    "curiosity": 8
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "Regression on the film's second payoff. On 'showed just how simple' (55.18-56.94 s), the XOR plate's only text is the word 'XOR'. 'one lit, not both' (the task's definition), 'never settles' and 'one layer of dials' were all removed by the shot's round-1 critic as unscripted text. A first-time viewer sees a jargon acronym and a row of case glyphs with ✓/✗ marks, but not what the right answer for each case was. They cannot tell why ✓●○ is wrong, or that the machine is chasing a target it can never reach. The question the film plants ('simple compared with what?') is now answered by a label rather than an idea. In round 4 the plate was legible and this was a best moment.",
+      "fix": "Add the plate text to ch01-s03's scripted onScreenText in story/script.json so later critics keep it: 'XOR · one lit, not both' as the title, with 'one layer of dials' as a small second line (claim limit-linear caveat). Then restore both on the plate as it enters (about 55.2 s), and bring 'never settles' in on 'simple' (56.40 s) under the try row in the same face. Keep the honest choice of no 'best: n of 4'. Optionally put the target glyph in each try box (for example ●○→lit, ●●→dark) so the ✓/✗ marks are self-explaining even without reading. Re-sheet at 55.4, 56.5 and 57.9 s."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The 'descendants' image still misses its word. While 'Its descendants, today's neural networks' plays (59.95-62.6 s), the camera is in a close-up on Rosenblatt and the eye, so the lineage shows only as a cropped column of dials and one thread at the left frame edge (60.3-61.8 s). The full 1→2→3-layer silhouette is readable only from about 62.3 s, in the wider frame. There it is a thin line diagram set in the left window, and it is gone by 'still' (63.21 s). The film's last idea gets about one second of a small, faint image.",
+      "fix": "Either start the pull-back from the close-up on 'Its' (59.95 s) so the lineage is fully in frame by 'descendants' (60.26 s), or anchor the lineage to the close-up framing: stacked layer silhouettes directly behind and above the camera box, each larger and fainter, at least 30% of the frame height, threaded into the eye. Hold them through 'networks' (62.14-62.6 s) and fade them by 'still'. No modern specifics (claim lineage-mlp)."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "This is the fifth round. The glint on 'see' was added, but the camera stand, eye housing, desk, lamp and all three racks still read in clear silhouette at 2.8 s, under the title and the still-typing place stamp. As a result, s02's reveal ('Its eye… Behind it, wires, and racks of dials') again shows things the viewer has already seen, and 'Once, a machine learned to see' opens on a machine already in full view, not a rumour in the dark.",
+      "fix": "In s01, multiply the action-plane layer (stand, box body, desk, lamp, racks) to at most about 12% luminance, with no rim strokes, so it merges into the shadow under the blinds. Keep only the window shafts, the fog and the eye glint on 'see' (2.79 s). Raise the machine with the s02 crossfade. If art direction prefers the current look, the showrunner should close this explicitly as won't-fix rather than carry it to round 6."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s02",
+      "severity": "minor",
+      "problem": "The man's moment is now right (arm open to the eye on 'Frank'), but the s03 iris still closes through the name card. At 22.7 s it reads 'SENBLATT', and the 'psychologist' line is cut off. The one human in the film loses his name to the transition.",
+      "fix": "Centre the iris aperture on the eye stand, around x ≈ 1150 px at 1080p, where the card sits, so the card stays whole until the aperture closes past it. Alternatively, fade the card out from 22.3 s so it is gone before the iris edge reaches it."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The 'years' beat is still a whisper. The key light drops only about 10-13% across 'for years, interest faded' (Y-avg 39.3 at 57.2 s, 35.6 at 57.9 s, 34.2 at 58.6 s). The decline reads as gradual dusk, not a felt loss, before the iris takes it.",
+      "fix": "On 'years' (57.61 s), step the key down a clear 25-30% over 0.3 s (to about Y-avg 28) and hold it while the XOR row keeps ticking. Then start the iris on 'faded' (58.96 s) as it does now."
+    }
+  ],
+  "best_moments": [
+    "The planted mystery finally breathes. 'Nobody gave it the rule.' is followed by 1.11 s of silence over an empty retina, with a lone celesta note, before 'Show it a shape'. This is the question the rest of the film answers.",
+    "'Wrong, and wrong again, and then, quite suddenly... right' (41.5-46.6 s): try boxes fill with crosses, a held breath after 'suddenly', and the lantern flares on 'right' with the D-major bloom. Still the emotional peak, and earned.",
+    "Try 5's NOW/THEN (47.3 s): 'a new horizontal bar · said horizontal · RIGHT' over the ghost of try 1's WRONG. Learning is shown as before and after.",
+    "On 'Frank Rosenblatt' the psychologist turns and opens his arm to the glowing eye. Man and machine share the frame, and the name card stands by the eye.",
+    "The bookend: the amber theatre irises down to the learned bar on the retina, then match-dissolves to the night lab. Rosenblatt looks into the lit bar under the returning title, and the picture holds in clear air before the fade. 'Once, a machine learned to see' is paid off."
+  ]
+}

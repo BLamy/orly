@@ -1,0 +1,12 @@
+{
+  "base": "http://127.0.0.1:5220",
+  "checkedAt": "2026-09-30T06:37:41.021Z",
+  "books": 6,
+  "chapters": 19,
+  "captions": 150,
+  "recordedAssets": "all 19 available",
+  "desktopSeriesOrder": "passed",
+  "crossBookSidebar": "passed",
+  "mobileShelfAndReader": "passed",
+  "pageErrors": []
+}

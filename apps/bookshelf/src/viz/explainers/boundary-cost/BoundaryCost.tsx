@@ -148,25 +148,29 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the table dims for the verdict, then clears away for the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const packets = clamp01(syncU);
+  // the side notes give way to the "why" box, then unmount so nothing sits under it
+  const noteFade = 1 - clamp01(whyU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0.001 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* column headers */}
+          {/* column headers, aligned with their columns */}
           {tableU > 0 && (
             <g opacity={tableU}>
-              <text x={200} y={168} fill={colors.MUTED} fontSize={13} fontWeight={600}>
+              <text x={200} y={168} fill={colors.MUTED} fontSize={14} fontWeight={600}>
                 what you trade
               </text>
-              <text x={560} y={168} fill={colors.WARM} fontSize={13} fontWeight={700}>
+              <text x={410} y={168} fill={colors.WARM} fontSize={14} fontWeight={700}>
                 trusted (container)
               </text>
-              <text x={860} y={168} fill={colors.POSITIVE} fontSize={13} fontWeight={700}>
+              <text x={720} y={168} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                 sandbox (cross-origin)
               </text>
             </g>
@@ -181,18 +185,34 @@ function Frame({ s }: { s: SceneState }) {
               return (
                 <g key={r.feature} opacity={u}>
                   <rect x={190} y={y} width={900} height={48} rx={8} fill={colors.PANEL} opacity={0.88} stroke={r.pay ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={1} />
-                  <text x={210} y={y + 29} fill={colors.TEXT} fontSize={13} fontWeight={600}>
+                  <text x={210} y={y + 29} fill={colors.TEXT} fontSize={14} fontWeight={600}>
                     {r.feature}
                   </text>
-                  <text x={410} y={y + 29} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+                  <text x={410} y={y + 29} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                     {r.trusted}
                   </text>
-                  <text x={720} y={y + 29} fill={r.pay ? colors.NEGATIVE : colors.POSITIVE} fontSize={11.5} fontFamily="monospace">
+                  <text x={720} y={y + 29} fill={r.pay ? colors.NEGATIVE : colors.POSITIVE} fontSize={13} fontFamily="monospace">
                     {r.sandbox}
                   </text>
                 </g>
               );
             })}
+
+          {/* the wall between the two columns: the snapshot packets cross under it */}
+          {tableU > 0 && (
+            <line x1={700} y1={176} x2={700} y2={540} stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="6 6" opacity={0.6 * tableU} />
+          )}
+
+          {/* highlight the row the caption is talking about, on existing beat timings */}
+          {[
+            { row: 1, u: syncU * (1 - asyncU) },
+            { row: 0, u: asyncU * (1 - verdictU) },
+            { row: 3, u: verdictU * (1 - whyU) },
+          ].map((h) =>
+            h.u > 0 ? (
+              <rect key={h.row} x={185} y={185 + h.row * 58} width={910} height={58} rx={11} fill="none" stroke={colors.ACCENT} strokeWidth={2} opacity={h.u} />
+            ) : null
+          )}
 
           {/* snapshot packets streaming across (decorative, tied to syncU) */}
           {syncU > 0 &&
@@ -203,47 +223,50 @@ function Frame({ s }: { s: SceneState }) {
               return <rect key={i} x={x} y={548} width={14} height={10} rx={2} fill={colors.ACCENT} opacity={0.7 * (1 - Math.abs(phase - 0.5) * 1.4)} />;
             })}
           {syncU > 0.1 && (
-            <text x={200} y={556} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace" opacity={clamp01(syncU * 2)}>
+            <text x={200} y={556} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={clamp01(syncU * 2)}>
               VFSSnapshot → sandbox · syncFile on every write →
             </text>
           )}
         </Camera>
       </g>
+      )}
 
-      {/* async note — screen space */}
-      {asyncU > 0 && (
-        <g opacity={asyncU * mainOp * (1 - 0.7 * clamp01(whyU * 2))}>
+      {/* async note — screen space; gone once the "why" box arrives */}
+      {asyncU > 0 && noteFade > 0.001 && (
+        <g opacity={asyncU * mainOp * noteFade}>
           <rect x={200} y={568} width={520} height={44} rx={9} fill={colors.PANEL} opacity={0.95} stroke={colors.WARM} />
           <text x={224} y={596} fill={colors.WARM} fontSize={12.5} fontFamily="monospace" fontWeight={700}>
             sync runFile()  →  await execute()  ·  60s timeout, or rejected
           </text>
         </g>
       )}
-      {verdictU > 0 && (
-        <g opacity={verdictU * mainOp * (1 - 0.7 * clamp01(whyU * 2))}>
+      {verdictU > 0 && noteFade > 0.001 && (
+        <g opacity={verdictU * mainOp * noteFade}>
           <rect x={740} y={568} width={490} height={44} rx={9} fill={colors.PANEL} opacity={0.95} stroke={colors.SECONDARY} />
           <text x={764} y={596} fill={colors.SECONDARY} fontSize={12.5} fontFamily="monospace" fontWeight={700}>
             onConsole callback can’t cross → relayed as messages
           </text>
         </g>
       )}
-      {whyU > 0 && (
+      {whyU > 0 && mainOp > 0.001 && (
         <g opacity={whyU * mainOp}>
           <rect x={210} y={560} width={1020} height={58} rx={10} fill={colors.PANEL} opacity={0.97} stroke={colors.POSITIVE} />
-          <text x={236} y={588} fill={colors.POSITIVE} fontSize={13.5} fontWeight={700}>
+          <text x={236} y={588} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
             why the unsafe path still ships:
           </text>
-          <text x={236} y={608} fill={colors.MUTED} fontSize={12.5}>
+          <text x={236} y={608} fill={colors.MUTED} fontSize={13}>
             trusted code should pay none of this — the library makes you CHOOSE the danger, not stumble into it.
           </text>
         </g>
       )}
 
-      <g opacity={titleU * mainOp}>
-        <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
-          The price of the wall
-        </text>
-      </g>
+      {titleU > 0 && mainOp > 0.001 && (
+        <g opacity={titleU * mainOp}>
+          <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+            The price of the wall
+          </text>
+        </g>
+      )}
 
       {/* close */}
       {closeU > 0 && (

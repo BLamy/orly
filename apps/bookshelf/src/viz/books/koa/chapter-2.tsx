@@ -28,7 +28,7 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 // Layout — the array on the left, the onion target on the right.
 // ---------------------------------------------------------------------------
 
-const ARRAY_X = 235;
+const ARRAY_X = 300;
 const ARRAY_Y0 = 185;
 const ARRAY_DY = 100;
 const CARD_W = 280;
@@ -42,10 +42,18 @@ const RING_COLORS = [colors.ACCENT, colors.SECONDARY, colors.TEAL] as const;
 const chipPos = (i: number): { x: number; y: number } => ({ x: ONION.x, y: ONION.y - RINGS[i] });
 
 // camera marks
-const CAM_ARRAY: CameraState = { x: 340, y: 330, k: 1.45 };
+// framings keep the whole subject inside the stage and clear of the caption band (y > 630)
+const CAM_ARRAY: CameraState = { x: 400, y: 330, k: 1.4 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_RING: CameraState = { x: 850, y: 240, k: 1.5 };
-const CAM_CENTER: CameraState = { x: 850, y: 380, k: 1.65 };
+const CAM_RING: CameraState = { x: 850, y: 330, k: 1.2 };
+const CAM_CENTER: CameraState = { x: 850, y: 345, k: 1.3 };
+
+// the index counter sits left of the onion, clear of the outer ring
+const IDX_BOX = { x: 380, y: ONION.y - 40, w: 250, h: 80 } as const;
+
+// dispatch(0) entry: from a chip below-left, into the outer ring
+const ENTRY_FROM = { x: 540, y: 560 } as const;
+const ENTRY_TO = { x: 660, y: 452 } as const; // on ring 0
 
 export interface Scene {
   tl: Timeline;
@@ -160,7 +168,7 @@ export function buildScene(): Scene {
   tl.set(idxN, 0, 47.6);
   tl.set(idxN, 1, 48.4);
   tl.tween(guardU, 1, { at: 49.6, dur: 0.6, ease: ease.pop });
-  tl.tween(guardU, 0.2, { at: 52.0, dur: 1.0, ease: ease.move });
+  tl.tween(guardU, 0, { at: 52.0, dur: 1.0, ease: ease.move });
   tl.hold(52.6, 0.5);
 
   // — Beat 9 · the empty center —
@@ -223,11 +231,11 @@ const scene = buildScene();
 
 function CodeChip({ x, y, text, u, color }: { x: number; y: number; text: string; u: number; color?: string }) {
   if (u <= 0) return null;
-  const w = text.length * 7.4 + 22;
+  const w = text.length * 8.4 + 22;
   return (
     <g opacity={u}>
-      <rect x={x - w / 2} y={y - 13} width={w} height={26} rx={6} fill={colors.PANEL} stroke={color ?? colors.GRID} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={color ?? colors.MUTED} fontSize={12} fontFamily="monospace">
+      <rect x={x - w / 2} y={y - 14} width={w} height={28} rx={6} fill={colors.PANEL} stroke={color ?? colors.GRID} />
+      <text x={x} y={y + 5} textAnchor="middle" fill={color ?? colors.MUTED} fontSize={14} fontFamily="monospace">
         {text}
       </text>
     </g>
@@ -235,24 +243,24 @@ function CodeChip({ x, y, text, u, color }: { x: number; y: number; text: string
 }
 
 // one middleware card, morphing from its array slot onto its ring
-function MiddlewareCard({ i, enterU, foldP }: { i: number; enterU: number; foldP: number }) {
+function MiddlewareCard({ i, enterU, foldP, dim }: { i: number; enterU: number; foldP: number; dim: number }) {
   if (enterU <= 0) return null;
   const slot = { x: ARRAY_X, y: ARRAY_Y0 + i * ARRAY_DY };
   const chip = chipPos(i);
-  // sweep with a vertical lift so the cards arc over instead of sliding flat
+  // sweep with a low lift so the cards arc over instead of sliding flat, and stay below the compose chip
   const x = lerp(slot.x, chip.x, foldP);
-  const y = lerp(slot.y, chip.y, foldP) - 70 * Math.sin(Math.PI * foldP);
+  const y = lerp(slot.y, chip.y, foldP) - 36 * Math.sin(Math.PI * foldP);
   const w = lerp(CARD_W, 86, foldP);
   const h = lerp(CARD_H, 28, foldP);
   const c = RING_COLORS[i];
   return (
-    <g opacity={enterU} transform={`translate(${x}, ${y})`}>
+    <g opacity={enterU * dim} transform={`translate(${x}, ${y})`}>
       <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={8} fill={colors.PANEL} stroke={c} strokeWidth={1.4} />
-      <text x={0} y={foldP > 0.5 ? 4.5 : -8} textAnchor="middle" fill={c} fontSize={foldP > 0.5 ? 13 : 15} fontFamily="monospace" fontWeight={700}>
+      <text x={0} y={foldP > 0.5 ? 5 : -8} textAnchor="middle" fill={c} fontSize={foldP > 0.5 ? 14 : 15} fontFamily="monospace" fontWeight={700}>
         fn {i}
       </text>
       {foldP < 0.5 && (
-        <text x={0} y={16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={1 - foldP * 2}>
+        <text x={0} y={16} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={1 - foldP * 2}>
           async (ctx, next) =&gt; …
         </text>
       )}
@@ -277,66 +285,72 @@ export function Render({ s }: { s: SceneState }) {
   const stageDim = s.get(scene.stageDim);
   const closeU = s.get(scene.closeU);
 
-  // the bad card slides in and bounces off the array
+  // the bad card rolls in from the right and bounces off the array's right bracket
   const badT = badU; // 0..1: 0→0.55 approach, 0.55→1 bounce back
-  const badX = badT < 0.55 ? lerp(ARRAY_X - 320, ARRAY_X - 60, badT / 0.55) : lerp(ARRAY_X - 60, ARRAY_X - 300, (badT - 0.55) / 0.45);
+  const badX = badT < 0.55 ? lerp(700, 540, badT / 0.55) : lerp(540, 620, (badT - 0.55) / 0.45);
   const badVisible = badU > 0 && badU < 1;
 
   const idxDisplay = idxN >= 3 ? '3 — off the end' : String(Math.round(idxN));
+
+  // the array is fully gone once the cards have folded onto the rings
+  const arrayOp = arrayU * stageDim * (1 - clamp01(foldU * 2));
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- the array ---- */}
-        <g opacity={arrayU * stageDim * (1 - 0.75 * clamp01(foldU * 2))}>
-          <text x={ARRAY_X} y={ARRAY_Y0 - 78} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontFamily="monospace">
-            this.middleware = []
-          </text>
-          <CodeChip x={ARRAY_X} y={ARRAY_Y0 - 44} text="use(fn) → this.middleware.push(fn)" u={clamp01(cardsU)} />
-          {/* the bracket */}
-          <path
-            d={`M ${ARRAY_X - CARD_W / 2 - 22} ${ARRAY_Y0 - 55} h -14 V ${ARRAY_Y0 + 2 * ARRAY_DY + 55} h 14`}
-            fill="none"
-            stroke={colors.GRID}
-            strokeWidth={2}
-          />
-          <path
-            d={`M ${ARRAY_X + CARD_W / 2 + 22} ${ARRAY_Y0 - 55} h 14 V ${ARRAY_Y0 + 2 * ARRAY_DY + 55} h -14`}
-            fill="none"
-            stroke={colors.GRID}
-            strokeWidth={2}
-          />
-        </g>
-
-        {/* ---- the three middleware cards (array slots → rings) ---- */}
-        {[0, 1, 2].map((i) => (
-          <MiddlewareCard key={i} i={i} enterU={clamp01(cardsU - i)} foldP={clamp01(foldU * 1.9 - i * 0.45)} />
-        ))}
-
-        {/* ---- the non-function bounce ---- */}
-        {badVisible && (
-          <g>
-            <g transform={`translate(${badX}, ${ARRAY_Y0 + ARRAY_DY})`} opacity={0.9}>
-              <rect x={-70} y={-24} width={140} height={48} rx={8} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="5 4" />
-              <text x={0} y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
-                'not a function'
-              </text>
-            </g>
-            <CodeChip
-              x={ARRAY_X - 160}
-              y={ARRAY_Y0 + ARRAY_DY - 62}
-              text="TypeError: middleware must be a function!"
-              u={typeErrU}
-              color={colors.NEGATIVE}
+        {arrayOp > 0 && (
+          <g opacity={arrayOp}>
+            <text x={ARRAY_X} y={ARRAY_Y0 - 78} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontFamily="monospace">
+              this.middleware = []
+            </text>
+            <CodeChip x={ARRAY_X} y={ARRAY_Y0 - 60} text="use(fn) → this.middleware.push(fn)" u={clamp01(cardsU)} />
+            <text x={ARRAY_X} y={ARRAY_Y0 + 2 * ARRAY_DY + 80} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={clamp01(cardsU)}>
+              order matters: fn 0 runs first
+            </text>
+            {/* the bracket */}
+            <path
+              d={`M ${ARRAY_X - CARD_W / 2 - 22} ${ARRAY_Y0 - 40} h -14 V ${ARRAY_Y0 + 2 * ARRAY_DY + 55} h 14`}
+              fill="none"
+              stroke={colors.GRID}
+              strokeWidth={2}
+            />
+            <path
+              d={`M ${ARRAY_X + CARD_W / 2 + 22} ${ARRAY_Y0 - 40} h 14 V ${ARRAY_Y0 + 2 * ARRAY_DY + 55} h -14`}
+              fill="none"
+              stroke={colors.GRID}
+              strokeWidth={2}
             />
           </g>
         )}
 
+        {/* ---- the three middleware cards (array slots → rings) ---- */}
+        {[0, 1, 2].map((i) => (
+          <MiddlewareCard key={i} i={i} enterU={clamp01(cardsU - i)} foldP={clamp01(foldU * 1.9 - i * 0.45)} dim={stageDim} />
+        ))}
+
+        {/* ---- the non-function bounce ---- */}
+        {badVisible && (
+          <g transform={`translate(${badX}, ${ARRAY_Y0 + ARRAY_DY})`} opacity={0.9}>
+            <rect x={-70} y={-24} width={140} height={48} rx={8} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="5 4" />
+            <text x={0} y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+              'not a function'
+            </text>
+          </g>
+        )}
+        <CodeChip
+          x={663}
+          y={ARRAY_Y0 + ARRAY_DY - 62}
+          text="TypeError: middleware must be a function!"
+          u={typeErrU}
+          color={colors.NEGATIVE}
+        />
+
         {/* ---- compose chip ---- */}
         <CodeChip
-          x={620}
-          y={112}
+          x={640}
+          y={92}
           text="callback(): const fn = this.compose(this.middleware)"
           u={composeChipU * stageDim}
           color={colors.WARM}
@@ -385,7 +399,8 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={i} opacity={u}>
                   <line x1={ONION.x + 46} y1={y0} x2={ONION.x + 46} y2={lerp(y0, y1, u)} stroke={colors.TEXT} strokeWidth={2} />
                   <path d={`M ${ONION.x + 41} ${lerp(y0, y1, u) - 7} L ${ONION.x + 46} ${lerp(y0, y1, u)} L ${ONION.x + 51} ${lerp(y0, y1, u) - 7}`} fill="none" stroke={colors.TEXT} strokeWidth={2} />
-                  <text x={ONION.x + 58} y={(y0 + y1) / 2 + 4} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+                  <rect x={ONION.x + 52} y={(y0 + y1) / 2 - 11} width={248} height={22} rx={4} fill={colors.BG} opacity={0.85} />
+                  <text x={ONION.x + 58} y={(y0 + y1) / 2 + 5} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                     next = dispatch.bind(null, {i + 1})
                   </text>
                 </g>
@@ -397,11 +412,11 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the index counter + guard ---- */}
         {idxU > 0 && (
           <g opacity={idxU * stageDim}>
-            <rect x={ONION.x - RINGS[0] - 230} y={ONION.y - 40} width={196} height={80} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={ONION.x - RINGS[0] - 132} y={ONION.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <rect x={IDX_BOX.x} y={IDX_BOX.y} width={IDX_BOX.w} height={IDX_BOX.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={IDX_BOX.x + IDX_BOX.w / 2} y={IDX_BOX.y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
               last entered
             </text>
-            <text x={ONION.x - RINGS[0] - 132} y={ONION.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontFamily="monospace" fontWeight={700}>
+            <text x={IDX_BOX.x + IDX_BOX.w / 2} y={IDX_BOX.y + 56} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontFamily="monospace" fontWeight={700}>
               index = {idxDisplay}
             </text>
           </g>
@@ -416,19 +431,19 @@ export function Render({ s }: { s: SceneState }) {
               strokeWidth={2.5}
               strokeDasharray="6 5"
             />
-            <CodeChip x={ONION.x - 130} y={ONION.y - RINGS[1] - 60} text="next() called multiple times" u={guardU} color={colors.NEGATIVE} />
+            <CodeChip x={ONION.x - 199} y={ONION.y - RINGS[1] - 60} text="next() called multiple times" u={guardU} color={colors.NEGATIVE} />
           </g>
         )}
 
         {/* ---- the calm center ---- */}
         {centerU > 0 && (
           <g opacity={centerU * stageDim}>
-            <circle cx={ONION.x} cy={ONION.y} r={44} fill={colors.WARM} opacity={0.12} />
-            <circle cx={ONION.x} cy={ONION.y} r={44} fill="none" stroke={colors.WARM} strokeWidth={1.5} opacity={0.8} />
-            <text x={ONION.x} y={ONION.y - 2} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+            <circle cx={ONION.x} cy={ONION.y} r={82} fill={colors.WARM} opacity={0.12} />
+            <circle cx={ONION.x} cy={ONION.y} r={82} fill="none" stroke={colors.WARM} strokeWidth={1.5} opacity={0.8} />
+            <text x={ONION.x} y={ONION.y - 8} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
               i === length
             </text>
-            <text x={ONION.x} y={ONION.y + 16} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+            <text x={ONION.x} y={ONION.y + 14} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
               Promise.resolve()
             </text>
           </g>
@@ -438,14 +453,14 @@ export function Render({ s }: { s: SceneState }) {
         {entryU > 0 && (
           <g opacity={entryU * stageDim}>
             <line
-              x1={ONION.x - RINGS[0] - 150}
-              y1={ONION.y + 120}
-              x2={lerp(ONION.x - RINGS[0] - 150, ONION.x - RINGS[0] - 8, entryU)}
-              y2={lerp(ONION.y + 120, ONION.y + 40, entryU)}
+              x1={ENTRY_FROM.x}
+              y1={ENTRY_FROM.y}
+              x2={lerp(ENTRY_FROM.x, ENTRY_TO.x, entryU)}
+              y2={lerp(ENTRY_FROM.y, ENTRY_TO.y, entryU)}
               stroke={colors.POSITIVE}
               strokeWidth={2.5}
             />
-            <CodeChip x={ONION.x - RINGS[0] - 130} y={ONION.y + 150} text="fnMiddleware(ctx) → dispatch(0)" u={entryU} color={colors.POSITIVE} />
+            <CodeChip x={ENTRY_FROM.x - 150} y={ENTRY_FROM.y + 12} text="fnMiddleware(ctx) → dispatch(0)" u={entryU} color={colors.POSITIVE} />
           </g>
         )}
 

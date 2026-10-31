@@ -1,0 +1,84 @@
+{
+ "shot": "ch02-s01",
+ "at": "2026-10-13T04:12:57.327Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 14,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Clue One: A Switch That Fires",
+   "capWhileSubject": 26.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "walter pitts",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "about 18",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "warren mcculloch",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "C",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "H",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "G",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "O",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "c",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "4",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 10
+}

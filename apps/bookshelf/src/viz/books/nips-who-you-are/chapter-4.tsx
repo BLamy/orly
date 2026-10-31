@@ -42,8 +42,26 @@ const NODE_POS = [
   { x: 880, y: 520 },
 ];
 
+// Direction from "you" to a person, plus an arrowhead tip just outside the person's circle.
+function edgeTo(p: { x: number; y: number }) {
+  const dx = p.x - YOU.x;
+  const dy = p.y - YOU.y;
+  const len = Math.hypot(dx, dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  const nx = -uy;
+  const ny = ux;
+  const tipX = p.x - ux * 28;
+  const tipY = p.y - uy * 28;
+  const baseX = p.x - ux * 40;
+  const baseY = p.y - uy * 40;
+  const head = `M${tipX},${tipY} L${baseX + nx * 6},${baseY + ny * 6} L${baseX - nx * 6},${baseY - ny * 6} Z`;
+  return { ux, uy, head };
+}
+
 const CAM_JSON: CameraState = { x: 330, y: 300, k: 1.3 };
-const CAM_GRAPH: CameraState = { x: 900, y: 330, k: 1.15 };
+// Graph framing keeps the JSON, the graph and the bottom labels all on-stage and above the caption pill.
+const CAM_GRAPH: CameraState = { x: 640, y: 345, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -157,7 +175,7 @@ function PersonNode({ x, y, label, color, u }: { x: number; y: number; label: st
       <circle cx={x} cy={y} r={26} fill={colors.PANEL} stroke={color} strokeWidth={2} />
       <circle cx={x} cy={y - 6} r={7} fill={color} opacity={0.85} />
       <path d={`M${x - 12},${y + 14} a12 10 0 0 1 24 0`} fill={color} opacity={0.85} />
-      <text x={x} y={y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+      <text x={x} y={y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {label}
       </text>
     </g>
@@ -176,7 +194,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The graph dims for the close, then fades out entirely under the closing panel.
+  const mainOp = (1 - 0.85 * dimU) * (1 - clamp01(closeU * 1.2));
 
   return (
     <>
@@ -187,7 +206,7 @@ function Frame({ s }: { s: SceneState }) {
           <JsonDoc
             layout={LAYOUT}
             reveal={jsonU}
-            opacity={1 - 0.7 * clamp01(outU * 1.5)}
+            opacity={1 - 0.55 * clamp01(outU * 1.5)}
             hidden={FOLLOWS.map((_, i) => `tags[${i}][1]`).filter((_, i) => clamp01(outU * FOLLOWS.length - i) > 0)}
             focus={swapU > 0.3 ? ['tags'] : undefined}
             focusU={swapU > 0.3 ? 0.6 : 0}
@@ -199,6 +218,7 @@ function Frame({ s }: { s: SceneState }) {
             const a = LAYOUT.anchor(`tags[${i}][1]`);
             const u = clamp01(outU * FOLLOWS.length - i);
             const p = NODE_POS[i];
+            const edge = edgeTo(p);
             if (u <= 0) return null;
             return (
               <g key={f.key}>
@@ -208,42 +228,50 @@ function Frame({ s }: { s: SceneState }) {
                   u={u}
                   text={shortHex(f.key, 6, 2)}
                   fill={colors.ACCENT}
-                  fontSize={12}
-                  lift={70}
+                  fontSize={13}
+                  lift={i === 1 ? 150 : 70}
                   fadeOut
                 />
                 <PersonNode x={p.x} y={p.y} label={petU > 0 ? f.pet : shortHex(f.key, 6, 2)} color={colors.ACCENT} u={clamp01(u * 2 - 1)} />
                 {clamp01(u * 2 - 1) > 0 && (
-                  <line
-                    x1={YOU.x + 24}
-                    y1={YOU.y}
-                    x2={p.x - 24}
-                    y2={p.y}
-                    stroke={colors.MUTED}
-                    strokeWidth={1.6}
-                    opacity={0.7 * clamp01(u * 2 - 1)}
-                    markerEnd="none"
-                  />
+                  <g opacity={0.7 * clamp01(u * 2 - 1)}>
+                    <line
+                      x1={YOU.x + edge.ux * 26}
+                      y1={YOU.y + edge.uy * 26}
+                      x2={p.x - edge.ux * 38}
+                      y2={p.y - edge.uy * 38}
+                      stroke={colors.MUTED}
+                      strokeWidth={1.6}
+                    />
+                    <path d={edge.head} fill={colors.MUTED} />
+                  </g>
                 )}
               </g>
             );
           })}
 
+          {/* legend for the graph: one p tag, one arrow */}
+          {outU > 0 && (
+            <text x={1000} y={612} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(outU * 1.5) * (1 - clamp01(chainU * 2))}>
+              each p tag is one arrow from you
+            </text>
+          )}
+
           {/* petname note */}
           {petU > 0 && chainU <= 0 && swapU <= 0 && (
-            <text x={760} y={120} fill={colors.MUTED} fontSize={12.5} opacity={petU}>
+            <text x={760} y={120} fill={colors.MUTED} fontSize={14} opacity={petU}>
               ["p", key, relay, <tspan fill={colors.POSITIVE}>petname</tspan>] — your word, not theirs
             </text>
           )}
 
-          {/* the wholesale swap */}
+          {/* the wholesale swap — clear of the alice node */}
           {swapU > 0 && chainU <= 0 && (
             <g opacity={Math.min(1, swapU * 1.5) * (1 - clamp01(chainU * 2))}>
-              <rect x={700} y={90} width={430} height={64} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={718} y={116} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+              <rect x={640} y={84} width={430} height={64} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={658} y={110} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                 new kind 3 = the ENTIRE list, again
               </text>
-              <text x={718} y={138} fill={colors.MUTED} fontSize={12}>
+              <text x={658} y={132} fill={colors.MUTED} fontSize={14}>
                 publish it missing alice → alice is unfollowed
               </text>
             </g>
@@ -263,7 +291,7 @@ function Frame({ s }: { s: SceneState }) {
                       d={`M${david.x + 20},${david.y - 16} Q ${(david.x + erin.x) / 2 + 40},${(david.y + erin.y) / 2 - 60} ${erin.x - 6},${erin.y + 30}`}
                       fill="none" stroke={colors.SECONDARY} strokeWidth={1.8} strokeDasharray="6 5" opacity={u1}
                     />
-                    <text x={1005} y={505} fill={colors.SECONDARY} fontSize={12} opacity={u1}>
+                    <text x={1005} y={505} fill={colors.SECONDARY} fontSize={14} opacity={u1}>
                       david’s list: "erin"
                     </text>
                     {u2 > 0 && (
@@ -284,9 +312,9 @@ function Frame({ s }: { s: SceneState }) {
           {recoverU > 0 && (
             <g opacity={recoverU}>
               <rect x={120} y={470} width={300} height={92} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
-              <text x={138} y={498} fill={colors.POSITIVE} fontSize={13} fontWeight={600}>new device</text>
-              <text x={138} y={520} fill={colors.MUTED} fontSize={12} fontFamily="monospace">has: the key</text>
-              <text x={138} y={540} fill={colors.MUTED} fontSize={12} fontFamily="monospace">asks relays: latest kind 3</text>
+              <text x={138} y={498} fill={colors.POSITIVE} fontSize={14} fontWeight={600}>new device</text>
+              <text x={138} y={520} fill={colors.MUTED} fontSize={14} fontFamily="monospace">has: the key</text>
+              <text x={138} y={540} fill={colors.MUTED} fontSize={14} fontFamily="monospace">asks relays: latest kind 3</text>
               <path d={`M${430},${505} Q 560,440 ${YOU.x - 40},${YOU.y + 30}`} fill="none" stroke={colors.POSITIVE} strokeWidth={1.8} opacity={0.8} strokeDasharray="6 5" />
             </g>
           )}

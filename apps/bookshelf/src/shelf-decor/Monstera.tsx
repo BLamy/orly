@@ -111,7 +111,7 @@ function buildStalk(rng: () => number, leafSize: number, lean: number, height: n
   blade.position.copy(tip);
   // The blade continues the petiole's direction, then flops a bit further over
   // than the stalk itself — the join has to stay hidden at the petiole's end.
-  const aim = dir.clone().add(new THREE.Vector3((rng() - 0.5) * 0.5, -0.25 - rng() * 0.3, 0.15)).normalize();
+  const aim = dir.clone().add(new THREE.Vector3((rng() - 0.5) * 0.5, -0.1 - rng() * 0.25, 0.3)).normalize();
   blade.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), aim);
   blade.rotateY((rng() - 0.5) * 0.7);
   pivot.add(blade);
@@ -125,7 +125,7 @@ function buildMonstera(potGroup: THREE.Group, rng: () => number): Sway[] {
   // A young plant: a handful of stalks, not a jungle. They fan mostly toward
   // the viewer so the fenestrations are actually face-on and readable rather
   // than seen edge-wise from behind.
-  const count = 4 + Math.floor(rng() * 4);
+  const count = 6 + Math.floor(rng() * 4);
   const sway: Sway[] = [];
   for (let i = 0; i < count; i++) {
     const a = (i / count - 0.5) * Math.PI * 1.5 + (rng() - 0.5) * 0.4;
@@ -134,7 +134,9 @@ function buildMonstera(potGroup: THREE.Group, rng: () => number): Sway[] {
     // newest leaf on a monstera comes up through the center.
     const centered = 1 - Math.abs(i / (count - 1) - 0.5) * 2;
     const height = 0.34 + centered * 0.3 + rng() * 0.12;
-    const stalk = buildStalk(rng, 0.3 + centered * 0.14 + rng() * 0.07, 0.35 + rng() * 0.4, height, i < 2 ? 0 : Math.floor(rng() * 3));
+    // Leaves are big on a monstera — the splits only read when the blade is
+    // a decent size against the pot. Older (outer) leaves are the largest.
+    const stalk = buildStalk(rng, 0.44 + (1 - centered) * 0.1 + centered * 0.08 + rng() * 0.1, 0.35 + rng() * 0.4, height * 1.1, i % 3 === 0 ? 0 : Math.floor(rng() * 3));
     stalk.position.set(Math.sin(a) * r, POT_CROWN_Y, Math.cos(a) * r);
     stalk.rotation.y = a;
     potGroup.add(stalk);
@@ -152,6 +154,6 @@ export function Monstera({ width, height, seed = 0 }: { width: number; height: n
   // stands on the board like the cactus and snake plant (see Cactus.tsx).
   // The wide fan of leaves needs a larger spread than an upright blade plant.
   return (
-    <PlantCanvas width={width} height={height} seed={seed} potY={-0.78} spread={0.75} build={buildMonstera} />
+    <PlantCanvas width={width} height={height} seed={seed} spread={1.0} build={buildMonstera} />
   );
 }

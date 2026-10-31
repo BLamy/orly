@@ -1,0 +1,123 @@
+{
+  "format": 3,
+  "slug": "when-memory-matters",
+  "title": "When Memory Matters",
+  "subtitle": "A traceable test of when the past belongs in the reply",
+  "paper": {
+    "title": "RealCompanion: Benchmarking Human Understanding from Reasoning over Longitudinal Real-World Conversations",
+    "authors": [
+      "Arman Behnam",
+      "Sunglyoung Kim",
+      "Liangwei Yang"
+    ],
+    "stableId": "arXiv:2610.01780",
+    "huggingFaceUrl": "https://huggingface.co/papers/2610.01780",
+    "canonicalUrl": "https://arxiv.org/abs/2610.01780",
+    "pdfUrl": "https://arxiv.org/pdf/2610.01780",
+    "officialCodeUrl": "https://anonymous.4open.science/r/realcompanion-54CC/"
+  },
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A conversation becomes a test",
+      "blurb": "Turn 220 days of conversations into inspectable probes.",
+      "scene": "books/when-memory-matters/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.283,
+        12.225,
+        17.136,
+        23.208,
+        27.817,
+        33.831,
+        39.451,
+        45.696,
+        51.664
+      ],
+      "duration": 55.913
+    },
+    {
+      "number": 2,
+      "title": "Rare does not mean nearby",
+      "blurb": "Separate recorded memory demand from stricter clear-need cases.",
+      "scene": "books/when-memory-matters/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        3.518,
+        9.636,
+        17.461,
+        22.965,
+        28.979,
+        34.133,
+        39.578,
+        44.617,
+        49.934
+      ],
+      "duration": 56.099
+    },
+    {
+      "number": 3,
+      "title": "The probe earns its label",
+      "blurb": "Follow retrieval, verification, and labeling through one probe.",
+      "scene": "books/when-memory-matters/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        3.831,
+        9.009,
+        17.009,
+        22.407,
+        26.796,
+        31.486,
+        37.791,
+        43.317,
+        48.913
+      ],
+      "duration": 54.66
+    },
+    {
+      "number": 4,
+      "title": "What the public audit can prove",
+      "blurb": "See which structural claims the released audit can establish.",
+      "scene": "books/when-memory-matters/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        3.866,
+        10.704,
+        16.115,
+        21.165,
+        26.424,
+        31.625,
+        38.464,
+        45.07,
+        51.525
+      ],
+      "duration": 58.607
+    },
+    {
+      "number": 5,
+      "title": "Score the decision, not just the average",
+      "blurb": "Keep memory need, retrieval success, and reply quality distinct.",
+      "scene": "books/when-memory-matters/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        5.875,
+        12.365,
+        18.309,
+        24.404,
+        29.443,
+        36.502,
+        44.408,
+        50.515,
+        59.28
+      ],
+      "duration": 66.27
+    }
+  ]
+}

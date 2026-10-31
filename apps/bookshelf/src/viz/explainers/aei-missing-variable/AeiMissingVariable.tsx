@@ -56,6 +56,19 @@ const camAt = (c: number, r = 0, k = 1): CameraState => ({
 // move is a single-axis pan and the camera never crosses a room it has left.
 // Zoom stays ≤ 1.08: at k the leftmost visible world x is 640 - 640/k, and the
 // room header sits at x = 60, so anything tighter shaves the title.
+// A room the camera cannot see at all is hidden outright. Its labels then never
+// count as off-stage, and nothing visible changes: the viewport never shows it.
+const inView = (cam: CameraState, c: number, r: number): number => {
+  const hw = STAGE_W / 2 / cam.k;
+  const hh = STAGE_H / 2 / cam.k;
+  const x0 = c * ROOM_DX;
+  const y0 = r * ROOM_DY;
+  const hit =
+    x0 < cam.x + hw && x0 + STAGE_W > cam.x - hw &&
+    y0 < cam.y + hh && y0 + STAGE_H > cam.y - hh;
+  return hit ? 1 : 0;
+};
+
 const CAM_SCORES = camAt(0, 0);
 const CAM_PAPER = camAt(1, 0);
 const CAM_PILLARS = camAt(2, 0);
@@ -72,7 +85,7 @@ const BENCH = [
   { label: 'helpfulness', v: 0.91 },
   { label: 'compliance', v: 0.96 },
 ];
-const SCORE = { x: 330, y: 180, w: 620, h: 300 };
+const SCORE = { x: 180, y: 150, w: 920, h: 320 };
 
 // The three assumptions §3 says evaluation implicitly makes.
 const PILLARS = [
@@ -85,6 +98,9 @@ const PILLAR_H = 190;
 const PILLAR_W = 150;
 // deterministic zigzag for the crack polyline
 const CRACK_PTS = [0, 8, -6, 10, -4, 7];
+
+// The launch decision the five pressures converge on (room (2,1), local coords).
+const NODE = { x: 620, y: 312, w: 240, h: 96 };
 
 const SHUTTLE_LINES = [
   'fragmented authority',
@@ -262,38 +278,53 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         {/* ---------- ROOM (0,0) — the green scoreboard ---------- */}
-        <g transform={roomAt(0, 0)} opacity={panelU}>
+        <g transform={roomAt(0, 0)} opacity={panelU * inView(cam, 0, 0)}>
           <RoomHeader
             title="The missing variable"
             sub="SSRN 6325939 — Adversarial Epistemic Incoherence · Jeremy B. Dixon"
           />
           <rect x={SCORE.x} y={SCORE.y} width={SCORE.w} height={SCORE.h} rx={14}
             fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={SCORE.x + 26} y={SCORE.y + 42} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
+          <text x={SCORE.x + 30} y={SCORE.y + 46} fill={colors.MUTED} fontSize={16} fontFamily="monospace">
             controlled evaluation — stable framing
           </text>
           {BENCH.map((b, i) => {
             const u = clamp01(barsU * BENCH.length - i);
-            const y = SCORE.y + 78 + i * 66;
-            const w = 300 * b.v * u;
+            const y = SCORE.y + 92 + i * 72;
+            const w = 384 * b.v * u;
             return (
               <g key={b.label}>
-                <text x={SCORE.x + 176} y={y + 22} textAnchor="end" fill={colors.MUTED} fontSize={15}>
+                <text x={SCORE.x + 200} y={y + 24} textAnchor="end" fill={colors.MUTED} fontSize={16}>
                   {b.label}
                 </text>
-                <rect x={SCORE.x + 194} y={y} width={Math.max(w, 1)} height={30} rx={5}
-                  fill={colors.POSITIVE} opacity={0.7} />
-                <text x={SCORE.x + 204 + w} y={y + 22} fill={colors.POSITIVE} fontSize={16}
+                <rect x={SCORE.x + 220} y={y} width={384} height={36} rx={6}
+                  fill={colors.GRID} opacity={0.35} />
+                <rect x={SCORE.x + 220} y={y} width={Math.max(w, 1)} height={36} rx={6}
+                  fill={colors.POSITIVE} opacity={0.75} />
+                <text x={SCORE.x + 232 + w} y={y + 25} fill={colors.POSITIVE} fontSize={18}
                   fontFamily="monospace" opacity={u}>
                   {Math.round(b.v * 100)}
                 </text>
               </g>
             );
           })}
+          <line x1={SCORE.x + 680} y1={SCORE.y + 40} x2={SCORE.x + 680} y2={SCORE.y + SCORE.h - 40}
+            stroke={colors.GRID} strokeWidth={1.5} opacity={panelU} />
+          <g opacity={panelU}>
+            <rect x={SCORE.x + 720} y={SCORE.y + 110} width={180} height={120} rx={14}
+              fill={colors.POSITIVE} fillOpacity={0.12} stroke={colors.POSITIVE} strokeWidth={1.5} />
+            <text x={SCORE.x + 810} y={SCORE.y + 160} textAnchor="middle" fill={colors.POSITIVE}
+              fontSize={30} fontWeight={600}>
+              ready
+            </text>
+            <text x={SCORE.x + 810} y={SCORE.y + 192} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+              to deploy
+            </text>
+          </g>
         </g>
 
         {/* ---------- ROOM (1,0) — the paper, photographed ---------- */}
-        <g transform={roomAt(1, 0)}>
+        <g transform={roomAt(1, 0)} opacity={inView(cam, 1, 0)}>
           <RoomHeader title="The claim" sub="SSRN 6325939 · title page and abstract" u={paperU} />
           <Figure
             src={`${FIG}/title-block.png`}
@@ -314,10 +345,21 @@ function Frame({ s }: { s: SceneState }) {
           <text x={90} y={456} fill={colors.MUTED} fontSize={15} opacity={abstractU}>
             is being under-modeled”
           </text>
+          {/* the variable the paper says is missing: an empty slot upstream of the system */}
+          <g opacity={abstractU}>
+            <rect x={90} y={468} width={520} height={84} rx={12} fill="none"
+              stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="6 6" />
+            <text x={350} y={502} textAnchor="middle" fill={colors.WARM} fontSize={18} fontWeight={600}>
+              the missing variable
+            </text>
+            <text x={350} y={530} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+              the upstream environment the system is deployed into
+            </text>
+          </g>
         </g>
 
         {/* ---------- ROOM (2,0) — the coherent-world assumption ---------- */}
-        <g transform={roomAt(2, 0)} opacity={pillarsU}>
+        <g transform={roomAt(2, 0)} opacity={pillarsU * inView(cam, 2, 0)}>
           <RoomHeader title="The coherent-world assumption" sub="SSRN 6325939 §3" />
           {PILLARS.map((p, i) => {
             const u = clamp01(pillarsU * PILLARS.length - i);
@@ -350,6 +392,10 @@ function Frame({ s }: { s: SceneState }) {
               </g>
             );
           })}
+          {/* the ground the pillars stand on: it turns red as the scores' footing gives way */}
+          <line x1={110} y1={PILLAR_TOP + PILLAR_H + 8} x2={690} y2={PILLAR_TOP + PILLAR_H + 8}
+            stroke={crackU > 0.3 ? colors.NEGATIVE : colors.MUTED} strokeWidth={2}
+            opacity={pillarsU} />
           {crackU > 0.4 && (
             <text x={400} y={PILLAR_TOP + PILLAR_H + 56} textAnchor="middle"
               fill={colors.NEGATIVE} fontSize={16} opacity={(crackU - 0.4) / 0.6}>
@@ -366,34 +412,50 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (2,1) — aerospace safety culture ---------- */}
-        <g transform={roomAt(2, 1)} opacity={shuttleU}>
+        <g transform={roomAt(2, 1)} opacity={shuttleU * inView(cam, 2, 1)}>
           <RoomHeader title="A case with no AI in it" sub="SSRN 6325939 §4 — Reason 1990; NRC 2011" />
-          <rect x={300} y={150} width={680} height={280} rx={14} fill={colors.PANEL} stroke={colors.WARM} />
-          <text x={330} y={190} fill={colors.WARM} fontSize={17} fontWeight={600}>
+          <text x={120} y={150} fill={colors.WARM} fontSize={18} fontWeight={600}>
             aerospace safety culture (non-AI)
           </text>
-          <text x={330} y={214} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={120} y={174} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             Challenger · Columbia
           </text>
+          {/* five pressures feed one launch decision: each line draws in as its factor lands */}
           {SHUTTLE_LINES.map((l, i) => {
             const u = clamp01(shuttleLinesU * SHUTTLE_LINES.length - i);
             if (u <= 0) return null;
-            const y = 248 + i * 36;
+            const y = 196 + i * 72;
+            const cy = y + 26;
             return (
               <g key={l} opacity={u}>
-                <circle cx={344} cy={y} r={4} fill={colors.WARM} />
-                <text x={362} y={y + 5} fill={colors.TEXT} fontSize={16}>
+                <line x1={440} y1={cy} x2={NODE.x} y2={NODE.y + NODE.h / 2}
+                  stroke={colors.WARM} strokeWidth={1.5} opacity={0.6} />
+                <rect x={120} y={y} width={320} height={52} rx={10}
+                  fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
+                <circle cx={144} cy={cy} r={4} fill={colors.WARM} />
+                <text x={160} y={cy + 6} fill={colors.TEXT} fontSize={17}>
                   {l}
                 </text>
               </g>
             );
           })}
+          <g opacity={shuttleU}>
+            <rect x={NODE.x} y={NODE.y} width={NODE.w} height={NODE.h} rx={14}
+              fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+            <text x={NODE.x + NODE.w / 2} y={NODE.y + 42} textAnchor="middle" fill={colors.TEXT}
+              fontSize={20} fontWeight={600}>
+              launch decision
+            </text>
+            <text x={NODE.x + NODE.w / 2} y={NODE.y + 70} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+              compliance on paper
+            </text>
+          </g>
           {shuttleNoteU > 0 && (
             <g opacity={shuttleNoteU}>
-              <text x={640} y={478} textAnchor="middle" fill={colors.NEGATIVE} fontSize={17}>
+              <text x={NODE.x} y={456} fill={colors.NEGATIVE} fontSize={17}>
                 internally coherent at the time — and epistemically unsound
               </text>
-              <text x={640} y={506} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+              <text x={NODE.x} y={484} fill={colors.MUTED} fontSize={15}>
                 nobody had to be a villain
               </text>
             </g>
@@ -401,33 +463,37 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (1,1) — performance vs readiness ---------- */}
-        <g transform={roomAt(1, 1)} opacity={axesU}>
+        <g transform={roomAt(1, 1)} opacity={axesU * inView(cam, 1, 1)}>
           <RoomHeader title="Performance is not readiness" sub="SSRN 6325939 §7" />
-          <g transform="translate(140, 180)">
-            <line x1={0} y1={280} x2={470 * axesU} y2={280} stroke={colors.GRID} strokeWidth={1.5} />
-            <line x1={0} y1={280} x2={0} y2={280 - 250 * axesU} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={466} y={306} textAnchor="end" fill={colors.ACCENT} fontSize={15}>
-              performance — stable framing
-            </text>
-            <text x={-14} y={20} textAnchor="start" fill={colors.WARM} fontSize={15}
-              transform="rotate(-90, -14, 20)">
-              readiness
-            </text>
-            {dotU > 0 && (
-              <g opacity={dotU}>
-                <circle cx={410} cy={258} r={10} fill={colors.POSITIVE} />
-                <text x={410} y={224} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
-                  high score
-                </text>
-                <text x={410} y={244} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
-                  readiness: unmeasured
-                </text>
-              </g>
-            )}
-          </g>
+          {/* axes meet at (150, 470); the top of the readiness axis is 190 */}
+          <line x1={150} y1={470} x2={150 + 560 * axesU} y2={470} stroke={colors.GRID} strokeWidth={1.5} />
+          <line x1={150} y1={470} x2={150} y2={470 - 280 * axesU} stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={710} y={502} textAnchor="end" fill={colors.ACCENT} fontSize={16} opacity={axesU}>
+            performance — stable framing
+          </text>
+          <text x={0} y={0} textAnchor="middle" fill={colors.WARM} fontSize={16} opacity={axesU}
+            transform="translate(118, 330) rotate(-90)">
+            readiness
+          </text>
+          {dotU > 0 && (
+            <g opacity={dotU}>
+              <line x1={620} y1={420} x2={620} y2={196} stroke={colors.WARM} strokeWidth={1.5}
+                strokeDasharray="5 6" />
+              <text x={620} y={182} textAnchor="middle" fill={colors.WARM} fontSize={26} fontWeight={600}>
+                ?
+              </text>
+              <circle cx={620} cy={434} r={10} fill={colors.POSITIVE} />
+              <text x={600} y={428} textAnchor="end" fill={colors.POSITIVE} fontSize={15}>
+                high score
+              </text>
+              <text x={600} y={450} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+                readiness: unmeasured
+              </text>
+            </g>
+          )}
           <Figure
             src={`${FIG}/readiness.png`}
-            x={700} y={250} w={500} h={165}
+            x={790} y={250} w={420} h={139}
             reveal={readyFigU} opacity={readyFigU}
             accent={colors.WARM}
             caption="§7 — the paper's own wording"
@@ -435,7 +501,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (0,1) — the close, on an empty stage ---------- */}
-        <g transform={roomAt(0, 1)} opacity={closeU}>
+        <g transform={roomAt(0, 1)} opacity={closeU * inView(cam, 0, 1)}>
           <rect x={190} y={200} width={900} height={230} rx={16}
             fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={268} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={600}>

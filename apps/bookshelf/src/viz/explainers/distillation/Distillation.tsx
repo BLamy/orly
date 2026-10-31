@@ -74,11 +74,11 @@ function Bars({
               fill={dark && darkU > 0.3 ? colors.WARM : color}
               opacity={0.88}
             />
-            <text x={barX(x0, i) + BAR_W / 2} y={BARS_Y - h - 8} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+            <text x={barX(x0, i) + BAR_W / 2} y={BARS_Y - h - 8} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               {(p * 100).toFixed(p >= 0.1 ? 0 : 1)}%
             </text>
             {labels && (
-              <text x={barX(x0, i) + BAR_W / 2} y={BARS_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={barX(x0, i) + BAR_W / 2} y={BARS_Y + 22} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.8}>
                 {CLASSES[i]}
               </text>
             )}
@@ -126,7 +126,7 @@ function Frame({ s }: { s: SceneState }) {
           </g>
           {teachU > 0 && <Bars dist={teacher} x0={T_X0} color={colors.ACCENT} reveal={teachU} darkU={darkU} />}
           {darkU > 0.3 && (
-            <text x={T_X0 + 100} y={150} fill={colors.WARM} fontSize={14} opacity={darkU}>
+            <text x={barX(T_X0, 1)} y={340} fill={colors.WARM} fontSize={15} fontWeight={600} opacity={darkU}>
               the dark knowledge: this dog is wolf-shaped
             </text>
           )}
@@ -166,7 +166,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Distillation
           </text>

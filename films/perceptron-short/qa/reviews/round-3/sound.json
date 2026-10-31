@@ -1,0 +1,78 @@
+{
+  "lens": "sound",
+  "round": 3,
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 8, "story": 7.5, "visual": 8, "sync": 8, "sound": 8, "curiosity": 7.5 },
+  "round2_followup": {
+    "L0104": "FIXED. The line now reads 'It was the Mark I Perceptron, the project of psychologist Frank Rosenblatt.' The name ends the sentence ('Rosenblatt' runs 21.31-22.17), there is a 0.80 s pre-gap after 'turned', and the M4 cello pickup now enters right after the name (A2 22.23, B2 22.65, D3 23.07 on the iris).",
+    "rosenblatt-unverified": "MOSTLY FIXED. voice/lexicon.json records an ElevenLabs scribe_v1 round trip: L0104 came back as 'Frank Rosenblatt' and L0108 as '1969, Minsky and Papert'. QA's stt check still says 'skip', though (see stt-qa-blind), and stress (PAP-ert, ROH-zen-blat) has not had a human listen.",
+    "line-dynamics-flattened": "PARTLY FIXED. levelDb exists now (L0101 -5, L0108 -1.5). L0101 peaks at -13.9 LUFS M, roughly 1.5 dB under the other lines, and the bloom (-16.1 M at 46.5) is the loudest non-speech moment. But L0108 measures -12.1 LUFS M, as loud as or louder than L0103 (-12.9), L0104 (-12.8) and L0106 (-12.4), so the 'quieter, reflective' close did not happen (see level-offsets-compressed).",
+    "duck-overshoot": "FIXED. The duck is calibrated to 3.11 dB against a 3 dB target, and QA now warns beyond ±1.5 dB. The 'tugs' pizz figure sits about 11-12 dB under speech. The 'nudge' A2 plucks are still about 15-16 dB under (see m01 nudge note).",
+    "L0106": "FIXED. 'had a say' is contiguous (had 37.30, a 37.48, say 37.58; no gap over 0.15 s), and the comma pause comes after 'say' (0.37 s) as directed.",
+    "within-chunk-gaps": "PARTLY FIXED. L0104 got its 0.80 s pre-gap. L0105b is still at the default 0.45 s, and the pre-gap before 'Wrong' fell from 1.0 s in round 2 to 0.60 s (see L0107).",
+    "no-diegetic-sound": "DEFERRED by the round-2 showrunner. Still absent. Carried forward as optional."
+  },
+  "measurements": {
+    "master": "-15.9 LUFS I, -2.6 dBTP, LRA 2.8, linear gain only (no master limiting), sub-40 Hz at -51.7 dB RMS",
+    "speechBandMargin": "voice over music in 250 Hz-3.5 kHz, wherever the voice is present (cue at -3 dB plus a 3 dB duck): minimum 8.3 dB, median 19.9 dB. Only five 0.1 s windows fall under 10 dB, all at word tails (24.1-25.6 and 35.5).",
+    "gaps": "title breath 3.19-5.61 (music only, -22 to -27 dB RMS); try-5 clear air 45.77-48.36 (bloom at -17.8 dB RMS at 46.2, echo D6/F#6 at 46.81/47.02 on try 5's verdict, about 46.9-47.0, decaying to -32 by 48.2)",
+    "ending": "'mistakes' ends at 64.515. The last chord strikes at 64.66. Picture luminance (YAVG) is 54.7 at 64.5, 51.3 at 64.8, 39.7 at 65.1, 25.9 at 65.4 and 16.9 at 65.7. Master audio is -26.3 dB RMS at 64.8, -34.1 at 65.2, -48.0 at 65.6 and -61.2 at 65.7, while the raw cue's own decay is still at -39.7 at 65.8."
+  },
+  "issues": [
+    {
+      "id": "ending-no-clear-air",
+      "owner": "global",
+      "severity": "major",
+      "problem": "Paying for the new L0108 inside the 66 s ceiling squeezed the ending. 'mistakes' ends at 64.515, the last D chord strikes at 64.66 (0.15 s later), the picture fade starts at about 64.6 and the film ends at 65.83, so the tail is only 1.3 s. In round 2 the strongest sound moment was M1 completing in about 2.6 s of clear air after the last word. That completion now runs under 'still learn from mistakes' (D5 62.56, A5 62.98, E6 63.40), and the final F#6 plus D chord, the film's resolution, gets about 0.4 s of full-level ring before the picture fade and the 0.8 s audio fadeOut take it. The cue's own decay is still at -39.7 dB at 65.8 when the master hits silence. The ending reads as rushed: the last word, the last chord and the fade to black all arrive within about 0.2 s.",
+      "fix": "Raise story/meta.json runtimeCeilingSec to about 68 s (still 'about a minute') and add about 1.8 s of bookend hold after L0108, so the film ends at about 67.6 s. In the mix, start the 0.8 s audio fadeOut no earlier than 1.6 s after the last-chord strike. In ch01-s03, start the picture fade about 1.0 s after the last chord, not on 'mistakes'. Then re-fit m01's last bar (see the m01 issue). If the ceiling cannot move, take the time from the 2.6 s try-5 gap first (down to about 2.0 s, with the echo still on try 5's verdict), not from L0108's breaths."
+    },
+    {
+      "id": "m01",
+      "owner": "cue",
+      "severity": "minor",
+      "problem": "Two things in m01, both small. (1) With the extended tail (see ending-no-clear-air), the last chord (strings at .16, held 1 16th, release .5; celesta F#6 .24) is built to die within about 1 s under a fade. Given clear air, it would sound clipped rather than resolved. (2) The 'nudge' figure is still buried. Round 2 asked for it about 9-11 dB under speech. Measured at 36.05-36.55 s in the master, the cue is about -32.6 dB RMS (below 300 Hz about -34) against the voice at -17.0, so it sits about 15-16 dB under. The 'tugs' figure at 29.3 is fine at about 11.5 dB under.",
+      "fix": "(1) After the re-lock, keep the F#6 plus D chord about 0.15 s after 'mistakes' ends, but lengthen the release to about 2-2.5 s (strings and contrabass), and let the music-box D6 (or a final celesta A5-D6) answer once about 0.9 s later. That restores a small clear-air completion, decaying to about -40 dB before the fadeOut starts. (2) Raise the three A2 'nudge' plucks (36.09 onward) by about 4-5 dB of velocity, with lpf kept at 1200 or below so the speech band is untouched. Re-measure so the plucks sit 10-11 dB under 'nudge'."
+    },
+    {
+      "id": "level-offsets-compressed",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The per-line levelDb is applied before the speech compressor (2.5:1, 3.3 dB of gain reduction) and the peak stages, and they absorb most of it. L0101's -5 dB comes out as only about 1.5 dB quieter (-13.9 LUFS M, against -12.4 for L0102). L0108's -1.5 dB vanishes completely (-12.1 LUFS M, louder than L0103, L0104 and L0106), so the reflective closing line, which the script marks 'quieter', is delivered at full explanatory level.",
+      "fix": "In the narration stem, apply levelDb as clip gain after the compressor and peak stages, then normalise the stem, or compensate as offset/(1-1/ratio) when the line sits above threshold. Add a QA check that compares each line's measured momentary peak with the median of the other lines and requires it to be within 0.5 dB of the requested offset. Targets: L0101 about 2.5-3 dB under the median, and L0108 about 1-1.5 dB under."
+    },
+    {
+      "id": "L0107",
+      "owner": "line",
+      "severity": "minor",
+      "problem": "The pre-gap before 'Wrong' shrank from 1.0 s (round 2) to the 0.60 s default. 'answer' ends at 40.01, and the M1 'tries' (D5 40.08, A5 40.50) are squeezed into the gap, so the A5 lands 0.11 s before 'Wrong' (40.61). The film's turn ('slow, savouring the turn') arrives on the heels of the longest explanatory line, with no air to reset.",
+      "fix": "Set L0107 preGap to 0.95 s in script.json and re-lock. No re-narration is needed, because only the clock moves. Shift m01's bar-11 tail with it, so D5 and A5 sit in the new gap and A5 lands at least 0.3 s before 'Wrong'. Re-anchor ch01-s03's try-3 beat. Take the 0.35 s from the ceiling headroom in ending-no-clear-air."
+    },
+    {
+      "id": "L0105b",
+      "owner": "line",
+      "severity": "minor",
+      "problem": "The take breaks the subject into pieces: 'Each [0.22 s] lit [0.19 s] cell [0.19 s] tugs the needle', three pauses in the first four words (27.82-29.37). It sounds hesitant, the same failure class as round 2's 'had a | say', and the explanatory line that teaches the weighted sum is the one that most needs to flow.",
+      "fix": "Re-narrate L0105b only (same text and voice settings, a new seed or take). Accept a take only if no gap inside 'Each lit cell tugs' exceeds 0.12 s, keeping the 0.34 s pause before 'the total decides' and the lift on 'total'. Re-lock, then slide m01's pizz D2 ('tugs') and A3 ('total') and ch01-s03's tug/sum beats to the new word times."
+    },
+    {
+      "id": "stt-qa-blind",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Round 2's verdict said 'QA stt must not be skip for this line'. The STT round trip was done (recorded only as prose in the voice/lexicon.json $notes), but qa/reports/latest.json still reports narration/stt as 'skip', so a later re-narration of L0104 or L0108 would not be re-checked. Stress is still unverified, because STT confirms the words, not PAP-ert vs pa-PAIR or ROH-zen-blat.",
+      "fix": "Write each STT result into narration/ledger.json per line ({model, transcript, at, sig}), and have QA pass narration/stt when every line with a firing lexicon entry has an STT record whose sig matches the current clip, and fail when it is stale. Add a one-line human listening sign-off for 'Pappert' and 'Rosenblatt' stress to voice/voice.json."
+    },
+    {
+      "id": "no-diegetic-sound",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Carried forward (deferred in round 2). The soundtrack is still voice plus score only, while the picture shows motors turning dials, a needle swinging past a threshold and a lantern flaring. The score's pizz figures stand in for the machinery, and the 'nudge' figure is barely audible (see m01).",
+      "fix": "Optional: add a sparse foley stem at -30 LUFS or below. Use a faint fluorescent or tube hum under ch01-s02 from 6.0 s (ducked under speech), and 3-4 soft servo ticks on the ch01-s03 weight updates, placed in word gaps (for example 41.13, 42.39 and the try-5 update about 46.0). Leave 'right' and the try-5 flare purely musical."
+    }
+  ],
+  "best_moments": [
+    "The L0104 fix works by ear and in the score. The name now ends the sentence, gets a 0.80 s breath before it, and the cello builder pickup (A2 22.23, B2 22.65) answers 'Rosenblatt' directly, landing D3 on the s03 iris at 23.07.",
+    "'right' (45.335) sits on a downbeat with the bare F#6 and low D. The bloom then fills the 2.6 s clear air at the film's loudest non-speech level (-16.1 LUFS M, about -17.8 dB RMS), and the quiet D6/F#6 echo (46.81/47.02) lands exactly on try 5's verdict (p5 + about 1.0-1.15 s), so the second correct answer gets its own sound without competing with the first.",
+    "The harmonic story now carries the history. Bm for 'only simple patterns', G for Minsky and Papert, Bb/F for 'interest faded', then Bb opening to D by two semitones on 'Its descendants'. The winter darkens and lifts in the score, not just in the words.",
+    "The mix is technically excellent. -15.9 LUFS I, -2.6 dBTP, linear gain with no master limiting, a calibrated 3.1 dB duck, sub-40 Hz at -52 dB, and a median 20 dB speech-band margin (minimum 8.3 dB at a word tail). Every word is clear, and the gap figures come back to full level between phrases.",
+    "The L0106 idiom 'had a say' now reads as one phrase, with the aside 'a little' set off by a clean 0.37 s comma pause."
+  ]
+}

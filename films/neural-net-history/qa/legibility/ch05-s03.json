@@ -1,0 +1,89 @@
+{
+ "shot": "ch05-s03",
+ "at": "2026-10-13T04:13:22.327Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 15,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "geoffrey hinton",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "PITTS",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "PITTSBURGH ·",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Boltzmann machine · with Sejnowski & Ackley · 1985",
+   "capWhileSubject": 29.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "PITTSBURGH · 1982",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "TORON",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "TORONTO · 1",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "TORONTO · 1987",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 12.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A STERILE EXTENSION",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit 1969 · still burning",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "20",
+   "maxCap": 40.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "12",
+   "maxCap": 41.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "10",
+   "maxCap": 42.3,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 7
+}

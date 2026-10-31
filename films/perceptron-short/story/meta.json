@@ -1,0 +1,19 @@
+{
+  "slug": "perceptron-short",
+  "title": "The Machine That Learned to See",
+  "subtitle": "a one-minute silhouette short",
+  "logline": "A grid of four hundred light cells, a nest of wires, and a rule for learning from mistakes.",
+  "runtimeTargetSec": 60,
+  "vhs": {
+    "subject": "Computer Science",
+    "theme": "cosmos",
+    "icons": [
+      "crt",
+      "lightbulb",
+      "neuron",
+      "gear"
+    ],
+    "tagline": "Watch a machine learn to see!"
+  },
+  "runtimeCeilingSec": 68
+}

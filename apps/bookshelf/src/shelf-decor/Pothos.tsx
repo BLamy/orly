@@ -193,44 +193,16 @@ function buildVine(
   return { group, phase: rng() * Math.PI * 2, freq: 0.5 + rng() * 0.4, amp: 0.05 + rng() * 0.04 };
 }
 
-const cordMat = new THREE.MeshStandardMaterial({ color: 0xcbb994, roughness: 0.9 });
-const knotMat = new THREE.MeshStandardMaterial({ color: 0x8a7452, roughness: 0.8 });
-
-/** A thin cylinder connecting two points — used for the hanging-planter
- *  macrame cords, since a plain THREE.Line renders razor-thin regardless of
- *  `linewidth` in WebGL and wouldn't read as a cord at all. */
-function cordBetween(a: THREE.Vector3, b: THREE.Vector3, radius: number): THREE.Mesh {
-  const dir = new THREE.Vector3().subVectors(b, a);
-  const len = dir.length();
-  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, len, 6), cordMat);
-  mesh.position.copy(a).addScaledVector(dir, 0.5);
-  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
-  return mesh;
-}
-
 function buildPothos(potGroup: THREE.Group, rng: () => number): Sway[] {
-  // A suspended planter needs a shape the macrame could actually cradle, so
-  // the pedestal-footed style is left to the plants that stand on the board.
-  const hangable: PotStyle[] = ['tapered', 'cylinder', 'round', 'classic', 'urn'];
+  // A pot that stands on the board, vines spilling over the rim and down past
+  // the board's front edge. Stoneware and terracotta in a few shapes.
+  const styles: PotStyle[] = ['tapered', 'cylinder', 'round', 'classic', 'urn', 'footed'];
   buildPot(potGroup, {
-    style: hangable[Math.floor(rng() * hangable.length)],
+    style: styles[Math.floor(rng() * styles.length)],
     color: Math.floor(rng() * 8),
-    glossy: rng() < 0.45,
+    glossy: rng() < 0.3,
     rim: rng() < 0.6,
   });
-
-  // A macrame-style hanger — three cords from the rim converging to a knot
-  // well above the crown — makes this read as a suspended hanging planter
-  // rather than a pot just sitting mid-air with nothing holding it up.
-  const apex = new THREE.Vector3(0, 0.55, 0);
-  for (let i = 0; i < 3; i++) {
-    const a = (i / 3) * Math.PI * 2 + Math.PI / 6;
-    const rimPoint = new THREE.Vector3(Math.sin(a) * 0.335, 0.2, Math.cos(a) * 0.335);
-    potGroup.add(cordBetween(rimPoint, apex, 0.013));
-  }
-  const knot = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), knotMat);
-  knot.position.copy(apex);
-  potGroup.add(knot);
 
   // 3-5 vines, mostly hanging straight down with varied lengths (not a
   // symmetric fan — a couple long trailing ones plus shorter fuller ones
@@ -250,7 +222,7 @@ function buildPothos(potGroup: THREE.Group, rng: () => number): Sway[] {
     const angle = vineCount === 1 ? 0 : (i / (vineCount - 1) - 0.5) * Math.PI * 0.95 + (rng() - 0.5) * 0.45;
     // Lengths spread widely — a couple of long trailing vines, some
     // mid-length, one or two short — rather than a tidy even curtain.
-    const drop = 0.7 + rng() * rng() * 2.1;
+    const drop = 0.45 + rng() * rng() * 0.7;
     // Hue across the whole yellow-green → blue-green range, not a 0.07-wide
     // slice, so no two vines are the same green.
     const hue = 0.22 + rng() * 0.16;
@@ -294,21 +266,7 @@ function buildPothos(potGroup: THREE.Group, rng: () => number): Sway[] {
  *  a brief extra "breeze" of sway whenever the page scrolls. Desktop shelf
  *  only — see DesktopShelf's placement logic in Library.tsx. */
 export function Pothos({ width, height, seed = 0 }: { width: number; height: number; seed?: number }) {
-  // Lower than the 0.55 default, freeing up headroom above the pot for the
-  // macrame hanger's apex/knot to sit clearly above the crown leaves instead
-  // of crowding right against them.
-  // `lift` raises the whole canvas off the shelf board: this one is suspended
-  // from its macrame hanger up near the row's rule, not standing on the board
-  // the way the cactus and snake plant do.
-  return (
-    <PlantCanvas
-      width={width}
-      height={height}
-      seed={seed}
-      potY={0.4}
-      lift={30}
-      spread={0.72}
-      build={buildPothos}
-    />
-  );
+  // `trail`: the canvas reaches 100px below the board so the vines can hang
+  // over its front edge.
+  return <PlantCanvas width={width} height={height} seed={seed} trail={100} spread={0.72} build={buildPothos} />;
 }

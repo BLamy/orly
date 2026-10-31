@@ -1,0 +1,226 @@
+{
+ "shot": "ch07-s06",
+ "at": "2026-10-28T17:40:36.249Z",
+ "step": 0.0833,
+ "sampled": 115,
+ "transition": {
+  "kind": "paperWipe",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch07-s06-pile"
+ ],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "drawImage@950,444",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 950,
+    "y": 439,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@957,440",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 956,
+    "y": 435,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@909,425",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 908,
+    "y": 419,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@943,444",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 942,
+    "y": 438,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@954,455",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 954,
+    "y": 450,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@860,423",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 858,
+    "y": 417,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@943,450",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 942,
+    "y": 445,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@931,449",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 930,
+    "y": 444,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@855,421",
+   "probed": false,
+   "from": 8.97,
+   "to": 10.13,
+   "seconds": 1.17,
+   "rect": {
+    "x": 853,
+    "y": 416,
+    "w": 146,
+    "h": 118
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "drawImage@625,226",
+   "probed": false,
+   "from": 0.55,
+   "to": 3.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch07-s06-pile",
+   "probed": true,
+   "from": 4.55,
+   "to": 10.05,
+   "minInkWhilePaper": 0.65
+  },
+  {
+   "id": "drawImage@950,444",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@957,440",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@909,425",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@943,444",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@954,455",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@860,423",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@943,450",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@931,449",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@855,421",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.05,
+   "minInkWhilePaper": 0
+  }
+ ]
+}

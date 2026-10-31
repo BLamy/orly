@@ -76,8 +76,10 @@ export const YEAR_MAX = 2026.5;
 export const sx = (year: number): number => X0 + ((year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (X1 - X0);
 export const sy = (score: number): number => Y0 + (score / 100) * (Y1 - Y0);
 
-export const CAM_STEEP: CameraState = { x: 430, y: 360, k: 1.25 };
-export const CAM_CEIL: CameraState = { x: 820, y: 250, k: 1.3 };
+// Both framings keep the whole chart (score labels, year ticks, every curve's
+// start) on the stage and above the caption pill, so nothing is cut off mid-move.
+export const CAM_STEEP: CameraState = { x: 614, y: 382, k: 1.15 };
+export const CAM_CEIL: CameraState = { x: 614, y: 388, k: 1.13 };
 
 export interface Scene {
   tl: Timeline;

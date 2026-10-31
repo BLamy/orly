@@ -63,9 +63,10 @@ export const TAPE = { x: 90, y: 200, w: 1100 };
 export const STEP = TAPE.w / CHARS.length;
 export const BAR_BASE = 470;
 export const BAR_SCALE = 42; // px per bit
-export const METERS = { x: 200, y: 540, w: 600, h: 24, scale: 4.4 }; // px per bit total
+export const METERS = { x: TAPE.x, y: 540, w: 600, h: 24, scale: 4.4 }; // px per bit total, left-aligned with the tape
 
-export const CAM_TAPE: CameraState = { x: 400, y: 330, k: 1.12 };
+// centred on the tape (its middle is x = 640) so both ends stay on the 1280 stage
+export const CAM_TAPE: CameraState = { x: 640, y: 375, k: 1.05 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -158,7 +159,7 @@ export function buildScene(): Scene {
   tl.hold(47.1, 0.5);
 
   // — Beat 6 · recap ————————————————————————————————————————————————————————
-  tl.tween(dimU, 0.13, { at: 47.6, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0.08, { at: 47.6, dur: 1.1, ease: ease.move });
   tl.tween(texU, 0, { at: 47.6, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 48.8, dur: 0.9, ease: ease.enter });
   tl.caption({

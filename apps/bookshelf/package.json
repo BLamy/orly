@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@brett_lamy/docstream": "^0.3.7",
+    "@brett_lamy/ui": "^5.1.0",
     "@brett_lamy/viz-engine": "^0.2.1",
     "@orly/mobile-ui": "0.1.0",
     "d3": "^7.9.0",
@@ -17,8 +18,7 @@
     "katex": "^0.17.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "three": "^0.185.1",
-    "vaul": "^1.1.2"
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/d3": "^7.4.3",

@@ -65,7 +65,7 @@ export function buildScene() {
 
   tl.caption({ at: 32.4, dur: 5.8, text: 'A reaction query can descend from reaction type, through coupling, to cross coupling without losing its place.' });
   tl.tween(diveU, 1, { at: 32.9, dur: 2.0, ease: ease.move });
-  tl.tween(cam, { x: 935, y: 355, k: 1.22 }, { at: 33.5, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 965, y: 355, k: 1.22 }, { at: 33.5, dur: 1.3, ease: ease.move });
   tl.hold(38.2, 0.6);
 
   tl.caption({ at: 38.8, dur: 6.0, text: 'A separate living taxonomy explores scientific principles, theories, models, mechanisms, and phenomena over the same store.' });
@@ -89,7 +89,7 @@ function Pill({ x, y, text, color, u, w = 176 }: { x: number; y: number; text: s
   const uu = clamp01(u);
   return <g opacity={uu} transform={`translate(${x} ${y}) scale(${0.84 + uu * 0.16})`}>
     <rect x={-w / 2} y={-19} width={w} height={38} rx={13} fill={colors.PANEL} stroke={color} strokeWidth={1.8} />
-    <text y={5} textAnchor="middle" fill={color} fontSize={11} fontFamily={MONO}>{text}</text>
+    <text y={5} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>{text}</text>
   </g>;
 }
 
@@ -103,53 +103,55 @@ export function Render({ s }: { s: SceneState }) {
   const livingU = s.get(scene.livingU);
   const orbitU = s.get(scene.orbitU);
   const pullbackU = s.get(scene.pullbackU);
-  const viewOpacity = viewsU * (1 - aliasesU * 0.88) * (1 - treeU * 0.88);
-  const mainOpacity = 1 - 0.9 * s.get(scene.dimU);
+  const viewOpacity = viewsU * (1 - aliasesU) * (1 - treeU);
+  const mainOpacity = 1 - s.get(scene.dimU);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
     <text x={640} y={48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={780} opacity={mainOpacity}>Stabilize the taxonomy</text>
     <Camera {...s.get(scene.cam)}>
       <g opacity={mainOpacity * (1 - pullbackU * 0.25)}>
-        <g opacity={s.get(scene.claimU)} transform={`translate(${640 + (1 - fanU) * -255} 345)`}>
-          <circle r={42} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={3} />
-          <text y={-3} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={750}>one claim</text>
-          <text y={17} textAnchor="middle" fill={colors.WARM} fontSize={9} fontFamily={MONO}>source_doi</text>
-        </g>
-        {VIEWS.map((view, i) => {
+        {VIEWS.map((view) => {
+          // Views sit on their final ring from the start; the claim slides in and its spokes reach each one.
           const r = 225;
-          const x = 640 + Math.cos(view.angle) * r * fanU;
-          const y = 345 + Math.sin(view.angle) * r * 0.8 * fanU;
+          const x = 640 + Math.cos(view.angle) * r;
+          const y = 345 + Math.sin(view.angle) * r * 0.8;
+          const hubX = 640 + (1 - fanU) * -255;
           return <g key={view.label} opacity={viewOpacity}>
-            <line x1={640} y1={345} x2={x} y2={y} stroke={view.color} strokeWidth={2} opacity={0.28 + fanU * 0.42} />
+            <line x1={hubX} y1={345} x2={x} y2={y} stroke={view.color} strokeWidth={2} opacity={0.28 + fanU * 0.42} />
             <Pill x={x} y={y} text={view.label} color={view.color} u={viewOpacity} w={184} />
           </g>;
         })}
-        {aliasesU > 0 && <g opacity={aliasesU * (1 - treeU * 0.8)}>
+        {/* The claim is drawn last so the spokes stop at its rim instead of crossing its label. */}
+        <g opacity={s.get(scene.claimU)} transform={`translate(${640 + (1 - fanU) * -255} 345)`}>
+          <circle r={46} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={3} />
+          <text y={-3} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={750}>one claim</text>
+          <text y={17} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>source_doi</text>
+        </g>
+        {aliasesU > 0 && treeU < 1 && <g opacity={aliasesU * (1 - treeU)}>
           <rect x={86} y={151} width={430} height={340} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={301} y={187} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>taxonomy_path_aliases.json</text>
+          <text x={301} y={187} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>taxonomy_path_aliases.json</text>
+          {/* Variants stay in their own rows (no stacking); curves funnel each one into the canonical pill below. */}
           {ALIASES.map((alias, i) => {
             const yy = 235 + i * 58;
-            const targetY = 325;
-            const x = 260 + funnelU * (340 - 260);
-            const y = yy + funnelU * (targetY - yy);
             return <g key={alias}>
-              <path d={`M260 ${yy} C300 ${yy} 310 ${targetY} 345 ${targetY}`} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.8} opacity={0.25 + funnelU * 0.5} />
-              <Pill x={x} y={y} text={alias} color={colors.NEGATIVE} u={aliasesU} w={310} />
+              <path d={`M456 ${yy} C500 ${yy} 470 462 423 462`} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.8} opacity={0.5 + funnelU * 0.4} />
+              <Pill x={301} y={yy} text={alias} color={colors.NEGATIVE} u={aliasesU * (1 - funnelU * 0.3)} w={310} />
             </g>;
           })}
-          {funnelU > 0 && <Pill x={401} y={325} text="biomedicine/antimicrobial" color={colors.POSITIVE} u={funnelU} w={245} />}
+          {funnelU > 0 && <Pill x={301} y={462} text="biomedicine/antimicrobial" color={colors.POSITIVE} u={funnelU} w={245} />}
         </g>}
-        {treeU > 0 && <g opacity={treeU * (1 - livingU * 0.88)}>
-          <rect x={690} y={120} width={500} height={440} rx={26} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-          <text x={940} y={157} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>taxonomy_v2.json · stable L1 / L2 / L3</text>
+        {treeU > 0 && livingU < 1 && <g opacity={treeU * (1 - livingU)}>
+          <rect x={720} y={120} width={500} height={440} rx={26} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
+          <text x={970} y={157} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>taxonomy_v2.json · stable L1 / L2 / L3</text>
           {[
-            { x: 790, y: 220, label: 'by_reaction_type', c: colors.ACCENT },
-            { x: 940, y: 330, label: 'coupling', c: colors.WARM },
-            { x: 1080, y: 445, label: 'cross_coupling', c: colors.POSITIVE },
+            { x: 820, y: 220, label: 'by_reaction_type', c: colors.ACCENT, level: 'L1 · broad' },
+            { x: 970, y: 330, label: 'coupling', c: colors.WARM, level: 'L2 · middle' },
+            { x: 1110, y: 445, label: 'cross_coupling', c: colors.POSITIVE, level: 'L3 · specific' },
           ].map((n, i, a) => <g key={n.label}>
-            {i > 0 && <path d={`M${a[i - 1].x + 80} ${a[i - 1].y} C${a[i - 1].x + 120} ${a[i - 1].y} ${n.x - 120} ${n.y} ${n.x - 80} ${n.y}`} fill="none" stroke={n.c} strokeWidth={3} opacity={clamp01(treeU * 3 - i)} />}
+            {i > 0 && <path d={`M${a[i - 1].x + 90} ${a[i - 1].y} C${a[i - 1].x + 130} ${a[i - 1].y} ${n.x - 130} ${n.y} ${n.x - 90} ${n.y}`} fill="none" stroke={n.c} strokeWidth={3} opacity={clamp01(treeU * 3 - i)} />}
             <Pill x={n.x} y={n.y} text={n.label} color={n.c} u={clamp01(treeU * 3 - i)} w={180} />
-            {diveU > 0 && <circle cx={n.x} cy={n.y} r={27 + i * 5} fill="none" stroke={colors.WARM} strokeWidth={2.5} opacity={clamp01(diveU * 3 - i) * (1 - clamp01(diveU * 3 - i - 1))} />}
+            <text x={n.x - 90} y={n.y + 42} fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={clamp01(treeU * 3 - i)}>{n.level}</text>
+            {diveU > 0 && <rect x={n.x - 98} y={n.y - 27} width={196} height={54} rx={21} fill="none" stroke={colors.WARM} strokeWidth={2.5} opacity={clamp01(diveU * 3 - i) * (1 - clamp01(diveU * 3 - i - 1))} />}
           </g>)}
         </g>}
         {livingU > 0 && <g opacity={livingU}>
@@ -158,7 +160,7 @@ export function Render({ s }: { s: SceneState }) {
             const r = 180 + i * 8;
             return <Pill key={label} x={640 + Math.cos(a) * r} y={345 + Math.sin(a) * r * 0.72} text={label} color={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE, colors.TEAL][i]} u={livingU} w={132} />;
           })}
-          <text x={640} y={585} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>living taxonomy · exploratory overlay</text>
+          <text x={640} y={585} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>living taxonomy · exploratory overlay</text>
         </g>}
       </g>
     </Camera>
@@ -166,7 +168,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect x={170} y={224} width={940} height={222} rx={28} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
       <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={820}>One claim store, many maps</text>
       <text x={640} y={350} textAnchor="middle" fill={colors.POSITIVE} fontSize={21}>stable facets for retrieval · living structures for discovery</text>
-      <text x={640} y={397} textAnchor="middle" fill={colors.MUTED} fontSize={14}>organization changes; provenance does not</text>
+      <text x={640} y={397} textAnchor="middle" fill={colors.TEXT} fontSize={18} opacity={0.8}>organization changes; provenance does not</text>
     </g>}
   </>;
 }

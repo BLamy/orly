@@ -1,0 +1,54 @@
+{
+ "shot": "ch07-s11",
+ "at": "2026-10-28T17:40:49.971Z",
+ "step": 0.0833,
+ "sampled": 308,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "Misalignment penalty",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "4%",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch07-s11-label",
+  "ch07-s11-qlabel"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch07-s11-label",
+   "probed": true,
+   "from": 12.467,
+   "to": 18.883,
+   "minInkWhilePaper": 0.17
+  },
+  {
+   "id": "ch07-s11-qlabel",
+   "probed": true,
+   "from": 20.883,
+   "to": 26.133,
+   "minInkWhilePaper": 0.02
+  }
+ ]
+}

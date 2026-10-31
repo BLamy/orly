@@ -1,0 +1,60 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-13T20:18:18.658Z",
+ "summary": {
+  "pass": 3,
+  "warn": 0,
+  "fail": 2,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "fail",
+   "detail": "m01: rendered body 75.85s but cue window is 76.267s — re-render; m02: rendered body 123.68s but cue window is 125.055s — re-render; m18: rendered body 150.16s but cue window is 150.493s — re-render; m19: rendered body 119.611s but cue window is 122.467s — re-render; m21: rendered body 91.3337s but cue window is 98.042s — re-render",
+   "problems": [
+    "m01: rendered body 75.85s but cue window is 76.267s — re-render",
+    "m02: rendered body 123.68s but cue window is 125.055s — re-render",
+    "m18: rendered body 150.16s but cue window is 150.493s — re-render",
+    "m19: rendered body 119.611s but cue window is 122.467s — re-render",
+    "m21: rendered body 91.3337s but cue window is 98.042s — re-render"
+   ],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "fail",
+   "detail": "films/neural-net-history/score/analysis/summary.json is stale (m01: cueSeconds 75.85 vs window 76.267 s; m02: cueSeconds 123.68 vs window 125.055 s; m18: cueSeconds 150.16 vs window 150.493 s; m19: cueSeconds 119.611 vs window 122.467 s; m21: cueSeconds 91.3337 vs window 98.042 s; measured on a 2153.5417 s clock, timeline is 2164 s): re-run film:score analyze --slug neural-net-history",
+   "problems": [
+    "m01: cueSeconds 75.85 vs window 76.267 s",
+    "m02: cueSeconds 123.68 vs window 125.055 s",
+    "m18: cueSeconds 150.16 vs window 150.493 s",
+    "m19: cueSeconds 119.611 vs window 122.467 s",
+    "m21: cueSeconds 91.3337 vs window 98.042 s",
+    "measured on a 2153.5417 s clock, timeline is 2164 s"
+   ]
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "pass",
+   "detail": "20 cue changes, each in the clear before the next line",
+   "under": [],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "notesClock",
+   "status": "pass",
+   "detail": "every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)"
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "36.6 min of music over 36.1 min (101%)"
+  }
+ ]
+}

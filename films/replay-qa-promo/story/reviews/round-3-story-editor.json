@@ -1,0 +1,58 @@
+{
+  "reviewer": "story-editor",
+  "round": 3,
+  "lens": "story, curiosity and voice for a 90-second promo",
+  "runtimeCheck": "script.mjs assemble --check: 0 errors, 11 warnings; 177 words, est. 99.4 s at 140 wpm (no voice/voice.json yet, so the default pace) against a 90 s target and a 100 s hard ceiling. It is inside the ceiling, so it is not critical, but the headroom is only 0.6 s, down from 3.9 s in round 2. Any added word or gap now risks the ceiling, so every fix below is word-neutral or saves words.",
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 7, "story": 7, "curiosity": 7, "visual": 8, "voice": 7 },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch05-s04 / L0507 (act structure: the payoff lands mid-act)",
+      "problem": "The film's payoff ('A screen recording can't see that. A time-travel recording can.', L0506) lands in ch05-s03. 'Another bug:' then opens a second example after the climax, so ch05 dips just where it should crest. 'Another bug' sounds like a list ('here's one more') and gives no reason for a second bug.",
+      "fix": "Make the second bug an escalation along the film's own axis, time scale: L0507 → 'Some bugs take minutes, not milliseconds. One list, fetched two hundred fifty-eight times.' (14 words, same as now). It rhymes with L0501 'Some bugs only exist in time' and contrasts with the 67 ms just shown. Requests span 15.3 s → 175.6 s [TIME-11], so 'minutes' is accurate. Keep the anchors on 'list', 'fetched' and 'fifty-eight'. Re-anchor beat 'nobody' (now on 'minutes') to the line's end edge, so it still fires after the counter."
+    },
+    {
+      "where": "ch05-s02 / L0503",
+      "problem": "'One update.' is opaque by ear: an update of what? It also stacks a third 'one' within seconds ('caught one in its own app. One update.', then 'one list'), so the narration starts to sound like counting.",
+      "fix": "Cut 'One update.': L0503 → 'Sixty-seven milliseconds. Four dropped frames.' Re-anchor beat ms67 from 'update' to 'Sixty-seven'; 'ribbon' already shares that anchor, so stagger it +0.1 s. L0504 'No click. A background refresh re-rendered the project list.' already names the cause, which becomes the reveal. This saves 2 words (≈ 0.9 s), which the runtime headroom needs."
+    },
+    {
+      "where": "ch03-s01 L0302 → ch04-s01 L0401",
+      "problem": "Read together, the lines go '...into user journeys, and runs them. Then it runs on Replay's browsers.' The verb is repeated across the join and lands flat. 'Then' also implies a later step, but this is the same running. L0401 is the film's only spoken hint of the primary message (fully managed), and it says it as a hosting detail, not as a benefit.",
+      "fix": "Word-neutral (6 → 6): L0401 → 'All on Replay's browsers, not yours. On a schedule, while you sleep.' 'not yours' says 'fully managed' to the ear [CONT-19; bible §Settings: Replay runs the containers, browsers and recordings]. Keep the anchors on 'browsers', 'schedule' and 'sleep', and move b-tag from 'Then' to 'All'. L0302 keeps 'runs', which b-check3 needs."
+    },
+    {
+      "where": "ch06-s02 / L0602",
+      "problem": "'Catch bugs that only exist in time.' The bare plural lands a little clipped. Spoken aloud, 'Catch bugs' runs together as two stressed syllables, and the line loses the defined echo of the turn ('Some bugs only exist in time') that it is meant to pay off.",
+      "fix": "'Catch the bugs that only exist in time.' +1 word. Word index 6 ('Catch') is unchanged, so beat 'url' still holds. Pay for it with the L0503 cut."
+    },
+    {
+      "where": "ch01-s01 / L0101 (hook)",
+      "problem": "The hook works and lands inside 5 s, but it is a generic convenience promise. Any testing product could open with it, and the film's distinctive idea (bugs that only exist in time) does not surface until about 50 s. A smaller ear problem: after a full stop, 'Or remember to run.' can be heard on its own as an instruction.",
+      "fix": "Keep the words. Join the two halves with a comma, 'Imagine end-to-end tests you never write, or remember to run.', so the narrator reads it as one thought; the kinetic type can still break after 'write'. Optional extra curiosity at no word cost: in ch01-s03, let the third postage stamp (bug-react 3100) be the red-pink 67 ms chip and hold it 0.1 s longer, so a sharp viewer has seen the punchline before the film explains it."
+    },
+    {
+      "where": "ch02-s02 / L0202",
+      "problem": "'No test suite needed.' repeats L0101 ('tests you never write') about 6 s later. In a 90 s film that spends a beat restating the setup.",
+      "fix": "Optional, if more headroom is needed: L0202 → 'No test suite. Just a quick chat.' This saves a word, and 'needed' is a weak stress anyway. Move the settle beat from 'needed' to 'suite'. Otherwise leave it: the repetition is mild, and it is grounded [SET-08]."
+    },
+    {
+      "where": "runtime (whole film)",
+      "problem": "99.4 s against a 100 s ceiling. TTS variance (direction cues like 'a short, real pause after Introducing', insertGaps and preGaps) can push the real narration past the estimate. The round-2 → round-3 rewrite added 12 words and spent 3.3 s of headroom.",
+      "fix": "Apply the L0503 cut (−2 words) and, if needed, the L0202 trim (−1). Also trim ch05-s05 minDuration 6.4 → 6.0 s; both critic exchanges still fit, at 1.3 s and about 3.8 s. Together these bring the estimate to about 97.5 s."
+    },
+    {
+      "where": "ch03-s01 'Done' swap; ch04-s02 'staging · preview · local' pill row",
+      "problem": "Two pure-type beats are still short of reading time (1.6 of 1.8 s and 3.4 of 3.6 s). The look requires type to be held at least 1.2 s after the last word lands. The other nine warnings are narrated kinetic type that the viewer reads along with the voice, which is acceptable.",
+      "fix": "Land the 'Done' swap 0.2 s earlier (or add 0.2 s to holdAfter). In ch04-s02, land the pill-row lift at 0.05 s together with the row, not at 0.1 s, and add 0.15 s to holdAfter. Take the time from the ch05-s05 trim."
+    }
+  ],
+  "strengths": [
+    "A clear promo arc: pain, then introduction, then the setup in one URL, the loop, always-on, the dark turn into 'Some bugs only exist in time', proof, the tricolon, and an end card that echoes the turn ('...exist in time'). One idea per beat throughout.",
+    "L0501 'Some bugs only exist in time.' is the best line in the film. Short, certain, and the brand-haze register change gives it a real turn.",
+    "'Replay QA caught one in its own app.' is a charming, credible proof beat [TIME-09], and 'No click. A background refresh...' delivers a genuine small surprise.",
+    "'Against staging, a preview, even localhost. / And on every pull request.' The rising taps with a closing beat are textbook promo cadence and land on brace snaps.",
+    "Round-2 fixes are in: 'user journeys', the generic 'A time-travel recording can.', 'Catch...' on the end card, and the agent pair no longer shares the frame with the 'Fixed' chip, so the subtle beat implies nothing false.",
+    "The L0601 tricolon ('Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.') is memorable and grounded [PROOF-07, TIME-C1 phrasing respected]."
+  ]
+}

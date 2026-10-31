@@ -75,11 +75,12 @@ const REDUCTION = Math.round((1 - W_OPT / W_NAIVE) * 100);
 
 const SRV_X = (i: number): number => 170 + i * 250;
 const SRV_Y = 220;
-const SRV_W = 200;
+const SRV_W = 216;
 const SRV_H = 130;
 
 const CAM_CLUSTER: CameraState = { x: 640, y: 300, k: 1.12 };
-const CAM_S1: CameraState = { x: 290, y: 280, k: 1.6 };
+// a closer view that still holds all four servers and the mean-wait readout
+const CAM_S1: CameraState = { x: 640, y: 330, k: 1.25 };
 
 interface Scene {
   tl: Timeline;
@@ -195,7 +196,7 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 function chipPos(placement: number[][], e: number): { x: number; y: number } {
   for (let s = 0; s < placement.length; s++) {
     const k = placement[s].indexOf(e);
-    if (k >= 0) return { x: SRV_X(s) + 18 + k * 92, y: SRV_Y + 58 };
+    if (k >= 0) return { x: SRV_X(s) + 16 + k * 100, y: SRV_Y + 58 };
   }
   return { x: 0, y: 0 };
 }
@@ -213,7 +214,9 @@ function Frame({ s }: { s: SceneState }) {
   const paperU = s.get(scene.paperU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  // old content fades fully out under the closing panel (it is not drawn at all once gone)
+  const mainOp = 1 - closeU;
+  const showMain = mainOp > 0;
   const loads = LOAD_NAIVE.map((l, i) => lerp(l, LOAD_OPT[i], afterU));
   const waits = loads.map((l) => wait(l));
   const meanW = lerp(W_NAIVE, W_OPT, afterU);
@@ -222,6 +225,7 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {showMain && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* servers */}
@@ -244,7 +248,7 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={SRV_X(i) + 14} y={SRV_Y + 26} fill={colors.TEXT} fontSize={14}>
                   server {i + 1}
                 </text>
-                <text x={SRV_X(i) + SRV_W - 14} y={SRV_Y + 26} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                <text x={SRV_X(i) + SRV_W - 14} y={SRV_Y + 26} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                   μ = {MU}/s
                 </text>
                 {/* load bar */}
@@ -258,17 +262,38 @@ function Frame({ s }: { s: SceneState }) {
                   fill={loads[i] > 9 ? colors.NEGATIVE : colors.POSITIVE}
                   opacity={0.85}
                 />
-                <text x={SRV_X(i) + 14} y={SRV_Y + 122} fill={colors.MUTED} fontSize={11} fontFamily="monospace" opacity={flowU}>
+                <text x={SRV_X(i) + 14} y={SRV_Y + 122} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={flowU}>
                   λ = {loads[i].toFixed(1)}/s
                 </text>
                 {waitU > 0 && (
-                  <text x={SRV_X(i) + SRV_W - 14} y={SRV_Y + 122} textAnchor="end" fill={waits[i] > 0.3 ? colors.NEGATIVE : colors.POSITIVE} fontSize={11} fontFamily="monospace" opacity={waitU}>
+                  <text x={SRV_X(i) + SRV_W - 14} y={SRV_Y + 122} textAnchor="end" fill={waits[i] > 0.3 ? colors.NEGATIVE : colors.POSITIVE} fontSize={14} fontFamily="monospace" opacity={waitU}>
                     wait {Number.isFinite(waits[i]) ? waits[i].toFixed(2) : '∞'} s
                   </text>
                 )}
               </g>
             );
           })}
+
+          {/* requests arriving at each expert's queue, falling into its server */}
+          {clusterU > 0 && (
+            <text x={640} y={132} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clusterU * (1 - flowU)}>
+              requests arrive, one queue per server
+            </text>
+          )}
+          {clusterU > 0 &&
+            RATES.map((r, e) => {
+              const p = chipPos(NAIVE, e);
+              return (
+                <circle
+                  key={e}
+                  cx={p.x + 46}
+                  cy={lerp(150, SRV_Y + 32, flowU)}
+                  r={3 + 4 * (r / RATES[0])}
+                  fill={e === 0 ? colors.NEGATIVE : colors.ACCENT}
+                  opacity={clusterU * (1 - flowU)}
+                />
+              );
+            })}
 
           {/* expert chips, migrating between placements */}
           {RATES.map((r, e) => {
@@ -279,8 +304,8 @@ function Frame({ s }: { s: SceneState }) {
             const hot = e === 0;
             return (
               <g key={e} opacity={clusterU}>
-                <rect x={x} y={y - 16} width={84} height={26} rx={6} fill={hot && hotU > 0 ? colors.NEGATIVE : colors.ACCENT} opacity={0.28 + 0.5 * (r / RATES[0])} />
-                <text x={x + 42} y={y + 2} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily="monospace">
+                <rect x={x} y={y - 16} width={92} height={26} rx={6} fill={hot && hotU > 0 ? colors.NEGATIVE : colors.ACCENT} opacity={0.28 + 0.5 * (r / RATES[0])} />
+                <text x={x + 46} y={y + 2} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                   e{e + 1} · {r}/s
                 </text>
               </g>
@@ -290,11 +315,17 @@ function Frame({ s }: { s: SceneState }) {
           {/* predictor chip */}
           {predU > 0 && (
             <g opacity={predU}>
-              <rect x={510} y={120} width={260} height={34} rx={9} fill={colors.PANEL} stroke={colors.TEAL} />
-              <text x={640} y={142} textAnchor="middle" fill={colors.TEAL} fontSize={13}>
+              <rect x={475} y={120} width={330} height={34} rx={9} fill={colors.PANEL} stroke={colors.TEAL} />
+              <text x={640} y={142} textAnchor="middle" fill={colors.TEAL} fontSize={14}>
                 predictor → optimizer → migrate
               </text>
             </g>
+          )}
+          {/* migrations run in the compute-bound phases, when the network is free */}
+          {migU > 0 && (
+            <text x={640} y={180} textAnchor="middle" fill={colors.TEAL} fontSize={14} opacity={migU}>
+              migrations run in compute-bound phases, network free
+            </text>
           )}
 
           {/* mean wait readout */}
@@ -308,13 +339,16 @@ function Frame({ s }: { s: SceneState }) {
               <text x={438 + W_NAIVE * 600} y={429} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 {meanW.toFixed(3)} s
               </text>
+              <text x={170} y={396} fill={colors.MUTED} fontSize={14}>
+                total load 18 req/s in both layouts
+              </text>
               {afterU > 0.95 && (
                 <text x={170} y={462} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                   {W_NAIVE.toFixed(3)} s → {W_OPT.toFixed(3)} s (−{REDUCTION}%) in this toy
                 </text>
               )}
               {paperU > 0 && (
-                <text x={170} y={490} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={paperU}>
+                <text x={170} y={490} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={paperU}>
                   Director, reported: 11–55% lower end-to-end latency (Mistral, DeepSeek, Qwen)
                 </text>
               )}
@@ -322,8 +356,10 @@ function Frame({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {/* screen-fixed */}
+      {showMain && (
       <g opacity={titleU * mainOp}>
         <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Placing the experts
@@ -332,6 +368,8 @@ function Frame({ s }: { s: SceneState }) {
           arXiv:2607.08782 · M/M/1 waits, computed
         </text>
       </g>
+      )}
+      {showMain && (
       <MathLabel
         tex="W = \frac{1}{\mu - \lambda}"
         x={1120}
@@ -340,10 +378,11 @@ function Frame({ s }: { s: SceneState }) {
         color={colors.WARM}
         opacity={s.get(scene.waitU) * mainOp}
       />
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Latency is geography.
           </text>

@@ -1,0 +1,184 @@
+{
+ "shot": "ch02-s07",
+ "at": "2026-10-13T04:13:07.293Z",
+ "minCapPx": 22,
+ "sampled": 37,
+ "texts": 34,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "D",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "A",
+   "capWhileSubject": 47.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "R",
+   "capWhileSubject": 46.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "T",
+   "capWhileSubject": 45.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "M",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "O",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "U",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "H",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "S",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "E",
+   "capWhileSubject": 39.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "5",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "6",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "john mccarthy",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "named the field",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ARTIFICIAL INTELLIGENCE",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "named in the proposal, August 1955",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "marvin minsky",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "built SNARC, 1951",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "bernard widrow",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "engineer",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "I was so taken by this that I",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "never got over it.”",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "recalling it in 2005",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "I",
+   "maxCap": 48,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "F",
+   "maxCap": 47.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "C",
+   "maxCap": 44.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "L",
+   "maxCap": 47.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "N",
+   "maxCap": 39.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "G",
+   "maxCap": 39.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IF  A ∧ B  →  C",
+   "maxCap": 32,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "∀x  P(x) → Q(x)",
+   "maxCap": 32,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "¬Q  ∴  ¬P",
+   "maxCap": 32,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 9
+}

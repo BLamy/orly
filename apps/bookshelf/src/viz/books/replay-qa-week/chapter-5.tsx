@@ -28,7 +28,7 @@ const CAL = { x: 340, y: 96, w: 600 };
  * which the agent first reaches it. Weeks explore outward: early clusters
  * light first, stragglers later, and a few corners stay dark all month.
  */
-const N = 760;
+const N = 640;
 const CLUSTERS: Array<{ cx: number; cy: number; sx: number; sy: number; wk: number }> = [
   { cx: 0.2, cy: 0.3, sx: 0.09, sy: 0.13, wk: 0.1 }, // home + sign in
   { cx: 0.42, cy: 0.55, sx: 0.1, sy: 0.14, wk: 0.5 }, // browse + search
@@ -211,7 +211,7 @@ function computeField(s: SceneState): ParticlePoint[] {
     const sweep = rw > 0 ? clamp01(1 - Math.abs(rw * 1.4 - d.ord / 3) * 6) : 0;
     const warm = Math.max(fresh, sweep * 0.9);
     const color = lit <= 0 ? DARK : warm > 0.45 ? colors.WARM : colors.TEAL;
-    const alpha = (lit <= 0 ? 0.28 : 0.45 + 0.5 * lit) * base * keep;
+    const alpha = (lit <= 0 ? 0.4 : 0.45 + 0.5 * lit) * base * keep;
     return { x: d.x, y: d.y, r: lit <= 0 ? 1.6 : 2.1 + 0.9 * lit + 1.1 * warm, color, alpha };
   });
 }
@@ -219,19 +219,25 @@ function computeField(s: SceneState): ParticlePoint[] {
 /* -------------------------------------------------- local subcomponents */
 
 /** Four weeks of five day-cells, filling as `week` advances. */
-function CalendarStrip({ u, week, friday, fade }: { u: number; week: number; friday: number; fade: number }) {
+function CalendarStrip({ u, week, friday, spot, fade }: { u: number; week: number; friday: number; spot: number; fade: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   const cellW = 22;
   const gap = 6;
   const weekW = DAYS_PER_WEEK * (cellW + gap) + 18;
+  // one focus per frame: the strip recedes while the field lights up and while
+  // the honest-note zoom is on, then comes back forward for Friday
+  const recede = 0.3 * clamp01((week - 0.6) / 0.6) * (1 - clamp01(friday));
+  const focus = (1 - recede) * (1 - 0.25 * clamp01(spot));
   return (
-    <g transform={`translate(${CAL.x}, ${CAL.y})`} opacity={uu * (0.15 + 0.85 * fade)}>
+    <g transform={`translate(${CAL.x}, ${CAL.y})`} opacity={uu * focus * (0.15 + 0.85 * fade)}>
+      {/* a backing panel keeps dots from the zoomed field from running under the labels */}
+      <rect x={-14} y={-26} width={4 * weekW - 18 + 28} height={54} rx={10} fill={colors.BG} opacity={0.85} />
       {WEEK_LABELS.map((wl, wi) => {
         const wx = wi * weekW;
         return (
           <g key={wi} transform={`translate(${wx}, 0)`}>
-            <text y={-10} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+            <text y={-10} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
               {wl}
             </text>
             {Array.from({ length: DAYS_PER_WEEK }, (_, di) => {
@@ -275,10 +281,10 @@ function SpotNote({ u }: { u: number }) {
       <g transform={`translate(${SPOT.x + 48}, ${SPOT.y - 74})`}>
         <rect width={230} height={52} rx={9} fill={colors.BG} opacity={0.92} />
         <rect width={230} height={52} rx={9} fill="none" stroke={colors.WARM} strokeWidth={1.2} />
-        <text x={12} y={21} fill={colors.TEXT} fontSize={11.5} fontFamily={mono}>
+        <text x={12} y={21} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
           last walk: passed
         </text>
-        <text x={12} y={40} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+        <text x={12} y={40} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
           movie saved, open any time
         </text>
       </g>
@@ -286,13 +292,30 @@ function SpotNote({ u }: { u: number }) {
   );
 }
 
-/** The book's last image: one line, clean stage. */
+/** The month collapsed to one link: what "paste a link" looked like. */
+function PasteCard({ u }: { u: number }) {
+  const uu = clamp01(u);
+  if (uu <= 0) return null;
+  return (
+    <g opacity={uu}>
+      <text x={640} y={300} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+        paste a link
+      </text>
+      <rect x={430} y={314} width={420} height={52} rx={10} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.4} />
+      <text x={452} y={346} fill={colors.TEXT} fontSize={18} fontFamily={mono}>
+        yourapp.com/checkout
+      </text>
+    </g>
+  );
+}
+
+/** The book's last image: one line, clean stage. The panel is opaque so no faded field ghosts through. */
 function CloseLine({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
     <g opacity={uu}>
-      <rect x={0} y={0} width={1280} height={720} fill={colors.BG} opacity={0.72 * uu} />
+      <rect x={0} y={0} width={1280} height={720} fill={colors.BG} />
       <text x={640} y={352 + (1 - uu) * 10} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={700}>
         You didn’t hire a tester.
       </text>
@@ -312,15 +335,26 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <ParticleCloud state={s} compute={computeField} />
         {/* hide the field label while the camera is zoomed into the spot note —
-            half-clipped text at the frame edge reads as a bug */}
+            half-clipped text at the frame edge reads as a bug. Centred on the
+            stage so a camera push never crops its first character. */}
         <g opacity={(0.15 + 0.85 * fade) * (1 - clamp01(s.get(scene.spotU)))}>
-          <text x={FIELD.x} y={FIELD.y - 16} fill={colors.MUTED} fontSize={12}>
+          <text x={640} y={FIELD.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             your app — every dot a moment it can reach
           </text>
         </g>
-        <CalendarStrip u={s.get(scene.calU)} week={s.get(scene.weekU)} friday={s.get(scene.fridayU)} fade={fade} />
         <SpotNote u={s.get(scene.spotU)} />
       </Camera>
+      {/* the calendar is a fixed header, not part of the camera: the spot zoom
+          must not push the week labels off the stage */}
+      <CalendarStrip
+        u={s.get(scene.calU)}
+        week={s.get(scene.weekU)}
+        friday={s.get(scene.fridayU)}
+        spot={s.get(scene.spotU)}
+        fade={fade}
+      />
+      {/* the paste card rises in the second half of the dim, inside the same window */}
+      <PasteCard u={clamp01((dim - 0.4) / 0.6) * (1 - clamp01(s.get(scene.closeU)))} />
       <CloseLine u={s.get(scene.closeU)} />
     </>
   );

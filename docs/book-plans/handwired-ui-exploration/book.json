@@ -1,0 +1,65 @@
+{
+  "slug": "handwired-ui-exploration",
+  "title": "UI Exploration",
+  "subtitle": "One night, one question: how far can a fixed circuit write a user interface?",
+  "animal": "raccoon",
+  "accent": "#4f7fd8",
+  "chapters": [
+    {
+      "title": "Count, Don't Search",
+      "blurb": "Two loops that look sequential, picking a list's first row and breaking a paragraph into lines, become counts of yes-or-no bits.",
+      "captions": [
+        "Handwired's author spent one night in September 2026 asking how far a fixed circuit of weighted sums and relu goes for writing a user interface. JavaScript only writes inputs and reads outputs.",
+        "The circuit has no loops and no search. So the trick, again and again, is to rewrite a search as a count: when a yes-or-no test flips exactly once along a line, add up the ones.",
+        "Take a list of ten thousand rows with room for a few on screen. Which row comes first? Divide the scroll position by the row height and round down. That is exact.",
+        "The circuit does just that, then takes that row number modulo the number of slots, so each row always lands in the same slot. JavaScript first floors the scroll position to a quarter pixel.",
+        "Each slot also gets a visibility bit: is the row's top above the viewport's bottom edge? One comparison per row, and the bit is exactly zero or one.",
+        "With uniform row heights and row data kept in JavaScript, the whole virtualized list is two hundred eighty operations in nineteen layers, whether it has one thousand rows or one hundred thousand.",
+        "Scope matters. Put the row data into the circuit's own source cells instead, and the same list costs twenty thousand three hundred five operations.",
+        "Now text. To break a paragraph into lines you would walk word by word until one no longer fits. That is a loop, and the circuit can't loop.",
+        "But for a line starting at some segment, each later segment either fits within the maximum width or doesn't, and the answers always read one, one, one, zero, zero, zero.",
+        "So the first segment that doesn't fit is just the count of fit bits. The next line starts that many segments along, skipping spaces, and its painted width is a sum gated by the same bits.",
+        "At lab scale, forty-eight words in ninety-five segments flow around a window in fourteen thousand seven hundred sixty operations and two hundred fifteen layers, with ninety-six word springs.",
+        "Lines still come one after another, so depth grows with every line. Walking lines is a sequential scan that the lab's rewrites shrink but don't remove.",
+        "That's the pattern: when a predicate flips once, count it. Counting turned a search into arithmetic that a fixed circuit can do."
+      ]
+    },
+    {
+      "title": "One Program, Many Photos",
+      "blurb": "Write the per-item program once and run it as instances, step springs as a matrix power, and read an array with one index operation.",
+      "captions": [
+        "The lab ports the 221-photo gallery from Cheng's website. Copying the whole circuit once per photo costs fifty-seven thousand one hundred thirty-five operations in sixty-seven layers, and it grows with every photo.",
+        "Write the per-photo program once instead, and run it as instances. An instance axis repeats it for every photo, with reductions between stages for what photos share.",
+        "Four hundred one operations are shared. Each photo then costs two hundred thirty-three operations, at two hundred twenty-one photos, at one thousand, and at ten thousand.",
+        "On the processor, that is sixty-five microseconds against five hundred forty-six for the duplicated circuit at two hundred twenty-one photos. Timings are rough.",
+        "At ten thousand photos it is four thousand one hundred six microseconds against forty-three thousand twenty-seven. The staged program scales; the copied one drowns.",
+        "Springs are the next loop. One semi-implicit Euler step updates a spring's velocity from stiffness and damping, which is a two-by-two matrix acting on its distance from the destination and its velocity.",
+        "So catching up many fixed steps is that matrix raised to a power. In the spring bank that cut the circuit from five thousand two hundred fifty-three operations to three thousand five hundred eighty.",
+        "Arrays are the next. Reading values at an index used to take a one-hot and a sum. The runtime now has an index read instruction, and reading one element is a single operation.",
+        "The README says it changes the cost of lists, text and slot routing more than anything else measured. That's its comparison, not a ranking. It's landed in the runtime.",
+        "It doesn't remove every scan. With index reads, pointer jumping gets the line count and widest line of a paragraph with one thousand twenty-three segments in sixty-six layers.",
+        "The gallery also has a catch. Far down it, pointers inside a band of about a fifth of a pixel between native box edges and the circuit's got a different hover and click.",
+        "So the instance axis, matrix powers and index reads each trade a loop for arithmetic. Each has a scope, and the gallery is the one UI where exact order of operations mattered beyond rounding points."
+      ]
+    },
+    {
+      "title": "What Held, What Narrowed",
+      "blurb": "A drag solver, a combined circuit, learned gates and timing each get a verdict with their scope, and the lab stays a historical record.",
+      "captions": [
+        "A designer drags a card's edge in the app shell. One backward pass asks which of five design numbers should move, padding, gap, minimum card width, sidebar width or title scale, and takes a gradient step.",
+        "The test is five hundred scripted drags of six frames each. Of those, two thousand nine hundred ninety-nine frames actually move.",
+        "With booleans frozen, one gradient step solved sixty-three point six percent of those moving frames. That is the app shell only.",
+        "The same strategy on the candidate gallery solved thirty-seven point six percent of fifteen hundred moving frames.",
+        "Decisions are why. Inside a decision region the gradient is the true slope; across one it is zero or misleading. At the start, every unlocked knob had a zero gradient in twenty-four point six percent of app shell frames.",
+        "Then search takes over: two hundred fifty-six candidate knob settings run as instances of the same circuit, and the closest valid one wins. The instance axis again.",
+        "Zoom out. Most of the user interface logic the prototypes ported became a circuit: lists, springs, layout, the gallery, a comment thread.",
+        "Combining the wins was richer, not cheaper: nineteen thousand eight hundred fifty-four operations with word springs, eighteen thousand twenty-seven without, versus five thousand two hundred fifty-three before.",
+        "Learning was weak. None of forty-eight runs learned a task exactly at base settings, though counting units did learn one rung exactly when trained on every case.",
+        "In chenguini's demos, a new spring destination mid-animation lands one hundred fifty-seven pixels apart between thirty and one hundred twenty frames per second. The runtime now steps springs to each event's time.",
+        "And zero mismatches always means over the traces named, not a proof. In lists at one hundred cards, seven of twenty runs flipped a settle decision, and positions differed by up to twenty-one pixels.",
+        "The status page calls this folder the record of that exploration: its measurements describe the code as it was then. Index reads landed; what agents build apps from stays open.",
+        "So: a fixed circuit can write much of a user interface, by counting, instancing and matrix powers. It is richer, not cheaper, and learning it is still mostly open."
+      ]
+    }
+  ]
+}

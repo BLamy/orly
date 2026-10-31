@@ -1,0 +1,507 @@
+{
+ "slug": "replay-qa-promo",
+ "at": "2026-10-14T22:18:12.432Z",
+ "summary": {
+  "pass": 38,
+  "warn": 7,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "20 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "warn",
+   "detail": "175 wpm overall; fast: L0202 196, L0301 199, L0302 195, L0401 198, L0508 197",
+   "wpm": 175.1,
+   "tooFast": [],
+   "fast": [
+    "L0202 196",
+    "L0301 199",
+    "L0302 195",
+    "L0401 198",
+    "L0508 197"
+   ],
+   "perShot": {
+    "ch01-s01": 183.9,
+    "ch01-s03": 139.9,
+    "ch02-s01": 331.1,
+    "ch02-s02": 196.5,
+    "ch03-s01": 196.3,
+    "ch04-s01": 198.2,
+    "ch04-s02": 169,
+    "ch04-s03": 173.3,
+    "ch05-s01": 183.5,
+    "ch05-s02": 148.2,
+    "ch05-s03": 161,
+    "ch05-s04": 184.6,
+    "ch06-s01": 171.4,
+    "ch06-s02": 165.5
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all 8 cut edges under -50 dBFS",
+   "loud": [],
+   "warm": [],
+   "dirty": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -19 LUFS (target -19), TP -2.5 dBTP, limiter 0 dB, compressor 1.66 dB GR, line rides ≤ 3.0 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "pass",
+   "detail": "20 lines round-tripped on the current takes (scribe_v1; terms heard literally): L0102 (QA); L0402 (localhost, Against); L0502 (QA); L0503 (67); L0505 (changed); L0602 (QA); L0101 (re-take, WER 0); L0201 (re-take, WER 0); L0202 (re-take, WER 0); L0301 (re-take, WER 0); L0302 (re-take, WER 0); L0401 (re-take, WER 0); L0403 (re-take, WER 0); L0404 (re-take, WER 0); L0501 (re-take, WER 0); L0504 (re-take, WER 0); L0506 (re-take, WER 0); L0507 (re-take, WER 0.231); L0508 (re-take, WER 0); L0601 (re-take, WER 0)",
+   "targets": [
+    "L0102",
+    "L0402",
+    "L0502",
+    "L0503",
+    "L0505",
+    "L0602"
+   ],
+   "bad": []
+  },
+  {
+   "stage": "narration",
+   "id": "listening",
+   "status": "warn",
+   "detail": "QA pending; localhost pending; Against pending; QA pending — a human listens and runs film:voice signoff --slug replay-qa-promo --term <term> --by <name>"
+  },
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "fresh",
+   "status": "pass",
+   "detail": "script.json was touched after timeline.json, but every line text matches the clock"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "87 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "pass",
+   "detail": "1.4 min vs target 1.5 min (92%)"
+  },
+  {
+   "stage": "timeline",
+   "id": "ceiling",
+   "status": "pass",
+   "detail": "82.71 s vs ceiling 100 s (story/meta.json runtimeCeilingSec)"
+  },
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "pass",
+   "detail": "1 cues rendered at exact length",
+   "problems": [],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "pass",
+   "detail": "summary current: 1 cue(s) on the 82.7083 s clock",
+   "problems": []
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "pass",
+   "detail": "0 cue changes, each in the clear before the next line",
+   "under": [],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "notesClock",
+   "status": "pass",
+   "detail": "every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)"
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "1.4 min of music over 1.4 min (100%)"
+  },
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-16 LUFS (target -16), LRA 2.7, linear normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-1.9 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "pass",
+   "detail": "82.7083s vs film 82.7083s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "pass",
+   "detail": "music ducks 4.21 dB (target 4, ceiling; warn beyond ±1.5) under 58.7s of narration; calibrated to threshold -26.04 dBFS, ratio 4"
+  },
+  {
+   "stage": "mix",
+   "id": "moments",
+   "status": "pass",
+   "detail": "L0101 peaks -13.2 LUFS momentary; loudest music-only windows: -15 LUFS @ 67.3s, -15.5 LUFS @ 73.9s, -15.9 LUFS @ 72.7s"
+  },
+  {
+   "stage": "mix",
+   "id": "preLimit",
+   "status": "pass",
+   "detail": "no master limiting (constant gain only)",
+   "reductionDb": 0
+  },
+  {
+   "stage": "mix",
+   "id": "stemLimit",
+   "status": "pass",
+   "detail": "narration stem limiter 0 dB; speech compressor 1.66 dB GR"
+  },
+  {
+   "stage": "mix",
+   "id": "lineLevels",
+   "status": "pass",
+   "detail": "spread of the rest -1.08..0.05 dB",
+   "lines": {
+    "L0101": {
+     "M": -19.14,
+     "offsetDb": -0.42,
+     "requestedDb": 0,
+     "errorDb": -0.42,
+     "driftDb": -0.42
+    },
+    "L0102": {
+     "M": -19.11,
+     "offsetDb": -0.39,
+     "requestedDb": 0,
+     "errorDb": -0.39,
+     "driftDb": -0.39
+    },
+    "L0201": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0202": {
+     "M": -19.8,
+     "offsetDb": -1.08,
+     "requestedDb": 0,
+     "errorDb": -1.08,
+     "driftDb": -1.08
+    },
+    "L0301": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0302": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0401": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0402": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0403": {
+     "M": -19,
+     "offsetDb": -0.28,
+     "requestedDb": 0,
+     "errorDb": -0.28,
+     "driftDb": -0.28
+    },
+    "L0404": {
+     "M": -18.77,
+     "offsetDb": -0.05,
+     "requestedDb": 0,
+     "errorDb": -0.05,
+     "driftDb": -0.05
+    },
+    "L0501": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0502": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0503": {
+     "M": -19.34,
+     "offsetDb": -0.62,
+     "requestedDb": 0,
+     "errorDb": -0.62,
+     "driftDb": -0.62
+    },
+    "L0504": {
+     "M": -19.43,
+     "offsetDb": -0.71,
+     "requestedDb": 0,
+     "errorDb": -0.71,
+     "driftDb": -0.71
+    },
+    "L0505": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0506": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0507": {
+     "M": -18.92,
+     "offsetDb": -0.2,
+     "requestedDb": 0,
+     "errorDb": -0.2,
+     "driftDb": -0.2
+    },
+    "L0508": {
+     "M": -18.83,
+     "offsetDb": -0.11,
+     "requestedDb": 0,
+     "errorDb": -0.11,
+     "driftDb": -0.11
+    },
+    "L0601": {
+     "M": -18.72,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0602": {
+     "M": -18.85,
+     "offsetDb": -0.13,
+     "requestedDb": 0,
+     "errorDb": -0.13,
+     "driftDb": -0.13
+    }
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "linePeaks",
+   "status": "pass",
+   "detail": "narration momentary peaks: median -13.05 LUFS, p95 -12.6, max -12.6 (none over median + 2 dB)",
+   "median": -13.05,
+   "p95": -12.6,
+   "hot": []
+  },
+  {
+   "stage": "mix",
+   "id": "foley",
+   "status": "pass",
+   "detail": "no score/foley.json (no foley bus)"
+  },
+  {
+   "stage": "mix",
+   "id": "swells",
+   "status": "pass",
+   "detail": "music-only ceiling -18.51 LUFS M (line p50 -16.51 − 2); 0 swells trimmed"
+  },
+  {
+   "stage": "mix",
+   "id": "fadeAfterStrike",
+   "status": "pass",
+   "detail": "m01: fade 81.808–82.71 s starts 2.358 s after the last strike (79.45 s; min 1.6)"
+  },
+  {
+   "stage": "mix",
+   "id": "floor",
+   "status": "pass",
+   "detail": "room tone -58 LUFS (target -58); quietest 400 ms of the master -57.7 LUFS"
+  },
+  {
+   "stage": "mix",
+   "id": "musicEq",
+   "status": "pass",
+   "detail": "music bus: 35 Hz high-pass (24 dB/oct), low band under 120 Hz keyed down 1.83 dB more under speech"
+  },
+  {
+   "stage": "mix",
+   "id": "lineMasking",
+   "status": "warn",
+   "detail": "under 10 dB: L0402 8.5, L0403 9.6",
+   "lines": {
+    "L0101": 99,
+    "L0102": 14,
+    "L0201": 13.5,
+    "L0202": 99,
+    "L0301": 99,
+    "L0302": 23.4,
+    "L0401": 14.3,
+    "L0402": 8.5,
+    "L0403": 9.6,
+    "L0404": 13.5,
+    "L0501": 11.2,
+    "L0502": 14,
+    "L0503": 99,
+    "L0504": 17.9,
+    "L0505": 16.8,
+    "L0506": 15.5,
+    "L0507": 11.5,
+    "L0508": 99,
+    "L0601": 11.8,
+    "L0602": 11.9
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "6 slices"
+  },
+  {
+   "stage": "render",
+   "id": "frames",
+   "status": "pass",
+   "detail": "1985 frames (expected 1985 = round(82.7083 × 24))"
+  },
+  {
+   "stage": "render",
+   "id": "format",
+   "status": "pass",
+   "detail": "1920×1080 @ 24 fps yuv420p"
+  },
+  {
+   "stage": "render",
+   "id": "av",
+   "status": "pass",
+   "detail": "video 82.708s, audio 82.708333s (aac)"
+  },
+  {
+   "stage": "render",
+   "id": "extras",
+   "status": "pass",
+   "detail": "captions muxed"
+  },
+  {
+   "stage": "render",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "6 chapters muxed (timeline has 6)"
+  },
+  {
+   "stage": "sheets",
+   "id": "coverage",
+   "status": "warn",
+   "detail": "older than the timeline: ch01-s01,ch01-s03,ch02-s01,ch02-s02,ch03-s01,ch04-s01,ch04-s02,ch04-s03,ch05-s01,ch05-s02"
+  },
+  {
+   "stage": "sheets",
+   "id": "cards",
+   "status": "warn",
+   "detail": "15 shots audited, no blank probed card; unaudited or changed since: 5 shots (ch01-s03, ch02-s02, ch04-s01, ch04-s02, ch06-s01…)",
+   "fails": [],
+   "suspects": [],
+   "unaudited": [
+    "ch01-s03",
+    "ch02-s02",
+    "ch04-s01",
+    "ch04-s02",
+    "ch06-s01"
+   ]
+  },
+  {
+   "stage": "sheets",
+   "id": "ghostText",
+   "status": "warn",
+   "detail": "15 shots audited, no ghost text (5 of 5 transitions audited cross-shot); changed since the audit: 5 shots",
+   "ghosts": [],
+   "noGhostAudit": [],
+   "noTransAudit": [],
+   "carry": []
+  },
+  {
+   "stage": "publish",
+   "id": "manifest",
+   "status": "pass",
+   "detail": "6 chapters, kind film"
+  },
+  {
+   "stage": "publish",
+   "id": "current",
+   "status": "warn",
+   "detail": "shelf copy is stale (runtime 84.25 s ≠ timeline 82.7083 s; manifest older than mix/master.wav): re-run film:publish"
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+{
+ "id": "m09",
+ "start": 792.8427,
+ "end": 888.4577,
+ "file": "films/neural-net-history/score/renders/m09.wav",
+ "duration": 101.615,
+ "I": -24.1,
+ "LRA": 10.1,
+ "TP": -7.3,
+ "expected": 101.615,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m09.png",
+ "cueSeconds": 95.615,
+ "cps": 0.3,
+ "lastStrikeLocal": 91.1,
+ "lastStrike": 883.943
+}

@@ -183,7 +183,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 48.0, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 48.6, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 48.6, dur: 1.1, ease: ease.move });
   tl.tween(statU, 0, { at: 48.6, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 49.8, dur: 0.9, ease: ease.enter });
   tl.caption({

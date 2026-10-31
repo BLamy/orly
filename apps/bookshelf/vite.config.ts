@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath } from 'node:url';
+import { editorServer } from './editor-server';
 
 // Served from the domain root everywhere (Cloudflare Workers prod + PR previews,
 // and locally), so all asset paths resolve relative to BASE_URL = '/'.
@@ -20,9 +21,14 @@ export default defineConfig({
     alias: {
       '@agent-wasm/core': fileURLToPath(new URL('./src/optional-agent-wasm.ts', import.meta.url)),
     },
+    // One React for the app and for linked packages such as @brett_lamy/viz-engine (its hooks
+    // otherwise run against a second, uninitialised copy and the whole book renders blank).
+    dedupe: ['react', 'react-dom'],
   },
   plugins: [
     react(),
+    // Film Editor API (/__editor/*: films, project save, media streaming, import, render jobs); dev server only
+    editorServer(),
     VitePWA({
       // 'autoUpdate' (not the default 'prompt') is the fix for a real incident:
       // a PWA installed on a phone kept running a stale build after a deploy,

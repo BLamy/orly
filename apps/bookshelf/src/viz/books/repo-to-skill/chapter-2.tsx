@@ -1,6 +1,6 @@
 // Grounding: arXiv:2609.02749 Sections 3.1–3.3 and Appendix A.1;
 // cli/.../create-repo-skill/SKILL.md; planning-and-writing.md; verify-repo-skill/SKILL.md.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -14,11 +14,14 @@ const EVIDENCE = [
   ['README', true], ['docs/', true], ['tests/', true], ['scripts/', true],
   ['build/', false], ['vendor/', false], ['cache/', false],
 ] as const;
+// Evidence tile grid: rows sit between the fork labels (y ≤ 196) and the stage circles (y ≥ 291).
+const TILE_Y = 234;
+const TILE_ROW = 40;
 const GRAPH = [
-  { x: 725, y: 360, label: 'entry skill' },
-  { x: 600, y: 490, label: 'setup' },
-  { x: 725, y: 520, label: 'evaluation' },
-  { x: 850, y: 490, label: 'recovery' },
+  { x: 725, y: 470, label: 'entry skill' },
+  { x: 545, y: 560, label: 'setup' },
+  { x: 725, y: 560, label: 'evaluation' },
+  { x: 905, y: 560, label: 'recovery' },
 ] as const;
 
 export function buildScene() {
@@ -86,7 +89,7 @@ export function buildScene() {
 const scene = buildScene();
 
 function Stage({ x, label, symbol, u, active }: { x: number; label: string; symbol: string; u: number; active: number }) {
-  return <g opacity={clamp01(u)} transform={`translate(${x} 348) scale(${0.85 + 0.15 * clamp01(u)})`}>
+  return <g opacity={0.5 + 0.5 * clamp01(u)} transform={`translate(${x} 348) scale(${0.85 + 0.15 * clamp01(u)})`}>
     <circle r="57" fill={colors.PANEL} stroke={active > 0.01 ? colors.WARM : colors.ACCENT} strokeWidth={2.5 + active * 2.5} />
     <text y="-5" textAnchor="middle" fill={active > 0.01 ? colors.WARM : colors.TEXT} fontSize="27" fontWeight="850">{symbol}</text>
     <text y="82" textAnchor="middle" fill={colors.MUTED} fontSize="15" fontFamily={colors.font.mono}>{label}</text>
@@ -102,23 +105,34 @@ export function Render({ s }: { s: SceneState }) {
   const gap = s.get(scene.gapU);
   const repair = s.get(scene.repairU);
   const close = s.get(scene.closeU);
+  // The raw tree appears once scope is chosen and is cleared as evidence arrives; the filter keeps it hidden after evidence resets.
+  const raw = s.get(scene.scopeU) * (1 - clamp01(evidence)) * (1 - clamp01(filter));
   const stageU = [s.get(scene.scopeU), clamp01(evidence / 2), skill, verify];
-  const tokenX = 205 + 780 * clamp01(verify);
+  // The token rides the rail toward the verify stage and stops short of its ring; it is drawn under the stage circles.
+  const tokenX = 205 + 700 * clamp01(verify);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
       <text x="640" y="90" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">scope → ground → construct → verify</text>
       <g opacity={s.get(scene.anchorU)}>
         <rect x="80" y="112" width="182" height="72" rx="20" fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth="3" />
+        <text x="171" y="104" textAnchor="middle" fill={colors.MUTED} fontSize="14">creator mode</text>
         <text x="171" y="143" textAnchor="middle" fill={colors.SECONDARY} fontSize="20" fontWeight="800">anchor z</text>
-        <text x="171" y="168" textAnchor="middle" fill={colors.MUTED} fontSize="13">source or task</text>
+        <text x="171" y="168" textAnchor="middle" fill={colors.MUTED} fontSize="14">source or task</text>
       </g>
       <g opacity={s.get(scene.modeU)}>
         <path d="M262 148 C330 148 320 112 390 112 M262 148 C330 148 320 184 390 184" fill="none" stroke={colors.SECONDARY} strokeWidth="3" />
         <text x="404" y="118" fill={colors.TEXT} fontSize="14">task-agnostic</text>
         <text x="404" y="190" fill={colors.TEXT} fontSize="14">task-oriented</text>
       </g>
-      <MathLabel tex={'z \\to Q \\to X \\to \\widetilde G \\to (G,R)'} x={810} y={150} fontSize={27} opacity={s.get(scene.anchorU)} />
+      <text x="800" y="156" textAnchor="middle" fill={colors.TEXT} fontSize="26" opacity={s.get(scene.anchorU)}>z → Q → X → G̃ → (G, R)</text>
       <line x1="205" y1="348" x2="985" y2="348" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
+      <g opacity={raw}>
+        {EVIDENCE.map(([label], i) => <g key={label} transform={`translate(${330 + (i % 4) * 105} ${TILE_Y + Math.floor(i / 4) * TILE_ROW})`}>
+          <rect x="-44" y="-17" width="88" height="34" rx="10" fill={colors.PANEL} stroke={colors.MUTED} />
+          <text y="5" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
+        </g>)}
+      </g>
+      {verify > 0 && <circle cx={tokenX} cy="348" r="11" fill={gap > 0 ? colors.NEGATIVE : colors.WARM} opacity={verify} />}
       {STAGES.map((stage, i) => <Stage key={stage.label} {...stage} u={Math.max(s.get(scene.anchorU) * 0.35, stageU[i])} active={i === 3 ? verify : 0} />)}
 
       <g opacity={clamp01(evidence / 2)}>
@@ -126,14 +140,14 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(evidence - i);
           const rejected = !keep && filter > 1;
           const x = 330 + (i % 4) * 105;
-          const y = 230 + Math.floor(i / 4) * 58;
-          return <g key={label} opacity={u * (rejected ? 0.18 : 1)} transform={`translate(${x} ${y})`}>
-            <rect x="-44" y="-18" width="88" height="36" rx="10" fill={colors.PANEL} stroke={keep ? colors.POSITIVE : colors.NEGATIVE} />
-            <text y="5" textAnchor="middle" fill={keep ? colors.TEXT : colors.NEGATIVE} fontSize="12" fontFamily={colors.font.mono}>{label}</text>
+          const y = TILE_Y + Math.floor(i / 4) * TILE_ROW;
+          return <g key={label} opacity={u * (rejected ? 0.5 : 1)} transform={`translate(${x} ${y})`}>
+            <rect x="-44" y="-17" width="88" height="34" rx="10" fill={colors.PANEL} stroke={keep ? colors.POSITIVE : colors.NEGATIVE} />
+            <text y="5" textAnchor="middle" fill={keep ? colors.TEXT : colors.NEGATIVE} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
             {rejected && <path d="M-32 -12 L32 12 M-32 12 L32 -12" stroke={colors.NEGATIVE} strokeWidth="3" />}
           </g>;
         })}
-        <rect x={300 + 115 * Math.min(filter, 1)} y="202" width="350" height="132" rx="22" fill="none" stroke={colors.WARM} strokeWidth="3" strokeDasharray="9 7" opacity={clamp01(filter)} />
+        <rect x="282" y={TILE_Y - 23} width="414" height="46" rx="22" fill="none" stroke={colors.WARM} strokeWidth="3" strokeDasharray="9 7" opacity={clamp01(filter)} />
       </g>
 
       <g opacity={skill}>
@@ -146,7 +160,7 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={graph}>
-        {GRAPH.slice(1).map((n, i) => <line key={`edge-${i}`} x1={GRAPH[0].x} y1={GRAPH[0].y + 40} x2={n.x} y2={n.y - 28} stroke={gap > 0 && i === 2 ? colors.NEGATIVE : colors.SECONDARY} strokeWidth="3" opacity={clamp01(graph * 3 - i)} />)}
+        {GRAPH.slice(1).map((n, i) => <line key={`edge-${i}`} x1={GRAPH[0].x} y1={GRAPH[0].y + 28} x2={n.x} y2={n.y - 28} stroke={gap > 0 && i === 2 ? colors.NEGATIVE : colors.SECONDARY} strokeWidth="3" opacity={clamp01(graph * 3 - i)} />)}
         {GRAPH.map((n, i) => <g key={n.label} opacity={clamp01(graph * 4 - i)}>
           <rect x={n.x - 68} y={n.y - 28} width="136" height="56" rx="16" fill={colors.PANEL} stroke={i === 0 ? colors.WARM : colors.ACCENT} strokeWidth="2.5" />
           <text x={n.x} y={n.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize="15">{n.label}</text>
@@ -154,34 +168,45 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       {verify > 0 && <g opacity={verify}>
-        <circle cx={tokenX} cy="348" r="11" fill={gap > 0 ? colors.NEGATIVE : colors.WARM} />
-        {['usability', 'native', 'static'].map((label, i) => <g key={label} transform={`translate(${902 + i * 98} 245)`} opacity={clamp01(verify * 3 - i)}>
-          <rect x="-42" y="-18" width="84" height="36" rx="12" fill={colors.PANEL} stroke={colors.POSITIVE} />
-          <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="12">{label}</text>
+        {['usability', 'native', 'static'].map((label, i) => <g key={label} transform={`translate(${877 + i * 108} 245)`} opacity={clamp01(verify * 3 - i)}>
+          <rect x="-48" y="-18" width="96" height="36" rx="12" fill={colors.PANEL} stroke={i === 0 && gap > 0 ? colors.NEGATIVE : colors.POSITIVE} />
+          <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{label}</text>
         </g>)}
       </g>}
+      {verify > 0 && <g opacity={clamp01(verify * 3)} transform="translate(60 448)">
+        <rect width="380" height="160" rx="16" fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth="2" />
+        <text x="20" y="30" fill={colors.MUTED} fontSize="14">usability case</text>
+        <text x="20" y="60" fill={colors.TEXT} fontSize="15" fontFamily={colors.font.mono}>task: split report.pdf by page</text>
+        <text x="20" y="88" fill={colors.TEXT} fontSize="15" fontFamily={colors.font.mono}>assert: 12 page files exist</text>
+        <g opacity={clamp01(verify * 2 - 1)}>
+          <text x="20" y="116" fill={colors.NEGATIVE} fontSize="15" fontFamily={colors.font.mono}>✗ got 11 page files</text>
+          <text x="20" y="144" fill={colors.NEGATIVE} fontSize="15" fontWeight="800">gate: usability → SKILL_GAP</text>
+        </g>
+      </g>}
       <g opacity={gap}>
-        <rect x="945" y="452" width="225" height="62" rx="18" fill="#2a1720" stroke={colors.NEGATIVE} strokeWidth="3" />
-        <text x="1058" y="480" textAnchor="middle" fill={colors.NEGATIVE} fontSize="17" fontWeight="800" fontFamily={colors.font.mono}>SKILL_GAP</text>
-        <text x="1058" y="500" textAnchor="middle" fill={colors.MUTED} fontSize="12">unsupported recovery edge</text>
+        <rect x="837" y="454" width="240" height="54" rx="18" fill="#2a1720" stroke={colors.NEGATIVE} strokeWidth="3" />
+        <text x="957" y="477" textAnchor="middle" fill={colors.NEGATIVE} fontSize="17" fontWeight="800" fontFamily={colors.font.mono}>SKILL_GAP</text>
+        <text x="957" y="497" textAnchor="middle" fill={colors.MUTED} fontSize="14">unsupported recovery edge</text>
       </g>
-      {repair > 0 && <path d={`M 1050 450 C ${980 - 180 * repair} ${560 + 40 * Math.sin(repair * Math.PI)} ${850 - 120 * repair} ${488 + 2 * repair}`} fill="none" stroke={colors.WARM} strokeWidth="5" strokeDasharray="10 8" opacity={repair} />}
-      <g opacity={s.get(scene.recordU)} transform="translate(1080 560)">
-        <rect x="-108" y="-30" width="216" height="60" rx="16" fill={colors.PANEL} stroke={colors.WARM} />
-        <text y="-3" textAnchor="middle" fill={colors.WARM} fontSize="16" fontWeight="800">record R</text>
-        <text y="19" textAnchor="middle" fill={colors.MUTED} fontSize="12">evidence · checks · gaps</text>
+      {repair > 0 && <path d="M 1000 508 C 990 524 982 540 973 558" fill="none" stroke={colors.WARM} strokeWidth="5" strokeDasharray="8 6" strokeDashoffset={-repair * 40} opacity={repair} />}
+      <g opacity={s.get(scene.recordU)} transform="translate(1145 560)">
+        <rect x="-115" y="-36" width="230" height="84" rx="16" fill={colors.PANEL} stroke={colors.WARM} />
+        <text y="-8" textAnchor="middle" fill={colors.WARM} fontSize="16" fontWeight="800">construction record R</text>
+        <text y="12" textAnchor="middle" fill={colors.MUTED} fontSize="14">evidence · checks · gaps</text>
+        <text y="32" textAnchor="middle" fill={colors.TEXT} fontSize="14">unresolved: no recovery fixture</text>
       </g>
       <g opacity={s.get(scene.acceptU)} transform="translate(985 348)">
-        <circle r="69" fill="none" stroke={colors.POSITIVE} strokeWidth="7" />
-        <text y="6" textAnchor="middle" fill={colors.POSITIVE} fontSize="18" fontWeight="900">ACCEPTED</text>
+        <circle r="66" fill="none" stroke={colors.POSITIVE} strokeWidth="6" />
+        <text x="81" y="-4" fill={colors.POSITIVE} fontSize="16" fontWeight="900">accepted</text>
+        <text x="81" y="16" fill={colors.POSITIVE} fontSize="14">graph G</text>
       </g>
     </g>
     <g opacity={close}>
       <rect x="210" y="148" width="860" height="390" rx="42" fill={colors.BG} stroke={colors.POSITIVE} strokeWidth="4" />
-      <text x="640" y="228" textAnchor="middle" fill={colors.TEXT} fontSize="39" fontWeight="850">distillation is a gate, not a summary</text>
-      <MathLabel tex={'z \\xrightarrow{scope} Q \\xrightarrow{ground} X \\xrightarrow{construct} \\widetilde G \\xrightarrow{verify} (G,R)'} x={640} y={340} fontSize={27} opacity={close} />
-      <text x="640" y="435" textAnchor="middle" fill={colors.POSITIVE} fontSize="22">accepted graph + inspectable record</text>
-      <text x="640" y="480" textAnchor="middle" fill={colors.MUTED} fontSize="16">unsupported claims travel backward</text>
+      <text x="640" y="240" textAnchor="middle" fill={colors.TEXT} fontSize="39" fontWeight="850">distillation is a gate, not a summary</text>
+      <text x="640" y="318" textAnchor="middle" fill={colors.TEXT} fontSize="28">z → Q → X → G̃ → (G, R)</text>
+      <text x="640" y="410" textAnchor="middle" fill={colors.POSITIVE} fontSize="22">accepted graph + inspectable record</text>
+      <text x="640" y="456" textAnchor="middle" fill={colors.MUTED} fontSize="16">unsupported claims travel backward</text>
     </g>
   </Camera>;
 }

@@ -1,0 +1,627 @@
+{
+  "id": "ch02",
+  "number": 2,
+  "title": "The Oldest Tags",
+  "blurb": "Framing only, said once in narration: the repo never cites the 1943 work. In 1943 McCulloch and Pitts tie on the oldest tag, the neuron as logic; their units fire against fixed thresholds and learn nothing. In 1951 Kleene shows such a net is a finite machine whose patterns are regular events; the film's own reading: a finite net can only remember so much, so anything unbounded has to come from outside. In 2020, branches of a single human neuron are caught answering either input but not both (XOR), which no lone threshold gate can, and the tag's thread splits: as biology it frays, as engineering it never came down. A younger tag, 2019: learn the weights, don't write them, with Sutton for and Brooks against. Some kept writing weights anyway (Siegelmann and Sontag, Tracr, Giannou et al., Percepta). Then the echo, not lineage: eighty-three years on, someone has written a network's weights by hand to run a desktop.",
+  "shots": [
+    {
+      "id": "ch02-s01",
+      "kind": "scene",
+      "setting": "A 1940s study: a gothic window bay, a desk lamp, a page of arrow-and-loop net diagrams; an older copper line strung across the room (December 1943, night, lamplight)",
+      "era": "1940s",
+      "mood": "candleAmber",
+      "leadIn": 1.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L0201",
+          "text": "In 1943, Warren McCulloch and Walter Pitts tied on the oldest tag. Handwired never cites them.",
+          "spoken": "In nineteen forty-three, Warren McCulloch and Walter Pitts tied on the oldest tag. Handwired never cites them.",
+          "pauseAfter": 0.7,
+          "direction": "storytelling register, a step back in time; not grand. The second sentence plain and brief, a fair disclosure, not a disclaimer"
+        },
+        {
+          "id": "L0202",
+          "text": "The tag: a neuron is a logic gate. Neural events, they wrote, \"can be treated by means of propositional logic.\"",
+          "direction": "read the quoted part as a quotation: a touch more formal, the cadence of a 1943 abstract, clear on 'propositional logic'"
+        }
+      ],
+      "visual": "THIS SHOT: in a 1940s study, two men tie the oldest tag onto an older line. A slow match dissolve from the title card's copper line into a far older line, a dull bronze wire strung across a 1940s study: a gothic window bay at L2 with a night backlight, a green-shaded desk lamp as the practical, a desk at L4 with a page of arrow-and-loop net diagrams (small circles with arrows and closed loops, cut in ink) and a reprint of the paper. Two profile silhouettes at L4, respectful, never caricatured: McCulloch (taller, full wild beard, thin face, three-piece suit, a pen) at left facing right; Pitts (small and slight, round spectacles, a slight stoop, papers in hand) at right facing left. On 'tied' they tie tag 1 onto the old line between them, its front inking in the film's hand: The neuron is a logic gate. Its knot card reads McCulloch & Pitts, 1943 (prop lettering). On 'cites' the camera eases to the tag's lower corner: its small brass signature grommet is drawn and it is visibly EMPTY, exactly as the narrator says the repo never cites it (this is the film's one statement of the framing; there is no persistent caption). On 'Neural' the page of net diagrams lifts off the desk into the lamp's light and becomes a parchment card carrying only two words, large, with a small attribution: the quoted span is spoken, so the card never sets the full sentence. Camera: slow push across the room (lens 1.00 to 1.06). TAG-LINE STAGING (meta staging.tagLine): PERIOD ROOMS: the same line passes through each era's room (the 1940s study's window bay, the 1951 office, the cool modern bench), slung lower (50%) and older (a dull bronze wire), the posts replaced by what the room has (a curtain rod, a filing cabinet); the red pencil rests on the room's own furniture at frame right.",
+      "beats": [
+        {
+          "id": "dissolve",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "match dissolve from the copper line to the older bronze line across a 1940s study"
+        },
+        {
+          "id": "study",
+          "at": {
+            "shotTime": 1.2
+          },
+          "what": "the study resolves: window bay, desk lamp, net diagrams, two profiles"
+        },
+        {
+          "id": "names",
+          "at": {
+            "line": "L0201",
+            "word": "McCullock"
+          },
+          "what": "name cards for the two men"
+        },
+        {
+          "id": "tied",
+          "at": {
+            "line": "L0201",
+            "word": "tied"
+          },
+          "what": "they tie tag 1 onto the old line; its front inks"
+        },
+        {
+          "id": "grommet",
+          "at": {
+            "line": "L0201",
+            "word": "cites"
+          },
+          "what": "the camera eases to tag 1's empty brass grommet"
+        },
+        {
+          "id": "abstract",
+          "at": {
+            "line": "L0202",
+            "word": "Neural"
+          },
+          "what": "the page of net diagrams lifts into the lamplight as a parchment card: 'propositional logic'"
+        },
+        {
+          "id": "logic",
+          "at": {
+            "line": "L0202",
+            "word": "propositional"
+          },
+          "what": "the card's two words take a warm kick"
+        }
+      ],
+      "cast": [
+        "mcculloch",
+        "pitts"
+      ],
+      "props": [
+        "older bronze line",
+        "tag 1 (knot card: McCulloch & Pitts, 1943; empty grommet)",
+        "gothic window bay",
+        "green-shaded desk lamp",
+        "page of arrow-and-loop net diagrams",
+        "parchment quote card (two words only)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "December 1943 · Bulletin of Mathematical Biophysics 5:115–133",
+          "beat": "study"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Warren S. McCulloch · University of Illinois",
+          "beat": "names"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Walter Pitts · University of Chicago",
+          "beat": "names"
+        },
+        {
+          "kind": "label",
+          "text": "The neuron is a logic gate",
+          "beat": "tied"
+        },
+        {
+          "kind": "quote",
+          "text": "\"propositional logic\" — McCulloch & Pitts, 1943",
+          "beat": "abstract"
+        }
+      ],
+      "music": {
+        "cue": "c02-oldest-tags",
+        "note": "The both-branches lines drop away; a single warm low line on a muted reed instrument, slower, older, like a gramophone in the next room (intensity 0.25). A soft detent 'tie' click on 'tied'."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "FR01",
+        "FR02",
+        "FR03",
+        "FR22"
+      ]
+    },
+    {
+      "id": "ch02-s02",
+      "kind": "plate",
+      "setting": "A parchment plate: three paper lanterns (paperLantern) with wicks and threshold rings, wired by fixed knotted threads (1943, lamplight)",
+      "era": "1940s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 1.3,
+      "lines": [
+        {
+          "id": "L0203",
+          "text": "Nothing in their nets learned. Someone chose every connection, by hand.",
+          "direction": "plain; a small pause before 'by hand', which matters later"
+        }
+      ],
+      "visual": "THIS SHOT: paper lanterns compute AND and OR, and nothing in them learns. On a parchment plate at L4, three kit paperLanterns (paperLantern with its wick and a brass threshold ring; act is only ever 0 or 1) hang from a fixed beam: two input lanterns at left, one output lantern at right, joined by kit thread() lines tied with knot() at each end, wiring that never changes. Every lantern is all or none: its wick is lit or dark, never half. The output lantern's threshold ring has two notches. These same three paperLantern objects, at the same relative positions and with the same thread() and knot() wiring, are reused as the 30% ghost in ch07-s03. In the silent lead-in: on 'andGate' both input wicks catch and the output wick catches only once both glow (label AND); one input goes dark and the output goes dark with it. On 'orGate' a paper hand's shadow lowers the ring one notch (threshold 1) and now either input alone lights the output (label OR), shown with the left, then the right. On 'learned' the threads are shown tied off with hard knots, and a faint grid of connection choices fades in beside them, all chosen, none changing. On 'hand' a paper hand's shadow pulls one last knot tight on the grid and withdraws. Camera: locked-off plate, gentle 2% drift.",
+      "beats": [
+        {
+          "id": "andGate",
+          "at": {
+            "shotTime": 0.8
+          },
+          "what": "both inputs glow; the output lantern catches only with both (AND)"
+        },
+        {
+          "id": "orGate",
+          "at": {
+            "shotTime": 2.4
+          },
+          "what": "the threshold ring drops a notch; either input now lights the output (OR)"
+        },
+        {
+          "id": "learned",
+          "at": {
+            "line": "L0203",
+            "word": "learned"
+          },
+          "what": "the fixed knots show; a grid of chosen connections fades in, unchanging"
+        },
+        {
+          "id": "hand",
+          "at": {
+            "line": "L0203",
+            "word": "hand"
+          },
+          "what": "a paper hand's shadow pulls one last knot tight on the grid and withdraws"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "three paperLanterns with wicks and threshold rings (reused as the ch07-s03 ghost)",
+        "thread() wiring tied with knot()",
+        "grid of chosen connections"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "threshold 2: both inputs (AND)",
+          "beat": "andGate"
+        },
+        {
+          "kind": "label",
+          "text": "threshold 1: either input (OR)",
+          "beat": "orGate"
+        }
+      ],
+      "music": {
+        "cue": "c02-oldest-tags",
+        "note": "The reed line continues; each wick catching is a dry relay clack (two clacks for AND, one for OR), no chime."
+      },
+      "transitionIn": "inkBleed",
+      "claims": [
+        "FR03",
+        "FR05"
+      ]
+    },
+    {
+      "id": "ch02-s03",
+      "kind": "scene",
+      "setting": "RAND, a 1950s office: a generic academic at a typewriter, a memo stacking up beside him; a clock dial with a fixed ring of stops; the old line with tag 1 overhead (15 December 1951, winter afternoon)",
+      "era": "1950s",
+      "mood": "winterBlue",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L0204",
+          "text": "In 1951, at RAND, Stephen Kleene showed such a net is a finite machine.",
+          "spoken": "In nineteen fifty-one, at RAND, Stephen Kleene showed such a net is a finite machine.",
+          "pauseAfter": 0.5,
+          "direction": "clear on the name, KLAY-nee; 'finite machine' plainly, a term being introduced"
+        },
+        {
+          "id": "L0205",
+          "text": "He called the patterns it can recognise regular events.",
+          "pauseAfter": 0.6,
+          "direction": "a term, said once and plainly"
+        },
+        {
+          "id": "L0206",
+          "text": "Our reading: a finite net remembers only so much; anything unbounded comes from outside. Hang that on the line.",
+          "direction": "'Our reading' flags the turn: this is the narrator's own conclusion, not Kleene's result; a slight shift of register, thinking aloud; the second clause slow and deliberate; the refrain lightly, a wink to the viewer"
+        }
+      ],
+      "visual": "THIS SHOT: Kleene turns the net into a finite machine; then the narrator draws his own conclusion from it. A cold winter-blue office (paperWipe in): venetian-blind light from a tall window at L2; at L4 a generic 1950s academic in a suit, receding hair, a slight stoop (Kleene: no likeness, a period figure) types at a desk; beside the typewriter a memo stacks up page by page on twos (the RAND memorandum, ninety-eight pages). Overhead runs the old line with tag 1. On 'Kleene' a second small knot card is tied beside McCulloch & Pitts on tag 1's knot, reading Kleene, 1951 (prop lettering, already said aloud; no flip, no red pencil: he extended the model). On 'finite' a brass clock dial at L3 lights: a ring of eight fixed stops around its face and a single pointer that can only step from stop to stop, once per tick; it ticks three times. On 'regular' a short strip of punched paper feeds through the dial and the stops it lands on glow in a pattern. On 'remembers' (the narrator's reading begins, flagged aloud as 'Our reading') the office dims a stop and the narrator's hands enter at lower left, a different layer from the period figure, and rest a finger on the ring: eight stops, no more. On 'outside' the camera pulls back to reveal the dial's crank is not part of it: a separate handle sits outside the dial's frame, and the narrator's hand gives it one slow turn. On 'Hang' the narrator's hands hang QUESTION CARD qK on the line in its tie-order place, just right of tag 1: a small square card bearing only the dial's outline (no words), on a plain loop of thread, with no knot card and no drop to the Lifespan Rule (a question, not a belief). It is paid in ch06-s12, where the hands untie it and pin it to the host clockwork.",
+      "beats": [
+        {
+          "id": "office",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "the RAND office resolves; the memo stacks page by page"
+        },
+        {
+          "id": "kleene",
+          "at": {
+            "line": "L0204",
+            "word": "Clay-nee"
+          },
+          "what": "a small knot card, Kleene, 1951, is tied beside McCulloch & Pitts on tag 1"
+        },
+        {
+          "id": "dial",
+          "at": {
+            "line": "L0204",
+            "word": "finite"
+          },
+          "what": "the clock dial with eight fixed stops lights and ticks three times"
+        },
+        {
+          "id": "events",
+          "at": {
+            "line": "L0205",
+            "word": "regular"
+          },
+          "what": "a punched strip feeds through; the stops glow in a pattern"
+        },
+        {
+          "id": "reading",
+          "at": {
+            "line": "L0206",
+            "word": "remembers"
+          },
+          "what": "the narrator's hands enter and rest a finger on the ring of eight stops"
+        },
+        {
+          "id": "outside",
+          "at": {
+            "line": "L0206",
+            "word": "outside"
+          },
+          "what": "pull back: the dial's crank sits outside its frame; the narrator's hand turns it once"
+        },
+        {
+          "id": "hang",
+          "at": {
+            "line": "L0206",
+            "word": "Hang"
+          },
+          "what": "the narrator's hands hang question card qK (the dial's outline, no words) on a plain loop beside tag 1; no knot card, no drop"
+        }
+      ],
+      "cast": [
+        "kleene",
+        "narrator-hands"
+      ],
+      "props": [
+        "typewriter",
+        "stacking memo (RAND RM-704)",
+        "venetian blind window",
+        "brass clock dial with eight fixed stops",
+        "external crank handle",
+        "punched paper strip",
+        "tag 1 on the old line, with a second knot card",
+        "question card qK (dial outline, plain loop of thread)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "RAND · 15 December 1951 · memorandum RM-704",
+          "beat": "office"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Stephen C. Kleene",
+          "beat": "kleene"
+        },
+        {
+          "kind": "term",
+          "text": "regular events",
+          "gloss": "the patterns a finite machine can recognise",
+          "beat": "events"
+        }
+      ],
+      "music": {
+        "cue": "c02-oldest-tags",
+        "note": "Colder: the reed line drops a register over room tone; a soft detent 'tie' click on the knot card; the dial's three ticks are a dry escapement, slow (this figure returns in ch06 as the host clockwork). On 'remember' the room tone thins, the reed line alone: the narrator thinking."
+      },
+      "transitionIn": "paperWipe",
+      "claims": [
+        "FR07"
+      ]
+    },
+    {
+      "id": "ch02-s04",
+      "kind": "scene",
+      "setting": "A cool modern bench in haze: one paper dendrite card lit from behind, two input threads touching it; then the old line with tag 1 and the empty Lifespan Rule (2020, then the line)",
+      "era": "2020s",
+      "mood": "labGreen",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "lines": [
+        {
+          "id": "L0208b",
+          "text": "In 2020, one human neuron's branches answered either input but not both: a job thought to need layers of gates.",
+          "spoken": "In twenty twenty, one human neuron's branches answered either input but not both: a job thought to need layers of gates.",
+          "pauseAfter": 0.6,
+          "direction": "plain, a dated fact; 'either input but not both' clearly; a small lift on 'layers of gates'"
+        },
+        {
+          "id": "L0209",
+          "text": "As biology, the logic-gate tag frayed. As engineering, it never came down.",
+          "direction": "two balanced halves, the second a quiet turn"
+        }
+      ],
+      "visual": "THIS SHOT: a single neuron does what one gate cannot; then tag 1's thread splits in two. A labGreen bench in haze, nothing period about it: at L4, one paper DENDRITE CARD, a single branching dendrite cut in fine paper and lit from behind, with two input threads of green light touching two of its branches; no figure, no likeness (the 2020 authors are a date stamp only). On 'branches' the card wakes: it lights for one input alone, for the other alone, and stays dark for both together (XOR-like), something no single threshold lantern from the earlier plate could do; the date stamp sets in with it. Then on 'biology' the scene pulls back to the old line with tag 1 and the empty Lifespan Rule below it: tag 1's thread SPLITS at its knot into two strands. On 'frayed' the biology strand (ended) drops to the rule at its measured lifespan, about seventy-seven years (1943 to 2020), just short of the lifetime tick, and frays out there, the dendrite card hanging beside it; on 'engineering' the other strand (still held) drops to its age as of 27 Oct 2026, about eighty-three years, just past the lifetime tick, and ends in a glowing open tip with a short copper arrow pointing right: the only thread in the film that passes a lifetime. LIFESPAN ENCODING (one rule, film-wide): a struck or ended thread drops to the Lifespan Rule at its measured lifespan; a still-held thread drops to its age as of 27 Oct 2026 and ends in a glowing open tip with a short copper arrow pointing right. Question cards hang on plain loops and never drop. No dates are ever set on the rule: it measures durations, not a calendar.",
+      "beats": [
+        {
+          "id": "lab",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "the bench resolves in labGreen haze: one dendrite card, dark"
+        },
+        {
+          "id": "dendrites",
+          "at": {
+            "line": "L0208b",
+            "word": "branches"
+          },
+          "what": "the dendrite card lights for one input, for the other, not for both; the XOR label sets"
+        },
+        {
+          "id": "split",
+          "at": {
+            "line": "L0209",
+            "word": "biology"
+          },
+          "what": "pull back to tag 1: its thread splits at the knot"
+        },
+        {
+          "id": "frayed",
+          "at": {
+            "line": "L0209",
+            "word": "frayed"
+          },
+          "what": "the biology strand drops to about seventy-seven years, just short of the lifetime tick, and frays out beside the dendrite card"
+        },
+        {
+          "id": "glow",
+          "at": {
+            "line": "L0209",
+            "word": "engineering"
+          },
+          "what": "the engineering strand drops just past the lifetime tick (about eighty-three years) and ends in a glowing open tip with a copper arrow pointing right"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "paper dendrite card",
+        "two input threads",
+        "tag 1 with split thread",
+        "Lifespan Rule"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "2020 · Gidon et al., Science",
+          "beat": "dendrites"
+        },
+        {
+          "kind": "label",
+          "text": "XOR-like: either input, not both",
+          "beat": "dendrites"
+        }
+      ],
+      "music": {
+        "cue": "c02-oldest-tags",
+        "note": "Lighter, a little curious; on 'biology' the reed line divides into two voices, one fading and fraying into breath, the other held and warm, sustained past the end of the shot."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "FR12"
+      ]
+    },
+    {
+      "id": "ch02-s05",
+      "kind": "card",
+      "setting": "A younger tag on a newer thread; two name cards in equal light, front and back (March 2019)",
+      "era": "2010s",
+      "mood": "duskRose",
+      "leadIn": 0.6,
+      "holdAfter": 2.5,
+      "lines": [
+        {
+          "id": "L0210",
+          "text": "In 2019, a younger tag: learn the weights, don’t write them.",
+          "spoken": "In twenty nineteen, a younger tag: learn the weights, don’t write them.",
+          "pauseAfter": 0.5,
+          "direction": "even-handed; the tag's words plainly, as a slogan being read off a label"
+        },
+        {
+          "id": "L0210b",
+          "text": "Rich Sutton tied it on in The Bitter Lesson. Six days later, Rodney Brooks replied, \"I think Sutton is wrong\".",
+          "direction": "give the two men exactly equal weight; read Brooks's words as a quotation, the opening of his sentence, mild, not a put-down"
+        }
+      ],
+      "visual": "THIS SHOT: tag 2, with Sutton on its front and Brooks on its back, in equal light. A duskRose card: the copper line runs across the frame; tag 2 hangs on a newer, finer thread. On 'tag' its front inks: Learn the weights; don't write them (prop lettering, spoken aloud). On 'Sutton' its knot card reads Sutton, 2019 and his name card sets on the left. On 'Brooks' the narrator's hands (lower left) flip the tag with a paper snap and the red-pencil hand writes Brooks, 2019 on the back; his name card sets on the right, lit exactly as brightly as the first: no figure, no faces, cards only. On 'replied' a small label sets under the tag. On 'wrong' the red pencil does not strike; it rests on the line's post beside the tag and the hand withdraws (a contested belief). Tag 2 hangs in its tie-order place, right of tag 1 and question card qK. Its thread (still held) drops to the Lifespan Rule at its age as of 27 Oct 2026, about seven and a half years, between the year tick and the lifetime tick (short of the unlabelled decade tick), and ends in a glowing open tip with a short copper arrow pointing right. The detent's third stroke is withheld (the bar hangs). TAG-LINE STAGING (meta staging.tagLine): PERIOD ROOMS: the same line passes through each era's room (the 1940s study's window bay, the 1951 office, the cool modern bench), slung lower (50%) and older (a dull bronze wire), the posts replaced by what the room has (a curtain rod, a filing cabinet); the red pencil rests on the room's own furniture at frame right. LIFESPAN ENCODING (one rule, film-wide): a struck or ended thread drops to the Lifespan Rule at its measured lifespan; a still-held thread drops to its age as of 27 Oct 2026 and ends in a glowing open tip with a short copper arrow pointing right. Question cards hang on plain loops and never drop. No dates are ever set on the rule: it measures durations, not a calendar.",
+      "beats": [
+        {
+          "id": "tag",
+          "at": {
+            "line": "L0210",
+            "word": "tag"
+          },
+          "what": "tag 2's front inks: Learn the weights; don't write them"
+        },
+        {
+          "id": "sutton",
+          "at": {
+            "line": "L0210b",
+            "word": "Sutton"
+          },
+          "what": "Sutton's knot card and name card set"
+        },
+        {
+          "id": "brooks",
+          "at": {
+            "line": "L0210b",
+            "word": "Brooks"
+          },
+          "what": "the tag flips; the red pencil writes Brooks, 2019; Brooks's name card sets in equal light"
+        },
+        {
+          "id": "contested",
+          "at": {
+            "line": "L0210b",
+            "word": "replied"
+          },
+          "what": "a small label sets under the tag"
+        },
+        {
+          "id": "rest",
+          "at": {
+            "line": "L0210b",
+            "word": "wrong"
+          },
+          "what": "the red pencil rests on the post beside the tag; the hand withdraws"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand",
+        "narrator-hands"
+      ],
+      "props": [
+        "copper line",
+        "tag 2 on a newer thread",
+        "two name cards in equal light"
+      ],
+      "onScreenText": [
+        {
+          "kind": "nameCard",
+          "text": "Rich Sutton · The Bitter Lesson · 13 March 2019",
+          "beat": "sutton"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Rodney Brooks · A Better Lesson · 19 March 2019",
+          "beat": "brooks"
+        },
+        {
+          "kind": "label",
+          "text": "the dominant view, but contested",
+          "beat": "contested"
+        }
+      ],
+      "music": {
+        "cue": "c02-oldest-tags",
+        "note": "The detent figure: tie on 'tag', flip on 'Brooks', and the third stroke is replaced by the two lines a whole tone apart held at half level, undecided; hold through the end."
+      },
+      "transitionIn": "paperWipe",
+      "claims": [
+        "FR20"
+      ]
+    },
+    {
+      "id": "ch02-s06",
+      "kind": "scene",
+      "setting": "Pull out to the whole bronze-to-copper line and the long Lifespan Rule beneath it: tags 1 and 2 hanging over their lifespans, question card qK on its plain loop, a small typed card on a plain thread right of tag 2; the move ends at the line's newest tags (dusk turning to lamplight)",
+      "era": "2010s",
+      "mood": "duskRose",
+      "leadIn": 1.2,
+      "holdAfter": 2,
+      "lines": [
+        {
+          "id": "L0211",
+          "text": "Some kept writing weights anyway, as proofs and test beds.",
+          "pauseAfter": 0.7,
+          "direction": "matter-of-fact, fair; a nod to others along the way, not a list"
+        },
+        {
+          "id": "L0212",
+          "text": "Eighty-three years after the oldest tag, someone has written a network’s weights by hand, to run a desktop.",
+          "direction": "the turn to the present: warm, curious; 'after the oldest tag' a light callback; a small pause before 'to run a desktop', said with quiet delight"
+        }
+      ],
+      "visual": "THIS SHOT: the Lifespan Rule shown once, others along the way, then the echo into the present. Pull out to the whole line in one wide frame: the long paper ruler along the bottom with its copper ticks (unlabelled here; ch01 named them). On 'wide' each tick lights in turn, left to right, and between each pair a short bracket stretches visibly longer than the one before, and the caption names the rule. Every thread sits where its lifespan puts it: tag 1's frayed biology strand ends at about seventy-seven years, just short of the lifetime tick; its engineering strand's glowing open tip sits just past the lifetime tick (about eighty-three years), copper arrow pointing right, the only thread past a lifetime; tag 2's glowing open tip sits at about seven and a half years, between a year and a lifetime, its arrow pointing right; question card qK hangs on its plain loop beside tag 1 with no drop. On 'writing' a small typed card swings onto the line at its tie-order place, just right of tag 2, hung on a plain thread with no tag and no drop to the rule (the film does not claim these as Handwired's lineage); its names and dates, 1992 to 2026, are printed on the card itself and set as the second caption; no date is ever placed on the rule. On 'years' the camera tracks along the line in its tie order, left to right past tag 2 and the typed card toward the newest tags, while the Lifespan Rule stays fixed along the bottom of frame (it measures how long, never when): the old bronze becomes copper, the duskRose lamp warms toward parchment, and at the line's right end the paper HandwiredOS dock and desk rise again out of the haze, small and warm (the copper wire under the dock). On 'hand' the narrator's hands are glimpsed for a beat at lower left, holding a single bent length of copper (flat, then up), and withdraw. TAG-LINE STAGING (meta staging.tagLine): PERIOD ROOMS: the same line passes through each era's room (the 1940s study's window bay, the 1951 office, the cool modern bench), slung lower (50%) and older (a dull bronze wire), the posts replaced by what the room has (a curtain rod, a filing cabinet); the red pencil rests on the room's own furniture at frame right. LIFESPAN ENCODING (one rule, film-wide): a struck or ended thread drops to the Lifespan Rule at its measured lifespan; a still-held thread drops to its age as of 27 Oct 2026 and ends in a glowing open tip with a short copper arrow pointing right. Question cards hang on plain loops and never drop. No dates are ever set on the rule: it measures durations, not a calendar.",
+      "beats": [
+        {
+          "id": "wide",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "pull out to the whole line and the Lifespan Rule; ticks light, each bracket visibly longer than the last"
+        },
+        {
+          "id": "others",
+          "at": {
+            "line": "L0211",
+            "word": "writing"
+          },
+          "what": "a small typed card of others (dates printed on the card) swings onto the line in tie order, right of tag 2; no drop to the rule"
+        },
+        {
+          "id": "present",
+          "at": {
+            "line": "L0212",
+            "word": "years"
+          },
+          "what": "track along the line in tie order toward the newest tags; bronze turns copper; the desk rises; the rule stays fixed"
+        },
+        {
+          "id": "hand",
+          "at": {
+            "line": "L0212",
+            "word": "hand"
+          },
+          "what": "the narrator's hands glimpsed holding a bent copper hinge, then gone"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "copper line",
+        "Lifespan Rule",
+        "tag 1 (split thread)",
+        "tag 2",
+        "question card qK on a plain loop",
+        "a small typed card on a plain thread",
+        "HandwiredOS dock and desk in the distance",
+        "bent copper hinge"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "the Lifespan Rule: each mark a far bigger jump than the last",
+          "beat": "wide"
+        },
+        {
+          "kind": "label",
+          "text": "Siegelmann & Sontag 1992 · Tracr 2023 · Giannou et al. 2023 · Percepta 2026",
+          "beat": "others"
+        }
+      ],
+      "music": {
+        "cue": "c02-oldest-tags",
+        "note": "The reed line warms and lifts on 'years'; as the desk rises, the both-branches motif returns underneath, its two lines a whole tone apart, the gate fully open on one: the present tense of the film."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "FR01",
+        "FR13",
+        "FR17",
+        "FR18",
+        "FR19",
+        "OS01"
+      ]
+    }
+  ]
+}

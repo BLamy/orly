@@ -1,0 +1,71 @@
+{
+ "shot": "ch06-s04",
+ "at": "2026-10-13T20:24:46.857Z",
+ "step": 0.0833,
+ "sampled": 234,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "fillRect@-41,909",
+   "probed": false,
+   "from": 3.3,
+   "to": 3.97,
+   "seconds": 0.67,
+   "rect": {
+    "x": 207,
+    "y": 672,
+    "w": 322,
+    "h": 211
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@405,532",
+   "probed": false,
+   "from": 4.05,
+   "to": 9.22,
+   "seconds": 5.17,
+   "rect": {
+    "x": -66,
+    "y": 470,
+    "w": 196,
+    "h": 128
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@1215,112",
+   "probed": false,
+   "from": 0.883,
+   "to": 2.383,
+   "minInkWhilePaper": 0.57
+  },
+  {
+   "id": "fillRect@1173,284",
+   "probed": false,
+   "from": 3.05,
+   "to": 3.467,
+   "minInkWhilePaper": 0.58
+  },
+  {
+   "id": "fillRect@-41,909",
+   "probed": false,
+   "from": 3.3,
+   "to": 3.883,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@405,532",
+   "probed": false,
+   "from": 4.05,
+   "to": 9.133,
+   "minInkWhilePaper": 0
+  }
+ ]
+}

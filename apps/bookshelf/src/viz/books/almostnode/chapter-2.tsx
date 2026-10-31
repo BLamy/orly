@@ -48,12 +48,12 @@ interface TreeNode {
 
 // the exact project the jsdom test writes into the VFS
 const NODES: TreeNode[] = [
-  { id: 'root', label: '/', kind: 'dir', x: 590, y: 175, parent: null },
-  { id: 'src', label: 'src/', kind: 'dir', x: 450, y: 285, parent: 'root' },
-  { id: 'index', label: 'index.html', kind: 'file', x: 745, y: 285, parent: 'root', bytes: 561 },
-  { id: 'main', label: 'main.jsx', kind: 'file', x: 315, y: 395, parent: 'src', bytes: 163 },
-  { id: 'app', label: 'App.jsx', kind: 'file', x: 470, y: 395, parent: 'src', bytes: 305 },
-  { id: 'style', label: 'style.css', kind: 'file', x: 620, y: 395, parent: 'src', bytes: 297 },
+  { id: 'root', label: '/', kind: 'dir', x: 660, y: 175, parent: null },
+  { id: 'src', label: 'src/', kind: 'dir', x: 520, y: 285, parent: 'root' },
+  { id: 'index', label: 'index.html', kind: 'file', x: 815, y: 285, parent: 'root', bytes: 561 },
+  { id: 'main', label: 'main.jsx', kind: 'file', x: 385, y: 395, parent: 'src', bytes: 163 },
+  { id: 'app', label: 'App.jsx', kind: 'file', x: 540, y: 395, parent: 'src', bytes: 305 },
+  { id: 'style', label: 'style.css', kind: 'file', x: 690, y: 395, parent: 'src', bytes: 297 },
 ];
 const N = (id: string): TreeNode => NODES.find((n) => n.id === id)!;
 
@@ -65,8 +65,8 @@ const CALLS = [
   { text: 'toSnapshot()', y: 350 },
   { text: "syncFile('/src/App.jsx')", y: 400 },
 ] as const;
-const CALL_X = 82;
-const CALL_W = 268;
+const CALL_X = 48;
+const CALL_W = 278;
 
 // FSNode type card (verbatim from virtual-fs.ts)
 const CARD = { x: 880, y: 96, w: 316, h: 158 } as const;
@@ -83,22 +83,33 @@ const CARD_LINES = [
 const WALK: TreeNode[] = [N('root'), N('src'), N('app')];
 
 // snapshot tape — five file/dir entries sliding into cells
-const TAPE = { x: 120, y: 545, w: 640, h: 46, cellW: 124, gap: 6 } as const;
+const TAPE = { x: 120, y: 520, w: 640, h: 46, cellW: 124, gap: 6 } as const;
 const TAPE_ENTRIES = ['/src', '/index.html', '/src/main.jsx', '/src/App.jsx', '/src/style.css'] as const;
+const SHIP_DX = 120; // how far the tape slides toward the worker
+const TAPE_CELL_X = (i: number): number => TAPE.x + i * (TAPE.cellW + TAPE.gap);
+const TAPE_MID_Y = TAPE.y + TAPE.h / 2;
+const TREE_SCALE_SUNK = 0.9; // sunk nodes shrink only the box; labels stay 14px
+// sink order follows each node's x in the tree, so the nodes slide over the tape without crossing
+const SINK_CELL: Record<string, number> = { main: 0, src: 1, app: 2, style: 3, index: 4 };
 
-// worker zone + twin tree (same shape, scaled down)
-const WORKER = { x: 830, y: 330, w: 370, h: 250 } as const;
-const TWIN_C = { x: 1015, y: 380 } as const; // twin root position
-const twinPos = (n: TreeNode): { x: number; y: number } => ({
-  x: TWIN_C.x + (n.x - N('root').x) * 0.42,
-  y: TWIN_C.y + (n.y - N('root').y) * 0.62,
-});
+// worker zone + twin tree, laid out by hand so every label fits the zone
+const WORKER = { x: 890, y: 280, w: 350, h: 250 } as const;
+const TWIN_SCALE = 0.92;
+const TWIN: Record<string, { x: number; y: number }> = {
+  root: { x: 1065, y: 340 },
+  src: { x: 985, y: 410 },
+  index: { x: 1145, y: 410 },
+  main: { x: 950, y: 475 },
+  app: { x: 1060, y: 475 },
+  style: { x: 1170, y: 475 },
+};
+const twinPos = (n: TreeNode): { x: number; y: number } => TWIN[n.id];
 
-// camera marks
+// camera marks — every label must sit inside the view it is shown in
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_CARD: CameraState = { x: 860, y: 230, k: 1.28 };
-const CAM_TREE: CameraState = { x: 540, y: 300, k: 1.25 };
-const CAM_WORKER: CameraState = { x: 860, y: 420, k: 1.2 };
+const CAM_CARD: CameraState = { x: 770, y: 200, k: 1.28 };
+const CAM_TREE: CameraState = { x: 622, y: 260, k: 1.1 };
+const CAM_WORKER: CameraState = { x: 640, y: 380, k: 1.06 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~86s, eleven beats).
@@ -238,7 +249,7 @@ export function buildScene() {
     dur: 7.0,
     text: 'One more thing rides along: watchers. Anyone can subscribe to a directory, and every write rings their bell. Remember that bell — hot reload is going to live on it.',
   });
-  tl.tween(cam, CAM_TREE, { at: 58.6, dur: 1.3, ease: ease.move });
+  tl.tween(cam, CAM_WIDE, { at: 58.6, dur: 1.3, ease: ease.move });
   tl.tween(watchU, 1, { at: 59.2, dur: 0.6, ease: ease.enter });
   tl.tween(bellU, 1, { at: 61.0, dur: 0.5, ease: ease.pop });
   tl.tween(bellU, 0, { at: 62.2, dur: 0.6, ease: ease.move });
@@ -293,12 +304,14 @@ function TreeNodeBox({
   hot,
   scale = 1,
   at,
+  showBytes = true,
 }: {
   n: TreeNode;
   u: number;
   hot?: boolean;
   scale?: number;
   at?: { x: number; y: number };
+  showBytes?: boolean;
 }) {
   if (u <= 0) return null;
   const p = at ?? { x: n.x, y: n.y };
@@ -316,11 +329,11 @@ function TreeNodeBox({
         stroke={hot ? colors.WARM : n.kind === 'dir' ? colors.ACCENT : colors.GRID}
         strokeWidth={hot ? 2.2 : 1.4}
       />
-      <text x={p.x} y={p.y + 4.5 * scale} textAnchor="middle" fill={hot ? colors.WARM : colors.TEXT} fontSize={13.5 * scale} fontFamily={MONO}>
+      <text x={p.x} y={p.y + 5} textAnchor="middle" fill={hot ? colors.WARM : colors.TEXT} fontSize={14} fontFamily={MONO}>
         {n.label}
       </text>
-      {n.kind === 'file' && n.bytes !== undefined && scale > 0.7 && (
-        <text x={p.x} y={p.y + h / 2 + 15} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+      {showBytes && n.kind === 'file' && n.bytes !== undefined && scale > 0.7 && (
+        <text x={p.x} y={p.y + h / 2 + 15} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
           {n.bytes} B
         </text>
       )}
@@ -348,9 +361,13 @@ export function Render({ s }: { s: SceneState }) {
   const bellU = s.get(scene.bellU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
-  const machineOp = 1 - 0.9 * dimU;
+  const machineOp = 1 - 0.94 * dimU;
+  const shipX = shipU * SHIP_DX;
 
-  // the read probe rides root → src → App.jsx
+  // where /src sits once the tree has sunk into the tape (its cell, shipped)
+  const srcCell = { x: TAPE_CELL_X(SINK_CELL.src) + TAPE.cellW / 2 + SHIP_DX, y: TAPE_MID_Y };
+
+  // the read probe rides root → src → App.jsx; it sits under the node boxes, so it shows only on the edges
   const probe =
     walkU <= 0.5
       ? { x: lerp(N('root').x, N('src').x, walkU * 2), y: lerp(N('root').y, N('src').y, walkU * 2) }
@@ -364,11 +381,12 @@ export function Render({ s }: { s: SceneState }) {
     y: lerp(N('app').y, CALLS[3].y + 15, bytesU),
   };
 
-  // sync packet: call chip → across the boundary → twin app node
+  // sync packet: call chip → across the boundary → stops on the twin app node's top edge
   const twinApp = twinPos(N('app'));
+  const syncEnd = { x: twinApp.x, y: twinApp.y - 18 - 9 };
   const syncP = {
-    x: lerp(CALL_X + CALL_W, twinApp.x, syncU),
-    y: lerp(CALLS[5].y + 15, twinApp.y, syncU),
+    x: lerp(CALL_X + CALL_W, syncEnd.x, syncU),
+    y: lerp(CALLS[5].y + 15, syncEnd.y, syncU),
   };
 
   return (
@@ -379,11 +397,13 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={diskU}>
           <ellipse cx={640} cy={330} rx={150} ry={44} fill="none" stroke={colors.MUTED} strokeWidth={1.6} />
           <ellipse cx={640} cy={300} rx={150} ry={44} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.6} />
+          <line x1={500} y1={400} x2={780} y2={230} stroke={colors.NEGATIVE} strokeWidth={4} opacity={clamp01(diskU * 2 - 0.8)} />
+          <line x1={500} y1={230} x2={780} y2={400} stroke={colors.NEGATIVE} strokeWidth={4} opacity={clamp01(diskU * 2 - 0.8)} />
+          {/* the label sits on a solid chip so the cross-out stops at its edge */}
+          <rect x={560} y={288} width={160} height={24} rx={6} fill={colors.PANEL} />
           <text x={640} y={306} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             /dev/sda
           </text>
-          <line x1={500} y1={400} x2={780} y2={230} stroke={colors.NEGATIVE} strokeWidth={4} opacity={clamp01(diskU * 2 - 0.8)} />
-          <line x1={500} y1={230} x2={780} y2={400} stroke={colors.NEGATIVE} strokeWidth={4} opacity={clamp01(diskU * 2 - 0.8)} />
         </g>
 
         <g opacity={machineOp}>
@@ -394,7 +414,7 @@ export function Render({ s }: { s: SceneState }) {
               virtual-fs.ts
             </text>
             {CARD_LINES.map((line, i) => (
-              <text key={i} x={CARD.x + 18} y={CARD.y + 30 + i * 22} fill={i === 2 || i === 3 ? colors.ACCENT : colors.TEXT} fontSize={13} fontFamily={MONO}>
+              <text key={i} x={CARD.x + 18} y={CARD.y + 30 + i * 22} fill={i === 2 || i === 3 ? colors.ACCENT : colors.TEXT} fontSize={14} fontFamily={MONO}>
                 {line}
               </text>
             ))}
@@ -407,7 +427,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={c.text} opacity={u * 0.95}>
                 <rect x={CALL_X} y={c.y - 4 * (1 - u)} width={CALL_W} height={34} rx={8} fill={colors.BG} stroke={colors.GRID} />
-                <text x={CALL_X + 12} y={c.y + 18} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                <text x={CALL_X + 10} y={c.y + 18} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {c.text}
                 </text>
               </g>
@@ -428,15 +448,18 @@ export function Render({ s }: { s: SceneState }) {
                 y2={n.y - 20}
                 stroke={hot ? colors.WARM : colors.GRID}
                 strokeWidth={hot ? 2.2 : 1.3}
-                opacity={u * (1 - 0.55 * tapeU)}
+                opacity={u * (1 - tapeU)}
               />
             );
           })}
 
-          {/* the children.get chip riding the walk */}
+          {/* the read probe, drawn under the node boxes so it slides between them */}
+          {walkU > 0 && walkU < 1 && <circle cx={probe.x} cy={probe.y} r={6} fill="none" stroke={colors.WARM} strokeWidth={2.2} />}
+
+          {/* the children.get chip for the walk, parked in clear space under the tree */}
           <g opacity={s.get(scene.getChip)}>
-            <rect x={probe.x + 16} y={probe.y - 40} width={168} height={26} rx={7} fill={colors.BG} stroke={colors.WARM} />
-            <text x={probe.x + 100} y={probe.y - 22} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+            <rect x={428} y={436} width={184} height={26} rx={7} fill={colors.BG} stroke={colors.WARM} />
+            <text x={520} y={453} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               {walkU <= 0.5 ? "children.get('src')" : "children.get('App.jsx')"}
             </text>
           </g>
@@ -444,11 +467,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* tree nodes — they sink toward the tape as tapeU rises */}
           {NODES.map((n, i) => {
             const u = s.get(scene.nodeU[i]);
-            const cellI = n.id === 'src' ? 0 : n.id === 'index' ? 1 : n.id === 'main' ? 2 : n.id === 'app' ? 3 : 4;
-            const tapeP = {
-              x: TAPE.x + cellI * (TAPE.cellW + TAPE.gap) + TAPE.cellW / 2 + shipU * 240,
-              y: TAPE.y + TAPE.h / 2,
-            };
+            const cellI = SINK_CELL[n.id] ?? 0;
+            const tapeP = { x: TAPE_CELL_X(cellI) + TAPE.cellW / 2 + shipX, y: TAPE_MID_Y };
             const sinkU = n.id === 'root' ? 0 : clamp01(tapeU * 1.4 - cellI * 0.08);
             const at = { x: lerp(n.x, tapeP.x, sinkU), y: lerp(n.y, tapeP.y, sinkU) };
             return (
@@ -457,14 +477,13 @@ export function Render({ s }: { s: SceneState }) {
                 n={n}
                 u={u * (n.id === 'root' ? 1 - 0.7 * tapeU : 1)}
                 hot={walkHot(n.id) && walkU > 0 && tapeU < 0.1}
-                scale={1 - 0.28 * sinkU}
+                scale={1 - (1 - TREE_SCALE_SUNK) * sinkU}
                 at={at}
               />
             );
           })}
 
-          {/* the read probe + returning bytes */}
-          {walkU > 0 && walkU < 1 && <circle cx={probe.x} cy={probe.y} r={7} fill="none" stroke={colors.WARM} strokeWidth={2.2} />}
+          {/* the returning bytes */}
           {bytesU > 0 && bytesU < 1 && (
             <g>
               <circle cx={bytesP.x} cy={bytesP.y} r={8} fill={colors.POSITIVE} stroke={colors.BG} strokeWidth={1.5} />
@@ -476,8 +495,8 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the snapshot tape rail */}
           <g opacity={clamp01(tapeU * 3) * (1 - shipU * 0.4)}>
-            <rect x={TAPE.x - 14} y={TAPE.y - 8} width={TAPE.w + 28} height={TAPE.h + 16} rx={10} fill="none" stroke={colors.GRID} strokeDasharray="5 5" />
-            <text x={TAPE.x - 14} y={TAPE.y - 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <rect x={TAPE.x - 8 + shipX} y={TAPE.y - 8} width={TAPE.w + 16} height={TAPE.h + 16} rx={10} fill="none" stroke={colors.GRID} strokeDasharray="5 5" />
+            <text x={TAPE.x - 8 + shipX} y={TAPE.y + TAPE.h + 30} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               {'VFSSnapshot · files: [{ path, content }]'}
             </text>
           </g>
@@ -485,7 +504,7 @@ export function Render({ s }: { s: SceneState }) {
           {TAPE_ENTRIES.map((_, i) => (
             <rect
               key={i}
-              x={TAPE.x + i * (TAPE.cellW + TAPE.gap) + shipU * 240}
+              x={TAPE_CELL_X(i) + shipX}
               y={TAPE.y}
               width={TAPE.cellW}
               height={TAPE.h}
@@ -499,10 +518,31 @@ export function Render({ s }: { s: SceneState }) {
           {/* the worker zone + twin tree */}
           <Zone x={WORKER.x} y={WORKER.y} w={WORKER.w} h={WORKER.h} label="Web Worker · runtime-worker.ts" kind="group" u={workerU} color={colors.SECONDARY} />
           <g opacity={clamp01(workerU * 2 - 0.5)}>
-            <text x={WORKER.x + 16} y={WORKER.y + WORKER.h - 16} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={WORKER.x + 16} y={WORKER.y + WORKER.h - 14} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               VirtualFS.fromSnapshot(snapshot)
             </text>
           </g>
+          {/* dashed ghost slots hold the worker's place until each twin node regrows */}
+          {NODES.map((n, i) => {
+            const u = clamp01(twinU * (NODES.length + 1) - NODES.indexOf(n)) * s.get(scene.nodeU[i]);
+            const p = twinPos(n);
+            const w = (n.kind === 'dir' ? 86 : 108) * TWIN_SCALE;
+            const h = 40 * TWIN_SCALE;
+            return (
+              <rect
+                key={`ghost-${n.id}`}
+                x={p.x - w / 2}
+                y={p.y - h / 2}
+                width={w}
+                height={h}
+                rx={n.kind === 'dir' ? h / 2 : 8 * TWIN_SCALE}
+                fill="none"
+                stroke={colors.GRID}
+                strokeDasharray="4 4"
+                opacity={clamp01(workerU * 2 - 0.5) * 0.7 * (1 - u)}
+              />
+            );
+          })}
           {NODES.map((n, i) => {
             const order = NODES.indexOf(n);
             const u = clamp01(twinU * (NODES.length + 1) - order) * s.get(scene.nodeU[i]);
@@ -513,15 +553,15 @@ export function Render({ s }: { s: SceneState }) {
                 {n.parent && (
                   <line
                     x1={twinPos(N(n.parent)).x}
-                    y1={twinPos(N(n.parent)).y + 10}
+                    y1={twinPos(N(n.parent)).y + 18 * TWIN_SCALE}
                     x2={p.x}
-                    y2={p.y - 10}
+                    y2={p.y - 18 * TWIN_SCALE}
                     stroke={colors.GRID}
                     strokeWidth={1}
                     opacity={u}
                   />
                 )}
-                <TreeNodeBox n={n} u={u} scale={0.55} at={p} hot={twinGlow > 0.2 && n.id === 'app'} />
+                <TreeNodeBox n={n} u={u} scale={TWIN_SCALE} at={p} hot={twinGlow > 0.2 && n.id === 'app'} showBytes={false} />
               </g>
             );
           })}
@@ -530,22 +570,22 @@ export function Render({ s }: { s: SceneState }) {
           {syncU > 0 && syncU < 1 && (
             <g>
               <circle cx={syncP.x} cy={syncP.y} r={7} fill={colors.ACCENT} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={syncP.x} y={syncP.y - 13} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+              <text x={twinApp.x + 40} y={syncEnd.y - 4} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
                 syncFile
               </text>
             </g>
           )}
 
-          {/* the watcher bell on /src */}
+          {/* the watcher bell on /src — rides the sunk /src cell on the tape */}
           <g opacity={watchU}>
-            <rect x={N('src').x - 170} y={N('src').y - 16} width={116} height={30} rx={8} fill={colors.BG} stroke={bellU > 0.15 ? colors.WARM : colors.GRID} strokeWidth={1.2 + bellU} />
-            <text x={N('src').x - 112} y={N('src').y + 4} textAnchor="middle" fill={bellU > 0.15 ? colors.WARM : colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <rect x={srcCell.x - 64} y={srcCell.y - 60} width={128} height={26} rx={8} fill={colors.BG} stroke={bellU > 0.15 ? colors.WARM : colors.GRID} strokeWidth={1.2 + bellU} />
+            <text x={srcCell.x} y={srcCell.y - 42} textAnchor="middle" fill={bellU > 0.15 ? colors.WARM : colors.MUTED} fontSize={14} fontFamily={MONO}>
               {"watch('/src')"}
             </text>
             {bellU > 0.02 && (
-              <circle cx={N('src').x} cy={N('src').y} r={26 + 18 * bellU} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={(1 - bellU) * 0.8} />
+              <circle cx={srcCell.x} cy={srcCell.y} r={26 + 18 * bellU} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={(1 - bellU) * 0.8} />
             )}
-            <text x={N('src').x - 112} y={N('src').y + 36} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO} opacity={bellU}>
+            <text x={srcCell.x + 72} y={srcCell.y - 42} fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={bellU}>
               'change'
             </text>
           </g>

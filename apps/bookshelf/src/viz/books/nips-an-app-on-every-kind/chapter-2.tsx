@@ -35,7 +35,7 @@ const REC = {
   ],
   content: '',
 };
-const REC_LAYOUT = layoutJson(REC, { x: 80, y: 150, fontSize: 15, inlineArrayMax: 30 });
+const REC_LAYOUT = layoutJson(REC, { x: 130, y: 150, fontSize: 15, inlineArrayMax: 30 });
 
 // kind 31990 — handler information: the url templates
 const HANDLER = {
@@ -49,14 +49,16 @@ const HANDLER = {
   ],
   content: '{ "name": "Habla" }',
 };
-const HANDLER_LAYOUT = layoutJson(HANDLER, { x: 700, y: 150, fontSize: 15, inlineArrayMax: 40 });
+const HANDLER_LAYOUT = layoutJson(HANDLER, { x: 620, y: 150, fontSize: 15, inlineArrayMax: 40 });
 
 const LINK = { x: 500, y: 96 };
-const APP = { x: 560, y: 470, w: 320, h: 96 };
+const APP = { x: 560, y: 500, w: 320, h: 96 };
 
+// Each camera keeps every visible label on the 1280×720 stage: the recommendation
+// stays in frame while the handler is in focus, so nothing is cropped mid-beat.
 const CAM_REC: CameraState = { x: 330, y: 300, k: 1.25 };
-const CAM_HANDLER: CameraState = { x: 900, y: 300, k: 1.2 };
-const CAM_APP: CameraState = { x: 640, y: 430, k: 1.15 };
+const CAM_HANDLER: CameraState = { x: 680, y: 300, k: 1.1 };
+const CAM_APP: CameraState = { x: 640, y: 400, k: 1.15 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -160,8 +162,10 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // fade to a ghost (≤ 0.05) so the closing card reads over a clean stage
+  const mainOp = 1 - 0.95 * dimU;
   const webAnchor = HANDLER_LAYOUT.anchor('tags[2][1]');
+  const filledUrl = `https://app.example/a/${NADDR}`;
 
   return (
     <>
@@ -176,49 +180,86 @@ export function Render({ s }: { s: SceneState }) {
               <text x={LINK.x + 16} y={LINK.y + 25} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
                 nostr:{NADDR}
               </text>
+              <text x={LINK.x - 16} y={LINK.y + 25} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+                a link, not an event
+              </text>
               {stuckU > 0 && (
-                <text x={LINK.x + 140} y={LINK.y + 66} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={stuckU}>
+                <text x={LINK.x + 140} y={LINK.y + 66} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={stuckU}>
                   kind 30023 — this app can’t render it
                 </text>
               )}
             </g>
           )}
 
+          {/* the app the reader holds: it knows short notes only */}
+          {stuckU > 0 && (
+            <g opacity={stuckU}>
+              <rect x={LINK.x} y={200} width={280} height={96} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={LINK.x + 16} y={226} fill={colors.MUTED} fontSize={14}>
+                the app you are holding
+              </text>
+              <text x={LINK.x + 16} y={256} fill={colors.TEXT} fontSize={16} fontWeight={600}>
+                kind 1 · short notes
+              </text>
+              <text x={LINK.x + 16} y={282} fill={colors.MUTED} fontSize={14}>
+                no handler for kind 30023 yet
+              </text>
+            </g>
+          )}
+
           {/* kind 31989 recommendation */}
-          <JsonDoc layout={REC_LAYOUT} reveal={recU} focus={dMatchU > 0 ? ['tags[0]', 'kind'] : undefined} focusU={dMatchU} />
+          <JsonDoc layout={REC_LAYOUT} reveal={recU} focus={dMatchU > 0 ? ['tags[0]', 'kind'] : undefined} focusU={dMatchU} dim={0.5} />
           {dMatchU > 0 && (
             <g opacity={dMatchU}>
               {(() => {
                 const a = REC_LAYOUT.anchor('tags[0][1]');
                 return (
-                  <rect x={a.x - 6} y={a.y - 2} width={a.w + 12} height={a.h + 2} rx={5} fill="none" stroke={colors.WARM} strokeWidth={1.5} />
+                  <>
+                    <rect x={a.x - 6} y={a.y - 2} width={a.w + 12} height={a.h + 2} rx={5} fill="none" stroke={colors.WARM} strokeWidth={1.5} />
+                    <text x={a.x + a.w + 16} y={a.cy + 5} fill={colors.WARM} fontSize={14}>
+                      d = 30023 → for articles
+                    </text>
+                  </>
                 );
               })()}
-              <text x={REC_LAYOUT.x} y={REC_LAYOUT.anchor('tags[0][1]').y + 44} fill={colors.WARM} fontSize={12}>
-                d = 30023 → this recommendation is for articles
-              </text>
             </g>
           )}
 
           {/* kind 31990 handler information */}
-          <JsonDoc layout={HANDLER_LAYOUT} reveal={handlerU} hidden={fillU > 0 && fillU < 1 ? ['tags[2][1]'] : undefined} />
+          <JsonDoc layout={HANDLER_LAYOUT} reveal={handlerU} hidden={fillU > 0 ? ['tags[2][1]'] : undefined} />
+
+          {/* what the hole is: the placeholder names an encoded identifier */}
+          {handlerU > 0 && fillU === 0 && (
+            <g opacity={handlerU}>
+              <text x={webAnchor.x + webAnchor.w + 16} y={webAnchor.cy + 4} fill={colors.WARM} fontSize={14}>
+                ← bech32 = the encoded id
+              </text>
+              <text x={webAnchor.x + webAnchor.w + 16} y={webAnchor.cy + 22} fill={colors.WARM} fontSize={14}>
+                of the entity the link names
+              </text>
+            </g>
+          )}
 
           {/* fill the <bech32> hole with the entity */}
-          {fillU > 0 && (
+          {fillU > 0 && fillU < 1 && (
             <TokenFlight
               from={{ x: LINK.x + 140, y: LINK.y + 20 }}
               to={{ x: webAnchor.cx, y: webAnchor.cy + 5 }}
               u={fillU}
               text={NADDR}
               fill={colors.POSITIVE}
-              fontSize={12}
+              fontSize={14}
               lift={90}
             />
           )}
           {fillU >= 1 && (
-            <text x={HANDLER_LAYOUT.x} y={webAnchor.y + 44} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
-              https://app.example/a/{NADDR}
-            </text>
+            <>
+              {/* the filled value replaces the placeholder slot, in the same spot */}
+              <rect x={webAnchor.x - 4} y={webAnchor.y + 2} width={filledUrl.length * HANDLER_LAYOUT.charW + 10} height={HANDLER_LAYOUT.fontSize + 4} rx={4} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.5} />
+              <text x={webAnchor.x} y={webAnchor.y + HANDLER_LAYOUT.fontSize} fill={colors.POSITIVE} fontSize={HANDLER_LAYOUT.fontSize} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+                {`"${filledUrl}"`}
+              </text>
+            </>
           )}
 
           {/* the app opens */}
@@ -230,7 +271,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={APP.x + 60} y={APP.y + 32} fill={colors.TEXT} fontSize={16} fontWeight={600}>
                 Habla — opened
               </text>
-              <text x={APP.x + 60} y={APP.y + 56} fill={colors.MUTED} fontSize={13}>
+              <text x={APP.x + 60} y={APP.y + 56} fill={colors.MUTED} fontSize={14}>
                 the exact article, in an app that reads it
               </text>
             </g>
@@ -247,8 +288,8 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             a recommendation points at a handler; the client fills the blank
           </text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
-            NIP-89 · kind 31989 recommends · kind 31990 handles
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
+            NIP-89 · kind 31989 recommends · kind 31990 handles · a link names it
           </text>
         </g>
       )}

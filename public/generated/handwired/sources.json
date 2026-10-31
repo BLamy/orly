@@ -1,0 +1,1871 @@
+{
+  "version": 1,
+  "slug": "handwired",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Both Branches Run",
+      "claims": [
+        {
+          "id": "c1-relu-and-sums",
+          "claim": "A Handwired program is built from weighted sums and products with a relu over floats, the neural-net form the README describes; a plain relu is a gated relu whose left side is the constant 1.",
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md lines 7",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "7",
+              "quote": "matrix multiplication + reglu over floats"
+            },
+            {
+              "label": "docs/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "3",
+              "quote": "mostly weighted sums and products with a ReLU"
+            },
+            {
+              "label": "README.md lines 18",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "18",
+              "quote": "Math.max(0, x) is ReLU"
+            },
+            {
+              "label": "docs/tutorial.md lines 74",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "74",
+              "quote": "`circuit.reglu([], 1, terms, bias)` computes `max(0, terms + bias)`, a ReLU."
+            }
+          ],
+          "caption": 0
+        },
+        {
+          "id": "c1-the-decision",
+          "claim": "The README example is a ternary, a greater than 4 gives 10 else 12, rewritten as basic arithmetic.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md lines 11",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "11",
+              "quote": "const result = (a > 4) ? 10 : 12"
+            },
+            {
+              "label": "README.md lines 14",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "14",
+              "quote": "The above can be expressed as basic arithmetic"
+            }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c1-two-ramps",
+          "claim": "above4 is built from Math.max(0, a - 4) and Math.max(0, a - 5), both ReLUs.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md lines 19",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "19",
+              "quote": "const above4 = Math.max(0, a - 4) - Math.max(0, a - 5)"
+            }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c1-difference-is-a-step",
+          "claim": "For an integer a, above4 is 1 if a > 4 and 0 otherwise.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md lines 18",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "18",
+              "quote": "For an integer a, above4 is 1 if a > 4, and 0 otherwise"
+            }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c1-both-branches-compute",
+          "claim": "Both branches compute, and above4 picks one: result = above4 10 + (1 - above4) 12.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md lines 20",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "20",
+              "quote": "Both branches compute, and above4 picks one"
+            },
+            {
+              "label": "README.md lines 21",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "21",
+              "quote": "const result = above4 * 10 + (1 - above4) * 12"
+            }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c1-slide-a",
+          "claim": "At a = 5 above4 is 1, so the result is 10 and the else branch is weighted by 1 - above4 = 0.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "README.md lines 10",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "10",
+              "quote": "const a = 5"
+            },
+            {
+              "label": "README.md lines 21",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "21",
+              "quote": "(1 - above4) * 12"
+            }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c1-fraction-blend",
+          "claim": "At a = 4.5 the README formulas give above4 = 0.5 and result = 11 (arithmetic on the README lines; the README states the integer assumption).",
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "README.md lines 18",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "18",
+              "quote": "For an integer a"
+            },
+            {
+              "label": "README.md lines 21",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "21",
+              "quote": "above4 * 10 + (1 - above4) * 12"
+            }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c1-no-converter",
+          "claim": "No tool converts existing JavaScript source; builder code is ordinary JavaScript that runs once and appends operations to a Circuit.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "3",
+              "quote": "No tool converts existing JavaScript source into a program."
+            },
+            {
+              "label": "docs/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "3",
+              "quote": "ordinary JavaScript that runs once and appends the operations to a Circuit"
+            }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c1-builder-line",
+          "claim": "Each line of builder code appends the operations of one familiar expression; the comment shows the JavaScript it replaces (not = affine with weight -1 and bias 1).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 74",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "74",
+              "quote": "Each line of builder code appends the operations of one familiar expression"
+            },
+            {
+              "label": "template/toggle.ts lines 50",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "50",
+              "quote": "// JS: !bit"
+            },
+            {
+              "label": "template/toggle.ts lines 51",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "51",
+              "quote": "const not = (bit: Wire) => circuit.affine([[bit, -1]], 1)"
+            }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c1-four-kinds",
+          "claim": "Four kinds of operation: affine (weighted sum), reglu (product with a ReLU), boolean (score rounded to 0 or 1), index read (table read). Every arithmetic step rounds to 32-bit floats (FP32), like Math.fround.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/README.md lines 15",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "15",
+              "quote": "a weighted sum (circuit.affine), a product with a ReLU (circuit.reglu), a score rounded to 0 or 1 (circuit.boolean), or a table read (circuit.indexRead)"
+            },
+            {
+              "label": "docs/tutorial.md lines 74",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "74",
+              "quote": "Every arithmetic step rounds to FP32, like `Math.fround`."
+            }
+          ],
+          "caption": 10
+        },
+        {
+          "id": "c1-layers",
+          "claim": "Independent operations at the same dependency depth share a layer; a layer is a sparse affine projection followed by the gates.",
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "docs/execution-model.md lines 40",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "40",
+              "quote": "Independent instructions at the same dependency depth share a layer."
+            },
+            {
+              "label": "docs/execution-model.md lines 40",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "40",
+              "quote": "evaluates its sparse affine projection"
+            }
+          ],
+          "caption": 11
+        },
+        {
+          "id": "c1-no-runtime-loops",
+          "claim": "Nothing in the program branches or loops at runtime; the host JavaScript around it does.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 13",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "13",
+              "quote": "so nothing in the program branches or loops at runtime"
+            }
+          ],
+          "caption": 13
+        },
+        {
+          "id": "c1-os-scale",
+          "claim": "On-screen only (zoom-out label): the desktop demo program is 234 source cells, 4,646 live operations in 130 layers, 9,909 stored weights.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/handwiredos/README.md lines 13",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/handwiredos/README.md",
+              "lines": "13",
+              "quote": "The program has 234 source cells, 4,646 live operations in 130 layers and 9,909 stored weights"
+            }
+          ]
+        },
+        {
+          "id": "c1-subtract-ramps",
+          "caption": 3,
+          "status": "verified",
+          "claim": "above4 is the first ramp, max(0, a - 4), minus the second ramp, max(0, a - 5).",
+          "sources": [
+            {
+              "label": "README.md lines 19",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "19",
+              "quote": "const above4 = Math.max(0, a - 4) - Math.max(0, a - 5)"
+            }
+          ]
+        },
+        {
+          "id": "c1-stack-of-layers",
+          "caption": 12,
+          "status": "paraphrase",
+          "claim": "A compiled program is packed into a sequence of layers of sparse matrices, one layer after another.",
+          "sources": [
+            {
+              "label": "docs/execution-model.md lines 298",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "298",
+              "quote": "a program packed into layers of sparse matrices"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "A Switch of Arithmetic",
+      "claims": [
+        {
+          "id": "c2-what-a-toggle-does",
+          "claim": "A press on the track arms the switch, a release on the track while armed flips it, and the thumb springs to its new side.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "3",
+              "quote": "a press on the track arms it, and a release on the track while it's armed flips it. The thumb springs to its new side."
+            }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c2-twenty-cells",
+          "claim": "The toggle's source table has 20 cells (viewport 2, down 3, up 3, cancel, on, armed, springMatrix 4, settleCheck, snap, thumb 3).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 145",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "145",
+              "quote": "the toggle's 20 cells"
+            },
+            {
+              "label": "template/toggle.ts lines 19",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "19",
+              "quote": "viewportWidth: input"
+            },
+            {
+              "label": "template/toggle.ts lines 34",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "34",
+              "quote": "displacement: state"
+            }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c2-cell-kinds",
+          "claim": "input: JavaScript writes it; event: JavaScript sets it to 1 and the program resets it to 0; state: the program computes its next value.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/runtime/cells.ts lines 29",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/cells.ts",
+              "lines": "29",
+              "quote": "- input: JavaScript writes it before an evaluation"
+            },
+            {
+              "label": "src/runtime/cells.ts lines 30",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/cells.ts",
+              "lines": "30",
+              "quote": "- event: an exact bit that JavaScript sets to 1 when an event arrives"
+            },
+            {
+              "label": "src/runtime/cells.ts lines 31",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/cells.ts",
+              "lines": "31",
+              "quote": "The program resets it to 0."
+            },
+            {
+              "label": "src/runtime/cells.ts lines 32",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/cells.ts",
+              "lines": "32",
+              "quote": "- state: the program computes its next value"
+            }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c2-four-comparisons",
+          "claim": "insideTrack is four emitCompare calls (left, right, top, bottom edge); with pointer coordinates on a 1/64 px grid and track edges on a 1/2 px grid each comparison takes 2 operations.",
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "template/toggle.ts lines 54",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "54",
+              "quote": "emitCompare(circuit, point.x, '>=', trackLeft),"
+            },
+            {
+              "label": "template/toggle.ts lines 57",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "57",
+              "quote": "emitCompare(circuit, point.y, '<', circuit.affine([[trackTop, 1]], layout.trackHeight)),"
+            },
+            {
+              "label": "docs/tutorial.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "53",
+              "quote": "the comparison takes 2 operations"
+            },
+            {
+              "label": "docs/execution-model.md lines 139",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "139",
+              "quote": "becomes its own operation, since the bit is exact for the operand"
+            },
+            {
+              "label": "docs/tutorial.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "53",
+              "quote": "When both operands have grids, like a pointer coordinate on 1/64 px and a track edge on 1/2 px, the comparison takes 2 operations."
+            }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c2-and-as-relu",
+          "claim": "AND of N exact bits is relu(sum of bits - (N - 1)); the toggle combines the four hit-test bits that way.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.ts lines 48",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "48",
+              "quote": "JS: bits.every(bit => bit === 1), as relu(sum of bits - (count - 1))."
+            },
+            {
+              "label": "template/toggle.ts lines 49",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "49",
+              "quote": "circuit.reglu([], 1, bits.map(bit => [bit, 1] as const), 1 - bits.length)"
+            }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c2-select",
+          "claim": "emitSelect(circuit, condition, off, on) is condition x on + (1 - condition) x off; both sides always compute; an if that assigns a cell becomes a select on its next value.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/expressions.md lines 11",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/expressions.md",
+              "lines": "11",
+              "quote": "Both sides always compute"
+            },
+            {
+              "label": "docs/tutorial.md lines 93",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "93",
+              "quote": "computes both sides and picks one, so an if that assigns a cell becomes a select on the cell"
+            }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c2-new-wire",
+          "claim": "Where JavaScript would reassign a variable, builder code makes a new wire: armedAfterDown holds the value after the press while cells.armed still holds the previous evaluation's value.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 93",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "93",
+              "quote": "Where JavaScript would reassign a variable, builder code makes a new wire"
+            },
+            {
+              "label": "template/toggle.ts lines 61",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "61",
+              "quote": "const armedAfterDown = emitSelect(circuit, cells.down.active, cells.armed, insideTrack(cells.down))"
+            }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c2-the-flip",
+          "claim": "on = select(all(up.active, armedAfterDown, insideTrack(up)), cells.on, not(cells.on)).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.ts lines 62",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "62",
+              "quote": "JS: if (up && armed && insideTrack(up)) on = !on"
+            },
+            {
+              "label": "template/toggle.ts lines 63",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "63",
+              "quote": "const on = emitSelect(circuit, all(cells.up.active, armedAfterDown, insideTrack(cells.up)), cells.on, not(cells.on))"
+            }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c2-disarm",
+          "claim": "armed = all(armedAfterDown, not(up.active), not(cancel)).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.ts lines 64",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "64",
+              "quote": "JS: if (up || cancel) armed = false"
+            },
+            {
+              "label": "template/toggle.ts lines 65",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "65",
+              "quote": "const armed = all(armedAfterDown, not(cells.up.active), not(cells.cancel))"
+            }
+          ],
+          "caption": 10
+        },
+        {
+          "id": "c2-matrix-power",
+          "claim": "One 4 ms spring step is a 2x2 matrix on (displacement, velocity); n steps are that matrix to the power n.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 106",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "106",
+              "quote": "One step is a 2 × 2 matrix applied to the spring's displacement and velocity, and n steps are that matrix to the power n."
+            },
+            {
+              "label": "docs/patterns.md lines 200",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "200",
+              "quote": "any number of steps is one matrix power"
+            }
+          ],
+          "caption": 12
+        },
+        {
+          "id": "c2-host-writes-matrix",
+          "claim": "JavaScript writes springMatrixPower(springStepMatrix(...), steps) into the pair's 4 cells; the program applies it with 4 products: 14 operations in 3 layers.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/execution-model.md lines 173",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "173",
+              "quote": "JavaScript writes springMatrixPower(springStepMatrix({stiffness, damping}), steps) into the pair's 4 cells."
+            },
+            {
+              "label": "docs/execution-model.md lines 178",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "178",
+              "quote": "14 operations in 3 layers for any step count"
+            }
+          ],
+          "caption": 13
+        },
+        {
+          "id": "c2-fixed-list",
+          "claim": "Inputs are handled in a fixed order (down, up, cancel); each insideTrack call appends a whole hit test and the program computes both in every evaluation.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 93",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "93",
+              "quote": "The inputs are handled in a fixed order, down, then up, then cancel."
+            },
+            {
+              "label": "docs/tutorial.md lines 93",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "93",
+              "quote": "the program computes both hit tests in every evaluation"
+            }
+          ],
+          "caption": 14
+        },
+        {
+          "id": "c2-os-spring-numbers",
+          "claim": "On-screen only: stiffness 650, damping 45, 4 ms step; matrix bound 10.36; released 20 px away the thumb peaks near 207 px/s (module-scope sanity check for the matrix).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.ts lines 10",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "10",
+              "quote": "export const springConstants = {stiffness: 650, damping: 45}"
+            },
+            {
+              "label": "docs/execution-model.md lines 243",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "243",
+              "quote": "e.g. 10.36 for stiffness 650 and damping 45"
+            },
+            {
+              "label": "docs/tutorial.md lines 55",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "55",
+              "quote": "peaks at 207 px/s"
+            }
+          ]
+        },
+        {
+          "id": "c2-os-step-matrix",
+          "claim": "On-screen only: the step matrix entries are [1 - k dt^2, dt (1 - c dt), -k dt, 1 - c dt] = [0.9896, 0.00328, -2.6, 0.82] for k=650, c=45, dt=0.004.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/runtime/host-timing.ts lines 162",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/host-timing.ts",
+              "lines": "162",
+              "quote": "return [1 - constants.stiffness * dt * dt, dt * velocityKeep, -constants.stiffness * dt, velocityKeep]"
+            }
+          ]
+        },
+        {
+          "id": "c2-os-track-geometry",
+          "claim": "On-screen only: at 1280 x 800 the track spans x 614..666 and y 384..416; the scripted press is at (640, 400).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.test.ts lines 9",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "9",
+              "quote": "where the track spans x 614..666 and y 384..416"
+            },
+            {
+              "label": "template/toggle.test.ts lines 22",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "22",
+              "quote": "pointer('down', 640, 400, 0, 1, false)"
+            }
+          ]
+        },
+        {
+          "id": "c2-flip-is-select",
+          "caption": 8,
+          "status": "verified",
+          "claim": "The flip of the on bit is built with emitSelect, like the arming step.",
+          "sources": [
+            {
+              "label": "template/toggle.ts lines 63",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "63",
+              "quote": "const on = emitSelect(circuit, all(cells.up.active, armedAfterDown, insideTrack(cells.up)), cells.on, not(cells.on))"
+            }
+          ]
+        },
+        {
+          "id": "c2-spring-steps",
+          "caption": 11,
+          "status": "verified",
+          "claim": "The time since the last evaluation decides how many fixed 4 ms steps the spring takes, which a program cannot loop over at runtime.",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 106",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "106",
+              "quote": "the time since the last evaluation decides how many fixed 4 ms steps the spring takes"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "The Host Loop",
+      "claims": [
+        {
+          "id": "c3-host-defined",
+          "claim": "The JavaScript around the program is the host: it writes inputs into the table, evaluates, copies next-state values back, and writes the DOM.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/README.md lines 21",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "21",
+              "quote": "It writes inputs into cells, evaluates, copies next-state values back into the table, and writes the DOM."
+            }
+          ],
+          "caption": 0
+        },
+        {
+          "id": "c3-queue",
+          "claim": "Event handlers only queue events with their timestamps.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 110",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "110",
+              "quote": "Event handlers only queue events with their timestamps."
+            },
+            {
+              "label": "template/toggle.ts lines 107",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "107",
+              "quote": "queued.push(event)"
+            }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c3-advance-frame",
+          "claim": "advanceFrame plans one evaluation per distinct event timestamp, a settle check every 64 ms of simulated time, and one at the frame timestamp; at a settle check a spring near rest lands on its destination and stops.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 110",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "110",
+              "quote": "one per distinct event timestamp, which steps the spring to that timestamp before applying the events, a settle check every 64 ms of simulated time, and one at the frame's timestamp"
+            },
+            {
+              "label": "docs/tutorial.md lines 110",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "110",
+              "quote": "A settle check is an evaluation in which a spring that is within 0.01 px of its destination and no faster than 0.01 px/s lands on the destination and stops."
+            }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c3-two-evaluations",
+          "claim": "The test's events arrive 3 ms before their frames; applying advanceFrame's rule (one evaluation per event time plus one at the frame) gives two evaluations in an event frame.",
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "template/toggle.test.ts lines 9",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "9",
+              "quote": "Each event arrives 3 ms before"
+            },
+            {
+              "label": "docs/tutorial.md lines 110",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "110",
+              "quote": "and one at the frame's timestamp"
+            }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c3-host-writes-table",
+          "claim": "The callback writes the spring matrix, settleCheck, snap, viewport and each event's active bit and coordinates into the table before evaluating.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.ts lines 115",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "115",
+              "quote": "cells.springMatrix.forEach((wire, index) => { values[wire] = matrix[index]! })"
+            },
+            {
+              "label": "template/toggle.ts lines 116",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "116",
+              "quote": "values[cells.settleCheck] = evaluation.settleCheck ? 1 : 0"
+            },
+            {
+              "label": "template/toggle.ts lines 124",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "124",
+              "quote": "values[cells[kind].active] = 1"
+            }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c3-evaluate-and-write-back",
+          "claim": "evaluate(values) runs the program; when the evaluation writes back, source.set(result.nextValues) copies next state into the table.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.ts lines 129",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "129",
+              "quote": "const result = evaluate(values)"
+            },
+            {
+              "label": "template/toggle.ts lines 130",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "130",
+              "quote": "if (evaluation.writesBack) source.set(result.nextValues)"
+            },
+            {
+              "label": "template/toggle.ts lines 130",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "130",
+              "quote": "if (evaluation.writesBack) source.set(result.nextValues)"
+            }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c3-frame-rate-independence",
+          "claim": "With 'events and settle checks', a frame's own evaluation runs on a copy, so stored state depends on the events, not the frame rate; the repo's replay tests (spring-matrix traces at 10, 30, 60 and 120 fps, the toast stack, the desktop demo's window manager) find stored tables identical in every bit across frame rates.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 143",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "143",
+              "quote": "a frame's own evaluation runs on a copy, so stored state depends on the events and not on the frame rate"
+            },
+            {
+              "label": "docs/execution-model.md lines 226",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "226",
+              "quote": "every stored table and every drawn output at a shared timestamp is identical in every bit at every frame rate"
+            },
+            {
+              "label": "docs/execution-model.md lines 224",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "224",
+              "quote": "at 10, 30, 60 and 120 fps"
+            },
+            {
+              "label": "docs/behavior-choices.md lines 48",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/behavior-choices.md",
+              "lines": "48",
+              "quote": "every stored table and every drawn top at a shared timestamp is identical in every bit at 10, 30, 60 and 120 fps"
+            },
+            {
+              "label": "docs/behavior-choices.md lines 52",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/behavior-choices.md",
+              "lines": "52",
+              "quote": "replays a timestamped session at several frame rates and checks that the stored tables and drawn outputs are identical"
+            }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c3-dom-from-outputs",
+          "claim": "mountToggle runs one step per requestAnimationFrame, then writes the DOM from output numbers only.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 151",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "151",
+              "quote": "then writes the DOM from output numbers only"
+            },
+            {
+              "label": "template/toggle.ts lines 153",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.ts",
+              "lines": "153",
+              "quote": "track.style.transform"
+            }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c3-reference-test",
+          "claim": "toggle-reference.ts is the same switch in plain JavaScript and toggle.test.ts compares the two over a scripted trace every frame.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.test.ts lines 1",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "1",
+              "quote": "Runs the toggle switch program and its plain JavaScript version over a scripted trace, and compares them every frame."
+            },
+            {
+              "label": "docs/tutorial.md lines 165",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "165",
+              "quote": "is the same switch in plain JavaScript, in float64"
+            }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c3-exact-decisions",
+          "claim": "The test compares on, armed and the track position exactly and the thumb within 1e-5 px (largest error over the whole trace).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 167",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "167",
+              "quote": "the on and armed bits and the track position exactly, the thumb within 1e-5 px"
+            },
+            {
+              "label": "template/toggle.test.ts lines 59",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "59",
+              "quote": "expect(largestThumbError).toBeLessThan(1e-5)"
+            }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c3-edge-presses",
+          "claim": "The trace presses 1/64 px left of the track (no arm), exactly on the left and top edges (arms), and 1/64 px inside the bottom right corner (flips); tests put presses exactly on edges since an inexact decision shows there first.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.test.ts lines 28",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "28",
+              "quote": "1/64 px left of the track"
+            },
+            {
+              "label": "template/toggle.test.ts lines 29",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "29",
+              "quote": "exactly on the left and top edges"
+            },
+            {
+              "label": "template/toggle.test.ts lines 35",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "35",
+              "quote": "1/64 px inside the bottom right corner"
+            },
+            {
+              "label": "docs/tutorial.md lines 169",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "169",
+              "quote": "since an inexact decision shows there first"
+            }
+          ],
+          "caption": 10
+        },
+        {
+          "id": "c3-no-early-exit",
+          "claim": "The program has no runtime loop and runs every operation on every evaluation, so a loop must become a count, a tree, a table, or the same work on every item.",
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "docs/tutorial.md lines 13",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "13",
+              "quote": "nothing in the program branches or loops at runtime"
+            },
+            {
+              "label": "docs/README.md lines 9",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "9",
+              "quote": "The program runs every operation on every frame and can't stop early"
+            }
+          ],
+          "caption": 11
+        },
+        {
+          "id": "c3-os-38-frames",
+          "claim": "On-screen only: the scripted trace has 38 frames during which the clock runs; the thumb rests at 20 px; measured thumb error at most 1.3e-6 px.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.test.ts lines 58",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "58",
+              "quote": "expect(animatingFrames).toBe(38)"
+            },
+            {
+              "label": "template/toggle.test.ts lines 61",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "61",
+              "quote": "thumbOffset).toBe(20)"
+            },
+            {
+              "label": "docs/tutorial.md lines 167",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "167",
+              "quote": "differ from float64 by 1.3e-6 px at most over this 20 px travel"
+            }
+          ]
+        },
+        {
+          "id": "c3-os-grid-throw",
+          "claim": "On-screen only: a pointer coordinate off the 1/64 px grid throws \"down.x must be a multiple of 0.015625\".",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "template/toggle.test.ts lines 68",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle.test.ts",
+              "lines": "68",
+              "quote": "down.x must be a multiple of 0.015625"
+            }
+          ]
+        },
+        {
+          "id": "c3-os-timeline-derived",
+          "claim": "On-screen only (derived, not printed output): from the first event at 1045 ms the clock starts at the release (1061 ms) and its first settle check falls at 1061 + 64 = 1125 ms; at 16 ms a frame the clock runs 4 steps of 4 ms.",
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "template/toggle-reference.ts lines 49",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle-reference.ts",
+              "lines": "49",
+              "quote": "switchState.animatedUntilMs = eventMs"
+            },
+            {
+              "label": "template/toggle-reference.ts lines 22",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "template/toggle-reference.ts",
+              "lines": "22",
+              "quote": "% 64 === 0 && withinThresholds()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Loops That Cannot Stop",
+      "claims": [
+        {
+          "id": "c4-loops-stop-programs-dont",
+          "claim": "A loop stops at the first item that fails the test; the program runs every operation on every frame and cannot stop early.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 69",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "69",
+              "quote": "A loop stops at the first item that fails the test."
+            },
+            {
+              "label": "docs/patterns.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "3",
+              "quote": "The program runs every operation on every frame and can't stop early"
+            }
+          ],
+          "caption": 0
+        },
+        {
+          "id": "c4-four-answers",
+          "claim": "A loop becomes a count, a tree, a table, or the same work on every item.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/README.md lines 9",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "9",
+              "quote": "a loop becomes a count, a tree, a table, or the same work on every item"
+            }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c4-find-index-bits",
+          "claim": "findIndex on row bottoms 40 80 80 140 180 with pointerY 90: the bits [rowBottom <= pointerY] are 1 1 1 0 0.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 72",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "72",
+              "quote": "rowBottoms.findIndex(rowBottom => pointerY < rowBottom)"
+            },
+            {
+              "label": "docs/patterns.md lines 75",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "75",
+              "quote": "rowBottom                  40   80   80  140  180    pointerY = 90"
+            },
+            {
+              "label": "docs/patterns.md lines 76",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "76",
+              "quote": "[rowBottom <= pointerY]     1    1    1    0    0"
+            }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c4-count-is-index",
+          "claim": "The number of items that pass is the index the loop returns, because the bits never go from 0 back to 1.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 69",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "69",
+              "quote": "the number of items that pass is the index the loop returns"
+            },
+            {
+              "label": "docs/patterns.md lines 80",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "80",
+              "quote": "The count gives the loop's index because the bits never go from 0 back to 1"
+            }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c4-find-index-cost",
+          "claim": "195 operations in 3 layers at 64 rows, against 447 in 34 for a tree built with emitFirstActive.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 81",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "81",
+              "quote": "195 in 3 at 64 rows, against 447 in 34 for a tree built with emitFirstActive"
+            }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c4-monotone-caveat",
+          "claim": "The bits must be monotone: unsorted bottoms give a wrong row without an error (bottoms 40, 30, 80 at pointerY 35: count 1, loop 0).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 82",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "82",
+              "quote": "unsorted bottoms give a wrong row without an error"
+            },
+            {
+              "label": "docs/patterns.md lines 82",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "82",
+              "quote": "at pointerY 35 the count is 1 while the loop returns 0"
+            }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c4-chain-depth",
+          "claim": "Each total reads the total before it, so the loop is a chain n layers deep; at 1,024 rows the chain is 1,023 operations in 1,023 layers.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 177",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "177",
+              "quote": "Each total reads the total before it, so the loop is a chain n layers deep."
+            },
+            {
+              "label": "docs/patterns.md lines 193",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "193",
+              "quote": "At 1,024 rows, the chain is 1,023 operations in 1,023 layers"
+            }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c4-brent-kung",
+          "claim": "A Brent-Kung prefix network, built by combining in pairs and then pairs of pairs, gives every running total of 1,024 rows in 18 layers for 2,036 operations.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 193",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "193",
+              "quote": "Brent-Kung about 2n operations in about 2 log2 n layers, 2,036 in 18"
+            },
+            {
+              "label": "docs/patterns.md lines 50",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "50",
+              "quote": "2,036 combines in 18 levels"
+            }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c4-ranks-not-sorting",
+          "claim": "An item's position after sorting is a count of the items before it; one comparison bit per pair, each rank one sum: 4,096 operations in 3 layers at 64 items (keys on a grid).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 358",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "358",
+              "quote": "that position is a count: how many items come before this item"
+            },
+            {
+              "label": "docs/patterns.md lines 373",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "373",
+              "quote": "One emitCompare(circuit, keys[earlier], '<=', keys[later]) per pair gives both of the pair's entries, and each rank is one sum of bits"
+            },
+            {
+              "label": "docs/patterns.md lines 374",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "374",
+              "quote": "4,096 operations in 3 layers at 64 items, with keys on a grid"
+            }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c4-table-javascript-writes",
+          "claim": "When data only changes between frames, JavaScript runs the loop for every input and writes the results into cells; the program reads one with 1 operation in 1 layer at any table size.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 458",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "458",
+              "quote": "JavaScript runs the loop for every possible input whenever the data changes and writes the results into cells"
+            },
+            {
+              "label": "docs/patterns.md lines 470",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "470",
+              "quote": "1 operation in 1 layer per read at any table size"
+            }
+          ],
+          "caption": 10
+        },
+        {
+          "id": "c4-cpu-vs-gpu",
+          "claim": "On the CPU executor time follows operations more than layers and the tree takes longer than the loop; on a GPU a level of the tree is one dispatch over all of its combines, i.e. one batch of parallel work.",
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 7",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "7",
+              "quote": "an evaluation's time follows its operations more than its layers"
+            },
+            {
+              "label": "docs/patterns.md lines 54",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "54",
+              "quote": "On the CPU executor, the tree takes longer than the loop, with either network."
+            },
+            {
+              "label": "docs/patterns.md lines 55",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "55",
+              "quote": "a level of the tree is one dispatch over all of the level's combines"
+            }
+          ],
+          "caption": 11
+        },
+        {
+          "id": "c4-loop-ends-like-branch",
+          "claim": "Synthesis, worded as an inference: like the branch, each loop pattern runs every test or combine in fixed layers and reads the answer from a count, a sum or a read.",
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 65",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "65",
+              "quote": "Each item's test or score is computed in the same layers, and one small structure over the results picks one item: a count when the results read 1...1 0...0, or a tree when they can be in any order."
+            }
+          ],
+          "caption": 12
+        },
+        {
+          "id": "c4-os-bk-diagram",
+          "claim": "On-screen only: the 4-item running-total diagram (layer 1: 0..1 and 2..3; layer 2: 0..3 and 0..2 = (0..1) + h2).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 186",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "186",
+              "quote": "layer 1: 0..1 and 2..3"
+            },
+            {
+              "label": "docs/patterns.md lines 188",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "188",
+              "quote": "layer 2: 0..3, and 0..2 = (0..1) + h2"
+            }
+          ]
+        },
+        {
+          "id": "c4-os-rank-table",
+          "claim": "On-screen only: keys 30 10 30 20 give ranks 2, 0, 3, 1; of two equal keys the earlier item comes first.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 366",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "366",
+              "quote": "keys                30   10   30   20"
+            },
+            {
+              "label": "docs/patterns.md lines 367",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "367",
+              "quote": "rank 2"
+            },
+            {
+              "label": "docs/patterns.md lines 369",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "369",
+              "quote": "rank 3"
+            }
+          ]
+        },
+        {
+          "id": "c4-os-ancestor-table",
+          "claim": "On-screen only: depths [0 1 2 1 2 3], ancestorAtLevel rows e.g. row 3 [0 3 3 3], row 5 [0 3 4 5]; the read is ancestorAtLevel[row x 4 + level], 1 operation.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 465",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "465",
+              "quote": "depths [0 1 2 1 2 3]"
+            },
+            {
+              "label": "docs/patterns.md lines 465",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "465",
+              "quote": "row 3: [0 3 3 3], row 5: [0 3 4 5]"
+            },
+            {
+              "label": "docs/patterns.md lines 466",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "466",
+              "quote": "ancestor = ancestorAtLevel[row × 4 + level], 1 operation"
+            }
+          ]
+        },
+        {
+          "id": "c4-integers-exact",
+          "caption": 8,
+          "status": "verified",
+          "claim": "Integers below 2^24 (about sixteen million) add exactly in any grouping, which is when running totals built as a tree match the loop bit for bit.",
+          "sources": [
+            {
+              "label": "docs/patterns.md lines 39",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/patterns.md",
+              "lines": "39",
+              "quote": "Integers below 2^24, and multiples of a power-of-two grid while totals stay small, add exactly in any grouping"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Exact, Trainable, Wide",
+      "claims": [
+        {
+          "id": "c5-exact-compare",
+          "claim": "For every pair of values within the declared ranges the comparison bit equals JavaScript's comparison; on a grid a >= b is relu(1 - relu(-D)), equal to relu(D + 1) - relu(D) at every integer.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/execution-model.md lines 118",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "118",
+              "quote": "For every pair of values within the declared ranges, the bit equals JavaScript's comparison of the two wires' FP32 values."
+            },
+            {
+              "label": "docs/execution-model.md lines 123",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "123",
+              "quote": "a >= b is relu(1 - relu(-D)), which equals relu(D + 1) - relu(D) at every integer"
+            }
+          ],
+          "caption": 0
+        },
+        {
+          "id": "c5-two-or-fifteen",
+          "claim": "Integer bits on a 1/64 grid: 2 operations in 2 layers; sign cascade: 15 operations in 14 layers for >=; both forms return the same bits.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/execution-model.md lines 136",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "136",
+              "quote": "integer bits on a 1/64 grid | 2 operations, 2 layers | 2 operations, 2 layers"
+            },
+            {
+              "label": "docs/execution-model.md lines 134",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "134",
+              "quote": "sign cascade | 16 operations, 15 layers | 15 operations, 14 layers"
+            },
+            {
+              "label": "docs/tutorial.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "53",
+              "quote": "Both forms return the same bits"
+            }
+          ],
+          "caption": 1
+        },
+        {
+          "id": "c5-exact-means-bits",
+          "claim": "Exactness means equality to the stated FP32 calculation, not arbitrary float64 arithmetic; toggle positions differ from float64 by 1.3e-6 px at most over the 20 px travel.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/execution-model.md lines 257",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "257",
+              "quote": "Exactness means equality to the stated FP32 calculation"
+            },
+            {
+              "label": "docs/tutorial.md lines 167",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/tutorial.md",
+              "lines": "167",
+              "quote": "differ from float64 by 1.3e-6 px at most over this 20 px travel"
+            }
+          ],
+          "caption": 2
+        },
+        {
+          "id": "c5-backprop",
+          "claim": "Almost every operation is a weighted sum or a product with a relu, so the program can be differentiated: backpropagation differentiates the intended real arithmetic; boolean atoms and index reads are the exceptions that throw by default.",
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "README.md lines 29",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "29",
+              "quote": "the full program stays differentiable"
+            },
+            {
+              "label": "docs/execution-model.md lines 36",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "36",
+              "quote": "Backpropagation differentiates the intended real arithmetic"
+            },
+            {
+              "label": "docs/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "3",
+              "quote": "mostly weighted sums and products with a ReLU"
+            },
+            {
+              "label": "docs/execution-model.md lines 36",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "36",
+              "quote": "`backpropagateReference` throws when a gradient reaches a boolean atom"
+            },
+            {
+              "label": "docs/execution-model.md lines 112",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "112",
+              "quote": "By default, `backpropagateReference` throws when a nonzero gradient reaches an index read"
+            }
+          ],
+          "caption": 3
+        },
+        {
+          "id": "c5-straight-through",
+          "claim": "backpropagateReference throws at a boolean atom unless booleanGradient is 'straight-through', which passes the output gradient to the atom's score terms unchanged; a cascade gives its operands gradient 0, the derivative of a step.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "docs/execution-model.md lines 36",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "36",
+              "quote": "throws when a gradient reaches a boolean atom, unless the caller passes {booleanGradient: 'straight-through'}"
+            },
+            {
+              "label": "src/runtime/numeric-ui-core.ts lines 720",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "720",
+              "quote": "throw new Error('cannot backpropagate through a boolean atom')"
+            },
+            {
+              "label": "src/runtime/numeric-ui-core.ts lines 722",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "722",
+              "quote": "accumulateTermGradients(gradients, operation.leftTerms, outputGradient)"
+            },
+            {
+              "label": "docs/execution-model.md lines 143",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "143",
+              "quote": "A cascade gives its operands gradient 0, the derivative of a step."
+            }
+          ],
+          "caption": 4
+        },
+        {
+          "id": "c5-desktop-frozen",
+          "claim": "A small desktop with 3 windows and a dock, run by one compiled program of 234 source cells, 4,646 live operations in 130 layers, 9,909 stored weights; every weight written by builder code, none trained.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/handwiredos/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/handwiredos/README.md",
+              "lines": "3",
+              "quote": "A small desktop with 3 windows (Monitor, Notes and Photos) and a dock, run by one compiled program."
+            },
+            {
+              "label": "src/handwiredos/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/handwiredos/README.md",
+              "lines": "3",
+              "quote": "Every weight of the program is written by builder code, and none is trained."
+            },
+            {
+              "label": "src/handwiredos/README.md lines 13",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/handwiredos/README.md",
+              "lines": "13",
+              "quote": "The program has 234 source cells, 4,646 live operations in 130 layers and 9,909 stored weights"
+            }
+          ],
+          "caption": 5
+        },
+        {
+          "id": "c5-learned-gallery",
+          "claim": "The learned gallery's 244 source cells are the trained coefficients of a small network (two ReGLU layers of 6 units), stepped with Adam using gradients from circuit.backpropagateReference; training runs 600 steps a second while the user edits.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/learned-gallery/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "lines": "3",
+              "quote": "Training steps the coefficients with Adam, using gradients from"
+            },
+            {
+              "label": "src/learned-gallery/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "lines": "3",
+              "quote": "Its 244 source cells are the trained coefficients"
+            },
+            {
+              "label": "src/learned-gallery/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "lines": "3",
+              "quote": "two ReGLU layers of 6 units"
+            },
+            {
+              "label": "src/learned-gallery/README.md lines 17",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "lines": "17",
+              "quote": "Training runs 600 steps a second at any frame rate"
+            }
+          ],
+          "caption": 6
+        },
+        {
+          "id": "c5-json-search",
+          "claim": "JSON search searches 100,000 generated JSON documents again at each keystroke, on the GPU, with two fixed numeric programs; every document runs the same operations and reads no other document's values, so one pass runs them all (100,000 is the default for a window of 720 px or wider).",
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "src/json-search/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "3",
+              "quote": "A page that searches 100,000 generated JSON documents again at each keystroke, on the GPU, with two fixed numeric programs."
+            },
+            {
+              "label": "src/json-search/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "3",
+              "quote": "every document runs the same operations and reads no other document's values, so one pass runs them all"
+            },
+            {
+              "label": "src/json-search/README.md lines 47",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "47",
+              "quote": "A window narrower than 720 px"
+            }
+          ],
+          "caption": 7
+        },
+        {
+          "id": "c5-timings",
+          "claim": "On an Apple M5 Max in Chrome 155 with 100,000 documents: a search takes 11 to 15 ms at a keystroke; RegExp 8 to 28 ms for ordinary patterns and 2.1 s for ([a-z]+)+x; neither is always faster; the same smallest program takes 13 s on the CPU.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/json-search/README.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "53",
+              "quote": "A search takes 11 to 15 ms at a keystroke"
+            },
+            {
+              "label": "src/json-search/README.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "53",
+              "quote": "RegExp takes 8 to 28 ms for ordinary patterns"
+            },
+            {
+              "label": "src/json-search/README.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "53",
+              "quote": "and 2.1 s for ([a-z]+)+x, which makes it backtrack"
+            },
+            {
+              "label": "src/json-search/README.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "53",
+              "quote": "So neither the search nor RegExp is always faster"
+            },
+            {
+              "label": "src/json-search/README.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "53",
+              "quote": "What it costs, on an Apple M5 Max in Chrome 155 with 100,000 documents"
+            }
+          ],
+          "caption": 8
+        },
+        {
+          "id": "c5-recap",
+          "claim": "Recap of chapters one to four (sources in those chapters).",
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "README.md lines 20",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "20",
+              "quote": "Both branches compute, and above4 picks one"
+            },
+            {
+              "label": "docs/README.md lines 9",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "9",
+              "quote": "a loop becomes a count, a tree, a table, or the same work on every item"
+            }
+          ],
+          "caption": 9
+        },
+        {
+          "id": "c5-closing",
+          "claim": "Synthesis: both sides of a select always compute, and an exact bit (0 or 1) weights which result survives.",
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "docs/expressions.md lines 11",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/expressions.md",
+              "lines": "11",
+              "quote": "Both sides always compute"
+            },
+            {
+              "label": "docs/execution-model.md lines 264",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/execution-model.md",
+              "lines": "264",
+              "quote": "gate × on + (1 - gate) × off"
+            }
+          ],
+          "caption": 11
+        },
+        {
+          "id": "c5-os-wallpaper",
+          "claim": "On-screen only: the desktop demo's wallpaper draws every stored weight as one arc (our arcs are a stand-in for the idea).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/handwiredos/README.md lines 42",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/handwiredos/README.md",
+              "lines": "42",
+              "quote": "the wallpaper, which draws every stored weight as one arc"
+            }
+          ]
+        },
+        {
+          "id": "c5-os-round-trip",
+          "claim": "On-screen only: a round trip to the GPU alone takes 0.6 ms or more, so a GPU is of no use for one document (the lab measured 0.58 ms for one document).",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/json-search/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "3",
+              "quote": "since a round trip to the GPU alone takes 0.6 ms or more"
+            }
+          ]
+        },
+        {
+          "id": "c5-os-first-fit",
+          "claim": "On-screen only: Story preset first fit takes 630 to 750 steps; seeded weights put the photos in a pile; network has 20 output slots, page uses up to 12.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/learned-gallery/README.md lines 17",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "lines": "17",
+              "quote": "630 to 750 steps for Story"
+            },
+            {
+              "label": "src/learned-gallery/README.md lines 28",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "lines": "28",
+              "quote": "The seeded weights put the photos in a pile"
+            },
+            {
+              "label": "src/learned-gallery/README.md lines 3",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/learned-gallery/README.md",
+              "lines": "3",
+              "quote": "The network has 20 output slots, of which the page uses up to 12."
+            }
+          ]
+        },
+        {
+          "id": "c5-os-page-line",
+          "claim": "On-screen only: the page line \"10,559 of 100,000 documents match. This program: 13 ms on the GPU. Native RegExp: 21 ms.\" and the 13 s CPU figure.",
+          "status": "verified",
+          "sources": [
+            {
+              "label": "src/json-search/README.md lines 30",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "30",
+              "quote": "10,559 of 100,000 documents match. This program: 13 ms on the GPU. Native RegExp: 21 ms."
+            },
+            {
+              "label": "src/json-search/README.md lines 53",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/json-search/README.md",
+              "lines": "53",
+              "quote": "On the CPU, a search on the smallest program takes 13 s."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -10,7 +10,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -155,8 +154,10 @@ const BAR_SCALE = 30;
 const ERR_X = scaleLinear().domain([0, 20]).range([680, 1150]);
 const ERR_Y = scaleLinear().domain([0, 0.45]).range([600, 460]);
 
-const CAM_KV: CameraState = { x: 330, y: 380, k: 1.35 };
-const CAM_STATE: CameraState = { x: 950, y: 360, k: 1.35 };
+// Each pan keeps its own memory fully in frame (the stream's top edge and the
+// state's labels stay on stage at the caption midpoint).
+const CAM_KV: CameraState = { x: 300, y: 350, k: 1.35 };
+const CAM_STATE: CameraState = { x: 1010, y: 350, k: 1.3 };
 
 const CH_COLORS = [
   colors.ACCENT,
@@ -297,7 +298,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel sits on a scene faded to 0.1, so nothing ghosts through it
+  const mainOp = 1 - 0.9 * dimU;
   const nTok = Math.floor(tok) + 1;
   const sweepLag = errSweep * 20;
 
@@ -309,10 +311,14 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* the shared input stream */}
           <g opacity={titleU}>
-            <text x={160} y={64} fill={colors.TEXT} fontSize={19}>
+            <text x={160} y={80} fill={colors.TEXT} fontSize={19}>
               one stream of tokens
             </text>
-            <Axes x={SIG_X} y={SIG_Y} reveal={clamp01(titleU)} xTicks={6} yTicks={2} xLabel="step" fontSize={11} />
+            <Axes x={SIG_X} y={SIG_Y} reveal={clamp01(titleU)} xTicks={6} yTicks={2} fontSize={13} />
+            {/* axis name sits below the ticks, clear of the trace's live end-dot */}
+            <text x={SIG_X(T - 1)} y={SIG_Y(0) + 40} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+              step
+            </text>
             <FunctionPlot
               x={SIG_X}
               y={SIG_Y}
@@ -350,7 +356,7 @@ function Frame({ s }: { s: SceneState }) {
                 />
               );
             })}
-            <text x={KV_X0} y={KV_Y0 + 4 * (KV_H + 5) + 22} fill={colors.MUTED} fontSize={13}>
+            <text x={KV_X0} y={KV_Y0 + 4 * (KV_H + 5) + 22} fill={colors.TEXT} fontSize={14}>
               {nTok} slots and counting — one per token
             </text>
           </g>
@@ -385,8 +391,8 @@ function Frame({ s }: { s: SceneState }) {
                   <text
                     x={BAR_X}
                     y={BAR_TOP + i * BAR_H + 14}
-                    fill={colors.MUTED}
-                    fontSize={11}
+                    fill={colors.TEXT}
+                    fontSize={12}
                     fontFamily="monospace"
                   >
                     h{i + 1} {hAt(tok, i).toFixed(2)}
@@ -412,20 +418,34 @@ function Frame({ s }: { s: SceneState }) {
                 xTicks={4}
                 yTicks={3}
                 xLabel="steps into the past"
-                fontSize={11}
+                fontSize={12}
               />
               {/* KV cache: exactly zero at every lag */}
               <FunctionPlot
                 x={ERR_X}
                 y={ERR_Y}
                 f={() => 0}
-                domain={[0, sweepLag < 0.5 ? 20 : 20]}
+                domain={[0, 20]}
                 samples={40}
                 reveal={errU}
                 color={colors.ACCENT}
                 width={2.6}
               />
-              {/* recurrent state: the measured error curve */}
+              {/* recurrent state: the full measured curve, faint, so the whole
+                  picture is readable while the dot traces it */}
+              <g opacity={0.3}>
+                <FunctionPlot
+                  x={ERR_X}
+                  y={ERR_Y}
+                  f={ERR_AT}
+                  domain={[0, 20]}
+                  samples={120}
+                  reveal={errU}
+                  color={colors.WARM}
+                  width={2.6}
+                />
+              </g>
+              {/* recurrent state: the error traced up to the sweep position */}
               <FunctionPlot
                 x={ERR_X}
                 y={ERR_Y}
@@ -450,7 +470,7 @@ function Frame({ s }: { s: SceneState }) {
                   </text>
                 </>
               )}
-              <text x={ERR_X(20) + 8} y={ERR_Y(0) + 4} fill={colors.ACCENT} fontSize={12}>
+              <text x={ERR_X(1)} y={ERR_Y(0) - 8} fill={colors.ACCENT} fontSize={13}>
                 cache: 0%
               </text>
             </g>
@@ -462,11 +482,15 @@ function Frame({ s }: { s: SceneState }) {
               <text x={KV_X0} y={470} fill={colors.ACCENT} fontSize={14}>
                 exact — but memory grows with T
               </text>
-              <MathLabel tex="O(T)" x={KV_X0 + 8} y={505} fontSize={19} color={colors.ACCENT} opacity={probeU} />
+              <text x={KV_X0 + 8} y={512} fill={colors.ACCENT} fontSize={22} fontStyle="italic" fontFamily="serif">
+                O(T)
+              </text>
               <text x={KV_X0} y={560} fill={colors.WARM} fontSize={14}>
                 lossy — but the state is constant
               </text>
-              <MathLabel tex="O(1)" x={KV_X0 + 8} y={595} fontSize={19} color={colors.WARM} opacity={probeU} />
+              <text x={KV_X0 + 8} y={602} fill={colors.WARM} fontSize={22} fontStyle="italic" fontFamily="serif">
+                O(1)
+              </text>
             </g>
           )}
         </Camera>
@@ -482,7 +506,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Frontier models stopped choosing.
           </text>

@@ -105,7 +105,7 @@ function Frame({ s }: { s: SceneState }) {
                   height={CELL - 6}
                   rx={8}
                   fill={wall ? colors.GRID : goal ? colors.PANEL : colors.heat(clamp01(v))}
-                  opacity={u * (wall ? 0.9 : goal ? 1 : 0.28 + 0.72 * clamp01(v))}
+                  opacity={u * (wall ? 0.9 : goal ? 1 : 0.4 + 0.6 * clamp01(v))}
                   stroke={goal ? colors.WARM : colors.GRID}
                   strokeWidth={goal ? 2.5 : 1}
                 />
@@ -144,7 +144,7 @@ function Frame({ s }: { s: SceneState }) {
                 stroke={colors.POSITIVE}
                 strokeWidth={3.5}
               />
-              <text x={cellCX(lastTr.c)} y={cellY(lastTr.r) - 8} textAnchor="middle" fill={colors.POSITIVE} fontSize={15}>
+              <text x={cellX(lastTr.c) + CELL + 8} y={cellCY(lastTr.r) + 5} fill={colors.POSITIVE} fontSize={15}>
                 {`Q: 0 → ${lastTr.qAfter.toFixed(2)}`}
               </text>
             </g>
@@ -173,13 +173,26 @@ function Frame({ s }: { s: SceneState }) {
           {/* the learning curve — episode length per episode */}
           {chartU > 0 && (
             <g opacity={chartU}>
-              <line x1={chartX(0)} y1={chartY(0)} x2={chartX(N_EPISODES)} y2={chartY(0)} stroke={colors.GRID} strokeWidth={1.5} />
-              <line x1={chartX(0)} y1={chartY(0)} x2={chartX(0)} y2={chartY(100)} stroke={colors.GRID} strokeWidth={1.5} />
-              <text x={chartX(N_EPISODES / 2)} y={chartY(0) + 30} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+              <line x1={chartX(0)} y1={chartY(0)} x2={chartX(N_EPISODES)} y2={chartY(0)} stroke={colors.MUTED} strokeOpacity={0.6} strokeWidth={1.5} />
+              <line x1={chartX(0)} y1={chartY(0)} x2={chartX(0)} y2={chartY(100)} stroke={colors.MUTED} strokeOpacity={0.6} strokeWidth={1.5} />
+              <text x={chartX(N_EPISODES / 2)} y={chartY(0) + 30} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 episode
               </text>
-              <text x={chartX(0) - 14} y={chartY(100) - 12} fill={colors.MUTED} fontSize={14}>
+              <text x={chartX(0) - 14} y={chartY(100) - 12} fill={colors.TEXT} fontSize={14}>
                 steps to reward
+              </text>
+              {/* axis ticks: 100 and 0 steps, first and last episode */}
+              <text x={chartX(0) - 10} y={chartY(100) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+                100
+              </text>
+              <text x={chartX(0) - 10} y={chartY(0) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+                0
+              </text>
+              <text x={chartX(1)} y={chartY(0) + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                1
+              </text>
+              <text x={chartX(N_EPISODES)} y={chartY(0) + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                {N_EPISODES}
               </text>
               {LENGTHS.map((len, e) =>
                 e < epProg ? (
@@ -192,10 +205,11 @@ function Frame({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed math + episode badge */}
+      {/* equation band: fixed above the grid, never on top of it */}
       <MathLabel
         tex={"Q(s,a) \\mathrel{+}= \\alpha\\,[\\,r + \\gamma \\max_{a'} Q(s',a') - Q(s,a)\\,]"}
-        x={880}
-        y={70}
+        x={640}
+        y={34}
         fontSize={19}
         opacity={s.get(scene.tdTexU)}
       />
@@ -211,7 +225,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={250} y={220} width={780} height={220} rx={16} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+          <rect x={250} y={220} width={780} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Q-Learning
           </text>

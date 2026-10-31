@@ -34,22 +34,23 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 // ---------------------------------------------------------------- geometry
 const PIVOT_X = 640;
-const PIVOT_Y = 252;
+const PIVOT_Y = 200;
 const ARM = 258;
 const PAN_DROP = 76;
 
 const FRAG_N = 10;
 const FRAG_LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-const FRAG_Y = 522;
+const FRAG_Y = 466;
 const FRAG_W = 92;
 const FRAG_GAP = 10;
 const fragX = (i: number) => 118 + i * (FRAG_W + FRAG_GAP);
 const COMPACTED = 4; // A through D fold into one snapshot
 
-const CAM_BEAM: CameraState = { x: 640, y: 268, k: 1.14 };
-const CAM_ROW: CameraState = { x: 620, y: 496, k: 1.2 };
+// Every camera keeps the fragment row (bottom edge ~y 556) above the caption band.
+const CAM_BEAM: CameraState = { x: 640, y: 340, k: 1.14 };
+const CAM_ROW: CameraState = { x: 620, y: 440, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 376, k: 1.0 };
-const CAM_TIP: CameraState = { x: 700, y: 268, k: 1.2 };
+const CAM_TIP: CameraState = { x: 660, y: 340, k: 1.05 };
 
 interface Scene {
   tl: Timeline;
@@ -246,17 +247,20 @@ function Beam({
         strokeLinecap="round"
       />
       <circle cx={PIVOT_X} cy={PIVOT_Y} r={8} fill={balanced ? colors.ACCENT : colors.NEGATIVE} />
+      <text x={PIVOT_X} y={150} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+        balance beam: files on the left, the declared total on the right
+      </text>
 
       {/* left pan — what the files actually add up to */}
       <g opacity={clamp01(loadU)}>
         <line x1={lx} y1={ly} x2={lx} y2={ly + PAN_DROP} stroke={colors.GRID} strokeWidth={1.4} />
         <rect x={lx - 118} y={ly + PAN_DROP} width={236} height={76} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
-        <text x={lx} y={ly + PAN_DROP + 28} textAnchor="middle" fill={colors.MUTED} fontSize={12} letterSpacing="0.1em">OBSERVED</text>
+        <text x={lx} y={ly + PAN_DROP + 28} textAnchor="middle" fill={colors.MUTED} fontSize={14} letterSpacing="0.1em">OBSERVED</text>
         <text x={lx} y={ly + PAN_DROP + 54} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={14}>
           Σ snapshots + fragments
         </text>
         {collectedU > 0.05 && (
-          <text x={lx} y={ly + PAN_DROP + 98} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={13} opacity={clamp01(collectedU)}>
+          <text x={lx} y={ly + PAN_DROP + 98} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={14} opacity={clamp01(collectedU)}>
             + collected
           </text>
         )}
@@ -266,7 +270,7 @@ function Beam({
       <g opacity={clamp01(loadU)}>
         <line x1={rx} y1={ry} x2={rx} y2={ry + PAN_DROP} stroke={colors.GRID} strokeWidth={1.4} />
         <rect x={rx - 118} y={ry + PAN_DROP} width={236} height={76} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-        <text x={rx} y={ry + PAN_DROP + 28} textAnchor="middle" fill={colors.MUTED} fontSize={12} letterSpacing="0.1em">DECLARED</text>
+        <text x={rx} y={ry + PAN_DROP + 28} textAnchor="middle" fill={colors.MUTED} fontSize={14} letterSpacing="0.1em">DECLARED</text>
         <text x={rx} y={ry + PAN_DROP + 54} textAnchor="middle" fill={colors.ACCENT} fontFamily={MONO} fontSize={14}>
           manifest.setsum
         </text>
@@ -282,7 +286,7 @@ function Beam({
       )}
 
       {lossU > 0.15 && (
-        <text x={PIVOT_X} y={PIVOT_Y + 176} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={clamp01(lossU)}>
+        <text x={fragX(7) + FRAG_W / 2} y={FRAG_Y - 20} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={clamp01(lossU)}>
           one fragment vanished from the bucket
         </text>
       )}
@@ -313,7 +317,7 @@ function FragmentRow({ rowU, compactU, lossU }: { rowU: number; compactU: number
               strokeDasharray={missing > 0.3 ? '5 5' : undefined}
             />
             <text x={fragX(i) + FRAG_W / 2} y={y + 28} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={15}>{label}</text>
-            <text x={fragX(i) + FRAG_W / 2} y={y + 48} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={10}>setsum</text>
+            <text x={fragX(i) + FRAG_W / 2} y={y + 48} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>setsum</text>
           </g>
         );
       })}
@@ -329,13 +333,16 @@ function FragmentRow({ rowU, compactU, lossU }: { rowU: number; compactU: number
             stroke={colors.SECONDARY}
             strokeWidth={1.4}
           />
-          <text x={fragX(0) + 14} y={FRAG_Y - 20} fill={colors.SECONDARY} fontFamily={MONO} fontSize={13}>
+          <text x={fragX(0) + 14} y={FRAG_Y - 20} fill={colors.SECONDARY} fontFamily={MONO} fontSize={14}>
             snapshot · setsum of A through D
           </text>
         </g>
       )}
-      <text x={118} y={FRAG_Y - 66} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={clamp01(rowU / 3)}>
+      <text x={118} y={FRAG_Y - 66} fill={colors.MUTED} fontSize={14} letterSpacing="0.12em" opacity={clamp01(rowU / 3)}>
         FRAGMENTS · EACH WITH ITS OWN SETSUM
+      </text>
+      <text x={118} y={FRAG_Y + 94} fill={colors.TEXT} fontSize={14} opacity={clamp01(rowU / 3) * 0.85}>
+        setsum is a checksum that ignores order and can be added and subtracted
       </text>
     </g>
   );
@@ -344,23 +351,26 @@ function FragmentRow({ rowU, compactU, lossU }: { rowU: number; compactU: number
 function EndToEnd({ u }: { u: number }) {
   if (u <= 0.02) return null;
   const n = 8;
+  const x0 = 401; // the 8-column block sits centred on the stage
   return (
     <g opacity={clamp01(u)}>
-      <text x={118} y={182} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">END-TO-END VERIFICATION</text>
+      <text x={x0} y={232} fill={colors.MUTED} fontSize={14} letterSpacing="0.12em">END-TO-END VERIFICATION</text>
       {Array.from({ length: n }, (_, i) => {
         const cu = clamp01(u * n - i);
-        const x = 130 + i * 62;
+        const x = x0 + i * 62;
         return (
           <g key={i} opacity={cu}>
-            <rect x={x} y={200} width={44} height={22} rx={5} fill={colors.ACCENT} opacity={0.75} />
-            <line x1={x + 22} y1={228} x2={x + 22} y2={252} stroke={colors.POSITIVE} strokeWidth={1.4} />
-            <rect x={x} y={254} width={44} height={22} rx={5} fill={colors.POSITIVE} opacity={0.75} />
+            <rect x={x} y={250} width={44} height={24} rx={5} fill={colors.ACCENT} opacity={0.75} />
+            <text x={x + 22} y={267} textAnchor="middle" fill={colors.BG} fontFamily={MONO} fontSize={14}>w{i + 1}</text>
+            <line x1={x + 22} y1={274} x2={x + 22} y2={304} stroke={colors.POSITIVE} strokeWidth={1.4} />
+            <rect x={x} y={304} width={44} height={24} rx={5} fill={colors.POSITIVE} opacity={0.75} />
+            <text x={x + 22} y={321} textAnchor="middle" fill={colors.BG} fontFamily={MONO} fontSize={14}>r{i + 1}</text>
           </g>
         );
       })}
-      <text x={640} y={214} fill={colors.MUTED} fontSize={13}>writes in</text>
-      <text x={640} y={270} fill={colors.MUTED} fontSize={13}>reads out</text>
-      <text x={840} y={244} fill={colors.POSITIVE} fontFamily={MONO} fontSize={14}>one to one, or it is a bug</text>
+      <text x={x0 - 14} y={267} textAnchor="end" fill={colors.MUTED} fontSize={14}>writes in</text>
+      <text x={x0 - 14} y={321} textAnchor="end" fill={colors.MUTED} fontSize={14}>reads out</text>
+      <text x={x0 + 7 * 62 + 44 + 30} y={298} fill={colors.POSITIVE} fontFamily={MONO} fontSize={16}>one to one, or it is a bug</text>
     </g>
   );
 }
@@ -377,7 +387,7 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
-        <g opacity={dim}>
+        <g opacity={dim * (1 - clamp01(endU))}>
           {e2eU < 0.05 && (
             <FragmentRow rowU={s.get(scene.rowU)} compactU={s.get(scene.compactU)} lossU={s.get(scene.lossU)} />
           )}
@@ -394,7 +404,7 @@ export function Render({ s }: { s: SceneState }) {
             <MathLabel
               tex={'\\mathrm{setsum}(A..J) = \\mathrm{setsum}(A..D) + \\mathrm{setsum}(E..J)'}
               x={640}
-              y={88}
+              y={56}
               fontSize={22}
               opacity={clamp01(algebraU) * 0.95}
             />
@@ -403,7 +413,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {recapU > 0.05 && (
             <g opacity={clamp01(recapU)}>
-              <text x={640} y={392} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={15}>
+              <text x={640} y={392} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={15} opacity={0.85}>
                 fragments · manifest · cursors · snapshots · setsum
               </text>
               {recapU > 1.05 && (
@@ -428,7 +438,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={392} textAnchor="middle" fill={colors.POSITIVE} fontSize={18}>
               a sum that has to balance, every time you ask
             </text>
-            <text x={640} y={434} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13}>
+            <text x={640} y={434} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>
               chroma-core/chroma · rust/wal3
             </text>
           </g>

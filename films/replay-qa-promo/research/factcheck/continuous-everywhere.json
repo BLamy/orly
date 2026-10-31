@@ -1,0 +1,63 @@
+{
+  "id": "continuous-everywhere",
+  "checked": 30,
+  "confirmed": 23,
+  "corrected": 5,
+  "unverifiable": 2,
+  "corrections": [
+    {
+      "original": "27 projects named 'ExampleApps PR #6 … #11 - <app>' with targets https://deploy-preview-N--replay-<app>.netlify.app (Timeline Jun 12–16; section 7.5 '27 of them have deploy-preview-N--replay-<app>.netlify.app targets')",
+      "verdict": "corrected",
+      "fix": "All 27 are Netlify deploy-preview-N--<site>.netlify.app URLs, but only 17 are on replay-<app> sites; 10 are on blamy-broken-linear-<app> (6), blamy-notes (1), todoist-clone-loopqa-4271 (3).",
+      "sources": ["films/replay-qa-promo/capture/clean/projects.json (replayed to mark filtered 6306 ms)"]
+    },
+    {
+      "original": "Badge CSS classes in every take include environment-badge--production, --staging and --development",
+      "verdict": "corrected",
+      "fix": "All five kinds (production, staging, development, preview, local) appear as badge classes; some takes also carry --default (the 'Project default' fallback, not an addable kind).",
+      "sources": ["films/replay-qa-promo/capture/clean/*.json"]
+    },
+    {
+      "original": "Preview discovery (3): a PR comment with a matching URL from a [bot] or a repository member",
+      "verdict": "corrected",
+      "fix": "Author must be a [bot] account or a repository owner, member, or collaborator; Replay's own bots are never used as a source.",
+      "sources": ["https://qa.replay.io/api/v1/skills/github-app/SKILL.md"]
+    },
+    {
+      "original": "Curiosity hook 1: 'about 34 journey tasks a night'",
+      "verdict": "corrected",
+      "fix": "'about 34 journey tasks per Tuesday run (33–44 visible rows)'; the captured schedule is weekly, so 'a night' implied a daily cadence.",
+      "sources": ["films/replay-qa-promo/capture/clean/schedule.json"]
+    },
+    {
+      "original": "Method: two marketing pages on www.replay.io 'that only render in a browser'",
+      "verdict": "corrected",
+      "fix": "Both pages serve the quoted text in their server HTML (plain HTTPS fetch on 2026-10-14 returned it); the quoted wording itself is confirmed verbatim.",
+      "sources": ["https://www.replay.io/pricing", "https://www.replay.io/how-it-works"]
+    },
+    {
+      "original": "fileIssues on the GitHub connection presented as one of two current GitHub Issues paths",
+      "verdict": "contested",
+      "fix": "SKILL.md labels fileIssues 'Legacy' while the docs present it as current; say 'file bugs to GitHub Issues, Linear or Jira' and do not name the toggle.",
+      "sources": ["https://qa.replay.io/api/v1/skills/github-app/SKILL.md", "https://docs.replay.io/basics/replay-qa/github"]
+    },
+    {
+      "original": "pr-closed status and Require approval / requireApproval field",
+      "verdict": "contested",
+      "fix": "Re-checked: docs (live) still state both; OpenAPI bug status enum is open/fixed/wontfix/invalid and the github schema has no requireApproval; SKILL.md omits both. Keep both off screen (unchanged guidance).",
+      "sources": ["https://docs.replay.io/basics/replay-qa/github", "films/replay-qa-promo/research/sources/openapi.json", "https://qa.replay.io/api/v1/skills/github-app/SKILL.md"]
+    },
+    {
+      "original": "The 27 'ExampleApps PR #N' projects were created automatically by the GitHub App",
+      "verdict": "unverifiable",
+      "fix": "Nothing captured shows how they were created; present them as 'projects pointed at PR previews' without claiming automation.",
+      "sources": ["films/replay-qa-promo/capture/clean/projects.json", "https://docs.replay.io/basics/replay-qa/github"]
+    },
+    {
+      "original": "per_pull_request_projects = [] comes from pagination (page 1, page_size 20, of 50 projects)",
+      "verdict": "unverifiable",
+      "fix": "Strongly supported inference (projects_total 20 = OpenAPI page_size default 20; grid and insights show 50), but the exact API query is not recorded and the raw dump is off limits; labeled as inference in the dossier.",
+      "sources": ["films/replay-qa-promo/research/sources/account-digest.json", "tools/promo/account-digest.mjs", "tools/promo/api-dump.mjs", "films/replay-qa-promo/research/sources/openapi.json"]
+    }
+  ]
+}

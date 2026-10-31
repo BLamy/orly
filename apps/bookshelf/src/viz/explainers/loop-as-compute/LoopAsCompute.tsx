@@ -8,7 +8,6 @@ import { scaleLinear, scaleLog } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -63,11 +62,13 @@ const DIAL_W = 360;
 
 // Right: log-error plot.
 const ERR_X = scaleLinear().domain([0, VISITS]).range([680, 1150]);
-const ERR_Y = scaleLog().domain([1e-8, 1]).range([580, 300]);
+// One decade of headroom below the last point, so its label and the x-axis
+// name never share ink with the curve.
+const ERR_Y = scaleLog().domain([1e-9, 1]).range([580, 300]);
 
 // Number line for the solver, above the plot.
 const NL_X = scaleLinear().domain([1.2, 2.1]).range([680, 1150]);
-const NL_Y = 220;
+const NL_Y = 232;
 
 const CAM_DIAL: CameraState = { x: 340, y: 330, k: 1.3 };
 
@@ -193,7 +194,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // dim to 0.15 as the rule is restated, then clear away for the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - 0.9 * closeU);
   const R = Math.round(rDial);
   const kShown = Math.min(VISITS, solveTok);
 
@@ -219,7 +221,7 @@ function Frame({ s }: { s: SceneState }) {
               parameters
             </text>
             <rect x={DIAL_X + 130} y={DIAL_Y + 52} width={90} height={18} rx={4} fill={colors.ACCENT} opacity={0.75} />
-            <text x={DIAL_X + 228} y={DIAL_Y + 66} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+            <text x={DIAL_X + 228} y={DIAL_Y + 66} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
               M blocks — fixed
             </text>
             {/* unrolled depth bar (grows with dial) */}
@@ -227,7 +229,7 @@ function Frame({ s }: { s: SceneState }) {
               unrolled depth
             </text>
             <rect x={DIAL_X + 130} y={DIAL_Y + 92} width={(90 / 4) * (rDial * 1)} height={18} rx={4} fill={colors.POSITIVE} opacity={0.85} />
-            <text x={DIAL_X + 140 + (90 / 4) * rDial} y={DIAL_Y + 106} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+            <text x={DIAL_X + 140 + (90 / 4) * rDial} y={DIAL_Y + 106} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
               N = M·{R}
             </text>
           </g>
@@ -246,21 +248,17 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* right: the solver, computed */}
       <g opacity={solveU * mainOp}>
-        <text x={680} y={168} fill={colors.TEXT} fontSize={15}>
+        <text x={680} y={160} fill={colors.TEXT} fontSize={16}>
           one tied rule, visited eight times (computed)
         </text>
-        <MathLabel
-          tex="x \leftarrow x - 0.3\,(x^2 - 2)"
-          x={1150}
-          y={162}
-          fontSize={18}
-          color={colors.SECONDARY}
-          anchor="end"
-        />
+        {/* the formula gets its own line under the heading */}
+        <text x={680} y={192} fill={colors.SECONDARY} fontSize={18} fontFamily="monospace">
+          x ← x − 0.3 (x² − 2)
+        </text>
         {/* number line of iterates */}
         <line x1={NL_X(1.2)} y1={NL_Y} x2={NL_X(2.1)} y2={NL_Y} stroke={colors.GRID} strokeWidth={1.5} />
         <line x1={NL_X(Math.SQRT2)} y1={NL_Y - 12} x2={NL_X(Math.SQRT2)} y2={NL_Y + 12} stroke={colors.POSITIVE} strokeWidth={2} />
-        <text x={NL_X(Math.SQRT2)} y={NL_Y + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+        <text x={NL_X(Math.SQRT2)} y={NL_Y + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
           √2
         </text>
         {XPOS.map((x, i) => {
@@ -271,13 +269,13 @@ function Frame({ s }: { s: SceneState }) {
           );
         })}
         {/* log-error plot */}
-        <Axes x={ERR_X} y={ERR_Y} reveal={solveU} xTicks={4} yTicks={4} xLabel="visits" fontSize={11} />
-        <text x={680} y={290} fill={colors.MUTED} fontSize={12}>
+        <Axes x={ERR_X} y={ERR_Y} reveal={solveU} xTicks={4} yTicks={4} xLabel="visits" fontSize={14} />
+        <text x={680} y={290} fill={colors.MUTED} fontSize={14}>
           error vs the true square root — log scale
         </text>
         <path
           d={ERRS.slice(0, Math.max(1, Math.ceil(kShown) + 1))
-            .map((e, i) => `${i === 0 ? 'M' : 'L'} ${ERR_X(i)} ${ERR_Y(Math.max(1e-8, e))}`)
+            .map((e, i) => `${i === 0 ? 'M' : 'L'} ${ERR_X(i)} ${ERR_Y(Math.max(1e-9, e))}`)
             .join(' ')}
           fill="none"
           stroke={colors.ACCENT}
@@ -286,10 +284,11 @@ function Frame({ s }: { s: SceneState }) {
         {ERRS.map((e, i) => {
           const u = clamp01(solveTok - i + 1);
           if (u <= 0) return null;
-          return <circle key={i} cx={ERR_X(i)} cy={ERR_Y(Math.max(1e-8, e))} r={3.5} fill={colors.ACCENT} opacity={u} />;
+          return <circle key={i} cx={ERR_X(i)} cy={ERR_Y(Math.max(1e-9, e))} r={3.5} fill={colors.ACCENT} opacity={u} />;
         })}
+        {/* the final value sits right of the plot, clear of the curve and the axis name */}
         {kShown >= VISITS - 0.02 && (
-          <text x={ERR_X(VISITS)} y={ERR_Y(Math.max(1e-8, ERRS[VISITS])) - 12} textAnchor="end" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+          <text x={ERR_X(VISITS) + 10} y={ERR_Y(Math.max(1e-9, ERRS[VISITS])) + 5} textAnchor="start" fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
             {ERRS[VISITS].toExponential(1)}
           </text>
         )}
@@ -298,25 +297,25 @@ function Frame({ s }: { s: SceneState }) {
       {/* bridges */}
       <g opacity={mainOp}>
         <g opacity={bridgeT}>
-          <rect x={110} y={430} width={410} height={54} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeOpacity={0.6} />
-          <text x={130} y={452} fill={colors.SECONDARY} fontSize={13} fontWeight={600}>
+          <rect x={110} y={430} width={410} height={58} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeOpacity={0.6} />
+          <text x={130} y={455} fill={colors.SECONDARY} fontSize={15} fontWeight={600}>
             test-time compute
           </text>
-          <text x={130} y={472} fill={colors.MUTED} fontSize={12}>
+          <text x={130} y={477} fill={colors.TEXT} fontSize={14} opacity={0.8}>
             more thinking per answer, same weights
           </text>
         </g>
         <g opacity={bridgeS}>
-          <rect x={110} y={498} width={410} height={54} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeOpacity={0.6} />
-          <text x={130} y={520} fill={colors.SECONDARY} fontSize={13} fontWeight={600}>
+          <rect x={110} y={502} width={410} height={58} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeOpacity={0.6} />
+          <text x={130} y={527} fill={colors.SECONDARY} fontSize={15} fontWeight={600}>
             fixed-state recurrence
           </text>
-          <text x={130} y={540} fill={colors.MUTED} fontSize={12}>
+          <text x={130} y={549} fill={colors.TEXT} fontSize={14} opacity={0.8}>
             one state, one rule, updated in place
           </text>
         </g>
         <g opacity={midU}>
-          <text x={110} y={588} fill={colors.WARM} fontSize={14}>
+          <text x={110} y={600} fill={colors.WARM} fontSize={14}>
             looped transformers sit between the two — if training survives the revisits
           </text>
         </g>
@@ -325,7 +324,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Depth is how many times the signal is transformed —
           </text>

@@ -1,0 +1,490 @@
+{
+ "shot": "ch07-s09",
+ "at": "2026-10-28T17:40:42.403Z",
+ "step": 0.0833,
+ "sampled": 101,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "0.5",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "b",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "∂L/∂b = (1/40) Σ [clip(e_left) + clip(e_right)] · clip ±0.08",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "Adam: b 0.5 → ≈ 0.492 (derived)",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch07-s09-slip"
+ ],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "drawImage@913,528",
+   "probed": false,
+   "from": 0.55,
+   "to": 5.8,
+   "seconds": 5.25,
+   "rect": {
+    "x": 789,
+    "y": 444,
+    "w": 144,
+    "h": 116
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@907,532",
+   "probed": false,
+   "from": 0.55,
+   "to": 5.38,
+   "seconds": 4.83,
+   "rect": {
+    "x": 807,
+    "y": 442,
+    "w": 149,
+    "h": 120
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@899,531",
+   "probed": false,
+   "from": 0.55,
+   "to": 8.97,
+   "seconds": 8.42,
+   "rect": {
+    "x": 454,
+    "y": 366,
+    "w": 279,
+    "h": 194
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@899,538",
+   "probed": false,
+   "from": 0.55,
+   "to": 8.97,
+   "seconds": 8.42,
+   "rect": {
+    "x": 464,
+    "y": 342,
+    "w": 259,
+    "h": 208
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@886,537",
+   "probed": false,
+   "from": 0.55,
+   "to": 0.88,
+   "seconds": 0.33,
+   "rect": {
+    "x": 909,
+    "y": 546,
+    "w": 145,
+    "h": 117
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@808,508",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.13,
+   "seconds": 0.58,
+   "rect": {
+    "x": 689,
+    "y": 551,
+    "w": 155,
+    "h": 125
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@537,885",
+   "probed": false,
+   "from": 0.55,
+   "to": 8.97,
+   "seconds": 8.42,
+   "rect": {
+    "x": 434,
+    "y": 750,
+    "w": 312,
+    "h": 65
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@913,532",
+   "probed": false,
+   "from": 0.97,
+   "to": 2.22,
+   "seconds": 1.25,
+   "rect": {
+    "x": 1031,
+    "y": 596,
+    "w": 162,
+    "h": 107
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@888,544",
+   "probed": false,
+   "from": 0.97,
+   "to": 1.72,
+   "seconds": 0.75,
+   "rect": {
+    "x": 984,
+    "y": 554,
+    "w": 152,
+    "h": 122
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@908,497",
+   "probed": false,
+   "from": 0.97,
+   "to": 1.97,
+   "seconds": 1,
+   "rect": {
+    "x": 876,
+    "y": 583,
+    "w": 151,
+    "h": 110
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@657,572",
+   "probed": false,
+   "from": 1.05,
+   "to": 2.97,
+   "seconds": 1.92,
+   "rect": {
+    "x": 531,
+    "y": 563,
+    "w": 150,
+    "h": 120
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@608,587",
+   "probed": false,
+   "from": 1.13,
+   "to": 2.88,
+   "seconds": 1.75,
+   "rect": {
+    "x": 532,
+    "y": 561,
+    "w": 158,
+    "h": 126
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@807,613",
+   "probed": false,
+   "from": 1.13,
+   "to": 2.38,
+   "seconds": 1.25,
+   "rect": {
+    "x": 714,
+    "y": 574,
+    "w": 145,
+    "h": 116
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@554,630",
+   "probed": false,
+   "from": 1.13,
+   "to": 2.38,
+   "seconds": 1.25,
+   "rect": {
+    "x": 565,
+    "y": 672,
+    "w": 145,
+    "h": 116
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@925,440",
+   "probed": false,
+   "from": 1.3,
+   "to": 5.3,
+   "seconds": 4,
+   "rect": {
+    "x": 805,
+    "y": 345,
+    "w": 161,
+    "h": 104
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@793,610",
+   "probed": false,
+   "from": 1.3,
+   "to": 2.3,
+   "seconds": 1,
+   "rect": {
+    "x": 711,
+    "y": 573,
+    "w": 148,
+    "h": 119
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "fillRect@721,667",
+   "probed": false,
+   "from": 1.38,
+   "to": 2.13,
+   "seconds": 0.75,
+   "rect": {
+    "x": 710,
+    "y": 687,
+    "w": 153,
+    "h": 109
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@586,679",
+   "probed": false,
+   "from": 1.63,
+   "to": 1.97,
+   "seconds": 0.33,
+   "rect": {
+    "x": 592,
+    "y": 693,
+    "w": 154,
+    "h": 124
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch07-s09-slip",
+   "probed": true,
+   "from": 0.55,
+   "to": 8.883,
+   "minInkWhilePaper": 0.69
+  },
+  {
+   "id": "drawImage@913,528",
+   "probed": false,
+   "from": 0.55,
+   "to": 5.717,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@907,532",
+   "probed": false,
+   "from": 0.55,
+   "to": 5.3,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@899,531",
+   "probed": false,
+   "from": 0.55,
+   "to": 8.883,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@899,538",
+   "probed": false,
+   "from": 0.55,
+   "to": 8.883,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@886,537",
+   "probed": false,
+   "from": 0.55,
+   "to": 0.8,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@808,508",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@813,510",
+   "probed": false,
+   "from": 0.55,
+   "to": 0.633,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@864,512",
+   "probed": false,
+   "from": 0.55,
+   "to": 0.717,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@910,543",
+   "probed": false,
+   "from": 0.55,
+   "to": 0.633,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@537,885",
+   "probed": false,
+   "from": 0.55,
+   "to": 8.883,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@913,532",
+   "probed": false,
+   "from": 0.967,
+   "to": 2.133,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@888,544",
+   "probed": false,
+   "from": 0.967,
+   "to": 1.633,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@908,497",
+   "probed": false,
+   "from": 0.967,
+   "to": 1.883,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@657,572",
+   "probed": false,
+   "from": 1.05,
+   "to": 2.883,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@608,587",
+   "probed": false,
+   "from": 1.133,
+   "to": 2.8,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@807,613",
+   "probed": false,
+   "from": 1.133,
+   "to": 2.3,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@554,630",
+   "probed": false,
+   "from": 1.133,
+   "to": 2.3,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@877,574",
+   "probed": false,
+   "from": 1.217,
+   "to": 1.3,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@925,440",
+   "probed": false,
+   "from": 1.3,
+   "to": 5.217,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@793,610",
+   "probed": false,
+   "from": 1.3,
+   "to": 2.217,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@721,667",
+   "probed": false,
+   "from": 1.383,
+   "to": 2.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@586,679",
+   "probed": false,
+   "from": 1.633,
+   "to": 1.883,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@870,571",
+   "probed": false,
+   "from": 1.717,
+   "to": 1.8,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@1024,571",
+   "probed": false,
+   "from": 1.967,
+   "to": 2.133,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@312,132",
+   "probed": false,
+   "from": 5.55,
+   "to": 8.883,
+   "minInkWhilePaper": 1
+  }
+ ]
+}

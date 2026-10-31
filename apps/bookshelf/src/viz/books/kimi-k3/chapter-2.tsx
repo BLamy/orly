@@ -81,7 +81,7 @@ export function Render({ s }: { s: SceneState }) {
   const blockU = s.get(scene.blockU);
   const summaryU = s.get(scene.summaryU);
   const combineU = s.get(scene.combineU);
-  const legacyOpacity = 1 - 0.82 * blockU;
+  const legacyOpacity = 1 - 0.95 * blockU;
   const mainOpacity = 1 - 0.88 * s.get(scene.dimU);
 
   return (
@@ -89,7 +89,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={750}>Attention over network depth</text>
-        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>Block AttnRes · 8 blocks × 12 layers · embedding source</text>
+        <text x={640} y={86} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14} fontFamily={MONO}>Block AttnRes · 8 blocks × 12 layers · embedding source</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
@@ -101,63 +101,67 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={idx} opacity={u * legacyOpacity}>
                   <rect x={layer.x} y={layer.y} width={68} height={46} rx={8} fill={colors.PANEL} stroke={blockU > 0 ? blockColor : colors.GRID} strokeWidth={1.4} />
-                  <text x={layer.x + 34} y={layer.y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily={MONO}>h{idx + 1}</text>
+                  <text x={layer.x + 34} y={layer.y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>h{idx + 1}</text>
                 </g>
               );
             })}
 
             {s.get(scene.streamU) > 0 && (
-              <path d="M200 566 C160 470 160 260 210 170" fill="none" stroke={colors.ACCENT} strokeWidth={7} opacity={s.get(scene.streamU) * legacyOpacity} />
+              <path d="M200 566 C150 470 140 260 180 170" fill="none" stroke={colors.ACCENT} strokeWidth={7} opacity={s.get(scene.streamU) * legacyOpacity} />
             )}
             {s.get(scene.bottleneckU) > 0 && (
               <g opacity={s.get(scene.bottleneckU) * legacyOpacity}>
-                <circle cx={207} cy={170} r={30} fill={colors.NEGATIVE} opacity={0.22} />
-                <text x={207} y={174} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontWeight={700}>ONE STATE</text>
+                <circle cx={180} cy={170} r={30} fill={colors.NEGATIVE} opacity={0.3} />
+                <text x={180} y={175} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>STATE</text>
               </g>
             )}
 
             {fanU > 0 && (
-              <g opacity={legacyOpacity}>
-                <circle cx={980} cy={166} r={30} fill={colors.WARM} opacity={0.2} stroke={colors.WARM} />
-                <text x={980} y={171} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>w_l</text>
+              <g>
                 {LAYERS.slice(-6).map((layer, i) => {
                   const weight = WEIGHTS[i] * weightsU;
-                  return <line key={i} x1={layer.x + 68} y1={layer.y + 23} x2={950} y2={166} stroke={colors.WARM} strokeWidth={1 + weight * 10} opacity={fanU * (0.16 + weight)} />;
+                  return <line key={i} x1={layer.x + 34} y1={layer.y} x2={976} y2={158} stroke={colors.WARM} strokeWidth={1 + weight * 10} opacity={fanU * (0.16 + weight) * legacyOpacity} />;
                 })}
-                <text x={980} y={215} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>learned pseudo-query</text>
+                <circle cx={1000} cy={150} r={26} fill={colors.WARM} opacity={0.2} stroke={colors.WARM} />
+                <text x={1000} y={156} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>w_l</text>
+                <text x={1036} y={156} fill={colors.TEXT} opacity={0.8} fontSize={14} fontFamily={MONO}>learned pseudo-query</text>
               </g>
             )}
 
             {s.get(scene.costU) > 0 && (
               <g opacity={s.get(scene.costU) * (1 - blockU)} transform="translate(830 480)">
                 <rect width={310} height={90} rx={14} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-                <text x={155} y={32} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontWeight={700}>FULL DEPTH STATE</text>
-                <text x={155} y={59} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>memory + communication = O(Ld)</text>
+                <text x={155} y={32} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>FULL DEPTH STATE</text>
+                <text x={155} y={59} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>memory + communication = O(Ld)</text>
               </g>
             )}
 
             {blockU > 0 && Array.from({ length: 8 }, (_, b) => {
               const x = 218 + (b % 4) * 150;
-              const y = 320 + Math.floor(b / 4) * 190;
+              const y = 296 + Math.floor(b / 4) * 170;
               const color = [colors.ACCENT, colors.SECONDARY, colors.POSITIVE, colors.WARM][b % 4];
               return (
                 <g key={b} opacity={blockU}>
-                  <rect x={x} y={y} width={120} height={156} rx={13} fill={colors.BG} fillOpacity={0.82} stroke={color} strokeWidth={2} />
-                  <text x={x + 60} y={y + 22} textAnchor="middle" fill={color} fontSize={10} fontFamily={MONO}>block {b + 1}</text>
+                  <rect x={x} y={y} width={120} height={150} rx={13} fill={colors.BG} fillOpacity={0.82} stroke={color} strokeWidth={2} />
+                  <text x={x + 60} y={y + 22} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>block {b + 1}</text>
                   <rect x={x + 18} y={y + 42} width={84} height={10} rx={5} fill={color} opacity={0.2} />
                   <rect x={x + 18} y={y + 68} width={84} height={10} rx={5} fill={color} opacity={0.35} />
                   <rect x={x + 18} y={y + 94} width={84} height={10} rx={5} fill={color} opacity={0.5} />
-                  {summaryU > 0 && <circle cx={x + 60} cy={y + 130} r={13 + 4 * combineU} fill={color} opacity={summaryU} />}
+                  {summaryU > 0 && <circle cx={x + 60} cy={y + 122} r={11 + 4 * combineU} fill={color} opacity={summaryU} />}
                 </g>
               );
             })}
 
             {summaryU > 0 && (
               <g opacity={summaryU}>
-                <rect x={870} y={315} width={250} height={210} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} />
-                <text x={995} y={350} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontWeight={700}>BLOCK SOURCES</text>
-                {Array.from({ length: 9 }, (_, i) => <circle key={i} cx={905 + (i % 3) * 90} cy={390 + Math.floor(i / 3) * 54} r={9 + 5 * combineU} fill={i === 0 ? colors.WARM : colors.ACCENT} opacity={0.35 + 0.55 * summaryU} />)}
-                <text x={995} y={548} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>memory + communication = O(Nd)</text>
+                {[900, 1000, 1100].map((x) => (
+                  <line key={x} x1={x} y1={296} x2={1000} y2={176} stroke={colors.WARM} strokeWidth={2} opacity={0.7} />
+                ))}
+                <rect x={850} y={296} width={300} height={320} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} />
+                <text x={1000} y={330} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>BLOCK SOURCES</text>
+                {Array.from({ length: 9 }, (_, i) => <circle key={i} cx={910 + (i % 3) * 90} cy={380 + Math.floor(i / 3) * 60} r={9 + 5 * combineU} fill={i === 0 ? colors.WARM : colors.ACCENT} opacity={0.35 + 0.55 * summaryU} />)}
+                <text x={1000} y={556} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14} fontFamily={MONO}>memory + communication = O(Nd)</text>
+                <text x={1000} y={586} textAnchor="middle" fill={colors.POSITIVE} opacity={combineU} fontSize={14} fontFamily={MONO}>24 layers → 8 blocks + embedding</text>
               </g>
             )}
           </g>
@@ -165,10 +169,11 @@ export function Render({ s }: { s: SceneState }) {
       </Camera>
       {s.get(scene.endU) > 0 && (
         <g opacity={s.get(scene.endU)}>
+          <rect x={230} y={245} width={820} height={174} rx={20} fill={colors.BG} />
           <rect x={230} y={245} width={820} height={174} rx={20} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
           <text x={640} y={308} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={750}>Depth becomes addressable memory</text>
           <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={16}>learned retrieval · block summaries · bounded live state</text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>AttnRes · Eq. 9–10 · 8 × 12</text>
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>AttnRes · Eq. 9–10 · 8 × 12</text>
         </g>
       )}
     </>

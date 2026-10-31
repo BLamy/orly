@@ -33,24 +33,35 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // ---------------------------------------------------------------------------
 
 const BELT_Y = 250;
-const ST_RELEASE = { x: 190, y: BELT_Y } as const;
-const ST_CAST = { x: 520, y: BELT_Y } as const;
-const ST_FORK = { x: 800, y: BELT_Y } as const;
-const ST_BF16 = { x: 1050, y: 170 } as const;
-const ST_INT8 = { x: 1050, y: 330 } as const;
+// the belt is compressed so every station stays inside the stage at the fork camera
+const ST_RELEASE = { x: 210, y: BELT_Y } as const;
+const ST_CAST = { x: 480, y: BELT_Y } as const;
+const ST_FORK = { x: 750, y: BELT_Y } as const;
+const ST_BF16 = { x: 990, y: 170 } as const;
+const ST_INT8 = { x: 990, y: 330 } as const;
+const ST_W = 230;
 
-const DECODER = { x: 260, y: 430, w: 760, h: 110 } as const;
-// the real rule filename, split into decodable chunks
+// the bit ladder above the belt: one weight drawn as a row of bit cells
+const BIT_X0 = ST_RELEASE.x - ST_W / 2;
+const BIT_STEP = 24;
+const BIT_W = 20;
+
+// the decoder is a four-field boarding pass: one column per field
+const DECODER = { x: 200, y: 430, w: 880, h: 150 } as const;
+const DEC_COL0 = DECODER.x + 24 + 104;
+const DEC_COL_W = 208;
+const DEC_CHAR_W = 10.2; // advance of 17px monospace
+// the real rule filename, split into decodable chunks, one per field
 const RULE_PARTS = [
-  { txt: 'DeepSeek-V3-Chat', gloss: 'the target model' },
-  { txt: '-sft-', gloss: 'a fine-tuning rule (not inference)' },
-  { txt: 'amx', gloss: 'tile backend on the CPU' },
-  { txt: '-multi-gpu', gloss: 'model parallel · default 2 cards' },
+  { field: 'MODEL', txt: 'DeepSeek-V3-Chat', gloss: 'the target model' },
+  { field: 'PURPOSE', txt: '-sft-', gloss: 'a fine-tuning rule (not inference)' },
+  { field: 'BACKEND', txt: 'amx', gloss: 'tile backend on the CPU' },
+  { field: 'CARDS', txt: '-multi-gpu', gloss: 'model parallel · default 2 cards' },
 ] as const;
 
-const CAM_BELT: CameraState = { x: 600, y: 250, k: 1.3 };
-const CAM_FORK: CameraState = { x: 950, y: 250, k: 1.4 };
-const CAM_DEC: CameraState = { x: 640, y: 460, k: 1.45 };
+const CAM_BELT: CameraState = { x: 640, y: 250, k: 1.1 };
+const CAM_FORK: CameraState = { x: 645, y: 250, k: 1.15 };
+const CAM_DEC: CameraState = { x: 640, y: 440, k: 1.15 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -173,12 +184,12 @@ function Station({ x, y, label, sub, color, u }: { x: number; y: number; label: 
   if (u <= 0.01) return null;
   return (
     <g opacity={u}>
-      <rect x={x - 85} y={y - 34} width={170} height={68} rx={11} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
-      <text x={x} y={y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+      <rect x={x - ST_W / 2} y={y - 34} width={ST_W} height={68} rx={11} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
+      <text x={x} y={y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {label}
       </text>
       {sub && (
-        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -200,6 +211,9 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const dimAll = 1 - closeU * 0.86;
+  // the belt steps back while the camera sits on the decoder: the camera's own move drives it
+  const decFocus = clamp01((cam.y - CAM_WIDE.y) / (CAM_DEC.y - CAM_WIDE.y));
+  const beltDim = 1 - decFocus * 0.7;
   // the crate's x position: enters → gate (pauses) → through cast
   const crateX = ST_RELEASE.x + (ST_CAST.x - 90 - ST_RELEASE.x) * crateU + (ST_FORK.x - ST_CAST.x + 20) * castU;
   const crateColor = castU > 0.55 ? colors.ACCENT : colors.SECONDARY;
@@ -210,73 +224,99 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         <g opacity={dimAll}>
-          {/* the belt */}
-          <g opacity={beltU}>
-            <line x1={120} y1={BELT_Y + 46} x2={ST_FORK.x + 30} y2={BELT_Y + 46} stroke={colors.GRID} strokeWidth={3} opacity={0.7} />
-            <Connection from={{ x: ST_FORK.x + 30, y: BELT_Y + 46 }} to={{ x: ST_BF16.x - 90, y: ST_BF16.y + 20 }} elbow="h" u={forkU} color={colors.GRID} width={2} />
-            <Connection from={{ x: ST_FORK.x + 30, y: BELT_Y + 46 }} to={{ x: ST_INT8.x - 90, y: ST_INT8.y + 10 }} elbow="h" u={forkU} color={colors.GRID} width={2} />
+          <g opacity={beltDim}>
+            {/* the belt */}
+            <g opacity={beltU}>
+              <line x1={120} y1={BELT_Y + 46} x2={ST_FORK.x + 30} y2={BELT_Y + 46} stroke={colors.GRID} strokeWidth={3} opacity={0.7} />
+              <Connection from={{ x: ST_FORK.x + 30, y: BELT_Y + 46 }} to={{ x: ST_BF16.x - ST_W / 2, y: ST_BF16.y + 20 }} elbow="h" u={forkU} color={colors.GRID} width={2} />
+              <Connection from={{ x: ST_FORK.x + 30, y: BELT_Y + 46 }} to={{ x: ST_INT8.x - ST_W / 2, y: ST_INT8.y + 10 }} elbow="h" u={forkU} color={colors.GRID} width={2} />
+            </g>
+
+            <Station x={ST_RELEASE.x} y={ST_RELEASE.y} label="release checkpoint" sub="DeepSeek-V3 · FP8" color={colors.SECONDARY} u={beltU} />
+            <Station x={ST_CAST.x} y={ST_CAST.y} label="cast up to BF16" sub="fp8_cast_bf16.py" color={colors.ACCENT} u={beltU} />
+            <Station x={ST_BF16.x} y={ST_BF16.y} label="AMXBF16" sub="full fidelity · 16-bit tiles" color={forkU > 0 && pickK < 0.5 ? colors.POSITIVE : colors.MUTED} u={forkU} />
+            <Station x={ST_INT8.x} y={ST_INT8.y} label="AMXInt8" sub="faster int math · online quant" color={forkU > 0 && pickK >= 0.5 ? colors.POSITIVE : colors.MUTED} u={forkU} />
+
+            {/* the bit ladder: the same weight counted in bits, 8 becomes 16 at the cast */}
+            <g opacity={beltU}>
+              <text x={BIT_X0} y={140} fill={colors.MUTED} fontSize={14}>
+                {castU > 0.55 ? 'one weight · 16 bits · BF16' : 'one weight · 8 bits · FP8'}
+              </text>
+              {Array.from({ length: 16 }, (_, i) => (
+                <rect
+                  key={i}
+                  x={BIT_X0 + i * BIT_STEP}
+                  y={148}
+                  width={BIT_W}
+                  height={18}
+                  rx={3}
+                  fill={i < 8 ? colors.SECONDARY : colors.ACCENT}
+                  opacity={i < 8 ? 0.85 : 0.1 + castU * 0.75}
+                />
+              ))}
+            </g>
+            <g opacity={onlineU}>
+              <text x={BIT_X0 + 17 * BIT_STEP} y={140} fill={colors.MUTED} fontSize={14}>
+                in memory only · AMXInt8 · 8 bits
+              </text>
+              {Array.from({ length: 8 }, (_, i) => (
+                <rect key={i} x={BIT_X0 + (17 + i) * BIT_STEP} y={148} width={BIT_W} height={18} rx={3} fill={colors.WARM} opacity={0.85} />
+              ))}
+            </g>
+
+            {/* the BF16-required gate: it is passed once the cast runs */}
+            <g opacity={gateU}>
+              <line x1={(ST_RELEASE.x + ST_CAST.x) / 2} y1={BELT_Y - 60} x2={(ST_RELEASE.x + ST_CAST.x) / 2} y2={BELT_Y + 60} stroke={colors.NEGATIVE} strokeWidth={2.5} strokeDasharray="8 5" opacity={1 - castU} />
+              <text x={(ST_RELEASE.x + ST_CAST.x) / 2} y={BELT_Y - 72} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={1 - castU}>
+                SFT requires BF16
+              </text>
+            </g>
+
+            {/* the crate rides under the belt line, clear of the station boxes */}
+            <g opacity={Math.min(1, crateU * 4)}>
+              <rect x={crateX - 34} y={BELT_Y + 50} width={68} height={26} rx={6} fill={crateColor} opacity={0.9} />
+              <text x={crateX} y={BELT_Y + 68} textAnchor="middle" fill={colors.BG} fontSize={13} fontWeight={700}>
+                {crateLabel}
+              </text>
+            </g>
+
+            {/* online quant note */}
+            <g opacity={onlineU}>
+              <rect x={ST_INT8.x - 135} y={ST_INT8.y + 46} width={270} height={32} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.2} />
+              <text x={ST_INT8.x} y={ST_INT8.y + 67} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+                quantized during model loading
+              </text>
+            </g>
           </g>
 
-          <Station x={ST_RELEASE.x} y={ST_RELEASE.y} label="release checkpoint" sub="DeepSeek-V3 · FP8" color={colors.SECONDARY} u={beltU} />
-          <Station x={ST_CAST.x} y={ST_CAST.y} label="cast up to BF16" sub="fp8_cast_bf16.py" color={colors.ACCENT} u={beltU} />
-          <Station x={ST_BF16.x} y={ST_BF16.y} label="AMXBF16" sub="full fidelity · 16-bit tiles" color={forkU > 0 && pickK < 0.5 ? colors.POSITIVE : colors.MUTED} u={forkU} />
-          <Station x={ST_INT8.x} y={ST_INT8.y} label="AMXInt8" sub="2× int throughput · online quant" color={forkU > 0 && pickK >= 0.5 ? colors.POSITIVE : colors.MUTED} u={forkU} />
-
-          {/* the BF16-required gate */}
-          <g opacity={gateU}>
-            <line x1={(ST_RELEASE.x + ST_CAST.x) / 2} y1={BELT_Y - 60} x2={(ST_RELEASE.x + ST_CAST.x) / 2} y2={BELT_Y + 60} stroke={colors.NEGATIVE} strokeWidth={2.5} strokeDasharray="8 5" opacity={1 - castU} />
-            <text x={(ST_RELEASE.x + ST_CAST.x) / 2} y={BELT_Y - 72} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} opacity={1 - castU * 0.5}>
-              SFT requires BF16
-            </text>
-          </g>
-
-          {/* the crate */}
-          <g opacity={Math.min(1, crateU * 4)}>
-            <rect x={crateX - 34} y={BELT_Y + 14} width={68} height={26} rx={6} fill={crateColor} opacity={0.9} />
-            <text x={crateX} y={BELT_Y + 32} textAnchor="middle" fill={colors.BG} fontSize={11.5} fontWeight={700}>
-              {crateLabel}
-            </text>
-          </g>
-
-          {/* online quant note */}
-          <g opacity={onlineU}>
-            <rect x={ST_INT8.x - 120} y={ST_INT8.y + 46} width={240} height={32} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.2} />
-            <text x={ST_INT8.x} y={ST_INT8.y + 67} textAnchor="middle" fill={colors.WARM} fontSize={10.5}>
-              quantized during model loading
-            </text>
-          </g>
-
-          {/* the decoder card */}
+          {/* the decoder card: four fields, one column each */}
           <g opacity={decU}>
             <rect x={DECODER.x} y={DECODER.y} width={DECODER.w} height={DECODER.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
-            <text x={DECODER.x + 18} y={DECODER.y + 26} fill={colors.MUTED} fontSize={10.5}>
+            <text x={DECODER.x + 24} y={DECODER.y + 28} fill={colors.MUTED} fontSize={13}>
               kt_optimize_rule, decoded:
             </text>
-            {(() => {
-              let xc = DECODER.x + 18;
-              return RULE_PARTS.map((p, i) => {
-                const on = clamp01(decK - i);
-                const w = p.txt.length * 8.6 + 6;
-                const el = (
-                  <g key={i}>
-                    <text x={xc} y={DECODER.y + 54} fill={on > 0.5 ? colors.WARM : colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
-                      {p.txt}
+            {RULE_PARTS.map((p, i) => {
+              const on = clamp01(decK - i);
+              const cx = DEC_COL0 + i * DEC_COL_W;
+              const w = p.txt.length * DEC_CHAR_W;
+              return (
+                <g key={i}>
+                  <text x={cx} y={DECODER.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    {p.field}
+                  </text>
+                  <text x={cx} y={DECODER.y + 92} textAnchor="middle" fill={on > 0.5 ? colors.WARM : colors.TEXT} fontSize={17} fontFamily="ui-monospace, monospace">
+                    {p.txt}
+                  </text>
+                  <g opacity={on}>
+                    <line x1={cx - w / 2} y1={DECODER.y + 102} x2={cx + w / 2} y2={DECODER.y + 102} stroke={colors.WARM} strokeWidth={1.6} />
+                    <text x={cx} y={DECODER.y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                      {p.gloss}
                     </text>
-                    {on > 0.5 && (
-                      <>
-                        <line x1={xc} y1={DECODER.y + 62} x2={xc + w - 6} y2={DECODER.y + 62} stroke={colors.WARM} strokeWidth={1.6} />
-                        <text x={xc + (w - 6) / 2} y={DECODER.y + 86} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
-                          {p.gloss}
-                        </text>
-                      </>
-                    )}
                   </g>
-                );
-                xc += w;
-                return el;
-              });
-            })()}
-            <text x={DECODER.x + DECODER.w - 18} y={DECODER.y + 54} textAnchor="end" fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
+                </g>
+              );
+            })}
+            <text x={DEC_COL0 + 3 * DEC_COL_W + (RULE_PARTS[3].txt.length * DEC_CHAR_W) / 2 + 2} y={DECODER.y + 92} fill={colors.TEXT} fontSize={17} fontFamily="ui-monospace, monospace">
               .yaml
             </text>
           </g>

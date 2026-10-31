@@ -1,0 +1,89 @@
+{
+  "reviewer": "sound",
+  "lens": "SOUND (promo): narrator delivery and pacing, music fit, mix loudness and ducking, the ending",
+  "round": 2,
+  "at": "2026-10-14",
+  "method": "No audio playback was possible. I measured EBU R128 momentary and short-term loudness (0.1-0.5 s steps) on mix/master.wav, score/renders/m01.wav and narration/narration.wav, and checked them against absolute word times from narration/timeline.json (82.708 s clock). I read mix/loudness.json, qa/reports/latest.json, render/render-report.json, score/cues.json notes, score/analysis/m01.json and m01.png, the narration and voice stage summaries in film.json, and the contact sheets for ch04-s02, ch06-s01 and ch06-s02. I checked round 1's sound issues and the round-1 verdict fixes for m01, L0402, L0505, L0601, ch06-s02 and the global clock. LEDGER: film.json has no stages.fixes key at all (no round1-global or round1-shots), so no id is marked fixed, partial or skipped. I verified each routed fix against the measurements and sheets instead.",
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 7.5, "story": 7.5, "visual": 7, "sync": 7.5, "sound": 7.5, "curiosity": 7.5 },
+  "roundOneCheck": {
+    "m01 ending": "PARTIAL. The film now holds 3.32 s after 'time' (79.39 to 82.71), a button strikes at 79.455 and the fade starts 2.36 s after it (0.9 s fade, round 1 asked for 1.5 s). But the button is only about 3 dB over the decaying pad in the cue (music M -29.4 to -26.3 at 79.4-79.8 s), and the master falls without a break from -17 at 79.4 to -29.4 at 80.0, -42 at 82.0 and -50 at 82.6. It lands 0.34 s before ch06-s02's caret beat (79.79).",
+    "m01 L0601 masking": "FIXED. lineMasking 8.0 to 11.8 dB on L0601 and 9.8 to 11.9 on L0602. The spectrogram shows the lift still bright between the phrases.",
+    "m01 opening": "FIXED (fallback). The haze pad sits at about -26 M in the cue from 0.4 s, with no fade-in. No lead-in bar was added, so the narrator still starts at 0.30.",
+    "m01 pulse under L0505 / verdict": "FIXED. Half-time ticks are visible from 49 to 55 s in the spectrogram. The verdict moved to the hinge with the ch05-s05 cut: Asus2 at 66.26, then the D on the 67.08 cut lifts the music from -28 to -16 M.",
+    "L0402 'Against'": "FIXED for STT, which hears 'Against staging, a preview, even local host'. MASKING REGRESSED: 9.9 to 8.5 dB, now the worst line in the film.",
+    "L0505 'changed'": "FIXED (STT 'changed').",
+    "L0601 pace": "FIXED. 171 wpm with 0.25 s breaks; L0601 is no longer on the fast list.",
+    "global clock / end hold": "FIXED. ch06-s02 holds 3.32 s after the last word. The film runs 82.71 s against a 90 s target.",
+    "global listening sign-offs": "NOT DONE. All 4 are still pending (QA in L0102, localhost and Against in L0402, QA in L0502).",
+    "ch06-s02 (verdict shot fix)": "NOT DONE on the current sheet. No 'Catch bugs that only exist in time.' line appears, and the black '▶ recording' chip stays in the lock-up to 1:21.792."
+  },
+  "summary": "Round 2 fixed most of what round 1 asked of the sound. The payoff triad L0601 now clears the music by 11.8 dB at a measured 171 wpm. The haze sits at full level from the first frame. The time chapter keeps a half-time thread, and the verdict now works as the hinge: an open Asus2 on 'starting over' and the D landing on the ch06 cut, a 12 dB lift. The four-beat hole is intact, and the narration's 0.7 s pre-gap makes the master drop to room tone (-57 LUFS M at 46.6-46.8 s) before 'No click', the purest silence in the film. The mix is clean: -16.0 LUFS I, -1.9 dBTP, LRA 2.7, no limiting and a calibrated 4.2 dB duck. Three things keep the sound from excellent. (1) The ending deflates. The tagline rides a bed that drains 10 dB under it, and the 'button' is a 3 dB bump. The last 2 s of the end card sit at -40 to -50 LUFS M, close to room tone, over a static card, and the button misses the caret settle by 0.34 s. A bright promo needs a sonic-logo button here, not air. (2) L0402 regressed to 8.5 dB of speech over music, the worst in the film. Its three plucked accents land on the onsets of 'staging', 'preview' and 'localhost'. (3) Chapters 2-4 are still breathless: 'Point it at your app' runs at 330 wpm, five lines run at 195-199, and some sentence gaps are 0.25 s, while 7.3 s of the 90 s target goes unused. Separately: the shelf UI shows no critic score because the film was last published at 21:11, before round 1's verdict (21:18). public/generated/replay-qa-promo has no review.json, and library.json still lists the 84.25 s cut (QA publish.current warns).",
+  "issues": [
+    {
+      "owner": "global",
+      "severity": "major",
+      "problem": "The shelf shows no critic score and an outdated film. generator/film/publish.mjs writes public/generated/<slug>/review.json from the newest qa/reviews/round-<n>/verdict.json, but the last publish ran at 21:11:16Z, seven minutes before round 1's verdict.json (21:18:35Z). The round-2 assemble did not publish, so public/generated/replay-qa-promo has no review.json, and library.json still says runtime 84.25 with ch05 at 37.04 s, against the current 82.71 s film. QA flags this: 'publish current warn: shelf copy is stale'. Structurally, film-assemble publishes before film-review runs, so even when it does publish, the score on the shelf is one round behind until the end-of-loop publish.",
+      "fix": "After this round's verdict.json is written, run `node generator/film/publish.mjs --slug replay-qa-promo` (local only). In .claude/workflows/film-loop.js, call publish (or a review.json-only refresh) right after each film-review verdict, not only after assemble and at loop end, so the shelf always shows the latest critic round."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "major",
+      "problem": "The ending has no punctuation. After the D6/9 strike on 'managed' (76.87), the bed under the tagline 'Catch bugs that only exist in time' (77.54-79.39) drains from -16.9 to -27.4 LUFS M in the cue. The button at 79.455 is only a 3 dB bump over the releasing pad (cue M -29.4, -27.6, -26.3 at 79.4/79.6/79.8), and the master never rises: -17.0 at 79.4, -22.3, -26.6, -29.4 at 80.0, -37.8 at 81.0, -42.1 at 82.0, -50.1 at 82.6. The end card's last 2 s play at near room tone over a static frame. The button also lands 0.34 s before ch06-s02's caret beat (79.79), so the round-1 ask that it land 'with the qa.replay.io caret settle' is not met. The fade is 0.9 s, where round 1 asked for 1.5 s.",
+      "fix": "Make the button the film's sonic logo. At 79.455, play M1's answer resolved, a two-note filtered-saw pluck A4 to D5 (dotted-8th delay, no bells) over sub D1, plus one dry 909 rim clack, about 7 dB louder than now (cue about -20 LUFS M at the hit). Under the tagline, keep a low Dmaj9 pad (lpf 800, about -24 M) instead of releasing from 77.5, and release it into the button. Let the button ring at least 2.5 s, then fade over 1.5 s, so the last second of the film sits no lower than about -35 LUFS M in the master. Re-check fadeAfterStrike and lineMasking on L0602 (keep at least 11 dB)."
+    },
+    {
+      "owner": "shot",
+      "id": "ch06-s02",
+      "severity": "major",
+      "problem": "Round 1's fix for the ending card is not on the current sheet. No 'Catch bugs that only exist in time.' line appears under the lock-up while the narrator says it (77.54-79.39). The black '▶ recording' chip is still beside 'Replay QA' in every frame through 1:21.792. From +5.83 s to the end (2.9 s) the card is completely static, so the near-silent tail has nothing on screen. The caret beat (5.874 = 79.79) does not coincide with the music's button (79.455).",
+      "fix": "As routed in round 1: on 'Catch' (77.54), grow the second line 'Catch bugs that only exist in time.' with '{ in time }' braces parting, and fade the '▶ recording' chip out before the URL types. Move the 'caret' beat to 5.539 (79.455) so the caret settles on the button, or keep it and ask m01 to move the button to 79.79. Add one small settle on the button (a logo pulse or a brace close) so the last 3 s are not frozen. Verify on render frames at 77.6, 79.0, 79.46 and 82.0 s."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "major",
+      "problem": "L0402 ('Against staging, a preview, even localhost') regressed from 9.9 to 8.5 dB of speech over music, now the lowest margin in the film. L0403 ('And on every pull request') sits at 9.6. The DRIVE section's three rising plucked accents land on b-staging 26.53, b-preview 27.12 and b-local 27.77, which are exactly the onsets of 'staging', 'preview' and 'localhost', the /st/ and /pr/ consonants. They play over bright 16th hats and an open hat on 2 and 4 (music M -18.3 to -20.7 during the line). This is the line whose 'Against' was misheard in round 1, and its listening sign-off is still pending.",
+      "fix": "Keep the accents on the pill fills but make them dark transients: lpf 1500, 3-4 dB softer, and no dotted-8th delay tail running into the next word. Under L0402-L0404 (25.84-35.44), give the drive the same treatment the lift got under L0601: closed hats eased 3 dB at hpf 8500, open hat at velocity 0.25 or lower with hpf 9000. Target at least 11 dB on L0402 and L0403 without lowering the section's level in the gaps (24.64-25.84, 28.33-29.26)."
+    },
+    {
+      "owner": "line",
+      "id": "L0201",
+      "severity": "minor",
+      "problem": "'Point it at your app.' is the product's core action and gives the M1 hook its name, but it is spoken in 0.91 s (8.00-8.91; 'it' 0.07 s, 'at' 0.08 s), which is 331 wpm on QA's per-shot measure and about twice the film's average. The action is thrown away in a blur right where the promo makes its first promise.",
+      "fix": "Re-take at speed about 0.9, with stress on 'Point' and 'app', so the line lasts about 1.2-1.3 s. Keep it only if STT returns it verbatim. Re-fit ch02-s01's keys/app/typed beats and m01's soft A5 on 'app' to the new word times."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Chapters 2-4 still feel wall-to-wall. Five lines run at 195-199 wpm (L0202 196, L0301 199, L0302 195, L0401 198, L0508 197). Some sentence gaps are 0.25 s (L0301 to L0302 at 16.64 to 16.89, L0507 to L0508 at 62.97 to 63.22) or 0.30 s (L0403 to L0404, L0505 to L0506). Narration covers 58.7 of 82.7 s, and 7.3 s of the 90 s target goes unused.",
+      "fix": "Spend about 2 s of the headroom on air. Add preGaps of 0.45 s before L0302, L0404 and L0508, and about 0.5 s of holdAfter on ch03-s01 and ch04-s01, so the bar-line cuts get a breath of music alone. Rebuild timeline.json, regenerate m01's tempo-map BARS (don't nudge them), then re-fit the affected shots."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "minor",
+      "problem": "The verdict motif now plays at the hinge: Asus2 at 66.26 and D on the 67.08 cut. That works musically, but the agent pair's on-screen verdict in ch06-s01 ('✕ not yet' visible from about 69.6, '✓ good' from about 72.5 on the sheet) gets no sound at all, so the visible exchange is unscored and reads as decoration.",
+      "fix": "Mark the two chips with transients only, kept out of the 2-5 kHz band while L0601 plays: a dry, low-velocity rim clack on '✕ not yet', and a muted felt-piano D dyad (lpf 1200, 150 ms) on '✓ good', each at -26 LUFS M or lower in the cue. Anchor both to ch06-s01's pair beats, not absolute times."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "All four human listening sign-offs in voice/voice.json are still pending, the same as round 1: QA in L0102, localhost and Against in L0402, and QA in L0502. STT now passes, but L0402's new spoken form ('Against, staging, ...') makes a 0.5 s 'Against' (25.84-26.34) followed by a 0.19 s hitch, which might sound stilted rather than natural.",
+      "fix": "A person listens to L0102, L0402, L0502 and L0602 in the master and runs 'film:voice signoff --slug replay-qa-promo --term <term> --by <name>' for each. If 'Against, staging' sounds halting, re-take with 'Run it against staging, a preview, even localhost' and re-fit ch04-s02."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "There is no fix ledger. film.json has no stages.fixes key (no round1-global, no round1-shots), even though round-1 fixes were applied: narration re-takes, the clock cut and the m01 re-fit. So no id can be checked as marked fixed, partial or skipped, and routed shot fixes that were never done (ch06-s02) went unrecorded.",
+      "fix": "For round 2, have film-shots run with ledger 'round2-shots' and close it with generator/film/shot-ledger.mjs finalize. The director records 'round2-global', including the publish refresh above."
+    }
+  ],
+  "best_moments": [
+    "The hinge verdict: an open felt-piano Asus2 under the tail of 'starting over' (66.26 s), then the full D landing on the ch06 cut (67.08 s). The music rises from -28 to -16 LUFS M, turning the cut into a resolution.",
+    "The four-beat hole on 'Four dropped frames' is intact (cue silent from about 45.3 to 47.1 s). With the 0.7 s pre-gap before 'No click', the master drops to room tone (-57 LUFS M at 46.6-46.8 s), and the kick returns on 'click'.",
+    "L0601's triad now lands as three beats: 171 wpm with 0.25 s breaks, 11.8 dB clear of the music, and the lift's brightness held in the gaps and the bloom.",
+    "The tape-stop after 'what's slow' still falls cleanly into the B-minor half-time chapter, and a soft half-time thread now runs under 'Twenty-five of twenty-seven', so the time chapter never loses its pulse.",
+    "The mix is clean: -16.0 LUFS I, -1.9 dBTP, LRA 2.7, no master limiting, a calibrated 4.2 dB duck and line levels within about 1 dB."
+  ]
+}

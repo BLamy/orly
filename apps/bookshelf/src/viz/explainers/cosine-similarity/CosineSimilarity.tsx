@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -41,12 +41,19 @@ function Arrow({
   grow,
   color,
   label,
+  lx = 14,
+  ly = -6,
+  anchor = 'start',
   width = 3.5,
 }: {
   v: V2;
   grow: number;
   color: string;
   label?: string;
+  /** label offset from the arrow tip, so labels of near-parallel arrows can sit apart */
+  lx?: number;
+  ly?: number;
+  anchor?: 'start' | 'end';
   width?: number;
 }) {
   if (grow <= 0) return null;
@@ -60,13 +67,27 @@ function Arrow({
         fill={color}
       />
       {label && (
-        <text x={vx(tip) + 14} y={vy(tip) - 6} fill={color} fontSize={15} fontWeight={600}>
+        <text
+          x={vx(tip) + lx}
+          y={vy(tip) + ly}
+          fill={color}
+          fontSize={15}
+          fontWeight={600}
+          textAnchor={anchor}
+        >
           {label}
         </text>
       )}
     </g>
   );
 }
+
+/** Words the opening caption talks about: they become vectors, then fade as the query arrives. */
+const CHIPS: { word: string; x: number; y: number }[] = [
+  { word: 'espresso', x: 330, y: 330 },
+  { word: 'grinder', x: 440, y: 262 },
+  { word: 'crema', x: 320, y: 200 },
+];
 
 function arcPath(v: V2, r: number): string {
   const a0 = Math.atan2(Q.y, Q.x);
@@ -104,47 +125,80 @@ function Frame({ s }: { s: SceneState }) {
         <g opacity={dimU}>
           {/* axes */}
           <g opacity={axU}>
-            <line x1={OX - 60} y1={OY} x2={OX + 5.6 * SCALE} y2={OY} stroke={colors.GRID} />
-            <line x1={OX} y1={OY + 50} x2={OX} y2={OY - 2.6 * SCALE} stroke={colors.GRID} />
-            <text x={OX - 16} y={OY + 22} fill={colors.MUTED} fontSize={13}>
+            <line x1={OX - 60} y1={OY} x2={OX + 5.6 * SCALE} y2={OY} stroke={colors.MUTED} strokeOpacity={0.6} />
+            <line x1={OX} y1={OY + 50} x2={OX} y2={OY - 2.6 * SCALE} stroke={colors.MUTED} strokeOpacity={0.6} />
+            <text x={OX - 16} y={OY + 22} fill={colors.MUTED} fontSize={14}>
               0
             </text>
           </g>
+
+          {/* the words the caption names, before they become vectors */}
+          {CHIPS.map((c) => (
+            <g key={c.word} opacity={axU * (1 - qU)}>
+              <rect x={c.x - 56} y={c.y - 16} width={112} height={32} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={c.x} y={c.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
+                {c.word}
+              </text>
+            </g>
+          ))}
 
           {/* unit circle */}
           {circU > 0 && (
             <g opacity={circU}>
               <circle cx={OX} cy={OY} r={SCALE} fill="none" stroke={colors.MUTED} strokeDasharray="6 7" opacity={0.6} />
-              <text x={OX + SCALE * 0.72} y={OY + SCALE * 0.8} fill={colors.MUTED} fontSize={13}>
+              <text x={OX + SCALE * 0.72} y={OY + SCALE * 0.8} fill={colors.MUTED} fontSize={14}>
                 the unit circle
               </text>
             </g>
           )}
 
-          {/* angle arcs */}
+          {/* angle arcs: each label sits outside its arc, clear of both rays */}
           {arcU > 0 && (
             <g opacity={arcU}>
               <path d={arcPath(DOC_A, SCALE * 0.55)} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} />
               <path d={arcPath(DOC_B, SCALE * 0.8)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.5} />
-              <text x={OX + SCALE * 0.62} y={OY - SCALE * 0.28} fill={colors.POSITIVE} fontSize={13}>
+              <text x={OX + SCALE * 0.7 * Math.cos(-0.14)} y={OY - SCALE * 0.7 * Math.sin(-0.14)} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
                 {`${ANGLE_A.toFixed(0)}°`}
               </text>
-              <text x={OX + SCALE * 0.74} y={OY - SCALE * 0.62} fill={colors.NEGATIVE} fontSize={13}>
+              <text x={OX + SCALE * 0.94 * Math.cos(0.47)} y={OY - SCALE * 0.94 * Math.sin(0.47)} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
                 {`${ANGLE_B.toFixed(0)}°`}
               </text>
             </g>
           )}
 
-          {/* the vectors */}
-          <Arrow v={qNow} grow={qU} color={colors.WARM} label="query" />
-          <Arrow v={aNow} grow={aU} color={colors.POSITIVE} label={normW > 0.5 ? 'Â' : 'A — short, on-topic'} />
-          <Arrow v={bNow} grow={bU} color={colors.NEGATIVE} label={normW > 0.5 ? 'B̂' : 'B — long, off-angle'} />
+          {/* the vectors: query label sits below its ray, A's above, so they never meet */}
+          <Arrow
+            v={qNow}
+            grow={qU}
+            color={colors.WARM}
+            label="query"
+            lx={normW > 0.5 ? -14 : 14}
+            ly={22}
+            anchor={normW > 0.5 ? 'end' : 'start'}
+          />
+          <Arrow
+            v={aNow}
+            grow={aU}
+            color={colors.POSITIVE}
+            label={normW > 0.5 ? 'Â' : 'A — short, on-topic'}
+            lx={normW > 0.5 ? 4 : 14}
+            ly={-10}
+          />
+          <Arrow
+            v={bNow}
+            grow={bU}
+            color={colors.NEGATIVE}
+            label={normW > 0.5 ? 'B̂' : 'B — long, off-angle'}
+            lx={normW > 0.5 ? 14 : -14}
+            ly={normW > 0.5 ? -6 : -12}
+            anchor={normW > 0.5 ? 'start' : 'end'}
+          />
         </g>
       </Camera>
 
-      {/* dot-product scoreboard */}
+      {/* dot-product scoreboard: fully gone once the cosine board takes over */}
       {dotU > 0 && (
-        <g opacity={dotU * dimU * (1 - 0.85 * cosU)}>
+        <g opacity={dotU * dimU * (1 - cosU)}>
           <rect x={905} y={110} width={310} height={110} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
           <text x={928} y={142} fill={colors.TEXT} fontSize={15} fontWeight={650}>
             raw dot product
@@ -181,15 +235,13 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Cosine Similarity
           </text>
-          <MathLabel
-            tex={'\\cos\\theta = \\frac{q\\cdot d}{\\|q\\|\\|d\\|} \\qquad \\text{meaning} = \\text{direction}'}
-            x={640}
-            y={340}
-            fontSize={21}
-            color={colors.ACCENT}
-            opacity={endU}
-          />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={340} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={600}>
+            {'cos θ = (q · d) / (‖q‖ ‖d‖)'}
+          </text>
+          <text x={640} y={372} textAnchor="middle" fill={colors.ACCENT} fontSize={18}>
+            {'meaning = direction'}
+          </text>
+          <text x={640} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             normalize, or your search engine quietly prefers long documents
           </text>
         </g>

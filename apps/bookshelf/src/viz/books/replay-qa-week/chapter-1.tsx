@@ -6,6 +6,9 @@
 // cloud) that lights up trail by trail, while a small "you" card stays busy
 // at its own desk. The camera drifts between your desk and the field; by
 // night the field is glowing.
+// Illustrative: the grid, the walks and the night trails are seeded synthetic
+// data, not a measured crawl of any real app. The HUD counts this synthetic
+// field (416 moments, 6 day trails, 8 overnight trails).
 import {
   CAMERA_HOME,
   Camera,
@@ -85,6 +88,8 @@ const DAY_TRAILS: number[][] = [
   walk(22, 10, 16),
 ];
 const DAY_PATH: number[] = DAY_TRAILS.flat();
+/** index into DAY_PATH where each day trail begins */
+const DAY_STARTS: number[] = DAY_TRAILS.map((_, i) => DAY_TRAILS.slice(0, i).reduce((a, p) => a + p.length, 0));
 
 /** Eight more trails that arrive overnight. */
 const NIGHT_TRAILS: number[][] = Array.from({ length: 8 }, () =>
@@ -139,9 +144,12 @@ const deskLineW = (row: number, work: number): number =>
   0.25 + 0.7 * Math.abs(Math.sin(work * 9 + row * 1.7));
 
 // camera marks
-const CAM_DESK: CameraState = { x: 300, y: 330, k: 1.5 };
+const CAM_DESK: CameraState = { x: 650, y: 330, k: 1.05 };
 const CAM_FIELD: CameraState = { x: 830, y: 330, k: 1.25 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
+
+/** 0 when the camera is on the desk, 1 when it is on the field. */
+const cameraToField = (cam: CameraState): number => clamp01((cam.x - CAM_DESK.x) / (CAM_FIELD.x - CAM_DESK.x));
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -158,7 +166,6 @@ export interface Scene {
   day: ChannelRef<number>;
   agentU: ChannelRef<number>;
   night: ChannelRef<number>;
-  moonU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -172,7 +179,6 @@ export function buildScene(): Scene {
   const day = tl.channel('day', 0);
   const agentU = tl.channel('agentU', 0);
   const night = tl.channel('night', 0);
-  const moonU = tl.channel('moonU', 0);
 
   // — Beat 1 · one action —
   tl.caption({
@@ -253,12 +259,12 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Overnight, the trails keep coming. Come back tomorrow — the whole field will be glowing.',
   });
-  tl.tween(moonU, 1, { at: 53.8, dur: 1.2, ease: ease.enter });
+  tl.tween(deskOp, 0, { at: 53.8, dur: 1.2, ease: ease.move }); // no ghost sliver in the night frame
   tl.tween(cam, CAM_FIELD, { at: 54.0, dur: 2.0, ease: ease.move });
   tl.tween(night, 1, { at: 54.4, dur: 6.6, ease: ease.linear });
   tl.hold(61.0, 1.4);
 
-  return { tl, cam, linkU, deskU, deskOp, work, fieldU, day, agentU, night, moonU };
+  return { tl, cam, linkU, deskU, deskOp, work, fieldU, day, agentU, night };
 }
 
 const scene = buildScene();
@@ -281,7 +287,8 @@ function computeParticles(s: SceneState) {
       x: m.x,
       y: m.y,
       r: 2 + 2.4 * lit,
-      alpha: appear * (0.14 + 0.82 * lit),
+      // unlit moments stay visible enough to read as a field, not as dust
+      alpha: appear * (0.34 + 0.66 * lit),
       color: lit > 0.02 ? colors.ACCENT : colors.MUTED,
     };
   });
@@ -297,10 +304,17 @@ export function Render({ s }: { s: SceneState }) {
   const day = s.get(scene.day);
   const agentU = s.get(scene.agentU);
   const night = s.get(scene.night);
-  const moonU = s.get(scene.moonU);
 
   const ap = agentPos(day);
   const dayIdx = day * (DAY_PATH.length - 1);
+  const particles = computeParticles(s);
+  const reached = particles.filter((p) => p.color === colors.ACCENT).length;
+  const dayWalked = DAY_STARTS.filter((st) => dayIdx > st).length;
+  const nightWalked = NIGHT_TRAILS.filter((_, i) => night * (NIGHT_TRAILS.length + 2) - i > 0).length;
+  // the desk leaves the frame as the camera moves from the desk to the field
+  const deskVis = deskU * deskOp * (1 - cameraToField(cam));
+  // the moon rises with the night trails
+  const moonU = clamp01(night * 4);
 
   return (
     <>
@@ -308,18 +322,22 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* the field of moments */}
         <g opacity={fieldU}>
-          <text x={(FIELD.x0 + FIELD.x1) / 2} y={FIELD.y0 - 22} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontStyle="italic">
+          <text x={FIELD.x0} y={FIELD.y0 - 22} textAnchor="start" fill={colors.MUTED} fontSize={15} fontStyle="italic">
             your app — every dot, a moment
           </text>
         </g>
+        {/* soft halo under every lit moment, so the night field reads as glowing */}
+        {particles.map((p, k) =>
+          p.color === colors.ACCENT ? <circle key={`g${k}`} cx={p.x} cy={p.y} r={10} fill={colors.ACCENT} opacity={0.14 * p.alpha} /> : null,
+        )}
         <ParticleCloud state={s} compute={computeParticles} />
 
         {/* day trails, revealed as the agent covers them */}
         {DAY_TRAILS.map((t, i) => {
-          const start = DAY_TRAILS.slice(0, i).reduce((a, p) => a + p.length, 0);
+          const start = DAY_STARTS[i];
           const u = clamp01((dayIdx - start) / (t.length - 1));
           return u > 0 ? (
-            <path key={`d${i}`} d={trailD(t, u)} fill="none" stroke={colors.ACCENT} strokeWidth={1.8} strokeLinejoin="round" opacity={0.35} />
+            <path key={`d${i}`} d={trailD(t, u)} fill="none" stroke={colors.ACCENT} strokeWidth={1.8} strokeLinejoin="round" opacity={0.5} />
           ) : null;
         })}
         {/* night trails */}
@@ -332,52 +350,75 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the agent — a small browser dot walking the field */}
         {agentU > 0 && day < 1 && (
-          <g opacity={agentU}>
-            <circle cx={ap.x} cy={ap.y} r={16} fill={colors.WARM} opacity={0.18} />
-            <circle cx={ap.x} cy={ap.y} r={7} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-            <text x={ap.x} y={ap.y - 16} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+          <g opacity={agentU * cameraToField(cam)}>
+            <circle cx={ap.x} cy={ap.y} r={18} fill={colors.WARM} opacity={0.2} />
+            <circle cx={ap.x} cy={ap.y} r={9} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
+            <text x={ap.x} y={ap.y - 18} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               agent
             </text>
           </g>
         )}
 
-        {/* the moon — night falls on the field */}
-        <g opacity={moonU}>
-          <circle cx={1190} cy={52} r={16} fill="none" stroke={colors.MUTED} strokeWidth={2} />
-          <circle cx={1184} cy={48} r={13} fill={colors.BG} />
-        </g>
-
         {/* your desk */}
-        <g opacity={deskU * deskOp}>
-          <rect x={DESK.x} y={DESK.y} width={DESK.w} height={DESK.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={DESK.x + 24} y={DESK.y + 38} fill={colors.TEXT} fontSize={17}>
-            you
-          </text>
-          <text x={DESK.x + 24} y={DESK.y + 60} fill={colors.MUTED} fontSize={13} fontStyle="italic">
-            your actual work
-          </text>
-          {[0, 1, 2, 3, 4].map((row) => (
-            <rect
-              key={row}
-              x={DESK.x + 24}
-              y={DESK.y + 86 + row * 28}
-              width={(DESK.w - 48) * deskLineW(row, work)}
-              height={10}
-              rx={5}
-              fill={colors.MUTED}
-              opacity={0.45}
-            />
-          ))}
-          {/* the pasted link — one action, then gone */}
-          <g opacity={linkU}>
-            <rect x={DESK.x + 20} y={DESK.y - 54} width={DESK.w - 40} height={40} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <rect x={DESK.x + 34} y={DESK.y - 40} width={(DESK.w - 96) * linkU} height={12} rx={6} fill={colors.ACCENT} opacity={0.8} />
-            <text x={DESK.x + DESK.w - 34} y={DESK.y - 30} textAnchor="end" fill={colors.ACCENT} fontSize={13}>
-              ⏎
+        {deskVis > 0.01 && (
+          <g opacity={deskVis}>
+            <rect x={DESK.x} y={DESK.y} width={DESK.w} height={DESK.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={DESK.x + 24} y={DESK.y + 38} fill={colors.TEXT} fontSize={17}>
+              you
+            </text>
+            <text x={DESK.x + 24} y={DESK.y + 60} fill={colors.MUTED} fontSize={14} fontStyle="italic">
+              your actual work
+            </text>
+            {[0, 1, 2, 3, 4].map((row) => (
+              <rect
+                key={row}
+                x={DESK.x + 24}
+                y={DESK.y + 86 + row * 28}
+                width={(DESK.w - 48) * deskLineW(row, work)}
+                height={10}
+                rx={5}
+                fill={colors.MUTED}
+                opacity={0.45}
+              />
+            ))}
+            {/* the pasted link — one action, then gone */}
+            <g opacity={linkU}>
+              <rect x={DESK.x + 20} y={DESK.y - 54} width={DESK.w - 40} height={40} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+              <rect x={DESK.x + 34} y={DESK.y - 40} width={(DESK.w - 96) * linkU} height={12} rx={6} fill={colors.ACCENT} opacity={0.8} />
+              <text x={DESK.x + DESK.w - 34} y={DESK.y - 30} textAnchor="end" fill={colors.ACCENT} fontSize={14}>
+                ⏎
+              </text>
+            </g>
+          </g>
+        )}
+      </Camera>
+
+      {/* the moon — screen-anchored so the camera never crops it */}
+      <g opacity={moonU}>
+        <circle cx={1196} cy={56} r={16} fill={colors.TEXT} opacity={0.85} />
+        <circle cx={1204} cy={48} r={14} fill={colors.BG} />
+      </g>
+
+      {/* running tally of the field, in screen space: concrete numbers for the night */}
+      {fieldU > 0.01 && (
+        <>
+          <g opacity={fieldU} fontSize={14} fill={colors.MUTED}>
+            <text x={24} y={30}>
+              moments reached {reached} / {MOMENTS.length}
+            </text>
+            <text x={24} y={50}>
+              day trails {dayWalked} / {DAY_TRAILS.length} · night {nightWalked} / {NIGHT_TRAILS.length}
             </text>
           </g>
-        </g>
-      </Camera>
+          {/* what the picture means, bottom-left where the field never reaches; says the field is illustrative */}
+          <g opacity={fieldU} fontSize={14} fill={colors.MUTED}>
+            <text x={16} y={552}>dot: a moment you could visit</text>
+            <text x={16} y={572}>line: a recorded walk</text>
+            <text x={16} y={592}>a re-walk replays one line</text>
+            <text x={16} y={612} fontStyle="italic">illustrative: synthetic data</text>
+          </g>
+        </>
+      )}
     </>
   );
 }

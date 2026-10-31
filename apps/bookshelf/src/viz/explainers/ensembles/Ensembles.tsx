@@ -47,6 +47,9 @@ void GRID_N;
 const NEG = colors.ACCENT;
 const POS = colors.WARM;
 
+// measured variance ratio (bagged σ² / single σ²), shown as a number not a slogan
+const VAR_RATIO = (STD_BAGGED / STD_SINGLE) ** 2;
+
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const aU = s.get(scene.aU);
@@ -92,22 +95,28 @@ function Frame({ s }: { s: SceneState }) {
               {/* the bagged average */}
               <path d={AVG_PATH} fill="none" stroke={colors.POSITIVE} strokeWidth={3.4} opacity={avgU} />
               {avgU > 0.5 && (
-                <text x={ax2(0.86)} y={ay2(AVG_CURVE[Math.floor(0.93 * (XS.length - 1))]) - 14} fill={colors.POSITIVE} fontSize={15} opacity={avgU}>
+                <text x={APLOT.x + APLOT.w - 16} y={APLOT.y + 30} textAnchor="end" fill={colors.POSITIVE} fontSize={15} opacity={avgU}>
                   average of 30 trees
                 </text>
               )}
               {/* measured variance panel */}
               {statsU > 0 && (
                 <g opacity={statsU}>
-                  <rect x={APLOT.x + 20} y={APLOT.y + 18} width={330} height={92} rx={12} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
-                  <text x={APLOT.x + 40} y={APLOT.y + 48} fill={colors.NEGATIVE} fontSize={15}>
+                  <rect x={APLOT.x + 60} y={APLOT.y + 18} width={330} height={150} rx={12} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+                  <text x={APLOT.x + 80} y={APLOT.y + 48} fill={colors.NEGATIVE} fontSize={15}>
                     {`single tree spread   σ = ${STD_SINGLE.toFixed(3)}`}
                   </text>
-                  <text x={APLOT.x + 40} y={APLOT.y + 74} fill={colors.POSITIVE} fontSize={15}>
+                  <text x={APLOT.x + 80} y={APLOT.y + 74} fill={colors.POSITIVE} fontSize={15}>
                     {`bag of ${B} spread      σ = ${STD_BAGGED.toFixed(3)}`}
                   </text>
-                  <text x={APLOT.x + 40} y={APLOT.y + 98} fill={colors.MUTED} fontSize={13.5}>
-                    variance ratio 0.036 ≈ 1 / 30
+                  <text x={APLOT.x + 80} y={APLOT.y + 102} fill={colors.TEXT} fontSize={15}>
+                    {`variance ratio ${VAR_RATIO.toFixed(3)} ≈ 1 / ${Math.round(1 / VAR_RATIO)}`}
+                  </text>
+                  <text x={APLOT.x + 80} y={APLOT.y + 124} fill={colors.MUTED} fontSize={14}>
+                    {`1 / ${B} assumes independent voters;`}
+                  </text>
+                  <text x={APLOT.x + 80} y={APLOT.y + 144} fill={colors.MUTED} fontSize={14}>
+                    bootstrap trees are correlated.
                   </text>
                 </g>
               )}
@@ -174,7 +183,7 @@ function Frame({ s }: { s: SceneState }) {
                   if (u <= 0) return null;
                   return (
                     <g key={i} opacity={u}>
-                      <text x={RPANEL.x} y={RPANEL.y + 36 + i * 30} fill={colors.MUTED} fontSize={14.5} fontFamily="ui-monospace, monospace">
+                      <text x={RPANEL.x} y={RPANEL.y + 36 + i * 30} fill={colors.TEXT} opacity={0.85} fontSize={14.5} fontFamily="ui-monospace, monospace">
                         {`r${i + 1}  ${stump.ax} > ${stump.t.toFixed(2)}   ε ${stump.err.toFixed(2)}   α ${stump.alpha.toFixed(2)}`}
                       </text>
                       <text x={RPANEL.x + 340} y={RPANEL.y + 36 + i * 30} fill={e === 0 ? colors.POSITIVE : colors.WARM} fontSize={14.5}>
@@ -200,7 +209,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={225} width={820} height={200} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={225} width={820} height={200} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Ensembles
           </text>

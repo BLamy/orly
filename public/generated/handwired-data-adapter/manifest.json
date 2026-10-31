@@ -1,0 +1,81 @@
+{
+  "format": 3,
+  "slug": "handwired-data-adapter",
+  "title": "Data Adapter",
+  "subtitle": "Eight rectangle lookups recovered by searching 868 tiny programs",
+  "animal": "animal.webp",
+  "accent": "#b5653a",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Lookup Circuit",
+      "blurb": "Twelve slots, a relu tent per slot, and an active bit turn \"find this identifier\" into arithmetic.",
+      "scene": "books/handwired-data-adapter/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.26,
+        19.934,
+        30.743,
+        43.468,
+        53.824,
+        64.145,
+        72.005,
+        83.464,
+        91.533,
+        99.741,
+        108.924,
+        118.526
+      ],
+      "duration": 127.756
+    },
+    {
+      "number": 2,
+      "title": "868 Programs, Twelve Scenes",
+      "blurb": "Exhaustive search over a small vocabulary leaves exactly one program per task after twelve training scenes.",
+      "scene": "books/handwired-data-adapter/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.694,
+        21.049,
+        25.553,
+        39.381,
+        48.367,
+        63.506,
+        72.213,
+        80.456,
+        87.364,
+        94.841,
+        106.822,
+        119.919
+      ],
+      "duration": 132.446
+    },
+    {
+      "number": 3,
+      "title": "What the Check Shows",
+      "blurb": "Held-out scenes, float rounding, a reuse claim that was retracted, and the lab's honest status.",
+      "scene": "books/handwired-data-adapter/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        3.657,
+        18.077,
+        28.131,
+        39.695,
+        49.227,
+        57.667,
+        68.627,
+        75.175,
+        82.768,
+        96.631,
+        108.822,
+        122.731
+      ],
+      "duration": 133.098
+    }
+  ],
+  "sources": "sources.json"
+}

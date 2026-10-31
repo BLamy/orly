@@ -1,0 +1,33 @@
+{
+ "shot": "ch07-s08",
+ "at": "2026-10-28T13:17:54.288Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "0.5",
+   "capWhileSubject": 32.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "b",
+   "capWhileSubject": 41.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "∂L/∂b = (1/40) Σ [clip(e_left) + clip(e_right)] · clip ±0.08",
+   "capWhileSubject": 36.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Adam: b 0.5 → ≈ 0.492 (derived)",
+   "capWhileSubject": 32,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

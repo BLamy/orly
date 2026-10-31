@@ -1,0 +1,20 @@
+{
+ "round": 4,
+ "at": "2026-10-06T22:42:28Z",
+ "pass": false,
+ "mean": 8.15,
+ "bar": 8.5,
+ "floor": 8,
+ "scores": {
+  "accuracy": 8.67,
+  "depth": 7.92,
+  "clarity": 8,
+  "story": 8.17,
+  "curiosity": 7.83,
+  "visual": 8,
+  "sync": 8.42,
+  "sound": 8.17
+ },
+ "notes": {},
+ "summary": "Round 4 FAILS the gate, but it is the closest yet: mean 8.15 (round 3: 7.83). Six of eight dimensions now clear 8 (accuracy 8.67, sync 8.42, story 8.17, sound 8.17, clarity 8.0, visual 8.0). Depth 7.92 and curiosity 7.83 trail just under, and no issue is critical. Nearly every round-3 fix landed and was verified. The remaining gap is the ending's teaching payload. The XOR limit is shown but is not legible: there is no case glyph, no 'one layer', it is small, it collides with the gauge labels, and 'never settles' arrives at the iris. The lineage reads as window fittings, not as more layers growing from the eye. So the two highest-leverage fixes are both in ch01-s03: (1) make XOR legible and single-layer (a bigger plate, case glyphs, 'one layer of dials', an early 'never settles' and a real tally), and (2) grow 1 → 2 → 3 layer silhouettes out of the eye on 'descendants'. Add a clear 'years' dim with '→ the 1970s'. Then fix L0105's pause after 'rule' with an insertGap of 0.68, paid for by L0108's preGap of 2.0 and a 0.16 s tail trim (runtime unchanged), re-fit m01, hide the machine in s01 (fourth round), turn Rosenblatt toward the eye on 'Frank', and do the lab value pass. The human Rosenblatt/Papert listening sign-off goes to the user, not the loop."
+}

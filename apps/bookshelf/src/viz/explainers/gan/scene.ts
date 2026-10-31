@@ -133,12 +133,14 @@ export const dOf = (x: number, snap: GanSnap): number => sgm(snap.w1 * x + snap.
 
 export const xAxis: ScaleLinear<number, number> = scaleLinear().domain([-4.2, 4.2]).range([90, 860]);
 export const pdfY: ScaleLinear<number, number> = scaleLinear().domain([0, 0.9]).range([330, 70]);
-export const dY: ScaleLinear<number, number> = scaleLinear().domain([0, 1]).range([600, 440]);
+export const dY: ScaleLinear<number, number> = scaleLinear().domain([0, 1]).range([560, 430]);
 
-export const trX: ScaleLinear<number, number> = scaleLinear().domain([0, NARROW_ITERS]).range([950, 1230]);
+export const trX: ScaleLinear<number, number> = scaleLinear().domain([0, NARROW_ITERS]).range([930, 1180]);
 export const trY: ScaleLinear<number, number> = scaleLinear().domain([-3.4, 3.4]).range([470, 130]);
 
-export const CAM_MAIN: CameraState = { x: 480, y: 335, k: 1.18 };
+// Frames the density panel, the detective and the trace so all three sit
+// above the caption pill (screen y < 630) and inside the stage width.
+export const CAM_MAIN: CameraState = { x: 650, y: 320, k: 1.08 };
 
 // ---------------------------------------------------------------------------
 // The timeline

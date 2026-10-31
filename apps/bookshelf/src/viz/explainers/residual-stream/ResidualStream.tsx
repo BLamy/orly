@@ -101,6 +101,23 @@ function blocksPassed(x: number): number {
 const arcD = (x1: number, y1: number, x2: number, y2: number): string =>
   `M${x1} ${y1} Q${(x1 + x2) / 2 - 70} ${(y1 + y2) / 2} ${x2} ${y2}`;
 
+/** half-width of a block label, in world units (its name is about 120px at 16px) */
+const LABEL_HALF = 64;
+
+/**
+ * A block's name and formula fade in only once they sit wholly inside the camera's
+ * view, and disappear in the wide multi-token shot where they would be too small to read.
+ */
+function labelVis(bx: number, cam: { x: number; k: number }, multi: number): number {
+  const viewHalf = STAGE_W / 2 / cam.k;
+  const room = viewHalf - LABEL_HALF - Math.abs(bx - cam.x);
+  return clamp01(room / 40) * (1 - multi);
+}
+
+/** a neighbour's arc that lands on the block's left side, clear of its name */
+const pullInD = (bx: number, fromY: number, toY: number): string =>
+  arcD(bx - 190, fromY, bx - BLOCK_W_PX / 2, toY);
+
 // — intro layout (screen-fixed) ————————————————————————————————————————————
 const INTRO_X = 470;
 const INTRO_Y = 370;
@@ -172,6 +189,7 @@ function Frame({ s }: { s: SceneState }) {
               ))}
               {BLOCK_X.map((bx, k) => {
                 const u = clamp01(highwayU * 1.6 - (k / (N_BLOCKS - 1)) * 0.6);
+                const lv = u * labelVis(bx, cam, multiU);
                 const kind = BLOCK_KIND[k];
                 return (
                   <g key={k} opacity={u}>
@@ -192,6 +210,7 @@ function Frame({ s }: { s: SceneState }) {
                       textAnchor="middle"
                       fill={KIND_COLOR[kind]}
                       fontSize={16}
+                      opacity={lv}
                     >
                       {BLOCK_NAME[kind]}
                     </text>
@@ -200,8 +219,8 @@ function Frame({ s }: { s: SceneState }) {
                       x={bx}
                       y={LANE_Y + 122}
                       fontSize={16}
-                      color={colors.MUTED}
-                      opacity={u}
+                      color={colors.TEXT}
+                      opacity={lv}
                     />
                   </g>
                 );
@@ -213,13 +232,13 @@ function Frame({ s }: { s: SceneState }) {
           {arcU > 0 && (
             <g opacity={arcU}>
               <path
-                d={arcD(attnX - 190, LANE_TOP, attnX, LANE_Y - 96)}
+                d={pullInD(attnX, LANE_TOP, LANE_Y - 60)}
                 fill="none"
                 stroke={colors.SECONDARY}
                 strokeWidth={2.4}
               />
               <path
-                d={arcD(attnX - 190, LANE_BOT, attnX, LANE_Y + 96)}
+                d={pullInD(attnX, LANE_BOT, LANE_Y + 60)}
                 fill="none"
                 stroke={colors.SECONDARY}
                 strokeWidth={2.4}
@@ -301,14 +320,14 @@ function Frame({ s }: { s: SceneState }) {
                 [BLOCK_X[1], BLOCK_X[3]].map((bx) => (
                   <g key={bx} opacity={crossU}>
                     <path
-                      d={arcD(bx - 40, LANE_TOP, bx, LANE_Y - 60)}
+                      d={pullInD(bx, LANE_TOP, LANE_Y - 60)}
                       fill="none"
                       stroke={colors.SECONDARY}
                       strokeWidth={2}
                       opacity={0.8}
                     />
                     <path
-                      d={arcD(bx - 40, LANE_BOT, bx, LANE_Y + 60)}
+                      d={pullInD(bx, LANE_BOT, LANE_Y + 60)}
                       fill="none"
                       stroke={colors.SECONDARY}
                       strokeWidth={2}
@@ -333,7 +352,7 @@ function Frame({ s }: { s: SceneState }) {
             hScale={INTRO_H}
             color={resP > 0 ? colors.POSITIVE : resetU > 0.5 ? colors.ACCENT : colors.ACCENT}
           />
-          <text x={INTRO_X} y={INTRO_Y + 195} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={INTRO_X} y={INTRO_Y + 195} textAnchor="middle" fill="#c3d1e4" fontSize={17}>
             {stepLabel}
           </text>
           <text x={INTRO_X} y={135} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
@@ -368,6 +387,9 @@ function Frame({ s }: { s: SceneState }) {
           <text x={GAUGE_X} y={GAUGE_Y0 + 32} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             {iNorm.toFixed(2)}
           </text>
+          <text x={GAUGE_X} y={GAUGE_Y0 + 58} textAnchor="middle" fill="#c3d1e4" fontSize={16}>
+            vector length
+          </text>
         </g>
       )}
 
@@ -384,6 +406,8 @@ function Frame({ s }: { s: SceneState }) {
       {/* recap card */}
       {s.get(scene.recapTexU) > 0 && (
         <g opacity={s.get(scene.recapTexU)}>
+          {/* a solid card, so the faded highway never shows through the closing text */}
+          <rect x={140} y={224} width={1000} height={188} rx={18} fill={colors.PANEL} stroke={colors.GRID} />
           <MathLabel
             tex="x_{\text{out}} \;=\; x_{\text{in}} \;+\; f_1 \;+\; f_2 \;+\; f_3 \;+\; f_4"
             x={640}

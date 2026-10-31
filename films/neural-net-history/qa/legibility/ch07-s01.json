@@ -1,0 +1,249 @@
+{
+ "shot": "ch07-s01",
+ "at": "2026-10-13T23:12:16.268Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 47,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "THE NET DOES NOT",
+   "capWhileSubject": 24.4,
+   "why": "named: \"net\""
+  },
+  {
+   "text": "WHO PAID FOR DINNER?",
+   "capWhileSubject": 36.7,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Two Accomplices: Data and Fire",
+   "capWhileSubject": 33.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "JACKEL: BY 2000,",
+   "capWhileSubject": 41.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "VAPNIK: BY 2005,",
+   "capWhileSubject": 41.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "JACKEL, 2000: LOST",
+   "capWhileSubject": 46.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "VAPNIK, 2005: LOST",
+   "capWhileSubject": 46.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WHY WOULD ANYONE",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHOOSE THE FOG?",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 63.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 63.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 31.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 31.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1989",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 31.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 28,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 28,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 28,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 30,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1984",
+   "maxCap": 30,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 28.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 30,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1.",
+   "maxCap": 21.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2.",
+   "maxCap": 21.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NETS EXPLAINED",
+   "maxCap": 41.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NETS UNUSED",
+   "maxCap": 41.2,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 40
+}

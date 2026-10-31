@@ -1,0 +1,78 @@
+{
+  "format": 3,
+  "slug": "handwired-reusable-layout",
+  "title": "Reusable Layout",
+  "subtitle": "One 121-parameter rule picks every photo's width, taught by a slow search, close on short captions and behind on long ones.",
+  "animal": "animal.webp",
+  "accent": "#d6b82e",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Rule for Every Photo",
+      "blurb": "Eight numbers go in, twelve relu units compute, and one preferred width comes out for each photo.",
+      "scene": "books/handwired-reusable-layout/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.916,
+        20.317,
+        34.946,
+        44.965,
+        54.868,
+        64.969,
+        75.534,
+        89.988,
+        100.053,
+        111.93
+      ],
+      "duration": 121.346
+    },
+    {
+      "number": 2,
+      "title": "A Teacher That Searches",
+      "blurb": "A slow coordinate search, scored by an authored objective, produces the widths the network learns to imitate.",
+      "scene": "books/handwired-reusable-layout/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.125,
+        20.433,
+        31.73,
+        44.432,
+        58.167,
+        68.964,
+        79.482,
+        94.506,
+        106.614,
+        118.061,
+        133.363
+      ],
+      "duration": 140.991
+    },
+    {
+      "number": 3,
+      "title": "Close, and Where It Slips",
+      "blurb": "On short captions the shared rule nearly matches its teacher; on longer captions it falls behind, and every method reflows abruptly.",
+      "scene": "books/handwired-reusable-layout/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.195,
+        26.691,
+        35.294,
+        49.331,
+        58.235,
+        73.77,
+        82.245,
+        95.654,
+        111.13,
+        126.943,
+        139.76,
+        153.088
+      ],
+      "duration": 166.533
+    }
+  ],
+  "sources": "sources.json"
+}

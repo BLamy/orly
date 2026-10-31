@@ -63,10 +63,11 @@ export const POS: Array<{ x: number; y: number }> = [
 export const MC = 26;
 export const MG = 3;
 export const MP = MC + MG;
-export const MAT = { x: 950, y: 200 } as const; // 10·29−3 = 287 → but shifted by camera
+export const MAT = { x: 966, y: 200 } as const; // 10·29−3 = 287 → but shifted by camera
 
 export const CAM_GRAPH: CameraState = { x: 470, y: 330, k: 1.25 };
-export const CAM_MAT: CameraState = { x: 980, y: 340, k: 1.15 };
+// wide enough that the graph's bridge (node 4) and the matrix stay on stage together
+export const CAM_MAT: CameraState = { x: 690, y: 360, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;

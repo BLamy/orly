@@ -1,0 +1,56 @@
+{
+  "reviewer": "story",
+  "round": 6,
+  "lens": "story & curiosity: arc, stakes, emotion, pacing, memorable images, plants and payoffs",
+  "scores": {"accuracy": 8.5, "depth": 9, "clarity": 8.5, "story": 9, "visual": 8.5, "sync": 8.5, "sound": 8, "curiosity": 9},
+  "summary": "Every round-5 story note is closed on the sheets, and the last act now lands. (1) The 'dark lantern' finally has its proof in the narration. L1504b ('Snuff that plan out, and it rhymes with \"habit\" instead.') sits between 'rabbit' and 'Nobody told it to plan'. On the ch15-s03 sheet the snuffer covers RABBIT by +13.62, HABIT lights on 'habit' (+14.29), the echo caption comes only after it (+15.46), and the slugs are done before 'plan'. A first-time viewer now sees an intervention and its result, not a word swapping for no reason, so ch15-s08's 'One lantern is still dark' is earned. (2) The crest of Hinton's 36-year arc now has him in it. He is asleep on the pillow from +6.79. The handset is dark at +9.33, just before 'phone', and lit by +10.37. His head is lifted by +10.67, and the GEOFFREY HINTON card follows. The medallion push now names both prize ideas (HOPFIELD NET · 1982 on 'downhill', BOLTZMANN MACHINE · 1983–85 on 'cools'), and the citation ribbon is gone before the push. (3) The final STATUS: OPEN is centred on the CASE FILE face in full red (+13.92, +15.25), so the last and loudest of the three stamps is no longer the faintest. The match is now struck by an articulated hand on 'new', and the candle catches on 'candles'. (4) ch14-s07's double exposure is gone: the 'liang' hand-off at +7.50 is one opaque shelf mid-pull-back, the tags are cleared and the quote is not yet up. The film's spine is the strongest I have seen in this pipeline: one case question, three suspects, and a candle clock that turns 'how long people believed it' into a duration you can see. Around a dozen 'put that in the file' plants each come back (the ChatGPT flaw becomes 'plausible, and sometimes wrong'; Rosenblatt's 1961 language note becomes 'language was the door'; the AlexNet waiting note becomes the scaling law; Lenat's 'practically nothing' comes back; 'why choose the fog?' is answered; the dinner bet; Widrow; the Helsinki student; Versailles; the three-stamp rule). What keeps it below 9.5: the film runs 36.1 min (2168 s, 103% of the 35-min ceiling), and the present-day news run (ch14-s01 to ch15-s05, about 4.5 min) is still the densest and least felt stretch. It reads as headlines between two emotional peaks, though it flows into a moving close. One thread the ear hears is never paid off aloud: Turing's 'educate a child machine' (L0212) plants the case question in 1950, but its only return is the silent Turing epigraph on the credits.",
+  "previousRoundCheck": "Sheets were re-rendered at 21:56-21:57 local (01:56-01:57Z), after round5-shots closed (01:36:46Z). The render finished at 01:41Z (52042 frames, 2168.417 s, A/V exact). QA at 02:02Z: 40 pass / 6 warn / 0 fail; m19 re-fit to its 1916.433-2043.317 window, and score.renders / analysisSummary / swells / fadeAfterStrike / lineMasking all PASS. I checked each round-5 story id on its sheet at the ledger times. FIXED, confirmed: L1505→L1504b (new line on the clock 11.835-15.364 shot-local); ch15-s03 (snuffer on 'Snuff', HABIT +14.29, echo caption after 'habit', slugs done by +17.29 before 'plan' 17.91); ch15-s01 (Hinton in the bed from +6.79, handset lit by +10.37, head lifted at +10.67, ribbon gone by +20.21, both medallion tags read at +20.42 to +26.04 and are gone by 'cheered'); ch15-s09 (stamp whole and centred under CASE FILE at +13.92 and +15.25, readable to the lamp-off; the frame at the b3 sample, 2126.4167, is one frame before b3 2126.419, so the stamp is not drawn yet; acceptable); ch14-s07 (+7.50 is a single opaque plane, tags gone, quote fades in after). L0114: the 0.84 retry was rejected (round5-global) and the 194 wpm take kept. My round-5 fix said to keep the current take and close the note if the retry drifted, so it is CLOSED. It is still flagged 'fast' in pacing, along with seven other lines, and none of them is a story problem.",
+  "ledgerAudit": {
+    "confirmedFixed": [
+      "ch15-s01 (+6.79 sleeper, +10.37 handset, +10.67 head lift, +20.42/+26.04 tags, ribbon gone by +20.21)",
+      "ch15-s09 (STATUS: OPEN centred on the folder at +13.92/+15.25; articulated hand +21.37/+22.79; flame +23.25)",
+      "ch14-s07 (+7.30/+7.50/+7.80 clean; stamp on 'stands' +14.29 absent → +14.75 struck)",
+      "ch15-s08 (stamp +37.92; the last frame +42.29 has the dark lantern central, no THE FIELD card, one WHO TAUGHT IT? slip)",
+      "ch15-s05 (plates only; feathered warning-shot plate)",
+      "ch15-s10 (maker disclosure on the CREDITS card +8.58 to +20.08)",
+      "ch01-s06 (cut on 'starts', stamp 'Two', lamp 'Chicago' +9.08)"
+    ],
+    "markedFixedButNot": {},
+    "partialButStoryMet": {
+      "ch15-s03": "The ledger shows partial only because the note check counted the required anchors ('L1504b', 'Snuff', 'habit') as removed keys, which is a mis-extraction. On the sheet: the snuffer covers RABBIT at +13.62 (on 'Snuff' about 12.0), HABIT lights at +14.29 on 'habit', the echo caption comes after 'habit' (+15.46), and the slugs are complete by +17.29, before 'plan' (17.91). Close as FIXED.",
+      "ch13-s03": "The ledger shows partial only because the sha changed after recording. On the sheet at +7.83 ('letter') the pause letter falls in already printed (header, ruled lines, signature scrawl), and at +8.87 it is settled with its label up. Close as FIXED."
+    },
+    "partialRerouted": {},
+    "closedByRule": {"L0114": "Retry at 0.84 rejected; the round-5 note said to keep the 194 wpm take and close. Closed."}
+  },
+  "issues": [
+    {
+      "id": "L1527",
+      "owner": "line",
+      "severity": "minor",
+      "problem": "Turing's 'not to program a grown-up mind, but to educate a child machine' (L0212, 1950) is the first time anyone in the film asks the case's own question. The story-editor rounds re-wrote it for exactly that reason. The ear never hears it come back. The verdict line L1527 ('Who taught it? Not rules alone. Not knowledge, typed in by hand. Learning, with its accomplices...') answers the question without naming who first proposed the answer. The only return is the silent 'Alan Turing, 1950' epigraph on the credits card (ch15-s10 +0.92 to +6.67), which most viewers will read as decoration, not as a payoff. This is the one plant in an unusually well-paid-off film that the narration leaves loose.",
+      "fix": "Revise L1527 to: 'Who taught it? Not rules alone. Not knowledge, typed in by hand. Learning, as Turing guessed, with its accomplices: data, fire, a messenger, and people choosing.' The added clause is 3 words, about +1.0 s; the claim is e1-turing-1950, already in the bible. Clock headroom is 3.58 s (2168.42 of 2172). Re-narrate solo and keep the delivery and level of the current take. Hand ch15-s08 a re-fit by T.word: the board beats on 'rules', 'knowledge', 'Learning', 'data', 'fire', 'messenger' and 'choosing' all still exist. Optionally, glint the 1950 Turing card on the case board when 'Turing' is spoken. Hand m21 a bodily shift of +Δ from L1527 onward. Its foley (fx-stamp-howfar, fx-stamp, lamp-off, match) rides underWord / beat anchors and moves with the clock. OPTIONAL: if the clock or m21 re-fit is judged too costly this late, leave it. The credits epigraph is an acceptable silent payoff."
+    },
+    {
+      "id": "global",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Pacing across the whole runtime: the film is 36.1 min (2168 s), above the brief's 30-35 min target (the reference ran 35:37). ch14-s01 to ch15-s05 (1770-2042 s, about 4.5 min) is a run of headline facts: the 2017 plan, the fence, DeepSeek's price, reasoning models, market drop, talent, Bletchley/dialogue, the gap, then the Nobel, interpretability, METR, and four lab-news items in ch15-s05 (38.75 s). Each beat is fair and sourced. Emotionally it is the flattest stretch, between the Hinton-recants peak (ch13) and the close (ch15-s06 to s10). That run is carried by the candle and stamp motifs, not by stakes the viewer feels.",
+      "fix": "No re-cut this round. The fairness balance in ch14/ch15-s05 is hard won, and every reviewer has signed off on it. Hold it as a note for the next film's outline: cap any present-day news act at about 3 min and give it one human scene (as ch15-s01 does). If a later round does need to trim, the safest cut is the second clause of L1531 ('Its authors now call that result out of date.'), about -2 s, together with its ch15-s04 hold. Change nothing else."
+    }
+  ],
+  "best_moments": [
+    "ch01-s01 / ch15-s09: the film opens on a lone cyan cursor in a dark room and closes on the same pinprick. A neighbour's lamp comes on, a paper-cut hand strikes a match on 'new', and a fresh candle catches on 'candles'. A true bookend.",
+    "ch01-s06 / ch15-s08: the silent rewind montage (Go stone, GPU fans, snow, the Mark I knob, the lantern) carries us to 'World War Two'. Thirty-four minutes later the same images fast-forward, and the case board rewires itself into a network: 'The board was a network all along.'",
+    "ch02-s04 / L0209: 'Each belief gets one, burning as long as it was held.' One rule turns 80 years of opinion into a bar chart in wax. It pays off in 'Some candles burned nearly forty years; some, two; one match, a day.'",
+    "ch04-s05: 'In 1971, on his forty-third birthday, Frank Rosenblatt drowned while sailing.' Still the film's best quiet beat.",
+    "ch06-s05 to ch07-s01: 'So who paid for dinner? Keep that question.' ... 'Both men. Each man lost one bet.'",
+    "ch08-s12 / L0823: the error drops 10.9 points, and the narrator says only 'A cliff.'",
+    "ch08-s13b: 'Why choose the fog?' The learned stencils come out of the fog, and Hinton, 'thirty-six years near the edge of the light', is reached by it: 'Now, it found him.'",
+    "ch12-s06: 'Not a new engine. A new door.' One warm window in a city of cold ones, and the first note in the case file comes back the same day.",
+    "ch15-s01 (new this round): Hinton asleep in a California hotel room, the handset lighting cool white and his head lifting toward it. Then a cut to the Nobel hall, where Hopfield's Versailles talk that 'nobody remembered' is paid off 25 minutes after it was planted, and the medallion names HOPFIELD NET and BOLTZMANN MACHINE as the push lands.",
+    "ch15-s03 (new this round): 'Snuff that plan out, and it rhymes with \"habit\" instead. Nobody told it to plan.' A brass snuffer drops on one lantern under a microscope, and the film's only look inside the dark lantern becomes an experiment a child could follow.",
+    "ch15-s07: Widrow's lantern in a snowy window, 'never got over it'. 'Remember him' is paid off 32 minutes after it was planted.",
+    "ch14-s07 → ch15-s08 → ch15-s09: three STATUS: OPEN stamps (fence, how far / how fast, the case file), rising in loudness and now all legible, while the verdict slip LEARNING + ACCOMPLICES / NEVER ONE PERSON closes the one question the film can answer."
+  ]
+}

@@ -37,12 +37,13 @@ const PG = { x: 220, y: 180 };
 const ZONE = { x: 560, y: 96, w: 560, h: 300 } as const;
 const REPLICA = { x: 700, y: 190 };
 const VS = { x: 980, y: 190 };
-const MUT = { x: 700, y: 330 };
+// mutagen sits above the fan-out wedge so no poke line runs through it
+const MUT = { x: 650, y: 262 };
 
 const DEVICES = [
-  { x: 330, y: 520, fw: 'React', hook: 'useQuery · ZeroProvider', writer: true },
-  { x: 660, y: 520, fw: 'Solid', hook: 'createQuery · createZero', writer: false },
-  { x: 990, y: 520, fw: 'React Native', hook: 'expoSQLiteStoreProvider', writer: false },
+  { x: 330, y: 470, fw: 'React', hook: 'useQuery · ZeroProvider', writer: true },
+  { x: 660, y: 470, fw: 'Solid', hook: 'createQuery · createZero', writer: false },
+  { x: 990, y: 470, fw: 'React Native', hook: 'expoSQLiteStoreProvider', writer: false },
 ] as const;
 
 // loop legs (each its own linear channel):
@@ -53,8 +54,10 @@ const L1 = { from: { x: MUT.x - 60, y: MUT.y - 10 }, to: { x: PG.x + 40, y: PG.y
 const L2 = { from: { x: PG.x + 64, y: PG.y }, to: { x: REPLICA.x - 62, y: REPLICA.y } };
 const L3 = { from: { x: REPLICA.x + 60, y: REPLICA.y }, to: { x: VS.x - 62, y: VS.y } };
 
-const CAM_ZONE: CameraState = { x: 840, y: 250, k: 1.3 };
-const CAM_DEVS: CameraState = { x: 660, y: 470, k: 1.25 };
+// frames Postgres, the tape, the replica and the view syncer together, clear of the caption band
+const CAM_ZONE: CameraState = { x: 600, y: 270, k: 1.2 };
+// wide enough to keep Postgres and the zone in frame while the devices fan out
+const CAM_DEVS: CameraState = { x: 605, y: 330, k: 1.2 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -245,27 +248,27 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={faded}>
           {/* your Postgres */}
           <g opacity={pgU}>
-            <ServiceNode x={PG.x} y={PG.y} kind="db" label="your Postgres" sublabel="source of truth" glow={pgGlow + (recap && recapU * 5 > 1 && recapU * 5 < 2 ? 0.5 : 0)} />
+            <ServiceNode x={PG.x} y={PG.y} kind="db" label="your Postgres" sublabel="source of truth" labelSize={16} glow={pgGlow + (recap && recapU * 5 > 1 && recapU * 5 < 2 ? 0.5 : 0)} />
           </g>
 
           {/* zero-cache */}
           <Zone x={ZONE.x} y={ZONE.y} w={ZONE.w} h={ZONE.h} label="zero-cache" u={zoneU} color={colors.ACCENT} />
           <g opacity={zoneU}>
-            <ServiceNode x={REPLICA.x} y={REPLICA.y} kind="storage" label="replica" sublabel="zero.db · SQLite" />
-            <ServiceNode x={VS.x} y={VS.y} kind="server" label="view syncer" sublabel="queries + ledger" glow={vsGlow} />
-            <ServiceNode x={MUT.x} y={MUT.y} kind="fn" label="mutagen" sublabel="replays mutations" />
-            <Connection from={L3.from} to={L3.to} u={zoneU} color={colors.GRID} arrow />
+            <ServiceNode x={REPLICA.x} y={REPLICA.y} kind="storage" label="replica" sublabel="zero.db · SQLite" labelSize={16} />
+            <ServiceNode x={VS.x} y={VS.y} kind="server" label="view syncer" sublabel="queries + ledger" labelSize={16} glow={vsGlow} />
+            <ServiceNode x={MUT.x} y={MUT.y} kind="fn" label="mutagen" sublabel="replays mutations" labelSize={16} />
+            <Connection from={L3.from} to={L3.to} u={zoneU} color={colors.MUTED} arrow />
           </g>
 
           {/* the loop wiring */}
           <g opacity={Math.min(zoneU, pgU)}>
-            <Connection from={L1.from} to={L1.to} u={zoneU} color={colors.GRID} arrow label="apply upstream" labelSize={10} dim={0.25} />
-            <Connection from={L2.from} to={L2.to} u={zoneU} color={colors.GRID} arrow dashed label="the tape · pgoutput" labelSize={10} dim={0.25} />
+            <Connection from={L1.from} to={L1.to} u={zoneU} color={colors.MUTED} arrow label="apply upstream" labelSize={13} />
+            <Connection from={L2.from} to={L2.to} u={zoneU} color={colors.MUTED} arrow dashed label="the tape · pgoutput" labelSize={13} />
           </g>
           <g opacity={devsU}>
-            <Connection from={L0.from} to={L0.to} u={devsU} color={colors.GRID} arrow label="push" labelSize={10} dim={0.25} />
+            <Connection from={L0.from} to={L0.to} u={devsU} color={colors.MUTED} arrow label="push" labelSize={13} />
             {DEVICES.map((d, i) => (
-              <Connection key={i} from={{ x: VS.x, y: VS.y + 36 }} to={{ x: d.x, y: d.y - 40 }} u={devsU} color={colors.GRID} dashed dim={0.45} />
+              <Connection key={i} from={{ x: VS.x, y: VS.y + 36 }} to={{ x: d.x, y: d.y - 40 }} u={devsU} color={colors.MUTED} dashed dim={0.3} />
             ))}
           </g>
 
@@ -275,10 +278,10 @@ export function Render({ s }: { s: SceneState }) {
             const flipped = flipU > 0.5;
             return (
               <g key={d.fw} opacity={devsU}>
-                <ServiceNode x={d.x} y={d.y} kind={i === 2 ? 'mobile' : 'browser'} label={d.fw} sublabel={flipped ? 'issue 42 · closed' : 'issue 42 · open'} glow={flipped && flipU < 0.9 ? 0.6 : 0} />
+                <ServiceNode x={d.x} y={d.y} kind={i === 2 ? 'mobile' : 'browser'} label={d.fw} sublabel={flipped ? 'issue 42 · closed' : 'issue 42 · open'} labelSize={16} glow={flipped && flipU < 0.9 ? 0.6 : 0} />
                 <g opacity={chipU}>
                   <rect x={d.x - 105} y={d.y + 44} width={210} height={26} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.1} />
-                  <text x={d.x} y={d.y + 61} textAnchor="middle" fill={colors.ACCENT} fontSize={10} fontFamily="ui-monospace, monospace">
+                  <text x={d.x} y={d.y + 61} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
                     {d.hook}
                   </text>
                 </g>
@@ -287,9 +290,9 @@ export function Render({ s }: { s: SceneState }) {
           })}
 
           {/* the traveling write */}
-          <Packet from={L0.from} to={L0.to} u={l0} r={7} color={colors.WARM} label={l0 > 0.1 && l0 < 0.9 ? 'closeIssue(42)' : undefined} labelSize={10} />
+          <Packet from={L0.from} to={L0.to} u={l0} r={7} color={colors.WARM} label={l0 > 0.1 && l0 < 0.9 ? 'closeIssue(42)' : undefined} labelSize={14} />
           <Packet from={L1.from} to={L1.to} u={l1} r={7} color={colors.WARM} />
-          <Packet from={L2.from} to={L2.to} u={l2} r={7} color={colors.SECONDARY} label={l2 > 0.2 && l2 < 0.8 ? 'commit · update' : undefined} labelSize={10} />
+          <Packet from={L2.from} to={L2.to} u={l2} r={7} color={colors.SECONDARY} label={l2 > 0.2 && l2 < 0.8 ? 'commit · update' : undefined} labelSize={14} />
           <Packet from={L3.from} to={L3.to} u={l3} r={7} color={colors.SECONDARY} />
           {/* the fan-out */}
           {fanU > 0 && fanU < 1 &&
@@ -305,7 +308,7 @@ export function Render({ s }: { s: SceneState }) {
                   r={5.5}
                   color={colors.POSITIVE}
                   label={i === 0 && u > 0.2 && u < 0.85 ? 'poke · rowsPatch' : undefined}
-                  labelSize={10}
+                  labelSize={14}
                 />
               );
             })}
@@ -338,10 +341,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={16.5}>
             local-first reads, on your own Postgres
           </text>
-          <text x={640} y={338} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={338} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             Postgres → tape → replica → queries → pokes → device
           </text>
-          <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             React · Solid · React Native
           </text>
         </g>

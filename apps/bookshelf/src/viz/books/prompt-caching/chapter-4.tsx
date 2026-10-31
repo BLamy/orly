@@ -57,7 +57,7 @@ const METERS = [
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_RECEIPT: CameraState = { x: 330, y: 300, k: 1.35 };
 const CAM_PLOT: CameraState = { x: 760, y: 360, k: 1.14 };
-const CAM_CROSS: CameraState = { x: 640, y: 430, k: 1.5 };
+const CAM_CROSS: CameraState = { x: 800, y: 425, k: 1.2 }; // keeps both axis labels and the crossing on stage
 
 // ---------------------------------------------------------------------------
 // Timeline (~61s, nine beats).
@@ -275,7 +275,11 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={crossU}>
             <line x1={xs(CROSS_N)} y1={ys(0)} x2={xs(CROSS_N)} y2={ys(costNo(CROSS_N))} stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="5 5" />
             <circle cx={xs(CROSS_N)} cy={ys(costNo(CROSS_N))} r={7} fill={colors.WARM} stroke={colors.BG} strokeWidth={2} />
-            <MathLabel tex={'1.25 + 0.1\\,(n-1) \\;<\\; n'} x={xs(CROSS_N) + 26} y={ys(costNo(CROSS_N)) - 44} fontSize={17} color={colors.WARM} opacity={crossU} />
+          </g>
+          {/* the inequality sits in the empty upper-left wedge, linked to the crossing by a leader */}
+          <g opacity={clamp01((crossU - 0.3) / 0.7)}>
+            <line x1={xs(CROSS_N)} y1={ys(costNo(CROSS_N)) - 8} x2={xs(CROSS_N) - 10} y2={ys(4.4)} stroke={colors.WARM} strokeWidth={1.2} />
+            <MathLabel tex={'1.25 + 0.1\\,(n-1) \\;<\\; n'} x={xs(0.25)} y={ys(5.2)} anchor="start" fontSize={17} color={colors.WARM} />
           </g>
 
           {/* endpoint labels at 100 */}

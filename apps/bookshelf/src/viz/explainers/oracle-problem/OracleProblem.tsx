@@ -77,11 +77,20 @@ const DISAGREE_PCT = (DISAGREE / N_RAND) * 100; // computed; shown on screen
 // Layout.
 // ---------------------------------------------------------------------------
 
-const TEST_X = 170;
-const TEST_Y0 = 170;
-const TEST_DY = 44;
-const CAM_TESTS: CameraState = { x: 470, y: 360, k: 1.15 };
-const CAM_FAIL: CameraState = { x: 640, y: 350, k: 1.2 };
+// Left column: the example suite. Right column: the function, the failing
+// input and the oracle / AI panel. Both columns sit inside the stage with the
+// camera at home; the camera only nudges so nothing is cut off mid-move.
+const TEST_X = 60;
+const TEST_W = 580;
+const TEST_Y0 = 120;
+const TEST_DY = 42;
+const COL_X = 680;
+const COL_W = 560;
+const CODE_Y = 104;
+const CARD_Y = 250;
+const CARD_H = 240;
+const CAM_TESTS: CameraState = { x: 640, y: 360, k: 1.04 };
+const CAM_FAIL: CameraState = { x: 660, y: 360, k: 1.06 };
 
 interface Scene {
   tl: Timeline;
@@ -215,8 +224,12 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.9 * dimU;
   const testFade = 1 - 0.75 * clamp01(failU * 2);
+  // the AI beat takes the right column; the suite and the median card step back
+  const aiFade = clamp01(aiU * 2);
+  const tableOp = 1 - 0.6 * aiFade;
+  const cardOp = codeU * (0.55 + 0.45 * clamp01(failU)) * (1 - 0.85 * aiFade);
 
   return (
     <>
@@ -230,19 +243,19 @@ function Frame({ s }: { s: SceneState }) {
             if (u <= 0) return null;
             const y = TEST_Y0 + i * TEST_DY;
             return (
-              <g key={i} opacity={u * testFade}>
-                <rect x={TEST_X} y={y} width={470} height={34} rx={7} fill={colors.PANEL} opacity={0.9} stroke={r.ok ? colors.POSITIVE : colors.NEGATIVE} strokeWidth={1} />
-                <text x={TEST_X + 16} y={y + 22} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+              <g key={i} opacity={u * testFade * tableOp}>
+                <rect x={TEST_X} y={y} width={TEST_W} height={34} rx={7} fill={colors.PANEL} opacity={0.9} stroke={r.ok ? colors.POSITIVE : colors.NEGATIVE} strokeWidth={1} />
+                <text x={TEST_X + 16} y={y + 22} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                   median([{r.input.join(', ')}])
                 </text>
-                <text x={TEST_X + 290} y={y + 22} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                <text x={TEST_X + 250} y={y + 22} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                   expect {r.expected}
                 </text>
-                <text x={TEST_X + 420} y={y + 22} fill={r.ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={13} fontFamily="monospace" fontWeight={700}>
+                <text x={TEST_X + 350} y={y + 22} fill={r.ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
                   {r.ok ? '✓' : '✗'} {r.got}
                 </text>
                 {oracleU > 0 && (
-                  <text x={TEST_X + 480} y={y + 22} fill={colors.WARM} fontSize={11} fontFamily="monospace" opacity={oracleU}>
+                  <text x={TEST_X + 420} y={y + 22} fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={oracleU}>
                     ← a human knew this
                   </text>
                 )}
@@ -250,37 +263,41 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
           {greenU > 0 && (
-            <text x={TEST_X} y={TEST_Y0 + EX_RESULTS.length * TEST_DY + 26} fill={colors.POSITIVE} fontSize={15} fontFamily="monospace" fontWeight={700} opacity={greenU * testFade}>
+            <text x={TEST_X} y={TEST_Y0 + EX_RESULTS.length * TEST_DY + 26} fill={colors.POSITIVE} fontSize={15} fontFamily="monospace" fontWeight={700} opacity={greenU * testFade * tableOp}>
               {EX_PASSED}/{EXAMPLES.length} passed ✓ — ship it
             </text>
           )}
 
-          {/* the failing input walkthrough */}
-          {failU > 0 && (
-            <g opacity={failU}>
-              <rect x={680} y={200} width={460} height={260} rx={12} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} />
-              <text x={706} y={234} fill={colors.TEXT} fontSize={15} fontWeight={600}>
+          {/* the failing input: its sorted list is on screen from the start,
+              so the sort bug has a picture before the caption walks through it;
+              it leaves once the AI panel takes the column */}
+          {aiFade < 1 && (
+            <g opacity={cardOp}>
+              <rect x={COL_X} y={CARD_Y} width={COL_W} height={CARD_H} rx={12} fill={colors.PANEL} opacity={0.97} stroke={colors.NEGATIVE} />
+              <text x={COL_X + 24} y={CARD_Y + 34} fill={colors.TEXT} fontSize={15} fontWeight={600}>
                 the input the suite never met
               </text>
-              <text x={706} y={266} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
+              <text x={COL_X + 24} y={CARD_Y + 66} fill={colors.ACCENT} fontSize={15} fontFamily="monospace">
                 median([{FAIL_IN.join(', ')}])
               </text>
-              <text x={706} y={298} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+              <text x={COL_X + 24} y={CARD_Y + 94} fill={colors.MUTED} fontSize={13.5} fontFamily="monospace">
                 default sort (as text): [{FAIL_SORTED_LEX.join(', ')}]
               </text>
-              <text x={706} y={330} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
-                returned: {FAIL_GOT}
-              </text>
-              <text x={706} y={358} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
-                true median: {FAIL_TRUE}
-              </text>
+              <g opacity={clamp01(failU)}>
+                <text x={COL_X + 24} y={CARD_Y + 130} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
+                  returned: {FAIL_GOT}
+                </text>
+                <text x={COL_X + 24} y={CARD_Y + 156} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
+                  true median: {FAIL_TRUE}
+                </text>
+              </g>
               {rateU > 0 && (
                 <g opacity={rateU}>
-                  <line x1={706} y1={380} x2={1114} y2={380} stroke={colors.GRID} strokeWidth={1} />
-                  <text x={706} y={408} fill={colors.WARM} fontSize={13.5} fontFamily="monospace" fontWeight={700}>
+                  <line x1={COL_X + 24} y1={CARD_Y + 176} x2={COL_X + COL_W - 24} y2={CARD_Y + 176} stroke={colors.GRID} strokeWidth={1} />
+                  <text x={COL_X + 24} y={CARD_Y + 204} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
                     {N_RAND.toLocaleString()} seeded lists: {DISAGREE.toLocaleString()} wrong ({DISAGREE_PCT.toFixed(1)}%)
                   </text>
-                  <text x={706} y={432} fill={colors.MUTED} fontSize={11.5}>
+                  <text x={COL_X + 24} y={CARD_Y + 226} fill={colors.MUTED} fontSize={12.5}>
                     values 0–99, lengths 3–9 · buggy vs true, computed live
                   </text>
                 </g>
@@ -292,40 +309,46 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* the function — screen space, top right */}
       {codeU > 0 && (
-        <g opacity={codeU * mainOp * (1 - 0.85 * clamp01(failU * 2)) * (1 - 0.85 * clamp01(aiU * 2))}>
-          <rect x={760} y={96} width={470} height={92} rx={10} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={784} y={126} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+        <g opacity={codeU * mainOp * (1 - 0.85 * aiFade)}>
+          <rect x={COL_X} y={CODE_Y} width={COL_W} height={120} rx={10} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <text x={COL_X + 24} y={CODE_Y + 26} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             const median = (xs) =&gt; {'{'}
           </text>
-          <text x={784} y={148} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
-            {'  '}const sorted = [...xs].sort();{'  '}// ← no comparator
+          <text x={COL_X + 24} y={CODE_Y + 49} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
+            {'  '}const sorted = [...xs].sort();
           </text>
-          <text x={784} y={170} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
-            {'  '}return sorted[Math.floor(sorted.length / 2)]; {'}'}
+          <text x={COL_X + 320} y={CODE_Y + 49} fill={colors.WARM} fontSize={12.5} fontFamily="monospace">
+            ← no comparator: sorts as text
+          </text>
+          <text x={COL_X + 24} y={CODE_Y + 72} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+            {'  '}return sorted[Math.floor(sorted.length / 2)];
+          </text>
+          <text x={COL_X + 24} y={CODE_Y + 95} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+            {'}'}
           </text>
         </g>
       )}
 
-      {/* AI panel — screen space */}
+      {/* AI panel — screen space, takes the failing-input card's place */}
       {aiU > 0 && (
         <g opacity={aiU * mainOp}>
-          <rect x={740} y={110} width={500} height={220} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.SECONDARY} />
-          <text x={766} y={144} fill={colors.SECONDARY} fontSize={15} fontWeight={700}>
+          <rect x={COL_X} y={CARD_Y} width={COL_W} height={CARD_H} rx={12} fill={colors.PANEL} opacity={0.97} stroke={colors.SECONDARY} />
+          <text x={COL_X + 24} y={CARD_Y + 36} fill={colors.SECONDARY} fontSize={16} fontWeight={700}>
             where the oracle stops existing
           </text>
-          <text x={766} y={178} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
-            median(list)      → oracle: cheap, exists
+          <text x={COL_X + 24} y={CARD_Y + 80} fill={colors.TEXT} fontSize={15} fontFamily="monospace">
+            median(list)       → oracle: cheap, exists
           </text>
-          <text x={766} y={206} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
-            summarize(doc)    → oracle: ???
+          <text x={COL_X + 24} y={CARD_Y + 116} fill={colors.TEXT} fontSize={15} fontFamily="monospace">
+            summarize(doc)     → oracle: ???
           </text>
-          <text x={766} y={234} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
-            agent(task) diff  → oracle: ???
+          <text x={COL_X + 24} y={CARD_Y + 152} fill={colors.TEXT} fontSize={15} fontFamily="monospace">
+            agent(task) diff   → oracle: ???
           </text>
-          <text x={766} y={262} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
-            chat(prompt)      → oracle: ???
+          <text x={COL_X + 24} y={CARD_Y + 188} fill={colors.TEXT} fontSize={15} fontFamily="monospace">
+            chat(prompt)       → oracle: ???
           </text>
-          <text x={766} y={300} fill={colors.MUTED} fontSize={12}>
+          <text x={COL_X + 24} y={CARD_Y + 226} fill={colors.MUTED} fontSize={13}>
             no expected value to write down — no example test to write
           </text>
         </g>
@@ -340,7 +363,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* close */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Example tests need an oracle. Oracles don’t scale.
           </text>

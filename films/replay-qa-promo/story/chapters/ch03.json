@@ -1,0 +1,161 @@
+{
+  "id": "ch03",
+  "number": 3,
+  "title": "The loop",
+  "blurb": "The reference's 'Building Image' step list becomes 'Testing your app': the replay.io home page's three steps, verbatim (Explore / Test & Record / Investigate & Report), each green check clacking in as the narration names the mechanism while 'Working' shimmers and turns to 'Done', with one small grey line of Insights proof (89 explorations, 1151 journeys). Then the rows break into square registration dots that clear to bare paper, and the cut lands straight into ch04 on M3's first downbeat. 'Recorded' is first said aloud in ch04 and 'root cause' in ch06's closing triplet.",
+  "shots": [
+    {
+      "id": "ch03-s01",
+      "kind": "card",
+      "setting": "studio paper (#e9e8ea), no haze · 2026 · even, timeless studio light; kit steps on a hairline spine, faint drifting hairlines",
+      "era": "product, as of 2026-10-14",
+      "mood": "parchment",
+      "leadIn": 0.3,
+      "holdAfter": 0.7,
+      "lines": [
+        {
+          "id": "L0301",
+          "text": "It explores your app in a real browser.",
+          "pauseAfter": 0.25,
+          "direction": "easy and assured, a friend pointing at the first row; a small lift on 'explores' NARRATION (2026-10-14): take ran 240 wpm; solo re-take at speed 0.98 with a comma breath (text unchanged), plus insertGaps on app (the solo take still ran 216 wpm).",
+          "spoken": "It explores your app, in a real browser.",
+          "tts": {
+            "solo": true,
+            "speed": 0.98
+          },
+          "insertGaps": {
+            "app": 0.2
+          }
+        },
+        {
+          "id": "L0302",
+          "text": "Turns what it finds into user journeys, and runs them.",
+          "direction": "a gentle roll forward through 'user journeys', then settle; 'runs' takes the last stress and 'them' falls away, a quiet full stop, the mechanism in one breath NARRATION (2026-10-14): take ran 201 wpm; a slightly longer breath after journeys.",
+          "insertGaps": {
+            "journeys": 0.1
+          }
+        }
+      ],
+      "visual": "The reference's 'Building Image' step list, re-made for Replay QA. A blur dissolve from ch02's floating new-project screen lands on bare studio paper (#e9e8ea), lots of negative space, two hairlines drifting slowly across the frame. Composition: the whole list (title, rows, proof line, Working/Done) sits in the LEFT TWO-THIRDS of the frame only, top-left anchored like the reference; the right third stays bare paper. At the top left the title 'Testing your app' (Promo Sans regular, 46 px, slightly tight tracking, sentence case) resolves from a 12 px blur to sharp over 0.5 s. Under it a thin vertical hairline spine draws downward (kit steps) and three step rows arrive one after another, 0.15 s apart, each sliding up 8 px and un-blurring: a small line icon in a pale circle (map / film strip / bug), the label in near-black Promo Sans regular 32 px, and under it a grey detail line at 22 px (never smaller: row three's meaning rides on its detail line). These are the replay.io home page's three steps VERBATIM (Explore · Test & Record · Investigate & Report); never mix them with the docs' five-step list. Grey details: 'an AI agent drives your app in a real browser' / 'every journey run, a Replay recording' / 'root cause for every bug'. As the first check lands, one small grey proof line (Promo Sans, 20 px, tabular figures, unspoken) fades in under the list, left-aligned to the labels: 'Insights: 89 explorations · 1151 journeys' (the exact figures on the Insights take's tiles; keep the 'Insights:' source tag, never 'in the account'). Bottom left, small, a shimmering 'Working' (a soft light sweep running through the word, as in the reference) sits until the last check. As each step is named, its pale circle fills and a green (#1f9d63) check mark draws itself over the icon in 0.18 s, the row's label darkens a notch, and the music lands one muted percussive clack (machines clack, never chime): on 'explores' row one; on 'journeys' row two (its film-strip icon advances one frame as the check draws); and row three on 'runs', the line's last stressed word (no word of its own: its grey detail line already reads 'root cause for every bug'). On that third check 'Working' stops shimmering and swaps to 'Done' in green, held still and readable through the end of the line and the hold. From 0.5 s after the line ends, the three resolved rows and the proof line break up from their right edges into a grid of small square registration dots (the look's squareDots) that scatter and clear to bare studio paper, 'Done' last; M2's one-bar fill runs under that hold, and the cut into ch04-s01 (also bare studio paper) lands on the bar line so M3's first downbeat arrives with it. No product footage in this shot or chapter, no quotation marks, and no numbers other than the one grey Insights line. Never show more steps than these three.",
+      "beats": [
+        {
+          "id": "b-title",
+          "at": {
+            "shotTime": 0.1
+          },
+          "what": "'Testing your app' resolves from a blur, top left; M2 bar line"
+        },
+        {
+          "id": "b-rows",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "the hairline spine draws down; the three step rows arrive 0.15 s apart, sliding up and un-blurring"
+        },
+        {
+          "id": "b-working",
+          "at": {
+            "shotTime": 0.7
+          },
+          "what": "'Working' fades in bottom left with its shimmer sweep"
+        },
+        {
+          "id": "b-check1",
+          "at": {
+            "line": "L0301",
+            "word": "explores"
+          },
+          "what": "green check draws over the Explore icon; row darkens; clack; the grey Insights proof line fades in under the list"
+        },
+        {
+          "id": "b-check2",
+          "at": {
+            "line": "L0302",
+            "word": "journeys"
+          },
+          "what": "green check over Test & Record; its film-strip icon advances one frame; clack"
+        },
+        {
+          "id": "b-check3",
+          "at": {
+            "line": "L0302",
+            "word": "runs"
+          },
+          "what": "green check over Investigate & Report on the last stressed word; clack; Working becomes Done in green"
+        },
+        {
+          "id": "b-dots",
+          "at": {
+            "line": "L0302",
+            "edge": "end",
+            "offset": 0.5
+          },
+          "what": "the resolved rows and the proof line break into square registration dots from their right edges and clear to bare paper, Done last; M2 fill into the cut to ch04"
+        }
+      ],
+      "props": [
+        "kit steps (hairline spine, three rows, icons map / film / bug)",
+        "grey Insights proof line (89 explorations · 1151 journeys)",
+        "green check marks",
+        "shimmering Working → Done",
+        "drifting hairlines",
+        "square registration dots"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "Testing your app",
+          "beat": "b-title"
+        },
+        {
+          "kind": "label",
+          "text": "Explore · an AI agent drives your app in a real browser",
+          "beat": "b-rows"
+        },
+        {
+          "kind": "label",
+          "text": "Test & Record · every journey run, a Replay recording",
+          "beat": "b-rows"
+        },
+        {
+          "kind": "label",
+          "text": "Investigate & Report · root cause for every bug",
+          "beat": "b-rows"
+        },
+        {
+          "kind": "label",
+          "text": "Insights: 89 explorations · 1151 journeys",
+          "beat": "b-check1"
+        },
+        {
+          "kind": "label",
+          "text": "Working",
+          "beat": "b-working",
+          "until": "b-check3"
+        },
+        {
+          "kind": "label",
+          "text": "Done",
+          "beat": "b-check3"
+        }
+      ],
+      "music": {
+        "cue": "M2 build",
+        "note": "M2 build continues, bright and rhythmic: kick, hats, soft clap on 2 and 4, warm pad underneath. Intensity ≈ 0.55 → 0.65. Each green check is one muted percussive clack placed on the beat nearest its cue (on 'explores', on 'journeys', and the third on 'runs', the line's last stressed word; never a chime or bell); the clacks are the shot's only accents. Under the closing hold a one-bar drum fill (snare and tom roll, filtered hats), so the cut into ch04 and M3's first downbeat coincide."
+      },
+      "transitionIn": "blur",
+      "claims": [
+        "LOOP-01",
+        "LOOP-02",
+        "LOOP-03",
+        "LOOP-05",
+        "LOOP-07",
+        "PROOF-01",
+        "PROOF-02",
+        "SET-16",
+        "LOOP-13",
+        "PROOF-13"
+      ]
+    }
+  ]
+}
