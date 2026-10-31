@@ -50,7 +50,7 @@ const APS = [
   { x: 860, label: 'current epoch', check: 'matches' },
   { x: 1060, label: 'retained history', check: 'kept' },
 ] as const;
-const BKT = { x: 640, y: 545 };
+const BKT = { x: 640, y: 525 };
 
 interface Pos {
   x: number;
@@ -59,14 +59,21 @@ interface Pos {
 }
 const ROOM_START: Pos = { x: 110, y: TRACK_Y, k: 1 };
 
-/** Pipeline segments — illustrative widths only (no measurements). */
-const PIPE = { x0: 250, y: 300, h: 46 };
+/** Pipeline lanes — illustrative widths only (no measurements). Each annotation owns a lane. */
+const PIPE = { x0: 250, h: 46, title: 150, note: 174, badge: 214, bar: 262, celldLabel: 362, celldBar: 398, domainTop: 225, domainBot: 465, noPath: 500 };
 
-const CAM_AP1: CameraState = { x: 380, y: 330, k: 1.3 };
-const CAM_AP2: CameraState = { x: 520, y: 300, k: 1.3 };
-const CAM_AP5: CameraState = { x: 900, y: 330, k: 1.3 };
-const CAM_PIPE: CameraState = { x: 640, y: 360, k: 1.1 };
-const CAM_ALARM: CameraState = { x: 640, y: 330, k: 1.12 };
+/* Cameras fit the complete active group (WarnCard at y 62 … bucket/hosts) above screen y 610. */
+const CAM_AP1: CameraState = { x: 520, y: 372, k: 1.13 };
+const CAM_AP2: CameraState = { x: 560, y: 359, k: 1.18 };
+const CAM_AP5: CameraState = { x: 700, y: 372, k: 1.13 };
+const CAM_PIPE: CameraState = { x: 620, y: 330, k: 1.2 };
+const CAM_ALARM: CameraState = { x: 640, y: 400, k: 1.12 };
+
+/** Half-width of a gate including its widest label (≈ 'retained history' at 18 px). */
+const GATE_HALF = 85;
+
+/** Alarm beat lanes (world y), framed by CAM_ALARM: badges · narration lane · room · hosts · caveat panel. */
+const ALARM = { badgeX: 150, badge1: 110, badge2: 150, lane: 205, host: 450, panel: 528 };
 
 /* ---------------------------------------------------------- timeline */
 export function buildScene() {
@@ -88,6 +95,7 @@ export function buildScene() {
   const datedU = tl.channel('datedU', 0);
   const histU = tl.channel('histU', 0);
   const contractU = tl.channel('contractU', 0);
+  const quietU = tl.channel('quietU', 0); // platform composition recedes for good
   const endU = tl.channel('endU', 0);
 
   // 1 — remove assumptions one at a time; healthy pass first
@@ -117,7 +125,7 @@ export function buildScene() {
   tl.tween(lifeU, 1, { at: B(4) + 1.6, dur: 7.8, ease: ease.linear });
 
   // 5 — latency budget
-  tl.caption({ at: 44.5, dur: 10, text: 'There is also a latency budget. Local SQL can be fast while a durable response waits for an object-store upload and an ownership check, especially when storage is far from compute.' });
+  tl.caption({ at: 44.5, dur: 10, text: 'There is also a latency budget. Local sequel can be fast while a durable response waits for an object-store upload and an ownership check, especially when storage is far from compute.' });
   tl.tween(lifeU, 0, { at: B(5), dur: 0.6, ease: ease.move });
   tl.tween(trackU, 0, { at: B(5), dur: 0.8, ease: ease.move });
   tl.tween(room, { x: 170, y: 330, k: 0.8 }, { at: B(5) + 0.2, dur: 1.4, ease: ease.move });
@@ -163,6 +171,7 @@ export function buildScene() {
   // 12 — the history, compressed
   tl.caption({ at: 121.5, dur: 10, text: 'The history began with coordinated state in twenty twenty, gained an open runtime in twenty twenty-two, and brought SQLite beside objects in twenty twenty-four. Celld made a different operating model concrete.' });
   tl.tween(datedU, 0, { at: B(12), dur: 0.6, ease: ease.move });
+  tl.tween(quietU, 1, { at: B(12) + 0.1, dur: 0.6, ease: ease.move });
   tl.tween(histU, 1, { at: B(12) + 0.4, dur: 7.0, ease: ease.linear });
 
   // 13 — the contract exchange
@@ -173,13 +182,13 @@ export function buildScene() {
   // 14 — the contracts line up
   tl.caption({ at: 143.5, dur: 10, text: "Our acknowledged message survives the owner's death because those contracts line up. Durable Objects become more portable when the machinery behind that promise can travel with the application." });
   tl.tween(contractU, 0, { at: B(14) + 0.2, dur: 0.8, ease: ease.move });
-  tl.tween(cam, { x: 640, y: 340, k: 1.05 }, { at: B(14) + 0.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 380, k: 1.05 }, { at: B(14) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(endU, 1, { at: B(14) + 0.8, dur: 1.2, ease: ease.enter });
   tl.hold(153.5, 0.5);
 
   return {
     tl, cam, room, trackU, passU, partU, lieU, lifeU, pipeU, stretchU, fleetU, alarmU, questU, portU, evalU,
-    datedU, histU, contractU, endU,
+    datedU, histU, contractU, quietU, endU,
   };
 }
 
@@ -210,18 +219,28 @@ function RoomToken({ p, color = ACCENT, op = 1, fenced = 0 }: { p: Pos; color?: 
   );
 }
 
-function Apertures({ u, pass, room, part, lie, life }: { u: number; pass: number; room: Pos; part: number; lie: number; life: number }) {
+function Apertures({ u, pass, room, part, lie, life, cam }: { u: number; pass: number; room: Pos; part: number; lie: number; life: number; cam: CameraState }) {
   if (u <= 0.001) return null;
   const failing = [part, lie, 0, 0, life];
+  // while one assumption is removed, the other gates step back; any gate the
+  // camera would chop at the frame edge is hidden instead of shown cut off
+  const focus = seg(Math.max(part, lie, life), 0, 0.12);
+  const visL = cam.x - 640 / cam.k;
+  const visR = cam.x + 640 / cam.k;
   return (
     <g opacity={u}>
-      <line x1={70} y1={TRACK_Y} x2={1220} y2={TRACK_Y} stroke={MUTED} strokeWidth={1.4} strokeDasharray="3 7" />
+      <line x1={70} y1={TRACK_Y} x2={1220} y2={TRACK_Y} stroke={MUTED} strokeWidth={1.4} strokeDasharray="3 7" opacity={1 - 0.7 * focus} />
       {APS.map((a, i) => {
         const passed = pass > 0 && room.x > a.x + 40 && failing[i] <= 0.01;
         const bad = seg(failing[i], 0.15, 0.3);
         const c = bad > 0.5 ? NEGATIVE : passed ? POSITIVE : MUTED;
+        const overflow = Math.max(0, visL - (a.x - GATE_HALF), a.x + GATE_HALF - visR);
+        const inView = clamp01(1 - overflow / 30);
+        const active = failing[i] > 0.01;
+        const op = inView * (active ? 1 : 1 - 0.6 * focus);
+        if (op <= 0.001) return null;
         return (
-          <g key={a.label}>
+          <g key={a.label} opacity={op}>
             <rect x={a.x - 52} y={TRACK_Y - 104} width={104} height={208} rx={12} fill="none" stroke={c} strokeWidth={3} />
             <rect x={a.x - 52} y={TRACK_Y - 104} width={104} height={208} rx={12} fill={c} opacity={0.06} />
             <Label x={a.x} y={TRACK_Y - 120} text={a.label} color={c === MUTED ? TEXT : c} size={18} />
@@ -238,16 +257,17 @@ function Partition({ u, room }: { u: number; room: Pos }) {
   const cut = seg(u, 0.1, 0.25);
   const gate = seg(u, 0.3, 0.45);
   const lease = seg(u, 0.5, 0.85);
-  const mx = (room.x + BKT.x) / 2;
-  const my = (TRACK_Y + 60 + BKT.y - 40) / 2;
+  // cut mark 70% along the room→bucket link, below the gate status row
+  const mx = lerp(room.x + 20, BKT.x - 120, 0.7) + 20;
+  const my = lerp(TRACK_Y + 90, BKT.y - 30, 0.7) + 20;
   return (
     <g>
-      <line x1={room.x + 20} y1={TRACK_Y + 90} x2={BKT.x - 120} y2={BKT.y - 30} stroke={TEAL} strokeWidth={2.4} strokeDasharray="6 5" />
+      <line x1={room.x + 20} y1={TRACK_Y + 90} x2={BKT.x - 120} y2={BKT.y - 30} stroke={TEAL} strokeWidth={2.4} strokeDasharray="6 5" opacity={seg(u, 0, 0.1)} />
       <path d={`M ${mx - 20} ${my - 20} l 10 12 l -8 6 l 18 22`} fill="none" stroke={NEGATIVE} strokeWidth={4} opacity={cut} />
       {/* ack gate shut */}
       <g transform={`translate(${room.x + 76}, ${TRACK_Y})`} opacity={gate}>
         <rect x={-7} y={-40} width={14} height={80} rx={3} fill={NEGATIVE} />
-        <Label x={46} y={-46} text="no ack" color={NEGATIVE} size={18} />
+        <Label x={30} y={-46} text="no ack" color={NEGATIVE} size={18} />
       </g>
       {/* lease bar drains */}
       <g opacity={seg(u, 0.45, 0.55)}>
@@ -298,17 +318,20 @@ function Lifecycle({ u, room }: { u: number; room: Pos }) {
   const sweep = seg(u, 0.15, 0.45);
   const jam = seg(u, 0.5, 0.6);
   const files = ['own.json', 'log/…', 'snapshot/…'];
+  const fileX = [770, 880, 1000];
   return (
     <g>
       <Bucket x={900} y={BKT.y} w={260} h={80} label="bucket" />
+      {/* recovery path from the bucket back to the room (drawn under the file pills) */}
+      <path d={`M ${1030} ${BKT.y} Q ${room.x + 80} ${TRACK_Y + 170} ${room.x + 40} ${TRACK_Y + 92}`} fill="none" stroke={jam > 0.5 ? NEGATIVE : POSITIVE} strokeWidth={2.4} strokeDasharray="7 5" opacity={seg(u, 0.45, 0.55)} />
       {files.map((f, i) => {
         const gone = seg(sweep, i * 0.25, i * 0.25 + 0.4);
-        return <Pill key={f} x={800 + i * 100} y={BKT.y - 80} text={f} color={gone > 0.5 ? NEGATIVE : TEAL} size={18} mono opacity={1 - 0.75 * gone} />;
+        return <Pill key={f} x={fileX[i]} y={BKT.y - 65} text={f} color={gone > 0.5 ? NEGATIVE : TEAL} size={18} mono opacity={1 - 0.75 * gone} />;
       })}
+      {/* the rule sits beside the bucket it sweeps, clear of the gate status row */}
       <g opacity={seg(u, 0.05, 0.15)}>
-        <Pill x={540} y={470} text="lifecycle rule: expire after N days" color={NEGATIVE} size={18} fill={colors.BG} />
+        <Pill x={758} y={BKT.y + 4} text="lifecycle rule: expire after N days" color={NEGATIVE} size={18} anchor="end" fill={colors.BG} />
       </g>
-      <path d={`M ${900} ${BKT.y - 110} Q ${room.x - 40} ${TRACK_Y + 160} ${room.x} ${TRACK_Y + 100}`} fill="none" stroke={jam > 0.5 ? NEGATIVE : POSITIVE} strokeWidth={2.4} strokeDasharray="7 5" opacity={seg(u, 0.45, 0.55)} />
       <WarnCard
         x={860}
         y={62}
@@ -327,7 +350,7 @@ function Pipeline({ u, stretch, fleet }: { u: number; stretch: number; fleet: nu
   const rtW = lerp(330, 520, stretch);
   const ownW = 120;
   const draw = clamp01(u);
-  const y = PIPE.y;
+  const y = PIPE.bar;
   const segs = [
     { w: sqlW, c: POSITIVE, label: 'local SQL' },
     { w: rtW, c: TEAL, label: 'object-store upload round trip' },
@@ -338,9 +361,12 @@ function Pipeline({ u, stretch, fleet }: { u: number; stretch: number; fleet: nu
   const shown = total * draw;
   const fRt = 210;
   const f = seg(fleet, 0.1, 0.4);
+  const cy = PIPE.celldBar;
   return (
     <g>
-      <Label x={PIPE.x0} y={y - 100} text="workerd bucket-proof path: time until a durable response" color={TEXT} size={18} anchor="start" />
+      {/* lane 1: title · lane 2: not-measured qualification · lane 3: distance badge */}
+      <Label x={PIPE.x0} y={PIPE.title} text="workerd bucket-proof path: time until a durable response" color={TEXT} size={18} anchor="start" opacity={draw} />
+      <Illus x={PIPE.x0} y={PIPE.note} text="illustrative widths — not measured" opacity={draw} />
       {segs.map((sg) => {
         const x0 = x;
         x += sg.w;
@@ -354,20 +380,19 @@ function Pipeline({ u, stretch, fleet }: { u: number; stretch: number; fleet: nu
         );
       })}
       <g opacity={stretch}>
-        <Pill x={PIPE.x0 + sqlW + rtW / 2} y={y - 30 - 28} text="storage far from compute → longer" color={TEAL} size={18} fill={colors.BG} />
+        <Pill x={PIPE.x0 + sqlW + rtW / 2} y={PIPE.badge} text="storage far from compute → longer" color={TEAL} size={18} fill={colors.BG} />
       </g>
       {/* failure domain boundary: both paths must cross it */}
       <g opacity={f}>
-        <rect x={110} y={200} width={PIPE.x0 + sqlW - 110 + 6} height={330} rx={16} fill="none" stroke={NEGATIVE} strokeWidth={2} strokeDasharray="8 6" />
-        <Label x={120} y={556} text="one failure domain" color={NEGATIVE} size={18} anchor="start" />
-        <Label x={PIPE.x0} y={y + 104} text="celld fleet path (explicitly celld)" color={SECONDARY} size={18} anchor="start" />
-        <rect x={PIPE.x0} y={y + 130 - PIPE.h / 2} width={sqlW} height={PIPE.h} fill={POSITIVE} opacity={0.75} />
-        <rect x={PIPE.x0 + sqlW} y={y + 130 - PIPE.h / 2} width={fRt * seg(fleet, 0.2, 0.5)} height={PIPE.h} fill={SECONDARY} opacity={0.75} />
-        <Label x={PIPE.x0 + sqlW + fRt / 2} y={y + 130 + PIPE.h / 2 + 26} text="follower fsync" color={SECONDARY} size={18} opacity={seg(fleet, 0.4, 0.5)} />
-        <Pill x={PIPE.x0 + sqlW + fRt + 24} y={y + 130} text="+ follower disks + recovery work" color={WARM} size={18} anchor="start" opacity={seg(fleet, 0.55, 0.7)} fill={colors.BG} />
+        <rect x={110} y={PIPE.domainTop} width={PIPE.x0 + sqlW - 110 + 6} height={PIPE.domainBot - PIPE.domainTop} rx={16} fill="none" stroke={NEGATIVE} strokeWidth={2} strokeDasharray="8 6" />
+        <Label x={120} y={PIPE.domainBot + 24} text="one failure domain" color={NEGATIVE} size={18} anchor="start" />
+        <Label x={PIPE.x0 + sqlW + 16} y={PIPE.celldLabel} text="celld fleet path (explicitly celld)" color={SECONDARY} size={18} anchor="start" />
+        <rect x={PIPE.x0} y={cy - PIPE.h / 2} width={sqlW} height={PIPE.h} fill={POSITIVE} opacity={0.75} />
+        <rect x={PIPE.x0 + sqlW} y={cy - PIPE.h / 2} width={fRt * seg(fleet, 0.2, 0.5)} height={PIPE.h} fill={SECONDARY} opacity={0.75} />
+        <Label x={PIPE.x0 + sqlW + fRt / 2} y={cy + PIPE.h / 2 + 26} text="follower fsync" color={SECONDARY} size={18} opacity={seg(fleet, 0.4, 0.5)} />
+        <Pill x={PIPE.x0 + sqlW + fRt + 24} y={cy} text="+ follower disks + recovery work" color={WARM} size={18} anchor="start" opacity={seg(fleet, 0.55, 0.7)} fill={colors.BG} />
       </g>
-      <Pill x={640} y={596} text="no path avoids moving bytes beyond one failure domain" color={TEXT} size={18} opacity={seg(fleet, 0.75, 0.9)} fill={colors.BG} />
-      <Illus x={PIPE.x0} y={y + 74} text="illustrative widths — not measured" opacity={draw} />
+      <Pill x={640} y={PIPE.noPath} text="no path avoids moving bytes beyond one failure domain" color={TEXT} size={18} opacity={seg(fleet, 0.75, 0.9)} fill={colors.BG} />
     </g>
   );
 }
@@ -381,41 +406,43 @@ function Alarm({ u, quest, room }: { u: number; quest: number; room: Pos }) {
   const qs = ['alarm discovery', 'durable scheduling state', 'handler execution', 'external effects'];
   return (
     <g>
-      <Host x={360} y={450} label="owner A" color={ACCENT} opacity={seg(u, 0, 0.1)} dead={kill} />
-      <Host x={920} y={450} label="survivor B" color={SECONDARY} opacity={seg(u, 0, 0.1)} />
+      <Host x={360} y={ALARM.host} label="owner A" color={ACCENT} opacity={seg(u, 0, 0.1)} dead={kill} />
+      <Host x={920} y={ALARM.host} label="survivor B" color={SECONDARY} opacity={seg(u, 0, 0.1)} />
       {/* bell rides with the room */}
       <g transform={`translate(${room.x + 58}, ${room.y - 42}) rotate(${wiggle})`} opacity={seg(u, 0.05, 0.15)}>
         <path d="M -14 8 Q -14 -14 0 -16 Q 14 -14 14 8 L 18 13 L -18 13 Z" fill={ring > 0.5 ? WARM : MUTED} />
         <circle cx={0} cy={17} r={4} fill={ring > 0.5 ? WARM : MUTED} />
       </g>
-      <Pill x={640} y={380} text="alarm deadline stays in the object's SQLite state" color={MUTED} size={18} opacity={seg(u, 0.1, 0.25) * (1 - seg(u, 0.45, 0.5))} fill={colors.BG} />
-      <Pill x={640} y={380} text="survivor claims ownership → alarm follows the claim" color={SECONDARY} size={18} opacity={claim * (1 - quest)} fill={colors.BG} />
-      <Pill x={920} y={196} text="alarm runs on survivor" color={WARM} size={18} opacity={ring * (1 - quest)} fill={colors.BG} />
+      {/* one narration lane at y=205: SQLite state → claim → alarm runs (sequential) */}
+      <Pill x={640} y={ALARM.lane} text="alarm deadline stays in the object's SQLite state" color={MUTED} size={18} opacity={seg(u, 0.1, 0.25) * (1 - seg(u, 0.45, 0.5))} fill={colors.BG} />
+      <Pill x={640} y={ALARM.lane} text="survivor claims ownership → alarm follows the claim" color={SECONDARY} size={18} opacity={claim * (1 - seg(u, 0.7, 0.75))} fill={colors.BG} />
+      <Pill x={920} y={ALARM.lane} text="alarm runs on survivor" color={WARM} size={18} opacity={ring} fill={colors.BG} />
       <g opacity={seg(u, 0.85, 1)}>
-        <Pill x={60} y={84} text="ad78a8f · Oct 31: tested (owner, killed owner, missing node record)" color={POSITIVE} size={18} anchor="start" fill={colors.BG} />
-        <Pill x={60} y={128} text="aa49479 · Oct 29 initial merge: no alarms" color={MUTED} size={18} anchor="start" fill={colors.BG} />
+        <Pill x={ALARM.badgeX} y={ALARM.badge1} text="ad78a8f · Oct 31: tested (owner, killed owner, missing node record)" color={POSITIVE} size={18} anchor="start" fill={colors.BG} />
+        <Pill x={ALARM.badgeX} y={ALARM.badge2} text="aa49479 · Oct 29 initial merge: no alarms" color={MUTED} size={18} anchor="start" fill={colors.BG} />
       </g>
       <g opacity={quest}>
-        <rect x={150} y={520} width={980} height={92} rx={14} fill={colors.BG} stroke={WARM} strokeWidth={2} />
-        <Label x={640} y={548} text="tests ≠ every side effect exactly once — separate questions:" color={WARM} size={18} />
+        <rect x={180} y={ALARM.panel} width={920} height={84} rx={14} fill={colors.BG} stroke={WARM} strokeWidth={2} />
+        <Label x={640} y={ALARM.panel + 26} text="tests ≠ every side effect exactly once — separate questions:" color={WARM} size={18} />
         {qs.map((q, i) => (
-          <Pill key={q} x={[255, 470, 720, 950][i]} y={586} text={q} color={TEXT} size={18} opacity={seg(quest, 0.15 + i * 0.15, 0.3 + i * 0.15)} />
+          <Pill key={q} x={[290, 529, 776, 984][i]} y={ALARM.panel + 62} text={q} color={TEXT} size={18} opacity={seg(quest, 0.15 + i * 0.15, 0.3 + i * 0.15)} />
         ))}
       </g>
     </g>
   );
 }
 
-function Portable({ u, evalU, dated, hist, contract }: { u: number; evalU: number; dated: number; hist: number; contract: number }) {
+function Portable({ u, evalU, dated, quiet }: { u: number; evalU: number; dated: number; quiet: number }) {
   if (u <= 0.001) return null;
   const move = seg(u, 0.35, 0.7);
   const bx = lerp(140, 680, ease.move(move));
-  const quiet = Math.max(contract, hist * 0.85);
   const chips = ['network services', 'supported APIs', 'production ops', 'managed services'];
+  // the evaluation / dated cards replace the platform box outright (no text-on-text)
+  const cover = Math.max(evalU, dated);
   return (
-    <g opacity={1 - 0.85 * quiet}>
+    <g opacity={1 - 0.88 * quiet}>
       {/* managed platform breadth stays where it is */}
-      <g opacity={seg(u, 0, 0.15)}>
+      <g opacity={seg(u, 0, 0.15) * (1 - seg(cover, 0, 0.2))}>
         <rect x={140} y={170} width={480} height={330} rx={26} fill={PANEL} stroke={MUTED} strokeWidth={1.6} opacity={0.6} />
         <Label x={380} y={204} text="managed platform breadth" color={MUTED} size={18} bold />
         {chips.map((c, i) => (
@@ -423,17 +450,17 @@ function Portable({ u, evalU, dated, hist, contract }: { u: number; evalU: numbe
         ))}
       </g>
       {/* portable boundary relocates */}
-      <rect x={bx} y={160} width={500} height={350} rx={22} fill="none" stroke={ACCENT} strokeWidth={2.6} strokeDasharray="10 7" />
+      <rect x={bx} y={160} width={500} height={330} rx={22} fill="none" stroke={ACCENT} strokeWidth={2.6} strokeDasharray="10 7" />
       <Label x={bx + 20} y={150} text="where the programming model runs" color={ACCENT} size={18} anchor="start" bold />
       <g opacity={seg(u, 0.65, 0.85)}>
         <Host x={760} y={400} label="your host" color={ACCENT} />
         <Host x={1040} y={400} label="your host" color={ACCENT} />
         <Pill x={900} y={204} text="same identity · same storage model" color={POSITIVE} size={18} />
-        <Bucket x={900} y={570} w={220} h={56} label="qualified bucket" />
-        <Label x={1190} y={600} text="your ops" color={WARM} size={18} anchor="end" />
+        <Bucket x={900} y={546} w={220} h={56} label="qualified bucket" />
+        <Label x={1190} y={556} text="your ops" color={WARM} size={18} anchor="end" />
       </g>
       <g opacity={evalU}>
-        <rect x={160} y={240} width={440} height={240} rx={14} fill={colors.BG} stroke={WARM} strokeWidth={2} />
+        <rect x={140} y={170} width={480} height={330} rx={26} fill={colors.BG} stroke={WARM} strokeWidth={2} />
         <Label x={180} y={272} text="evaluate separately:" color={WARM} size={20} anchor="start" bold />
         {['runtime portability', 'supported APIs', 'network services', 'production operations'].map((r, i) => (
           <g key={r} opacity={seg(evalU, 0.1 + i * 0.15, 0.25 + i * 0.15)}>
@@ -443,7 +470,7 @@ function Portable({ u, evalU, dated, hist, contract }: { u: number; evalU: numbe
         ))}
       </g>
       <g opacity={dated}>
-        <rect x={160} y={240} width={440} height={240} rx={14} fill={colors.BG} stroke={MUTED} strokeWidth={1.6} />
+        <rect x={140} y={170} width={480} height={330} rx={26} fill={colors.BG} stroke={MUTED} strokeWidth={1.6} />
         <Label x={180} y={274} text="stated direction:" color={TEXT} size={18} anchor="start" />
         <Label x={180} y={304} text="first-class self-hosting" color={POSITIVE} size={22} anchor="start" bold />
         <Label x={180} y={350} text="inspected implementation:" color={TEXT} size={18} anchor="start" />
@@ -513,14 +540,16 @@ export function Render({ s }: { s: SceneState }) {
   const hist = s.get(scene.histU);
   const contract = s.get(scene.contractU);
   const port = s.get(scene.portU);
+  const cam = s.get(scene.cam);
+  const quiet = Math.max(s.get(scene.quietU), end);
   const fenced = seg(part, 0.85, 0.95);
   const roomColor = seg(lie, 0.15, 0.3) > 0.5 || seg(life, 0.55, 0.6) > 0.5 ? NEGATIVE : ACCENT;
   const roomOp = (1 - 0.88 * Math.max(clamp01(hist * 3), clamp01(contract * 3))) * (1 - end);
   return (
     <>
       <Backdrop />
-      <Camera {...s.get(scene.cam)}>
-        <Apertures u={s.get(scene.trackU)} pass={s.get(scene.passU)} room={room} part={part} lie={lie} life={life} />
+      <Camera {...cam}>
+        <Apertures u={s.get(scene.trackU)} pass={s.get(scene.passU)} room={room} part={part} lie={lie} life={life} cam={cam} />
         <g opacity={seg(part, 0.0, 0.1)}>
           <Bucket x={BKT.x} y={BKT.y} w={240} h={76} label="bucket" />
         </g>
@@ -528,12 +557,11 @@ export function Render({ s }: { s: SceneState }) {
         <Liar u={lie} room={room} />
         <Lifecycle u={life} room={room} />
         <Pipeline u={s.get(scene.pipeU)} stretch={s.get(scene.stretchU)} fleet={s.get(scene.fleetU)} />
-        <Portable u={port} evalU={s.get(scene.evalU)} dated={s.get(scene.datedU)} hist={hist} contract={contract} />
+        <Portable u={port} evalU={s.get(scene.evalU)} dated={s.get(scene.datedU)} quiet={quiet} />
         <Alarm u={s.get(scene.alarmU)} quest={s.get(scene.questU)} room={room} />
         <RoomToken p={room} color={roomColor} op={roomOp} fenced={fenced} />
         <History u={hist} />
         <Contract u={contract} />
-        <Illus x={60} y={612} opacity={1 - end} text="lobby, m42, hosts: illustrative · no measured latencies" />
         <Msg x={640} y={196} label="m42 ✓" color={POSITIVE} opacity={end} size={22} />
         <Takeaway
           u={end}
@@ -546,6 +574,8 @@ export function Render({ s }: { s: SceneState }) {
           foot="workerd aa49479 (2026-10-29 UTC) · ad78a8f (2026-10-31) · celld v0.6.3"
         />
       </Camera>
+      {/* screen-space footer: stable above the caption band, never moved by the camera */}
+      <Illus x={60} y={612} opacity={1 - end} text="lobby, m42, hosts: illustrative · no measured latencies" />
     </>
   );
 }

@@ -41,17 +41,32 @@ const { ACCENT, WARM, POSITIVE, SECONDARY, NEGATIVE, TEAL, MUTED, TEXT, PANEL } 
 const HA = { x: 190, y: 300 };
 const HB = { x: 1090, y: 300 };
 const LATCH = { x: 640, y: 310, r: 58 };
-const BKT = { x: 640, y: 480, w: 460, h: 170 };
-const CARD = { x: 640, y: 466, w: 400, h: 92 };
+const BKT = { x: 640, y: 468, w: 460, h: 150 };
+const CARD = { x: 640, y: 458, w: 400, h: 92 };
 const KEY = 'do/ns/lobby/own.json';
 
-const CAM_GAP: CameraState = { x: 640, y: 260, k: 1.25 };
-const CAM_LATCH: CameraState = { x: 640, y: 340, k: 1.2 };
-const CAM_CAS: CameraState = { x: 640, y: 250, k: 1.4 };
+// Push-ins sized so the whole active race (hosts, claims, latch, bucket rim) stays in frame.
+const CAM_GAP: CameraState = { x: 640, y: 325, k: 1.08 };
+const CAM_LATCH: CameraState = { x: 640, y: 340, k: 1.12 };
+const CAM_CAS: CameraState = { x: 640, y: 335, k: 1.1 };
 const CAM_READ: CameraState = { x: 900, y: 380, k: 1.25 };
 const CAM_TESTS: CameraState = { x: 900, y: 420, k: 1.25 };
 const CAM_SCOPE: CameraState = { x: 640, y: 420, k: 1.3 };
 const CAM_BUCKET: CameraState = { x: 640, y: 480, k: 1.7 };
+
+/**
+ * Screen-fit visibility: 1 while the world box sits inside the safe frame
+ * (x 20…1260, y 20…598) under camera c, fading to 0 over 28 px of overflow —
+ * context a push-in would chop fades out instead of being cut.
+ */
+function fit(c: CameraState, x0: number, x1: number, y0: number, y1: number): number {
+  const sx0 = (x0 - c.x) * c.k + 640;
+  const sx1 = (x1 - c.x) * c.k + 640;
+  const sy0 = (y0 - c.y) * c.k + 360;
+  const sy1 = (y1 - c.y) * c.k + 360;
+  const over = Math.max(0, 20 - sx0, sx1 - 1260, 20 - sy0, sy1 - 598);
+  return clamp01(1 - over / 28);
+}
 
 /** Teeth of the latch ring, precomputed. */
 const TEETH = Array.from({ length: 16 }, (_, i) => (i / 16) * Math.PI * 2);
@@ -93,6 +108,7 @@ export function buildScene() {
   const serviceU = tl.channel('serviceU', 0);
   const opsU = tl.channel('opsU', 0);
   const dimU = tl.channel('dimU', 0);
+  const extrasQ = tl.channel('extrasQ', 0); // beat-8 annotations step back
   const endU = tl.channel('endU', 0);
 
   // 1 — both read an empty record
@@ -136,7 +152,7 @@ export function buildScene() {
   tl.tween(casU, 1, { at: B(7) + 1.2, dur: 5.0, ease: ease.linear });
 
   // 8 — workerd's record: node, epoch, from; JS runs on a compute node
-  tl.caption({ at: 77.5, dur: 10, text: 'In workerd, the authority record names a node, its epoch, and the last epoch that finished opening. The bucket stores this decision; the JavaScript still executes on a compute node.' });
+  tl.caption({ at: 77.5, dur: 10, text: 'In workerd, the authority record names a node, its epoch, and the last epoch that finished opening. The bucket stores this decision; the Java Script still executes on a compute node.' });
   tl.tween(casU, 0, { at: B(8), dur: 0.6, ease: ease.move });
   tl.tween(cam, CAMERA_HOME, { at: B(8) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(recordU, 1, { at: B(8) + 1.0, dur: 5.0, ease: ease.linear });
@@ -144,6 +160,7 @@ export function buildScene() {
 
   // 9 — strong reads
   tl.caption({ at: 88.5, dur: 10, text: 'Strong reads are a separate requirement. After a successful write, a later read must observe the updated record, rather than an obsolete answer from a lagging replica.' });
+  tl.tween(extrasQ, 1, { at: B(9), dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_READ, { at: B(9) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(strongU, 1, { at: B(9) + 1.2, dur: 6.0, ease: ease.linear });
 
@@ -154,7 +171,7 @@ export function buildScene() {
   tl.tween(testsU, 1, { at: B(10) + 1.0, dur: 6.5, ease: ease.linear });
 
   // 11 — one authority key, not a multi-key transaction
-  tl.caption({ at: 110.5, dur: 10, text: 'This is a guarantee about one authority key. It does not turn separate objects into one atomic SQL transaction, and it does not make arbitrary bucket operations transactional together.' });
+  tl.caption({ at: 110.5, dur: 10, text: 'This is a guarantee about one authority key. It does not turn separate objects into one atomic sequel transaction, and it does not make arbitrary bucket operations transactional together.' });
   tl.tween(testsU, 0, { at: B(11), dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_SCOPE, { at: B(11) + 0.1, dur: 1.4, ease: ease.move });
   tl.tween(scopeU, 1, { at: B(11) + 1.0, dur: 5.0, ease: ease.linear });
@@ -181,7 +198,7 @@ export function buildScene() {
 
   return {
     tl, cam, stageU, readU, writeU, warnU, gapU, rewindU, latchU, createU, matchU, casU, recordU,
-    pagesU, strongU, testsU, scopeU, serviceU, opsU, dimU, endU,
+    pagesU, strongU, testsU, scopeU, serviceU, opsU, dimU, extrasQ, endU,
   };
 }
 
@@ -204,7 +221,7 @@ function recordState(read: number, write: number, create: number, match: number)
 
 /* ------------------------------------------------------ subcomponents */
 
-function Latch({ u, create, match, cas }: { u: number; create: number; match: number; cas: number }) {
+function Latch({ u, create, match, cas, record }: { u: number; create: number; match: number; cas: number; record: number }) {
   if (u <= 0.001) return null;
   const accept = Math.max(seg(create, 0.22, 0.3) * (1 - seg(create, 0.36, 0.44)), seg(match, 0.34, 0.42) * (1 - seg(match, 0.48, 0.56)));
   const reject = Math.max(seg(create, 0.44, 0.5) * (1 - seg(create, 0.58, 0.66)), seg(match, 0.58, 0.64) * (1 - seg(match, 0.72, 0.8)));
@@ -227,7 +244,7 @@ function Latch({ u, create, match, cas }: { u: number; create: number; match: nu
       </text>
       {/* the bolt drops on rejection */}
       <rect x={-LATCH.r - 18} y={-6 + 0} width={(LATCH.r + 18) * 2} height={12} rx={6} fill={NEGATIVE} opacity={reject} />
-      <text y={LATCH.r + 34} textAnchor="middle" fill={MUTED} fontSize={18} fontFamily={MONO} opacity={1 - cas}>
+      <text y={-LATCH.r - 22} textAnchor="middle" fill={MUTED} fontSize={18} fontFamily={MONO} opacity={(1 - seg(cas, 0, 0.3)) * (1 - seg(record, 0, 0.2))}>
         own.json only
       </text>
     </g>
@@ -241,7 +258,7 @@ function RecordCard({ st, record }: { st: RecState; record: number }) {
     <g transform={`translate(${CARD.x}, ${CARD.y})`}>
       <rect x={-w / 2} y={-CARD.h / 2} width={w} height={CARD.h} rx={10} fill={colors.BG} stroke={st.color} strokeWidth={2.4} />
       <rect x={-w / 2} y={-CARD.h / 2} width={w} height={CARD.h} rx={10} fill={st.color} opacity={0.22 * st.flash} />
-      <text y={-CARD.h / 2 + 30} textAnchor="middle" fill={MUTED} fontSize={18} fontFamily={MONO}>
+      <text y={-CARD.h / 2 + 30 - 6 * wide} textAnchor="middle" fill={MUTED} fontSize={18} fontFamily={MONO}>
         {KEY}
       </text>
       <g opacity={1 - wide}>
@@ -250,10 +267,10 @@ function RecordCard({ st, record }: { st: RecState; record: number }) {
         </text>
       </g>
       <g opacity={wide}>
-        <text y={4} textAnchor="middle" fill={TEXT} fontSize={18} fontFamily={MONO}>
+        <text y={10} textAnchor="middle" fill={TEXT} fontSize={18} fontFamily={MONO}>
           OwnerRecord {'{'} node, epoch, from {'}'}
         </text>
-        <text y={34} textAnchor="middle" fill={POSITIVE} fontSize={20} fontFamily={MONO} fontWeight={700}>
+        <text y={37} textAnchor="middle" fill={POSITIVE} fontSize={20} fontFamily={MONO} fontWeight={700}>
           node: A · epoch: 7 · from: 7
         </text>
       </g>
@@ -360,20 +377,21 @@ function CasDefinition({ u }: { u: number }) {
   );
 }
 
-function RecordExtras({ record, pages }: { record: number; pages: number }) {
-  const js = seg(record, 0.45, 0.75);
+function RecordExtras({ record, pages, quiet, jsFit }: { record: number; pages: number; quiet: number; jsFit: number }) {
+  const js = seg(record, 0.45, 0.75) * (1 - quiet);
   return (
     <g>
-      <g opacity={js}>
-        <path d={`M ${CARD.x - CARD.w / 2} ${CARD.y} Q 300 470 ${HA.x} ${HA.y + 70}`} fill="none" stroke={ACCENT} strokeWidth={2.2} strokeDasharray="6 6" />
+      <g opacity={js * jsFit}>
+        <path d={`M ${CARD.x - CARD.w / 2} ${CARD.y - CARD.h / 2 + 6} Q 330 380 ${HA.x + 20} ${HA.y + 70}`} fill="none" stroke={ACCENT} strokeWidth={2.2} strokeDasharray="6 6" />
         <Pill x={HA.x} y={HA.y + 120} text="JavaScript runs here" color={ACCENT} size={18} />
-        <Pill x={CARD.x} y={598} text="the bucket stores the decision" color={TEAL} size={18} fill={colors.BG} />
       </g>
+      <Pill x={CARD.x} y={586} text="the bucket stores the decision" color={TEAL} size={18} fill={colors.BG} opacity={js} />
       {pages > 0.001 ? (
-        <g>
-          {['log/…', 'snapshot/…'].map((t, i) => (
-            <Pill key={t} x={lerp(1250, 560 + i * 170, ease.move(seg(pages, i * 0.2, 0.8 + i * 0.2)))} y={545} text={t} color={MUTED} size={18} mono opacity={0.9} />
-          ))}
+        <g opacity={1 - quiet}>
+          {['log/…', 'snapshot/…'].map((t, i) => {
+            const p = seg(pages, i * 0.2, 0.8 + i * 0.2);
+            return <Pill key={t} x={lerp(1120, 560 + i * 170, ease.move(p))} y={524} text={t} color={MUTED} size={18} mono opacity={0.9 * seg(p, 0, 0.3)} />;
+          })}
         </g>
       ) : null}
     </g>
@@ -392,9 +410,9 @@ function StrongRead({ u }: { u: number }) {
         <Pill x={HB.x} y={HB.y + 104} text="V8 ✓" color={POSITIVE} size={20} mono bold />
       </g>
       <g opacity={ghost}>
-        <Pill x={1060} y={430} text="V7 from lagging replica" color={NEGATIVE} size={18} mono />
-        <line x1={928} y1={430} x2={928 + 264 * strike} y2={430} stroke={NEGATIVE} strokeWidth={3} />
-        <Label x={1230} y={480} text="reads must see the latest write" color={TEXT} size={18} anchor="end" opacity={strike} />
+        <Pill x={1060} y={462} text="V7 from lagging replica" color={NEGATIVE} size={18} mono />
+        <line x1={928} y1={462} x2={928 + 264 * strike} y2={462} stroke={NEGATIVE} strokeWidth={3} />
+        <Label x={1230} y={512} text="reads must see the latest write" color={TEXT} size={18} anchor="end" opacity={strike} />
       </g>
     </g>
   );
@@ -431,7 +449,7 @@ function Scope({ u }: { u: number }) {
         <Pill x={300} y={530} text="do/ns/other/own.json" color={MUTED} size={18} mono />
         <rect x={150} y={420} width={980} height={150} rx={18} fill="none" stroke={NEGATIVE} strokeWidth={2.4} strokeDasharray="10 7" />
       </g>
-      <Pill x={640} y={598} text="✗ not one atomic transaction across keys" color={NEGATIVE} size={18} opacity={seg(u, 0.55, 0.75)} fill={colors.BG} />
+      <Pill x={640} y={586} text="✗ not one atomic transaction across keys" color={NEGATIVE} size={18} opacity={seg(u, 0.55, 0.75)} fill={colors.BG} />
     </g>
   );
 }
@@ -476,7 +494,7 @@ function OperatorBoundary({ u }: { u: number }) {
         <line x1={295} y1={277} x2={535} y2={325} stroke={NEGATIVE} strokeWidth={3} opacity={seg(u, 0.15, 0.25)} />
       </g>
       <Pill x={820} y={140} text="no separate coordination cluster to run" color={POSITIVE} size={18} opacity={seg(u, 0.45, 0.6)} fill={colors.BG} />
-      <Pill x={640} y={598} text="price: depend on the referee's semantics + availability" color={WARM} size={18} opacity={seg(u, 0.6, 0.8)} fill={colors.BG} />
+      <Pill x={640} y={586} text="price: depend on the referee's semantics + availability" color={WARM} size={18} opacity={seg(u, 0.6, 0.8)} fill={colors.BG} />
     </g>
   );
 }
@@ -495,6 +513,10 @@ export function Render({ s }: { s: SceneState }) {
   const dim = s.get(scene.dimU);
   const st = recordState(read, write, create, match);
   const base = 1 - 0.9 * dim;
+  const cam = s.get(scene.cam);
+  const strong = s.get(scene.strongU);
+  const fitA = fit(cam, HA.x - 80, HA.x + 80, 204, 362);
+  const fitB = fit(cam, HB.x - 80, HB.x + 80, 204, 362);
   // ownership stamps: who believes it owns lobby
   const naiveA = seg(write, 0.36, 0.42);
   const naiveB = seg(write, 0.72, 0.78);
@@ -504,24 +526,29 @@ export function Render({ s }: { s: SceneState }) {
   return (
     <>
       <Backdrop />
-      <Camera {...s.get(scene.cam)}>
+      <Camera {...cam}>
         <g opacity={stage * base}>
           <Bucket x={BKT.x} y={BKT.y} w={BKT.w} h={BKT.h} label="" opacity={1} />
-          <Label x={BKT.x - BKT.w / 2 - 16} y={BKT.y + 6} text="bucket" color={TEAL} size={20} anchor="end" bold />
+          <Label x={BKT.x - BKT.w / 2 - 16} y={BKT.y + 6} text="bucket" color={TEAL} size={20} anchor="end" bold opacity={fit(cam, BKT.x - BKT.w / 2 - 90, BKT.x - BKT.w / 2 - 10, BKT.y - 14, BKT.y + 12)} />
           <g opacity={1 - 0.9 * clamp01(service * 3)}>
             <RecordCard st={st} record={record} />
           </g>
-          <Host x={HA.x} y={HA.y} label="host A" color={ACCENT} />
-          <Host x={HB.x} y={HB.y} label="host B" color={SECONDARY} />
-          <Illus x={60} y={612} text="lobby, hosts, V7/V8, record values: illustrative · key schema real" />
-          <Stamp x={HA.x} text="✓ I own lobby" color={POSITIVE} u={Math.max(naiveA, casA)} />
-          <Stamp x={HB.x} text="✓ I own lobby" color={POSITIVE} u={naiveB} />
-          <Latch u={latch} create={create} match={match} cas={cas} />
+          <g opacity={fitA}>
+            <Host x={HA.x} y={HA.y} label="host A" color={ACCENT} />
+            <Stamp x={HA.x} text="✓ I own lobby" color={POSITIVE} u={Math.max(naiveA, casA)} />
+          </g>
+          <g opacity={fitB}>
+            <Host x={HB.x} y={HB.y} label="host B" color={SECONDARY} />
+            <Stamp x={HB.x} text="✓ I own lobby" color={POSITIVE} u={naiveB} />
+          </g>
+          <g opacity={fit(cam, LATCH.x - 70, LATCH.x + 70, LATCH.y - 70, LATCH.y + 100)}>
+            <Latch u={latch} create={create} match={match} cas={cas} record={record} />
+          </g>
           <NaiveRace read={read} write={write} />
           <CasRace create={create} match={match} />
           <Pill x={640} y={92} text="owners serving lobby: 1" color={POSITIVE} size={20} bold opacity={counterOp * (1 - seg(record, 0, 0.1))} />
-          <RecordExtras record={record} pages={s.get(scene.pagesU)} />
-          <StrongRead u={s.get(scene.strongU)} />
+          <RecordExtras record={record} pages={s.get(scene.pagesU)} quiet={s.get(scene.extrasQ)} jsFit={fit(cam, HA.x - 110, HA.x + 110, HA.y + 100, HA.y + 140)} />
+          <StrongRead u={strong} />
           <StoreTests u={s.get(scene.testsU)} />
           <Scope u={s.get(scene.scopeU)} />
           <ServiceInterior u={service} />
@@ -551,6 +578,8 @@ export function Render({ s }: { s: SceneState }) {
           foot="illustrative values · conditional write on one key"
         />
       </Camera>
+      {/* screen-space footer: never moves with the camera, stays above the caption band */}
+      <Illus x={60} y={620} opacity={stage * base} text="lobby, hosts, V7/V8, record values: illustrative · key schema real" />
     </>
   );
 }

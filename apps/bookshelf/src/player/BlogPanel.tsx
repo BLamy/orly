@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ComponentProps } from 'react';
+import { useEffect, useMemo, useRef, useState, type ComponentProps } from 'react';
 import { GitbookStreamdown } from '@brett_lamy/docstream';
 import { VizEmbed } from '@brett_lamy/docstream/viz';
 import '@brett_lamy/docstream/styles.css';
@@ -216,10 +216,28 @@ function BlogViz({
   block: BlogVizBlock;
   timingByScene: Record<string, BlogTiming>;
 }) {
+  const container = useRef<HTMLDivElement>(null);
+  const [nearViewport, setNearViewport] = useState(false);
   const [entry, setEntry] = useState<VizSceneEntry | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const element = container.current;
+    if (!element) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setNearViewport(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => setNearViewport(entries.some((entry) => entry.isIntersecting)),
+      { rootMargin: '250px 0px' },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!nearViewport) return;
     let alive = true;
     setEntry(null);
     setError(null);
@@ -233,7 +251,7 @@ function BlogViz({
       () => alive && setError(`Could not load visualization scene “${block.scene}”.`),
     );
     return () => { alive = false; };
-  }, [block.scene]);
+  }, [block.scene, nearViewport]);
 
   const scene = useMemo<DocstreamScene | null>(() => {
     if (!entry) return null;
@@ -258,11 +276,9 @@ function BlogViz({
     } as DocstreamScene;
   }, [entry, block.scene, block.from, block.to, timingByScene]);
 
-  if (error) return <p className="bp-blog-viz-error">{error}</p>;
-  if (!scene) return <div className="bp-blog-viz-loading" role="status">Loading visualization…</div>;
-
   return (
     <div
+      ref={container}
       className="bp-blog-viz"
       aria-label={block.title ?? `Visualization section ${block.section ?? block.cue}`}
       data-viz-section={block.section ?? ''}
@@ -270,13 +286,22 @@ function BlogViz({
       data-viz-from={block.from}
       data-viz-to={block.to}
     >
-      <VizEmbed
-        scene={scene}
-        autoplay
-        loop
-        showCaptions={false}
-        className="bp-blog-viz-embed"
-      />
+      {nearViewport && error ? <p className="bp-blog-viz-error">{error}</p> : nearViewport && scene ? (
+        <VizEmbed
+          scene={scene}
+          autoplay
+          loop
+          showCaptions={false}
+          className="bp-blog-viz-embed"
+        />
+      ) : (
+        <div className="bp-blog-viz-placeholder" aria-hidden={!nearViewport}>
+          <div className="bp-blog-viz-placeholder-stage" role={nearViewport ? 'status' : undefined}>
+            {nearViewport ? 'Loading visualization…' : null}
+          </div>
+          <div className="bp-blog-viz-placeholder-controls" />
+        </div>
+      )}
     </div>
   );
 }

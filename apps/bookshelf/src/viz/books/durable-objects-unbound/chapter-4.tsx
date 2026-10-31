@@ -44,13 +44,20 @@ const { ACCENT, WARM, POSITIVE, SECONDARY, NEGATIVE, TEAL, MUTED, TEXT, PANEL } 
 /* ------------------------------------------------------------ layout */
 const CLIENT = { x: 1190, y: 140 };
 const GATE = { x: 1070, y: 140 };
-const HOST = { x: 120, y: 210, w: 740, h: 380 };
-const GRID = { x: 170, y: 280, cell: 44, gap: 4, cols: 4, rows: 3 };
-const WAL = { x: 170, y: 500, hdrW: 96, fW: 104, h: 62 };
-const PRESS = { x: 790, y: 500 };
-const TRAY = { x: 470, y: 330 };
-const BKT = { x: 1090, y: 510 };
+// Everything at the home camera stays above y = 610 (captions own y ≥ 630).
+const HOST = { x: 120, y: 210, w: 740, h: 390 };
+const GRID = { x: 170, y: 270, cell: 44, gap: 4, cols: 4, rows: 3 };
+const WAL = { x: 170, y: 490, hdrW: 96, fW: 104, h: 62 };
+const PRESS = { x: 790, y: 490 };
+const TRAY = { x: 420, y: 320 };
+const BKT = { x: 1090, y: 490 };
 const OWN = { x: 1070, y: 300 };
+/** Annotation lanes inside the host: A sits between the page grid and the WAL title,
+ * B sits right of the grid, so the frame / commit-marker / rollback facts never share a slot. */
+const LANE_A = { x: 470, y: 440 };
+const LANE_B = { x: 380, y: 360 };
+/** Released tickets park beside (not on top of) the client label. */
+const PARK_X = 1128;
 
 /** WAL fixture (illustrative pages): tx1 = p1, p3*; tx2 = p5 (rolled back); tx3 = p3*. */
 const FRAMES = [
@@ -74,12 +81,14 @@ const TICKETS = [
   { id: 'm44', target: 5 },
 ] as const;
 
-const CAM_ROOM: CameraState = { x: 500, y: 330, k: 1.15 };
-const CAM_WAL: CameraState = { x: 470, y: 470, k: 1.4 };
-const CAM_TRAY: CameraState = { x: 600, y: 420, k: 1.25 };
-const CAM_CELLD: CameraState = { x: 820, y: 420, k: 1.15 };
-const CAM_GATE: CameraState = { x: 960, y: 220, k: 1.4 };
+// Visible world = cam ± (640, 360)/k; load-bearing world y ≤ cam.y + 250/k.
+const CAM_ROOM: CameraState = { x: 490, y: 380, k: 1.15 };
+const CAM_WAL: CameraState = { x: 490, y: 432, k: 1.4 };
+const CAM_TRAY: CameraState = { x: 500, y: 420, k: 1.25 };
+const CAM_CELLD: CameraState = { x: 800, y: 400, k: 1.2 };
+const CAM_GATE: CameraState = { x: 960, y: 200, k: 1.4 };
 const CAM_ESC: CameraState = { x: 860, y: 260, k: 1.2 };
+const CAM_CGATE: CameraState = { x: 800, y: 280, k: 1.15 };
 
 /* ---------------------------------------------------------- timeline */
 export function buildScene() {
@@ -103,16 +112,23 @@ export function buildScene() {
   const cgateU = tl.channel('cgateU', 0); // celld output gate scope
   const retryU = tl.channel('retryU', 0); // lost reply / retry ambiguity
   const endU = tl.channel('endU', 0);
+  // context visibility: fade outgoing layers instead of leaving them chopped by the camera
+  const ctxU = tl.channel('ctxU', 1); // client / gate / bucket (off while the camera is inside the host)
+  const encU = tl.channel('encU', 0); // beat 8: hide grid/WAL/host so workerd vs celld stands alone
+  const grpU = tl.channel('grpU', 0); // beat 10: hide host + bucket while the gate is in focus
+  const escCtxU = tl.channel('escCtxU', 0); // beats 12–13: hide host, successor, bucket
 
   // 1 — m42 updates SQLite locally
-  tl.caption({ at: 0.5, dur: 10, text: 'Our room accepts message forty-two and updates its SQLite database. Because the database runs beside the object, the SQL work can be local even though preserving its result is distributed work.' });
+  tl.caption({ at: 0.5, dur: 10, text: 'Our room accepts message forty-two and updates its SQLite database. Because the database runs beside the object, the sequel work can be local even though preserving its result is distributed work.' });
   tl.tween(stageU, 1, { at: B(1) + 0.2, dur: 1.2, ease: ease.enter });
+  tl.tween(ctxU, 0, { at: B(1) + 3.7, dur: 0.5, ease: ease.move });
   tl.tween(cam, CAM_ROOM, { at: B(1) + 4.2, dur: 1.4, ease: ease.move });
   tl.tween(arriveU, 1, { at: B(1) + 1.6, dur: 6.0, ease: ease.linear });
 
   // 2 — reply immediately, then lose the machine
   tl.caption({ at: 11.5, dur: 10, text: 'If we reply immediately and then lose that machine, the client may believe the message is safe while the only copy vanished with the owner. A local commit is not our final durability proof.' });
   tl.tween(cam, CAMERA_HOME, { at: B(2) + 0.1, dur: 1.4, ease: ease.move });
+  tl.tween(ctxU, 1, { at: B(2) + 1.0, dur: 0.6, ease: ease.move });
   tl.tween(earlyU, 1, { at: B(2) + 1.0, dur: 3.0, ease: ease.move });
   tl.tween(killU, 1, { at: B(2) + 5.0, dur: 2.0, ease: ease.move });
 
@@ -120,12 +136,13 @@ export function buildScene() {
   tl.caption({ at: 22.5, dur: 10, text: 'Watch the message disappear after that premature acknowledgement. We must move the acknowledgement gate to the far side of the work that makes the message recoverable.' });
   tl.tween(lostU, 1, { at: B(3) + 0.4, dur: 1.0, ease: ease.enter });
   tl.tween(lostU, 0, { at: B(3) + 5.6, dur: 0.8, ease: ease.move });
-  tl.tween(gateU, 1, { at: B(3) + 6.0, dur: 2.2, ease: ease.move });
+  tl.tween(gateU, 1, { at: B(3) + 6.5, dur: 2.2, ease: ease.move });
 
   // 4 — rewind; the WAL records changed pages; the main file waits for checkpoint
   tl.caption({ at: 33.5, dur: 10, text: 'SQLite first records changed pages in its write-ahead log. The main database file does not have to be rewritten for every transaction; checkpointing can copy those changes into it later.' });
   tl.tween(killU, 0, { at: B(4) + 0.1, dur: 1.2, ease: ease.move });
   tl.tween(earlyU, 0, { at: B(4) + 0.1, dur: 1.2, ease: ease.move });
+  tl.tween(ctxU, 0, { at: B(4) + 0.5, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAM_WAL, { at: B(4) + 1.0, dur: 1.5, ease: ease.move });
   tl.tween(walU, 1, { at: B(4) + 2.0, dur: 6.0, ease: ease.linear });
 
@@ -143,7 +160,8 @@ export function buildScene() {
   tl.tween(mergeU, 1, { at: B(7) + 1.0, dur: 8.0, ease: ease.linear });
 
   // 8 — celld's different encoding rail
-  tl.caption({ at: 77.5, dur: 10, text: "Celld has a related but different path: it captures committed SQLite log changes into LTX files, with transaction positions and checksums. Workerd's inspected cluster path uses its own frame format." });
+  tl.caption({ at: 77.5, dur: 10, text: "Celld has a related but different path: it captures committed SQLite log changes into L T X files, with transaction positions and checksums. Workerd's inspected cluster path uses its own frame format." });
+  tl.tween(encU, 1, { at: B(8) + 0.1, dur: 0.9, ease: ease.move });
   tl.tween(cam, CAM_CELLD, { at: B(8) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(celldU, 1, { at: B(8) + 1.0, dur: 2.0, ease: ease.enter });
   tl.tween(celldU, 0, { at: B(8) + 9.4, dur: 0.6, ease: ease.move });
@@ -151,31 +169,38 @@ export function buildScene() {
   // 9 — upload, re-read epoch, advance the watermark
   tl.caption({ at: 88.5, dur: 10, text: 'Workerd uploads the captured batch to the bucket. Then it reads the ownership epoch again; only a matching epoch lets it advance the acknowledgement watermark for waiting operations.' });
   tl.tween(cam, CAMERA_HOME, { at: B(9) + 0.1, dur: 1.4, ease: ease.move });
+  tl.tween(encU, 0, { at: B(9) + 0.1, dur: 1.2, ease: ease.move });
+  tl.tween(ctxU, 1, { at: B(9) + 0.1, dur: 1.2, ease: ease.move });
   tl.tween(uploadU, 1, { at: B(9) + 1.0, dur: 8.4, ease: ease.linear });
 
   // 10 — group commit: each waits for coverage of its own target
   tl.caption({ at: 99.5, dur: 10, text: 'Several operations can share one upload. Each waits for a watermark covering its own captured target, so batching can reduce storage requests without allowing an uncovered response to slip through.' });
+  tl.tween(grpU, 1, { at: B(10) + 0.1, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAM_GATE, { at: B(10) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(groupU, 1, { at: B(10) + 1.2, dur: 8.0, ease: ease.linear });
 
   // 11 — kill the owner after the gate opens; successor restores
   tl.caption({ at: 110.5, dur: 10, text: 'Now kill the owner after the gate opens. The local database can disappear, but the acknowledged message has a bucket-backed history that the successor can restore.' });
   tl.tween(cam, CAMERA_HOME, { at: B(11) + 0.2, dur: 1.4, ease: ease.move });
+  tl.tween(grpU, 0, { at: B(11) + 1.3, dur: 0.8, ease: ease.move });
   tl.tween(kill2U, 1, { at: B(11) + 1.0, dur: 8.0, ease: ease.linear });
 
   // 12 — observation escape paths
   tl.caption({ at: 121.5, dur: 10, text: "The gate matters for observations too. A response, stream chunk, or external effect can reveal a new value before a normal write reply does; those escape paths need the runtime's durability rules." });
-  tl.tween(cam, CAM_ESC, { at: B(12) + 0.2, dur: 1.4, ease: ease.move });
+  tl.tween(escCtxU, 1, { at: B(12) + 0.0, dur: 0.6, ease: ease.move });
+  tl.tween(cam, CAM_ESC, { at: B(12) + 0.4, dur: 1.4, ease: ease.move });
   tl.tween(escU, 1, { at: B(12) + 1.0, dur: 8.0, ease: ease.linear });
 
   // 13 — celld gates read-only and error responses too
   tl.caption({ at: 132.5, dur: 10, text: 'Celld explicitly gates outputs that expose uncovered writes, including read-only and error responses. This is stronger than asking application authors to remember a final flush in every happy path.' });
+  tl.tween(cam, CAM_CGATE, { at: B(13) + 0.1, dur: 1.3, ease: ease.move });
   tl.tween(cgateU, 1, { at: B(13) + 0.6, dur: 7.0, ease: ease.linear });
 
   // 14 — lost reply: durability is not exactly-once
   tl.caption({ at: 143.5, dur: 10, text: 'A lost reply still leaves uncertainty for the caller: the write may have committed. Durability preserves acknowledged state; it does not make arbitrary retried application effects happen exactly once.' });
   tl.tween(cgateU, 0, { at: B(14), dur: 0.6, ease: ease.move });
   tl.tween(escU, 0, { at: B(14), dur: 0.6, ease: ease.move });
+  tl.tween(escCtxU, 0, { at: B(14) + 1.0, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAMERA_HOME, { at: B(14) + 0.1, dur: 1.4, ease: ease.move });
   tl.tween(retryU, 1, { at: B(14) + 0.8, dur: 4.6, ease: ease.linear });
   tl.tween(endU, 1, { at: B(14) + 5.8, dur: 1.2, ease: ease.enter });
@@ -183,7 +208,7 @@ export function buildScene() {
 
   return {
     tl, cam, stageU, arriveU, earlyU, killU, lostU, gateU, walU, frameU, rollU, mergeU, celldU, uploadU,
-    groupU, kill2U, escU, cgateU, retryU, endU,
+    groupU, kill2U, escU, cgateU, retryU, endU, ctxU, encU, grpU, escCtxU,
   };
 }
 
@@ -260,14 +285,15 @@ function WalRibbon({ wal, frame, roll, merge, kill }: { wal: number; frame: numb
           </g>
         );
       })}
-      <g opacity={hdr * (1 - commitSpot)}>
-        <Pill x={WAL.x + 290} y={WAL.y - 52} text="frame = 24-byte header + one page" color={ACCENT} size={18} />
+      {/* lane A: frame anatomy, later replaced by the rollback fact; lane B: commit marker */}
+      <g opacity={hdr * (1 - seg(roll, 0, 0.15))}>
+        <Pill x={LANE_A.x} y={LANE_A.y} text="frame = 24-byte header + one page" color={ACCENT} size={18} />
       </g>
-      <g opacity={commitSpot * (1 - seg(roll, 0, 0.1))}>
-        <Pill x={WAL.x + 300} y={WAL.y - 52} text="db-size field ≠ 0 → transaction committed" color={POSITIVE} size={18} />
+      <g opacity={commitSpot * (1 - seg(roll, 0, 0.15))}>
+        <Pill x={LANE_B.x} y={LANE_B.y} text="db-size field ≠ 0 → committed" color={POSITIVE} size={18} anchor="start" />
       </g>
       <g opacity={seg(roll, 0.2, 0.4) * (1 - seg(merge, 0, 0.1))}>
-        <Pill x={frameX(2) + WAL.fW / 2} y={WAL.y - 52} text="tx2 rolled back → buffered, never emitted" color={NEGATIVE} size={18} fill={colors.BG} />
+        <Pill x={LANE_A.x + 50} y={LANE_A.y} text="tx2 rolled back → buffered, never emitted" color={NEGATIVE} size={18} fill={colors.BG} />
       </g>
     </g>
   );
@@ -293,11 +319,11 @@ function MergeTray({ merge, upload }: { merge: number; upload: number }) {
   const pack = seg(merge, 0.8, 0.95);
   const fly = seg(upload, 0.05, 0.4);
   const bx = lerp(TRAY.x + 120, BKT.x, ease.move(fly));
-  const by = lerp(TRAY.y + 90, BKT.y - 40, ease.move(fly));
+  const by = lerp(TRAY.y + 112, BKT.y - 40, ease.move(fly));
   return (
     <g>
       <g opacity={1 - pack}>
-        <rect x={TRAY.x - 40} y={TRAY.y - 44} width={400} height={120} rx={12} fill={colors.BG} stroke={MUTED} strokeWidth={1.4} />
+        <rect x={TRAY.x - 50} y={TRAY.y - 44} width={370} height={130} rx={12} fill={colors.BG} stroke={MUTED} strokeWidth={1.4} />
         <Label x={TRAY.x - 24} y={TRAY.y - 18} text="ordered page log" color={MUTED} size={18} anchor="start" />
         {COMMITTED.map((c, k) => {
           const u = seg(gather, k * 0.25, k * 0.25 + 0.5);
@@ -313,13 +339,13 @@ function MergeTray({ merge, upload }: { merge: number; upload: number }) {
             </g>
           );
         })}
-        <g opacity={seg(gather, 0.8, 1) * (1 - fold)}>
+        <g opacity={seg(gather, 0.8, 1) * (1 - seg(fold, 0, 0.45))}>
           <line x1={TRAY.x + 150} y1={TRAY.y - 4} x2={TRAY.x + 150} y2={TRAY.y + 52} stroke={MUTED} strokeWidth={2} strokeDasharray="3 3" />
           <Label x={TRAY.x + 50} y={TRAY.y + 70} text="tx1" color={MUTED} size={16} />
           <Label x={TRAY.x + 200} y={TRAY.y + 70} text="tx3" color={MUTED} size={16} />
         </g>
-        <Label x={TRAY.x + 260} y={TRAY.y + 30} text="latest p3 kept" color={WARM} size={18} anchor="start" opacity={fold} />
-        <Label x={TRAY.x + 90} y={TRAY.y + 70} text="covers seq 1–3" color={TEXT} size={16} opacity={fold} />
+        <Label x={TRAY.x + 220} y={TRAY.y + 70} text="latest p3 kept" color={WARM} size={18} opacity={seg(fold, 0.5, 1)} />
+        <Label x={TRAY.x + 75} y={TRAY.y + 70} text="covers seq 1–3" color={TEXT} size={16} opacity={seg(fold, 0.5, 1)} />
       </g>
       {pack > 0.001 && fly < 1 ? (
         <g transform={`translate(${bx}, ${by})`} opacity={pack}>
@@ -336,12 +362,13 @@ function CelldRail({ u }: { u: number }) {
   if (u <= 0.001) return null;
   return (
     <g opacity={u}>
-      <rect x={880} y={300} width={360} height={150} rx={14} fill={colors.BG} stroke={SECONDARY} strokeWidth={2.2} />
-      <Label x={900} y={330} text="celld — a different path" color={SECONDARY} size={20} anchor="start" bold />
-      <Label x={900} y={362} text="committed WAL → L0 LTX" color={TEXT} size={18} mono anchor="start" />
-      <Label x={900} y={392} text="TXID ranges · CRC64" color={TEXT} size={18} mono anchor="start" />
-      <Label x={900} y={428} text="not workerd's encoding" color={MUTED} size={16} anchor="start" />
-      <Pill x={TRAY.x + 160} y={TRAY.y - 70} text="workerd: own frame format (frames.capnp)" color={TEAL} size={18} fill={colors.BG} />
+      <rect x={880} y={262} width={360} height={150} rx={14} fill={colors.BG} stroke={SECONDARY} strokeWidth={2.2} />
+      <Label x={900} y={292} text="celld — a different path" color={SECONDARY} size={20} anchor="start" bold />
+      <Label x={900} y={324} text="committed WAL → L0 LTX" color={TEXT} size={18} mono anchor="start" />
+      <Label x={900} y={354} text="TXID ranges · CRC64" color={TEXT} size={18} mono anchor="start" />
+      <Label x={900} y={390} text="not workerd's encoding" color={MUTED} size={16} anchor="start" />
+      {/* workerd's side sits directly above its packed batch (TRAY.x + 120, TRAY.y + 112) */}
+      <Pill x={TRAY.x + 120} y={TRAY.y + 52} text="workerd: own frame format (frames.capnp)" color={TEAL} size={18} fill={colors.BG} />
     </g>
   );
 }
@@ -379,13 +406,13 @@ function Tickets({ upload, group, kill2 }: { upload: number; group: number; kill
   if (show <= 0.001) return null;
   const wm = watermark(upload);
   return (
-    <g opacity={show * (1 - 0.85 * seg(kill2, 0.0, 0.1))}>
+    <g opacity={show * (1 - seg(kill2, 0.0, 0.05))}>
       {TICKETS.map((tk, i) => {
         if (i > 0 && group <= 0.001) return null;
         const appear = i === 0 ? 1 : seg(group, (i - 1) * 0.12, (i - 1) * 0.12 + 0.12);
         const covered = wm >= tk.target;
         const release = covered ? (i === 0 ? seg(upload, 0.85, 1) : seg(group, 0.4 + i * 0.1, 0.55 + i * 0.1)) : 0;
-        const x = lerp(900 - i * 56, CLIENT.x, ease.move(release));
+        const x = lerp(900 - i * 56, PARK_X, ease.move(release));
         return (
           <g key={tk.id} opacity={appear * (1 - 0.5 * release)}>
             <Msg x={x} y={GATE.y + (i - 1) * 40} label={tk.id} color={covered ? POSITIVE : WARM} />
@@ -394,8 +421,8 @@ function Tickets({ upload, group, kill2 }: { upload: number; group: number; kill
         );
       })}
       <g opacity={seg(group, 0.2, 0.35)}>
-        <Pill x={940} y={GATE.y + 110} text={`ack watermark: seq ${Math.round(wm)}`} color={POSITIVE} size={18} mono fill={colors.BG} />
-        <Label x={760} y={GATE.y + 46} text="m44 needs seq 5 — waits" color={WARM} size={18} opacity={seg(group, 0.75, 0.9)} />
+        <Pill x={840} y={GATE.y + 122} text={`ack watermark: seq ${Math.round(wm)}`} color={POSITIVE} size={18} mono fill={colors.BG} />
+        <Label x={788} y={GATE.y + 86} text="m44 needs seq 5 — waits" color={WARM} size={18} opacity={seg(group, 0.75, 0.9)} />
       </g>
     </g>
   );
@@ -450,16 +477,16 @@ function CelldGate({ u }: { u: number }) {
   const rows = ['responses', 'read-only responses', 'error responses', 'stream chunks', 'certain side effects'];
   return (
     <g opacity={clamp01(u * 5)}>
-      <rect x={300} y={240} width={460} height={290} rx={14} fill={colors.BG} stroke={SECONDARY} strokeWidth={2.2} />
-      <Label x={320} y={272} text="celld output gate holds, when they" color={SECONDARY} size={18} anchor="start" bold />
-      <Label x={320} y={298} text="expose uncovered writes:" color={SECONDARY} size={18} anchor="start" bold />
+      <rect x={320} y={220} width={440} height={262} rx={14} fill={colors.BG} stroke={SECONDARY} strokeWidth={2.2} />
+      <Label x={340} y={250} text="celld output gate holds, when they" color={SECONDARY} size={18} anchor="start" bold />
+      <Label x={340} y={276} text="expose uncovered writes:" color={SECONDARY} size={18} anchor="start" bold />
       {rows.map((r, i) => (
         <g key={r} opacity={seg(u, 0.1 + i * 0.1, 0.2 + i * 0.1)}>
-          <circle cx={334} cy={330 + i * 32} r={5} fill={SECONDARY} />
-          <Label x={350} y={336 + i * 32} text={r} color={TEXT} size={18} anchor="start" />
+          <circle cx={354} cy={306 + i * 30} r={5} fill={SECONDARY} />
+          <Label x={370} y={312 + i * 30} text={r} color={TEXT} size={18} anchor="start" />
         </g>
       ))}
-      <Label x={530} y={508} text="not: “remember a final flush”" color={WARM} size={18} opacity={seg(u, 0.7, 0.85)} />
+      <Label x={540} y={464} text="not: “remember a final flush”" color={WARM} size={18} opacity={seg(u, 0.7, 0.85)} />
     </g>
   );
 }
@@ -471,14 +498,15 @@ function Retry({ u }: { u: number }) {
   const retry = seg(u, 0.5, 0.8);
   return (
     <g>
-      {fly < 1 && fly > 0 ? <Msg x={lerp(GATE.x + 10, CLIENT.x - 60, fly)} y={GATE.y - 70} label="ack m42" color={POSITIVE} /> : null}
+      {/* the reply passes through the open gate, then is lost before reaching the client */}
+      {fly < 1 && fly > 0 ? <Msg x={lerp(GATE.x - 30, CLIENT.x - 70, fly)} y={GATE.y} label="ack m42" color={POSITIVE} /> : null}
       <g opacity={lostMark}>
-        <Label x={CLIENT.x - 70} y={GATE.y - 60} text="✗" color={NEGATIVE} size={34} bold />
+        <Label x={CLIENT.x - 66} y={GATE.y + 12} text="✗" color={NEGATIVE} size={34} bold />
         <Pill x={CLIENT.x} y={GATE.y + 80} text="committed?" color={WARM} size={18} anchor="end" />
       </g>
       <g opacity={retry}>
-        <path d={`M ${CLIENT.x - 20} ${CLIENT.y + 100} Q ${CLIENT.x - 140} ${CLIENT.y + 150} ${GATE.x - 200} ${CLIENT.y + 60}`} fill="none" stroke={WARM} strokeWidth={2.4} strokeDasharray="7 5" />
-        <Pill x={GATE.x - 240} y={CLIENT.y + 140} text="retry → effect may repeat" color={WARM} size={18} fill={colors.BG} />
+        <path d={`M ${CLIENT.x - 20} ${CLIENT.y + 100} Q ${CLIENT.x - 100} ${CLIENT.y + 130} ${GATE.x - 110} ${CLIENT.y + 36}`} fill="none" stroke={WARM} strokeWidth={2.4} strokeDasharray="7 5" />
+        <Pill x={GATE.x - 250} y={CLIENT.y + 28} text="retry → effect may repeat" color={WARM} size={18} fill={colors.BG} />
       </g>
     </g>
   );
@@ -503,7 +531,13 @@ export function Render({ s }: { s: SceneState }) {
   const dead = Math.max(kill, seg(kill2, 0.1, 0.35));
   const restore = seg(kill2, 0.45, 0.85);
   const base = 1 - 0.9 * end;
-  const hostFocus = 1 - 0.8 * clamp01(esc * 4);
+  const ctx = s.get(scene.ctxU);
+  const enc = s.get(scene.encU);
+  const grp = s.get(scene.grpU);
+  const escCtx = s.get(scene.escCtxU);
+  // the owner host leaves the frame entirely when the camera focuses elsewhere
+  const hostFocus = 1 - Math.max(enc, grp, escCtx);
+  const bucketOp = seg(wal, 0, 0.2) * ctx * (1 - grp) * (1 - escCtx);
   // m42 request travel
   const reqU = seg(arrive, 0, 0.4);
   return (
@@ -519,7 +553,6 @@ export function Render({ s }: { s: SceneState }) {
             <WalRibbon wal={wal} frame={frame} roll={roll} merge={merge} kill={dead} />
             <Press wal={wal} roll={roll} merge={merge} kill={dead} />
             <g opacity={1 - dead}>
-              <MergeTray merge={merge} upload={upload} />
               <Pill x={560} y={268} text="SQL: local library call" color={POSITIVE} size={18} opacity={seg(arrive, 0.55, 0.75) * (1 - seg(wal, 0, 0.1))} />
             </g>
             {dead > 0.01 ? (
@@ -528,29 +561,36 @@ export function Render({ s }: { s: SceneState }) {
                 <line x1={HOST.x + 450} y1={HOST.y + 110} x2={HOST.x + 290} y2={HOST.y + 270} />
               </g>
             ) : null}
-            {/* successor restores from the bucket (beat 11) */}
-            <g opacity={restore * (1 - 0.85 * seg(esc, 0, 0.1))}>
-              <Host x={960} y={380} label="successor" color={POSITIVE} />
-              <path d={`M ${BKT.x - 90} ${BKT.y} Q 980 ${BKT.y} 965 452`} fill="none" stroke={POSITIVE} strokeWidth={2.4} strokeDasharray="7 5" />
-              <Pill x={820} y={578} text="restore from bucket history" color={POSITIVE} size={18} fill={colors.BG} />
-              <Msg x={960} y={312} label="m42" color={POSITIVE} />
-            </g>
+          </g>
+          {/* the packed batch survives beat 8's host fade: it IS workerd's side of the comparison */}
+          <g opacity={1 - dead}>
+            <MergeTray merge={merge} upload={upload} />
+          </g>
+          {/* successor restores from the bucket (beat 11) */}
+          <g opacity={restore * (1 - escCtx)}>
+            <Host x={960} y={370} label="successor" color={POSITIVE} />
+            <path d={`M ${BKT.x - 90} ${BKT.y} Q 975 ${BKT.y} 962 446`} fill="none" stroke={POSITIVE} strokeWidth={2.4} strokeDasharray="7 5" />
+            <Pill x={1060} y={592} text="restore from bucket history" color={POSITIVE} size={18} fill={colors.BG} />
+            <Msg x={960} y={302} label="m42" color={POSITIVE} />
           </g>
           {/* client + m42 request */}
-          <circle cx={CLIENT.x} cy={CLIENT.y} r={20} fill={PANEL} stroke={TEXT} strokeWidth={2} />
-          <Label x={CLIENT.x} y={CLIENT.y - 32} text="client" color={TEXT} size={18} />
+          <g opacity={ctx}>
+            <circle cx={CLIENT.x} cy={CLIENT.y} r={20} fill={PANEL} stroke={TEXT} strokeWidth={2} />
+            <Label x={CLIENT.x} y={CLIENT.y - 32} text="client" color={TEXT} size={18} />
+          </g>
           {reqU > 0 && reqU < 1 ? <Msg x={lerp(CLIENT.x - 30, GRID.x + 100, ease.move(reqU))} y={lerp(CLIENT.y, GRID.y + 60, ease.move(reqU))} label="m42" /> : null}
-          <Bucket x={BKT.x} y={BKT.y} w={180} h={92} label="bucket" opacity={seg(wal, 0, 0.2)} />
-          {upload > 0.3 ? <Label x={BKT.x} y={BKT.y + 74} text="log/…" color={TEAL} size={18} mono opacity={seg(upload, 0.35, 0.45)} /> : null}
+          <Bucket x={BKT.x} y={BKT.y} w={180} h={92} label="bucket" opacity={bucketOp} />
+          {upload > 0.3 ? <Label x={BKT.x} y={BKT.y + 74} text="log/…" color={TEAL} size={18} mono opacity={seg(upload, 0.35, 0.45) * bucketOp} /> : null}
           <OwnCheck upload={upload} kill2={kill2} />
-          <Gate u={s.get(scene.gateU)} open={gateOpen} bad={0} />
+          <g opacity={ctx}>
+            <Gate u={s.get(scene.gateU)} open={gateOpen} bad={0} />
+          </g>
           <Tickets upload={upload} group={group} kill2={kill2} />
           <NaiveLoss early={s.get(scene.earlyU)} kill={kill} lost={s.get(scene.lostU)} />
           <CelldRail u={s.get(scene.celldU)} />
           <Escapes u={esc} cgate={cgate} />
           <CelldGate u={cgate} />
           <Retry u={s.get(scene.retryU)} />
-          <Illus x={60} y={612} text="m42–m44, pages, sequence numbers: illustrative" />
         </g>
         <Takeaway
           u={end}
@@ -565,6 +605,8 @@ export function Render({ s }: { s: SceneState }) {
           foot="workerd bucket-proof path"
         />
       </Camera>
+      {/* screen-space footer: never moves with the camera, stays above the caption band */}
+      <Illus x={60} y={616} opacity={stage * (1 - end)} text="m42–m44, pages, sequence numbers: illustrative" />
     </>
   );
 }

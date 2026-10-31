@@ -48,7 +48,7 @@ const { ACCENT, WARM, POSITIVE, SECONDARY, NEGATIVE, TEAL, MUTED, TEXT, PANEL } 
 /* ------------------------------------------------------------ layout */
 const BKT = { x: 640, y: 128, w: 300, h: 70 };
 const TAPE_Y = 250;
-const TILE_W = 120;
+const TILE_W = 126;
 const TILE_H = 56;
 const tileX = (i: number) => 180 + i * 136;
 
@@ -86,9 +86,9 @@ const DOOR = { x: 370, y: 430 };
 const TAIL_X = tileX(5);
 
 const CAM_TAPE: CameraState = { x: 560, y: 330, k: 1.15 };
-const CAM_JAM: CameraState = { x: 760, y: 300, k: 1.3 };
+const CAM_JAM: CameraState = { x: 640, y: 348, k: 1.25 };
 const CAM_FLEET: CameraState = { x: 640, y: 380, k: 1.1 };
-const CAM_SEAL: CameraState = { x: 560, y: 420, k: 1.2 };
+const CAM_SEAL: CameraState = { x: 660, y: 385, k: 1.12 };
 
 /* ---------------------------------------------------------- timeline */
 export function buildScene() {
@@ -220,12 +220,12 @@ function Tape({ gap, corrupt, compact, mode, fleet, seal, block, end }: { gap: n
         const gone = (1 - 0.85 * discard) * (1 - shift);
         const color = t.snap ? SECONDARY : bad > 0.3 ? NEGATIVE : TEAL;
         return (
-          <g key={i} transform={`translate(${tileX(i)}, ${TAPE_Y - 70 * off})`} opacity={(1 - 0.85 * off) * gone}>
+          <g key={i} transform={`translate(${tileX(i)}, ${TAPE_Y - 40 * off})`} opacity={(1 - off) * gone}>
             <rect x={0} y={-TILE_H / 2} width={TILE_W} height={TILE_H} rx={7} fill={PANEL} stroke={color} strokeWidth={2.2} />
             {bad > 0.01 ? (
               <path d="M 8 -14 l 14 18 l 14 -18 l 14 18 l 14 -18 l 14 18 l 14 -18 l 14 18 l 10 -12" fill="none" stroke={NEGATIVE} strokeWidth={2} opacity={bad} />
             ) : null}
-            <text x={TILE_W / 2} y={7} textAnchor="middle" fill={color} fontSize={18} fontFamily={MONO} opacity={1 - ltx}>
+            <text x={TILE_W / 2} y={7} textAnchor="middle" fill={color} fontSize={t.label.length > 9 ? 16 : 18} fontFamily={MONO} opacity={1 - ltx}>
               {t.label}
             </text>
             <text x={TILE_W / 2} y={7} textAnchor="middle" fill={color} fontSize={18} fontFamily={MONO} opacity={ltx}>
@@ -235,10 +235,12 @@ function Tape({ gap, corrupt, compact, mode, fleet, seal, block, end }: { gap: n
           </g>
         );
       })}
+      {/* the removed batch leaves a visible hole in the history */}
+      <rect x={tileX(3)} y={TAPE_Y - TILE_H / 2} width={TILE_W} height={TILE_H} rx={7} fill="none" stroke={NEGATIVE} strokeWidth={2} strokeDasharray="6 5" opacity={g.removed} />
       {/* newer snapshot (compaction) — written first, then history is discarded */}
       <g transform={`translate(${lerp(tileX(5), tileX(0), shift)}, ${TAPE_Y})`} opacity={snapNew}>
         <rect x={0} y={-TILE_H / 2} width={TILE_W} height={TILE_H} rx={7} fill={PANEL} stroke={SECONDARY} strokeWidth={2.6} />
-        <text x={TILE_W / 2} y={7} textAnchor="middle" fill={SECONDARY} fontSize={18} fontFamily={MONO}>
+        <text x={TILE_W / 2} y={7} textAnchor="middle" fill={SECONDARY} fontSize={ltx > 0.5 ? 18 : 16} fontFamily={MONO}>
           {ltx > 0.5 ? 'snapshot' : 'snapshot @12'}
         </text>
       </g>
@@ -341,7 +343,7 @@ function Rebuilt({ snap, replay, gap, corrupt, mode }: { snap: number; replay: n
         );
       })}
       <Msg x={GRID.x + 240} y={GRID.y + 70} label="m42" color={POSITIVE} opacity={seg(replay, 0.92, 1) * (1 - failing)} />
-      <Illus x={GRID.x} y={GRID.y + 168} text="old local disk discarded: not authoritative" opacity={snap} />
+      <Illus x={GRID.x + 200} y={GRID.y + 22} text="old local disk discarded: not authoritative" opacity={snap * (1 - seg(replay, 0.5, 0.6))} />
     </g>
   );
 }
@@ -353,10 +355,10 @@ function Coverage({ u, replay, gap, mode }: { u: number; replay: number; gap: nu
   const overlap = seg(replay, 0.7, 0.8);
   return (
     <g opacity={u * (1 - mode) * (1 - seg(gap, 0, 0.05))}>
-      <Pill x={1150} y={TAPE_Y + 80} text={`covered through seq ${covered}`} color={POSITIVE} size={18} mono anchor="end" fill={colors.BG} />
+      <Pill x={1100} y={TAPE_Y + 80} text={`covered through seq ${covered}`} color={POSITIVE} size={18} mono anchor="end" fill={colors.BG} />
       <g opacity={overlap}>
-        <path d={`M ${tileX(2) + 20} ${TAPE_Y - 36} Q ${tileX(3) - 8} ${TAPE_Y - 76} ${tileX(3) + 40} ${TAPE_Y - 36}`} fill="none" stroke={WARM} strokeWidth={2} />
-        <Pill x={tileX(3)} y={TAPE_Y - 84} text="overlap 4–6: already covered" color={WARM} size={18} fill={colors.BG} />
+        <path d={`M ${tileX(2) + 20} ${TAPE_Y + 36} Q ${tileX(3) - 8} ${TAPE_Y + 64} ${tileX(3) + 40} ${TAPE_Y + 36}`} fill="none" stroke={WARM} strokeWidth={2} />
+        <Pill x={tileX(3) - 8} y={TAPE_Y + 74} text="overlap 4–6: already covered" color={WARM} size={18} fill={colors.BG} />
       </g>
     </g>
   );
@@ -368,15 +370,15 @@ function OpenSteps({ u }: { u: number }) {
   const dies = seg(u, 0.12, 0.3) * (1 - seg(u, 0.38, 0.45));
   return (
     <g opacity={clamp01(u * 6)}>
-      <rect x={660} y={360} width={560} height={230} rx={14} fill={colors.BG} stroke={MUTED} strokeWidth={1.4} />
-      <Label x={680} y={392} text="takeover order (epoch 9 claimant)" color={MUTED} size={18} anchor="start" />
+      <rect x={600} y={322} width={490} height={218} rx={14} fill={colors.BG} stroke={MUTED} strokeWidth={1.4} />
+      <Label x={620} y={354} text="takeover order (epoch 9 claimant)" color={MUTED} size={18} anchor="start" />
       {steps.map((st, i) => {
         const on = seg(u, 0.45 + i * 0.14, 0.55 + i * 0.14);
-        return <Pill key={st} x={690} y={436 + i * 48} text={`${i + 1} · ${st}`} color={i === 2 ? POSITIVE : TEAL} size={18} anchor="start" opacity={0.35 + 0.65 * on} />;
+        return <Pill key={st} x={630} y={396 + i * 46} text={`${i + 1} · ${st}`} color={i === 2 ? POSITIVE : TEAL} size={18} anchor="start" opacity={(1 - dies) * (0.35 + 0.65 * on)} />;
       })}
       <g opacity={dies}>
-        <Pill x={1200} y={436} text="claimant dies before open" color={NEGATIVE} size={18} anchor="end" fill={colors.BG} />
-        <Pill x={1200} y={484} text="own.json keeps from = 7" color={WARM} size={18} mono anchor="end" fill={colors.BG} />
+        <Pill x={630} y={396} text="claimant dies before open" color={NEGATIVE} size={18} anchor="start" fill={colors.BG} />
+        <Pill x={630} y={442} text="own.json keeps from = 7" color={WARM} size={18} mono anchor="start" fill={colors.BG} />
       </g>
     </g>
   );
@@ -385,8 +387,8 @@ function OpenSteps({ u }: { u: number }) {
 function ModeBadge({ mode }: { mode: number }) {
   return (
     <g>
-      <Pill x={60} y={70} text="workerd · bucket-proof path" color={TEAL} size={22} bold anchor="start" opacity={1 - mode} fill={colors.BG} />
-      <Pill x={60} y={70} text="celld v0.6.3 · fleet mode (default)" color={SECONDARY} size={22} bold anchor="start" opacity={mode} fill={colors.BG} />
+      <Pill x={24} y={40} text="workerd · bucket-proof path" color={TEAL} size={20} bold anchor="start" opacity={1 - mode} fill={colors.BG} />
+      <Pill x={24} y={40} text="celld v0.6.3 · fleet mode (default)" color={SECONDARY} size={20} bold anchor="start" opacity={mode} fill={colors.BG} />
     </g>
   );
 }
@@ -416,7 +418,7 @@ function Stepper({ seal, block, oblig }: { seal: number; block: number; oblig: n
         const stuck = blocked > 0.5 && i >= 1;
         const c = stuck ? (i === 1 ? WARM : MUTED) : done ? POSITIVE : MUTED;
         const mark = stuck && i === 1 ? '⏸' : done && !stuck ? '✓' : '·';
-        return <Pill key={st} x={1000} y={360 + i * 46} text={`${mark} ${st}`} color={c} size={18} anchor="start" fill={colors.BG} opacity={stuck && i > 1 ? 0.35 : 1} />;
+        return <Pill key={st} x={900} y={374 + i * 46} text={`${mark} ${st}`} color={c} size={18} anchor="start" fill={colors.BG} opacity={stuck && i > 1 ? 0.35 : 1} />;
       })}
     </g>
   );
@@ -442,18 +444,19 @@ function Fleet({ mode, fleet, follow, fallback, oblig, seal, block, end }: { mod
   );
   return (
     <g opacity={mode * (1 - 0.88 * end)}>
+      {repl(F1, f1 * (1 - down) * (1 - ownerDead))}
+      {repl(F2, f2 * (1 - down) * (1 - ownerDead))}
       <Host x={OWNER.x} y={OWNER.y} label="owner A" color={ACCENT} dead={ownerDead} />
       <Host x={F1.x} y={F1.y} label="follower 1" color={SECONDARY} opacity={f1} dead={down} />
       <Host x={F2.x} y={F2.y} label="follower 2" color={SECONDARY} opacity={f2} dead={down} />
-      <Host x={F3.x} y={F3.y} label="3rd machine" color={MUTED} opacity={f3} />
-      {repl(F1, f1 * (1 - down) * (1 - ownerDead))}
-      {repl(F2, f2 * (1 - down) * (1 - ownerDead))}
-      <Disk x={F1.x} y={F1.y + 112} label="tail · fsync ✓" color={POSITIVE} u={fsync * (1 - down)} />
+      <Host x={F3.x} y={F3.y} label="3rd machine" color={MUTED} opacity={f3 * (1 - seg(oblig, 0.45, 0.6))} />
+      {/* blocked counterexample: NO current follower can certify the complete tail */}
+      <Disk x={F1.x} y={F1.y + 112} label={blocked > 0.5 ? 'range incomplete' : 'tail · fsync ✓'} color={blocked > 0.5 ? WARM : POSITIVE} u={fsync * (1 - down)} />
       <Disk x={F2.x} y={F2.y + 112} label={blocked > 0.5 ? 'range damaged' : 'tail · fsync ✓'} color={POSITIVE} u={seg(follow, 0.3, 0.45) * (1 - down)} bad={blocked} />
       {/* the owner's own disk does not count as a follower */}
       <g opacity={seg(follow, 0.55, 0.7) * (1 - seg(fallback, 0, 0.05))}>
         <Disk x={OWNER.x} y={OWNER.y + 112} label="owner's disk" color={MUTED} u={1} />
-        <Pill x={OWNER.x + 60} y={OWNER.y + 168} text="✗ not its own follower" color={NEGATIVE} size={18} anchor="start" fill={colors.BG} />
+        <Pill x={OWNER.x + 48} y={OWNER.y + 112} text="✗ not its own follower" color={NEGATIVE} size={18} anchor="start" fill={colors.BG} />
       </g>
       <g opacity={ack * (1 - seg(fallback, 0, 0.05))}>
         <Pill x={640} y={332} text={follow > 0.3 ? 'fleet proof: 2 followers fsync → ack m42' : 'fleet proof: follower fsync → ack m42'} color={POSITIVE} size={20} fill={colors.BG} />
@@ -472,9 +475,9 @@ function Fleet({ mode, fleet, follow, fallback, oblig, seal, block, end }: { mod
       </g>
       {/* sealing door between the old session and its followers */}
       <g transform={`translate(${DOOR.x}, ${DOOR.y})`} opacity={Math.max(door, seg(oblig, 0.6, 0.75) * 0.5)}>
-        <rect x={-10} y={-70} width={20} height={140} fill={PANEL} stroke={NEGATIVE} strokeWidth={2.4} />
-        <rect x={-10} y={-70} width={20} height={140 * door} fill={NEGATIVE} opacity={0.75} />
-        <Label x={0} y={-82} text={marked > 0.5 ? 'session sealed' : 'seal'} color={NEGATIVE} size={18} bold />
+        <rect x={-10} y={-40} width={20} height={110} fill={PANEL} stroke={NEGATIVE} strokeWidth={2.4} />
+        <rect x={-10} y={-40} width={20} height={110 * door} fill={NEGATIVE} opacity={0.75} />
+        <Label x={0} y={94} text={marked > 0.5 && blocked < 0.5 ? 'session sealed' : 'fence'} color={NEGATIVE} size={18} bold />
       </g>
       <g opacity={door * (1 - upload)}>
         <Pill x={640} y={332} text="sealed: old session can't complete new fleet proofs" color={NEGATIVE} size={20} fill={colors.BG} />
@@ -491,11 +494,11 @@ function Fleet({ mode, fleet, follow, fallback, oblig, seal, block, end }: { mod
         <Msg x={SUCC.x + 110} y={SUCC.y + 6} label="m42" color={POSITIVE} />
       </g>
       <WarnCard
-        x={640}
-        y={290}
-        w={600}
-        title="if the tail is damaged: recovery blocks"
-        lines={['follower 2 range damaged: tail not certified complete', 'acknowledged data may exist there → do not restore']}
+        x={600}
+        y={284}
+        w={580}
+        title="no complete tail proof: recovery blocks"
+        lines={['follower 1: range incomplete · follower 2: damaged', 'acknowledged data may exist there → do not restore']}
         opacity={seg(block, 0.2, 0.35) * (1 - seg(block, 0.9, 1))}
         color={WARM}
       />
@@ -523,9 +526,6 @@ export function Render({ s }: { s: SceneState }) {
       <Backdrop />
       <Camera {...s.get(scene.cam)}>
         <g opacity={stage}>
-          <g opacity={1 - end}>
-            <ModeBadge mode={mode} />
-          </g>
           <g opacity={1 - 0.88 * end}>
             <Bucket x={BKT.x} y={BKT.y} w={BKT.w} h={BKT.h} label="bucket" />
             <Tape gap={gap} corrupt={corrupt} compact={compact} mode={mode} fleet={fleet} seal={seal} block={block} end={end} />
@@ -534,16 +534,16 @@ export function Render({ s }: { s: SceneState }) {
             <Rebuilt snap={s.get(scene.snapU)} replay={replay} gap={gap} corrupt={corrupt} mode={Math.max(mode, clamp01(open * 5) * 0.5)} />
           </g>
           <WarnCard
-            x={900}
-            y={360}
+            x={840}
+            y={330}
             w={560}
             title="gap: seq 7–9 unresolved → stop"
             lines={['next batch starts at 10; coverage ends at 6', 'skipping it would hide lost state (check_gaps)']}
             opacity={g.jam}
           />
           <WarnCard
-            x={900}
-            y={360}
+            x={840}
+            y={330}
             w={560}
             title="checksum mismatch → batch rejected"
             lines={['damage detected; page 9 cannot be invented', 'recovery stays blocked until good data exists']}
@@ -560,7 +560,6 @@ export function Render({ s }: { s: SceneState }) {
             block={block}
             end={end}
           />
-          <Illus x={60} y={612} opacity={1 - end} text="sequence ranges, pages, m42, hosts: illustrative" />
         </g>
         <Takeaway
           u={end}
@@ -575,6 +574,11 @@ export function Render({ s }: { s: SceneState }) {
           foot="verified prefix: snapshot … seq 12 · then sealed tail (m42)"
         />
       </Camera>
+      {/* screen space: the path title and the fixture footer never ride the camera */}
+      <g opacity={stage * (1 - end)}>
+        <ModeBadge mode={mode} />
+        <Illus x={24} y={612} text="sequence ranges, pages, m42, hosts: illustrative" />
+      </g>
     </>
   );
 }

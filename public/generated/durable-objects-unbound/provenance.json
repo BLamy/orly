@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "slug": "durable-objects-unbound",
+  "researchedAsOf": "2026-10-31",
+  "planning": {
+    "requestedModel": "gpt-6.1-sol",
+    "actualModel": "gpt-6.1-sol",
+    "roles": [
+      "research",
+      "fixed narration and visual plan",
+      "independent source and visual review"
+    ],
+    "evidence": "Explicit model-specific Codex subagent assignments"
+  },
+  "animation": {
+    "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+    "requestedModel": "claude-opus-5-5",
+    "runs": [
+      {
+        "stage": "initial scenes",
+        "requestedModel": "claude-opus-5-5",
+        "actualModels": [
+          "claude-opus-5-5"
+        ],
+        "outcome": "success",
+        "turns": 41
+      },
+      {
+        "stage": "layout and pronunciation corrections",
+        "requestedModel": "claude-opus-5-5",
+        "actualModels": [
+          "claude-opus-5-5"
+        ],
+        "outcome": "success",
+        "turns": 70
+      },
+      {
+        "stage": "independent review corrections",
+        "requestedModel": "claude-opus-5-5",
+        "actualModels": [
+          "claude-opus-5-5"
+        ],
+        "outcome": "success",
+        "turns": 6
+      }
+    ],
+    "fallbackUsed": false
+  },
+  "sourceSnapshots": {
+    "initialWorkerd": "aa494794c44a900592c8281b191302d3b0a6e2a5",
+    "inspectedWorkerd": "ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+    "celld": "8702f6d186c77698dbfb30cf29e3b1922a88f008"
+  },
+  "cover": {
+    "tool": "Codex built-in ImageGen",
+    "subject": "hermit crab",
+    "asset": "animal.webp",
+    "noLetteringVerified": true
+  },
+  "narration": {
+    "provider": "ElevenLabs",
+    "model": "eleven_multilingual_v2",
+    "speed": 0.9,
+    "chapters": 6,
+    "captions": 84,
+    "cueSource": "Provider character alignment",
+    "approximateCuesAccepted": false,
+    "timing": "narration-timing.json"
+  },
+  "upstreamTests": "Upstream code and tests were inspected; upstream test suites were not executed."
+}

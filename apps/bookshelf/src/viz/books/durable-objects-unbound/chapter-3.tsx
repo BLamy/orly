@@ -60,14 +60,14 @@ const CARD = { x: 540, y: 420 };
 const GATE = { x: 780, y: 420 };
 const LADDER = { xl: 960, xr: 1110, rungs: { 7: 560, 8: 470, 9: 380 } as Record<number, number> };
 
-const CAM_RULER: CameraState = { x: 640, y: 230, k: 1.2 };
+const CAM_RULER: CameraState = { x: 640, y: 250, k: 1.15 };
 const CAM_SKEW: CameraState = { x: 840, y: 300, k: 1.25 };
-const CAM_GUARD: CameraState = { x: 860, y: 175, k: 1.6 };
-const CAM_CUTS: CameraState = { x: 700, y: 190, k: 1.35 };
+const CAM_GUARD: CameraState = { x: 900, y: 175, k: 1.6 };
+const CAM_CUTS: CameraState = { x: 720, y: 190, k: 1.35 };
 const CAM_PAUSE: CameraState = { x: 640, y: 250, k: 1.15 };
-const CAM_LADDER: CameraState = { x: 760, y: 450, k: 1.2 };
+const CAM_LADDER: CameraState = { x: 690, y: 460, k: 1.12 };
 const CAM_GATE: CameraState = { x: 560, y: 440, k: 1.35 };
-const CAM_FROM: CameraState = { x: 900, y: 450, k: 1.3 };
+const CAM_FROM: CameraState = { x: 760, y: 460, k: 1.25 };
 
 const SECONDS = Array.from({ length: T_MAX + 1 }, (_, i) => i);
 
@@ -79,6 +79,7 @@ export function buildScene() {
   const leaseU = tl.channel('leaseU', 0); // publish lease, bar extends to E
   const failU = tl.channel('failU', 0); // failed request ≠ dead owner
   const constU = tl.channel('constU', 0); // constants + renewal metronome
+  const constOut = tl.channel('constOut', 0); // constants legend retires after beat 3
   const skewU = tl.channel('skewU', 0); // skew gauge
   const guardU = tl.channel('guardU', 0); // 2 s + 2 s = 4 s
   const cutU = tl.channel('cutU', 0); // 16 s and 12 s boundaries
@@ -89,6 +90,7 @@ export function buildScene() {
   const claimU = tl.channel('claimU', 0); // B claims epoch 8
   const lateU = tl.channel('lateU', 0); // A's late upload lands
   const ackU = tl.channel('ackU', 0); // fresh epoch read; door stays shut
+  const ladderOut = tl.channel('ladderOut', 0); // ladder steps aside while the ack door explains
   const fromU = tl.channel('fromU', 0); // B dies; C epoch 9 recovers from 7; opens
   const jobsU = tl.channel('jobsU', 0);
   const outageU = tl.channel('outageU', 0);
@@ -108,10 +110,11 @@ export function buildScene() {
   tl.tween(failU, 0, { at: B(3), dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_RULER, { at: B(3) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(constU, 1, { at: B(3) + 1.0, dur: 7.0, ease: ease.linear });
-  tl.tween(worldU, 0.12, { at: B(3) + 0.2, dur: 0.8, ease: ease.move });
+  tl.tween(worldU, 0, { at: B(3) + 0.2, dur: 0.8, ease: ease.move }); // fully out while the ruler works: nothing chopped in the caption band
 
   // 4 — skew against the bucket; > 2 s fences
   tl.caption({ at: 33.5, dur: 10, text: 'The expiry is judged using clocks, so the code also checks clock skew against the bucket. More than two seconds of observed skew makes the node fence itself.' });
+  tl.tween(constOut, 1, { at: B(4), dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_SKEW, { at: B(4) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(skewU, 1, { at: B(4) + 1.0, dur: 8.0, ease: ease.linear });
 
@@ -145,17 +148,19 @@ export function buildScene() {
   tl.tween(claimU, 1, { at: B(9) + 1.2, dur: 7.0, ease: ease.linear });
 
   // 10 — the old owner wakes and finishes an old upload
-  tl.caption({ at: 99.5, dur: 10, text: 'Suppose the old owner wakes after the new epoch opens. It may still possess an old database and may even finish an old upload; physical activity alone is not proof of current ownership.' });
+  tl.caption({ at: 99.5, dur: 10, text: 'Suppose the old owner wakes after the new epoch is claimed. It may still possess an old database and may even finish an old upload; physical activity alone is not proof of current ownership.' });
   tl.tween(lateU, 1, { at: B(10) + 0.8, dur: 7.0, ease: ease.linear });
 
   // 11 — reread the epoch after upload; no acknowledgement
   tl.caption({ at: 110.5, dur: 10, text: 'Workerd checks the authority record again after uploading a commit. If the current epoch differs, that upload cannot release a successful acknowledgement to the client.' });
+  tl.tween(ladderOut, 1, { at: B(11), dur: 0.4, ease: ease.move });
   tl.tween(cam, CAM_GATE, { at: B(11) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(ackU, 1, { at: B(11) + 1.0, dur: 7.5, ease: ease.linear });
 
   // 12 — `from` survives a claimant that dies mid-recovery
   tl.caption({ at: 121.5, dur: 10, text: 'A takeover also remembers the last epoch that finished opening. If a replacement dies halfway through recovery, the next replacement still knows which completed predecessor it must recover.' });
   tl.tween(cam, CAM_FROM, { at: B(12) + 0.2, dur: 1.4, ease: ease.move });
+  tl.tween(ladderOut, 0, { at: B(12) + 0.6, dur: 0.8, ease: ease.move });
   tl.tween(fromU, 1, { at: B(12) + 1.0, dur: 8.5, ease: ease.linear });
 
   // 13 — three jobs, three windows
@@ -169,8 +174,8 @@ export function buildScene() {
   tl.hold(153.5, 0.5);
 
   return {
-    tl, cam, rulerU, leaseU, failU, constU, skewU, guardU, cutU, pauseU, assumeU, rulerDim, worldU, claimU,
-    lateU, ackU, fromU, jobsU, outageU,
+    tl, cam, rulerU, leaseU, failU, constU, constOut, skewU, guardU, cutU, pauseU, assumeU, rulerDim, worldU, claimU,
+    lateU, ackU, ladderOut, fromU, jobsU, outageU,
   };
 }
 
@@ -195,12 +200,12 @@ function recordAt(claim: number, from: number): { node: string; epoch: number; f
 
 /* ------------------------------------------------------ subcomponents */
 
-function Ruler({ u, dim }: { u: number; dim: number }) {
+function Ruler({ u, dim, labelOp }: { u: number; dim: number; labelOp: number }) {
   if (u <= 0.001) return null;
   const x1 = lerp(R_X0, R_X1, clamp01(u));
   return (
     <g opacity={1 - 0.88 * dim}>
-      <Label x={R_X0 - 10} y={R_Y - 36} text="owner's clock" color={MUTED} size={18} anchor="start" />
+      <Label x={X(1.4)} y={R_Y - 30} text="owner's clock" color={MUTED} size={18} anchor="start" opacity={labelOp} />
       <line x1={R_X0} y1={R_Y} x2={x1} y2={R_Y} stroke={MUTED} strokeWidth={2.4} />
       {SECONDS.map((sec) => {
         const x = X(sec);
@@ -217,7 +222,7 @@ function Ruler({ u, dim }: { u: number; dim: number }) {
   );
 }
 
-function LeaseBar({ u, dim }: { u: number; dim: number }) {
+function LeaseBar({ u, dim, pubOut }: { u: number; dim: number; pubOut: number }) {
   if (u <= 0.001) return null;
   const xe = lerp(X(0), X(E), ease.move(clamp01(u)));
   return (
@@ -225,7 +230,7 @@ function LeaseBar({ u, dim }: { u: number; dim: number }) {
       <rect x={X(0)} y={R_Y - 16} width={xe - X(0)} height={32} rx={6} fill={ACCENT} opacity={0.28} />
       <line x1={xe} y1={R_Y - 34} x2={xe} y2={R_Y + 18} stroke={WARM} strokeWidth={3} />
       <Pill x={xe} y={R_Y - 52} text="E: published expiry" color={WARM} size={18} opacity={seg(u, 0.6, 1)} />
-      <Pill x={X(0)} y={R_Y - 52} text="publish" color={ACCENT} size={18} opacity={seg(u, 0, 0.3)} />
+      <Pill x={X(0)} y={R_Y - 52} text="publish" color={ACCENT} size={18} opacity={seg(u, 0, 0.3) * (1 - pubOut)} />
     </g>
   );
 }
@@ -245,8 +250,9 @@ function FailNote({ u }: { u: number }) {
   );
 }
 
-function Constants({ u }: { u: number }) {
+function Constants({ u, out }: { u: number; out: number }) {
   if (u <= 0.001) return null;
+  const legend = 1 - out;
   const chips = [
     { t: 'LEASE_MS = 20000', c: ACCENT },
     { t: 'INTERVAL_MS = 3000', c: POSITIVE },
@@ -257,20 +263,20 @@ function Constants({ u }: { u: number }) {
   return (
     <g>
       {chips.map((ch, i) => (
-        <Pill key={ch.t} x={760} y={268 + i * 44} text={ch.t} color={ch.c} size={18} mono anchor="start" opacity={seg(u, i * 0.12, i * 0.12 + 0.12)} />
+        <Pill key={ch.t} x={760} y={268 + i * 44} text={ch.t} color={ch.c} size={18} mono anchor="start" opacity={seg(u, i * 0.12, i * 0.12 + 0.12) * legend} />
       ))}
       {/* renewal metronome: attempts every 3 s */}
       {[0, 3, 6, 9].map((sec, i) => (
-        <g key={sec} opacity={seg(beat, i * 0.22, i * 0.22 + 0.1)}>
+        <g key={sec} opacity={seg(beat, i * 0.22, i * 0.22 + 0.1) * (1 - 0.65 * out)}>
           <circle cx={X(sec)} cy={R_Y} r={8} fill={POSITIVE} />
           <line x1={X(sec)} y1={R_Y + 12} x2={X(sec + 4)} y2={R_Y + 12} stroke={WARM} strokeWidth={3} opacity={i === 2 ? 1 : 0.3} />
         </g>
       ))}
-      <g opacity={seg(u, 0.7, 0.85)}>
+      <g opacity={seg(u, 0.7, 0.85) * legend}>
         <Label x={X(5)} y={R_Y + 66} text="renew every 3 s · 4 s timeout" color={TEXT} size={18} />
         <Label x={X(5)} y={R_Y + 92} text="retry after 1 s on failure" color={MUTED} size={18} />
       </g>
-      <Illus x={760} y={448} opacity={seg(u, 0.85, 1)} text="same lease constants at aa49479 and ad78a8f" />
+      <Illus x={760} y={448} opacity={seg(u, 0.85, 1) * legend} text="same lease constants at aa49479 and ad78a8f" />
     </g>
   );
 }
@@ -304,14 +310,15 @@ function Guard({ u, cut }: { u: number; cut: number }) {
   if (u <= 0.001 && cut <= 0.001) return null;
   const a = seg(u, 0.1, 0.35);
   const b = seg(u, 0.35, 0.6);
+  const lab = 1 - seg(cut, 0, 0.06);
   return (
     <g>
       <rect x={X(16)} y={R_Y - 16} width={(X(18) - X(16)) * a} height={32} fill={SECONDARY} opacity={0.55} />
       <rect x={X(18)} y={R_Y - 16} width={(X(20) - X(18)) * b} height={32} fill={TEAL} opacity={0.55} />
-      <g opacity={a * (1 - cut)}>
+      <g opacity={a * lab}>
         <Label x={(X(16) + X(18)) / 2} y={R_Y + 66} text="owner ±2 s" color={SECONDARY} size={18} />
       </g>
-      <g opacity={b * (1 - cut)}>
+      <g opacity={b * lab}>
         <Label x={(X(18) + X(20)) / 2 + 30} y={R_Y + 92} text="peer ±2 s" color={TEAL} size={18} />
       </g>
       <MathLabel tex={'S = 2 \\times 2000 = 4000\\ \\text{ms}'} x={X(18)} y={72} fontSize={24} opacity={seg(u, 0.65, 0.85) * (1 - cut)} />
@@ -325,36 +332,46 @@ function Cutoffs({ u, dim, quiet }: { u: number; dim: number; quiet: number }) {
   const b = seg(u, 0.45, 0.75);
   return (
     <g opacity={1 - 0.88 * dim}>
-      <MathLabel tex={'\\text{holds}(t):\\ t + 4000 < E'} x={X(10)} y={76} fontSize={24} opacity={a * (1 - 0.88 * quiet)} />
-      <MathLabel tex={'\\text{before renew}:\\ t + 8000 < E'} x={X(10)} y={118} fontSize={24} opacity={b * (1 - 0.88 * quiet)} />
+      <MathLabel tex={'\\text{holds}(t):\\ t + 4000 < E'} x={X(10)} y={76} fontSize={24} opacity={a * (1 - quiet)} />
+      <MathLabel tex={'\\text{before renew}:\\ t + 8000 < E'} x={X(10)} y={118} fontSize={24} opacity={b * (1 - quiet)} />
       <g opacity={a}>
         <line x1={X(SERVE_CUT)} y1={R_Y - 28} x2={X(SERVE_CUT)} y2={R_Y + 50} stroke={NEGATIVE} strokeWidth={3} />
-        <Pill x={X(SERVE_CUT)} y={R_Y + 72} text="serve only if t < 16 s" color={NEGATIVE} size={18} fill={colors.BG} />
       </g>
+      <Pill x={X(SERVE_CUT)} y={R_Y + 72} text="serve only if t < 16 s" color={NEGATIVE} size={18} fill={colors.BG} opacity={seg(u, 0.1, 0.35)} />
       <g opacity={b}>
         <line x1={X(RENEW_CUT)} y1={R_Y - 28} x2={X(RENEW_CUT)} y2={R_Y + 50} stroke={WARM} strokeWidth={3} />
         <Pill x={X(RENEW_CUT)} y={R_Y + 112} text="start renewal only if t < 12 s" color={WARM} size={18} fill={colors.BG} />
       </g>
-      <Illus x={X(E) - 40} y={R_Y + 150} opacity={seg(u, 0.8, 1) * (1 - dim)} text="E = 20 s illustrative" />
     </g>
   );
 }
 
-function PauseDemo({ u }: { u: number }) {
-  if (u <= 0.001) return null;
+/** Owner A's playhead line, drawn beneath the cutoff pills so their opaque fills read cleanly. */
+function PausePlayhead({ u, out }: { u: number; out: number }) {
+  if (u <= 0.001 || out >= 0.999) return null;
+  const { peer, owner, resumed } = pauseClocks(u);
+  const paused = !resumed && peer > 10;
+  return (
+    <g opacity={clamp01(u * 8) * (1 - out)}>
+      <line x1={X(owner)} y1={R_Y - 18} x2={X(owner)} y2={R_Y + 140} stroke={paused ? MUTED : resumed ? NEGATIVE : ACCENT} strokeWidth={4} />
+    </g>
+  );
+}
+
+function PauseDemo({ u, out }: { u: number; out: number }) {
+  if (u <= 0.001 || out >= 0.999) return null;
   const { peer, owner, resumed } = pauseClocks(u);
   const paused = !resumed && peer > 10;
   const verdict = seg(u, 0.74, 0.84);
   return (
-    <g opacity={clamp01(u * 8)}>
+    <g opacity={clamp01(u * 8) * (1 - out)}>
       {/* peer / bucket-side clock keeps moving */}
       <line x1={X(peer)} y1={R_Y - 40} x2={X(peer)} y2={R_Y + 18} stroke={TEAL} strokeWidth={3} />
-      <Pill x={X(peer)} y={R_Y - 58} text={`peer clock ${peer.toFixed(1)} s`} color={TEAL} size={18} fill={colors.BG} />
-      {/* owner A's playhead */}
-      <line x1={X(owner)} y1={R_Y - 18} x2={X(owner)} y2={R_Y + 140} stroke={paused ? MUTED : resumed ? NEGATIVE : ACCENT} strokeWidth={4} />
+      <Pill x={X(peer) - 4} y={R_Y - 66} text={`peer clock ${peer.toFixed(1)} s`} color={TEAL} size={18} fill={colors.BG} anchor="end" />
+      {/* owner A's playhead label (line drawn by PausePlayhead) */}
       <Pill x={X(owner)} y={R_Y + 160} text={paused ? '⏸ A paused at 10 s' : resumed ? `A resumes: t = ${owner.toFixed(0)} s` : `A at ${owner.toFixed(1)} s`} color={paused ? MUTED : resumed ? NEGATIVE : ACCENT} size={18} fill={colors.BG} />
-      {/* renewal gate at 12 s: locked */}
-      <g transform={`translate(${X(RENEW_CUT) + 186}, ${R_Y + 112})`} opacity={seg(u, 0.4, 0.55)}>
+      {/* renewal gate at 12 s: locked (left of the renewal pill) */}
+      <g transform={`translate(${X(RENEW_CUT) - 190}, ${R_Y + 112})`} opacity={seg(u, 0.4, 0.55)}>
         <rect x={-18} y={-12} width={36} height={28} rx={5} fill={PANEL} stroke={WARM} strokeWidth={2.4} />
         <path d="M -10 -12 v -8 a 10 10 0 0 1 20 0 v 8" fill="none" stroke={WARM} strokeWidth={2.4} />
       </g>
@@ -392,8 +409,8 @@ function Assumptions({ u }: { u: number }) {
   );
 }
 
-function Ladder({ claim, from, late, ack }: { claim: number; from: number; late: number; ack: number }) {
-  const vis = seg(claim, 0, 0.15);
+function Ladder({ claim, from, late, ack, out }: { claim: number; from: number; late: number; ack: number; out: number }) {
+  const vis = seg(claim, 0, 0.15) * (1 - out);
   if (vis <= 0.001) return null;
   const rung = (e: number, label: string, on: number, color: string, note?: string) => (
     <g key={e} opacity={0.35 + 0.65 * on}>
@@ -428,7 +445,7 @@ function Ladder({ claim, from, late, ack }: { claim: number; from: number; late:
   );
 }
 
-function AuthorityWorld({ u, claim, from, late, ack, outage }: { u: number; claim: number; from: number; late: number; ack: number; outage: number }) {
+function AuthorityWorld({ u, claim, from, late, ack, outage, ladderOut }: { u: number; claim: number; from: number; late: number; ack: number; outage: number; ladderOut: number }) {
   if (u <= 0.001) return null;
   const rec = recordAt(claim, from);
   const bDead = seg(from, 0.1, 0.25);
@@ -472,9 +489,9 @@ function AuthorityWorld({ u, claim, from, late, ack, outage }: { u: number; clai
       </g>
       {/* fresh epoch read → compare → door */}
       {reread > 0 && reread < 1 ? (
-        <Pill x={lerp(CARD.x + 170, GATE.x - 30, reread)} y={CARD.y} text="current_epoch = 8" color={WARM} size={18} mono />
+        <Pill x={lerp(CARD.x + 20, CARD.x + 90, reread)} y={CARD.y - 84} text="current_epoch = 8" color={WARM} size={18} mono opacity={seg(reread, 0, 0.15)} />
       ) : null}
-      <g transform={`translate(${GATE.x}, ${GATE.y})`} opacity={seg(ack, 0, 0.1) + outage}>
+      <g transform={`translate(${GATE.x}, ${GATE.y})`} opacity={(seg(ack, 0, 0.1) + outage) * (1 - 0.85 * seg(from, 0, 0.1))}>
         <rect x={-34} y={-56} width={68} height={112} rx={6} fill={PANEL} stroke={gateBad ? NEGATIVE : MUTED} strokeWidth={3} />
         <line x1={-34} y1={0} x2={34} y2={0} stroke={NEGATIVE} strokeWidth={6} opacity={gateBad ? 1 : 0} />
         <Label x={0} y={-72} text="ack door" color={MUTED} size={18} />
@@ -485,7 +502,7 @@ function AuthorityWorld({ u, claim, from, late, ack, outage }: { u: number; clai
         <Label x={GATE.x} y={GATE.y + 130} text="no slot.ack(epoch, round)" color={TEXT} size={18} mono />
         <Label x={GATE.x} y={GATE.y + 154} text="client gets no success" color={MUTED} size={16} />
       </g>
-      <Ladder claim={claim} from={from} late={late} ack={ack} />
+      <Ladder claim={claim} from={from} late={late} ack={ack} out={ladderOut} />
     </g>
   );
 }
@@ -533,29 +550,40 @@ export function Render({ s }: { s: SceneState }) {
   const cut = s.get(scene.cutU);
   const lower = 1 - 0.9 * clamp01(jobs * 3);
   const skew = s.get(scene.skewU);
+  const constOut = s.get(scene.constOut);
+  const guard = s.get(scene.guardU);
+  // the ruler is outgoing context while the skew gauge is the active machine
+  const rulerQuiet = Math.max(dim, 0.88 * seg(skew, 0, 0.1));
+  // the left-hand clock label only shows when the camera frames the whole ruler
+  const clockLabel = 1 - constOut * (1 - seg(pause, 0, 0.08));
+  const pauseOut = seg(assume, 0, 0.12);
   return (
     <>
       <Backdrop />
       <Camera {...s.get(scene.cam)}>
         <g opacity={lower}>
-          <AuthorityWorld u={s.get(scene.worldU)} claim={claim} from={from} late={late} ack={ack} outage={outage} />
-          <Ruler u={s.get(scene.rulerU)} dim={dim} />
-          <LeaseBar u={s.get(scene.leaseU)} dim={dim} />
-          <g opacity={1 - dim}>
-            <Constants u={s.get(scene.constU) * (1 - seg(skew, 0, 0.1))} />
-            <Guard u={s.get(scene.guardU)} cut={cut} />
+          <AuthorityWorld u={s.get(scene.worldU)} claim={claim} from={from} late={late} ack={ack} outage={outage} ladderOut={s.get(scene.ladderOut)} />
+          <Ruler u={s.get(scene.rulerU)} dim={rulerQuiet} labelOp={clamp01(clockLabel)} />
+          <LeaseBar u={s.get(scene.leaseU)} dim={rulerQuiet} pubOut={seg(s.get(scene.constU), 0, 0.1)} />
+          <g opacity={(1 - dim) * (1 - 0.88 * seg(skew, 0, 0.1))}>
+            <Constants u={s.get(scene.constU)} out={constOut} />
+            <Guard u={guard} cut={cut} />
           </g>
-          <Cutoffs u={cut} dim={Math.max(dim, assume * 0.6)} quiet={seg(pause, 0, 0.05) * (1 - assume)} />
           <g opacity={1 - dim}>
-            <PauseDemo u={pause * (1 - assume)} />
+            <PausePlayhead u={pause} out={pauseOut} />
+          </g>
+          <Cutoffs u={cut} dim={Math.max(dim, assume)} quiet={seg(pause, 0, 0.05) * (1 - assume)} />
+          <g opacity={1 - dim}>
+            <PauseDemo u={pause} out={pauseOut} />
           </g>
           <FailNote u={s.get(scene.failU)} />
           <SkewGauge u={skew} />
-          <Assumptions u={assume} />
-          <Illus x={60} y={612} text="hosts A/B/C, epochs 7–9, E = 20 s: illustrative · constants real" />
+          <Assumptions u={seg(assume, 0.1, 1)} />
         </g>
         <Jobs u={jobs} outage={outage} />
       </Camera>
+      {/* screen-space footer: stable above the caption band */}
+      <Illus x={60} y={612} opacity={lower} text="hosts A/B/C, epochs 7–9, E = 20 s: illustrative · constants real" />
     </>
   );
 }

@@ -94,12 +94,27 @@ const SMALL_ROOMS: Array<{ x: number; y: number; m: number }> = (() => {
 /** SQLite page grid inside the room (beat 8): 4×4 pages. */
 const PAGES = Array.from({ length: 16 }, (_, i) => ({ c: i % 4, r: Math.floor(i / 4) }));
 
-const CAM_ROOM: CameraState = { x: 640, y: 330, k: 1.35 };
+const CAM_ROOM: CameraState = { x: 600, y: 330, k: 1.3 };
 const CAM_INTER: CameraState = { x: 820, y: 330, k: 1.2 };
 const CAM_SQL: CameraState = { x: 760, y: 330, k: 1.15 };
 const CAM_RAIL: CameraState = { x: 880, y: 200, k: 1.45 };
-const CAM_DOOR: CameraState = { x: 950, y: 220, k: 1.45 };
+const CAM_DOOR: CameraState = { x: 950, y: 240, k: 1.45 };
+const CAM_NOTES: CameraState = { x: 880, y: 262, k: 1.3 };
 const CAM_END: CameraState = { x: 640, y: 350, k: 1.05 };
+
+/**
+ * Screen-fit visibility: 1 while the world box [x0,x1]×[y0,y1] sits inside the
+ * safe frame (x 20…1260, y 20…598) under camera c, fading to 0 over 28 px of
+ * overflow (below 0.3 opacity by the true frame edge). Context that would be chopped by a camera move fades instead.
+ */
+function fit(c: CameraState, x0: number, x1: number, y0: number, y1: number): number {
+  const sx0 = (x0 - c.x) * c.k + 640;
+  const sx1 = (x1 - c.x) * c.k + 640;
+  const sy0 = (y0 - c.y) * c.k + 360;
+  const sy1 = (y1 - c.y) * c.k + 360;
+  const over = Math.max(0, 20 - sx0, sx1 - 1260, 20 - sy0, sy1 - 598);
+  return clamp01(1 - over / 28);
+}
 
 /* ---------------------------------------------------------- timeline */
 export function buildScene() {
@@ -173,7 +188,7 @@ export function buildScene() {
   tl.tween(gapU, 1, { at: B(7) + 0.8, dur: 1.4, ease: ease.draw });
 
   // 8 — 2024: SQLite beside each object
-  tl.caption({ at: 77.5, dur: 10, text: 'In September twenty twenty-four, SQLite brought SQL beside each object. A query can run as a local library call, but a durable acknowledgement can still require work elsewhere.' });
+  tl.caption({ at: 77.5, dur: 10, text: 'In September twenty twenty-four, SQLite brought sequel beside each object. A query can run as a local library call, but a durable acknowledgement can still require work elsewhere.' });
   tl.tween(gapU, 0, { at: B(8), dur: 0.6, ease: ease.move });
   tl.tween(shellU, 0, { at: B(8) + 0.2, dur: 1.3, ease: ease.move });
   tl.tween(litN, 3, { at: B(8) + 0.4, dur: 0.8, ease: ease.enter });
@@ -197,17 +212,18 @@ export function buildScene() {
 
   // 11 — announced transition plans
   tl.caption({ at: 110.5, dur: 10, text: 'Deno announced a year of runtime fixes and security updates, and six months of continued Deploy operation. Those were transition plans announced with the move, not promises of indefinite maintenance.' });
+  tl.tween(cam, CAM_NOTES, { at: B(11) + 0.1, dur: 1.4, ease: ease.move });
   tl.tween(noteU, 1, { at: B(11) + 0.6, dur: 2.0, ease: ease.enter });
 
   // 12 — JSR and rusty_v8; not "every Deno project became workerd"
-  tl.caption({ at: 121.5, dur: 10, text: 'The announcement also said JSR would continue and that rusty V8 would remain supported. We should distinguish those commitments from a claim that every Deno project simply became the Workers runtime.' });
+  tl.caption({ at: 121.5, dur: 10, text: 'The announcement also said the Java Script Registry would continue and that rusty V8 would remain supported. We should distinguish those commitments from a claim that every Deno project simply became the Workers runtime.' });
   tl.tween(jsrU, 1, { at: B(12) + 0.6, dur: 4.0, ease: ease.linear });
 
   // 13 — Oct 29 UTC: the hinged door
-  tl.caption({ at: 132.5, dur: 10, text: 'The commit we were given arrived on October twenty-ninth in UTC. It begins experimental clustering over a shared bucket, including request forwarding, ownership, and recovery after an owner dies.' });
+  tl.caption({ at: 132.5, dur: 10, text: 'The commit we were given arrived on October twenty-ninth in coordinated universal time. It begins experimental clustering over a shared bucket, including request forwarding, ownership, and recovery after an owner dies.' });
   tl.tween(noteU, 0, { at: B(13), dur: 0.6, ease: ease.move });
   tl.tween(jsrU, 0, { at: B(13), dur: 0.6, ease: ease.move });
-  tl.tween(denoU, 0.15, { at: B(13), dur: 0.6, ease: ease.move });
+  tl.tween(denoU, 0, { at: B(13), dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_DOOR, { at: B(13) + 0.2, dur: 1.4, ease: ease.move });
   tl.tween(litN, 6, { at: B(13) + 0.6, dur: 0.8, ease: ease.enter });
   tl.tween(doorU, 1, { at: B(13) + 1.4, dur: 4.0, ease: ease.move });
@@ -217,7 +233,7 @@ export function buildScene() {
   tl.tween(litN, 7, { at: B(14) + 0.3, dur: 0.8, ease: ease.enter });
   tl.tween(bellU, 1, { at: B(14) + 0.6, dur: 2.0, ease: ease.pop });
   tl.tween(cam, CAM_END, { at: B(14) + 4.6, dur: 1.6, ease: ease.move });
-  tl.tween(roomDim, 0, { at: B(14) + 4.8, dur: 1.0, ease: ease.move });
+  tl.tween(roomDim, 0, { at: B(14) + 5.4, dur: 1.0, ease: ease.move });
   tl.tween(endU, 1, { at: B(14) + 4.8, dur: 1.2, ease: ease.move });
   tl.hold(153.5, 0.5);
 
@@ -231,7 +247,7 @@ const scene = buildScene();
 
 /* ------------------------------------------------------ subcomponents */
 
-function HistoryRail({ u, lit, dimEarly, end }: { u: number; lit: number; dimEarly: number; end: number }) {
+function HistoryRail({ u, lit, dimEarly, end, cam }: { u: number; lit: number; dimEarly: number; end: number; cam: CameraState }) {
   if (u <= 0.001) return null;
   const x1 = lerp(RAIL_X0, RAIL_X1, clamp01(u));
   const railOp = 1 - 0.88 * end;
@@ -239,14 +255,16 @@ function HistoryRail({ u, lit, dimEarly, end }: { u: number; lit: number; dimEar
     <g>
       <g opacity={railOp}>
         <line x1={RAIL_X0} y1={RAIL_Y} x2={x1} y2={RAIL_Y} stroke={MUTED} strokeWidth={3} strokeLinecap="round" />
-        <path d={`M 705 70 L 705 62 L 1180 62 L 1180 70`} fill="none" stroke={MUTED} strokeWidth={1.4} opacity={clamp01(lit - 3)} />
-        <Label x={942} y={56} text="2026" color={MUTED} size={18} opacity={clamp01(lit - 3)} bold />
+        <path d={`M 705 70 L 705 62 L 1180 62 L 1180 70`} fill="none" stroke={MUTED} strokeWidth={1.4} opacity={clamp01(lit - 3) * fit(cam, 705, 1180, 40, 70)} />
+        <Label x={942} y={56} text="2026" color={MUTED} size={18} opacity={clamp01(lit - 3) * fit(cam, 900, 985, 40, 70)} bold />
         {TICKS.map((tk, i) => {
           const on = clamp01(lit - i);
           const shown = clamp01((u * (RAIL_X1 - RAIL_X0) - (tk.x - RAIL_X0)) / 40);
           const early = i < 4 ? 1 - 0.7 * dimEarly : 1;
+          const hw = Math.max(tk.date.length, tk.event.length) * 18 * 0.3 + 4;
+          const inFrame = fit(cam, tk.x - hw, tk.x + hw, RAIL_Y - 40, RAIL_Y + 40);
           return (
-            <g key={tk.date} opacity={shown * early}>
+            <g key={tk.date} opacity={shown * early * inFrame}>
               <circle cx={tk.x} cy={RAIL_Y} r={lerp(5, 9, on)} fill={on > 0.5 ? WARM : PANEL} stroke={on > 0.5 ? WARM : MUTED} strokeWidth={2} />
               <Label x={tk.x} y={RAIL_Y - 22} text={tk.date} color={on > 0.5 ? TEXT : MUTED} size={18} opacity={0.45 + 0.55 * on} />
               <Label x={tk.x} y={RAIL_Y + 34} text={tk.event} color={on > 0.5 ? WARM : MUTED} size={18} mono={i >= 5} opacity={on} />
@@ -258,14 +276,14 @@ function HistoryRail({ u, lit, dimEarly, end }: { u: number; lit: number; dimEar
   );
 }
 
-function Clients({ u, flow, merge }: { u: number; flow: number; merge: number }) {
+function Clients({ u, flow, merge, cam }: { u: number; flow: number; merge: number; cam: CameraState }) {
   if (u <= 0.001) return null;
   return (
-    <g opacity={u}>
+    <g opacity={u * fit(cam, CLIENT_X - 44, CLIENT_X + 44, CLIENTS[0].y - 46, CLIENTS[2].y + 20)}>
       {CLIENTS.map((c) => (
         <g key={c.id}>
           <circle cx={CLIENT_X} cy={c.y} r={16} fill={PANEL} stroke={ACCENT} strokeWidth={2} />
-          <Label x={CLIENT_X - 28} y={c.y + 6} text={c.id} color={MUTED} size={18} anchor="end" />
+          <Label x={CLIENT_X} y={c.y - 24} text={c.id} color={MUTED} size={18} />
           <line x1={CLIENT_X + 18} y1={c.y} x2={TURN.x - 14} y2={TURN.y} stroke={ACCENT} strokeWidth={1.5} strokeDasharray="4 6" opacity={merge * (0.25 + 0.4 * clamp01(flow * 4))} />
         </g>
       ))}
@@ -447,14 +465,14 @@ function Interleave({ u }: { u: number }) {
   );
 }
 
-function ManyRooms({ u, hot }: { u: number; hot: number }) {
+function ManyRooms({ u, hot, cam }: { u: number; hot: number; cam: CameraState }) {
   if (u <= 0.001) return null;
   return (
     <g>
       {MACHINES.map((mx, i) => (
         <g key={mx} opacity={u}>
           <rect x={mx - 130} y={180} width={260} height={360} rx={16} fill="none" stroke={MUTED} strokeWidth={1.4} strokeDasharray="6 6" />
-          <Label x={mx} y={572} text={`machine ${i + 1}`} color={MUTED} size={18} />
+          <Label x={mx} y={572} text={`machine ${i + 1}`} color={MUTED} size={18} opacity={fit(cam, mx - 50, mx + 50, 556, 578)} />
         </g>
       ))}
       {SMALL_ROOMS.map((r, i) => {
@@ -548,7 +566,8 @@ function DenoRail({ u }: { u: number }) {
   if (u <= 0.001) return null;
   const joinX = TICKS[4].x;
   const len = 520;
-  const d = `M 520 250 C 700 250, ${joinX - 60} 160, ${joinX} ${RAIL_Y}`;
+  // arrives from the left above the event labels, so it never crosses 'celld' or 'Deno joins'
+  const d = `M 520 250 C 640 250, 760 150, ${joinX - 68} ${RAIL_Y + 10} L ${joinX - 9} ${RAIL_Y + 1}`;
   return (
     <g>
       <path d={d} fill="none" stroke={SECONDARY} strokeWidth={3.5} strokeDasharray={len} strokeDashoffset={len * (1 - seg(u, 0, 0.6))} />
@@ -596,19 +615,19 @@ function CommitDoor({ u, quiet }: { u: number; quiet: number }) {
   const chips = ['request forwarding', 'ownership', 'recovery after owner death'];
   return (
     <g opacity={seg(u, 0, 0.1) * (1 - 0.88 * quiet)}>
-      <line x1={x} y1={RAIL_Y + 8} x2={x} y2={RAIL_Y + 50} stroke={WARM} strokeWidth={2} />
+      <line x1={x} y1={RAIL_Y + 42} x2={x} y2={RAIL_Y + 50} stroke={WARM} strokeWidth={2} />
       <rect x={x - 32} y={RAIL_Y + 50} width={64} height={100} fill={colors.BG} stroke={MUTED} strokeWidth={2} />
       <rect x={x - 32} y={RAIL_Y + 50} width={64} height={100} fill={WARM} opacity={0.18 * open} />
       <rect x={x - 32} y={RAIL_Y + 50} width={Math.max(4, w)} height={100} fill={PANEL} stroke={WARM} strokeWidth={2.4} />
       <circle cx={x - 32 + Math.max(4, w) - 9} cy={RAIL_Y + 102} r={3.5} fill={WARM} />
       <g opacity={seg(u, 0.35, 0.55)}>
-        <Pill x={1250} y={RAIL_Y + 182} text="aa49479 · 2026-10-29 03:11 UTC" color={WARM} size={18} mono anchor="end" />
-        <Label x={1250} y={RAIL_Y + 222} text="experimental: cluster over a shared bucket" color={TEXT} size={18} anchor="end" />
+        <Pill x={x} y={RAIL_Y + 196} text="aa49479 · 2026-10-29 03:11 UTC" color={WARM} size={18} mono fill={colors.BG} />
+        <Label x={x} y={RAIL_Y + 236} text="experimental: cluster over a shared bucket" color={TEXT} size={18} />
       </g>
       {chips.map((c, i) => (
-        <Pill key={c} x={x - 380} y={RAIL_Y + 76 + i * 48} text={c} color={ACCENT} size={18} anchor="start" opacity={seg(u, 0.55 + i * 0.12, 0.67 + i * 0.12)} />
+        <Pill key={c} x={x - 50} y={RAIL_Y + 62 + i * 46} text={c} color={ACCENT} size={18} anchor="end" fill={colors.BG} opacity={seg(u, 0.55 + i * 0.12, 0.67 + i * 0.12)} />
       ))}
-      <Illus x={x - 380} y={RAIL_Y + 238} opacity={seg(u, 0.9, 1)} text="initial merge: no alarms yet" />
+      <Illus x={x - 130} y={RAIL_Y + 266} opacity={seg(u, 0.9, 1)} text="initial merge: no alarms yet" />
     </g>
   );
 }
@@ -646,16 +665,17 @@ export function Render({ s }: { s: SceneState }) {
   const roomDim = s.get(scene.roomDim);
   const end = s.get(scene.endU);
   const inter = s.get(scene.interU);
-  const roomOp = 1 - 0.88 * roomDim;
+  const cam = s.get(scene.cam);
+  const roomOp = 1 - 0.94 * roomDim;
   const clientsOp = s.get(scene.clientsU) * (1 - many) * (1 - shell) * (1 - sql) * (1 - 0.9 * roomDim);
   return (
     <>
       <Backdrop />
-      <Camera {...s.get(scene.cam)}>
-        <HistoryRail u={s.get(scene.railU)} lit={s.get(scene.litN)} dimEarly={roomDim * (1 - end)} end={end} />
+      <Camera {...cam}>
+        <HistoryRail u={s.get(scene.railU)} lit={s.get(scene.litN)} dimEarly={roomDim * (1 - end)} end={end} cam={cam} />
         <g opacity={roomOp}>
-          <Clients u={clientsOp} flow={flow} merge={merge} />
-          <ManyRooms u={many} hot={hot} />
+          <Clients u={clientsOp} flow={flow} merge={merge} cam={cam} />
+          <ManyRooms u={many} hot={hot} cam={cam} />
           <RoomCore merge={merge} flow={flow} many={many} hot={hot} shell={shell} sql={sql} celld={celld} end={end} />
           <Turnstile flow={flow} op={clamp01(merge) * (1 - many) * (1 - shell)} />
           <Streams flow={flow} op={clientsOp > 0.5 ? 1 : clientsOp * 2} />
