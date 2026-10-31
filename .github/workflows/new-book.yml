@@ -108,16 +108,16 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender
 
-      - name: Plan and model with Astra
+      - name: Plan and model with Sol
         id: plan
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          model: gpt-6-astra
+          model: gpt-6.1-sol
           effort: high
           sandbox: workspace-write
           codex-args: '["-c", "sandbox_workspace_write.network_access=true"]'
-          output-file: .orly-work/astra-result.md
+          output-file: .orly-work/sol-result.md
           prompt: |
             Read docs/authoring-models.md. You own planning and Blender 3D work;
             do not author D3/SVG animation scenes. Do not run git or gh.
@@ -129,19 +129,19 @@ jobs:
             Write .orly-work/visual-plan.md with source anchors, chapter beats,
             fixed narration, 2D/3D choices and verification criteria. Build any needed
             Blender assets and their Three.js adapter; Blender is installed.
-            Write .orly-work/fable-assignment.md: a bounded assignment for Fable 5.1
+            Write .orly-work/opus-assignment.md: a bounded assignment for Opus 5.5
             to implement only the D3/SVG portions, read your visual plan, integrate
             assets, build manifests/audio/blogs, and run typecheck/build/playback
             verification. Include the original request, relevant sources, permitted
-            files, existing publication constraints and exact commands. Fable must
+            files, existing publication constraints and exact commands. Opus must
             not run git/gh or publish; the workflow creates a preview PR.
             A missing provider is a blocker, not permission to substitute models.
 
-      - name: Author D3 animations with latest Claude CLI and Fable 5.1
+      - name: Author D3 animations with latest Claude CLI and Opus 5.5
         id: generate
         if: ${{ !contains(steps.issue.outputs.labels, 'new-series') }}
         continue-on-error: true # retain partial work in the existing preview PR flow
-        run: node generator/run-fable.mjs --prompt-file .orly-work/fable-assignment.md --output .orly-work/fable-result.json
+        run: node generator/run-claude.mjs --prompt-file .orly-work/opus-assignment.md --output .orly-work/opus-result.json
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
@@ -150,7 +150,7 @@ jobs:
           NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
 
       # ---- SERIES FAN-OUT: a 📚 issue plans; each book runs as its own pipeline ----
-      # new-series.md (CI path) has Astra write /tmp/series-plan.json instead of
+      # new-series.md (CI path) has Sol write /tmp/series-plan.json instead of
       # authoring 4+ books in one session. This step files one new-book issue
       # per book; a collaborator applies the `build` label to start each run
       # (human approval per autonomous run — token-created issues fire nothing).

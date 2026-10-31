@@ -11,16 +11,16 @@ export function command(maxTurns=400) {
 }
 export function verifyResult(raw) {
  const result=JSON.parse(raw);
- if(result.is_error||result.subtype?.startsWith('error'))throw new Error('Fable failed or hit a provider limit; inspect the private result file.');
+ if(result.is_error||result.subtype?.startsWith('error'))throw new Error('Opus failed or hit a provider limit; inspect the private result file.');
  const models=Object.keys(result.modelUsage??{});
- if(!models.includes(policy.animation2d))throw new Error('Fable 5.1 provider provenance is missing.');
+ if(!models.includes(policy.animation2d))throw new Error('Opus 5.5 provider provenance is missing.');
  // Claude may account for auxiliary classification calls separately; never accept another primary author.
  if(models.some(m=>m!==policy.animation2d&&!m.includes('haiku')))throw new Error('Unexpected authoring model in provider result.');
  return result;
 }
 async function main() {
  const args=process.argv.slice(2);const value=k=>args[args.indexOf(k)+1];
- if(!args.includes('--prompt-file')||!args.includes('--output'))throw new Error('Usage: run-fable.mjs --prompt-file assignment.md --output private-result.json [--max-turns 400] [--dry-run]');
+ if(!args.includes('--prompt-file')||!args.includes('--output'))throw new Error('Usage: run-claude.mjs --prompt-file assignment.md --output private-result.json [--max-turns 400] [--dry-run]');
  const cmd=command(args.includes('--max-turns')?Number(value('--max-turns')):400);
  const prompt=readFileSync(resolve(value('--prompt-file')),'utf8');
  if(args.includes('--dry-run')){console.log(JSON.stringify({...cmd,promptBytes:Buffer.byteLength(prompt)}));return;}
@@ -31,6 +31,6 @@ async function main() {
  const raw=Buffer.concat(chunks).toString();writeFileSync(output,raw,{mode:0o600});
  if(errors.length)writeFileSync(output+'.stderr',Buffer.concat(errors),{mode:0o600});
  if(code!==0)throw new Error(`Latest Claude CLI exited ${code}; inspect ${output}`);
- verifyResult(raw);console.log(`Fable 5.1 completed; private provenance: ${output}`);
+ verifyResult(raw);console.log(`Opus 5.5 completed; private provenance: ${output}`);
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href)main().catch(e=>{console.error(e.message);process.exitCode=1;});

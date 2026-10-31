@@ -25,7 +25,7 @@
     "cf:preview": "wrangler versions upload",
     "lint:yaml": "node generator/lint-yaml.mjs",
     "prepare": "git config core.hooksPath .githooks || true",
-    "author:d3": "node generator/run-fable.mjs",
+    "author:d3": "node generator/run-claude.mjs",
     "test:authoring": "node --test generator/authoring-models.test.mjs"
   },
   "dependencies": {

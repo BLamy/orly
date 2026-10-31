@@ -2,7 +2,7 @@
 
 <p align="center">
   <em>A self-building bookshelf of generated explainers.</em><br/>
-  Point Astra and Fable at any GitHub repo + a subsystem to build a narrated,
+  Point Sol and Opus at any GitHub repo + a subsystem to build a narrated,
   animated <strong>O'RLY-parody</strong> "book" — then ships it to the shelf.
 </p>
 
@@ -28,8 +28,8 @@
 
 ## Authoring workflow
 
-**Astra plans and builds Blender 3D models; Fable 5.1 authors D3 animations.**
-Use `npx --yes @anthropic-ai/claude-code@latest` for every Fable run. The
+**Sol plans and builds Blender 3D models; Opus 5.5 authors D3 animations.**
+Use `npx --yes @anthropic-ai/claude-code@latest` for every Opus run. The
 [shared workflow](docs/authoring-models.md) covers handoffs, source grounding,
 model provenance and deterministic hybrid playback. Covers still use built-in ImageGen.
 
@@ -51,7 +51,7 @@ You never edit files to add a book. You **open an issue**, and CI does the rest:
 ```mermaid
 flowchart LR
   issue["📋 GitHub issue<br/>new-book · new-series · tweak"] --> ci["⚙️ GitHub Actions<br/>new-book.yml"]
-  ci --> claude["🤖 Astra + Fable in CI<br/>plan / 3D → D3 → narrate → cover"]
+  ci --> claude["🤖 Sol + Opus in CI<br/>plan / 3D → D3 → narrate → cover"]
   claude --> pr["🔀 Pull request<br/>(stays open)"]
   pr --> preview["☁️ Cloudflare preview<br/>*.workers.dev link"]
   preview -. "💬 reply @claude &lt;change&gt;" .-> claude
@@ -61,7 +61,7 @@ flowchart LR
 ```
 
 1. **Open an issue** from a template (📕 new book, 📚 new series, ✏️ tweak). Anyone can file one; it only runs for the repo **owner** — when you open it, or apply the `build` label. Re-labeling re-runs it.
-2. **Astra plans, then Fable 5.1 authors D3 in CI**, following the matching playbook in [`.claude/commands/`](.claude/commands), and runs the generator end to end.
+2. **Sol plans, then Opus 5.5 authors D3 in CI**, following the matching playbook in [`.claude/commands/`](.claude/commands), and runs the generator end to end.
 3. A **pull request** opens (and stays open) with a **live Cloudflare preview** commented right on it.
 4. **Reply `@claude <change>`** on the PR to revise the book — it edits the branch, pushes, and the preview redeploys. As many rounds as you like.
 5. **You merge** — the one deliberate manual step — and it deploys to **Cloudflare Workers**.
@@ -96,7 +96,7 @@ npm run explain -- --repo https://github.com/koajs/koa \
                    --title "Koa.js" --open
 ```
 
-Keys live in a gitignored `.env` (`OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Astra writes the visual plan; Fable 5.1 authors D3 scenes using the latest Claude CLI. See [`generator/README.md`](generator/README.md) for the full pipeline, and [`.claude/commands/`](.claude/commands) for the playbooks.
+Keys live in a gitignored `.env` (`OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Sol writes the visual plan; Opus 5.5 authors D3 scenes using the latest Claude CLI. See [`generator/README.md`](generator/README.md) for the full pipeline, and [`.claude/commands/`](.claude/commands) for the playbooks.
 
 ## Architecture
 
