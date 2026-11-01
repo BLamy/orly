@@ -1,0 +1,47 @@
+ok   narration.coverage     203 lines narrated and current
+WARN narration.wordMap      4 lines anchor on spoken words (explicit spoken text with a different word count)
+WARN narration.pacing       163 wpm overall; fast: L0101 199, L0110 188, L0111 197, L0114 197, L0117 198, L0211 189, L0214 188, L0219 192
+ok   narration.clipEdges    all 242 cut edges under -50 dBFS
+ok   narration.stem         stem -19 LUFS (target -19), TP -1.8 dBTP, limiter 0.94 dB, compressor 1.93 dB GR, line rides ≤ 3.0 dB
+WARN narration.listening    celld pending; workerd pending; Deno pending; SQLite pending; S3 pending; epoch pending; Vogels pending; Litestream pending — a human listens and runs film:voice signoff --slug durable-objects-unbound --term <term> --by <name>
+ok   timeline.draft         locked from narration
+ok   timeline.appCopy       app copy identical
+ok   timeline.matchesScript lines match script.json
+ok   timeline.fresh         timeline.json is newer than script.json and lines.json
+ok   timeline.frames        shots contiguous, on whole frames
+ok   timeline.beats         341 beats inside their shots
+ok   timeline.runtime       24.0 min vs target 24.0 min (100%)
+ok   timeline.ceiling       1439.42 s vs ceiling 1680 s (story/meta.json runtimeCeilingSec)
+ok   score.renders          8 cues rendered at exact length
+ok   score.analysisSummary  summary current: 8 cue(s) on the 1439.4167 s clock
+ok   score.cueJoins         7 cue changes, each in the clear before the next line
+ok   score.notesClock       every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)
+ok   score.coverage         24.2 min of music over 24.0 min (101%)
+ok   mix.loudness           -16 LUFS (target -16), LRA 3, linear normalization
+ok   mix.truePeak           -1.7 dBTP (ceiling -1.5)
+ok   mix.length             1439.4167s vs film 1439.4167s
+ok   mix.duck               music ducks 2.85 dB (target 3, ceiling; warn beyond ±1.5) under 1180.2s of narration; calibrated to threshold -23.04 dBFS, ratio 3
+ok   mix.moments            L0101 peaks -13.6 LUFS momentary; loudest music-only windows: -17 LUFS @ 867.8s, -18.1 LUFS @ 6.5s, -18.1 LUFS @ 722.8s
+ok   mix.preLimit           no master limiting (constant gain only)
+ok   mix.stemLimit          narration stem limiter 0.94 dB; speech compressor 1.93 dB GR
+WARN mix.lineLevels         more than 1.5 dB from lineLufs + hint (capped leveling keeps the take's level): L0423 -1.87; hinted/offset: L0117 -2 (hint -2), L0209 -2 (hint -2), L0224 -2 (hint -2), L0406 -2 (hint -2), L0410 -2 (hint -2), L0734 -2 (hint -2), L0736 -2 (hint -2), L0818 -2 (hint -2); spread of the rest -1.87..0 dB
+ok   mix.linePeaks          narration momentary peaks: median -13.2 LUFS, p95 -12.4, max -12 (none over median + 2 dB)
+ok   mix.foley              no score/foley.json (no foley bus)
+ok   mix.swells             music-only ceiling -18.35 LUFS M (line p50 -16.35 − 2); 0 swells trimmed
+ok   mix.fadeAfterStrike    m01: fade 106.517–108.47 s starts 3.761 s after the last strike (102.756 s; min 1.6); m02: fade 272.338–274.53 s starts 2.959 s after the last strike (269.379 s; min 1.6); m03: fade 481.074–482.23 s starts 2.777 s after the last strike (478.297 s; min 1.6); m04: fade 601.987–604.16 s starts 4.268 s after the last strike (597.719 s; min 1.6); m05: fade 875.422–876.58 s starts 3.761 s after the last strike (871.661 s; min 1.6); m06: fade 1058.619–1059.77 s starts 3.935 s after the last strike (1054.684 s; min 1.6); m07: fade 1301.084–1302.64 s starts 2.438 s after the last strike (1298.646 s; min 1.6); m08: fade 1435.417–1439.42 s starts 3.759 s after the last strike (1431.658 s; min 1.6)
+ok   mix.floor              room tone -58 LUFS (target -58); quietest 400 ms of the master -58 LUFS
+ok   mix.musicEq            music bus: 35 Hz high-pass (24 dB/oct), low band under 120 Hz keyed down 1.71 dB more under speech
+ok   mix.lineMasking        every line at least 10 dB over the music (lowest L0423 10.8 dB)
+ok   mix.chapters           8 slices
+ok   render.frames          34546 frames (expected 34546 = round(1439.4167 × 24))
+ok   render.format          1920×1080 @ 24 fps yuv420p
+ok   render.av              video 1439.417s, audio 1439.416667s (aac)
+ok   render.extras          captions muxed
+ok   render.chapters        8 chapters muxed (timeline has 8)
+ok   sheets.coverage        42 sheets current
+WARN sheets.cards           42 shots audited, no blank probed card; suspect unprobed paper (read the frames): ch06-s01, ch06-s03, ch03-s03
+WARN sheets.ghostText       42 shots audited, no ghost text (24 of 24 transitions audited cross-shot); text dissolving over the other shot's picture in 2 transitions (ch02-s04: outgoing '#42 · the ferry is late' up to 71 % over the other shot -0.16..0.26 s | ch08-s03: outgoing 'workerd · 31 Oct' up to 71 % over the other shot -0.16..0.26 s; outgoing 'AS OF · 31 OCTOBER 2026' up to 71 % over the other shot -0.16..0.26 s)
+ok   publish.manifest       8 chapters, kind film
+ok   publish.current        matches the current clock and master
+
+40 pass · 6 warn · 0 fail · 0 skip → films/durable-objects-unbound/qa/reports/latest.json

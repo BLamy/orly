@@ -1,6 +1,72 @@
 {
   "books": [
     {
+      "slug": "durable-objects-unbound",
+      "title": "Durable Objects, Unbound",
+      "subtitle": "One promised message, a well that learned to say no, and the road to running it yourself",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "href": "?film=durable-objects-unbound",
+      "sources": "generated/durable-objects-unbound/sources/",
+      "kind": "film",
+      "runtime": 1439.42,
+      "vhs": {
+        "subject": "Computer Science",
+        "theme": "ocean",
+        "icons": [
+          "globe",
+          "chip",
+          "gear",
+          "book"
+        ],
+        "tagline": "One room, any machine!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Tick",
+          "duration": 108.875
+        },
+        {
+          "number": 2,
+          "title": "One Room in the Whole World",
+          "duration": 166.25
+        },
+        {
+          "number": 3,
+          "title": "The Well That Learned to Say No",
+          "duration": 207.708
+        },
+        {
+          "number": 4,
+          "title": "Two Lineages, One Commit",
+          "duration": 158.042
+        },
+        {
+          "number": 5,
+          "title": "The Plate and the Candle",
+          "duration": 236.5
+        },
+        {
+          "number": 6,
+          "title": "The Ribbon",
+          "duration": 183
+        },
+        {
+          "number": 7,
+          "title": "The Neighbours",
+          "duration": 242.667
+        },
+        {
+          "number": 8,
+          "title": "What Travels",
+          "duration": 136.375
+        }
+      ],
+      "createdAt": "2026-11-01T07:25:40.225Z"
+    },
+    {
       "slug": "handwired-explained",
       "title": "Promises, Not Proofs",
       "subtitle": "How a program becomes a hand-wired neural network, told in the things people were sure of",

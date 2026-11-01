@@ -1,0 +1,240 @@
+{
+ "slug": "durable-objects-unbound",
+ "at": "2026-11-01T04:30:59.242Z",
+ "summary": {
+  "pass": 11,
+  "warn": 2,
+  "fail": 2,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "203 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "wordMap",
+   "status": "warn",
+   "detail": "4 lines anchor on spoken words (explicit spoken text with a different word count)"
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "fail",
+   "detail": "163 wpm overall; OVER 200 wpm (re-narrate slower, e.g. script line tts {solo, speed: 0.88}): L0214 202, L0318 228, L0525 204, L0620 210, L0702 214, L0817 227; fast: L0101 199, L0110 188, L0111 197, L0114 197, L0117 198, L0211 189, L0219 192, L0222 185",
+   "wpm": 162.9,
+   "tooFast": [
+    "L0214 202",
+    "L0318 228",
+    "L0525 204",
+    "L0620 210",
+    "L0702 214",
+    "L0817 227"
+   ],
+   "fast": [
+    "L0101 199",
+    "L0110 188",
+    "L0111 197",
+    "L0114 197",
+    "L0117 198",
+    "L0211 189",
+    "L0219 192",
+    "L0222 185",
+    "L0302 195",
+    "L0305 191",
+    "L0306 199",
+    "L0307 193",
+    "L0322 196",
+    "L0331 197",
+    "L0332 195",
+    "L0402 185",
+    "L0409 188",
+    "L0507 198",
+    "L0517 191",
+    "L0518 191",
+    "L0523 187",
+    "L0527 196",
+    "L0601 186",
+    "L0605 199",
+    "L0609 197",
+    "L0615 194",
+    "L0622 198",
+    "L0624 190",
+    "L0704 196",
+    "L0705 193",
+    "L0708 199",
+    "L0722 189",
+    "L0724 198",
+    "L0730 186",
+    "L0733 188",
+    "L0816 187"
+   ],
+   "perShot": {
+    "ch01-s01": 167.8,
+    "ch01-s02": 167.6,
+    "ch01-s03": 182.9,
+    "ch01-s04": 171.6,
+    "ch02-s01": 161.6,
+    "ch02-s02": 172.1,
+    "ch02-s03": 167.6,
+    "ch02-s04": 156,
+    "ch02-s05": 147.9,
+    "ch03-s01": 173.1,
+    "ch03-s02": 168.6,
+    "ch03-s03": 148.1,
+    "ch03-s04": 158.3,
+    "ch03-s05": 150.8,
+    "ch03-s06": 188.4,
+    "ch04-s01": 146.3,
+    "ch04-s02": 158.1,
+    "ch04-s03": 154.1,
+    "ch04-s04": 165.3,
+    "ch05-s01": 174.3,
+    "ch05-s02": 169.7,
+    "ch05-s03": 164.1,
+    "ch05-s04": 163.3,
+    "ch05-s05": 175.4,
+    "ch05-s06": 149.7,
+    "ch06-s01": 163.5,
+    "ch06-s02": 167.6,
+    "ch06-s03": 159.9,
+    "ch06-s04": 169.2,
+    "ch06-s05": 174.5,
+    "ch07-s01": 172.9,
+    "ch07-s02": 170.5,
+    "ch07-s03": 166.2,
+    "ch07-s03b": 151.6,
+    "ch07-s04": 170.4,
+    "ch07-s05": 144.1,
+    "ch07-s06": 160.5,
+    "ch07-s07": 144.4,
+    "ch08-s01": 158.9,
+    "ch08-s02": 151.7,
+    "ch08-s03": 172,
+    "ch08-s04": 193.1
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all 246 cut edges under -50 dBFS",
+   "loud": [],
+   "warm": [],
+   "dirty": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -19 LUFS (target -19), TP -1.8 dBTP, limiter 0.95 dB, compressor 1.93 dB GR, line rides ≤ 3.0 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "fail",
+   "detail": "L0215: workerd (only a near spelling) not heard literally in \"September 2022, Cloudflare opens the source of its runtime Worker Dee\" (accept workerd/worker D); L0416: workerd (only a near spelling) not heard literally in \"Ryan Dahl and Bert Belder are to lead a first-class, supported way to run Worker Dee yourself\" (accept workerd/worker D) — run film:stt --slug durable-objects-unbound",
+   "targets": [
+    "L0201",
+    "L0215",
+    "L0216",
+    "L0217",
+    "L0301",
+    "L0302",
+    "L0313",
+    "L0320",
+    "L0327",
+    "L0401",
+    "L0402",
+    "L0404",
+    "L0405",
+    "L0406",
+    "L0407",
+    "L0409",
+    "L0411",
+    "L0412",
+    "L0413",
+    "L0414",
+    "L0416",
+    "L0418",
+    "L0508",
+    "L0514",
+    "L0526",
+    "L0601",
+    "L0609",
+    "L0613",
+    "L0614",
+    "L0711",
+    "L0714",
+    "L0725",
+    "L0804",
+    "L0810",
+    "L0811",
+    "L0813"
+   ],
+   "bad": [
+    "L0215: workerd (only a near spelling) not heard literally in \"September 2022, Cloudflare opens the source of its runtime Worker Dee\" (accept workerd/worker D)",
+    "L0416: workerd (only a near spelling) not heard literally in \"Ryan Dahl and Bert Belder are to lead a first-class, supported way to run Worker Dee yourself\" (accept workerd/worker D)"
+   ]
+  },
+  {
+   "stage": "narration",
+   "id": "listening",
+   "status": "warn",
+   "detail": "celld pending; workerd pending; Deno pending; SQLite pending; S3 pending; epoch pending; Vogels pending; Litestream pending — a human listens and runs film:voice signoff --slug durable-objects-unbound --term <term> --by <name>"
+  },
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "fresh",
+   "status": "pass",
+   "detail": "timeline.json is newer than script.json and lines.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "341 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "pass",
+   "detail": "24.0 min vs target 24.0 min (100%)"
+  },
+  {
+   "stage": "timeline",
+   "id": "ceiling",
+   "status": "pass",
+   "detail": "1437.38 s vs ceiling 1680 s (story/meta.json runtimeCeilingSec)"
+  }
+ ]
+}

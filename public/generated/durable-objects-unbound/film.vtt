@@ -1,0 +1,1439 @@
+WEBVTT
+
+1
+00:00:06.500 --> 00:00:11.166
+Everything in this harbour is made up,
+except the kind of room in that window.
+
+2
+00:00:11.616 --> 00:00:16.909
+It is a chat room, the very example
+Durable Objects began with, in 2020.
+
+3
+00:00:17.459 --> 00:00:21.522
+Someone types message
+forty-two: the ferry is late.
+
+4
+00:00:22.272 --> 00:00:27.799
+It waits at the door. Then it gets
+its tick: a promise that it is saved.
+
+5
+00:00:32.450 --> 00:00:35.874
+Then House A goes dark,
+and the square goes quiet.
+
+6
+00:00:37.724 --> 00:00:42.321
+Up the hill, House C lights.
+Its keeper, the runtime,
+
+7
+00:00:42.321 --> 00:00:46.558
+draws a bundle from the well, and
+the room relights in a new window.
+
+8
+00:00:46.858 --> 00:00:49.852
+Message forty-two is still
+there, with its tick.
+
+9
+00:00:50.602 --> 00:00:55.645
+The machine that made that promise
+is gone. The promise is still true.
+
+10
+00:00:57.925 --> 00:01:00.443
+How did the promise outlive the machine?
+
+11
+00:01:01.093 --> 00:01:05.701
+The answer is in the square: the
+town well, which is a storage bucket.
+
+12
+00:01:06.001 --> 00:01:08.589
+The plate above it names the room's owner.
+
+13
+00:01:09.039 --> 00:01:12.673
+The room keeps two promises:
+one owner at a time,
+
+14
+00:01:12.673 --> 00:01:15.876
+and nothing acknowledged is
+lost when a machine fails.
+
+15
+00:01:16.176 --> 00:01:21.446
+And a newer one, still being built: the
+room can move between machines you run.
+
+16
+00:01:21.996 --> 00:01:27.324
+So how can a bucket, which cannot run a
+single line of code, make a room portable?
+
+17
+00:01:29.783 --> 00:01:36.284
+A story from 2020 to the end of October
+2026: a room, a well and a ribbon.
+
+18
+00:01:36.734 --> 00:01:40.252
+The harbour is ours. The
+machinery is real code,
+
+19
+00:01:40.252 --> 00:01:42.886
+and every piece wears a tag saying whose.
+
+20
+00:01:43.236 --> 00:01:46.417
+The newest of it is days
+old, and still experimental.
+
+21
+00:01:50.075 --> 00:01:53.094
+On the twenty-eighth of September, 2020,
+
+22
+00:01:53.094 --> 00:01:58.178
+Kenton Varda of Cloudflare introduced
+Durable Objects, in a closed beta.
+
+23
+00:01:58.628 --> 00:02:02.679
+Each object has an identifier that
+is unique across the whole world.
+
+24
+00:02:02.979 --> 00:02:06.415
+And his post is plain about
+where that object lives.
+
+25
+00:02:07.165 --> 00:02:10.520
+In one place. Only ever one, at a time.
+
+26
+00:02:10.970 --> 00:02:15.068
+So every request about the same
+thing reaches the same place,
+
+27
+00:02:15.068 --> 00:02:16.913
+and that place can coordinate them.
+
+28
+00:02:18.392 --> 00:02:23.001
+His demonstration is a chat app:
+each chat room is one object,
+
+29
+00:02:23.001 --> 00:02:25.996
+and every message passes
+through it to everyone else.
+
+30
+00:02:26.296 --> 00:02:31.938
+That is the kind of room our lantern
+holds: one room, one object, one home.
+
+31
+00:02:32.588 --> 00:02:37.093
+Notice what one home does not
+mean. A handler can stop and wait,
+
+32
+00:02:37.093 --> 00:02:41.411
+and living in one place does not
+make all its steps one transaction.
+
+33
+00:02:43.467 --> 00:02:51.105
+The third of August, 2021. A later post of his
+is called Easy, Fast, Correct: Choose three.
+
+34
+00:02:51.555 --> 00:02:55.235
+It puts a gate on the
+room's door, an output gate.
+
+35
+00:02:55.235 --> 00:02:59.646
+While a write is unfinished, the reply
+to our sender waits behind a latch.
+
+36
+00:02:59.946 --> 00:03:03.870
+The write completes. The latch
+lifts, and the letter goes out.
+
+37
+00:03:04.420 --> 00:03:07.961
+If the write fails, the waiting
+letters are thrown away,
+
+38
+00:03:07.961 --> 00:03:11.106
+replaced with errors,
+and the object restarts.
+
+39
+00:03:11.406 --> 00:03:15.068
+So the tick in the harbour
+was a held letter, released.
+
+40
+00:03:17.133 --> 00:03:22.949
+September 2022. Cloudflare opens
+the source of its runtime, workerd.
+
+41
+00:03:23.399 --> 00:03:27.114
+Now the runtime could leave
+Cloudflare, and a room could come too,
+
+42
+00:03:27.114 --> 00:03:30.179
+but only as a single
+instance on one machine.
+
+43
+00:03:30.179 --> 00:03:36.309
+In 2026 Ryan Dahl would call it exactly
+that: limited to a single instance.
+
+44
+00:03:36.959 --> 00:03:44.388
+September 2024. SQLite moves inside the
+object, into the very same thread as its code.
+
+45
+00:03:44.688 --> 00:03:47.114
+Local reads become almost instant.
+
+46
+00:03:47.564 --> 00:03:53.032
+But a tick is not a local read. A tick
+says the write will outlive the machine.
+
+47
+00:03:54.683 --> 00:04:01.311
+On Cloudflare's own network, a hosted service
+kept that promise: the Storage Relay Service.
+
+48
+00:04:01.761 --> 00:04:07.044
+It watches SQLite's write-ahead log,
+where each change is written first,
+
+49
+00:04:07.044 --> 00:04:10.701
+and ships the changes to
+object storage in batches:
+
+50
+00:04:10.701 --> 00:04:14.009
+ten seconds, or sixteen
+megabytes, at the most.
+
+51
+00:04:14.309 --> 00:04:18.674
+Object storage is slow, and nobody
+can wait ten seconds for a tick.
+
+52
+00:04:19.124 --> 00:04:22.711
+So each commit also goes
+straight to five followers,
+
+53
+00:04:22.711 --> 00:04:28.026
+in five different data centres.
+When three answer, the latch lifts.
+
+54
+00:04:28.326 --> 00:04:32.238
+Real machinery. And all of
+it lived inside Cloudflare.
+
+55
+00:04:36.125 --> 00:04:39.829
+Back to the square. In our
+harbour the Well stands
+
+56
+00:04:39.829 --> 00:04:43.647
+for a bucket in an object
+store, like Amazon's S3.
+
+57
+00:04:43.997 --> 00:04:47.782
+There was a time when
+overwriting a file in S3 and
+
+58
+00:04:47.782 --> 00:04:50.916
+reading it straight back
+could hand you the old copy.
+
+59
+00:04:51.216 --> 00:04:54.641
+Amazon later explained
+why: a write could take
+
+60
+00:04:54.641 --> 00:04:57.775
+one path through its
+caches, and a read another.
+
+61
+00:04:58.225 --> 00:05:04.784
+On the first of December, 2020, that changed:
+read after a write, and you get the latest.
+
+62
+00:05:05.084 --> 00:05:07.742
+Whatever bucket you draw up is the newest.
+
+63
+00:05:09.433 --> 00:05:14.111
+The job: the room's Plate is empty,
+and Houses A and B both want it.
+
+64
+00:05:14.461 --> 00:05:16.296
+Fresh reads are not enough.
+
+65
+00:05:16.296 --> 00:05:20.196
+Pull the pin from the Well's brass
+tooth, and the Well checks nothing.
+
+66
+00:05:20.746 --> 00:05:25.111
+Each keeper reads the Plate:
+nobody. Each writes: mine.
+
+67
+00:05:25.461 --> 00:05:28.769
+Both lanterns light;
+both rooms take messages.
+
+68
+00:05:29.069 --> 00:05:35.465
+B's plate lands a moment later and wins the
+Well. But A has already answered its senders.
+
+69
+00:05:35.915 --> 00:05:40.733
+An overwrite can win the well. It cannot
+take back what was already served.
+
+70
+00:05:41.383 --> 00:05:45.515
+Between the read and the write,
+the world moved. Pin back.
+
+71
+00:05:48.600 --> 00:05:51.897
+The twentieth of August, 2024.
+
+72
+00:05:51.897 --> 00:05:57.086
+S3 learns its first refusal: write
+this only if nothing is there.
+
+73
+00:05:57.436 --> 00:06:03.670
+Two keepers race. One creation lands, a
+shutter drops, and the second card is refused.
+
+74
+00:06:04.120 --> 00:06:10.249
+The twenty-fifth of November, 2024: replace
+this only if it is still the version I read.
+
+75
+00:06:10.599 --> 00:06:13.560
+Both cards carry the same old version.
+
+76
+00:06:13.560 --> 00:06:20.234
+One click: accepted, and the Plate's
+notch is cut anew. One thunk: refused.
+
+77
+00:06:20.684 --> 00:06:25.570
+That is compare and swap, and the store
+checks the condition, not the keeper.
+
+78
+00:06:25.870 --> 00:06:28.121
+The Well had learned to say no.
+
+79
+00:06:30.383 --> 00:06:32.507
+So who referees the referee?
+
+80
+00:06:33.257 --> 00:06:38.783
+In April 2021, Werner Vogels,
+Amazon's chief technology officer,
+
+81
+00:06:38.783 --> 00:06:41.685
+described what they had built inside S3.
+
+82
+00:06:42.035 --> 00:06:46.203
+Caches that agree with one another,
+an order for every object's changes,
+
+83
+00:06:46.203 --> 00:06:52.482
+and a witness, told of every change,
+that any cache can ask: is my copy stale?
+
+84
+00:06:52.932 --> 00:06:55.567
+They checked it with
+proofs and model checking,
+
+85
+00:06:55.567 --> 00:06:58.283
+which, he wrote, was more
+work than building it.
+
+86
+00:06:58.833 --> 00:07:03.047
+So the houses on the hill run
+no consensus of their own.
+
+87
+00:07:03.047 --> 00:07:05.833
+The coordination has
+moved inside the Well.
+
+88
+00:07:08.100 --> 00:07:11.605
+Now a warning, from
+celld's own documentation.
+
+89
+00:07:11.855 --> 00:07:16.604
+Some stores speak S3's language
+but do not keep these conditions;
+
+90
+00:07:16.604 --> 00:07:19.226
+on them, two houses can own one room.
+
+91
+00:07:19.576 --> 00:07:23.441
+Worse, a store can accept the
+condition and silently ignore it.
+
+92
+00:07:23.891 --> 00:07:29.359
+So before it serves, every celld
+node makes four test writes: create,
+
+93
+00:07:29.359 --> 00:07:35.605
+refuse a second create, update,
+refuse a stale update. Two must fail.
+
+94
+00:07:35.855 --> 00:07:40.440
+Then it checks a ranged read.
+No node can skip the test.
+
+95
+00:07:40.790 --> 00:07:44.470
+A bucket earns its place
+by refusing, on demand.
+
+96
+00:07:46.350 --> 00:07:52.514
+One more thing to notice. The Well referees
+one key at a time: one Plate for one room.
+
+97
+00:07:52.864 --> 00:07:56.067
+It makes no promise that
+two rooms commit as one.
+
+98
+00:07:56.517 --> 00:08:00.974
+And if the Well goes quiet, no
+house can take a Plate at all.
+
+99
+00:08:03.833 --> 00:08:10.113
+August, 2026. A second desk, a second
+lamp: the Deno team releases celld.
+
+100
+00:08:10.563 --> 00:08:14.927
+Ryan Dahl, of Deno, had started
+it, and he later told us why.
+
+101
+00:08:15.227 --> 00:08:21.426
+He wanted a single binary, written in Rust,
+whose only outside service is object storage.
+
+102
+00:08:21.876 --> 00:08:27.611
+celld runs a Workers application on
+machines you own: Durable Objects,
+
+103
+00:08:27.611 --> 00:08:31.546
+self-hosted and distributed,
+with long-term state in a bucket.
+
+104
+00:08:31.846 --> 00:08:35.352
+Its README says it needs
+no consensus service.
+
+105
+00:08:35.352 --> 00:08:39.426
+By now we know where the
+consensus went: inside the well.
+
+106
+00:08:39.876 --> 00:08:44.333
+Its log replicator descends from a
+Rust reimplementation of Litestream.
+
+107
+00:08:45.808 --> 00:08:49.256
+In October the two would
+write one post together.
+
+108
+00:08:49.256 --> 00:08:52.727
+In it, Kenton Varda, of
+Cloudflare, named the gap.
+
+109
+00:08:53.027 --> 00:08:59.111
+workerd's Durable Objects ran as a single
+instance: good enough for local testing,
+
+110
+00:08:59.111 --> 00:09:04.717
+unable to scale. He called it workerd's
+one big gap in production readiness.
+
+111
+00:09:05.167 --> 00:09:10.414
+And he wrote that when the Deno team released
+celld in August, “we were delighted.”
+
+112
+00:09:10.964 --> 00:09:15.038
+Two lamps in one frame. Two
+ropes, beginning to braid.
+
+113
+00:09:16.792 --> 00:09:20.159
+On the ninth of October,
+2026, Deno and Cloudflare
+
+114
+00:09:20.159 --> 00:09:24.187
+announced that the whole Deno
+team was joining Cloudflare.
+
+115
+00:09:24.637 --> 00:09:26.703
+These are plans, as announced.
+
+116
+00:09:26.703 --> 00:09:31.114
+The Deno runtime gets one more year
+of bug-fix and security releases.
+
+117
+00:09:31.414 --> 00:09:37.764
+After that year, Ryan Dahl writes, the team's
+work on the Deno runtime comes to an end.
+
+118
+00:09:38.214 --> 00:09:46.607
+Deno Deploy runs six more months. JSR and
+rusty_v8 continue. Deno stays open source.
+
+119
+00:09:46.907 --> 00:09:49.949
+Cloudflare filed its
+post under acquisitions,
+
+120
+00:09:49.949 --> 00:09:55.010
+yet neither post states a price or
+any terms. We will not guess at them.
+
+121
+00:09:55.560 --> 00:09:59.031
+Ryan Dahl and Bert Belder
+are to lead a first-class,
+
+122
+00:09:59.031 --> 00:10:01.887
+supported way to run workerd yourself.
+
+123
+00:10:05.758 --> 00:10:09.462
+On the evening of the twenty-eighth
+of October, Pacific time,
+
+124
+00:10:09.462 --> 00:10:13.884
+Ryan Dahl's commit landed in
+workerd, calling itself a beginning.
+
+125
+00:10:14.334 --> 00:10:19.570
+Several processes share one bucket;
+each object has one owner at a time,
+
+126
+00:10:19.570 --> 00:10:23.169
+and if an owner dies, the message
+says, another picks it up.
+
+127
+00:10:23.469 --> 00:10:25.733
+It is experimental. For now,
+
+128
+00:10:25.733 --> 00:10:29.331
+a write is acknowledged only
+once the bucket holds all of it.
+
+129
+00:10:29.681 --> 00:10:33.256
+And one plain line: “Alarms
+are not supported yet.”
+
+130
+00:10:33.806 --> 00:10:38.101
+Two days later, alarms
+landed. The next day, facets.
+
+131
+00:10:38.551 --> 00:10:39.618
+Let us open it.
+
+132
+00:10:41.675 --> 00:10:46.029
+Open the Plate. In workerd's
+cluster it has three tiles:
+
+133
+00:10:46.029 --> 00:10:50.056
+the house that owns the room, an
+epoch, and a third, called from.
+
+134
+00:10:50.406 --> 00:10:54.202
+The epoch is a count that
+goes up with every new claim.
+
+135
+00:10:54.202 --> 00:10:57.766
+The from tile names the last
+epoch that actually opened.
+
+136
+00:10:58.116 --> 00:11:02.225
+The code calls it the only
+authority on who owns the room.
+
+137
+00:11:02.675 --> 00:11:08.004
+To claim, a keeper offers the version it
+read. If the Plate names a house whose
+
+138
+00:11:08.004 --> 00:11:13.715
+lease has run out, the claim writes the
+next epoch, and at most one claimant wins.
+
+139
+00:11:14.065 --> 00:11:18.384
+If that house is still alive,
+the request goes there instead.
+
+140
+00:11:18.384 --> 00:11:21.111
+A brand-new room is born already open.
+
+141
+00:11:23.175 --> 00:11:29.072
+A house may serve only while it holds a lease:
+a candle on its sill, relit at each renewal.
+
+142
+00:11:29.422 --> 00:11:34.728
+In workerd the lease is twenty
+seconds. A house renews every three,
+
+143
+00:11:34.728 --> 00:11:38.523
+gives each attempt four, and
+retries a failure after one.
+
+144
+00:11:38.873 --> 00:11:41.497
+A clock may be two
+seconds off the bucket's,
+
+145
+00:11:41.497 --> 00:11:46.302
+so the painted band at the candle's
+foot is twice that: four seconds.
+
+146
+00:11:46.752 --> 00:11:50.270
+If this lease runs out at
+twenty thousand milliseconds,
+
+147
+00:11:50.270 --> 00:11:54.611
+the house may serve only while its
+clock reads under sixteen thousand.
+
+148
+00:11:54.961 --> 00:11:58.491
+And it may start a renewal
+only under twelve thousand,
+
+149
+00:11:58.491 --> 00:12:02.356
+so even a full four-second
+attempt ends before the band.
+
+150
+00:12:02.806 --> 00:12:05.974
+Lines on a ruler, not
+promises about timers.
+
+151
+00:12:08.433 --> 00:12:13.668
+Why give each renewal four seconds,
+and not two? The code keeps a scar.
+
+152
+00:12:14.018 --> 00:12:17.931
+A comment records that
+Cloudflare's R2 stalls writes for
+
+153
+00:12:17.931 --> 00:12:21.402
+about five and a half seconds
+at every five-minute mark,
+
+154
+00:12:21.402 --> 00:12:24.617
+and that a two-second limit
+once stopped every node.
+
+155
+00:12:25.067 --> 00:12:30.162
+So failed renewals are retried while the
+lease still holds through the attempt.
+
+156
+00:12:32.017 --> 00:12:35.360
+A's keeper falls asleep: a paused process.
+
+157
+00:12:35.710 --> 00:12:38.995
+Pull the pin, so A never
+checks its own candle.
+
+158
+00:12:39.545 --> 00:12:45.361
+The candle burns through the band. B sees that
+A's lease has run out, and claims the room.
+
+159
+00:12:45.711 --> 00:12:48.682
+A wakes and goes on serving. Two rooms.
+
+160
+00:12:49.332 --> 00:12:53.779
+Pin back. Waking, A
+checks its candle first.
+
+161
+00:12:53.779 --> 00:12:59.223
+Past the band, it serves nothing, closes
+its own shutters, and its lamp goes out.
+
+162
+00:12:59.573 --> 00:13:04.507
+A house that cannot renew in time does
+the same while its lease still holds:
+
+163
+00:13:04.507 --> 00:13:08.244
+gone before anyone may
+take over. That is fencing.
+
+164
+00:13:08.894 --> 00:13:14.849
+Notice what B never knew. A timeout
+proves silence. It does not prove death.
+
+165
+00:13:15.299 --> 00:13:19.931
+Safety comes from A stopping itself,
+and from a second look at the Plate.
+
+166
+00:13:22.017 --> 00:13:26.057
+One soft spot: each house measures
+its clock against the bucket's,
+
+167
+00:13:26.057 --> 00:13:28.297
+and when it cannot, it assumes zero.
+
+168
+00:13:28.647 --> 00:13:33.239
+So the clock is not the last line
+of defence; the second look is.
+
+169
+00:13:33.689 --> 00:13:38.020
+celld, a different implementation,
+uses ten-second leases,
+
+170
+00:13:38.020 --> 00:13:43.429
+and when the Well proves a write it does
+the same: it reads the record, not a clock.
+
+171
+00:13:46.092 --> 00:13:50.840
+Claimed is not opened, and the difference
+decides which past the room comes back with.
+
+172
+00:13:51.390 --> 00:13:58.088
+Made-up numbers. A opened epoch seven:
+A, seven, from seven. The crown is lit.
+
+173
+00:13:58.438 --> 00:14:04.985
+B claims: B, eight, from seven. The from
+tile stays at seven, and the crown is dark.
+
+174
+00:14:05.335 --> 00:14:09.910
+To open, B must restore
+seven's log, upload a snapshot,
+
+175
+00:14:09.910 --> 00:14:13.670
+and then make the opening write
+that sets the from tile to eight.
+
+176
+00:14:14.120 --> 00:14:22.049
+That flicker in House B, the night A went
+dark? B died first. C claims: C, nine,
+
+177
+00:14:22.049 --> 00:14:27.261
+from seven, and recovers seven, because
+eight never opened and acknowledged nothing.
+
+178
+00:14:27.811 --> 00:14:35.322
+Rewind. Had B opened, the Plate would read B,
+eight, from eight, and C would recover eight.
+
+179
+00:14:38.175 --> 00:14:42.622
+Inside the lantern, SQLite
+keeps the room in a file.
+
+180
+00:14:42.622 --> 00:14:45.105
+But it does not write changes there first.
+
+181
+00:14:45.455 --> 00:14:51.630
+It writes them to a second file beside it:
+a write-ahead log. Think of it as a ribbon.
+
+182
+00:14:52.080 --> 00:14:55.574
+It starts with a leader,
+thirty-two bytes long.
+
+183
+00:14:55.574 --> 00:15:00.113
+Then frames: each a
+twenty-four-byte tab and one page.
+
+184
+00:15:00.463 --> 00:15:04.480
+On a transaction's last frame,
+the tab records how many pages
+
+185
+00:15:04.480 --> 00:15:09.413
+the database has after the commit.
+Other frames hold zero there.
+
+186
+00:15:09.863 --> 00:15:13.926
+We draw it as a red stamp.
+That number is the commit mark.
+
+187
+00:15:16.183 --> 00:15:21.106
+workerd's keeper hears every write
+to the ribbon, holds the frames
+
+188
+00:15:21.106 --> 00:15:25.516
+since the last stamp, and cuts only
+when a stamped frame is complete.
+
+189
+00:15:25.866 --> 00:15:31.043
+One cut, one whole transaction. Nothing
+half-finished ever leaves the room.
+
+190
+00:15:31.493 --> 00:15:35.696
+A transaction that rolls back
+leaves frames with no stamp,
+
+191
+00:15:35.696 --> 00:15:37.564
+and the next writes straight over them.
+
+192
+00:15:37.914 --> 00:15:41.594
+When SQLite copies the
+ribbon into its main file
+
+193
+00:15:41.594 --> 00:15:44.775
+and starts a fresh one, the
+keeper starts fresh too.
+
+194
+00:15:46.642 --> 00:15:50.137
+The cut lengths go down
+to the Well as scrolls:
+
+195
+00:15:50.137 --> 00:15:53.003
+each page once, in its newest version.
+
+196
+00:15:53.353 --> 00:15:57.138
+Every scroll's cord records
+a checksum and its length,
+
+197
+00:15:57.138 --> 00:16:02.083
+so a damaged or short scroll refuses
+to be read, rather than read wrong.
+
+198
+00:16:02.533 --> 00:16:08.140
+Each epoch's shelf starts with a
+Book, a snapshot of what it inherited;
+
+199
+00:16:08.140 --> 00:16:11.773
+a new Book goes down before
+old scrolls are cleared.
+
+200
+00:16:12.223 --> 00:16:18.143
+This is workerd's own format. celld
+writes a different one, called LTX.
+
+201
+00:16:20.217 --> 00:16:23.073
+Now the tick itself, in workerd.
+
+202
+00:16:23.073 --> 00:16:27.252
+Message forty-two is written;
+its reply waits behind the latch.
+
+203
+00:16:27.602 --> 00:16:31.769
+The keeper cuts the transaction, and
+sends the scroll down to the Well.
+
+204
+00:16:32.019 --> 00:16:36.757
+Then, before it rings the bell, the keeper
+looks up at the Plate one more time.
+
+205
+00:16:36.757 --> 00:16:39.426
+Still A. Still epoch seven.
+
+206
+00:16:39.876 --> 00:16:43.892
+Only then the bell. The
+latch lifts. The tick.
+
+207
+00:16:44.542 --> 00:16:49.407
+Finishing inside the room is not the
+tick. The Well and the second look are.
+
+208
+00:16:49.407 --> 00:16:53.864
+celld's gate holds even more:
+errors, and every chunk of a stream.
+
+209
+00:16:56.142 --> 00:16:59.149
+Pull the pin, and the
+keeper never looks up.
+
+210
+00:16:59.599 --> 00:17:03.894
+A sends its scroll with its lease in
+order, then the whole house freezes,
+
+211
+00:17:03.894 --> 00:17:10.372
+like the sleeper. B claims epoch eight, and
+A's scroll lands on epoch seven's shelf.
+
+212
+00:17:10.722 --> 00:17:15.424
+A rings the bell anyway: a tick
+for a write that B may never see.
+
+213
+00:17:16.074 --> 00:17:19.951
+Pin back. A looks up:
+the Plate says eight.
+
+214
+00:17:19.951 --> 00:17:24.711
+No bell; the letter becomes an error,
+and the old scroll is cleared later.
+
+215
+00:17:25.261 --> 00:17:29.266
+One honest limit: if a reply
+is lost on its way home,
+
+216
+00:17:29.266 --> 00:17:31.738
+the sender cannot tell
+whether the write happened.
+
+217
+00:17:32.088 --> 00:17:38.519
+A missing tick does not prove a write absent.
+Durability is not the same as exactly once.
+
+218
+00:17:41.375 --> 00:17:48.061
+Back to workerd's town, the night A went dark.
+House C holds the Plate: nine, from seven.
+
+219
+00:17:48.511 --> 00:17:51.889
+First it throws away its
+own copy of the room.
+
+220
+00:17:52.189 --> 00:17:58.355
+It reads the newest Book, then each scroll
+in order, skipping pages already laid down.
+
+221
+00:17:58.655 --> 00:18:01.870
+A missing scroll in the
+middle stops the restore cold.
+
+222
+00:18:02.420 --> 00:18:06.297
+A checksum can say a scroll is
+damaged. Never what it said.
+
+223
+00:18:06.597 --> 00:18:09.952
+Pages are laid down
+again; no code is re-run.
+
+224
+00:18:10.252 --> 00:18:16.623
+Message forty-two is back. Only then does C
+send down its own Book, and open the Plate.
+
+225
+00:18:18.100 --> 00:18:20.933
+That is the price. In workerd's cluster,
+
+226
+00:18:20.933 --> 00:18:24.577
+every tick waits for the Well,
+and a second look at the Plate.
+
+227
+00:18:24.877 --> 00:18:29.485
+Our bar is illustrative: a sliver
+of local work, then the long walk.
+
+228
+00:18:29.785 --> 00:18:34.892
+Cloudflare's hosted relay, back in
+2024, answered that with followers.
+
+229
+00:18:35.192 --> 00:18:40.369
+celld uses followers too: a neighbour's
+disk can answer much sooner than the Well.
+
+230
+00:18:40.819 --> 00:18:42.014
+Change the lamps.
+
+231
+00:18:44.692 --> 00:18:47.037
+This is celld's town, version 0.6.3.
+
+232
+00:18:47.037 --> 00:18:53.422
+By default, the owner hands each
+write to one or two neighbours.
+
+233
+00:18:53.872 --> 00:19:00.762
+Each must press the page onto its own disk
+before it answers. That press is called fsync.
+
+234
+00:19:01.062 --> 00:19:03.512
+When every neighbour in
+the proof has pressed,
+
+235
+00:19:03.512 --> 00:19:08.271
+the bell can ring before the page
+reaches the Well. The upload follows.
+
+236
+00:19:09.725 --> 00:19:12.673
+Now count. The owner never counts itself.
+
+237
+00:19:13.123 --> 00:19:15.700
+One house alone gets no fleet.
+
+238
+00:19:15.700 --> 00:19:19.635
+It falls back on the Well's
+proof: much slower, still correct.
+
+239
+00:19:19.935 --> 00:19:24.205
+Two running houses: one
+neighbour, enough for a proof.
+
+240
+00:19:24.205 --> 00:19:27.247
+Three or more: two
+neighbours, three copies.
+
+241
+00:19:27.547 --> 00:19:30.693
+Until a second neighbour
+joins, a fresh write's proof
+
+242
+00:19:30.693 --> 00:19:34.337
+rests on two copies: the
+owner's and one neighbour's.
+
+243
+00:19:37.000 --> 00:19:40.042
+Now replay that night in celld's town:
+
+244
+00:19:40.042 --> 00:19:43.988
+the owner dies while forty-two lives
+only in the neighbours' notebooks.
+
+245
+00:19:44.288 --> 00:19:45.228
+Pull the pin.
+
+246
+00:19:45.978 --> 00:19:49.925
+In celld's Well, each epoch
+writes under its own shelf,
+
+247
+00:19:49.925 --> 00:19:54.696
+so a stale owner can only add to an
+old shelf, never to the new owner's.
+
+248
+00:19:54.996 --> 00:20:02.256
+That fences the Well. It cannot fetch what
+only the neighbours hold. Forty-two is gone.
+
+249
+00:20:02.556 --> 00:20:06.955
+Or the old owner was only asleep,
+and wakes to ring one more bell.
+
+250
+00:20:07.605 --> 00:20:11.216
+Pin back. Before its first
+tick from the neighbours,
+
+251
+00:20:11.216 --> 00:20:15.069
+each celld session creates its
+own log record in the Well.
+
+252
+00:20:17.158 --> 00:20:20.942
+So a successor reads that
+record before it reads the Well.
+
+253
+00:20:21.392 --> 00:20:25.721
+Absent: the old session never
+ticked ahead of the Well.
+
+254
+00:20:25.721 --> 00:20:28.158
+Sealed: someone already recovered it.
+
+255
+00:20:28.458 --> 00:20:35.060
+Open, or still recovering: fence it with
+a compare and swap. Seal every neighbour
+
+256
+00:20:35.060 --> 00:20:40.261
+it can reach, collect their pages,
+upload them, and mark the record sealed.
+
+257
+00:20:40.561 --> 00:20:46.713
+Only then restore. With its neighbours
+sealed, the old owner cannot win another bell.
+
+258
+00:20:49.383 --> 00:20:52.216
+Now the hard rule. At
+least one current neighbour
+
+259
+00:20:52.216 --> 00:20:55.350
+must hand over its complete
+range of retained pages.
+
+260
+00:20:55.800 --> 00:20:59.885
+Two made-up cases. One
+notebook is water-damaged,
+
+261
+00:20:59.885 --> 00:21:03.146
+but the other is complete:
+recovery proceeds.
+
+262
+00:21:03.796 --> 00:21:07.848
+Now one notebook is incomplete,
+and the other damaged.
+
+263
+00:21:07.848 --> 00:21:11.656
+Nobody can prove the whole
+tail, so the door stays shut.
+
+264
+00:21:11.956 --> 00:21:16.564
+And a neighbour that answers with an
+error has not proved its pages absent.
+
+265
+00:21:17.114 --> 00:21:21.235
+The room would rather stay shut
+than come back missing a promise.
+
+266
+00:21:23.508 --> 00:21:28.825
+Houses that restart together still lend
+each other their notebooks. Recovery can
+
+267
+00:21:28.825 --> 00:21:34.200
+take minutes; a waiting request gives up
+only after two hundred and forty tries.
+
+268
+00:21:34.750 --> 00:21:40.984
+In our harbour the notebooks are whole. The
+lantern relights; forty-two keeps its tick.
+
+269
+00:21:44.242 --> 00:21:48.393
+Four pins, in the order
+we pulled them: the Tooth,
+
+270
+00:21:48.393 --> 00:21:52.630
+the band on the candle, the
+second look, the neighbours' seal.
+
+271
+00:21:52.930 --> 00:21:55.390
+Pull any one, and a promise breaks.
+
+272
+00:21:55.940 --> 00:22:00.061
+So what travels, when a room
+travels, is not the bucket alone.
+
+273
+00:22:00.361 --> 00:22:06.189
+It is the bucket's refusals on one key,
+and its fresh reads; leases, with clocks
+
+274
+00:22:06.189 --> 00:22:12.481
+kept close; and, as celld asks, a supervisor
+to restart a house that fenced itself.
+
+275
+00:22:12.781 --> 00:22:17.195
+And a runtime that cuts the
+ribbon, uploads and looks again;
+
+276
+00:22:17.195 --> 00:22:22.314
+in celld's fleet, one that also
+seals and collects before it replays.
+
+277
+00:22:23.975 --> 00:22:28.746
+The small print, as of the
+thirty-first of October, 2026.
+
+278
+00:22:29.196 --> 00:22:33.502
+workerd's clustering is three
+days old, and still experimental.
+
+279
+00:22:33.802 --> 00:22:39.026
+Its tests check one writer,
+forwarding, and takeover after a kill.
+
+280
+00:22:39.026 --> 00:22:41.499
+We read them. We did not run them.
+
+281
+00:22:41.799 --> 00:22:45.154
+The alarm tests check
+the cases they stage.
+
+282
+00:22:45.154 --> 00:22:49.170
+They do not establish exactly-once
+effects for every application.
+
+283
+00:22:49.470 --> 00:22:51.757
+celld documents its own limits,
+
+284
+00:22:51.757 --> 00:22:55.588
+and wants bucket lifecycle rules
+that leave its records alone.
+
+285
+00:22:55.888 --> 00:23:00.531
+And workerd, on its own, is not
+a sandbox for untrusted code.
+
+286
+00:23:03.008 --> 00:23:06.770
+The two lamps, once more.
+The announced plan stands,
+
+287
+00:23:06.770 --> 00:23:08.917
+and the commit called itself a beginning.
+
+288
+00:23:09.267 --> 00:23:13.249
+celld's code and ideas are
+to be merged into workerd,
+
+289
+00:23:13.249 --> 00:23:18.159
+and Ryan Dahl writes that the team's
+future work goes into this shared platform.
+
+290
+00:23:18.809 --> 00:23:24.048
+And the Well? It does not run your
+code, make two rooms commit as one,
+
+291
+00:23:24.048 --> 00:23:28.531
+promise exactly once, or keep
+the town open when it goes quiet.
+
+292
+00:23:31.017 --> 00:23:34.604
+Dawn over the harbour. The
+lantern burns in House C,
+
+293
+00:23:34.604 --> 00:23:37.181
+and the sender's slip
+still carries its tick.
+
+294
+00:23:37.931 --> 00:23:41.286
+A tick is not a feeling. It is a proof.
+
+295
+00:23:42.036 --> 00:23:47.443
+The bytes were in the Well, and the Plate
+still named its owner when the bell rang.
+
+296
+00:23:48.293 --> 00:23:51.508
+The harbour was made up. The code is real.

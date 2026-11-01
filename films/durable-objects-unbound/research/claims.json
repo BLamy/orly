@@ -1,7 +1,7 @@
 [
  {
   "id": "HI01",
-  "claim": "Cloudflare introduced Durable Objects in closed beta on 28 September 2020, in a post by Kenton Varda. Each object has a globally-unique identifier and, in the post's words, exists in only one location in the whole world at a time.",
+  "claim": "Cloudflare introduced Durable Objects in closed beta on 28 September 2020, in a post by Kenton Varda. Each object has a globally-unique identifier and lives in just one place in the world at any given moment.",
   "sources": [
    "https://blog.cloudflare.com/introducing-workers-durable-objects"
   ],
@@ -15,7 +15,7 @@
  },
  {
   "id": "HI02",
-  "claim": "The 2020 post's demonstration is a chat app that uses one Durable Object to control each chat room; users connect over WebSockets and messages from one user are broadcast to the others. It calls the chat room the logical unit of state in a chat app.",
+  "claim": "The 2020 post's demonstration is a chat app that uses one Durable Object to control each chat room; users connect over WebSockets and messages from one user are broadcast to the others. It treats the chat room as the app's logical unit of state.",
   "sources": [
    "https://blog.cloudflare.com/introducing-workers-durable-objects"
   ],
@@ -68,7 +68,7 @@
  },
  {
   "id": "HI06",
-  "claim": "Cloudflare released workerd, the Workers runtime, as open source under the Apache License 2.0 on 27 September 2022 (post by Kenton Varda). The 2026 work is therefore distributed self-hosting progress, not the first open-sourcing.",
+  "claim": "Cloudflare released workerd, the Workers runtime, as open source on 27 September 2022 (post by Kenton Varda), licensed under Apache 2.0. The 2026 work is therefore distributed self-hosting progress, not the first open-sourcing.",
   "sources": [
    "https://blog.cloudflare.com/workerd-open-source-workers-runtime/"
   ],
@@ -95,7 +95,7 @@
  },
  {
   "id": "HI08",
-  "claim": "On 26 September 2024 Cloudflare put SQLite inside Durable Objects, running in the very same thread as the application; Kenton Varda wrote that latency is effectively zero because there is no communication barrier between application and SQLite. This describes local access, not end-to-end durable acknowledgement.",
+  "claim": "On 26 September 2024 Cloudflare put SQLite inside Durable Objects, running in the very same thread as the application; Kenton Varda wrote that this makes latency effectively zero, since nothing separates the application from SQLite. This describes local access, not end-to-end durable acknowledgement.",
   "sources": [
    "https://blog.cloudflare.com/sqlite-in-durable-objects/"
   ],
@@ -151,7 +151,7 @@
  },
  {
   "id": "HI12",
-  "claim": "In the 9 October 2026 joint post, Ryan Dahl wrote that workerd's Durable Objects support is limited to a single instance; Kenton Varda wrote that workerd has always had one big gap in its production-readiness, Durable Objects, which it implements only in a single-instance way, good enough for local testing but unable to scale.",
+  "claim": "In the 9 October 2026 joint post, Ryan Dahl wrote that workerd's Durable Objects support covers only one instance; Kenton Varda called Durable Objects the big gap in workerd's production-readiness, implemented for a single instance only: fine for local testing, but unable to scale.",
   "sources": [
    "https://blog.cloudflare.com/deno-joins-cloudflare/"
   ],
@@ -166,7 +166,7 @@
  },
  {
   "id": "HI13",
-  "claim": "In the joint post Ryan Dahl writes that this is why he started celld, wanting one binary, written in Rust, with object storage as its only external service dependency.",
+  "claim": "In the joint post Ryan Dahl explains that this is why he started celld: he wanted a single Rust binary whose only outside service is object storage.",
   "sources": [
    "https://blog.cloudflare.com/deno-joins-cloudflare/"
   ],
@@ -179,7 +179,7 @@
  },
  {
   "id": "HI14",
-  "claim": "In the joint post Kenton Varda writes that the Deno team released celld in August 2026 and that Cloudflare was delighted. The exact August day is not established from a primary source; the film uses the month only.",
+  "claim": "In the joint post Kenton Varda writes that celld was released by the Deno team in August 2026 and that Cloudflare was delighted. The exact August day is not established from a primary source; the film uses the month only.",
   "sources": [
    "https://blog.cloudflare.com/deno-joins-cloudflare/"
   ],
@@ -192,7 +192,7 @@
  },
  {
   "id": "HI15",
-  "claim": "On 9 October 2026 Deno (post by Ryan Dahl) and Cloudflare announced that the entire Deno team is joining Cloudflare.",
+  "claim": "On 9 October 2026 Deno (post by Ryan Dahl) and Cloudflare announced that the whole Deno team is joining Cloudflare.",
   "sources": [
    "https://deno.com/blog/cloudflare",
    "https://blog.cloudflare.com/deno-joins-cloudflare/"
@@ -238,7 +238,7 @@
  },
  {
   "id": "HI18",
-  "claim": "The joint post says Ryan Dahl and Bert Belder will lead a new effort to make workerd self-hosting a first-class supported way to build and run apps, which will involve merging code and ideas from celld back into workerd.",
+  "claim": "The joint post says Ryan Dahl and Bert Belder will lead a new effort to make self-hosting workerd a first-class supported way to build and run apps, bringing celld's code and ideas back into workerd.",
   "sources": [
    "https://blog.cloudflare.com/deno-joins-cloudflare/"
   ],
@@ -265,7 +265,7 @@
  },
  {
   "id": "HI20",
-  "claim": "The supplied workerd commit, \"Cluster workerd processes over a shared bucket (#7994)\", is authored by Ryan Dahl at 2026-10-28 20:11:42 -07:00 (29 October 03:11 UTC). Its message calls it the beginning of merging celld's functionality into workerd.",
+  "claim": "The supplied workerd commit, \"Cluster workerd processes over a shared bucket (#7994)\", is authored by Ryan Dahl at 2026-10-28 20:11:42 -07:00 (29 October 03:11 UTC). Its message presents it as the first step in folding celld's functionality into workerd.",
   "sources": [
    "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5"
   ],
@@ -279,7 +279,7 @@
  },
  {
   "id": "HI21",
-  "claim": "The commit message: several workerd processes form a cluster by sharing one S3-compatible bucket (Config.cluster, behind --experimental); each Durable Object has one owner at a time; requests reach it from any process; when its owner dies another process picks it up from the bucket; objects use the bucket as cold storage; for now a write is acknowledged only once fully synced to the bucket; alarms are not supported yet.",
+  "claim": "The commit message: several workerd processes form a cluster by sharing one S3-compatible bucket (Config.cluster, behind --experimental); each Durable Object has one owner at a time; requests reach it from any process; when its owner dies another process picks it up from the bucket; objects use the bucket as cold storage; for now a write is acknowledged only after it has been completely written to the bucket; alarms are not yet supported.",
   "sources": [
    "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
    "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/workerd.capnp"
@@ -316,7 +316,7 @@
  },
  {
   "id": "HI23",
-  "claim": "celld describes itself as self-hosted, distributed Durable Objects: an open-source daemon that runs a Workers application from its wrangler.json on your own machines, keeping long-term state in an S3-compatible, Google Cloud Storage or Azure Blob bucket. Its README says it needs no serving control plane or consensus service, and that the fleet needs no membership protocol, failure detector, or consensus service.",
+  "claim": "celld describes itself as self-hosted, distributed Durable Objects: an open-source daemon that runs a Workers application from its wrangler.json on your own machines, keeping long-term state in an S3-compatible, Google Cloud Storage or Azure Blob bucket. Its README says it requires neither a serving control plane nor a consensus service, and that the fleet needs no membership protocol, failure detector, or consensus service.",
   "sources": [
    "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md"
   ],
@@ -422,7 +422,7 @@
  },
  {
   "id": "SB03",
-  "claim": "Vogels describes how S3 built strong consistency internally: a cache coherence protocol for its metadata caches, new replication logic that lets S3 reason about the order of operations per object, and a witness component notified every time an object changes, which acts like a read barrier so a cache learns whether its view is stale.",
+  "claim": "Vogels describes how S3 built strong consistency internally: a cache coherence protocol for its metadata caches, new replication logic that lets S3 reason about the order of operations per object, and a witness component that is told about every change to an object, which acts like a read barrier so a cache learns whether its view is stale.",
   "sources": [
    "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html"
   ],
@@ -540,7 +540,7 @@
  },
  {
   "id": "SB11",
-  "claim": "celld's documentation warns that some S3-compatible stores do not implement the required conditional writes, so two nodes can own one cell on them, and that a store which accepts the conditional headers but ignores the condition fails late and silently.",
+  "claim": "celld's documentation warns that some S3-compatible stores do not implement the required conditional writes, so two nodes can own one cell on them, and that a store which takes the conditional headers without enforcing the condition fails only later, without any error.",
   "sources": [
    "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
   ],
@@ -969,7 +969,7 @@
  },
  {
   "id": "LE12",
-  "claim": "celld's acknowledgement check after a bucket proof reads the ownership record instead of a clock, so a paused process or a skewed clock cannot pass it.",
+  "claim": "celld's acknowledgement check after a bucket proof consults the ownership record rather than a clock, so neither a paused process nor a skewed clock can satisfy it.",
   "sources": [
    "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
   ],
@@ -1229,7 +1229,7 @@
  },
  {
   "id": "DU08",
-  "claim": "Inference, stated in celld's own words as \"a missing acknowledgement does not prove a write absent\": a lost reply cannot tell a client that a write did not happen, so durability alone does not give exactly-once effects on retry.",
+  "claim": "Inference, matching celld's guarantees (a lost acknowledgement is not evidence that a write is absent): a lost reply cannot tell a client that a write did not happen, so durability alone does not give exactly-once effects on retry.",
   "sources": [
    "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
   ],
@@ -1463,7 +1463,7 @@
  },
  {
   "id": "CE07",
-  "claim": "celld: a takeover seals the prior node-log session before it restores, so a stale owner cannot complete another fleet proof.",
+  "claim": "celld: before restoring, a takeover seals the previous node-log session, so an outdated owner can no longer finish another fleet proof.",
   "sources": [
    "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
   ],
@@ -1490,7 +1490,7 @@
  },
  {
   "id": "CE09",
-  "claim": "celld documents recovery limits: a follower's HTTP error does not prove its data absent, so persistent errors can block recovery; a range with a damaged batch or gap cannot be certified until valid data covers it; an older node's entries-only tail proves neither completeness nor loss; a deleted final batch is undetectable if nothing later records its range.",
+  "claim": "celld documents recovery limits: an HTTP error from a follower is no evidence that its data is gone, so persistent errors can block recovery; a range with a damaged batch or gap cannot be certified until valid data covers it; an older node's entries-only tail proves neither completeness nor loss; a deleted final batch is undetectable if nothing later records its range.",
   "sources": [
    "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
   ],

@@ -1,0 +1,34 @@
+{
+ "shot": "ch07-s02",
+ "at": "2026-11-01T07:54:20.382Z",
+ "minCapPx": 22,
+ "sampled": 31,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "workerd · 28 Oct",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Cloudflare, hosted",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "C",
+   "maxCap": 29.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "9",
+   "maxCap": 28.7,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

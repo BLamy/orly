@@ -1,0 +1,34 @@
+{
+ "shot": "ch07-s03",
+ "at": "2026-11-01T07:04:15.051Z",
+ "minCapPx": 22,
+ "sampled": 33,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "celld 0.6.3",
+   "capWhileSubject": 105.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "FSYNC",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 256.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the book press",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 2
+}

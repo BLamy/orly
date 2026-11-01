@@ -1,0 +1,14 @@
+{
+ "card": [
+  "Research, script & code — Claude Opus 5.5 · Anthropic",
+  "Voice — ElevenLabs · “George (ElevenLabs premade)”",
+  "Pronunciation checks — ElevenLabs Scribe",
+  "Music — Strudel · strudel.cc",
+  "Picture — Canvas 2D in the browser",
+  "Render & mix — Chromium · FFmpeg"
+ ],
+ "footer": [
+  "Claude is made by Anthropic.",
+  "Every music cue’s Strudel source: on the film’s page"
+ ]
+}

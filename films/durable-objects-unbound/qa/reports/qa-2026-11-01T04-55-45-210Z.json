@@ -1,0 +1,47 @@
+{
+ "slug": "durable-objects-unbound",
+ "at": "2026-11-01T04:55:45.210Z",
+ "summary": {
+  "pass": 5,
+  "warn": 0,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "pass",
+   "detail": "8 cues rendered at exact length",
+   "problems": [],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "pass",
+   "detail": "summary current: 8 cue(s) on the 1439.4167 s clock",
+   "problems": []
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "pass",
+   "detail": "7 cue changes, each in the clear before the next line",
+   "under": [],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "notesClock",
+   "status": "pass",
+   "detail": "every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)"
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "24.2 min of music over 24.0 min (101%)"
+  }
+ ]
+}

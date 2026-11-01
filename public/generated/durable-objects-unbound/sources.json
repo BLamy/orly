@@ -1,0 +1,2440 @@
+{
+ "chapters": [
+  {
+   "number": 1,
+   "id": "ch01",
+   "title": "The Tick",
+   "start": 0,
+   "shots": [
+    {
+     "id": "ch01-s01",
+     "start": 0,
+     "lines": [
+      "L0101",
+      "L0102",
+      "L0103",
+      "L0104"
+     ],
+     "claims": [
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "HI02",
+       "claim": "The 2020 post's demonstration is a chat app that uses one Durable Object to control each chat room; users connect over WebSockets and messages from one user are broadcast to the others. It treats the chat room as the app's logical unit of state.",
+       "date": "2020-09-28",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/introducing-workers-durable-objects"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s02",
+     "start": 29.25,
+     "lines": [
+      "L0105",
+      "L0106",
+      "L0107",
+      "L0108"
+     ],
+     "claims": [
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "HI21",
+       "claim": "The commit message: several workerd processes form a cluster by sharing one S3-compatible bucket (Config.cluster, behind --experimental); each Durable Object has one owner at a time; requests reach it from any process; when its owner dies another process picks it up from the bucket; objects use the bucket as cold storage; for now a write is acknowledged only after it has been completely written to the bucket; alarms are not yet supported.",
+       "date": "2026-10-29",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/workerd.capnp"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s03",
+     "start": 57.125,
+     "lines": [
+      "L0109",
+      "L0110",
+      "L0111",
+      "L0112",
+      "L0113",
+      "L0114"
+     ],
+     "claims": [
+      {
+       "id": "HI20",
+       "claim": "The supplied workerd commit, \"Cluster workerd processes over a shared bucket (#7994)\", is authored by Ryan Dahl at 2026-10-28 20:11:42 -07:00 (29 October 03:11 UTC). Its message presents it as the first step in folding celld's functionality into workerd.",
+       "date": "2026-10-29",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5"
+       ]
+      },
+      {
+       "id": "HI23",
+       "claim": "celld describes itself as self-hosted, distributed Durable Objects: an open-source daemon that runs a Workers application from its wrangler.json on your own machines, keeping long-term state in an S3-compatible, Google Cloud Storage or Azure Blob bucket. Its README says it requires neither a serving control plane nor a consensus service, and that the fleet needs no membership protocol, failure detector, or consensus service.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md"
+       ]
+      },
+      {
+       "id": "CE14",
+       "claim": "celld's guarantees open with two promises: exactly one node serves a cell at a time, and celld does not acknowledge a write until it survives a failure; both require a bucket with working conditional writes and ranged reads and a supervisor that restarts the process.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s04",
+     "start": 88.5833,
+     "lines": [
+      "L0115",
+      "L0116",
+      "L0117"
+     ],
+     "claims": [
+      {
+       "id": "HI27",
+       "claim": "Sequence: Durable Objects debuted in 2020, workerd became open source in 2022, SQLite in Durable Objects arrived in 2024, celld was released in August 2026, the Deno team joining Cloudflare was announced on 9 October 2026, and the supplied clustering commit landed on 28 October 2026 (Pacific).",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/introducing-workers-durable-objects",
+        "https://blog.cloudflare.com/workerd-open-source-workers-runtime/",
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/",
+        "https://blog.cloudflare.com/deno-joins-cloudflare/",
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5"
+       ]
+      },
+      {
+       "id": "LI01",
+       "claim": "At the supplied commit workerd clustering is experimental (Config.cluster behind --experimental) and lacks alarms; it is a beginning, not full platform parity.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/workerd.capnp"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "id": "ch02",
+   "title": "One Room in the Whole World",
+   "start": 108.875,
+   "shots": [
+    {
+     "id": "ch02-s01",
+     "start": 108.875,
+     "lines": [
+      "L0201",
+      "L0202",
+      "L0203",
+      "L0204",
+      "L0205"
+     ],
+     "claims": [
+      {
+       "id": "HI01",
+       "claim": "Cloudflare introduced Durable Objects in closed beta on 28 September 2020, in a post by Kenton Varda. Each object has a globally-unique identifier and lives in just one place in the world at any given moment.",
+       "date": "2020-09-28",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/introducing-workers-durable-objects"
+       ]
+      },
+      {
+       "id": "HI03",
+       "claim": "The 2020 post presents Durable Objects as a way to coordinate between clients: requests about the same topic are forwarded to the same object, which coordinates between them; independent objects partition an app into logical units.",
+       "date": "2020-09-28",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/introducing-workers-durable-objects"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q01",
+       "text": "…only one location in the whole world at a time.",
+       "speaker": "Kenton Varda",
+       "date": "2020-09-28",
+       "source": "https://blog.cloudflare.com/introducing-workers-durable-objects",
+       "context": "Introducing Durable Objects.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch02-s02",
+     "start": 137.7917,
+     "lines": [
+      "L0207",
+      "L0208",
+      "L0209"
+     ],
+     "claims": [
+      {
+       "id": "HI02",
+       "claim": "The 2020 post's demonstration is a chat app that uses one Durable Object to control each chat room; users connect over WebSockets and messages from one user are broadcast to the others. It treats the chat room as the app's logical unit of state.",
+       "date": "2020-09-28",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/introducing-workers-durable-objects"
+       ]
+      },
+      {
+       "id": "HI04",
+       "claim": "Inference: one object identity does not mean that every asynchronous operation of its handlers forms one atomic transaction.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/server/actor.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q02",
+       "text": "The logical unit of state in a chat app is a chat room.",
+       "speaker": "Kenton Varda",
+       "date": "2020-09-28",
+       "source": "https://blog.cloudflare.com/introducing-workers-durable-objects",
+       "context": "The chat demo.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch02-s03",
+     "start": 162.6667,
+     "lines": [
+      "L0210",
+      "L0211",
+      "L0212",
+      "L0213",
+      "L0214"
+     ],
+     "claims": [
+      {
+       "id": "HI05",
+       "claim": "On 3 August 2021 Kenton Varda described input gates and output gates: while a storage write is in progress, new outgoing network messages are held back until the write completes; if the write fails, the held messages are discarded and replaced with errors and the object restarts.",
+       "date": "2021-08-03",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/durable-objects-easy-fast-correct-choose-three/"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q03",
+       "text": "When a storage write operation is in progress, any new outgoing network messages will be held back",
+       "speaker": "Kenton Varda",
+       "date": "2021-08-03",
+       "source": "https://blog.cloudflare.com/durable-objects-easy-fast-correct-choose-three/",
+       "context": "Opening clause of the output-gate rule; in the source the sentence goes on to name the release condition (the write completing).",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch02-s04",
+     "start": 196.3333,
+     "lines": [
+      "L0215",
+      "L0216",
+      "L0217",
+      "L0218",
+      "L0219"
+     ],
+     "claims": [
+      {
+       "id": "HI06",
+       "claim": "Cloudflare released workerd, the Workers runtime, as open source on 27 September 2022 (post by Kenton Varda), licensed under Apache 2.0. The 2026 work is therefore distributed self-hosting progress, not the first open-sourcing.",
+       "date": "2022-09-27",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/workerd-open-source-workers-runtime/"
+       ]
+      },
+      {
+       "id": "HI08",
+       "claim": "On 26 September 2024 Cloudflare put SQLite inside Durable Objects, running in the very same thread as the application; Kenton Varda wrote that this makes latency effectively zero, since nothing separates the application from SQLite. This describes local access, not end-to-end durable acknowledgement.",
+       "date": "2024-09-26",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+       ]
+      },
+      {
+       "id": "HI12",
+       "claim": "In the 9 October 2026 joint post, Ryan Dahl wrote that workerd's Durable Objects support covers only one instance; Kenton Varda called Durable Objects the big gap in workerd's production-readiness, implemented for a single instance only: fine for local testing, but unable to scale.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q04",
+       "text": "workerd is Open Source under the Apache License version 2.0.",
+       "speaker": "Kenton Varda",
+       "date": "2022-09-27",
+       "source": "https://blog.cloudflare.com/workerd-open-source-workers-runtime/",
+       "context": "",
+       "where": "on screen"
+      },
+      {
+       "id": "Q05",
+       "text": "Latency is effectively zero",
+       "speaker": "Kenton Varda",
+       "date": "2024-09-26",
+       "source": "https://blog.cloudflare.com/sqlite-in-durable-objects/",
+       "context": "About LOCAL access. Never present as end-to-end acknowledgement latency.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch02-s05",
+     "start": 234.0833,
+     "lines": [
+      "L0220",
+      "L0221",
+      "L0222",
+      "L0223",
+      "L0224"
+     ],
+     "claims": [
+      {
+       "id": "HI09",
+       "claim": "Cloudflare's hosted Storage Relay Service (SRS) monitors changes to SQLite's write-ahead log by hooking SQLite's VFS, and uploads them to object storage in batches of up to 10 seconds or 16 MB, whichever comes first.",
+       "date": "2024-09-26",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+       ]
+      },
+      {
+       "id": "HI10",
+       "claim": "SRS forwards each committed change log immediately to five follower machines, each in a different physical data center; once at least three respond that they received it, SRS tells the application the write is confirmed, which opens the output gate.",
+       "date": "2024-09-26",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+       ]
+      },
+      {
+       "id": "HI11",
+       "claim": "The 2024 post describes object storage latency as relatively high, measured in tens or hundreds of milliseconds, and says the application cannot wait ten seconds to confirm a write.",
+       "date": "2024-09-26",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q06",
+       "text": "Once at least three of these followers respond… the write is confirmed.",
+       "speaker": "Kenton Varda",
+       "date": "2024-09-26",
+       "source": "https://blog.cloudflare.com/sqlite-in-durable-objects/",
+       "context": "Hosted Storage Relay Service.",
+       "where": "on screen"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "id": "ch03",
+   "title": "The Well That Learned to Say No",
+   "start": 275.125,
+   "shots": [
+    {
+     "id": "ch03-s01",
+     "start": 275.125,
+     "lines": [
+      "L0301",
+      "L0302",
+      "L0303",
+      "L0304",
+      "L0305"
+     ],
+     "claims": [
+      {
+       "id": "SB01",
+       "claim": "On 1 December 2020 AWS announced that Amazon S3 delivers strong read-after-write consistency automatically for all applications: after a write or overwrite, the next read returns the latest version, and listings reflect changes.",
+       "date": "2020-12-01",
+       "status": "confirmed",
+       "sources": [
+        "https://aws.amazon.com/about-aws/whats-new/2020/12/amazon-s3-now-delivers-strong-read-after-write-consistency-automatically-for-all-applications/"
+       ]
+      },
+      {
+       "id": "SB02",
+       "claim": "Werner Vogels explained that S3's earlier eventual consistency arose because writes might flow through one part of the cache infrastructure while reads queried another.",
+       "date": "2021-04-20",
+       "status": "confirmed",
+       "sources": [
+        "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch03-s02",
+     "start": 308.8333,
+     "lines": [
+      "L0306",
+      "L0307",
+      "L0308",
+      "L0309",
+      "L0310",
+      "L0311",
+      "L0312"
+     ],
+     "claims": [
+      {
+       "id": "SB08",
+       "claim": "Inference: with a separate read and an unconditional write, two contenders can both observe the key absent and both write; the last overwrite wins the key but cannot retract the serving decisions the other already made.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch03-s03",
+     "start": 348,
+     "lines": [
+      "L0313",
+      "L0314",
+      "L0315",
+      "L0316",
+      "L0317",
+      "L0318"
+     ],
+     "claims": [
+      {
+       "id": "SB05",
+       "claim": "On 20 August 2024 AWS announced S3 conditional writes with If-None-Match: a write that succeeds only if no object exists at that key; AWS said customers no longer need to build client-side consensus mechanisms to coordinate such updates. When several conditional creates race on one key, one succeeds and the others fail with a precondition error.",
+       "date": "2024-08-20",
+       "status": "confirmed",
+       "sources": [
+        "https://aws.amazon.com/about-aws/whats-new/2024/08/amazon-s3-conditional-writes/",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+       ]
+      },
+      {
+       "id": "SB06",
+       "claim": "On 25 November 2024 AWS added If-Match conditional writes: S3 checks that the object's ETag still matches the value in the request before committing an overwrite, letting workloads offload compare-and-swap operations to S3.",
+       "date": "2024-11-25",
+       "status": "confirmed",
+       "sources": [
+        "https://aws.amazon.com/about-aws/whats-new/2024/11/amazon-s3-functionality-conditional-writes/",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+       ]
+      },
+      {
+       "id": "SB07",
+       "claim": "A conditional write is applied only if the storage-side precondition holds for that write; the condition is checked by the store, not by the client.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+       ]
+      },
+      {
+       "id": "SB16",
+       "claim": "workerd guards replacement of an ownership record with an opaque version (Guard::Match) or requires absence (Guard::Absent); here the ETag-like version is an opaque guard, not a content checksum.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/bucket.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch03-s04",
+     "start": 389.5833,
+     "lines": [
+      "L0319",
+      "L0320",
+      "L0321",
+      "L0322",
+      "L0323"
+     ],
+     "claims": [
+      {
+       "id": "SB03",
+       "claim": "Vogels describes how S3 built strong consistency internally: a cache coherence protocol for its metadata caches, new replication logic that lets S3 reason about the order of operations per object, and a witness component that is told about every change to an object, which acts like a read barrier so a cache learns whether its view is stale.",
+       "date": "2021-04-20",
+       "status": "confirmed",
+       "sources": [
+        "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html"
+       ]
+      },
+      {
+       "id": "SB04",
+       "claim": "Vogels writes that S3 verified the design with integration tests, deductive proofs of the cache coherence algorithm and model checking, later extended to runnable code, and that this verification was more work than the implementation itself.",
+       "date": "2021-04-20",
+       "status": "confirmed",
+       "sources": [
+        "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html"
+       ]
+      },
+      {
+       "id": "SB14",
+       "claim": "Inference: the application fleet relies on the store's conditional serialisation instead of running its own consensus service for ownership; the coordination still exists, inside the storage service (SB03, SB04).",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q17",
+       "text": "…a witness to writes, notified every time an object changes.",
+       "speaker": "Werner Vogels",
+       "date": "2021-04-20",
+       "source": "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html",
+       "context": "How S3 implemented strong consistency.",
+       "where": "on screen"
+      },
+      {
+       "id": "Q18",
+       "text": "They were more work, in fact, than the actual implementation itself.",
+       "speaker": "Werner Vogels",
+       "date": "2021-04-20",
+       "source": "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html",
+       "context": "About S3's proofs and model checking.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch03-s05",
+     "start": 427.5,
+     "lines": [
+      "L0324",
+      "L0325",
+      "L0326",
+      "L0327",
+      "L0328",
+      "L0329"
+     ],
+     "claims": [
+      {
+       "id": "SB11",
+       "claim": "celld's documentation warns that some S3-compatible stores do not implement the required conditional writes, so two nodes can own one cell on them, and that a store which takes the conditional headers without enforcing the condition fails only later, without any error.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "SB12",
+       "claim": "celld's storage test sends four conditional writes (create, reject-create, update, reject-stale); two of the four must fail. Every node runs the same writes plus a ranged-read check before it serves, and cannot disable the test.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "SB09",
+       "claim": "celld's guarantees require a bucket that provides a conditional create, a conditional overwrite, read-after-write consistency and ranged reads (list-after-write consistency only for optional epoch GC), plus a supervisor that restarts the process.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "SB10",
+       "claim": "At v0.6.3 celld lists Amazon S3, Cloudflare R2, Tigris, Google Cloud Storage and Azure Blob Storage as qualified stores; its release tests run against R2.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q24",
+       "text": "…ignores the condition fails late and silently",
+       "speaker": "celld docs/guarantees.md (v0.6.3)",
+       "date": "2026-10-21",
+       "source": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+       "context": "",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch03-s06",
+     "start": 465.75,
+     "lines": [
+      "L0330",
+      "L0331",
+      "L0332"
+     ],
+     "claims": [
+      {
+       "id": "SB13",
+       "claim": "Inference: serialising one ownership key does not by itself give atomic application transactions across separate objects.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+       ]
+      },
+      {
+       "id": "SB15",
+       "claim": "Inference: moving ownership serialisation into the bucket makes ownership progress depend on the bucket's semantics and availability.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "id": "ch04",
+   "title": "Two Lineages, One Commit",
+   "start": 482.8333,
+   "shots": [
+    {
+     "id": "ch04-s01",
+     "start": 482.8333,
+     "lines": [
+      "L0401",
+      "L0402",
+      "L0403",
+      "L0404",
+      "L0405",
+      "L0406"
+     ],
+     "claims": [
+      {
+       "id": "HI13",
+       "claim": "In the joint post Ryan Dahl explains that this is why he started celld: he wanted a single Rust binary whose only outside service is object storage.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      },
+      {
+       "id": "HI14",
+       "claim": "In the joint post Kenton Varda writes that celld was released by the Deno team in August 2026 and that Cloudflare was delighted. The exact August day is not established from a primary source; the film uses the month only.",
+       "date": "2026-08",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      },
+      {
+       "id": "HI23",
+       "claim": "celld describes itself as self-hosted, distributed Durable Objects: an open-source daemon that runs a Workers application from its wrangler.json on your own machines, keeping long-term state in an S3-compatible, Google Cloud Storage or Azure Blob bucket. Its README says it requires neither a serving control plane nor a consensus service, and that the fleet needs no membership protocol, failure detector, or consensus service.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md"
+       ]
+      },
+      {
+       "id": "HI25",
+       "claim": "celld's SQLite-to-object-store replicator crate was vendored on 2026-08-03 from rustyriver, a Rust reimplementation of Litestream v0.5 (github.com/benbjohnson/litestream) and the LTX format (github.com/superfly/ltx), all Apache-2.0.",
+       "date": "2026-08-03",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/ltx/Cargo.toml"
+       ]
+      },
+      {
+       "id": "SB14",
+       "claim": "Inference: the application fleet relies on the store's conditional serialisation instead of running its own consensus service for ownership; the coordination still exists, inside the storage service (SB03, SB04).",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q19",
+       "text": "It needs no serving control plane or consensus service.",
+       "speaker": "celld README (v0.6.3)",
+       "date": "2026-10-21",
+       "source": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md",
+       "context": "",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch04-s02",
+     "start": 525.2083,
+     "lines": [
+      "L0407",
+      "L0408",
+      "L0409",
+      "L0410"
+     ],
+     "claims": [
+      {
+       "id": "HI12",
+       "claim": "In the 9 October 2026 joint post, Ryan Dahl wrote that workerd's Durable Objects support covers only one instance; Kenton Varda called Durable Objects the big gap in workerd's production-readiness, implemented for a single instance only: fine for local testing, but unable to scale.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      },
+      {
+       "id": "HI14",
+       "claim": "In the joint post Kenton Varda writes that celld was released by the Deno team in August 2026 and that Cloudflare was delighted. The exact August day is not established from a primary source; the film uses the month only.",
+       "date": "2026-08",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q10",
+       "text": "we were delighted.",
+       "speaker": "Kenton Varda",
+       "date": "2026-10-09",
+       "source": "https://blog.cloudflare.com/deno-joins-cloudflare/",
+       "context": "Kenton Varda's section of the joint post; the excerpt closes his sentence about celld's release.",
+       "where": "narration L0409"
+      }
+     ]
+    },
+    {
+     "id": "ch04-s03",
+     "start": 556.2917,
+     "lines": [
+      "L0411",
+      "L0412",
+      "L0413",
+      "L0414",
+      "L0415",
+      "L0416"
+     ],
+     "claims": [
+      {
+       "id": "HI15",
+       "claim": "On 9 October 2026 Deno (post by Ryan Dahl) and Cloudflare announced that the whole Deno team is joining Cloudflare.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://deno.com/blog/cloudflare",
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      },
+      {
+       "id": "HI16",
+       "claim": "Announced plans, as stated by Deno on 9 October 2026: the Deno runtime is supported for another year with monthly bug-fix and security releases, after which Deno ends its development of the runtime; Deno Deploy continues for six months before shutting down, with migration support for paying customers; JSR continues with its infrastructure moving to Cloudflare; rusty_v8 continues to be supported with work toward integrating it into workerd; Deno remains open source.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://deno.com/blog/cloudflare"
+       ]
+      },
+      {
+       "id": "HI17",
+       "claim": "Neither announcement states a purchase price or deal terms; the Cloudflare post carries an \"Acquisitions\" tag. The film does not describe terms.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/",
+        "https://deno.com/blog/cloudflare"
+       ]
+      },
+      {
+       "id": "HI18",
+       "claim": "The joint post says Ryan Dahl and Bert Belder will lead a new effort to make self-hosting workerd a first-class supported way to build and run apps, bringing celld's code and ideas back into workerd.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      },
+      {
+       "id": "HI19",
+       "claim": "Ryan Dahl writes that the team will put its future development into this shared platform rather than continuing a separate runtime.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://deno.com/blog/cloudflare"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q12",
+       "text": "the entire Deno team is joining Cloudflare",
+       "speaker": "Ryan Dahl",
+       "date": "2026-10-09",
+       "source": "https://deno.com/blog/cloudflare",
+       "context": "",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch04-s04",
+     "start": 604.9583,
+     "lines": [
+      "L0418",
+      "L0419",
+      "L0420",
+      "L0421",
+      "L0422",
+      "L0423"
+     ],
+     "claims": [
+      {
+       "id": "HI20",
+       "claim": "The supplied workerd commit, \"Cluster workerd processes over a shared bucket (#7994)\", is authored by Ryan Dahl at 2026-10-28 20:11:42 -07:00 (29 October 03:11 UTC). Its message presents it as the first step in folding celld's functionality into workerd.",
+       "date": "2026-10-29",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5"
+       ]
+      },
+      {
+       "id": "HI21",
+       "claim": "The commit message: several workerd processes form a cluster by sharing one S3-compatible bucket (Config.cluster, behind --experimental); each Durable Object has one owner at a time; requests reach it from any process; when its owner dies another process picks it up from the bucket; objects use the bucket as cold storage; for now a write is acknowledged only after it has been completely written to the bucket; alarms are not yet supported.",
+       "date": "2026-10-29",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/workerd.capnp"
+       ]
+      },
+      {
+       "id": "HI22",
+       "claim": "Alarms for clustered Durable Objects landed in workerd on 30 October 2026 (#8090) and facets on 31 October 2026 (#8113), both authored by Ryan Dahl; the later snapshot ad78a8fe includes alarm tests.",
+       "date": "2026-10-31",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/2992f3f89",
+        "https://github.com/cloudflare/workerd/commit/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/alarms.rs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/tests/cluster/cluster-test.mjs"
+       ]
+      },
+      {
+       "id": "LI01",
+       "claim": "At the supplied commit workerd clustering is experimental (Config.cluster behind --experimental) and lacks alarms; it is a beginning, not full platform parity.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/workerd.capnp"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q16",
+       "text": "Alarms are not supported yet",
+       "speaker": "Ryan Dahl (commit message)",
+       "date": "2026-10-28",
+       "source": "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+       "context": "Commit aa494794 (no final period in the original).",
+       "where": "narration L0421"
+      },
+      {
+       "id": "Q14",
+       "text": "…the beginning of merging celld's functionality into workerd.",
+       "speaker": "Ryan Dahl (commit message)",
+       "date": "2026-10-28",
+       "source": "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+       "context": "Commit aa494794.",
+       "where": "on screen"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "id": "ch05",
+   "title": "The Plate and the Candle",
+   "start": 640.875,
+   "shots": [
+    {
+     "id": "ch05-s01",
+     "start": 640.875,
+     "lines": [
+      "L0501",
+      "L0502",
+      "L0503",
+      "L0504",
+      "L0505"
+     ],
+     "claims": [
+      {
+       "id": "OW01",
+       "claim": "In workerd each Durable Object has one owner record, do/<namespace>/<actor>/own.json, described in the code as the only authority for who owns it and whose log holds its latest commits. It holds three fields: node, epoch and from.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "OW02",
+       "claim": "In workerd, from is the last epoch that opened. A claim writes the next epoch and copies from unchanged; the opening write sets from equal to the epoch. An epoch is still recovering while from differs from epoch, and it recovers from's log.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "OW04",
+       "claim": "workerd's acquire_or_route: a record with no owner, or naming an instance whose lease expired, is taken over with the next epoch by a conditional write, so exactly one claimant wins; a record naming a live peer sends the request to that peer instead.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/registry.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "OW05",
+       "claim": "For a brand-new object, workerd creates own.json already opened in one conditional create; the claimant that loses that write routes to the winner.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s02",
+     "start": 682.375,
+     "lines": [
+      "L0507",
+      "L0508",
+      "L0509",
+      "L0510",
+      "L0511",
+      "L0512"
+     ],
+     "claims": [
+      {
+       "id": "LE01",
+       "claim": "workerd lease constants: lease 20,000 ms; renewal every 3,000 ms, each bounded at 4,000 ms; a failed renewal retried every 1,000 ms; maximum clock skew 2,000 ms; safety margin twice the skew, 4,000 ms.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "LE03",
+       "claim": "In workerd a lease holds at time now only if now plus the 4,000 ms safety margin is before its expiry; an actor serves only while it holds.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "LE04",
+       "claim": "Before each renewal workerd fences if the node's clock is more than 2,000 ms off the bucket's, or if the lease would not still hold 4,000 ms from now (a paused process or blocked loop may have been taken over and must not renew and serve on).",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "LE07",
+       "claim": "Inference from holds and before_renew: with an expiry at 20,000 ms, the node may serve only while its clock reads below 16,000 ms and may start a renewal only below 12,000 ms. These are arithmetic boundaries, not guaranteed timer delivery.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s03",
+     "start": 727.8333,
+     "lines": [
+      "L0513",
+      "L0514",
+      "L0515"
+     ],
+     "claims": [
+      {
+       "id": "LE02",
+       "claim": "A comment in workerd's lease code records that R2 stalls writes about 5.5 s at every 5-minute mark and that a 2 s renewal bound cancelled them and fenced every node, which is why each renewal is bounded at 4 s.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "LE05",
+       "claim": "After a failed renewal workerd retries while the lease still covers the renewal timeout and fences otherwise, so the node is gone before a peer may take over.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s04",
+     "start": 751.4167,
+     "lines": [
+      "L0516",
+      "L0517",
+      "L0518",
+      "L0519",
+      "L0520",
+      "L0521",
+      "L0522",
+      "L0523"
+     ],
+     "claims": [
+      {
+       "id": "LE04",
+       "claim": "Before each renewal workerd fences if the node's clock is more than 2,000 ms off the bucket's, or if the lease would not still hold 4,000 ms from now (a paused process or blocked loop may have been taken over and must not renew and serve on).",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "LE05",
+       "claim": "After a failed renewal workerd retries while the lease still covers the renewal timeout and fences otherwise, so the node is gone before a peer may take over.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "LE06",
+       "claim": "In workerd, fence means stop serving: the process exits before peers may take over.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "LE09",
+       "claim": "Inference: an expired lease does not prove a machine died; the node may be paused. Safety rests on the old owner fencing itself before expiry and on the post-upload epoch check, not on knowing who is alive.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "LE10",
+       "claim": "workerd node records carry an expiry that peers use to decide whether a node is live; the lease code calls a peer whose record was not renewed for a full lease dead, as a working rule.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/registry.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+       ]
+      },
+      {
+       "id": "DU10",
+       "claim": "Inference: lease expiry, guarded ownership updates and the post-upload epoch check close different failure windows; none of them alone suffices.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s05",
+     "start": 801.4167,
+     "lines": [
+      "L0524",
+      "L0525",
+      "L0526"
+     ],
+     "claims": [
+      {
+       "id": "LE08",
+       "claim": "workerd measures each node's skew against the bucket's observed clock; when no observation is available the skew defaults to zero, so the bound is an assumption rather than verified synchronisation.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/cluster.rs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/bucket.rs"
+       ]
+      },
+      {
+       "id": "LE11",
+       "claim": "celld leases default to a 10,000 ms lifetime renewed after one third of it; when the published expiry passes the node fences itself, stopping each active cell and failing incomplete requests, writes nothing, and exits with code 3; celld also checks the published expiry on every routed request.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "LE12",
+       "claim": "celld's acknowledgement check after a bucket proof consults the ownership record rather than a clock, so neither a paused process nor a skewed clock can satisfy it.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch05-s06",
+     "start": 825.2917,
+     "lines": [
+      "L0527",
+      "L0528",
+      "L0529",
+      "L0530",
+      "L0531",
+      "L0532"
+     ],
+     "claims": [
+      {
+       "id": "OW02",
+       "claim": "In workerd, from is the last epoch that opened. A claim writes the next epoch and copies from unchanged; the opening write sets from equal to the epoch. An epoch is still recovering while from differs from epoch, and it recovers from's log.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "OW03",
+       "claim": "In workerd a claimant that dies mid-recovery leaves from unchanged, so the next claimant still recovers the last epoch that actually opened.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "OW07",
+       "claim": "workerd opens a claimed epoch only if the record still names this node at this epoch and from has not yet been set to it; the guarded write sets from to the epoch. If the record changed, the epoch never opens.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "OW08",
+       "claim": "On takeover workerd deletes the node's non-authoritative local database, restores the recovering epoch's session from the bucket, uploads the starting snapshot of the new session, and only then performs the conditional open; if the record was superseded first, the epoch fails with \"superseded before it opened\".",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "OW09",
+       "claim": "Inference from owner.rs: an object serves commits only after its epoch has opened, so a claimed epoch that never opened acknowledged nothing.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "RE05",
+       "claim": "Inference from ownership.rs: if A opened epoch 7 (record A, 7, from 7), and B claims 8 (B, 8, from 7) but dies before opening, C's claim writes (C, 9, from 7) and recovers epoch 7's log; had B opened 8 (B, 8, from 8), C would recover 8.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "id": "ch06",
+   "title": "The Ribbon",
+   "start": 877.375,
+   "shots": [
+    {
+     "id": "ch06-s01",
+     "start": 877.375,
+     "lines": [
+      "L0601",
+      "L0602",
+      "L0603",
+      "L0604",
+      "L0605"
+     ],
+     "claims": [
+      {
+       "id": "WA01",
+       "claim": "SQLite's write-ahead log begins with a 32-byte header; each frame is a 24-byte frame header followed by one page; in a commit frame the header records the size of the database in pages after the commit, and is zero in other frames.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://www.sqlite.org/fileformat2.html#the_write_ahead_log",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/capture.rs"
+       ]
+      },
+      {
+       "id": "HI08",
+       "claim": "On 26 September 2024 Cloudflare put SQLite inside Durable Objects, running in the very same thread as the application; Kenton Varda wrote that this makes latency effectively zero, since nothing separates the application from SQLite. This describes local access, not end-to-end durable acknowledgement.",
+       "date": "2024-09-26",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s02",
+     "start": 915.5833,
+     "lines": [
+      "L0606",
+      "L0607",
+      "L0608",
+      "L0609"
+     ],
+     "claims": [
+      {
+       "id": "WA02",
+       "claim": "workerd's capture reads the writes SQLite makes to its WAL, as workerd's VFS reports them, and cuts them into transactions: frames since the last commit are buffered, and the write that completes a commit frame completes one transaction.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/capture.rs"
+       ]
+      },
+      {
+       "id": "WA03",
+       "claim": "In workerd's capture a write at offset 0 starts a new WAL after a checkpoint copied earlier frames into the database file, and a rolled-back transaction's frames are overwritten by the next transaction's.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/capture.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s03",
+     "start": 946.0417,
+     "lines": [
+      "L0610",
+      "L0611",
+      "L0612",
+      "L0613"
+     ],
+     "claims": [
+      {
+       "id": "WA04",
+       "claim": "workerd stores each object's log in the bucket as gzipped files: batches log/<session>/<end> with runs of page frames merged to the newest version of each page, and snapshots snapshot/<session>/<frame>, in its own frames.capnp format.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+       ]
+      },
+      {
+       "id": "WA05",
+       "claim": "Every workerd log file is gzipped; gzip ends with the content's CRC-32 and length, which the decoder checks, so a corrupt or truncated copy fails to replay rather than replaying wrong or short.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+       ]
+      },
+      {
+       "id": "WA06",
+       "claim": "celld captures SQLite WAL changes into the LTX format (transaction ranges and page checksums); workerd's cluster path uses frames.capnp instead. The two implementations are distinct.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/ltx/Cargo.toml",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+       ]
+      },
+      {
+       "id": "WA07",
+       "claim": "In workerd each epoch writes its own session of the object's log, starting with a snapshot of the state it inherited.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "WA08",
+       "claim": "workerd snapshots a session when the log since the last snapshot has reached the database's size, keeping bucket writes within about twice the log, and uploads a replacement snapshot before deleting the files it covers.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch06-s04",
+     "start": 979.4167,
+     "lines": [
+      "L0614",
+      "L0615",
+      "L0616",
+      "L0617",
+      "L0619"
+     ],
+     "claims": [
+      {
+       "id": "DU01",
+       "claim": "workerd: a commit is acknowledged once the bucket holds it and own.json still names the epoch after the upload.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "DU02",
+       "claim": "workerd's push stages the captured frames, uploads them, rereads the current epoch from own.json, and if it no longer matches returns \"epoch was superseded\" without acknowledging; only a match advances the acknowledgement.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "DU04",
+       "claim": "workerd's code describes the epoch reread as \"the re-read after a bucket upload that makes the upload an acknowledgement\".",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "DU05",
+       "claim": "In workerd cluster mode local SQLite completion is not the acknowledgement: the commit waits for bucket-backed coverage. At both inspected workerd snapshots the commit path acknowledges after the upload and epoch reread; no follower acknowledgement path is present.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "DU06",
+       "claim": "celld holds each response until a durability proof covers every write it can reveal: write responses, read-only responses when an uncovered committed write exists, error responses, R2 mutations, raw TCP actions, and each chunk of a streamed body.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/logic/output_gate.rs"
+       ]
+      },
+      {
+       "id": "HI05",
+       "claim": "On 3 August 2021 Kenton Varda described input gates and output gates: while a storage write is in progress, new outgoing network messages are held back until the write completes; if the write fails, the held messages are discarded and replaced with errors and the object restarts.",
+       "date": "2021-08-03",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/durable-objects-easy-fast-correct-choose-three/"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q25",
+       "text": "…cannot act on a value that a crash can still lose.",
+       "speaker": "celld docs/guarantees.md (v0.6.3)",
+       "date": "2026-10-21",
+       "source": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+       "context": "Closes the acknowledgement rule.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch06-s05",
+     "start": 1015.5417,
+     "lines": [
+      "L0620",
+      "L0621",
+      "L0622",
+      "L0623",
+      "L0624",
+      "L0625"
+     ],
+     "claims": [
+      {
+       "id": "DU02",
+       "claim": "workerd's push stages the captured frames, uploads them, rereads the current epoch from own.json, and if it no longer matches returns \"epoch was superseded\" without acknowledging; only a match advances the acknowledgement.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "RE06",
+       "claim": "Inference from owner.rs: an old owner that wakes after a successor has claimed can still upload into its old session, but its reread shows the newer epoch, so it never acknowledges.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "DU11",
+       "claim": "A superseded workerd owner still uploading can finish writing files into its old session; that does not make it the owner, and the next epoch deletes those leftovers.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "DU08",
+       "claim": "Inference, matching celld's guarantees (a lost acknowledgement is not evidence that a write is absent): a lost reply cannot tell a client that a write did not happen, so durability alone does not give exactly-once effects on retry.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "DU10",
+       "claim": "Inference: lease expiry, guarded ownership updates and the post-upload epoch check close different failure windows; none of them alone suffices.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 7,
+   "id": "ch07",
+   "title": "The Neighbours",
+   "start": 1060.375,
+   "shots": [
+    {
+     "id": "ch07-s01",
+     "start": 1060.375,
+     "lines": [
+      "L0701",
+      "L0702",
+      "L0703",
+      "L0704",
+      "L0705",
+      "L0706",
+      "L0707"
+     ],
+     "claims": [
+      {
+       "id": "OW08",
+       "claim": "On takeover workerd deletes the node's non-authoritative local database, restores the recovering epoch's session from the bucket, uploads the starting snapshot of the new session, and only then performs the conditional open; if the record was superseded first, the epoch fails with \"superseded before it opened\".",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "RE01",
+       "claim": "workerd restores a session from its newest snapshot, then each batch past it, skipping frames a batch before already applied by their sequence.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+       ]
+      },
+      {
+       "id": "RE02",
+       "claim": "workerd replay fails if a skipped batch's frames were never replayed: a batch in between is missing, and the restore refuses rather than continuing.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+       ]
+      },
+      {
+       "id": "RE03",
+       "claim": "Inference: checksums detect corrupt or truncated bytes; they cannot recreate missing ones.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+       ]
+      },
+      {
+       "id": "RE04",
+       "claim": "Restore replays recorded pages; it does not re-run application handlers.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s02",
+     "start": 1097.5,
+     "lines": [
+      "L0708",
+      "L0709",
+      "L0710",
+      "L0711",
+      "L0712"
+     ],
+     "claims": [
+      {
+       "id": "DU01",
+       "claim": "workerd: a commit is acknowledged once the bucket holds it and own.json still names the epoch after the upload.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "DU09",
+       "claim": "Inference: local SQL work and the remote upload plus authority check are separate parts of a workerd acknowledgement's latency; any widths drawn are illustrative, not measured.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "HI10",
+       "claim": "SRS forwards each committed change log immediately to five follower machines, each in a different physical data center; once at least three respond that they received it, SRS tells the application the write is confirmed, which opens the output gate.",
+       "date": "2024-09-26",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+       ]
+      },
+      {
+       "id": "HI11",
+       "claim": "The 2024 post describes object storage latency as relatively high, measured in tens or hundreds of milliseconds, and says the application cannot wait ten seconds to confirm a write.",
+       "date": "2024-09-26",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+       ]
+      },
+      {
+       "id": "CE01",
+       "claim": "celld's default durability is fleet mode: the owner sends each write to one or two other nodes, its followers, and every follower must fsync it; celld can acknowledge such a write before its bucket upload completes, and uploads afterwards.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md"
+       ]
+      },
+      {
+       "id": "CE04",
+       "claim": "A celld node without an ensemble stays correct by acknowledging on a bucket proof instead, at the cost of latency: an object store round trip is much slower than a follower fsync.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s03",
+     "start": 1123.2917,
+     "lines": [
+      "L0713",
+      "L0714",
+      "L0715"
+     ],
+     "claims": [
+      {
+       "id": "CE01",
+       "claim": "celld's default durability is fleet mode: the owner sends each write to one or two other nodes, its followers, and every follower must fsync it; celld can acknowledge such a write before its bucket upload completes, and uploads afterwards.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s03b",
+     "start": 1149.125,
+     "lines": [
+      "L0716",
+      "L0717",
+      "L0718",
+      "L0719"
+     ],
+     "claims": [
+      {
+       "id": "CE02",
+       "claim": "A celld node never counts itself as a follower and one follower is enough, so a fleet needs two running nodes before any fleet proof; a one-node fleet requests the fleet posture and does not get it.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "CE03",
+       "claim": "A celld node recruits up to two followers, so a fleet of three or more holds three copies of an acknowledged write; until a second follower is recruited, a write not yet in the bucket is only on the owner and one follower.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "CE04",
+       "claim": "A celld node without an ensemble stays correct by acknowledging on a bucket proof instead, at the cost of latency: an object store round trip is much slower than a follower fsync.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s04",
+     "start": 1176,
+     "lines": [
+      "L0720",
+      "L0721",
+      "L0722",
+      "L0723",
+      "L0724",
+      "L0725"
+     ],
+     "claims": [
+      {
+       "id": "CE05",
+       "claim": "Because fleet acknowledgements can precede the bucket, each celld process session creates a conditional node-log record before its first fleet-durable acknowledgement.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/celld/node_log.rs"
+       ]
+      },
+      {
+       "id": "CE13",
+       "claim": "Inference (the mandatory distinction): celld's epoch prefixes fence bucket writes, but they cannot recover a tail that was acknowledged on followers only; the sealing recovery gate is what recovers it. workerd's bucket proofs and celld's follower proofs need different recovery paths because they acknowledge bytes in different places.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "OW11",
+       "claim": "celld writes each cell's SQLite data under cells/<cell>/ltx/e<epoch>/ with unconditional PUTs; the epoch in the key is the fence: a node that lost ownership can keep writing, but only into a superseded prefix, and a restore selects the current lineage.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "CE07",
+       "claim": "celld: before restoring, a takeover seals the previous node-log session, so an outdated owner can no longer finish another fleet proof.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "LE09",
+       "claim": "Inference: an expired lease does not prove a machine died; the node may be paused. Safety rests on the old owner fencing itself before expiry and on the post-upload epoch check, not on knowing who is alive.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s05",
+     "start": 1215.9583,
+     "lines": [
+      "L0726",
+      "L0727",
+      "L0728",
+      "L0729"
+     ],
+     "claims": [
+      {
+       "id": "CE06",
+       "claim": "A celld cold activation checks the prior owner's node-log record before reading the bucket: absent proves the session never acknowledged past the bucket; sealed proves recovery completed; open or recovering forces recovery first: compare-and-swap the record to fence it, seal the reachable followers, upload their retained data into the cell's prefixes, and mark the record sealed.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/celld/node_log.rs"
+       ]
+      },
+      {
+       "id": "CE07",
+       "claim": "celld: before restoring, a takeover seals the previous node-log session, so an outdated owner can no longer finish another fleet proof.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "OW10",
+       "claim": "In celld each cell has one ownership record, cells/<cell>/own.json, naming the owner node's session and a fencing epoch; it is acquired by conditional create or compare-and-swap, every activation advances the epoch so an epoch never has two writers, and celld never deletes the record.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/celld/ownership_store.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s06",
+     "start": 1248.5833,
+     "lines": [
+      "L0730",
+      "L0731",
+      "L0732",
+      "L0733",
+      "L0734"
+     ],
+     "claims": [
+      {
+       "id": "CE08",
+       "claim": "celld: once the log epoch is active, at least one current follower must return its complete retained range, or the activation fails and keeps the recovery requirement.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "CE09",
+       "claim": "celld documents recovery limits: an HTTP error from a follower is no evidence that its data is gone, so persistent errors can block recovery; a range with a damaged batch or gap cannot be certified until valid data covers it; an older node's entries-only tail proves neither completeness nor loss; a deleted final batch is undetectable if nothing later records its range.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch07-s07",
+     "start": 1282.7083,
+     "lines": [
+      "L0735",
+      "L0736"
+     ],
+     "claims": [
+      {
+       "id": "CE10",
+       "claim": "A restarting celld node serves follower seal and tail requests before its own predecessor recovery completes, so nodes that restart together can recover acknowledged writes from surviving follower disks.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "CE11",
+       "claim": "celld recovery of a large dead node can take minutes; failed attempts retry with a backoff (default 1,000 ms) and waiting requests fail only after 240 attempts by default.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  },
+  {
+   "number": 8,
+   "id": "ch08",
+   "title": "What Travels",
+   "start": 1303.0417,
+   "shots": [
+    {
+     "id": "ch08-s01",
+     "start": 1303.0417,
+     "lines": [
+      "L0801",
+      "L0802",
+      "L0803",
+      "L0804",
+      "L0805"
+     ],
+     "claims": [
+      {
+       "id": "LI07",
+       "claim": "Inference: what becomes portable is the runtime's recovery machinery together with a qualified storage contract; either alone is not enough.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "SB09",
+       "claim": "celld's guarantees require a bucket that provides a conditional create, a conditional overwrite, read-after-write consistency and ranged reads (list-after-write consistency only for optional epoch GC), plus a supervisor that restarts the process.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "LI04",
+       "claim": "celld must run under a supervisor that restarts it without an attempt limit and waits at least one lease lifetime between attempts; a fenced node exits and the fleet loses that capacity until restart.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "DU10",
+       "claim": "Inference: lease expiry, guarded ownership updates and the post-upload epoch check close different failure windows; none of them alone suffices.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "DU02",
+       "claim": "workerd's push stages the captured frames, uploads them, rereads the current epoch from own.json, and if it no longer matches returns \"epoch was superseded\" without acknowledging; only a match advances the acknowledgement.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "CE07",
+       "claim": "celld: before restoring, a takeover seals the previous node-log session, so an outdated owner can no longer finish another fleet proof.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "WA03",
+       "claim": "In workerd's capture a write at offset 0 starts a new WAL after a checkpoint copied earlier frames into the database file, and a rolled-back transaction's frames are overwritten by the next transaction's.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/capture.rs"
+       ]
+      },
+      {
+       "id": "RE04",
+       "claim": "Restore replays recorded pages; it does not re-run application handlers.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch08-s02",
+     "start": 1343.375,
+     "lines": [
+      "L0806",
+      "L0807",
+      "L0808",
+      "L0809",
+      "L0810",
+      "L0811"
+     ],
+     "claims": [
+      {
+       "id": "LI01",
+       "claim": "At the supplied commit workerd clustering is experimental (Config.cluster behind --experimental) and lacks alarms; it is a beginning, not full platform parity.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/workerd.capnp"
+       ]
+      },
+      {
+       "id": "LI02",
+       "claim": "The workerd cluster integration test starts a fake S3 and several workerd instances and exercises consistent state across instances (single-writer correctness), forwarding from the wrong instance, takeover after a node is killed and per-instance lease records; the later snapshot adds alarms on a survivor and facets. This film inspected these tests and did not execute them.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/tests/cluster/cluster-test.mjs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/tests/cluster/cluster-test.mjs"
+       ]
+      },
+      {
+       "id": "LI03",
+       "claim": "Inference: the alarm tests assert observed firings in specific kill-and-recover scenarios; they do not establish exactly-once external effects for arbitrary applications.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/tests/cluster/cluster-test.mjs"
+       ]
+      },
+      {
+       "id": "LI04",
+       "claim": "celld must run under a supervisor that restarts it without an attempt limit and waits at least one lease lifetime between attempts; a fenced node exits and the fleet loses that capacity until restart.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "LI05",
+       "claim": "celld reserves bucket prefixes it reads to fence and restore cells; an operator must not delete, expire or overwrite objects there, so bucket lifecycle rules must not select them.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "LI06",
+       "claim": "celld documents its supported APIs and limitations; running the runtime yourself does not establish full parity with the hosted platform.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/limitations.md",
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      },
+      {
+       "id": "HI07",
+       "claim": "The 2022 workerd post says workerd is not, on its own, a secure way to run possibly-malicious code; it must be enclosed in an additional sandboxing layer.",
+       "date": "2022-09-27",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/workerd-open-source-workers-runtime/"
+       ]
+      },
+      {
+       "id": "HI21",
+       "claim": "The commit message: several workerd processes form a cluster by sharing one S3-compatible bucket (Config.cluster, behind --experimental); each Durable Object has one owner at a time; requests reach it from any process; when its owner dies another process picks it up from the bucket; objects use the bucket as cold storage; for now a write is acknowledged only after it has been completely written to the bucket; alarms are not yet supported.",
+       "date": "2026-10-29",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/workerd.capnp"
+       ]
+      },
+      {
+       "id": "HI22",
+       "claim": "Alarms for clustered Durable Objects landed in workerd on 30 October 2026 (#8090) and facets on 31 October 2026 (#8113), both authored by Ryan Dahl; the later snapshot ad78a8fe includes alarm tests.",
+       "date": "2026-10-31",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/2992f3f89",
+        "https://github.com/cloudflare/workerd/commit/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/alarms.rs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/tests/cluster/cluster-test.mjs"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch08-s03",
+     "start": 1382.2083,
+     "lines": [
+      "L0812",
+      "L0813",
+      "L0814"
+     ],
+     "claims": [
+      {
+       "id": "HI18",
+       "claim": "The joint post says Ryan Dahl and Bert Belder will lead a new effort to make self-hosting workerd a first-class supported way to build and run apps, bringing celld's code and ideas back into workerd.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/"
+       ]
+      },
+      {
+       "id": "HI19",
+       "claim": "Ryan Dahl writes that the team will put its future development into this shared platform rather than continuing a separate runtime.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://deno.com/blog/cloudflare"
+       ]
+      },
+      {
+       "id": "HI17",
+       "claim": "Neither announcement states a purchase price or deal terms; the Cloudflare post carries an \"Acquisitions\" tag. The film does not describe terms.",
+       "date": "2026-10-09",
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/deno-joins-cloudflare/",
+        "https://deno.com/blog/cloudflare"
+       ]
+      },
+      {
+       "id": "SB13",
+       "claim": "Inference: serialising one ownership key does not by itself give atomic application transactions across separate objects.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+       ]
+      },
+      {
+       "id": "DU08",
+       "claim": "Inference, matching celld's guarantees (a lost acknowledgement is not evidence that a write is absent): a lost reply cannot tell a client that a write did not happen, so durability alone does not give exactly-once effects on retry.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      },
+      {
+       "id": "LE13",
+       "claim": "Inference: when the bucket is unreachable, no new upload-backed acknowledgements can complete, and sustained renewal failure fences the affected writers: safety is kept by stopping, not by serving on.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs",
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "SB15",
+       "claim": "Inference: moving ownership serialisation into the bucket makes ownership progress depend on the bucket's semantics and availability.",
+       "date": null,
+       "status": "inferred",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs",
+        "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+       ]
+      }
+     ],
+     "quotes": [
+      {
+       "id": "Q14",
+       "text": "…the beginning of merging celld's functionality into workerd.",
+       "speaker": "Ryan Dahl (commit message)",
+       "date": "2026-10-28",
+       "source": "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+       "context": "Commit aa494794.",
+       "where": "on screen"
+      }
+     ]
+    },
+    {
+     "id": "ch08-s04",
+     "start": 1409.4167,
+     "lines": [
+      "L0815",
+      "L0816",
+      "L0817",
+      "L0818"
+     ],
+     "claims": [
+      {
+       "id": "DU01",
+       "claim": "workerd: a commit is acknowledged once the bucket holds it and own.json still names the epoch after the upload.",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/owner.rs"
+       ]
+      },
+      {
+       "id": "FX01",
+       "claim": "Illustrative teaching fixtures: the chat room (\"the harbour room\"), the message (#42, \"the ferry is late\"), the houses A, B and C, the epochs 7, 8 and 9, the times on lease plates and the page numbers on the ribbon are invented for teaching and labelled as such on screen or in narration. No measured latency, benchmark or real deployment is depicted.",
+       "date": null,
+       "status": "illustrative",
+       "sources": [
+        "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+       ]
+      },
+      {
+       "id": "HI27",
+       "claim": "Sequence: Durable Objects debuted in 2020, workerd became open source in 2022, SQLite in Durable Objects arrived in 2024, celld was released in August 2026, the Deno team joining Cloudflare was announced on 9 October 2026, and the supplied clustering commit landed on 28 October 2026 (Pacific).",
+       "date": null,
+       "status": "confirmed",
+       "sources": [
+        "https://blog.cloudflare.com/introducing-workers-durable-objects",
+        "https://blog.cloudflare.com/workerd-open-source-workers-runtime/",
+        "https://blog.cloudflare.com/sqlite-in-durable-objects/",
+        "https://blog.cloudflare.com/deno-joins-cloudflare/",
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5"
+       ]
+      },
+      {
+       "id": "HI20",
+       "claim": "The supplied workerd commit, \"Cluster workerd processes over a shared bucket (#7994)\", is authored by Ryan Dahl at 2026-10-28 20:11:42 -07:00 (29 October 03:11 UTC). Its message presents it as the first step in folding celld's functionality into workerd.",
+       "date": "2026-10-29",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5"
+       ]
+      },
+      {
+       "id": "HI22",
+       "claim": "Alarms for clustered Durable Objects landed in workerd on 30 October 2026 (#8090) and facets on 31 October 2026 (#8113), both authored by Ryan Dahl; the later snapshot ad78a8fe includes alarm tests.",
+       "date": "2026-10-31",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/cloudflare/workerd/commit/2992f3f89",
+        "https://github.com/cloudflare/workerd/commit/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/alarms.rs",
+        "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/tests/cluster/cluster-test.mjs"
+       ]
+      },
+      {
+       "id": "HI26",
+       "claim": "The pinned celld snapshot 8702f6d is version 0.6.3, dated 2026-10-21; the celld website may show a different current version.",
+       "date": "2026-10-21",
+       "status": "confirmed",
+       "sources": [
+        "https://github.com/denoland/celld/tree/8702f6d186c77698dbfb30cf29e3b1922a88f008",
+        "https://celld.dev/"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  }
+ ],
+ "offScreen": [
+  {
+   "from": "ch02-s01",
+   "text": "Source: Kenton Varda, Cloudflare blog, 28 September 2020"
+  },
+  {
+   "from": "ch02-s05",
+   "text": "Source: Kenton Varda, Cloudflare blog, 26 September 2024"
+  },
+  {
+   "from": "ch03-s04",
+   "text": "Source: Werner Vogels, All Things Distributed, 20 April 2021"
+  },
+  {
+   "from": "ch04-s01",
+   "text": "Source: Ryan Dahl, Cloudflare blog, 9 October 2026"
+  },
+  {
+   "from": "ch04-s04",
+   "text": "Source: Ryan Dahl, workerd commit aa494794, 28 October 2026"
+  }
+ ],
+ "counts": {
+  "claims": 109,
+  "quotes": 15,
+  "sources": 38
+ }
+}

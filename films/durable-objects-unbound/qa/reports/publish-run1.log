@@ -1,0 +1,3 @@
+  stems: 203 narration lines + 8 cues (211 encoded, 44.4 MB) → public/generated/durable-objects-unbound/audio/film-audio.json
+published locally → public/generated/durable-objects-unbound/manifest.json (8 chapters, 24.0 min) + library entry; deploy is a human decision
+  note (books only; films use the VHS sleeve): no cover at films/durable-objects-unbound/cover/animal.webp — the shelf will use the default spine

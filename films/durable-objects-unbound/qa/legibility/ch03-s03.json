@@ -1,0 +1,54 @@
+{
+ "shot": "ch03-s03",
+ "at": "2026-11-01T07:51:38.008Z",
+ "minCapPx": 22,
+ "sampled": 53,
+ "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "20 AUGUST 2024",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "A",
+   "capWhileSubject": 80.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "25 NOVEMBER 2024",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "only if absent · only if unchanged",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "COMPARE AND SWAP",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Amazon S3",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "B",
+   "maxCap": 52.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the Tooth",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 3
+}

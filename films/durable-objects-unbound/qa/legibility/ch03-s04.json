@@ -1,0 +1,59 @@
+{
+ "shot": "ch03-s04",
+ "at": "2026-11-01T07:04:00.418Z",
+ "minCapPx": 22,
+ "sampled": 44,
+ "texts": 9,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "werner vogels",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Amazon CTO",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…a witness to writes, notified every",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "time an object changes.”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "werner vogels, 2021",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "They were more work, in fact, than",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the actual implementation itself.”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 45.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Amazon S3",
+   "maxCap": 18.8,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

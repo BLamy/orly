@@ -1,0 +1,23 @@
+{
+ "shot": "ch01-s01",
+ "at": "2026-11-01T07:51:40.706Z",
+ "minCapPx": 22,
+ "sampled": 34,
+ "texts": 2,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Illustrative: harbour, houses, room",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "#42 · the ferry is late",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

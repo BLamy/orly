@@ -1,0 +1,137 @@
+{
+ "round": 1,
+ "pass": true,
+ "scores": {
+  "accuracy": 9.0,
+  "depth": 9.0,
+  "clarity": 8.3,
+  "story": 8.6,
+  "visual": 8.4,
+  "sync": 8.4,
+  "sound": 8.1,
+  "curiosity": 8.7
+ },
+ "mean": 8.56,
+ "bar": 8.5,
+ "criticalIssues": 0,
+ "reviewer": {
+  "model": "claude-opus-5-5",
+  "effort": "high",
+  "via": "Claude Code",
+  "role": "fresh independent final film reviewer"
+ },
+ "at": "2026-11-01",
+ "basis": "Own coverage: about 350 frames cut from the current render/film.mp4 (8 viewed at full 1920 px and 16 at 960 px, the rest in 480-640 px tiles; about 90 of them were targeted re-grabs), sampling all 42 shots, all 8 chapters, the end card, all corrected shots and the unresolved concerns, plus film-wide frame differences at 4 fps. qa/sheets PNGs and all 42 source sheets were NOT re-read; the prior full-coverage evidence is the 42 current sheets and the legibility, depth and cards audits, which were reused and not re-run. No real-time viewing or listening.",
+ "summary": "PASS on the actual completed film: a 1080p24 H.264 movie with master audio, an original Strudel score, captions, a format-3 kind film manifest and a VHS ?film= entry. All eight dimensions are at or above 8, the mean is 8.56 against a bar of 8.5, and there are no critical issues. Sound was assessed from measurements, not hearing; human pronunciation listening remains pending and unsigned. Eight bounded shot fixes are routed; the two worth applying first are ch07-s02 (visible water between the town and the hosted relay) and ch05-s05 (the assumed-zero dial). Rulings: the ch01-s01 tick is not a material problem; ch05-s04's B·8·7 dark to B·8·8 lit is accurate; ch07-s02 is a staging defect, not a scope error.",
+ "dimensionNotes": {
+  "accuracy": "Hosted Cloudflare, the 28 October and later workerd snapshots, and celld 0.6.3 stay separate in narration and on their tags. Claimed versus opened epochs, lease margins versus the second look, one-key scope, and the complete versus damaged tail cases all match the verified claims, with no invented deal terms, benchmarks or exactly-once promises.",
+  "depth": "The film goes to the byte layout of the SQLite log, the 12,000 and 16,000 ms lease arithmetic, compare and swap, the order of the proof before the tick, the restore and its limits, and celld's fsync and sealing gate. An experienced engineer gets the actual mechanism, and it is still tied to one message.",
+  "clarity": "Pull-the-pin failures and large inserts make most mechanisms readable with the sound off, and the opening tick reads at full size. Remaining soft spots are small: the zero clock in ch05-s05, the hosted lamps with no visible water in ch07-s02, and calendar dots that lean on the narration.",
+  "story": "One tick carries 24 minutes, from the promise to the failure to the final trace back to the Well and the Plate. The history chapters at the desks are the quietest stretch, but they pay off in the two-rope braid and the commit.",
+  "visual": "A consistent paper-cut world with motivated light, real depth and a clear grammar of lamps, tags and moods. A few push-ins go soft or leave large empty walls, and a few text and prop collisions remain.",
+  "sync": "Sampled beats land on their words, including the tick strokes, the bell and the Plate flips, and every shot keeps moving, with no fully static hold of 5 s or more. This was judged from about 350 frames of the movie and a frame-difference measure, not from watching it in real time.",
+  "sound": "Assessed from the script, speech-to-text, waveforms, spectrograms and loudness measurements, not by hearing it. The master is -16.0 LUFS at -1.7 dBTP, voice sits at least 10.8 dB over the music, the duck is 2.85 dB, and the last cue fades after its final strike; human pronunciation listening is still pending.",
+  "curiosity": "Pulling a pin and watching a promise break makes each guarantee feel earned, and the reversal of who referees the referee reframes 'S3 is all you need'. The film stays honest about what it did not run or establish."
+ },
+ "fixes": {
+  "shots": {
+   "ch07-s02": "MAJOR, scope clarity; not critical. Owner: ch07-s02 shot author, film-local. Time: L0710 'Cloudflare's hosted relay', beat shore 1110.6 s (frame 26654), through 1117. The lamps are on L1, not the town ridge, and no town house is drawn as the relay, so this is not an ownership error. But no water separates the pale headland from the town's L2 ridge in this framing, and the badge's lower edge is cut by that ridge about 1110.4-1111.4 s while Cloudflare is being named. Fix in this shot only: raise headland, five lamps and tag about 48 px in L1 so a moonlit sea band shows between the ridge top and the headland foot and the tag never touches the ridge. The narrator names this tag, so set legible: true and keep it on the audited 22 px cap. Do not change the bar, rod, timing or the shared harbour set.",
+   "ch05-s05": "MAJOR, clarity of one word; not critical. Owner: ch05-s05 shot author, film-local. Time: beat zero 807.6 s (frame 19382, L0524 'assumes zero'), close-up about 806.9-809.6 s. In the ZCAM close-up the near pulley lines cross B's sill clock and the clock hand lies on the '0', so the assumed zero reads like a struck-through glyph. Fix: in this shot only move B's clock clear of every line, for example up and right of the crossing, and hide or park the hand once the zero inks. Ink the zero in dark brass rather than red, which is outside the accent budget. Keep the snapped thread.",
+   "ch08-s01": "MINOR. Owner: ch08-s01 shot author. Time: 1307.3-1309.7 s. The screen-fixed title 'What Travels' stays up while the pan slides the dark pin board under it, and the first pin crosses 'Travels'. Fix: shorten the titleCard duration from 6.5 to about 4.0 s so it has fully faded by 1307.2 s, before the board arrives. Optional in the same edit: let the board clear the frame after beat well, since its corner clips the top-left at about 1326 s and 1335 s.",
+   "ch03-s03": "MINOR. Owner: ch03-s03 shot author. Time: beat click 373.9 s to about 380.7 s. The label 'only if absent · only if unchanged' runs onto the Plate's frame and the A tile (x about 470-535 at 1080p), so its last letters sit on cream at low contrast. Fix: move this one label clear of the Plate, for example right-aligned under the date stamp at upper right. Keep its text and timing.",
+   "ch03-s02": "MINOR. Owner: ch03-s02 shot author. Time: about 322-345 s. Keeper B stands over the 'Amazon S3' tag, so it reads 'AMAZON S' for about 22 s. The film promises that every piece wears a tag saying whose. Fix: shift keeper B about 40 px right for this block, or hang the tag on the left hook.",
+   "ch07-s06": "MINOR. Owner: ch07-s06 shot author. Time: beat promise 1280.5 s to the cut at 1282.71 s. The DOOR camera overshoots: the keeper and the error slip leave at the left edge, a sliver of the upper window sits on the top edge, and about 70 % of the frame is flat wall. Fix: stop the push about 15-20 % earlier and recentre so keeper, door and dark lantern all stay whole on the last frame. Keep the dark lantern as the subject.",
+   "ch08-s04": "MINOR, payoff image. Owner: ch08-s04 shot author. Time: beat slip 1416.7 s to about 1421 s. The returning tick is legible at full size, but the slip's right end, with the tick, butts against the sender's forehead and the window mullion. Fix: move SLIP about 35 px left so the tick sits on clear window light. Keep the existing gold-line trace from the slip.",
+   "ch01-s01": "MINOR. Owner: ch01-s01 director. Time: 0.0-1.3 s (frames 0-31). The screenplay and timeline give this shot an iris, but the movie's frame 0 is already the fully open town and no iris plays, because nothing precedes the first shot. Fix: draw a shot-local iris from black onto A's far window over 0.1-1.3 s. Do NOT change the tick staging: the opening-tick concern was inspected at full resolution and is not material."
+  },
+  "cues": {},
+  "lines": {},
+  "global": [
+   "Human pronunciation listening stays pending and unsigned for celld, workerd, Deno, SQLite, S3, epoch, Vogels and Litestream. Add three lines to the listener's queue, with no re-take unless a person hears a fault: L0312, where STT heard 'Between the red and the right', so check the noun 'read' is said as 'reed'; L0519, where STT heard 'Awakes'; and L0101 at 199 wpm, the fastest line in the film and its first spoken line.",
+   "Re-render only the eight routed shots' frame ranges, re-sheet them, and re-check only those ranges. Do not touch score, mix, clock, shared sets or engine. None of the authors' wanted engine changes is required by a defect in the actual film. This includes the crane-speed departures, deep push-in softness and the ch07-s04 railing, which were checked and do not harm clarity in the sampled frames."
+  ]
+ },
+ "fixChecks": {
+  "ch07-s02": {
+   "absent": [
+    "text: 'Cloudflare, hosted', alpha: seg(t, b.cloud + 0.4, b.shore + 0.4) * far, legible: false"
+   ]
+  },
+  "ch08-s01": {
+   "absent": [
+    "title: 'What Travels', at: b.iris, dur: 6.5"
+   ]
+  },
+  "ch03-s03": {
+   "absent": [
+    "text: 'only if absent · only if unchanged', x: 64, y: 92"
+   ]
+  }
+ },
+ "format": {
+  "verdict": "genuine film",
+  "video": "h264 High yuv420p 1920x1080 24/1, 34546 frames",
+  "audio": "aac 48 kHz stereo, 1439.417 s, equal to video",
+  "captions": "mov_text muxed, film.vtt 296 cues, median 14.2 cps, max 20.9",
+  "chapters": 8,
+  "size": "687.6 MB",
+  "manifest": "format 3, kind film, timing locked",
+  "library": "href ?film=durable-objects-unbound, kind film, vhs entry",
+  "staleness": "no shot, set, engine or timeline file is newer than the render; only credits.json is, and no shot imports it"
+ },
+ "measurements": {
+  "masterLufs": -16.0,
+  "truePeakDbtp": -1.7,
+  "lra": 3,
+  "duckDb": 2.85,
+  "minVoiceOverMusicDb": 10.8,
+  "floorLufs": -58,
+  "m08LastStrikeSec": 1431.66,
+  "m08FadeSec": [
+   1435.42,
+   1439.42
+  ],
+  "endingMomentaryLufs": {
+   "1431": -17.3,
+   "1435": -21.5,
+   "1437": -22.7,
+   "1439": -32.5
+  },
+  "qa": "40 pass, 6 warn, 0 fail",
+  "wpmByChapter": {
+   "ch01": 173,
+   "ch02": 156,
+   "ch03": 159,
+   "ch04": 150,
+   "ch05": 163,
+   "ch06": 162,
+   "ch07": 157,
+   "ch08": 159
+  }
+ },
+ "adjudications": {
+  "ch01-s01 opening tick": "Not material; no correction routed. At 25.3 s (full size) the slip is about 115 x 48 px, high contrast, with the stroke landing clearly on beat tick 25.18 s. The tick was still visible in a 640 px cut at 27 s and holds until about 29 s. The slip's flight (17.9-22.9 s) is small but carried by motion and the '#42' label.",
+  "ch05-s04 B·8·7 to B·8·8": "Accurate; no correction. Source and frames agree: the click at 764.4 s gives B·8·7 with the crown dark, readable about 764.85-765.35 s; the from tile then flips to 8 and the crown lights by about 765.6 s; B's lantern finishes lighting by 765.9 s, before 'two rooms' at 767.8 s. The lantern starts about a frame before the flip, which is imperceptible. The staged counterfactual does not contradict ch05-s06, where B dies before opening.",
+  "ch07-s02 hosted lamps": "The stage report's 'on the ridge' does not match the current render. The lamps are painted on L1 on a separate pale headland, with the tag and serverCyan colour, and no town house is drawn as the relay, so this is not an implementation-scope or ownership error. It does miss the screenplay's visible far shore and has a brief badge clip, so one film-local fix is routed.",
+  "camera speed and softness": "No material harm in sampled frames or the 4 fps difference measure; mean frame difference in the flagged moves is about 3-6 against a film p90 of 6.7, with the ch07-s01 peak of 30.4 at its cut. Real-time judder was not assessed.",
+  "qa warnings": "cards: suspect paper in ch03-s03, ch06-s01 and ch06-s03 read as swap cards and the ribbon in the sampled frames, not blank cards. ghostText: the ch02-s04 and ch08-s03 ink-bleed transitions carry text for about 0.4 s, which is acceptable."
+ },
+ "humanListening": {
+  "status": "pending, not signed",
+  "terms": [
+   "celld",
+   "workerd",
+   "Deno",
+   "SQLite",
+   "S3",
+   "epoch",
+   "Vogels",
+   "Litestream"
+  ],
+  "additionalChecks": [
+   "L0312",
+   "L0519",
+   "L0101"
+  ]
+ }
+}

@@ -1,0 +1,7 @@
+# durable-objects-unbound: regenerable local diagnostics (kept on disk, not committed).
+# Set-gallery PNG snapshots (regenerate via the set gallery / film:stills).
+qa/sets/*.png
+# Raw narration run logs (final ledger, timeline, STT and provenance stay tracked).
+narration/narrate-run*.log
+# Local rollback snapshots; the shipped shot sources and guard metadata remain tracked.
+qa/shot-guard/versions/

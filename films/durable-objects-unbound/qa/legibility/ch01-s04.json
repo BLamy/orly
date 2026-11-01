@@ -1,0 +1,54 @@
+{
+ "shot": "ch01-s04",
+ "at": "2026-11-01T07:03:53.994Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Durable Objects, Unbound",
+   "capWhileSubject": 56.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "illustrative harbour · real code",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "C",
+   "maxCap": 30.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "workerd · 28 Oct",
+   "maxCap": 4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "workerd · 31 Oct",
+   "maxCap": 4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "celld 0.6.3",
+   "maxCap": 4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Cloudflare, hosted",
+   "maxCap": 4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Amazon S3",
+   "maxCap": 4,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 6
+}

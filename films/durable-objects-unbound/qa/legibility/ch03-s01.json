@@ -1,0 +1,29 @@
+{
+ "shot": "ch03-s01",
+ "at": "2026-11-01T07:03:58.001Z",
+ "minCapPx": 22,
+ "sampled": 38,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "1 DECEMBER 2020",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "read after write: always the latest",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Amazon S3",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

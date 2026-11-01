@@ -28,7 +28,7 @@ const WIDE: Camera3 = { x: 640, y: 372, z: -40, lens: 1 };
 const SENDER: Camera3 = { x: 966, y: 500, z: 520, lens: 1.05 };
 const PROOF: Camera3 = { x: 700, y: 452, z: 110, lens: 1 };
 /** the slip in the sender's hand at the window (L4 world) */
-const SLIP = { x: TOWN.sender.win.x - 14, y: TOWN.sender.win.y - 8, w: 36 };
+const SLIP = { x: TOWN.sender.win.x - 25, y: TOWN.sender.win.y - 8, w: 36 }; // final review r1: the tick on clear window light
 
 export default defineShot({
   id: ID,

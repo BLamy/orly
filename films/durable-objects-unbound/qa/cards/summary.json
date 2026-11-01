@@ -1,0 +1,375 @@
+{
+ "shots": {
+  "ch01-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:52:35.649Z"
+  },
+  "ch02-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:04:50.070Z"
+  },
+  "ch06-s01": {
+   "fails": [],
+   "suspects": [
+    "drawImage@779,-143 1.65-2.57 s",
+    "drawImage@779,-143 1.65-2.57 s",
+    "fillRect@699,363 9.48-18.82 s",
+    "fillRect@571,385 15.73-18.82 s",
+    "fillRect@571,385 18.98-37.73 s",
+    "fillRect@856,380 18.9-19.57 s",
+    "fillRect@856,380 19.82-37.73 s",
+    "fillRect@1060,379 19.65-37.73 s",
+    "fillRect@1184,377 20.48-21.15 s",
+    "fillRect@1184,377 21.4-37.73 s",
+    "fillRect@1264,376 21.23-37.73 s",
+    "fillRect@1398,375 22.07-30.57 s",
+    "fillRect@1807,374 31.73-37.73 s"
+   ],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:07:30.570Z"
+  },
+  "ch02-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:04:54.897Z"
+  },
+  "ch07-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:08:09.385Z"
+  },
+  "ch06-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:07:36.787Z"
+  },
+  "ch02-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:05:02.205Z"
+  },
+  "ch07-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:08:20.657Z"
+  },
+  "ch07-s03b": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:08:25.962Z"
+  },
+  "ch07-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:08:36.085Z"
+  },
+  "ch07-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:54:26.492Z"
+  },
+  "ch02-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '#42 · the ferry is late' up to 71 % over the other shot -0.16..0.26 s"
+   ],
+   "probed": 0,
+   "at": "2026-11-01T07:05:10.172Z"
+  },
+  "ch07-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:08:42.741Z"
+  },
+  "ch06-s03": {
+   "fails": [],
+   "suspects": [
+    "fillRect@707,447 7.55-11.47 s"
+   ],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:07:43.510Z"
+  },
+  "ch06-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:07:50.689Z"
+  },
+  "ch03-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:05:25.071Z"
+  },
+  "ch06-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:08:01.569Z"
+  },
+  "ch03-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:52:16.752Z"
+  },
+  "ch03-s03": {
+   "fails": [],
+   "suspects": [
+    "fillRect@970,763 24.13-25.72 s",
+    "fillRect@970,763 26.55-30.38 s",
+    "fillRect@970,763 31.13-39.63 s"
+   ],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:52:08.475Z"
+  },
+  "ch03-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:05:49.693Z"
+  },
+  "ch03-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:05:57.361Z"
+  },
+  "ch04-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:06:09.352Z"
+  },
+  "ch04-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:06:15.631Z"
+  },
+  "ch04-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:06:26.338Z"
+  },
+  "ch04-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-11-01T07:06:33.599Z"
+  },
+  "ch05-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:06:41.910Z"
+  },
+  "ch05-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:06:51.005Z"
+  },
+  "ch05-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:06:55.878Z"
+  },
+  "ch05-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:07:07.739Z"
+  },
+  "ch05-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:51:51.593Z"
+  },
+  "ch05-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:07:22.897Z"
+  },
+  "ch07-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:52:23.745Z"
+  },
+  "ch07-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:08:55.827Z"
+  },
+  "ch01-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:04:33.837Z"
+  },
+  "ch01-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:04:40.161Z"
+  },
+  "ch01-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:04:44.136Z"
+  },
+  "ch08-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:52:00.150Z"
+  },
+  "ch08-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:09:12.561Z"
+  },
+  "ch08-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'workerd · 31 Oct' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'AS OF · 31 OCTOBER 2026' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'Not a sandbox on its own' up to 71 % over the other shot -0.16..0.26 s"
+   ],
+   "probed": 0,
+   "at": "2026-11-01T07:09:18.532Z"
+  },
+  "ch08-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-11-01T07:52:30.005Z"
+  },
+  "ch02-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:05:18.328Z"
+  },
+  "ch03-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-11-01T07:06:00.702Z"
+  }
+ },
+ "at": "2026-11-01T07:54:26.514Z",
+ "rule": "review round 3: no card shows paper > 50% with text < 20% for more than 0.3 s (probed cards fail, unprobed paper warns)",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s"
+}

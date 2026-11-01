@@ -1,0 +1,64 @@
+{
+ "shot": "ch08-s01",
+ "at": "2026-11-01T07:51:37.123Z",
+ "minCapPx": 22,
+ "sampled": 51,
+ "texts": 10,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "What Travels",
+   "capWhileSubject": 43.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "C",
+   "maxCap": 57.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "9",
+   "maxCap": 55,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "workerd · 28 Oct",
+   "maxCap": 23.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Amazon S3",
+   "maxCap": 13.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "celld 0.6.3",
+   "maxCap": 13.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A",
+   "maxCap": 27.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7",
+   "maxCap": 25.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "B",
+   "maxCap": 19.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "0",
+   "maxCap": 10.7,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 9
+}

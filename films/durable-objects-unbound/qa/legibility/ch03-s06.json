@@ -1,0 +1,34 @@
+{
+ "shot": "ch03-s06",
+ "at": "2026-11-01T07:04:01.518Z",
+ "minCapPx": 22,
+ "sampled": 20,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "one key at a time · no cross-room commit",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 44.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Amazon S3",
+   "maxCap": 14.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "B",
+   "maxCap": 27.4,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 3
+}

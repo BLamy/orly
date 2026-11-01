@@ -144,7 +144,8 @@ export default defineShot({
           }
         },
         L4: (c, env) => {
-          board(c, env, t, named, broke);
+          // final review r1: the board exits on the cut to the first close-up, so its corner never clips those frames
+          if (t < b.refusals - 0.7) board(c, env, t, named, broke);
           // the stale card spat back from the Tooth on 'refusals'
           const sp = seg(t, b.refusals - 0.6, b.refusals) * (1 - seg(t, b.refusals + 0.1, b.refusals + 1.4));
           if (t > b.refusals - 0.6 && t < b.refusals + 1.6) {
@@ -169,7 +170,7 @@ export default defineShot({
         },
       },
     );
-    titleCard(f.c, { title: 'What Travels', at: b.iris, dur: 6.5, fade: 0.8, x: 300, y: 96, size: 46 }, { t, mood: f.mood, seed: 8 });
+    titleCard(f.c, { title: 'What Travels', at: b.iris, dur: 3.3, fade: 0.6, x: 300, y: 96, size: 46 }, { t, mood: f.mood, seed: 8 });
 
     /** the board on its post, the four pins and, below each, the machine it came from */
     function board(c: C2, env: PaintEnv, tt: number, nm: number[], br: number): void {

@@ -41,7 +41,8 @@ const ZCAM: Camera3 = { x: 640 + 1.3 * (756 - 640), y: 360 + 1.3 * (452 - 360), 
 const WCLOCK = { x: W.x - 36, y: W.y - 24 };
 const HOUSES: HouseId[] = ['A', 'B', 'C'];
 /** a sill clock's spot beside each house's candle (L3) */
-const sillClock = (h: HouseId) => ({ x: TOWN[h].sill.x + (h === 'A' ? 64 : 48), y: TOWN[h].sill.y - 14 });
+/** final review r1: B's clock is hung up and right of the pulley lines' crossing, so no line ever cuts its zero */
+const sillClock = (h: HouseId) => (h === 'B' ? { x: TOWN.B.sill.x + 54, y: TOWN.B.sill.y - 44 } : { x: TOWN[h].sill.x + (h === 'A' ? 64 : 48), y: TOWN[h].sill.y - 14 });
 const sillCandle = (h: HouseId) => ({ x: TOWN[h].sill.x + (h === 'A' ? 40 : 26), y: TOWN[h].sill.y + 1 });
 
 function clockFace(c: C2, env: PaintEnv, x: number, y: number, r: number, ang: number, zero = 0): void {
@@ -54,20 +55,26 @@ function clockFace(c: C2, env: PaintEnv, x: number, y: number, r: number, ang: n
   c.beginPath();
   c.arc(x, y, r * 0.78, 0, Math.PI * 2);
   c.fill();
-  c.strokeStyle = env.fill('ink');
-  c.lineWidth = Math.max(0.8, r * 0.14);
-  c.beginPath();
-  c.moveTo(x, y);
-  c.lineTo(x + Math.sin(ang) * r * 0.55 * (1 - 0.4 * zero), y - Math.cos(ang) * r * 0.55 * (1 - 0.4 * zero));
-  c.stroke();
+  // the hand leaves the face as the zero inks, so nothing lies across the digit
+  if (zero < 0.45) {
+    c.save();
+    c.globalAlpha *= 1 - Math.min(1, zero * 2.2);
+    c.strokeStyle = env.fill('ink');
+    c.lineWidth = Math.max(0.8, r * 0.14);
+    c.beginPath();
+    c.moveTo(x, y);
+    c.lineTo(x + Math.sin(ang) * r * 0.55, y - Math.cos(ang) * r * 0.55);
+    c.stroke();
+    c.restore();
+  }
   if (zero > 0.01) {
     textRole(c, 'texture', () => {
       c.globalAlpha *= zero;
-      c.fillStyle = mixLab('#7a2a1a', env.mood.fg, 0.2);
-      c.font = `700 ${r * 0.72}px ${FONT.mono}`;
+      c.fillStyle = mixLab('#54401a', env.mood.fg, 0.12); // dark brass (red is reserved)
+      c.font = `700 ${r * 0.9}px ${FONT.mono}`;
       c.textAlign = 'center';
       c.textBaseline = 'middle';
-      c.fillText('0', x, y + r * 0.42);
+      c.fillText('0', x, y + r * 0.04);
     });
   }
   c.restore();

@@ -1,0 +1,54 @@
+{
+ "shot": "ch06-s05",
+ "at": "2026-11-01T07:04:13.184Z",
+ "minCapPx": 22,
+ "sampled": 56,
+ "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "A",
+   "capWhileSubject": 36.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 63.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "B",
+   "capWhileSubject": 65.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8",
+   "capWhileSubject": 63.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "no second look: a false tick",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "celld: no ack is no proof of absence",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "epoch 7",
+   "maxCap": 22.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "epoch 8",
+   "maxCap": 22.2,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

@@ -1,0 +1,49 @@
+{
+ "shot": "ch04-s04",
+ "at": "2026-11-01T07:04:04.751Z",
+ "minCapPx": 22,
+ "sampled": 46,
+ "texts": 7,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "28 OCTOBER 2026 · PACIFIC",
+   "capWhileSubject": 27.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…the beginning of merging celld’s",
+   "capWhileSubject": 59.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "functionality into workerd.",
+   "capWhileSubject": 59.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— Ryan Dahl, commit aa494794",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Commit: no ack until the bucket holds it",
+   "capWhileSubject": 38.6,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "workerd · 28 Oct",
+   "maxCap": 14.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "workerd · 31 Oct",
+   "maxCap": 14.5,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

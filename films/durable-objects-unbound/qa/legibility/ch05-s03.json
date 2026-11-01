@@ -1,0 +1,18 @@
+{
+ "shot": "ch05-s03",
+ "at": "2026-11-01T07:04:06.901Z",
+ "minCapPx": 22,
+ "sampled": 27,
+ "texts": 1,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "R2 stalls ~5.5 s every 5 minutes",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

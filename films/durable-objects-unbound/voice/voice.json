@@ -94,6 +94,36 @@
       "at": null,
       "clipSig": null,
       "note": null
+    },
+    {
+      "term": "read (noun)",
+      "line": "L0312",
+      "expect": "the noun \"read\" said REED, then \"write\": \"Between the read and the write\"",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "final review r1: STT heard \"Between the red and the right\". Check by ear; no re-take unless a person hears a fault"
+    },
+    {
+      "term": "A wakes",
+      "line": "L0519",
+      "expect": "two distinct words, the letter then the verb: \"A wakes\" (AY wakes), not \"awakes\"",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "final review r1: STT heard \"Awakes\". Check by ear; no re-take unless a person hears a fault"
+    },
+    {
+      "term": "opening line",
+      "line": "L0101",
+      "expect": "every word clear at pace in the film's first spoken line: \"Everything in this harbour is made up, except the kind of room in that window.\"",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "final review r1: 199 wpm, the fastest line in the film. Check by ear; no re-take unless a person hears a fault"
     }
   ]
 }

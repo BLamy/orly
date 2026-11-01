@@ -25,6 +25,7 @@ import { camAt, clamp01, label, lerp, pulse, seg, slip, sm, tone, twos, type Cam
 import { lanternPt } from '../sets/roomLantern';
 
 const ID = 'ch01-s01';
+const IRIS = { at: 0.1, dur: 1.2 };
 const LANTERN_S = 0.68;
 /** the lantern in A's window (L3): its base sits on the sill */
 const LANT = { x: TOWN.A.main.x, y: TOWN.A.main.y + TOWN.A.main.h / 2 - 2, s: LANTERN_S };
@@ -138,6 +139,24 @@ export default defineShot({
         },
       },
     );
+    // ---------------------------------------------------------------- the opening iris (nothing precedes the first shot, so
+    // the reel has no iris to play: it is painted here, screen-locked, from black onto A's far window, 0.1–1.3 s)
+    const irisU = clamp01((t - IRIS.at) / IRIS.dur);
+    if (irisU < 1) {
+      const p = toScreen(LAYERS.L3, cam, TOWN.A.main.x, TOWN.A.main.y);
+      const c = f.c;
+      c.save();
+      if (t < IRIS.at) c.fillStyle = '#000000';
+      else {
+        const r = 10 + 1560 * Math.pow(irisU, 2.4);
+        const g = c.createRadialGradient(p.x, p.y, r * 0.7, p.x, p.y, r);
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(1, 'rgba(0,0,0,1)');
+        c.fillStyle = g;
+      }
+      c.fillRect(-20, -20, 1320, 760);
+      c.restore();
+    }
     // ---------------------------------------------------------------- type (screen-locked, upper right)
     const sw = textSwap(t, b.types + 0.1, 0.4);
     const a1 = seg(t, b.made - 0.1, b.made + 0.4) * sw.out;

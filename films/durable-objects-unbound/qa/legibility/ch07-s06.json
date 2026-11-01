@@ -1,0 +1,29 @@
+{
+ "shot": "ch07-s06",
+ "at": "2026-11-01T07:51:39.523Z",
+ "minCapPx": 22,
+ "sampled": 43,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "No complete tail: the door stays shut",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "celld: an error is not proof of absence",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "celld 0.6.3",
+   "maxCap": 8.9,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

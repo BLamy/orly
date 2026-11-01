@@ -36,7 +36,8 @@ import { WIN, facades, gate, roomBack, scrollCase, spineBand } from '../sets/ch0
 
 const ID = 'ch07-s06';
 const TWO: Camera3 = { x: 640, y: 336, z: 40, lens: 1 };
-const DOOR: Camera3 = { x: 1130, y: 500, z: 450, lens: 1 };
+/** final review r1: stops about 18 % earlier and recentres: keeper, door and dark lantern whole, below C's window */
+const DOOR: Camera3 = { x: 952, y: 538, z: 380, lens: 1 };
 /** case one: the camera leans left so the wellhead and its gate (beyond B's corner) are in frame as the gate opens */
 const GATE: Camera3 = { x: 470, y: 352, z: 30, lens: 1 };
 const CTINT = '#cfd9a8';

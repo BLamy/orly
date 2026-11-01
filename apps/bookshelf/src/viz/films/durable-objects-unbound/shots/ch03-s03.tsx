@@ -156,7 +156,7 @@ export default defineShot({
     const c = f.c;
     dateStamp(c, f.mood, { id: `${ID}-date1`, text: '20 August 2024', x: 1222, y: 66, alpha: seg(t, b.date1 - 0.1, b.date1 + 0.4) * (1 - seg(t, b.date2 - 0.5, b.date2 - 0.15)) });
     dateStamp(c, f.mood, { id: `${ID}-date2`, text: '25 November 2024', x: 1222, y: 66, alpha: seg(t, b.date2 - 0.05, b.date2 + 0.4) });
-    label(c, f.mood, { id: `${ID}-only`, text: 'only if absent · only if unchanged', x: 64, y: 92, alpha: seg(t, b.click - 0.1, b.click + 0.4) * (1 - seg(t, b.term - 0.7, b.term - 0.2)) });
+    label(c, f.mood, { id: `${ID}-only`, text: 'only if absent · only if unchanged', x: 1222, y: 116, align: 'right', alpha: seg(t, b.click - 0.1, b.click + 0.4) * (1 - seg(t, b.term - 0.7, b.term - 0.2)) });
   },
 });
 

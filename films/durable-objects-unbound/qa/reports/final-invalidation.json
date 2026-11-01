@@ -1,0 +1,377 @@
+{
+  "at": "2026-11-01T07:57:17.342Z",
+  "timelineSha": "2482f4b29dee8e0666f6a12b5c3f19106b9277a644f743d5c0c39bcc1bc2253c",
+  "fps": 24,
+  "totalFrames": 34546,
+  "reason": "Eight bounded round-1 visual fixes; incoming and outgoing half-transition margins plus one frame",
+  "ranges": [
+    {
+      "id": "ch01-s01",
+      "start": 0,
+      "end": 29.25,
+      "from": 0,
+      "to": 718,
+      "sourceSha": "c918848f8e07f2fe65e6453081d9fac0860c9ac3dfc125384c261108f8bce4d9"
+    },
+    {
+      "id": "ch03-s02",
+      "start": 308.8333,
+      "end": 348,
+      "from": 7396,
+      "to": 8353,
+      "sourceSha": "240f13ada8cb505e29a3eadb2040684f47cec57eb5bb329633d1530cac5e286b"
+    },
+    {
+      "id": "ch03-s03",
+      "start": 348,
+      "end": 389.5833,
+      "from": 8351,
+      "to": 9351,
+      "sourceSha": "eb59cb41c90f815d1510d90172ad91454f7c03bf3566c01b99f3956ba5f54284"
+    },
+    {
+      "id": "ch05-s05",
+      "start": 801.4167,
+      "end": 825.2917,
+      "from": 19233,
+      "to": 19821,
+      "sourceSha": "1fe491d497b18cf8a72ae2c32e8781501744d6debb0cefc3e21054c41d23e003"
+    },
+    {
+      "id": "ch07-s02",
+      "start": 1097.5,
+      "end": 1123.2917,
+      "from": 26339,
+      "to": 26975,
+      "sourceSha": "7c6b944238a472d038228b22faaf67463be6b2ff0bad353e2fae8561479efcb8"
+    },
+    {
+      "id": "ch07-s06",
+      "start": 1248.5833,
+      "end": 1282.7083,
+      "from": 29952,
+      "to": 30786,
+      "sourceSha": "372adc849794d689bd1542bc544e0179e2525d56f17e271f2d83d9a8e44b5402"
+    },
+    {
+      "id": "ch08-s01",
+      "start": 1303.0417,
+      "end": 1343.375,
+      "from": 31257,
+      "to": 32242,
+      "sourceSha": "0c8e98229c45b067aac2e887f3216a300be310e96df17058a91d3085f557180a"
+    },
+    {
+      "id": "ch08-s04",
+      "start": 1409.4167,
+      "end": 1439.4167,
+      "from": 33808,
+      "to": 34546,
+      "sourceSha": "0daec63be4fea0b419f4947e45f495d881e4fea60535f8f25540ef4b9e71b917"
+    }
+  ],
+  "invalidated": [
+    {
+      "name": "000000-000480.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 0,
+        "b": 480,
+        "fps": 24,
+        "worker": 1,
+        "at": "2026-11-01T07:16:36.310Z"
+      },
+      "shots": [
+        "ch01-s01"
+      ]
+    },
+    {
+      "name": "000480-000960.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 480,
+        "b": 960,
+        "fps": 24,
+        "worker": 0,
+        "at": "2026-11-01T07:16:36.197Z"
+      },
+      "shots": [
+        "ch01-s01"
+      ]
+    },
+    {
+      "name": "007200-007680.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 7200,
+        "b": 7680,
+        "fps": 24,
+        "worker": 1,
+        "at": "2026-11-01T07:18:14.089Z"
+      },
+      "shots": [
+        "ch03-s02"
+      ]
+    },
+    {
+      "name": "007680-008160.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 7680,
+        "b": 8160,
+        "fps": 24,
+        "worker": 0,
+        "at": "2026-11-01T07:18:15.763Z"
+      },
+      "shots": [
+        "ch03-s02"
+      ]
+    },
+    {
+      "name": "008160-008640.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 8160,
+        "b": 8640,
+        "fps": 24,
+        "worker": 2,
+        "at": "2026-11-01T07:18:15.631Z"
+      },
+      "shots": [
+        "ch03-s02",
+        "ch03-s03"
+      ]
+    },
+    {
+      "name": "008640-009120.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 8640,
+        "b": 9120,
+        "fps": 24,
+        "worker": 1,
+        "at": "2026-11-01T07:18:34.832Z"
+      },
+      "shots": [
+        "ch03-s03"
+      ]
+    },
+    {
+      "name": "009120-009600.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 9120,
+        "b": 9600,
+        "fps": 24,
+        "worker": 2,
+        "at": "2026-11-01T07:18:35.937Z"
+      },
+      "shots": [
+        "ch03-s03"
+      ]
+    },
+    {
+      "name": "019200-019680.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 19200,
+        "b": 19680,
+        "fps": 24,
+        "worker": 1,
+        "at": "2026-11-01T07:21:09.381Z"
+      },
+      "shots": [
+        "ch05-s05"
+      ]
+    },
+    {
+      "name": "019680-020160.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 19680,
+        "b": 20160,
+        "fps": 24,
+        "worker": 0,
+        "at": "2026-11-01T07:21:09.071Z"
+      },
+      "shots": [
+        "ch05-s05"
+      ]
+    },
+    {
+      "name": "025920-026400.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 25920,
+        "b": 26400,
+        "fps": 24,
+        "worker": 0,
+        "at": "2026-11-01T07:23:01.886Z"
+      },
+      "shots": [
+        "ch07-s02"
+      ]
+    },
+    {
+      "name": "026400-026880.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 26400,
+        "b": 26880,
+        "fps": 24,
+        "worker": 2,
+        "at": "2026-11-01T07:23:02.423Z"
+      },
+      "shots": [
+        "ch07-s02"
+      ]
+    },
+    {
+      "name": "026880-027360.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 26880,
+        "b": 27360,
+        "fps": 24,
+        "worker": 1,
+        "at": "2026-11-01T07:23:02.545Z"
+      },
+      "shots": [
+        "ch07-s02"
+      ]
+    },
+    {
+      "name": "029760-030240.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 29760,
+        "b": 30240,
+        "fps": 24,
+        "worker": 2,
+        "at": "2026-11-01T07:23:45.393Z"
+      },
+      "shots": [
+        "ch07-s06"
+      ]
+    },
+    {
+      "name": "030240-030720.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 30240,
+        "b": 30720,
+        "fps": 24,
+        "worker": 1,
+        "at": "2026-11-01T07:24:06.984Z"
+      },
+      "shots": [
+        "ch07-s06"
+      ]
+    },
+    {
+      "name": "030720-031200.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 30720,
+        "b": 31200,
+        "fps": 24,
+        "worker": 2,
+        "at": "2026-11-01T07:24:08.382Z"
+      },
+      "shots": [
+        "ch07-s06"
+      ]
+    },
+    {
+      "name": "031200-031680.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 31200,
+        "b": 31680,
+        "fps": 24,
+        "worker": 0,
+        "at": "2026-11-01T07:24:08.278Z"
+      },
+      "shots": [
+        "ch08-s01"
+      ]
+    },
+    {
+      "name": "031680-032160.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 31680,
+        "b": 32160,
+        "fps": 24,
+        "worker": 1,
+        "at": "2026-11-01T07:24:29.348Z"
+      },
+      "shots": [
+        "ch08-s01"
+      ]
+    },
+    {
+      "name": "032160-032640.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 32160,
+        "b": 32640,
+        "fps": 24,
+        "worker": 0,
+        "at": "2026-11-01T07:24:30.207Z"
+      },
+      "shots": [
+        "ch08-s01"
+      ]
+    },
+    {
+      "name": "033600-034080.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 480,
+        "a": 33600,
+        "b": 34080,
+        "fps": 24,
+        "worker": 0,
+        "at": "2026-11-01T07:24:52.248Z"
+      },
+      "shots": [
+        "ch08-s04"
+      ]
+    },
+    {
+      "name": "034080-034546.json",
+      "marker": {
+        "key": "dd075103edaeaa06",
+        "frames": 466,
+        "a": 34080,
+        "b": 34546,
+        "fps": 24,
+        "worker": 2,
+        "at": "2026-11-01T07:24:52.177Z"
+      },
+      "shots": [
+        "ch08-s04"
+      ]
+    }
+  ],
+  "retained": 52
+}

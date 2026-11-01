@@ -19,7 +19,7 @@
  * Text: only the two badges. Nothing below y 634.
  */
 import { Timeline } from '../../../core';
-import { defineShot, mixLab, withAlpha } from '../../../film';
+import { LAYERS, defineShot, mixLab, toLayer, toScreen, withAlpha } from '../../../film';
 import type { Camera3, PaintEnv } from '../../../film';
 import { paintTown, pulleyAt } from '../sets/harbourTown';
 import { houseBell, bellSwing } from '../sets/heldLetter';
@@ -35,8 +35,12 @@ const BELL = { x: 772, y: 572 };
 /** the tag's upright on the rod's left end */
 const TAG = { x: 198, y: 558 };
 /** the far headland across the water (L1) and its five far lamps */
-const HEAD = { x0: 960, x1: 1620, peak: 112 };
-const FAR = [1086, 1136, 1190, 1242, 1294].map((x, i) => ({ x, y: 156 + [8, 0, -6, -1, 7][i] }));
+const HEAD = { x0: 960, x1: 1620, peak: 64, foot: 392 };
+/** final review r1: the sea's waterline at the headland's foot (L1), so water shows between the town's ridge and the relay */
+/** the hosted tag's hook, in the far plane's coordinates */
+const HOSTED = { x: 1190, y: 132 };
+const SEA = { y: 242, x0: 250, fade: 520, x1: 1760, y1: 470 };
+const FAR = [1086, 1136, 1190, 1242, 1294].map((x, i) => ({ x, y: 108 + [8, 0, -6, -1, 7][i] }));
 
 const SQ: Camera3 = { x: 600, y: 470, z: 100, lens: 1 };
 const SQ2: Camera3 = { x: 636, y: 462, z: 140, lens: 1 };
@@ -47,17 +51,37 @@ const TERR2: Camera3 = { x: 646, y: 408, z: 78, lens: 1 };
 
 function headY(x: number): number {
   const u = (x - HEAD.x0) / (HEAD.x1 - HEAD.x0);
-  if (u <= 0 || u >= 1) return 440;
-  return 440 - (440 - HEAD.peak) * Math.pow(Math.sin(Math.PI * u), 0.7) - 6 * Math.sin(x * 0.05);
+  if (u <= 0 || u >= 1) return HEAD.foot;
+  return HEAD.foot - (HEAD.foot - HEAD.peak) * Math.pow(Math.sin(Math.PI * u), 0.7) - 6 * Math.sin(x * 0.05);
 }
 function headland(c: C2, env: PaintEnv) {
   c.fillStyle = mixLab(env.fill('set'), env.fill('ink'), 0.15);
   c.beginPath();
-  c.moveTo(HEAD.x0 - 40, 446);
-  for (let x = HEAD.x0 - 40; x <= HEAD.x1 + 40; x += 6) c.lineTo(x, Math.min(446, headY(x)));
-  c.lineTo(HEAD.x1 + 40, 446);
+  c.moveTo(HEAD.x0 - 40, HEAD.foot + 6);
+  for (let x = HEAD.x0 - 40; x <= HEAD.x1 + 40; x += 6) c.lineTo(x, Math.min(HEAD.foot + 6, headY(x)));
+  c.lineTo(HEAD.x1 + 40, HEAD.foot + 6);
   c.closePath();
   c.fill();
+}
+
+/** the far water (L1), baked: a bright waterline, darkening toward the viewer, feathered away at its left end */
+function seaBand(c: C2, env: PaintEnv) {
+  const set = env.fill('set');
+  const g = c.createLinearGradient(0, SEA.y, 0, SEA.y1);
+  g.addColorStop(0, mixLab(set, env.mood.haze, 0.3));
+  g.addColorStop(0.14, mixLab(set, env.mood.fg, 0.22));
+  g.addColorStop(1, mixLab(set, env.mood.fg, 0.6));
+  c.fillStyle = g;
+  c.fillRect(SEA.x0, SEA.y, SEA.x1 - SEA.x0, SEA.y1 - SEA.y);
+  c.fillStyle = withAlpha(mixLab(env.mood.core, '#ffffff', 0.3), 0.55);
+  c.fillRect(SEA.x0, SEA.y, SEA.x1 - SEA.x0, 1.6);
+  c.globalCompositeOperation = 'destination-in';
+  const h = c.createLinearGradient(SEA.x0, 0, SEA.x0 + SEA.fade, 0);
+  h.addColorStop(0, 'rgba(0,0,0,0)');
+  h.addColorStop(1, 'rgba(0,0,0,1)');
+  c.fillStyle = h;
+  c.fillRect(SEA.x0 - 2, SEA.y - 2, SEA.x1 - SEA.x0 + 4, SEA.y1 - SEA.y + 4);
+  c.globalCompositeOperation = 'source-over';
 }
 
 export default defineShot({
@@ -131,8 +155,20 @@ export default defineShot({
       {
         L1: (c, env) => {
           // the far headland across the water and the hosted relay's five far lamps (remembered from ch02)
-          bakeRect(f, c, env, `${ID}/headland`, { x: HEAD.x0 - 60, y: HEAD.peak - 20, w: HEAD.x1 - HEAD.x0 + 120, h: 460 - HEAD.peak }, (cc) => headland(cc, env));
+          bakeRect(f, c, env, `${ID}/headland`, { x: HEAD.x0 - 60, y: HEAD.peak - 20, w: HEAD.x1 - HEAD.x0 + 120, h: HEAD.foot + 20 - HEAD.peak }, (cc) => headland(cc, env));
           if (far > 0.01) {
+            // the moonlit water between the ridge and the headland's foot (present only while the relay is remembered)
+            c.save();
+            c.globalAlpha = far;
+            bakeRect(f, c, env, `${ID}/sea`, { x: SEA.x0, y: SEA.y - 2, w: SEA.x1 - SEA.x0, h: SEA.y1 - SEA.y + 2 }, (cc) => seaBand(cc, env));
+            c.restore();
+            for (let i = 0; i < 9; i++) {
+              // slow moon glints on the water, just under the waterline
+              const gy = SEA.y + 7 + i * 6.5;
+              const gx = 1190 + 250 * Math.sin(i * 2.4) + 14 * Math.sin(t * 0.5 + i * 1.3);
+              c.fillStyle = withAlpha(mixLab(env.mood.core, '#ffffff', 0.3), (0.3 - i * 0.02) * far);
+              c.fillRect(gx - 26 - i * 3, gy, 52 + i * 6, 1.6);
+            }
             FAR.forEach((p, i) => {
               const on = seg(t, b.shore - 0.4 + i * 0.12, b.shore + 0.2 + i * 0.12) * far;
               const fl = 0.9 + 0.1 * Math.sin(t * 2.1 + i * 1.7);
@@ -140,10 +176,17 @@ export default defineShot({
               c.fillStyle = withAlpha(mixLab(tone(env, SEA_CYAN, 0.05), '#ffffff', 0.4), on);
               c.fillRect(p.x - 1.2, p.y - 1.2, 2.4, 2.4);
             });
-            badge(c, env, { x: 1190, y: 180, text: 'Cloudflare, hosted', alpha: seg(t, b.cloud + 0.4, b.shore + 0.4) * far, legible: false, s: 1.9, swing: 0.03 * Math.sin(tq * 1.4), id: `${ID}-hosted` });
           }
         },
         L4: (c, env) => {
+          // the narrated tag tracks its far point (L1, above the headland's foot) but is drawn on this sharp plane: L1 paints
+          // through a low-res blur buffer, where the legibility floor would blow it up about 3x at 1080p and clip it
+          const tagA = seg(t, b.cloud + 0.4, b.shore + 0.4) * far;
+          if (tagA > 0.01) {
+            const sp = toScreen(LAYERS.L1, cam, HOSTED.x, HOSTED.y);
+            const lp = toLayer(LAYERS.L4, cam, sp.x, sp.y);
+            badge(c, env, { x: lp.x, y: lp.y, text: 'Cloudflare, hosted', alpha: tagA, legible: true, s: 1.2, swing: 0.03 * Math.sin(tq * 1.4), id: `${ID}-hosted` });
+          }
           // the scroll the long walk stands for: down C's pulley line into the Well
           if (ride > 0.001 && ride < 0.995) {
             const p = pulleyAt(cam, 'C', ride);

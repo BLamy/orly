@@ -1,0 +1,59 @@
+{
+ "shot": "ch06-s04",
+ "at": "2026-11-01T07:04:12.250Z",
+ "minCapPx": 22,
+ "sampled": 45,
+ "texts": 9,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "workerd · 28 Oct",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "A",
+   "capWhileSubject": 47.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 45.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "upload → look again → bell",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "celld 0.6.3",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…cannot act on a value that a",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "crash can still lose.”",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "celld guarantees, v0.6.3",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0",
+   "maxCap": 9.7,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

@@ -34,7 +34,7 @@ const W = TOWN.well;
 const SLOT = { x: W.x + WELL.slot.x, y: W.y + WELL.slot.y };
 const PIN = { x: SLOT.x + 18, y: SLOT.y - 6 };
 const KS = 0.56;
-const AX = 336, BX = 534;
+const AX = 336, BX = 574; // final review r1: B stands clear of the 'Amazon S3' tag on the right hook
 
 const WIDE: Camera3 = { x: 520, y: 404, z: 210, lens: 1 };
 const TOOTH: Camera3 = { x: 486, y: 520, z: 520, lens: 1 };
