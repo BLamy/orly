@@ -24,7 +24,7 @@ const ID = 'ch01-s03';
 const HIGH: Camera3 = { x: 900, y: 300, z: 200, lens: 1 };
 const SQUARE: Camera3 = { x: 520, y: 446, z: 200, lens: 1 };
 const CLOSE: Camera3 = { x: 479, y: 417, z: 420, lens: 1 };
-const MID: Camera3 = { x: 600, y: 410, z: 260, lens: 1 };
+const MID: Camera3 = { x: 680, y: 410, z: 260, lens: 1 }; // review r1: C's window in frame at 'acked'
 const WIDE: Camera3 = { x: 640, y: 372, z: -30, lens: 1 };
 
 export default defineShot({

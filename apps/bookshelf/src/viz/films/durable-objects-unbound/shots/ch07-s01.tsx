@@ -44,11 +44,9 @@ const RBOOK = { x: 1084, y: 390 };
 const ASIDE = { x: 1104, y: 389 };
 
 const C0: Camera3 = { x: 1207, y: 360, z: 150, lens: 1 };
-const WIDE: Camera3 = { x: 700, y: 395, z: 150, lens: 1 };
-const WIDE2: Camera3 = { x: 688, y: 398, z: 178, lens: 1 };
+const WIDE: Camera3 = { x: 640, y: 395, z: 150, lens: 1 };
+const WIDE2: Camera3 = { x: 630, y: 398, z: 178, lens: 1 };
 const MED: Camera3 = { x: 1140, y: 372, z: 700, lens: 1 };
-const CLOSE: Camera3 = { x: 1150, y: 376, z: 800, lens: 1 };
-const CLOSE2: Camera3 = { x: 1158, y: 378, z: 836, lens: 1 };
 const END: Camera3 = { x: 664, y: 398, z: 205, lens: 1 };
 
 function l4ToL3(cam: Camera3, p: { x: number; y: number }) {
@@ -57,8 +55,9 @@ function l4ToL3(cam: Camera3, p: { x: number; y: number }) {
 }
 const SAG = 40;
 /** a point on C's pulley line in L3 coords: u 0 = the block on C's sill, 1 = the wellhead pulley */
+let FAR: { x: number; y: number } | null = null;
 function lineAt(cam: Camera3, u: number) {
-  const w = l4ToL3(cam, WELL_TOP_L4);
+  const w = FAR ?? l4ToL3(cam, WELL_TOP_L4);
   return cordAt(BLOCK.x, BLOCK.y, w.x, w.y, SAG, clamp01(u));
 }
 /** a small rider hanging under the line at u */
@@ -108,10 +107,9 @@ export default defineShot({
       { t: 0.7, cam: { ...C0, z: C0.z + 4 } },
       { t: b.claim + 0.8, cam: WIDE },
       { t: b.seven + 0.45, cam: WIDE2 },
-      { t: b.wipe + 1.7, cam: MED },
-      { t: b.book + 1.1, cam: CLOSE },
-      { t: b.only - 0.55, cam: CLOSE2 },
-      { t: b.open + 0.1, cam: WIDE },
+      { t: b.wipe - 1.01, cam: MED },
+      { t: b.only - 0.45, cam: MED },
+      { t: b.open + 0.3, cam: WIDE },
       { t: b.D, cam: END },
     ];
     return { tl, b, cams };
@@ -160,30 +158,7 @@ export default defineShot({
     const crown = seg(t, b.open + 0.6, b.open + 1.1);
     const bucketDown = seg(t, b.open - 0.3, b.open + 0.9);
 
-    paintTown(
-      f,
-      {
-        cam,
-        cams: cams.map((k) => k.cam),
-        lamps: { A: 0, B: 0, C: 1 },
-        lines: { C: 0 },
-        plate: {
-          house: 'C',
-          epoch: 9,
-          from: flipU < 0.5 ? 7 : 9,
-          crown,
-          flip: [1, 1, flipU < 1 && t > b.open ? flipU : 1],
-          glint: [0, pulse(t, b.nine - 0.1, 0.2, 0.35, 0.6), pulse(t, b.seven - 0.1, 0.2, 0.35, 0.6) + 0.8 * pulse(t, b.open + 0.3, 0.2, 0.3, 0.8)],
-        },
-        plateLegible: true,
-        tooth: null,
-        well: { bucket: lerp(0.32, 1, bucketDown), load: bucketDown > 0.01 && bucketDown < 0.99 ? 'book' : 'none', glint: 0.35 },
-        badge: { text: 'workerd · 28 Oct', legible: true, glint: pulse(t, b.badge + 1.2, 0.3, 0.5, 0.8) },
-        lampPostLit: 0.45,
-        skip: { L6: true },
-      },
-      {
-        L3back: (c, env) => {
+    const drawInterior = (c: C2, env: PaintEnv) => {
           // inside C's main window, clipped to the opening (dynamic art in a blurred layer sits above the baked
           // wall, so the window does its own masking): stove, keeper, the Room Lantern (members never move)
           const wn = C.main;
@@ -238,10 +213,11 @@ export default defineShot({
           c.fillStyle = set;
           c.fillRect(wn.x - 1.2, wn.y - wn.h / 2, 2.4, wn.h);
           c.fillRect(wn.x - wn.w / 2 - 5, wn.y + wn.h / 2, wn.w + 10, 5);
-        },
-        L3: (c, env) => {
+        
+    };
+    const drawChain = (c: C2, env: PaintEnv) => {
           // C's pulley line on the terrace plane, its far end held on the wellhead pulley
-          const w = l4ToL3(cam, WELL_TOP_L4);
+          const w = FAR ?? l4ToL3(cam, WELL_TOP_L4);
           cord(c, BLOCK.x, BLOCK.y, w.x, w.y, SAG, withAlpha(env.fill('ink'), 0.9), 0.7);
           const ink = env.fill('ink');
           // the Book of session 7 rides up
@@ -362,25 +338,141 @@ export default defineShot({
           c.beginPath();
           c.arc(BLOCK.x, BLOCK.y, 2.6, 0, Math.PI * 2);
           c.fill();
+        
+    };
+    // ---- the restore, cut in close on C's window (the interior and the chain at 6.5x on the action plane)
+    const inset = t >= b.wipe - 1.0 && t < b.only - 0.45;
+    if (inset) {
+      const drift = seg(t, b.wipe - 1.0, b.only - 0.45);
+      const K = 6.5 + 0.35 * drift;
+      const ctr = { x: 1050 + 6 * drift, y: 374 };
+      const at = { x: 640, y: 340 };
+      FAR = { x: 520, y: 480 };
+      f.camera({ x: 640, y: 360, z: 0, lens: 1 });
+      f.backlight({ sunX: TOWN.moon.x, sunY: TOWN.moon.y + 30, intensity: 0.7 });
+      f.layer('L2', (c, env) => {
+        // the night beyond C's terrace: the ridge and a few far roofs above the wall line
+        c.fillStyle = mixLab(env.fill('set'), env.fill('ink'), 0.3);
+        c.fillRect(-200, 120, 1700, 900);
+      });
+      f.fog('A');
+      f.layer('L4', (c, env) => {
+        c.save();
+        c.translate(at.x, at.y);
+        c.scale(K, K);
+        c.translate(-ctr.x, -ctr.y);
+        const wn = C.main;
+        // the lit room behind the window
+        c.save();
+        c.beginPath();
+        c.rect(wn.x - wn.w / 2, wn.y - wn.h / 2, wn.w, wn.h);
+        c.clip();
+        const g = c.createRadialGradient(wn.x + 8, wn.y, 2, wn.x, wn.y, 40);
+        g.addColorStop(0, mixLab(tone(env, '#f2b45e', 0.1), '#fff2d6', 0.15 + 0.25 * warm));
+        g.addColorStop(1, mixLab(tone(env, '#f2b45e', 0.1), env.mood.fg, 0.55));
+        c.fillStyle = g;
+        c.fillRect(wn.x - wn.w / 2, wn.y - wn.h / 2, wn.w, wn.h);
+        c.restore();
+        drawInterior(c, env);
+        // C's facade around the window (a hole for the room), the sill and the pulley block
+        const wall = new Path2D();
+        wall.rect(ctr.x - 300, ctr.y - 200, 600, 400);
+        wall.rect(wn.x - wn.w / 2, wn.y - wn.h / 2, wn.w, wn.h);
+        c.fillStyle = mixLab(env.fill('set'), env.fill('ink'), 0.62);
+        c.fill(wall, 'evenodd');
+        // stone courses on the facade (faint, rim-lit tops)
+        c.save();
+        c.clip(wall, 'evenodd');
+        c.strokeStyle = withAlpha(env.fill('rim'), 0.1);
+        c.lineWidth = 0.25;
+        for (let y = ctr.y - 200; y < ctr.y + 200; y += 7) {
+          c.beginPath();
+          c.moveTo(ctr.x - 300, y);
+          c.lineTo(ctr.x + 300, y);
+          c.stroke();
+          for (let x = ctr.x - 300 + ((y / 7) % 2) * 6; x < ctr.x + 300; x += 12) {
+            c.beginPath();
+            c.moveTo(x, y);
+            c.lineTo(x, y + 7);
+            c.stroke();
+          }
+        }
+        c.restore();
+        c.strokeStyle = withAlpha(env.fill('rim'), 0.35);
+        c.lineWidth = 0.35;
+        c.strokeRect(wn.x - wn.w / 2, wn.y - wn.h / 2, wn.w, wn.h);
+        c.fillStyle = mixLab(env.fill('set'), env.fill('ink'), 0.75);
+        c.fillRect(wn.x - wn.w / 2 - 5, wn.y + wn.h / 2, wn.w + 10, 5);
+        c.fillRect(BLOCK.x - 1, BLOCK.y - 10, 2, 8);
+        drawChain(c, env);
+        c.restore();
+      });
+      f.rim({ x: 0, y: -1 });
+      f.layer('L5', (c, env) => {
+        // a blurred shutter edge at the right and the rope's near loop at the left (out of focus)
+        c.fillStyle = env.fill('fg');
+        c.fillRect(1196, -100, 200, 900);
+        c.strokeStyle = env.fill('fg');
+        c.lineWidth = 10;
+        c.beginPath();
+        c.moveTo(-40, 120);
+        c.quadraticCurveTo(70, 420, 20, 760);
+        c.stroke();
+      });
+      // the ghost what-if: cold and desaturated over the chain only (no red)
+      if (ghost > 0.01) {
+        const cc = f.c;
+        const gx0 = at.x + (960 - ctr.x) * K, gx1 = at.x + (1046 - ctr.x) * K;
+        const gy0 = at.y + (380 - ctr.y) * K, gy1 = at.y + (412 - ctr.y) * K;
+        const ell = () => {
+          cc.beginPath();
+          cc.ellipse((gx0 + gx1) / 2, (gy0 + gy1) / 2, (gx1 - gx0) / 2, (gy1 - gy0) * 0.75, 0, 0, Math.PI * 2);
+        };
+        cc.save();
+        cc.globalCompositeOperation = 'saturation';
+        cc.globalAlpha = 0.8 * ghost;
+        cc.fillStyle = '#808080';
+        ell();
+        cc.fill();
+        cc.globalCompositeOperation = 'multiply';
+        cc.globalAlpha = 0.3 * ghost;
+        cc.filter = 'blur(18px)';
+        cc.fillStyle = '#9fb4c8';
+        ell();
+        cc.fill();
+        cc.restore();
+      }
+      FAR = null;
+      const la = seg(t, b.gap - 0.15, b.gap + 0.3) * (1 - seg(t, b.crc - 0.6, b.crc - 0.15));
+      label(f.c, f.mood, { id: `${ID}-missing`, text: 'Missing scroll: the restore refuses', x: 64, y: 92, alpha: la, italic: true });
+      return;
+    }
+    paintTown(
+      f,
+      {
+        cam,
+        cams: cams.map((k) => k.cam),
+        lamps: { A: 0, B: 0, C: 1 },
+        lines: { C: 0 },
+        plate: {
+          house: 'C',
+          epoch: 9,
+          from: flipU < 0.5 ? 7 : 9,
+          crown,
+          flip: [1, 1, flipU < 1 && t > b.open ? flipU : 1],
+          glint: [0, pulse(t, b.nine - 0.1, 0.2, 0.35, 0.6), pulse(t, b.seven - 0.1, 0.2, 0.35, 0.6) + 0.8 * pulse(t, b.open + 0.3, 0.2, 0.3, 0.8)],
         },
+        plateLegible: true,
+        tooth: null,
+        well: { bucket: lerp(0.32, 1, bucketDown), load: bucketDown > 0.01 && bucketDown < 0.99 ? 'book' : 'none', glint: 0.35 },
+        badge: { text: 'workerd · 28 Oct', legible: true, glint: pulse(t, b.badge + 1.2, 0.3, 0.5, 0.8) },
+        lampPostLit: 0.45,
+        skip: { L6: true },
+      },
+      {
+        L3back: (c, env) => drawInterior(c, env),
+        L3: (c, env) => drawChain(c, env),
       },
     );
-    // ---- the ghost: a cold, desaturated wash over the what-if (no red)
-    if (ghost > 0.01) {
-      const c = f.c;
-      c.save();
-      c.globalCompositeOperation = 'saturation';
-      c.globalAlpha = 0.75 * ghost;
-      c.fillStyle = '#808080';
-      c.fillRect(0, 0, 1280, 720);
-      c.globalCompositeOperation = 'multiply';
-      c.globalAlpha = 0.35 * ghost;
-      c.fillStyle = '#9fb4c8';
-      c.fillRect(0, 0, 1280, 720);
-      c.restore();
-    }
-    // ---- type (screen-locked, upper right)
-    const la = seg(t, b.gap - 0.15, b.gap + 0.3) * (1 - seg(t, b.crc - 0.6, b.crc - 0.15));
-    label(f.c, f.mood, { id: `${ID}-missing`, text: 'Missing scroll: the restore refuses', x: 1220, y: 92, align: 'right', alpha: la, italic: true });
   },
 });

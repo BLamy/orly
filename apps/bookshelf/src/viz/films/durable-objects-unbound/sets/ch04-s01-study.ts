@@ -376,12 +376,16 @@ export function pencil(c: C2, env: PaintEnv, o: { x: number; y: number; s?: numb
   c.lineTo(9, 2.6);
   c.closePath();
   c.fill();
-  c.fillStyle = tone(env, '#c79a4e', 0.2);
-  c.fillRect(9, -2.6, 54, 5.2);
-  c.fillStyle = brass(env, 0.4);
-  c.fillRect(63, -2.8, 5, 5.6);
-  c.fillStyle = tone(env, '#b8705a', 0.25);
-  c.fillRect(68, -2.6, 5, 5.2);
+  // (path fills, not fillRect: a rotated pencil is not a paper card)
+  const box = (x: number, y: number, w: number, h: number, col: string) => {
+    c.fillStyle = col;
+    c.beginPath();
+    c.rect(x, y, w, h);
+    c.fill();
+  };
+  box(9, -2.6, 54, 5.2, tone(env, '#c79a4e', 0.2));
+  box(63, -2.8, 5, 5.6, brass(env, 0.4));
+  box(68, -2.6, 5, 5.2, tone(env, '#b8705a', 0.25));
   c.strokeStyle = withAlpha(env.fill('ink'), 0.6);
   c.lineWidth = 0.6;
   c.strokeRect(9, -2.6, 54, 5.2);

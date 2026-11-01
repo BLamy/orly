@@ -23,7 +23,7 @@ import { POSES, PUPPET_NEAR_BLACK, addPose, defineShot, mixLab, withAlpha } from
 import type { Camera3 } from '../../../film';
 import { cast, MOON_LIGHT } from '../cast';
 import { TOWN, gutter, l3ToL4, paintTown, pulleyAt } from '../sets/harbourTown';
-import { camAt, clamp01, cordAt, glowDot, label, lerp, paper, pulse, seg, tone, twos, type C2, type CamKey } from '../sets/common';
+import { camAt, clamp01, cordAt, glowDot, label, lerp, paper, pulse, seg, slip, tone, twos, type C2, type CamKey } from '../sets/common';
 import { bellSwing, houseBell } from '../sets/heldLetter';
 import { book, scroll } from '../sets/walRibbon';
 import { epochShelf } from '../sets/wellCutaway';
@@ -38,9 +38,11 @@ const WIDE0: Camera3 = { x: 660, y: 400, z: 190, lens: 1 };
 const MED_B: Camera3 = { x: 640, y: 410, z: 330, lens: 1 };
 const DEEP: Camera3 = { x: 440, y: 716, z: 270, lens: 1 };
 const WIDE: Camera3 = { x: 680, y: 398, z: 210, lens: 1 };
-const ON_C: Camera3 = { x: 836, y: 382, z: 330, lens: 1 };
-const WIDE2: Camera3 = { x: 640, y: 400, z: 170, lens: 1 };
 const AT_WELL: Camera3 = { x: 478, y: 470, z: 420, lens: 1 };
+/** close on C's window: the room relights without #42 */
+const ON_C2: Camera3 = { x: 1205, y: 372, z: 640, lens: 1 };
+/** A's sill and sour bell with B's facade (the seal stamp) and B's copyist in one medium */
+const A_B: Camera3 = { x: 450, y: 399, z: 380, lens: 1 };
 
 /** the cutaway under the wellhead (L4) */
 const SHAFT = { x0: 270, x1: 594, y0: 616, y1: 960 };
@@ -134,10 +136,12 @@ export default defineShot({
       { t: b.pull + 0.9, cam: { ...MED_B, z: MED_B.z + 6 } },
       { t: b.staleW - 0.3, cam: DEEP },
       { t: 19.4, cam: { ...DEEP, z: DEEP.z + 16 } },
-      { t: 24.2, cam: WIDE },
-      { t: 27.0, cam: ON_C },
-      { t: 29.6, cam: WIDE2 },
-      { t: 33.4, cam: { ...WIDE2, x: WIDE2.x - 6, z: WIDE2.z + 12 } },
+      { t: 22.6, cam: WIDE },
+      { t: b.gone - 0.3, cam: ON_C2 },
+      { t: b.asleep - 0.31, cam: { ...ON_C2, z: ON_C2.z + 12 } },
+      // cut on the rewind to A and B
+      { t: b.asleep - 0.3, cam: A_B },
+      { t: b.back + 1.6, cam: { ...A_B, z: A_B.z + 14 } },
       { t: b.record - 0.3, cam: AT_WELL },
       { t: b.D, cam: { ...AT_WELL, z: AT_WELL.z + 18 } },
     ];
@@ -180,7 +184,7 @@ export default defineShot({
     const lock2 = seg(t, b.asleep + 1.95, b.asleep + 2.15);
     const swing = bellSwing(t, b.stale, 0.55);
     const ring = pulse(t, b.stale, 0.15, 0.4, 1.0);
-    // ---- the Plate: A·7·7 → C claims (C·8·7, crown dark) → opened after the restore (from 8, crown lit)
+    // ---- celld's plain Plate (house letter only; no workerd epoch/from tiles): A → C claims → C opens
     const claimU = clamp01((tq - (b.fetch - 0.6)) / 0.5);
     const openU = clamp01((tq - (b.fetch + 2.6)) / 0.5);
     // ---- the record tile
@@ -201,8 +205,8 @@ export default defineShot({
           { house: 'C', lit: litC, members: 4 * litC, tq, door: 0, colour: 'green', alpha: 0.3 + 0.7 * litC, slips: [{ x: 0.2, y: 0.45, tick: 1 - lostTick, alpha: litC }] },
         ],
         plate: claimU <= 0
-          ? { house: 'A', epoch: 7, from: 7, crown: 0.7 * lanternA, dim: 0.4 }
-          : { house: 'C', epoch: 8, from: openU > 0 ? 8 : 7, crown: openU, dim: 0.4, flip: [claimU, claimU, openU > 0 ? openU : 1] },
+          ? { house: 'A', epoch: '', from: '', crown: 0.35 * lanternA, dim: 0.4 }
+          : { house: 'C', epoch: '', from: '', crown: 0.35 + 0.35 * openU, dim: 0.4, flip: [claimU, 1, 1] },
         tooth: null,
         well: { bucket: t < b.fetch - 1.4 ? 0.25 : rise < 1 ? lerp(0.95, 0.2, rise) : 0.25, load: 'none', glint: 0.25 },
         badge: { text: 'celld 0.6.3', legible: false },
@@ -217,7 +221,10 @@ export default defineShot({
           riser(c, env, 'B', 1);
           riser(c, env, 'C', 1);
           sealStamp(c, env, { pin: 1 - pinOut, pinOut, slack: pinOut, pinShown: !carrying });
-          houseBell(c, env, { ...A_BELL, s: 0.8, swing, ring, sour: true });
+          houseBell(c, env, { ...A_BELL, s: 1.25, swing, ring, sour: true });
+          // the room in C's window: #42's slip loses its tick (large enough to read close on C)
+          slip(c, env, { x: TOWN.C.main.x + 4, y: TOWN.C.main.y - 6, w: 40, rot: -0.06, tick: 1 - lostTick, alpha: litC });
+          if (lostTick > 0.01 && lostTick < 1) glowDot(c, TOWN.C.main.x + 14, TOWN.C.main.y - 8, 18, tone(env, '#f0e0b0', 0.1), 0.5 * Math.sin(Math.PI * lostTick));
         },
         L4back: (c, env) => {
           cast.sender.draw(c, { x: TOWN.sender.seat.x, y: TOWN.sender.seat.y, facing: 'left', pose: POSES.sit, scale: TOWN.sender.seatScale, ink: PUPPET_NEAR_BLACK, edgeRim: { x: -0.8, y: -0.5, px: 2.5, alpha: 0.85, warm: 0.65 } }, env);
@@ -262,7 +269,7 @@ export default defineShot({
               const e = l3ToL4(cam, TOWN[h].sill);
               const p = cordAt(a.x, a.y, e.x, e.y, 22, ridePage);
               c.fillStyle = paper(env, 0.02);
-              c.fillRect(p.x - 5, p.y - 13, 10, 12);
+              c.fillRect(p.x - 8, p.y - 20, 16, 19);
             }
           }
           // the record tile on the wellhead's right hook (created only if none exists; shutter falls after)

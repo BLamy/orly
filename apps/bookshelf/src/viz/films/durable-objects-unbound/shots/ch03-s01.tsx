@@ -116,8 +116,8 @@ export default defineShot({
           keeper(c, env, K);
           const hand = keeperHand(K);
           // the sheet: held up fresh, dropped into the mouth; later taken from the bucket and held up
-          const markDown: Mark = second ? 'fresh2' : 'fresh';
-          const markUp: Mark = second ? 'fresh2' : 'old';
+          const markDown: Mark = 'fresh';
+          const markUp: Mark = second ? 'fresh' : 'old';
           if (t < r.drop + 0.6) {
             const fall = clamp01((t - r.drop) / 0.55);
             const x = lerp(hand.x + 6, MOUTH.x, sm(fall)), y = lerp(hand.y - 12, MOUTH.y + 6, fall * fall);

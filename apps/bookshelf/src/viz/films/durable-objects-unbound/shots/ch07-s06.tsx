@@ -36,7 +36,9 @@ import { WIN, facades, gate, roomBack, scrollCase, spineBand } from '../sets/ch0
 
 const ID = 'ch07-s06';
 const TWO: Camera3 = { x: 640, y: 336, z: 40, lens: 1 };
-const DOOR: Camera3 = { x: 1112, y: 440, z: 360, lens: 1 };
+const DOOR: Camera3 = { x: 1130, y: 500, z: 450, lens: 1 };
+/** case one: the camera leans left so the wellhead and its gate (beyond B's corner) are in frame as the gate opens */
+const GATE: Camera3 = { x: 470, y: 352, z: 30, lens: 1 };
 const CTINT = '#cfd9a8';
 /** the raised notebooks, held up to each window */
 const NB = { B: { x: WIN.B.x + 30, y: WIN.B.y + 66, s: 2.5 }, C: { x: WIN.C.x + 26, y: WIN.C.y + 58, s: 2.15 } };
@@ -74,6 +76,10 @@ export default defineShot({
     const cams: CamKey[] = [
       { t: 0, cam: { ...TWO, x: TWO.x + 12, z: TWO.z - 20 } },
       { t: b.rule, cam: TWO },
+      { t: b.other - 0.2, cam: { ...TWO, x: TWO.x - 6 } },
+      { t: b.proceeds + 0.1, cam: GATE },
+      { t: b.now + 0.1, cam: GATE },
+      { t: b.case2 + 0.9, cam: TWO },
       { t: b.l734 - 0.4, cam: { ...TWO, x: TWO.x + 20, z: TWO.z + 20 } },
       { t: b.D, cam: DOOR },
     ];
@@ -138,13 +144,13 @@ export default defineShot({
     f.fog('A');
     f.layer('L3', (c, env) => {
       // far down at the left edge: the wellhead, its small gate and celld's badge (art, unnamed here)
-      const r = { x: -160, y: 380, w: 300, h: 300 };
+      const r = { x: -160, y: 330, w: 340, h: 350 };
       f.cached(`dou/${ID}/well/${env.mood.id}`, r.w, r.h, (cc) => {
         cc.translate(-r.x, -r.y);
-        wellBase(cc, env, { x: 34, y: 566, s: 0.55 });
+        wellBase(cc, env, { x: 34, y: 566, s: 0.7 });
       })(c, r.x, r.y);
-      badge(c, env, { x: 34 - 62 * 0.55 + 4, y: 566 - 128 * 0.55, text: 'celld 0.6.3', s: 0.6, legible: false, swing: 0.03 * Math.sin(tq * 1.3) });
-      gate(c, env, { x: 96, y: 572, s: 1.05, open: gateOpen, glow: !case2 ? pulse(t, b.proceeds + 0.2, 0.2, 0.4, 0.9) : 0 });
+      badge(c, env, { x: 34 - 62 * 0.7 + 4, y: 566 - 128 * 0.7, text: 'celld 0.6.3', s: 0.6, legible: false, swing: 0.03 * Math.sin(tq * 1.3) });
+      gate(c, env, { x: 36, y: 600, s: 2.0, open: gateOpen, glow: !case2 ? pulse(t, b.proceeds + 0.2, 0.2, 0.4, 0.9) : 0 });
     });
     f.fog('B');
     // ------------------------------------------------ L4: the rooms, the copyists, the facades, the keeper
@@ -259,10 +265,12 @@ export default defineShot({
       f.c.restore();
     }
     // ------------------------------------------------ labels
-    const sA = seg(t, b.shut - 0.15, b.shut + 0.3) * (1 - seg(t, b.D - 0.9, b.D - 0.3) * 0.85);
-    label(f.c, f.mood, { id: `${ID}-shut`, text: 'No complete tail: the door stays shut', x: 64, y: 70, alpha: sA });
-    const eA = seg(t, b.error - 0.15, b.error + 0.3) * (1 - seg(t, b.D - 0.9, b.D - 0.3) * 0.85);
-    label(f.c, f.mood, { id: `${ID}-error`, text: 'celld: an error is not proof of absence', x: 1216, y: 132, align: 'right', alpha: eA });
+    // both labels clear before the push, so the final image rests on the latched, unlit door alone
+    const out = 1 - seg(t, b.l734 - 0.9, b.l734 - 0.3);
+    const sA = seg(t, b.shut - 0.15, b.shut + 0.3) * out;
+    label(f.c, f.mood, { id: `${ID}-shut`, text: 'No complete tail: the door stays shut', x: 64, y: 64, alpha: sA });
+    const eA = seg(t, b.error - 0.15, b.error + 0.3) * out;
+    label(f.c, f.mood, { id: `${ID}-error`, text: 'celld: an error is not proof of absence', x: 1216, y: 64, align: 'right', alpha: eA });
     void toLayer;
     void toScreen;
     void LAYERS;

@@ -17,7 +17,7 @@
  * Bottom 12% clear.
  */
 import { Timeline } from '../../../core';
-import { FONT, LAYERS, POSES, PUPPET_NEAR_BLACK, defineShot, legibleSize, mixLab, textRole, toScreen, withAlpha } from '../../../film';
+import { FONT, LAYERS, POSES, PUPPET_NEAR_BLACK, addPose, defineShot, legibleSize, mixLab, textRole, toScreen, withAlpha } from '../../../film';
 import type { Camera3, PaintEnv } from '../../../film';
 import { cast, MOON_LIGHT, MOON_RIM } from '../cast';
 import { TOWN, l3ToL4, paintTown, type HouseId } from '../sets/harbourTown';
@@ -33,11 +33,15 @@ const WIPE: Camera3 = { x: 792, y: 404, z: 140, lens: 1 };
 const TERR: Camera3 = { x: 560, y: 410, z: 140, lens: 1 };
 const REF: Camera3 = { x: 600, y: 432, z: 260, lens: 1 };
 const GREEN: Camera3 = { x: 236, y: 432, z: 250, lens: 1 };
+/** close on celld's Well: the scroll goes down, the bucket comes back, the keeper looks up at the plate */
+const GCLOSE: Camera3 = { x: 300, y: 470, z: 470, lens: 1 };
+/** close on B's sill clock (its thread snaps; an engraved 0) */
+const ZCAM: Camera3 = { x: 640 + 1.3 * (756 - 640), y: 360 + 1.3 * (452 - 360), z: 900, lens: 1 };
 /** the Well's own clock, set into the wellhead's ring (L4) */
 const WCLOCK = { x: W.x - 36, y: W.y - 24 };
 const HOUSES: HouseId[] = ['A', 'B', 'C'];
 /** a sill clock's spot beside each house's candle (L3) */
-const sillClock = (h: HouseId) => ({ x: TOWN[h].sill.x + (h === 'A' ? 60 : 44), y: TOWN[h].sill.y - 10 });
+const sillClock = (h: HouseId) => ({ x: TOWN[h].sill.x + (h === 'A' ? 64 : 48), y: TOWN[h].sill.y - 14 });
 const sillCandle = (h: HouseId) => ({ x: TOWN[h].sill.x + (h === 'A' ? 40 : 26), y: TOWN[h].sill.y + 1 });
 
 function clockFace(c: C2, env: PaintEnv, x: number, y: number, r: number, ang: number, zero = 0): void {
@@ -54,16 +58,16 @@ function clockFace(c: C2, env: PaintEnv, x: number, y: number, r: number, ang: n
   c.lineWidth = Math.max(0.8, r * 0.14);
   c.beginPath();
   c.moveTo(x, y);
-  c.lineTo(x + Math.sin(ang) * r * 0.65, y - Math.cos(ang) * r * 0.65);
+  c.lineTo(x + Math.sin(ang) * r * 0.55 * (1 - 0.4 * zero), y - Math.cos(ang) * r * 0.55 * (1 - 0.4 * zero));
   c.stroke();
   if (zero > 0.01) {
     textRole(c, 'texture', () => {
       c.globalAlpha *= zero;
       c.fillStyle = mixLab('#7a2a1a', env.mood.fg, 0.2);
-      c.font = `700 ${r * 0.9}px ${FONT.mono}`;
+      c.font = `700 ${r * 0.72}px ${FONT.mono}`;
       c.textAlign = 'center';
       c.textBaseline = 'middle';
-      c.fillText('0', x, y + r * 0.08);
+      c.fillText('0', x, y + r * 0.42);
     });
   }
   c.restore();
@@ -89,13 +93,17 @@ export default defineShot({
     const cams: CamKey[] = [
       { t: 0, cam: WIPE },
       { t: 3.0, cam: TERR },
-      { t: b.drift - 0.2, cam: { ...TERR, x: TERR.x - 6 } },
+      { t: b.cannot - 1.5, cam: { ...TERR, x: TERR.x + 10 } },
+      { t: b.cannot + 0.3, cam: ZCAM },
+      { t: b.zero + 0.9, cam: { ...ZCAM, z: ZCAM.z + 20 } },
       { t: b.celld - 0.6, cam: REF },
       { t: b.D, cam: { ...REF, x: REF.x - 8, z: REF.z + 16 } },
     ];
     const green: CamKey[] = [
       { t: 0, cam: GREEN },
-      { t: b.D, cam: { ...GREEN, x: GREEN.x + 10, z: GREEN.z + 20 } },
+      { t: b.proves - 1.3, cam: { ...GREEN, x: GREEN.x + 8, z: GREEN.z + 16 } },
+      { t: b.proves - 0.1, cam: GCLOSE },
+      { t: b.D, cam: { ...GCLOSE, z: GCLOSE.z + 18 } },
     ];
     return { tl, b, cams, green };
   },
@@ -132,28 +140,36 @@ export default defineShot({
             const k = sillClock(h);
             // each sill clock nudges to agree with the Well's (B's, after its thread snaps, reads an assumed zero)
             const wob = h === 'B' ? lerp(offs.B, 0, agree) * (1 - snap) + snap * -0.4 : lerp(offs[h], 0, agree);
-            clockFace(c, env, k.x, k.y, 8, wob + Math.sin(tq * 0.8) * 0.02, h === 'B' ? zeroK : 0);
+            clockFace(c, env, k.x, k.y, 15, wob + Math.sin(tq * 0.8) * 0.02, h === 'B' ? zeroK : 0);
           }
         },
         L4: (c, env) => {
+          // workerd's lease candle on its wellhead (twenty seconds: its band and renewal notch), for the comparison
+          leaseCandle(c, env, { x: W.x + 52, y: W.y - 50, s: 0.7, nowMs: 3000, band: 1, notch: 1, seed: 40 });
           // the Well's own clock, set into the wellhead
           clockFace(c, env, WCLOCK.x, WCLOCK.y, 11, 0.1);
           // the threads from each sill clock down to the Well's clock
           if (thread > 0.01) {
+            const k4 = toScreen(LAYERS.L4, cam, 0, 0).k;
             for (const h of HOUSES) {
-              const a = l3ToL4(cam, sillClock(h));
+              const sk = sillClock(h);
+              const a = l3ToL4(cam, { x: sk.x + 6, y: sk.y + 9 });
               const col = withAlpha(mixLab(env.mood.core, '#ffffff', 0.2), 0.75);
               c.save();
               c.strokeStyle = col;
-              c.lineWidth = 0.9;
+              c.lineWidth = Math.max(0.35, 1.5 / k4);
               c.beginPath();
               if (h === 'B' && snap > 0) {
                 // snapped in the wind: two loose ends curl and fall
-                const mid = { x: lerp(a.x, WCLOCK.x, 0.5), y: lerp(a.y, WCLOCK.y, 0.5) };
+                // the near end dangles from the sill clock (L3), curling in the wind; the far end lies by the Well
+                const k = sillClock('B');
+                const tip = l3ToL4(cam, { x: k.x + 14 + 4 * Math.sin(tq * 5) * snap, y: k.y + 9 + 30 * snap });
+                const ctl = l3ToL4(cam, { x: k.x - 10, y: k.y + 14 * snap });
+                const pre = l3ToL4(cam, { x: lerp(k.x, k.x - 60, 1 - snap), y: lerp(k.y, k.y + 30, 1 - snap) });
                 c.moveTo(a.x, a.y);
-                c.quadraticCurveTo(lerp(a.x, mid.x, 0.5) + 8 * snap, lerp(a.y, mid.y, 0.5) + 30 * snap, mid.x + 10 * snap, mid.y + 60 * snap);
+                c.quadraticCurveTo(lerp(ctl.x, pre.x, 1 - snap), lerp(ctl.y, pre.y, 1 - snap), tip.x, tip.y);
                 c.moveTo(WCLOCK.x, WCLOCK.y);
-                c.quadraticCurveTo(lerp(WCLOCK.x, mid.x, 0.5) - 6 * snap, lerp(WCLOCK.y, mid.y, 0.5) + 26 * snap, mid.x - 8 * snap, mid.y + 50 * snap);
+                c.quadraticCurveTo(WCLOCK.x + 30, WCLOCK.y + 10, WCLOCK.x + 60, WCLOCK.y + 14 * snap);
               } else {
                 const u = thread;
                 c.moveTo(a.x, a.y);
@@ -178,9 +194,10 @@ export default defineShot({
     }
     if (rise > 0.001) {
       const cam2 = camAt(green, t);
-      const down = seg(t, b.proves - 0.6, b.proves + 0.3);
-      const proven = pulse(t, b.proves + 0.35, 0.15, 0.2, 0.9);
-      const look = seg(t, b.record - 0.6, b.record);
+      const down = seg(t, b.proves - 0.7, b.proves + 0.2);
+      const up = seg(t, b.proves + 0.7, b.proves + 1.9);
+      const proven = pulse(t, b.proves + 0.3, 0.15, 0.3, 0.9);
+      const look = seg(t, b.record - 0.7, b.record - 0.1);
       const ringAt = b.clock + 0.35;
       const ring = pulse(t, ringAt, 0.1, 0.2, 0.8);
       f.c.save();
@@ -198,7 +215,7 @@ export default defineShot({
           lanterns: [{ house: 'A', lit: 0.85, members: 3, tq, door: 0, s: 0.5, colour: 'green' }],
           plate: { house: 'A', epoch: '', from: '', crown: 0.4, glint: [0.3 * look, 0.3 * look, 0.3 * look] },
           tooth: null,
-          well: { bucket: lerp(0.3, 0.95, down) - 0.65 * seg(t, b.proves + 0.6, b.proves + 1.6), load: down < 0.95 ? 'scroll' : 'none', glint: 0.3 + 0.7 * proven },
+          well: { bucket: lerp(0.3, 1, down) - 0.7 * up, load: up > 0 ? 'none' : 'scroll', glint: 0.3 + 0.9 * proven },
           badge: { text: 'celld 0.6.3', legible: true, glint: 0.3 },
           neighbourCords: 0.6,
           lampPostLit: 0.3,
@@ -214,11 +231,15 @@ export default defineShot({
           },
           L4: (c, env) => {
             // celld's keeper at its own Well: watches the scroll go down, then looks up at the plate, then rings
-            const pose = look > 0.5 ? POSES.listen : POSES.stand;
+            const pose = addPose(POSES.listen, { neck: -14 * look + 8 * down * (1 - look), head: -16 * look + 10 * down * (1 - look) });
             const o = { x: 548, y: W.y, facing: 'left' as const, pose, scale: 0.6, ink: PUPPET_NEAR_BLACK, light: MOON_LIGHT, edgeRim: MOON_RIM };
             cast['keeper-a'].draw(c, o, env);
             const hk = { x: W.x + WELL.hookR.x + 8, y: W.y + WELL.hookR.y };
             houseBell(c, env, { x: hk.x, y: hk.y, s: 0.9, swing: 0.5 * ring * Math.sin(tq * 18), ring });
+            // celld's lease candle on the wellhead: ten seconds, half as tall, a renewal mark a third of the way down
+            leaseCandle(c, env, { x: W.x + 52, y: W.y - 50, s: 0.7, nowMs: 1500, variant: 'celld', notch: 1, seed: 41 });
+            // the plate answers the look (the record read after the bucket proof)
+            glowDot(c, W.x, W.y - 212, 70, tone(env, '#e8f0c0', 0.1), 0.35 * pulse(t, b.record - 0.1, 0.2, 0.6, 1.0));
           },
         },
       );

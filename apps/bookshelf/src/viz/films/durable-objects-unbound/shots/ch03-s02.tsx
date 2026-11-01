@@ -150,7 +150,7 @@ export default defineShot({
             const from = l3ToL4(cam, { x: TOWN.A.main.x, y: TOWN.A.main.y });
             const to = { x: TOWN.sender.win.x - 20, y: TOWN.sender.win.y - 6 };
             const e = sm(sv);
-            slip(c, env, { x: lerp(from.x, to.x, e), y: lerp(from.y, to.y, e) - Math.sin(Math.PI * e) * 90, w: 18, tick: clamp01((tq - (b.served - 0.3)) / 0.4), rot: Math.sin(tq * 4) * 0.1, alpha: 1 - seg(sv, 0.9, 1) });
+            slip(c, env, { x: lerp(from.x, to.x, e), y: lerp(from.y, to.y, e) - Math.sin(Math.PI * e) * 90, w: 30, tick: clamp01((tq - (b.served - 0.3)) / 0.4), rot: Math.sin(tq * 4) * 0.1, alpha: 1 - seg(sv, 0.9, 1) });
           }
         },
         afterRim: () => {
@@ -181,12 +181,12 @@ export default defineShot({
 /** an ink-line diagram under the gap label: a time line with the read and the write, and a card slipping in between */
 function gapDiagram(c: C2, core: string, t: number, tq: number, at: number, a: number): void {
   if (a <= 0.01) return;
-  const x0 = 70, x1 = 420, y = 132;
+  const x0 = 70, x1 = 520, y = 150;
   const col = mixLab('#efe3cf', core, 0.2);
   c.save();
   c.globalAlpha = a;
   c.strokeStyle = withAlpha(col, 0.9);
-  c.lineWidth = 2;
+  c.lineWidth = 3;
   c.lineCap = 'round';
   const draw = seg(t, at, at + 0.8);
   c.beginPath();
@@ -197,8 +197,8 @@ function gapDiagram(c: C2, core: string, t: number, tq: number, at: number, a: n
   for (const [x, d] of [[x0 + 40, 0.15], [x1 - 40, 0.6]] as const) {
     if (draw < d) continue;
     c.beginPath();
-    c.moveTo(x, y - 12);
-    c.lineTo(x, y + 12);
+    c.moveTo(x, y - 16);
+    c.lineTo(x, y + 16);
     c.stroke();
   }
   // the gap: bracketed, and another hand's card slips into it
@@ -210,12 +210,12 @@ function gapDiagram(c: C2, core: string, t: number, tq: number, at: number, a: n
     c.quadraticCurveTo((x0 + x1) / 2, y + 30, x1 - 52, y + 18);
     c.stroke();
     const u = sm(clamp01((tq - (at + 0.8)) / 0.7));
-    const cx = (x0 + x1) / 2, cy = lerp(y - 46, y - 2, u);
+    const cx = (x0 + x1) / 2, cy = lerp(y - 60, y - 2, u);
     c.fillStyle = mixLab('#d9b56a', core, 0.15);
-    c.fillRect(cx - 14, cy - 9, 28, 18);
+    c.fillRect(cx - 22, cy - 14, 44, 28);
     c.strokeStyle = withAlpha('#2a1d10', 0.8);
-    c.lineWidth = 1;
-    c.strokeRect(cx - 14, cy - 9, 28, 18);
+    c.lineWidth = 1.2;
+    c.strokeRect(cx - 22, cy - 14, 44, 28);
   }
   c.restore();
 }

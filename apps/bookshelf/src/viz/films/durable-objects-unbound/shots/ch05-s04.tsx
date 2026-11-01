@@ -24,12 +24,12 @@
  * Grade returns toward winterBlue across L0523. Text upper right; bottom 12% clear.
  */
 import { Timeline } from '../../../core';
-import { POSES, PUPPET_NEAR_BLACK, addPose, defineShot } from '../../../film';
+import { POSES, PUPPET_NEAR_BLACK, addPose, defineShot, withAlpha } from '../../../film';
 import type { Camera3 } from '../../../film';
 import { cast, MOON_LIGHT, MOON_RIM } from '../cast';
 import { TOWN, l3ToL4, paintTown } from '../sets/harbourTown';
 import { BRASS_HI, brass, camAt, clamp01, glowDot, label, lerp, pulse, seg, sm, tone, twos, type CamKey } from '../sets/common';
-import { leaseCandle } from '../sets/leaseCandle';
+import { leaseCandle, msToY } from '../sets/leaseCandle';
 import { handReach } from '../sets/demonstratorHand';
 import { handFromRight } from '../sets/ch05-s03-sill';
 import { swapCard, wellPt, WELL } from '../sets/wellAndPlate';
@@ -42,7 +42,11 @@ const KB = { x: 552, y: W.y, scale: 0.6 };
 const TWO: Camera3 = { x: 480, y: 440, z: 300, lens: 1 };
 const WIDE: Camera3 = { x: 520, y: 432, z: 210, lens: 1 };
 const ONA: Camera3 = { x: 276, y: 432, z: 640, lens: 1 };
-const KNEW: Camera3 = { x: 570, y: 444, z: 340, lens: 1 };
+/** B's keeper close: A's dark window at left, the Plate (B · 8 · 7, dark) above, the keeper looking up at them */
+const KNEW: Camera3 = { x: 552, y: 500, z: 420, lens: 1 };
+const KNEW2: Camera3 = { x: 520, y: 478, z: 450, lens: 1 };
+/** close on A's candle for the fencing vignette: its notch and band large, A's window beside it */
+const CANDLEC: Camera3 = { x: 136, y: 392, z: 760, lens: 1 };
 const PLATE: Camera3 = { x: 470, y: 420, z: 430, lens: 1 };
 /** vignette: lease ms per screen second */
 const VMS = 1000 / 0.36;
@@ -99,11 +103,12 @@ export default defineShot({
       { t: b.check + 0.4, cam: ONA },
       { t: b.out + 0.4, cam: ONA },
       { t: b.early - 0.1, cam: { ...ONA, x: ONA.x + 10, z: ONA.z - 30 } },
-      { t: vNotch + 0.6, cam: ONA },
-      { t: vExpiry - 0.3, cam: TWO },
-      { t: b.knew - 0.3, cam: TWO },
-      { t: b.knew + 1.6, cam: KNEW },
-      { t: b.foreshadow - 1.4, cam: KNEW },
+      { t: b.early + 1.3, cam: CANDLEC },
+      { t: vNotch + 1.1, cam: { ...CANDLEC, z: CANDLEC.z + 20 } },
+      { t: vExpiry - 0.15, cam: TWO },
+      { t: b.knew - 0.6, cam: TWO },
+      { t: b.knew + 1.4, cam: KNEW },
+      { t: b.foreshadow - 1.4, cam: KNEW2 },
       { t: b.foreshadow + 0.8, cam: PLATE },
       { t: b.D, cam: { ...PLATE, z: PLATE.z + 14 } },
     ];
@@ -163,7 +168,7 @@ export default defineShot({
     const insert = P1 ? seg(t, b.claimB - 0.35, b.claimB) : P3 ? seg(t, clickAt - 0.35, clickAt) : 0;
     const kbIn = P1 ? seg(t, b.sees - 0.6, b.sees) : 1;
     const slipsK = P1 ? seg(t, b.wakeBad + 0.2, b.wakeBad + 1.6) : 0;
-    const hookGlint = seg(t, b.foreshadow - 0.2, b.foreshadow + 0.6);
+    const hookGlint = seg(t, b.foreshadow - 0.2, b.foreshadow + 0.6) * 1.6;
     const tint = P3 ? { A: '#c8d8e8' } : undefined;
     paintTown(
       f,
@@ -211,6 +216,19 @@ export default defineShot({
           }
           // A's candle: workerd's band and notch; the latch and its pin
           leaseCandle(c, env, { x: CAND.x, y: CAND.y, s: CAND.s, nowMs, band: 1, notch: 1, flame, seed: 3, latch: pinSeated ? { pin: 1, open: 0 } : undefined });
+          if (P3) {
+            // the 12,000 ms renewal notch, ringed in brass across the wax: the shutters close exactly here
+            const yN = msToY({ x: CAND.x, y: CAND.y, s: CAND.s }, 12000);
+            c.save();
+            c.strokeStyle = withAlpha(tone(env, BRASS_HI, 0.15), 0.95);
+            c.lineWidth = 1.6;
+            c.beginPath();
+            c.moveTo(CAND.x - 12 * CAND.s, yN);
+            c.lineTo(CAND.x + 12 * CAND.s, yN);
+            c.stroke();
+            c.restore();
+            glowDot(c, CAND.x, yN, 16, tone(env, BRASS_HI, 0.1), 0.8 * pulse(t, v.vNotch - 0.1, 0.12, 0.4, 0.8));
+          }
           if (!pinSeated) {
             // the latch hangs open (no pin)
             const s = CAND.s;
@@ -250,7 +268,7 @@ export default defineShot({
           // the unused lamp hook on the Plate's frame (foreshadowing the second look)
           if (hookGlint > 0.01) {
             const hk = { x: W.x + WELL.hookR.x + 7, y: W.y + WELL.hookR.y - 2 };
-            glowDot(c, hk.x, hk.y, 22, tone(env, BRASS_HI, 0.1), 0.7 * hookGlint * (0.7 + 0.3 * Math.sin(t * 2.4)));
+            glowDot(c, hk.x, hk.y, 34, tone(env, BRASS_HI, 0.1), 0.7 * hookGlint * (0.7 + 0.3 * Math.sin(t * 2.4)));
           }
           // the demonstrator's hand, from the lower right, at the pin
           if (reachP > 0.01) {

@@ -16,7 +16,7 @@
  * Badge 'celld 0.6.3' stays on the wellhead, unnamed (art). Nothing below y 634.
  */
 import { Timeline } from '../../../core';
-import { POSES, PUPPET_NEAR_BLACK, defineShot, textSwap, withAlpha } from '../../../film';
+import { POSES, PUPPET_NEAR_BLACK, mixLab, defineShot, textSwap, withAlpha } from '../../../film';
 import { cast } from '../cast';
 import type { Camera3 } from '../../../film';
 import { TOWN, l3ToL4, paintTown, pulleyAt } from '../sets/harbourTown';
@@ -28,6 +28,8 @@ import { A_BELL, CELLD_TINT, copyistWindow, ownerNotebook, sillPage, tabGlint } 
 const ID = 'ch07-s03b';
 const WIPE: Camera3 = { x: 836, y: 402, z: 180, lens: 1 };
 const TWO: Camera3 = { x: 662, y: 400, z: 196, lens: 1 };
+/** A's sill (the owner's own notebook), bell, pulley line and the wellhead in one medium */
+const A_MED: Camera3 = { x: 340, y: 448, z: 420, lens: 1 };
 const END: Camera3 = { x: 640, y: 398, z: 250, lens: 1 };
 /** a copy standing on each main sill (L3), right of the window centre */
 const SILL_PAGE = {
@@ -56,7 +58,9 @@ export default defineShot({
     };
     const cams: CamKey[] = [
       { t: 0, cam: WIPE },
-      { t: 2.1, cam: TWO },
+      { t: b.self - 0.1, cam: A_MED },
+      { t: b.wellproof + 1.0, cam: { ...A_MED, x: A_MED.x + 10, z: A_MED.z + 12 } },
+      { t: b.two + 1.4, cam: TWO },
       { t: b.D, cam: END },
     ];
     return { tl, b, cams };
@@ -108,7 +112,7 @@ export default defineShot({
         lamps: { A: 1, B: 0.1 * litB, C: 0.1 * litC, Bup: litB, Cup: litC },
         lampTint: { A: '#efcf8a', Bup: CELLD_TINT, Cup: CELLD_TINT, B: CELLD_TINT, C: CELLD_TINT },
         lanterns: [{ house: 'A', lit: 1 + 0.15 * ring, members: 4, tq, door: 0, colour: 'green' }],
-        plate: { house: 'A', epoch: 7, from: 7, crown: 0.7, dim: 0.35 },
+        plate: { house: 'A', epoch: '', from: '', crown: 0.35, dim: 0.35 },
         tooth: null,
         well: { bucket, load: t > b.alone + 3.3 && t < b.wellproof - 0.3 ? 'scroll' : 'none', glint: 0.3 + proofGlint },
         badge: { text: 'celld 0.6.3', legible: false },
@@ -123,10 +127,21 @@ export default defineShot({
         },
         L3: (c, env) => {
           ownerNotebook(c, env, { ring: ringU });
+          // the empty ring, drawn large enough to read in the medium: the owner's own copy is never a vote
+          if (ringU > 0.01) {
+            const sx = TOWN.A.sill.x - 12, sy = TOWN.A.sill.y - 5;
+            c.save();
+            c.strokeStyle = withAlpha(mixLab(env.mood.core, '#ffffff', 0.2), 0.9 * (1 - seg(t, b.two - 0.4, b.two + 0.4)));
+            c.lineWidth = 2.6;
+            c.beginPath();
+            c.ellipse(sx, sy, 17, 12, 0, -1.2, -1.2 + Math.PI * 2 * ringU);
+            c.stroke();
+            c.restore();
+          }
           tabGlint(c, env, 'B', lockB * litB);
           tabGlint(c, env, 'C', lockC * litC);
-          for (const h of ['A', 'B', 'C'] as const) sillPage(c, env, { ...SILL_PAGE[h], h: 13, alpha: copies[h], glow: h === 'C' ? 0 : gold * 0.6 });
-          houseBell(c, env, { ...A_BELL, s: 0.8, swing, ring });
+          for (const h of ['A', 'B', 'C'] as const) sillPage(c, env, { ...SILL_PAGE[h], h: 20, alpha: copies[h], glow: h === 'C' ? 0 : gold * 0.6 });
+          houseBell(c, env, { ...A_BELL, s: 1.15, swing, ring });
         },
         L4back: (c, env) => {
           cast.sender.draw(c, { x: TOWN.sender.seat.x, y: TOWN.sender.seat.y, facing: 'left', pose: POSES.sit, scale: TOWN.sender.seatScale, ink: PUPPET_NEAR_BLACK, edgeRim: { x: -0.8, y: -0.5, px: 2.5, alpha: 0.85, warm: 0.65 } }, env);
@@ -145,7 +160,7 @@ export default defineShot({
             const e = l3ToL4(cam, TOWN[h].sill);
             const p = cordAt(a.x, a.y, e.x, e.y, 22, u);
             c.fillStyle = paper(env, 0.02);
-            c.fillRect(p.x - 5, p.y - 13, 10, 12);
+            c.fillRect(p.x - 8, p.y - 20, 16, 19);
           };
           ride('B', page2);
           ride('B', page3B);
@@ -153,10 +168,10 @@ export default defineShot({
           // alone: the scroll's slow trip down A's pulley line
           if (down > 0 && down < 1) {
             const p = pulleyAt(cam, 'A', down);
-            scroll(c, env, { x: p.x + 2, y: p.y + 4, s: 0.5, rot: 0.3, tag: 1 });
+            scroll(c, env, { x: p.x + 2, y: p.y + 6, s: 1.0, rot: 0.3, tag: 1 });
           } else if (t > b.alone - 1.5 && down <= 0) {
             const p = pulleyAt(cam, 'A', 0);
-            scroll(c, env, { x: p.x + 2, y: p.y + 4, s: 0.5, tag: 1, alpha: seg(t, b.alone - 1.5, b.alone - 0.9) });
+            scroll(c, env, { x: p.x + 2, y: p.y + 6, s: 1.0, tag: 1, alpha: seg(t, b.alone - 1.5, b.alone - 0.9) });
           }
           // twoPlaces: a thin gold outline joins A's and B's copies (and nothing at the Well)
           if (gold > 0.01) {

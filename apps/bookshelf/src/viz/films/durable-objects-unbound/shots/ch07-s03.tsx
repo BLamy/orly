@@ -34,9 +34,10 @@ const WIDE: Camera3 = { x: 600, y: 396, z: 120, lens: 1 };
 /** into B's upper window (copyist-1 at the press) */
 const ON_B: Camera3 = { x: 806, y: 382, z: 860, lens: 1 };
 /** both copyists' windows, B lower-left, C's dormer upper-right */
-const BOTH: Camera3 = { x: 905, y: 332, z: 740, lens: 1 };
-const MEDIUM: Camera3 = { x: 640, y: 384, z: 190, lens: 1 };
-const END: Camera3 = { x: 672, y: 384, z: 232, lens: 1 };
+const BOTH: Camera3 = { x: 988, y: 318, z: 890, lens: 1 };
+/** A's sill, bell and lantern door with the pulley line and the wellhead in one medium (cut in on the bell) */
+const A_MED: Camera3 = { x: 262, y: 412, z: 520, lens: 1 };
+const END: Camera3 = { x: 318, y: 440, z: 480, lens: 1 };
 
 export default defineShot({
   id: ID,
@@ -64,7 +65,10 @@ export default defineShot({
       { t: 12.8, cam: { ...ON_B, z: ON_B.z + 8 } },
       { t: b.term - 0.5, cam: BOTH },
       { t: b.every + 0.35, cam: { ...BOTH, z: BOTH.z + 6 } },
-      { t: 21.0, cam: MEDIUM },
+      { t: b.bell - 0.36, cam: { ...BOTH, z: BOTH.z + 12 } },
+      // cut on the bell to A's medium
+      { t: b.bell - 0.35, cam: A_MED },
+      { t: b.upload + 0.2, cam: { ...A_MED, x: A_MED.x + 8, z: A_MED.z + 10 } },
       { t: b.D, cam: END },
     ];
     return { tl, b, cams };
@@ -101,7 +105,7 @@ export default defineShot({
         lamps: { A: 1, B: 0.1, C: 0.1, Bup: 1, Cup: 1 },
         lampTint: { A: '#efcf8a', Bup: CELLD_TINT, Cup: CELLD_TINT, B: CELLD_TINT, C: CELLD_TINT },
         lanterns: [{ house: 'A', lit: 1 + 0.2 * ring, members: 4, tq, door: latch, colour: 'green', slips: [{ x: 0.25, y: 0.42, tick }] }],
-        plate: { house: 'A', epoch: 7, from: 7, crown: 0.7, dim: 0.35 },
+        plate: { house: 'A', epoch: '', from: '', crown: 0.35, dim: 0.35 },
         tooth: null,
         well: { bucket, load: down > 0.98 ? 'scroll' : 'none', glint: 0.4 },
         badge: { text: 'celld 0.6.3', legible: badgeClose > 0.5, glint: pulse(t, b.badge, 0.2, 0.4, 0.8) },
@@ -137,7 +141,9 @@ export default defineShot({
           // the press tabs glow when both are locked (they are small at this distance)
           tabGlint(c, env, 'B', lockB * (0.35 + 0.65 * both));
           tabGlint(c, env, 'C', lockC * (0.35 + 0.65 * both));
-          houseBell(c, env, { ...A_BELL, s: 0.8, swing: bellA, ring });
+          houseBell(c, env, { ...A_BELL, s: 1.15, swing: bellA, ring });
+          // #42's slip inside the lantern takes its tick as the latch lifts (large enough to read in the medium)
+          slip(c, env, { x: TOWN.A.main.x + 4, y: TOWN.A.main.y - 4, w: 40, rot: -0.08, tick, alpha: seg(t, b.bell - 0.5, b.bell - 0.2) });
         },
         L4back: (c, env) => {
           cast.sender.draw(c, { x: TOWN.sender.seat.x, y: TOWN.sender.seat.y, facing: 'left', pose: POSES.sit, scale: TOWN.sender.seatScale, ink: PUPPET_NEAR_BLACK, edgeRim: { x: -0.8, y: -0.5, px: 2.5, alpha: 0.85, warm: 0.65 } }, env);
@@ -150,12 +156,12 @@ export default defineShot({
             const e = l3ToL4(cam, TOWN[h].sill);
             const p = cordAt(a.x, a.y, e.x, e.y, 22, u);
             c.fillStyle = paper(env, 0.02);
-            c.fillRect(p.x - 5, p.y - 13, 10, 12);
+            c.fillRect(p.x - 8, p.y - 20, 16, 19);
           }
           // the scroll for that page, waiting on A's sill, then down the pulley line into the Well
           if (scrollOn > 0.01 && down < 1) {
             const p = pulleyAt(cam, 'A', down);
-            scroll(c, env, { x: p.x + 2, y: p.y + 4, s: 0.42, rot: 0.25 * down, alpha: scrollOn, tag: 1 });
+            scroll(c, env, { x: p.x + 2, y: p.y + 6, s: 0.95, rot: 0.25 * down, alpha: scrollOn, tag: 1, glint: pulse(t, b.bell + 0.9, 0.2, 0.6, 0.8) });
           }
           // #42's tick lands at the sender's window
           const phone = cast.sender.anchor({ x: TOWN.sender.seat.x, y: TOWN.sender.seat.y, facing: 'left', pose: POSES.sit, scale: TOWN.sender.seatScale }, 'handF');

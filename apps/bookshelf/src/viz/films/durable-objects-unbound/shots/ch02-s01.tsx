@@ -18,7 +18,7 @@
  * No implementation badge (the 2020 post's idea, carried by its date stamp). Nothing below y 634.
  */
 import { Timeline } from '../../../core';
-import { LAYERS, defineShot, mixLab, nameCard, quoteCard, toScreen, withAlpha } from '../../../film';
+import { defineShot, mixLab, nameCard, quoteCard, withAlpha } from '../../../film';
 import type { Camera3, PaintEnv } from '../../../film';
 import { camAt, clamp01, glowDot, lerp, paper, seg, slip, sm, tone, twos, type C2, type CamKey } from '../sets/common';
 import { STUDY, paintStudy } from '../sets/ch02-s01-study';
@@ -109,6 +109,13 @@ export default defineShot({
       f,
       { cam, cams, era: 2020, lamp: 1, screen: 0.55 + 0.45 * screenLift, think, deskOn: !inGlobe },
       {
+        L4back: (c, env) => {
+          if (inGlobe) return;
+          // the laptop's light lifts and spreads on the wall and desk behind him (never over the figure)
+          const up = seg(t, b.globe - 0.3, swap - 0.2);
+          const scr = STUDY.anchors.screen;
+          glowFill(c, scr.x + 4, scr.y, 40 + 150 * up, mixLab('#e2cfb0', env.mood.core, 0.5), 0.2 * screenLift + 0.22 * up);
+        },
         L4: (c, env) => {
           if (!inGlobe) return;
           sideTable(f, c, env);
@@ -159,8 +166,8 @@ export default defineShot({
         },
         L5: (c, env) => {
           if (!inGlobe) return;
-          // a curtain edge falls at the right of the globe framing (the near occluder there)
-          bakeRes(f, c, env, `${ID}-curtain`, { x: 2160, y: -260, w: 360, h: 1300 }, (cc) => curtain(cc, env));
+          // the study's shelf edge at the left of the globe framing (the near occluder)
+          bakeRes(f, c, env, `${ID}-shelf`, { x: 1300, y: -260, w: 300, h: 1300 }, (cc) => shelfEdge(cc, env));
         },
       },
     );
@@ -172,24 +179,38 @@ export default defineShot({
         f.practical({ x: p.x, y: p.y - 4, kind: 'candle', seed: 9, intensity: 0.42 * oneLit * p.z + 0.12 * Math.min(1, arrive), radius: 30, layer: 'L4' });
       }
     }
-    // ---------------------------------------------------------------- the glow: screen lift, white-out, blot dissolve
+    // ---------------------------------------------------------------- the dissolve: through a dark ink tone, < 0.6 s
+    // (the screen's glow itself is drawn BEHIND the figure in L4back, so he stays the darkest shape in frame)
     const c = f.c;
-    const glowCol = mixLab('#f4e6d2', f.mood.core, 0.4);
+    const inkTone = mixLab(f.mood.fg, '#3a2a20', 0.35);
     if (!inGlobe) {
-      const sp = toScreen(LAYERS.L4, cam, STUDY.anchors.screen.x, STUDY.anchors.screen.y);
-      const up = seg(t, b.globe - 0.3, swap - 0.15);
-      glowFill(c, sp.x, sp.y, 90 + 1100 * up * up, glowCol, Math.min(0.9, 0.25 * screenLift + 0.75 * up));
-    } else {
-      // blots of light clear one by one, revealing the globe (an ink-bleed dissolve, in light)
-      const u = (t - swap) / 1.7;
-      if (u < 1.2) {
+      const close = seg(t, swap - 0.3, swap);
+      if (close > 0.001) {
         c.save();
-        const base = 0.9 * (1 - seg(u, 0.05, 0.55));
-        c.fillStyle = withAlpha(glowCol, base);
+        c.fillStyle = withAlpha(inkTone, close);
+        c.fillRect(0, 0, 1280, 720);
+        c.restore();
+      }
+    } else {
+      // blots of ink clear one by one, revealing the globe
+      const u = (t - swap) / 0.8;
+      if (u < 1.05) {
+        c.save();
+        c.fillStyle = withAlpha(inkTone, 1 - seg(u, 0.0, 0.35));
         c.fillRect(0, 0, 1280, 720);
         for (let i = 0; i < 9; i++) {
-          const a = 0.92 * (1 - seg(u, 0.1 + h01(i, 2) * 0.6, 0.35 + h01(i, 2) * 0.75));
-          glowFill(c, 120 + h01(i, 5) * 1040, 80 + h01(i, 6) * 520, 220 + h01(i, 8) * 160, glowCol, a);
+          const a = 1 - seg(u, 0.1 + h01(i, 2) * 0.45, 0.3 + h01(i, 2) * 0.65);
+          if (a <= 0.01) continue;
+          c.fillStyle = withAlpha(inkTone, a);
+          c.beginPath();
+          const cx = 120 + h01(i, 5) * 1040, cy = 80 + h01(i, 6) * 520, r = 200 + h01(i, 8) * 160;
+          for (let k = 0; k <= 16; k++) {
+            const an = (k / 16) * Math.PI * 2;
+            const rr = r * (1 + 0.16 * Math.sin(an * 5 + i));
+            c.lineTo(cx + Math.cos(an) * rr, cy + Math.sin(an) * rr);
+          }
+          c.closePath();
+          c.fill();
         }
         c.restore();
       }
@@ -382,22 +403,18 @@ function placeLantern(c: C2, env: PaintEnv, x: number, y: number, z: number, lit
   c.restore();
   if (lit > 0.02) glowDot(c, x, y - h * 0.55, 16 * s, core, 0.75 * lit * (0.5 + 0.5 * z));
 }
-function curtain(c: C2, env: PaintEnv): void {
-  const fg = env.fill('fg');
-  c.fillStyle = fg;
-  c.beginPath();
-  c.moveTo(2200, -260);
-  for (let y = -260; y <= 1040; y += 40) c.lineTo(2200 + 22 * Math.sin(y * 0.012) + 8 * Math.sin(y * 0.05), y);
-  c.lineTo(2480, 1040);
-  c.lineTo(2480, -260);
-  c.closePath();
-  c.fill();
-  c.strokeStyle = withAlpha(env.mood.rim, 0.12);
-  c.lineWidth = 3;
-  for (const dx of [60, 140, 220]) {
-    c.beginPath();
-    c.moveTo(2200 + dx, -260);
-    c.bezierCurveTo(2200 + dx + 14, 200, 2200 + dx - 14, 600, 2200 + dx + 8, 1040);
-    c.stroke();
+function shelfEdge(c: C2, env: PaintEnv): void {
+  c.fillStyle = env.fill('fg');
+  c.fillRect(1300, -260, 150, 1300);
+  for (const y of [40, 270, 500]) {
+    c.fillRect(1440, y, 100, 14);
+    let x = 1444;
+    let k = y;
+    while (x < 1530) {
+      const w = 8 + ((k * 7) % 9), h = 40 + ((k * 13) % 34);
+      c.fillRect(x, y - h, w, h);
+      x += w + 2;
+      k += 3;
+    }
   }
 }

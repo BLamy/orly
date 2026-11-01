@@ -21,7 +21,7 @@
 import { Timeline } from '../../../core';
 import { defineShot, mixLab, withAlpha } from '../../../film';
 import type { Camera3 } from '../../../film';
-import { camAt, clamp01, glowDot, lerp, pulse, seg, sm, tone, twos, INK_RED, type CamKey } from '../sets/common';
+import { camAt, clamp01, glowDot, lerp, pulse, seg, sm, tone, twos, type CamKey } from '../sets/common';
 import { ledger, ribbon, ribbonLayout, type RibbonFrame } from '../sets/walRibbon';
 import { roomLantern, lanternPt } from '../sets/roomLantern';
 import { foldDraw, lanternRibs, lanternWall, nearRibs, parchmentSheet, quill } from '../sets/ch06-s01-lanternRoom';
@@ -132,7 +132,7 @@ export default defineShot({
           const g = pulse(t, b.howMany + i * 0.26, 0.15, 0.5 + (5 - i) * 0.26, 1.2) * (1 - seg(t, b.commit + 1.4, b.commit + 2.2));
           if (g <= 0.01) continue;
           const yy = LEDGER.y - (6 + (i + 1) * 3.2) * LEDGER.s;
-          c.fillStyle = withAlpha(tone(env, INK_RED, 0.2), 0.75 * g);
+          c.fillStyle = withAlpha(tone(env, '#e9c46a', 0.15), 0.85 * g);
           c.fillRect(LEDGER.x - 44 * LEDGER.s, yy, 88 * LEDGER.s, 2.6 * LEDGER.s);
         }
         // txn 2 adds a page: a dotted 7th page waits beside the ledger for the next checkpoint

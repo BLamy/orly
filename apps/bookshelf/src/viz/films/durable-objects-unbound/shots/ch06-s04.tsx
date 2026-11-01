@@ -362,7 +362,7 @@ export default defineShot({
     const sw = textSwap(t, b.local, 0.5);
     const la = seg(t, b.look - 0.1, b.look + 0.4) * sw.out * (1 - seg(t, b.tick - 0.4, b.tick + 0.2));
     label(ctx, f.mood, { id: `${ID}-look`, text: 'upload → look again → bell', x: 64, y: 92, alpha: la, italic: true });
-    if (t > b.local - 0.05)
-      quoteCard(ctx, { quote: '…cannot act on a value that a crash can still lose.', speaker: 'celld guarantees, v0.6.3', x: 300, y: 170, width: 440, size: 26, at: b.local, align: 'center', maxChars: 30 }, { t, mood: f.mood });
+    if (t > b.celld - 0.35)
+      quoteCard(ctx, { quote: '…cannot act on a value that a crash can still lose.', speaker: 'celld guarantees, v0.6.3', x: 300, y: 170, width: 440, size: 26, at: b.celld - 0.3, align: 'center', maxChars: 30 }, { t, mood: f.mood });
   },
 });

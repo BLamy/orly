@@ -14,7 +14,7 @@
  */
 import { mixLab, withAlpha } from '../../../film';
 import type { PaintEnv } from '../../../film';
-import { BRASS_HI, brass, clamp01, glowDot, tickMark, tone, INK_RED, type C2 } from './common';
+import { BRASS_HI, brass, clamp01, glowDot, tickMark, tone, type C2 } from './common';
 
 export interface LanternSlip {
   /** horizontal position -1..1 inside */
@@ -145,7 +145,7 @@ export function roomLantern(c: C2, env: PaintEnv, o: RoomLanternOpts): void {
     c.globalAlpha = A * a;
     c.fillStyle = mixLab(tone(env, '#f4e8cc', 0.2), core, 0.25);
     c.fillRect(sx - 7, sy - 3, 14, 6);
-    if ((sl.tick ?? 0) > 0) tickMark(c, sx + 3.5, sy, 5, sl.tick ?? 0, mixLab(INK_RED, '#1d1712', 0.3), 0.2);
+    if ((sl.tick ?? 0) > 0) tickMark(c, sx + 3.5, sy, 5, sl.tick ?? 0, '#1d1712', 0.2);
   }
   c.restore();
   c.globalAlpha = A;

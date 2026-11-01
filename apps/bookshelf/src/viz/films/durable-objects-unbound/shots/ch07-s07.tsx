@@ -15,7 +15,7 @@
  * No text items; bottom 12% clear.
  */
 import { Timeline } from '../../../core';
-import { POSES, PUPPET_NEAR_BLACK, defineShot, mixLab, withAlpha } from '../../../film';
+import { LAYERS, POSES, PUPPET_NEAR_BLACK, defineShot, mixLab, toLayer, toScreen, withAlpha } from '../../../film';
 import type { Camera3 } from '../../../film';
 import { cast } from '../cast';
 import { TOWN, l3ToL4, paintTown } from '../sets/harbourTown';
@@ -61,7 +61,7 @@ export default defineShot({
       { t: 2.2, cam: WIDE },
       { t: b.whole - 1.0, cam: DRIFT },
       { t: b.relight - 0.2, cam: ONC },
-      { t: b.tick + 0.3, cam: LANT },
+      { t: b.tick - 0.25, cam: LANT },
       { t: b.D, cam: { ...LANT, z: LANT.z + 16 } },
     ];
     return { tl, b, cams };
@@ -82,6 +82,7 @@ export default defineShot({
     const ride = seg(t, b.whole + 0.2, b.whole + 1.6);
     const lantern = seg(t, b.relight - 0.1, b.relight + 0.8);
     const tickGlow = pulse(t, b.tick - 0.05, 0.2, 0.5, 1.0);
+    const fwd = seg(t, b.relight + 1.2, b.tick - 0.25);
     // the sand-glass on the wellhead: turns on 'minutes', and again on 'gives up'
     const flip1 = sm((tq - b.minutes) / 0.45);
     const flip2 = sm((tq - b.gives) / 0.45);
@@ -137,14 +138,27 @@ export default defineShot({
           const hand = cast['keeper-c'].anchor(ko, 'handF');
           glowDot(c, hand.x, hand.y + 4, 9, tone(env, '#ffc46e', 0.05), 0.7 * L);
           // slip #42 in the relit lantern, large enough to read its tick on the push
-          const sl = seg(t, b.relight + 0.6, b.relight + 1.4);
+          // slip #42 in the relit lantern (it then comes forward, on the action plane, for the tick)
+          const sl = seg(t, b.relight + 0.6, b.relight + 1.2) * (fwd > 0.02 ? 0 : 1);
           if (sl > 0.01) {
             const wn = TOWN.C.main;
             slip(c, env, { x: wn.x - 10, y: wn.y + 19, w: 22, tick: 1, alpha: sl, rot: -0.08 });
-            glowDot(c, wn.x - 3, wn.y + 17, 9, tone(env, '#ffd890', 0.05), 0.5 * tickGlow);
           }
         },
         L4: (c, env) => {
+          // slip #42 comes forward out of the lantern to the action plane and holds, large: its ink tick intact
+          if (fwd > 0.02) {
+            const wn = TOWN.C.main;
+            const from = l3ToL4(cam, { x: wn.x - 10, y: wn.y + 19 });
+            const k3 = toScreen(LAYERS.L3, cam, 0, 0).k, k4 = toScreen(LAYERS.L4, cam, 0, 0).k;
+            const to = toLayer(LAYERS.L4, LANT, 770, 478);
+            const k4End = toScreen(LAYERS.L4, LANT, 0, 0).k;
+            const u = sm(fwd);
+            const x = lerp(from.x, to.x, u), y = lerp(from.y, to.y, u) - Math.sin(Math.PI * u) * 10;
+            const w = lerp((22 * k3) / k4, 210 / k4End, u);
+            glowDot(c, x, y, w * 0.9, tone(env, '#ffd890', 0.05), 0.35 + 0.35 * tickGlow);
+            slip(c, env, { x, y, w, tick: 1, rot: lerp(-0.08, -0.03, u) + 0.01 * Math.sin(tq * 1.6) });
+          }
           // the sand-glass on the wellhead's ring (it turns, and turns again)
           hourglass(c, env, { x: W.x + 46, y: W.y - 50, s: 1.0, u: sandU, flip: t < b.gives ? flip1 : flip2 > 0 && flip2 < 1 ? flip2 : 0 });
           // the gate at the wellhead opens when the notebooks are whole

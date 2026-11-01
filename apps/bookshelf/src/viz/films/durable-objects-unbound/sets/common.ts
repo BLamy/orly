@@ -295,7 +295,7 @@ export function slip(c: C2, env: PaintEnv, o: SlipOpts): void {
       c.stroke();
     }
   }
-  tickMark(c, o.text ? w * 0.4 : w * 0.34, o.text ? -h * 0.12 : h * 0.02, h * (o.text ? 0.5 : 0.62), o.tick ?? 0, mixLab(INK_RED, '#1d1712', 0.35));
+  tickMark(c, o.text ? w * 0.4 : w * 0.34, o.text ? -h * 0.12 : h * 0.02, h * (o.text ? 0.5 : 0.62), o.tick ?? 0, mixLab('#1d1712', env.mood.fg, 0.1)); // the tick is plain ink: red is reserved (pins, wax, WAL stamps, emberRed)
   if ((o.question ?? 0) > 0.01) {
     c.globalAlpha = a * (o.question ?? 0) * 0.55;
     c.fillStyle = ink;

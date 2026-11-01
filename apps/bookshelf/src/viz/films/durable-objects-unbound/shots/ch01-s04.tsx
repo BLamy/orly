@@ -62,7 +62,7 @@ export default defineShot({
         cams: cams.map((k) => k.cam),
         lamps: { A: 0, B: 0, C: 0.9, Cup: 0.6 },
         lanterns: [{ house: 'C', lit: 0.9, members: 4, tq, door: 0, s: 0.6 }],
-        plate: { house: '', epoch: '', from: '', crown, dim: 0.35 },
+        plate: { house: 'C', epoch: '', from: '', crown, dim: 0.35 }, // continuity: ch01-s03 ends on 'C'
         tooth: { shutter: 0, pin: 1, showPin: false },
         well: { bucket: 0.3, glint: 0.4 },
         lampPostLit: 0.5,

@@ -23,7 +23,8 @@ import type { Camera3, LayerSpec } from '../../../film';
 import { cast } from '../cast';
 import { seaAndShore } from '../sets/harbourTown';
 import { camAt, clamp01, glowDot, label, lerp, pulse, seg, sm, tone, twos, type CamKey } from '../sets/common';
-import { candleFlamePt, leaseCandle } from '../sets/leaseCandle';
+import { candleFlamePt, leaseCandle, msToY } from '../sets/leaseCandle';
+import { BRASS_HI, INK_RED, paper } from '../sets/common';
 import { SILL, aWall, codePage, gust, hourglass, interiorRoom, terraceLamps, terraceStatic } from '../sets/ch05-s03-sill';
 
 const ID = 'ch05-s03';
@@ -32,7 +33,7 @@ const PAGE: Camera3 = { x: 410, y: 292, z: 330, lens: 1 };
 const SILLC: Camera3 = { x: 700, y: 352, z: 230, lens: 1 };
 const CANDLE_S = 1.25;
 /** case 2: story seconds -> screen seconds */
-const K2 = 0.62;
+const K2 = 0.56;
 const STALL = 5.5;
 
 export default defineShot({
@@ -55,7 +56,7 @@ export default defineShot({
       gustEnd: t0 + STALL * K2,
       attemptOut: t0 + 4 * K2,
       retryAt: t0 + 5 * K2,
-      land: t0 + 5 * K2 + 0.4,
+      land: t0 + 5.9 * K2,
     };
     const cams: CamKey[] = [
       { t: 0, cam: C0 },
@@ -132,6 +133,18 @@ export default defineShot({
         aWall(cc, env);
       })(c, r.x, r.y);
       leaseCandle(c, env, cOpts);
+      // the 12,000 ms renewal notch, ringed in brass across the wax so it reads at this distance
+      {
+        const yN = msToY(cOpts, 12000);
+        c.save();
+        c.strokeStyle = withAlpha(tone(env, BRASS_HI, 0.15), 0.95);
+        c.lineWidth = 2.4;
+        c.beginPath();
+        c.moveTo(SILL.candle.x - 18 * CANDLE_S, yN);
+        c.lineTo(SILL.candle.x + 18 * CANDLE_S, yN);
+        c.stroke();
+        c.restore();
+      }
       // the hourglasses on the sill
       const G = SILL.glass;
       if (!case2) {
@@ -175,8 +188,131 @@ export default defineShot({
       f.c.fillRect(0, 0, 1280, 720);
       f.c.restore();
     }
+    // ------------------------------------------------ the rewind as a timeline: a small parchment inset above the sill
+    timelineInset(f.c, t, b.retry, c2);
     // ------------------------------------------------ type
     const lA = seg(t, b.stall - 0.15, b.stall + 0.3) * (1 - seg(t, b.retry - 0.6, b.retry - 0.1));
     label(f.c, f.mood, { id: `${ID}-stall`, text: 'R2 stalls ~5.5 s every 5 minutes', x: 1216, y: 86, align: 'right', alpha: lA });
   },
 });
+
+/**
+ * The retry, read left to right on the lease clock (no numbers): the gust (the stall), the first attempt's 4 s bound
+ * running out INSIDE the gust (an x), the 1 s retry hook, the retry landing just after the gust (a relit flame) —
+ * well before the brass 12,000 ms notch (the same mark as on the candle). A playhead follows the action on the sill.
+ */
+function timelineInset(c: CanvasRenderingContext2D, t: number, retry: number, c2: { t0: number; gustEnd: number; attemptOut: number; retryAt: number; land: number }): void {
+  const open = seg(t, retry + 0.05, retry + 0.45);
+  if (open <= 0.002) return;
+  const X0 = 652, X1 = 1232, Y0 = 108, Y1 = 312;
+  const ax0 = X0 + 40, ax1 = X1 - 40, ay = Y1 - 50;
+  const msX = (ms: number) => ax0 + ((ms - 2000) * (ax1 - ax0)) / 11000;
+  const now = Math.min(3000 + (Math.max(0, t - c2.t0) / K2) * 1000, 3000 + ((c2.land - c2.t0) / K2) * 1000);
+  const upto = (ms: number) => clamp01((now - ms) / 250);
+  c.save();
+  // the card folds open from its top edge
+  c.translate(0, Y0);
+  c.scale(1, open);
+  c.translate(0, -Y0);
+  c.fillStyle = mixLab('#e6d6b4', '#1d2430', 0.08);
+  c.beginPath();
+  c.moveTo(X0, Y0);
+  c.lineTo(X1, Y0 + 2);
+  c.lineTo(X1 - 2, Y1);
+  c.lineTo(X0 + 3, Y1 - 1);
+  c.closePath();
+  c.shadowColor = 'rgba(0,0,0,0.5)';
+  c.shadowBlur = 14;
+  c.fill();
+  c.shadowBlur = 0;
+  const ink = '#2a1d12';
+  const L = (x0: number, y0: number, x1: number, y1: number, w = 2, col = ink) => {
+    c.strokeStyle = col;
+    c.lineWidth = w;
+    c.beginPath();
+    c.moveTo(x0, y0);
+    c.lineTo(x1, y1);
+    c.stroke();
+  };
+  // the clock's axis
+  L(ax0, ay, ax1, ay, 2);
+  for (let ms = 2000; ms <= 13000; ms += 1000) L(msX(ms), ay, msX(ms), ay + 6, 1);
+  // the 12,000 ms notch (brass), with a small candle above it
+  const nx = msX(12000);
+  c.fillStyle = '#b8934a';
+  c.beginPath();
+  c.moveTo(nx - 9, ay + 14);
+  c.lineTo(nx, ay + 2);
+  c.lineTo(nx + 9, ay + 14);
+  c.closePath();
+  c.fill();
+  c.setLineDash([4, 4]);
+  L(nx, ay, nx, Y0 + 26, 1.4, '#8a6a34');
+  c.setLineDash([]);
+  c.fillStyle = mixLab('#e9dcc0', ink, 0.25);
+  c.fillRect(nx - 6, Y0 + 30, 12, 30);
+  c.strokeStyle = ink;
+  c.lineWidth = 1.2;
+  c.strokeRect(nx - 6, Y0 + 30, 12, 30);
+  L(nx - 12, Y0 + 44, nx + 12, Y0 + 44, 2.4, '#b8934a');
+  // the gust: a grey-blue wash with wind strokes, 3,000 → 8,500, drawn as the playhead passes
+  const g0 = msX(3000), g1 = msX(8500);
+  const gx = Math.min(g1, msX(now));
+  if (gx > g0) {
+    c.fillStyle = 'rgba(70,96,120,0.28)';
+    c.fillRect(g0, Y0 + 20, gx - g0, ay - Y0 - 26);
+    c.strokeStyle = 'rgba(40,60,80,0.55)';
+    c.lineWidth = 1.4;
+    for (let x = g0 + 14; x < gx - 10; x += 34) {
+      for (const yy of [Y0 + 44, Y0 + 84]) {
+        c.beginPath();
+        c.moveTo(x, yy);
+        c.quadraticCurveTo(x + 10, yy - 6, x + 22, yy);
+        c.stroke();
+      }
+    }
+  }
+  // attempt 1: the 4 s bound, 3,000 → 7,000, runs out inside the gust (an x)
+  const yA = ay - 34;
+  const a1 = Math.min(msX(7000), msX(now));
+  if (a1 > msX(3000)) {
+    L(msX(3000), yA - 8, msX(3000), yA + 8, 2.4);
+    L(msX(3000), yA, a1, yA, 3);
+  }
+  if (upto(7000) > 0) {
+    const k = upto(7000);
+    c.globalAlpha = k;
+    L(msX(7000) - 9, yA - 9, msX(7000) + 9, yA + 9, 3, INK_RED);
+    L(msX(7000) - 9, yA + 9, msX(7000) + 9, yA - 9, 3, INK_RED);
+    c.globalAlpha = 1;
+  }
+  // the 1 s retry hook, 7,000 → 8,000
+  const h1 = Math.min(msX(8000), msX(now));
+  if (h1 > msX(7000)) {
+    c.setLineDash([3, 4]);
+    L(msX(7000), yA, h1, yA - 26, 2.2);
+    c.setLineDash([]);
+  }
+  // attempt 2: from 8,000, landing just after the gust (8,900): the flame relit
+  const yB = yA - 26;
+  const a2 = Math.min(msX(8900), msX(now));
+  if (a2 > msX(8000)) L(msX(8000), yB, a2, yB, 3);
+  if (upto(8900) > 0) {
+    const k = upto(8900);
+    const fx = msX(8900), fy = yB;
+    c.fillStyle = `rgba(242,200,106,${0.9 * k})`;
+    c.beginPath();
+    c.moveTo(fx, fy + 10);
+    c.quadraticCurveTo(fx - 9, fy - 2, fx, fy - 22);
+    c.quadraticCurveTo(fx + 9, fy - 2, fx, fy + 10);
+    c.fill();
+    c.strokeStyle = ink;
+    c.lineWidth = 1.4;
+    c.stroke();
+  }
+  // the playhead
+  if (now < 3000 + ((c2.land - c2.t0) / K2) * 1000 - 1) L(msX(now), Y0 + 16, msX(now), ay + 8, 1.2, 'rgba(42,29,18,0.6)');
+  c.restore();
+  void paper;
+  void BRASS_HI;
+}

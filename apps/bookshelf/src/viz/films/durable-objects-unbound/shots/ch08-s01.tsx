@@ -23,6 +23,8 @@
 import { Timeline } from '../../../core';
 import { defineShot, mixLab, titleCard, withAlpha } from '../../../film';
 import type { Camera3, PaintEnv } from '../../../film';
+import { cast } from '../cast';
+import { POSES, PUPPET_NEAR_BLACK } from '../../../film';
 import { TOWN, paintTown } from '../sets/harbourTown';
 import { EMBER, brass, camAt, clamp01, glowDot, paper, pulse, seg, sm, tone, twos, type C2, type CamKey } from '../sets/common';
 import { leaseCandle } from '../sets/leaseCandle';
@@ -35,7 +37,8 @@ const ID = 'ch08-s01';
 const BOARD = { x: -140, y: 240, w: 520 };
 const PIN_X = [0, 1, 2, 3].map((i) => BOARD.x - BOARD.w / 2 + (BOARD.w * (i + 0.5)) / 4);
 const VIG_Y = 470;
-const POST_X = BOARD.x - BOARD.w / 2 - 40;
+/** review r1: the post stands at the board's right end, so it never crosses the title at the left */
+const POST_X = BOARD.x + BOARD.w / 2 + 40;
 
 export default defineShot({
   id: ID,
@@ -58,12 +61,23 @@ export default defineShot({
       cuts: T.beat('cuts'),
       replays: T.beat('replays'),
     };
+    // review r1: after the pan ends on the Well, CUT on each idea to a close vignette (a slow drift inside each)
+    const cut = (t0: number) => t0 + 0.001;
     const cams: CamKey[] = [
       { t: 0, cam: { x: -330, y: 380, z: 300, lens: 1 } },
       { t: b.seal + 1.0, cam: { x: 0, y: 384, z: 300, lens: 1 } },
-      { t: b.well + 1.5, cam: { x: 470, y: 410, z: 120, lens: 1 } },
-      { t: b.cuts - 1.0, cam: { x: 560, y: 404, z: 120, lens: 1 } },
-      { t: b.D, cam: { x: 650, y: 396, z: 96, lens: 1 } },
+      { t: b.well + 1.2, cam: { x: 470, y: 410, z: 120, lens: 1 } },
+      { t: b.refusals - 0.7, cam: { x: 470, y: 410, z: 120, lens: 1 } },
+      { t: cut(b.refusals - 0.7), cam: { x: 452, y: 472, z: 420, lens: 1 } },
+      { t: b.reads - 0.6, cam: { x: 450, y: 468, z: 436, lens: 1 } },
+      { t: b.reads + 0.6, cam: { x: 440, y: 452, z: 410, lens: 1 } },
+      { t: b.supervisor - 0.6, cam: { x: 444, y: 450, z: 420, lens: 1 } },
+      { t: cut(b.supervisor - 0.6), cam: { x: 741, y: 426, z: 300, lens: 1 } },
+      { t: b.cuts - 0.6, cam: { x: 735, y: 424, z: 318, lens: 1 } },
+      { t: cut(b.cuts - 0.6), cam: { x: 236, y: 462, z: 420, lens: 1 } },
+      { t: b.replays - 1.6, cam: { x: 240, y: 460, z: 434, lens: 1 } },
+      { t: cut(b.replays - 1.6), cam: { x: 1207, y: 352, z: 450, lens: 1.2 } },
+      { t: b.D, cam: { x: 1205, y: 352, z: 462, lens: 1.2 } },
     ];
     return { tl, b, cams };
   },
@@ -103,12 +117,19 @@ export default defineShot({
               const u = clamp01(pages * 1.6 - i * 0.2);
               if (u <= 0 || u >= 1) continue;
               c.fillStyle = withAlpha(paper(env, 0.1), 0.9 * Math.sin(Math.PI * u));
-              c.fillRect(w.x - 8 + i * 4, w.y - w.h / 2 + 4 + u * (w.h - 14), 7, 4);
+              c.fillRect(w.x - 12 + i * 5, w.y - w.h / 2 + 4 + u * (w.h - 18), 11, 7);
             }
           }
         },
         L3: (c, env) => {
-          // the lamplighter's pole reaching up to B's window
+          // the lamplighter (a supervisor) waits by B's dark, self-fenced house, then raises the pole and relights it
+          const lw = seg(t, b.supervisor - 0.8, b.supervisor - 0.3) * (1 - seg(t, b.supervisor + 3.6, b.supervisor + 4.4));
+          if (lw > 0.01) {
+            c.save();
+            c.globalAlpha = lw;
+            cast['keeper-c'].draw(c, { x: TOWN.B.main.x - 66, y: TOWN.B.base, facing: 'right', pose: POSES.stand, scale: 0.34, ink: PUPPET_NEAR_BLACK, edgeRim: { x: -0.7, y: -0.7, px: 2.5, alpha: 0.85, warm: 0.6 } }, env);
+            c.restore();
+          }
           if (pole > 0.01) {
             const w = TOWN.B.main;
             c.save();
@@ -164,7 +185,7 @@ export default defineShot({
       c.lineTo(POST_X + 18, 82);
       c.closePath();
       c.fill();
-      c.fillRect(POST_X, BOARD.y - 70, 46, 5);
+      c.fillRect(POST_X - 46, BOARD.y - 70, 46, 5);
       c.restore();
       glowDot(c, POST_X, 66, 30, tone(env, '#ffcf8a', 0.1), 0.6);
       pinBoard(c, env, { x: BOARD.x, y: BOARD.y, w: BOARD.w, pins: nm.map((k, i) => ({ alpha: 1, glint: k * (1 - seg(tt, [b.tooth, b.candle, b.look, b.seal][i] + 1.2, [b.tooth, b.candle, b.look, b.seal][i] + 2.2)), swing: 0.05 * Math.sin(tq * 1.3 + i) })) });

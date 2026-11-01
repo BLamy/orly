@@ -123,7 +123,7 @@ export default defineShot({
       f.layer('L5', (c, env) => {
         c.save();
         c.globalAlpha = section;
-        bakeRes(f, c, env, `${ID}-near`, { x: -400, y: 800, w: 1600, h: 900 }, (cc) => nearRocks(cc, env));
+        bakeRes(f, c, env, `${ID}-ropes`, { x: -400, y: 780, w: 1600, h: 940 }, (cc) => nearRocks(cc, env));
         c.restore();
       });
     }
@@ -152,8 +152,19 @@ function cutaway(f: Parameters<typeof bakeRes>[0], c: C2, env: PaintEnv, t: numb
   c.globalAlpha = a;
   void cam;
   // Werner Vogels at his lectern-height desk on the landing
+  c.save();
+  c.globalAlpha = a;
   podium(c, { x: VOG.x - 44, y: VOG.y, mic: false, w: 46, s: 0.62 }, env);
   cast['werner-vogels'].draw(c, { x: VOG.x + 4, y: VOG.y, facing: 'left', pose: POSES.stand, scale: 0.56, ink: PUPPET_NEAR_BLACK, light: { x: -0.8, y: -0.3, floor: 0.15 }, edgeRim: { x: -0.85, y: -0.4, px: 2.5, alpha: 0.85, warm: 0.3 } }, env);
+  c.restore();
+  // the puppet's rim pass ignores globalAlpha: the landing's stone dissolves OVER him instead, revealing him
+  if (a < 0.995) {
+    c.save();
+    c.globalAlpha = 1 - a;
+    c.fillStyle = mixLab(env.fill('set'), ink, 0.75);
+    c.fillRect(ALCOVE.x0 - 19, ALCOVE.y0, ALCOVE.x1 - ALCOVE.x0 + 20, ALCOVE.y1 - ALCOVE.y0 + 1);
+    c.restore();
+  }
   // ledges with the machinery
   c.fillStyle = mixLab(env.fill('set'), ink, 0.5);
   for (const p of [...CIS, WIT, LEDGER]) c.fillRect(p.x - 64, p.y, 128, 10);
@@ -281,26 +292,14 @@ function squareAndSection(f: Parameters<typeof bakeRes>[0], c: C2, env: PaintEnv
   }
   void cam;
 }
-/** L5: rough near-stone fragments along the crane's path (they slide fast past the lens) */
+/** L5: two near ropes hanging down the shaft past the lens (the winch ropes), blurred, sliding fast in the crane */
 function nearRocks(c: C2, env: PaintEnv): void {
-  c.fillStyle = env.fill('fg');
-  const lines = [
-    [{ x: -190, y: 1500 }, { x: 200, y: 900 }],
-    [{ x: 600, y: 1500 }, { x: 990, y: 900 }],
-  ];
-  for (const [a, b] of lines) {
-    for (let i = 0; i < 6; i++) {
-      const u = i / 5;
-      const x = lerp(a.x, b.x, u) + (a.x > 0 ? 40 : -40), y = lerp(a.y, b.y, u);
-      const r = 18 + 22 * h01(i, a.x > 0 ? 7 : 3);
-      c.beginPath();
-      for (let k = 0; k < 9; k++) {
-        const ang = (k / 9) * Math.PI * 2;
-        const rr = r * (0.7 + 0.5 * h01(i * 9 + k, 11));
-        c.lineTo(x + Math.cos(ang) * rr * 0.7, y + Math.sin(ang) * rr);
-      }
-      c.closePath();
-      c.fill();
-    }
+  c.strokeStyle = env.fill('fg');
+  c.lineCap = 'round';
+  for (const [x, w] of [[-120, 7], [585, 5]] as const) {
+    c.lineWidth = w;
+    c.beginPath();
+    for (let y = 800; y <= 1700; y += 30) c.lineTo(x + Math.sin(y * 0.01 + x) * 4, y);
+    c.stroke();
   }
 }

@@ -37,7 +37,7 @@ const ROPE_X = 470;
 const SH = { x: 540, y: 470, s: 1.5, w: 570 };
 const slotX = (i: number) => SH.x + 40 + i * 66;
 const SCROLL_Y = SH.y - 8 * SH.s;
-const REJECT = { x: 1210, y: 600 };
+const REJECT = { x: 1120, y: 560 };
 const GREEN = { x: 260, y: 250 };
 
 export default defineShot({
@@ -179,7 +179,7 @@ function paintCutaway(f: Frame, sc: SC, t: number): void {
   const tq = twos(t);
   f.camera(cam);
   f.backlight({ sunX: 640, sunY: 120, intensity: 0.35 });
-  const greenA = seg(t, b.ltx - 0.2, b.ltx + 0.5) * (1 - seg(t, b.LTX + 1.0, b.LTX + 2.0));
+  const greenA = seg(t, b.ltx - 0.2, b.ltx + 0.5) * (1 - seg(t, b.LTX + 0.3, b.LTX + 1.3));
   f.layer('L2', (c, env) => {
     const r = { x: -500, y: -400, w: 2300, h: 1500 };
     bakeRect(f, c, env, `ch06s03/far/${r.x}`, r, (cc) => {

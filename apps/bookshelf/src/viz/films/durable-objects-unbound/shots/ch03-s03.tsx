@@ -9,11 +9,13 @@
  *   (lands)   A's card goes in first; the first tile stamps 'A'
  *   shutter   the shutter drops over the slot with a dry click
  *   refuse1   B's card strikes the shutter and is spat back, punched
- * LESSON TWO (date2 '25 November 2024'): only if unchanged. The Plate (now showing 'B', illustrative) carries a
- * notched brass edge: its version, an opaque pattern (not a checksum). The jaw on the slot is cut to it.
+ * LESSON TWO (date2 '25 November 2024'): only if unchanged. The Plate still shows A's claim from lesson one (nothing
+ * changes it without a card), now with a notched brass edge: its version, an opaque pattern (not a checksum). The
+ * jaw on the slot is cut to it.
  *   notch     both cards are held up beneath the Plate: their edges carry the SAME sawtooth as the Plate's
- *   click     A's card meets the jaw: the teeth mesh, click; the tile turns to 'A'; the Plate's notch (and the jaw)
- *             is re-cut to a new pattern; label 'only if absent · only if unchanged'
+ *   click     A's card meets the jaw: the teeth mesh, click; A's tile turns over to its new claim; the Plate's notch
+ *             (and the jaw) is re-cut: the old profile peels away in ember, the new one flares brass;
+ *             label 'only if absent · only if unchanged'
  *   thunk     B's card, still carrying the old pattern, butts the new jaw: thunk, spat back punched
  *   term      (the reel's tag 'compare and swap' top-left; nothing of ours there)
  *   store     the camera tilts down past the slot to the Well's mouth: the jaw's rod runs down into the store
@@ -96,7 +98,8 @@ export default defineShot({
     // ---- lesson two
     const recut = seg(t, b.anew - 1.3, b.anew - 0.1);
     const notchNow = t < b.click + 0.4 ? N1 : N2;
-    const house2 = t < b.click + 0.1 ? 'B' : 'A';
+    // A still owns the Plate from lesson one; A's accepted swap turns its own tile to a new claim and re-cuts the version
+    const house2 = 'A';
     const flip0 = lesson2 ? seg(t, b.click + 0.1, b.click + 0.4) : seg(t, landA1 + 0.3, landA1 + 0.6);
     const notchShow = lesson2 ? seg(t, b.date2 - 0.2, b.date2 + 0.6) : 0;
     const flashClick = Math.max(Math.sin(Math.PI * seg(t, b.shutter - 0.12, b.shutter + 0.3)), Math.sin(Math.PI * seg(t, b.click - 0.05, b.click + 0.4)));
@@ -145,6 +148,7 @@ export default defineShot({
           c.restore();
           if (!lesson2) lessonOne(c, env, t, tq, b);
           else lessonTwo(c, env, t, tq, b);
+          if (lesson2) recutHighlight(c, env, t, recut, b);
         },
       },
     );
@@ -169,11 +173,62 @@ interface B {
   anew: number;
   no: number;
 }
+/** the Plate's version edge re-cut: the old profile peels away (ember), the new one flares (brass), a file spark runs */
+function recutHighlight(c: C2, env: PaintEnv, t: number, recut: number, b: B): void {
+  const ox = W.x - WELL.plateW / 2 + 6, oy = W.y + WELL.plate.y + WELL.plateH / 2 + 8;
+  const on = seg(t, b.anew - 1.6, b.anew - 1.3);
+  const oldA = on * (1 - seg(recut, 0.35, 1));
+  c.save();
+  c.lineJoin = 'round';
+  if (oldA > 0.01) {
+    c.save();
+    c.translate(ox, oy + 14 * seg(recut, 0.2, 1));
+    c.strokeStyle = withAlpha(tone(env, EMBER, 0.2), 0.9 * oldA);
+    c.lineWidth = 1.6;
+    c.stroke(notchPath(N1, WELL.plateW - 12, 7));
+    c.restore();
+  }
+  const flare = Math.sin(Math.PI * seg(t, b.anew - 0.4, b.anew + 1.0));
+  if (flare > 0.01) {
+    c.save();
+    c.translate(ox, oy);
+    c.strokeStyle = withAlpha(mixLab(BRASS_HI, '#ffffff', 0.35), 0.95 * flare);
+    c.lineWidth = 1.8;
+    c.stroke(notchPath(N2, WELL.plateW - 12, 7));
+    c.restore();
+  }
+  if (recut > 0.01 && recut < 0.99) glowDot(c, ox + (WELL.plateW - 12) * recut, oy - 3, 16, tone(env, BRASS_HI, 0.05), 0.9);
+  c.restore();
+}
+/** a punched hole that reads: a dark hole with a torn ember rim, in the card's own frame */
+function punchHole(c: C2, env: PaintEnv, x: number, y: number, s: number, rot: number, u: number): void {
+  if (u <= 0.01) return;
+  c.save();
+  c.translate(x, y);
+  c.rotate(rot);
+  c.scale(s, s);
+  c.fillStyle = mixLab(env.fill('ink'), '#000000', 0.5);
+  c.beginPath();
+  c.arc(34 * 0.18, 1, 5.2 * u, 0, Math.PI * 2);
+  c.fill();
+  c.strokeStyle = withAlpha(tone(env, EMBER, 0.2), 0.85 * u);
+  c.lineWidth = 1;
+  c.beginPath();
+  for (let k = 0; k <= 10; k++) {
+    const a = (k / 10) * Math.PI * 2;
+    const r = (5.2 + (k % 2 ? 1.6 : 0.4)) * u;
+    c.lineTo(34 * 0.18 + Math.cos(a) * r, 1 + Math.sin(a) * r);
+  }
+  c.closePath();
+  c.stroke();
+  c.restore();
+}
 /** a hand-held card: the keeper's forearm from its side, the card in the grip */
 function held(c: C2, env: PaintEnv, side: 'left' | 'right', x: number, y: number, a: number, card: Parameters<typeof swapCard>[2]): void {
   if (a <= 0.01) return;
   const arm = { tip: { x: x + (side === 'left' ? -17 : 17), y: y + 9 }, side, sleeve: side === 'left' ? 'gilet' : 'coat', angle: 0.22, s: 0.62, alpha: a } as const;
   swapCard(c, env, { ...card, x, y, alpha: a });
+  punchHole(c, env, x, y, card.s ?? 1, card.rot ?? 0, (card.punched ?? 0) * a);
   keeperArm(c, env, arm);
 }
 /** lesson one: the race to create; the shutter; the refusal */

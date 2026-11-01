@@ -37,6 +37,9 @@ const L45: LayerSpec = { id: 'L4.5', z: 850, haze: 0, blur: 3 };
 const WIDE: Camera3 = { x: 670, y: 374, z: 0, lens: 1 };
 const CLOSE: Camera3 = { x: 905, y: 392, z: 230, lens: 1 };
 const LAST: Camera3 = { x: 915, y: 394, z: 252, lens: 1 };
+/** pushed in on the calendar while the pencil dots the plans (the calendar fills the middle of the frame) */
+const CALC: Camera3 = { x: CAL.x + CAL.w / 2, y: 384, z: 640, lens: 1 };
+const CALC2: Camera3 = { x: CAL.x + CAL.w / 2 + 4, y: 386, z: 664, lens: 1 };
 
 export default defineShot({
   id: ID,
@@ -65,8 +68,11 @@ export default defineShot({
     const cams: CamKey[] = [
       { t: 0, cam: WIDE },
       { t: 2.6, cam: WIDE },
-      { t: 8.6, cam: CLOSE },
-      { t: b.D, cam: LAST },
+      { t: 7.4, cam: CLOSE },
+      { t: b.plans + 1.4, cam: CALC },
+      { t: b.terms + 1.2, cam: CALC2 },
+      { t: b.bert - 0.4, cam: LAST },
+      { t: b.D, cam: { ...LAST, z: LAST.z + 12 } },
     ];
     return { tl, b, cams };
   },
@@ -137,9 +143,12 @@ export default defineShot({
     f.practical({ x: ka.bulb.x, y: ka.bulb.y, kind: 'lamp', seed: 21, intensity: lerp(0.85, 0.5, seg(t, 2.6, 8.6)), radius: 60, layer: 'L4' });
     f.practical({ x: ra.bulb.x, y: ra.bulb.y, kind: 'lamp', seed: 22, intensity: 0.95, radius: 64, layer: 'L4' });
     // ------------------------------------------------ Bert Belder's empty chair, out of focus (L4.5)
-    f.layer(L45, (c, env) => {
-      emptyChair(c, env, { x: 1325, y: 606, s: 1.0, flip: true });
-    });
+    // Bert Belder's chair and the stage lip are near planes: not drawn while the camera is pushed past them
+    if (cam.z < 420)
+      f.layer(L45, (c, env) => {
+        emptyChair(c, env, { x: 1325, y: 606, s: 1.0, flip: true });
+      });
+    if (cam.z < 480)
     f.layer('L5', (c, env) => {
       const r = { x: -400, y: 640, w: 2400, h: 200 };
       f.cached(`dou/${ID}/lip/${env.mood.id}`, r.w, r.h, (cc) => {
@@ -153,7 +162,7 @@ export default defineShot({
     const te = { t, mood: f.mood };
     const dA = seg(t, b.date - 0.15, b.date + 0.2) * (1 - seg(t, b.join - 1.0, b.join - 0.4));
     dateStamp(f.c, f.mood, { id: `${ID}-date`, text: '9 October 2026', x: 64, y: 78, alpha: dA, typed: clamp01((t - (b.date - 0.1)) / 0.8) });
-    quoteCard(f.c, { quote: 'the entire Deno team is joining Cloudflare', speaker: 'Ryan Dahl', source: '2026', x: 92, y: 140, width: 520, maxChars: 30, size: 28, align: 'left', at: b.join - 0.15, dur: b.deploy - b.join + 0.4, fade: 0.4, stagger: 0.25 }, te);
+    quoteCard(f.c, { quote: 'the entire Deno team is joining Cloudflare', speaker: 'Ryan Dahl', source: '2026', x: 92, y: 140, width: 520, maxChars: 30, size: 28, align: 'left', at: b.join - 0.15, dur: b.deploy - b.join + 0.1, fade: 0.4, stagger: 0.25 }, te);
     nameCard(f.c, { name: 'Bert Belder', role: '', at: b.bert - 0.12, dur: Math.max(3.4, b.D - b.bert - 0.6), fade: 0.4, align: 'right', x: 1222, y: 92 }, te);
     const mA = seg(t, b.merge - 0.2, b.merge + 0.25) * (1 - seg(t, b.D - 0.9, b.D - 0.3) * 0.85);
     label(f.c, f.mood, { id: `${ID}-merge`, text: "Varda: celld's code and ideas into workerd", x: 64, y: 92, alpha: mA });

@@ -27,7 +27,8 @@ import { book } from '../sets/walRibbon';
 const ID = 'ch01-s02';
 const WIDE: Camera3 = { x: 640, y: 372, z: -30, lens: 1 };
 const FOLLOW: Camera3 = { x: 732, y: 344, z: 40, lens: 1 };
-const ON_C: Camera3 = { x: 1190, y: 380, z: 470, lens: 1.14 };
+/** review r1: close enough on C's window that #42's slip and its tick read */
+const ON_C: Camera3 = { x: 1207, y: 375, z: 560, lens: 1.5 };
 /** keeper C stands under C's pulley block, hauling the line (L3, small: the terrace is far) */
 const KC = { x: 1022, y: TOWN.C.base, s: 0.3 };
 const haul = (k: number): Pose =>
@@ -100,7 +101,7 @@ export default defineShot({
           // #42's slip pinned beside the lantern in C's window, its tick intact
           if (relit > 0.01) {
             const w = TOWN.C.main;
-            slip(c, env, { x: w.x + 11, y: w.y - 2, w: 17, rot: -0.12, tick: 1, alpha: relit * seg(t, b.relit, b.relit + 0.8) });
+            slip(c, env, { x: w.x + 10, y: w.y + 2, w: 22, rot: -0.12, tick: 1, alpha: relit * seg(t, b.relit, b.relit + 0.8) });
           }
         },
         L3: (c, env) => {

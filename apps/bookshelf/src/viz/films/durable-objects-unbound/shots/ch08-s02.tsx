@@ -79,7 +79,8 @@ export default defineShot({
         mood: { from: 'winterBlue', to: 'labGreen', u: green },
         lamps: { A: 0.9, B: green > 0.5 ? bLit : 0.9, C: 0.9, Cup: 0.6 },
         lanterns: [{ house: 'C', lit: 0.9, members: 4, tq, door: 0, s: 0.55 }],
-        plate: { house: 'C', epoch: 9, from: 9, crown: 1, dim: 0.25 },
+        variant: green > 0.5 ? 'celld' : 'night',
+        plate: green > 0.5 ? { house: '', epoch: '', from: '', crown: 0.6, dim: 0.2 } : { house: 'C', epoch: 9, from: 9, crown: 1, dim: 0.25 },
         tooth: { shutter: 0, pin: 1, showPin: false },
         well: { bucket: 0.3, glint: 0.4 },
         badge: null,
@@ -144,7 +145,7 @@ export default defineShot({
           drawBadge(c, env, { x: 0, y: 0, text: turn < 0.5 ? 'workerd · 28 Oct' : 'workerd · 31 Oct', s: 0.85, legible: true, id: `${ID}-badge`, alpha: seg(t, b.d28 - 0.3, b.d28 + 0.3) * (1 - green) }); // never beside celld's badge
           c.restore();
           // the 'experimental' pennant on the frame's finial
-          const pen = seg(t, b.d28 - 0.2, b.d28 + 0.4);
+          const pen = seg(t, b.d28 - 0.2, b.d28 + 0.4) * (1 - green);
           if (pen > 0.01) {
             const top = { x: W.x, y: W.y + WELL.crown.y - 30 };
             c.save();
@@ -173,12 +174,15 @@ export default defineShot({
           c.restore();
           if (bellIn > 0.01) {
             const ring = pulse(t, b.once, 0.1, 0.4, 0.8);
-            houseBell(c, env, { x: BRACKET.x + 16, y: BRACKET.y + 4 - (1 - bellIn) * 20, s: 0.9, swing: sw, ring, alpha: bellIn });
+            houseBell(c, env, { x: BRACKET.x + 16, y: BRACKET.y + 4 - (1 - bellIn) * 20, s: 0.9, swing: sw, ring, alpha: bellIn * (1 - green) });
             // the ghost of the same ring, faint, beside it
             const g = pulse(t, b.once + 0.75, 0.1, 0.5, 1.2);
             if (g > 0.01) houseBell(c, env, { x: BRACKET.x + 44, y: BRACKET.y + 4, s: 0.9, swing: ghost, ring: g, alpha: 0.32 * g });
           }
+          c.save();
+          c.globalAlpha = 1 - green;
           clipboardPost(c, env, t);
+          c.restore();
           // the roped-off records round the wellhead base, and the groundskeeper's rake going round them
           const rope = seg(t, b.lifecycle - 2.2, b.lifecycle - 1.4) * (1 - seg(t, b.sandbox - 0.6, b.sandbox + 0.4));
           if (rope > 0.01) {

@@ -38,6 +38,8 @@ const PLATE: Camera3 = { x: 432, y: 448, z: 470, lens: 1 };
 const MED: Camera3 = { x: 470, y: 452, z: 230, lens: 1 };
 /** drifted toward A's sill while its candle runs out */
 const MEDA: Camera3 = { x: 412, y: 440, z: 290, lens: 1 };
+/** close on the Tooth for 'at most one claimant wins' (the slot centred, well above the caption band) */
+const TOOTHC: Camera3 = { x: 472, y: 528, z: 560, lens: 1 };
 const KB = { x: 552, y: W.y, scale: 0.6 };
 const SLOT = wellPt({ x: W.x, y: W.y }, 'slot');
 /** the fresh small plate's wellhead-equivalent anchor (plate() hangs the Plate above it) */
@@ -76,6 +78,9 @@ export default defineShot({
       { t: b.runout - 1.2, cam: MEDA },
       { t: b.runout + 0.9, cam: MEDA },
       { t: b.writes - 0.1, cam: MED },
+      { t: b.one - 0.9, cam: TOOTHC },
+      { t: b.one + 1.7, cam: { ...TOOTHC, z: TOOTHC.z + 20 } },
+      { t: b.route - 0.1, cam: MED },
       { t: b.D, cam: { ...MED, x: MED.x + 8, z: MED.z + 26 } },
     ];
     return { tl, b, cams };
@@ -132,14 +137,14 @@ export default defineShot({
             const shelfY = W.y - 22;
             c.save();
             c.globalAlpha *= lg;
-            c.strokeStyle = withAlpha(tone(env, BRASS_HI, 0.15), 0.85);
-            c.lineWidth = 1.2;
+            c.strokeStyle = withAlpha(tone(env, BRASS_HI, 0.15), 0.95);
+            c.lineWidth = 2;
             c.beginPath();
             c.moveTo(top.x, top.y);
             c.lineTo(top.x, shelfY - 10);
             c.stroke();
-            c.strokeStyle = withAlpha(tone(env, '#d8e4ee', 0.2), 0.7);
-            c.lineWidth = 1;
+            c.strokeStyle = withAlpha(tone(env, '#d8e4ee', 0.2), 0.95);
+            c.lineWidth = 1.6;
             c.strokeRect(W.x - 46, shelfY - 8, 92, 18);
             for (let i = 0; i < 4; i++) {
               c.beginPath();
@@ -165,12 +170,14 @@ export default defineShot({
             c.restore();
           }
           // a second claimant's card (a ghost, from House C) is spat back, punched ('at most one wins')
-          const g1 = seg(t, b.one - 0.6, b.one - 0.1);
-          const g2 = seg(t, b.one + 0.2, b.one + 1.1);
-          if (!rewind && g1 > 0 && g2 < 1) {
-            const x = lerp(SLOT.x + 120, SLOT.x + 10, g1) + g2 * 90;
-            const y = lerp(SLOT.y - 70, SLOT.y, g1) - g2 * 60;
-            swapCard(c, env, { x, y, s: 0.9, house: 'C', notch: 12, rot: -0.2 * g2, punched: seg(t, b.one + 0.15, b.one + 0.3), alpha: 0.75 * (1 - g2 * 0.6) });
+          const g1 = seg(t, b.one - 0.7, b.one - 0.05);
+          const g2 = seg(t, b.one + 0.35, b.one + 1.3);
+          if (!rewind && g1 > 0) {
+            // C's card arrives at the slot after B's has won: the pawl refuses it, punches it, and spits it back out
+            const x = lerp(SLOT.x + 96, SLOT.x + 12, g1) + g2 * 54;
+            const y = lerp(SLOT.y - 58, SLOT.y - 2, g1) - g2 * 30;
+            swapCard(c, env, { x, y, s: 1.05, house: 'C', notch: 12, rot: -0.25 * g2, punched: seg(t, b.one + 0.05, b.one + 0.25), alpha: 0.95 * (1 - seg(t, b.route - 1.2, b.route - 0.3)) });
+            glowDot(c, SLOT.x + 10, SLOT.y, 24, tone(env, '#f0b090', 0.15), 0.6 * pulse(t, b.one + 0.1, 0.06, 0.12, 0.5));
           }
           // the request goes to the owner: a dotted line from B's door along the pulley lines to A's door
           const rt = rewind ? seg(t, b.route + 0.05, b.route + 1.8) * (1 - seg(t, b.fresh - 0.3, b.fresh + 0.4) * 0.7) : 0;
