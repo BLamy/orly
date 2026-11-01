@@ -400,7 +400,11 @@
      "id": "L0517",
      "text": "Pull the pin, so A never checks its own candle.",
      "pauseAfter": 0.7,
-     "direction": "the demonstrator's line, firm"
+     "direction": "the demonstrator's line, firm",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
     },
     {
      "id": "L0518",
@@ -606,7 +610,14 @@
      "id": "L0525",
      "text": "So the clock is not the last line of defence; the second look is.",
      "pauseAfter": 0.6,
-     "direction": "short, firm"
+     "direction": "short, firm",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     },
+     "insertGaps": {
+      "defence": 0.32
+     }
     },
     {
      "id": "L0526",
@@ -671,8 +682,8 @@
    ],
    "onScreenText": [
     {
-     "kind": "quote",
-     "text": "The check reads the record instead of a clock — celld guarantees, v0.6.3",
+     "kind": "label",
+     "text": "celld: reads the record, not a clock",
      "beat": "celld"
     }
    ],

@@ -43,23 +43,23 @@
   "creditsSources": [
    {
     "from": "ch02-s01",
-    "text": "That object exists in only one location in the whole world at a time. — Kenton Varda, 2020"
+    "text": "Source: Kenton Varda, Cloudflare blog, 28 September 2020"
    },
    {
     "from": "ch02-s05",
-    "text": "Once at least three of these followers respond that they have received the change, SRS informs the application that the write is confirmed. — Kenton Varda, 2024"
+    "text": "Source: Kenton Varda, Cloudflare blog, 26 September 2024"
    },
    {
     "from": "ch03-s04",
-    "text": "This component acts as a witness to writes, notified every time an object changes. — Werner Vogels, 2021"
+    "text": "Source: Werner Vogels, All Things Distributed, 20 April 2021"
    },
    {
     "from": "ch04-s01",
-    "text": "With celld, I wanted the opposite: one binary, written in Rust, with object storage as its only external service dependency. — Ryan Dahl, 2026"
+    "text": "Source: Ryan Dahl, Cloudflare blog, 9 October 2026"
    },
    {
     "from": "ch04-s04",
-    "text": "This is the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794, 2026"
+    "text": "Source: Ryan Dahl, workerd commit aa494794, 28 October 2026"
    }
   ],
   "sourcesCard": "SOURCES CARD (end): Cloudflare blog posts by Kenton Varda (2020, 2021, 2022, 2024) and by Ryan Dahl and Kenton Varda (2026); Deno blog (Ryan Dahl, 2026); AWS announcements (Dec 2020, Aug 2024, Nov 2024) and S3 User Guide; Werner Vogels, 'Diving Deep on S3 Consistency' (2021); SQLite file format; workerd at aa494794 and ad78a8fe; celld 0.6.3 at 8702f6d. celld's replicator descends from rustyriver (Mike Nomitch), Litestream (Ben Johnson) and the LTX format. Harbour, room, message, houses and epoch numbers are illustrative. Upstream tests were read, not run.",

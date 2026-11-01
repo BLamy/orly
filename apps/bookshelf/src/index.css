@@ -1154,26 +1154,6 @@ body {
   background: var(--background);
 }
 
-.bp-blog-viz-placeholder {
-  width: 100%;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--background);
-  color: var(--muted-foreground);
-  font-size: 13px;
-}
-
-.bp-blog-viz-placeholder-stage {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 9;
-}
-
-.bp-blog-viz-placeholder-controls {
-  height: 40px;
-}
-
 /* ---- mobile portrait: the bottom sheet (Chapters / Blog / Score) is player/PlayerSheet.tsx, @brett_lamy/ui's
        FloatingSheet, styled in player/player-sheet.css ---- */
 

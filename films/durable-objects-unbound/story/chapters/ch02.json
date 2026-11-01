@@ -26,7 +26,11 @@
      "id": "L0203",
      "text": "And his post is plain about where that object lives.",
      "pauseAfter": 0.9,
-     "direction": "a turn toward the quote on screen; leave room for the eye to read it"
+     "direction": "a turn toward the quote on screen; leave room for the eye to read it",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
     },
     {
      "id": "L0204",
@@ -131,7 +135,7 @@
     },
     {
      "kind": "quote",
-     "text": "That object exists in only one location in the whole world at a time. — Kenton Varda, 2020",
+     "text": "…only one location in the whole world at a time. — Kenton Varda, 2020",
      "beat": "plain"
     }
    ],
@@ -283,7 +287,14 @@
     {
      "id": "L0214",
      "text": "So the tick in the harbour was a held letter, released.",
-     "direction": "a quiet click of understanding; 'released' landing soft"
+     "direction": "a quiet click of understanding; 'released' landing soft",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     },
+     "insertGaps": {
+      "letter": 0.25
+     }
     }
    ],
    "leadIn": 0.8,
@@ -404,7 +415,11 @@
      "id": "L0215",
      "text": "September 2022. Cloudflare opens the source of its runtime, workerd.",
      "pauseAfter": 0.6,
-     "direction": "a new era, plain; 'workerd' said clearly as a name"
+     "direction": "a new era, plain; 'workerd' said clearly as a name",
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     }
     },
     {
      "id": "L0216",
@@ -670,7 +685,7 @@
    "onScreenText": [
     {
      "kind": "quote",
-     "text": "Once at least three of these followers respond that they have received the change, SRS informs the application that the write is confirmed. — Kenton Varda, 2024",
+     "text": "Once at least three of these followers respond… the write is confirmed. — Kenton Varda, 2024",
      "beat": "five"
     }
    ],

@@ -1,0 +1,99 @@
+{
+  "voiceId": "JBFqnCBsd6RMkjVDRZzb",
+  "name": "George (ElevenLabs premade) — warm, measured, middle-aged British storyteller; unused by any other film",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.9
+  },
+  "seed": 1398879544,
+  "format": "mp3_44100_192",
+  "wpm": 154.2,
+  "lockedAt": "2026-11-01T04:15:47.726Z",
+  "notes": "Premade ElevenLabs library voice (George, documented in docs/film/research/elevenlabs-narration.md as a warm, middle-aged British storyteller), used by id; nothing created, cloned or added to the account; not chosen for, or described as, resembling any real person; voiceId unused by every other films/*/voice/voice.json. Cast 2026-11-01 by claude-opus-5-5 (high) from ONE audition: the film opening L0101-L0108 (570 chars, 108 words) on eleven_multilingual_v2 at speed 0.9: 154.2 wpm over a 42.03 s speech span, -23.4 LUFS integrated, TP -4.3 dBTP, LRA 2.9 LU, 251 credits, alignment exact. Pace is inside the 110-155 wpm window and predicts ~1486 s (3268 words + ~214.5 s scripted air) against the 1680 s ceiling, so no second audition was run. Choice rests on the documented archetype and these objective metrics; human listening quality is UNASSESSED.",
+  "listening": [
+    {
+      "term": "celld",
+      "line": "L0324",
+      "expect": "CELL-dee (spoken respelled cell-dee)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "no published pronunciation; -d server-suffix convention"
+    },
+    {
+      "term": "workerd",
+      "line": "L0215",
+      "expect": "WORKER-dee (spoken respelled worker dee)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "Cloudflare 2022 post: Unix -d suffix"
+    },
+    {
+      "term": "Deno",
+      "line": "L0401",
+      "expect": "DEE-no (spoken respelled Dee-no)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "not DEN-oh"
+    },
+    {
+      "term": "SQLite",
+      "line": "L0217",
+      "expect": "ESS-cue-ell-ite (spoken respelled ess cue ell lite)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "lexicon corrected from ess cue lite at narration"
+    },
+    {
+      "term": "S3",
+      "line": "L0301",
+      "expect": "ESS three (spoken respelled ess three)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": null
+    },
+    {
+      "term": "epoch",
+      "line": "L0501",
+      "expect": "EE-pok or EP-ok, consistent across the film (no respelling)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "everyday word: no lexicon key; check consistency across L0501-L0727"
+    },
+    {
+      "term": "Vogels",
+      "line": "L0320",
+      "expect": "VOH-gels (spoken respelled Vohgels)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": null
+    },
+    {
+      "term": "Litestream",
+      "line": "L0406",
+      "expect": "LIGHT-stream (spoken respelled Light-stream)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": null
+    }
+  ]
+}

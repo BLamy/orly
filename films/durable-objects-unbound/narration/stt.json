@@ -1,0 +1,3262 @@
+{
+ "version": 1,
+ "lines": {
+  "L0201": {
+   "lineId": "L0201",
+   "model": "scribe_v1",
+   "transcript": "On the 28th of September, 2020, Kenton Varda of Cloudflare introduced durable objects in a closed beta",
+   "expectedTerms": [
+    {
+     "term": "Varda",
+     "accept": [
+      "Varda"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 1,
+   "sig": "73e5e895ef28",
+   "lineSig": "84f5e2b697f9",
+   "clip": "narration/clips/L0201.wav",
+   "wer": 0.111,
+   "requestId": null,
+   "at": "2026-11-01T04:18:03.388Z"
+  },
+  "L0215": {
+   "lineId": "L0215",
+   "model": "scribe_v1",
+   "transcript": "September 2022, Cloudflare opens the source of its runtime, Workerd",
+   "expectedTerms": [
+    {
+     "term": "workerd",
+     "accept": [
+      "workerd",
+      "worker D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "f936ce9599f8",
+   "lineSig": "899c46ab62b7",
+   "clip": "narration/clips/L0215.wav",
+   "wer": 0.182,
+   "requestId": null,
+   "at": "2026-11-01T04:34:39.962Z"
+  },
+  "L0216": {
+   "lineId": "L0216",
+   "model": "scribe_v1",
+   "transcript": "Now the runtime could leave Cloudflare and a room could come too, but only as a single instance on one machine. In 2026, Ryan Dahl would call it exactly that: limited to a single instance.",
+   "expectedTerms": [
+    {
+     "term": "Dahl",
+     "accept": [
+      "Dahl"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 1,
+   "sig": "0ce5787eba5f",
+   "lineSig": "40d98627cc7b",
+   "clip": "narration/clips/L0216.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:18:05.205Z"
+  },
+  "L0217": {
+   "lineId": "L0217",
+   "model": "scribe_v1",
+   "transcript": "September 2024. SQLite moves inside the object into the very same thread as its code",
+   "expectedTerms": [
+    {
+     "term": "SQLite",
+     "accept": [
+      "SQLite",
+      "S Q L lite"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "a03252830cce",
+   "lineSig": "44b33a7b66d0",
+   "clip": "narration/clips/L0217.wav",
+   "wer": 0.222,
+   "requestId": null,
+   "at": "2026-11-01T04:22:34.697Z"
+  },
+  "L0301": {
+   "lineId": "L0301",
+   "model": "scribe_v1",
+   "transcript": "Back to the square. In our harbor, the well stands for a bucket in an object store like Amazon's S3",
+   "expectedTerms": [
+    {
+     "term": "S3",
+     "accept": [
+      "S3",
+      "S three"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "c46aced50a5d",
+   "lineSig": "c70a0115492f",
+   "clip": "narration/clips/L0301.wav",
+   "wer": 0.143,
+   "requestId": null,
+   "at": "2026-11-01T04:22:35.472Z"
+  },
+  "L0302": {
+   "lineId": "L0302",
+   "model": "scribe_v1",
+   "transcript": "There was a time when overwriting a file in S3 and reading it straight back could hand you the old copy",
+   "expectedTerms": [
+    {
+     "term": "S3",
+     "accept": [
+      "S3",
+      "S three"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "0b3d3d35b043",
+   "lineSig": "a61bcd4c295e",
+   "clip": "narration/clips/L0302.wav",
+   "wer": 0.091,
+   "requestId": null,
+   "at": "2026-11-01T04:28:14.554Z"
+  },
+  "L0313": {
+   "lineId": "L0313",
+   "model": "scribe_v1",
+   "transcript": "The 20th of August, 2024. S3 learns its first refusal. Write this only if nothing is there",
+   "expectedTerms": [
+    {
+     "term": "S3",
+     "accept": [
+      "S3",
+      "S three"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "d7a8f9082364",
+   "lineSig": "0787a8050108",
+   "clip": "narration/clips/L0313.wav",
+   "wer": 0.167,
+   "requestId": null,
+   "at": "2026-11-01T04:22:36.794Z"
+  },
+  "L0320": {
+   "lineId": "L0320",
+   "model": "scribe_v1",
+   "transcript": "In April 2021, Werner Vogels, Amazon's chief technology officer, described what they had built inside S3",
+   "expectedTerms": [
+    {
+     "term": "S3",
+     "accept": [
+      "S3",
+      "S three"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Vogels",
+     "accept": [
+      "Vogels",
+      "Vohgels"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "4ddb81f3897e",
+   "lineSig": "719082afaedf",
+   "clip": "narration/clips/L0320.wav",
+   "wer": 0.176,
+   "requestId": null,
+   "at": "2026-11-01T04:22:37.411Z"
+  },
+  "L0327": {
+   "lineId": "L0327",
+   "model": "scribe_v1",
+   "transcript": "So before it serves, every Cell D node makes four test writes: create, refuse a second create, update, refuse a stale update. Two must fail",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "69c47df7a09c",
+   "lineSig": "e19230d7d52c",
+   "clip": "narration/clips/L0327.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:38.232Z"
+  },
+  "L0401": {
+   "lineId": "L0401",
+   "model": "scribe_v1",
+   "transcript": "August 2026. A second desk, a second lamp. The Deno team releases Cell D",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Deno",
+     "accept": [
+      "Deno",
+      "Dee-no"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "346ba2b72849",
+   "lineSig": "90cb4e9ebcbb",
+   "clip": "narration/clips/L0401.wav",
+   "wer": 0.133,
+   "requestId": null,
+   "at": "2026-11-01T04:22:38.763Z"
+  },
+  "L0402": {
+   "lineId": "L0402",
+   "model": "scribe_v1",
+   "transcript": "Ryan Dahl of Deno had started it, and he later told us why",
+   "expectedTerms": [
+    {
+     "term": "Deno",
+     "accept": [
+      "Deno",
+      "Dee-no"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Dahl",
+     "accept": [
+      "Dahl"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 2,
+   "sig": "a96079888d53",
+   "lineSig": "9ec1e8c6ea68",
+   "clip": "narration/clips/L0402.wav",
+   "wer": 0.143,
+   "requestId": null,
+   "at": "2026-11-01T04:18:11.131Z"
+  },
+  "L0404": {
+   "lineId": "L0404",
+   "model": "scribe_v1",
+   "transcript": "Cell D runs a worker's application on machines you own. Durable objects, self-hosted and distributed with long-term state in a bucket",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "f8d1d800b9c2",
+   "lineSig": "58dae4463a5d",
+   "clip": "narration/clips/L0404.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:39.502Z"
+  },
+  "L0405": {
+   "lineId": "L0405",
+   "model": "scribe_v1",
+   "transcript": "Its README says it needs no consensus service. By now we know where the consensus went: inside the well",
+   "expectedTerms": [
+    {
+     "term": "README",
+     "accept": [
+      "README",
+      "read-me"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "e60c1c3a991e",
+   "lineSig": "410656b3ab59",
+   "clip": "narration/clips/L0405.wav",
+   "wer": 0.1,
+   "requestId": null,
+   "at": "2026-11-01T04:18:12.521Z"
+  },
+  "L0406": {
+   "lineId": "L0406",
+   "model": "scribe_v1",
+   "transcript": "Its log replicator descends from a Rust re-implementation of Lightstream",
+   "expectedTerms": [
+    {
+     "term": "Litestream",
+     "accept": [
+      "Litestream",
+      "Lightstream"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "e69ad30a19c2",
+   "lineSig": "8b64f41af811",
+   "clip": "narration/clips/L0406.wav",
+   "wer": 0.2,
+   "requestId": null,
+   "at": "2026-11-01T04:22:40.006Z"
+  },
+  "L0407": {
+   "lineId": "L0407",
+   "model": "scribe_v1",
+   "transcript": "In October, the two would write one post together. In it, Kenton Varda of Cloudflare named the gap",
+   "expectedTerms": [
+    {
+     "term": "Varda",
+     "accept": [
+      "Varda"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 1,
+   "sig": "1391a137eb5c",
+   "lineSig": "1271368ecb7b",
+   "clip": "narration/clips/L0407.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:18:13.958Z"
+  },
+  "L0409": {
+   "lineId": "L0409",
+   "model": "scribe_v1",
+   "transcript": "And he wrote that when the Deno team released Cell D in August, we were delighted",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Deno",
+     "accept": [
+      "Deno",
+      "Dee-no"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "cd6490d2f198",
+   "lineSig": "5af1a789dff2",
+   "clip": "narration/clips/L0409.wav",
+   "wer": 0.118,
+   "requestId": null,
+   "at": "2026-11-01T04:22:40.588Z"
+  },
+  "L0411": {
+   "lineId": "L0411",
+   "model": "scribe_v1",
+   "transcript": "On the 9th of October, 2026, Deno and Cloudflare announced that the whole Deno team was joining Cloudflare",
+   "expectedTerms": [
+    {
+     "term": "Deno",
+     "accept": [
+      "Deno",
+      "Dee-no"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "4e7fe0824eba",
+   "lineSig": "c69a60189e89",
+   "clip": "narration/clips/L0411.wav",
+   "wer": 0.25,
+   "requestId": null,
+   "at": "2026-11-01T04:18:15.238Z"
+  },
+  "L0412": {
+   "lineId": "L0412",
+   "model": "scribe_v1",
+   "transcript": "These are plans as announced. The Deno runtime gets one more year of bug fix and security releases",
+   "expectedTerms": [
+    {
+     "term": "Deno",
+     "accept": [
+      "Deno",
+      "Dee-no"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "6efe20a039d2",
+   "lineSig": "b0f217657d2b",
+   "clip": "narration/clips/L0412.wav",
+   "wer": 0.105,
+   "requestId": null,
+   "at": "2026-11-01T04:18:15.886Z"
+  },
+  "L0413": {
+   "lineId": "L0413",
+   "model": "scribe_v1",
+   "transcript": "After that year, Ryan Dahl writes, \"The team's work on the Deno runtime comes to an end.\"",
+   "expectedTerms": [
+    {
+     "term": "Deno",
+     "accept": [
+      "Deno",
+      "Dee-no"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Dahl",
+     "accept": [
+      "Dahl"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 2,
+   "sig": "4213d904bd0d",
+   "lineSig": "ccfe23bbe877",
+   "clip": "narration/clips/L0413.wav",
+   "wer": 0.111,
+   "requestId": null,
+   "at": "2026-11-01T04:46:50.793Z"
+  },
+  "L0414": {
+   "lineId": "L0414",
+   "model": "scribe_v1",
+   "transcript": "Deno Deploy runs six more months. JSR and Rusty v8 continue. Deno stays open source",
+   "expectedTerms": [
+    {
+     "term": "Deno",
+     "accept": [
+      "Deno",
+      "Dee-no"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "JSR",
+     "accept": [
+      "JSR",
+      "J S R"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "379a61bee378",
+   "lineSig": "38e48046f1af",
+   "clip": "narration/clips/L0414.wav",
+   "wer": 0.45,
+   "requestId": null,
+   "at": "2026-11-01T04:18:17.130Z"
+  },
+  "L0416": {
+   "lineId": "L0416",
+   "model": "scribe_v1",
+   "transcript": "Ryan Dahl and Bert Belder are to lead a first-class, supported way to run WorkerD yourself",
+   "expectedTerms": [
+    {
+     "term": "workerd",
+     "accept": [
+      "workerd",
+      "worker D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Dahl",
+     "accept": [
+      "Dahl"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Belder",
+     "accept": [
+      "Belder"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 3,
+   "sig": "f38f6bf4c00e",
+   "lineSig": "9c187908a1b8",
+   "clip": "narration/clips/L0416.wav",
+   "wer": 0.111,
+   "requestId": null,
+   "at": "2026-11-01T04:34:40.733Z"
+  },
+  "L0418": {
+   "lineId": "L0418",
+   "model": "scribe_v1",
+   "transcript": "On the evening of the twenty-eighth of October, Pacific Time, Ryan Dahl's commit landed in worker D, calling itself a beginning.",
+   "expectedTerms": [
+    {
+     "term": "workerd",
+     "accept": [
+      "workerd",
+      "worker D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Dahl",
+     "accept": [
+      "Dahl"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 2,
+   "sig": "3c92f3e2f354",
+   "lineSig": "b78575b64c78",
+   "clip": "narration/clips/L0418.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:41.910Z"
+  },
+  "L0508": {
+   "lineId": "L0508",
+   "model": "scribe_v1",
+   "transcript": "In worker D, the lease is 20 seconds. A house renews every three, gives each attempt four, and retries a failure after one",
+   "expectedTerms": [
+    {
+     "term": "workerd",
+     "accept": [
+      "workerd",
+      "worker D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "e95c37b2cc40",
+   "lineSig": "2dd0a20dc87d",
+   "clip": "narration/clips/L0508.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:42.521Z"
+  },
+  "L0514": {
+   "lineId": "L0514",
+   "model": "scribe_v1",
+   "transcript": "A comment records that Cloudflare's R2 stalls writes for about five and a half seconds at every five-minute mark and that a two-second limit once stopped every node",
+   "expectedTerms": [
+    {
+     "term": "R2",
+     "accept": [
+      "R2",
+      "R two"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "b491cd751863",
+   "lineSig": "aa55eb59c75c",
+   "clip": "narration/clips/L0514.wav",
+   "wer": 0.065,
+   "requestId": null,
+   "at": "2026-11-01T04:22:43.504Z"
+  },
+  "L0526": {
+   "lineId": "L0526",
+   "model": "scribe_v1",
+   "transcript": "Cell D, a different implementation, uses ten-second leases, and when the well proves a write, it does the same. It reads the record, not a clock",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "5232dd8f4604",
+   "lineSig": "fc064cf5dacc",
+   "clip": "narration/clips/L0526.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:44.243Z"
+  },
+  "L0601": {
+   "lineId": "L0601",
+   "model": "scribe_v1",
+   "transcript": "Inside the lantern, SQLite keeps the room in a file, but it does not write changes there first",
+   "expectedTerms": [
+    {
+     "term": "SQLite",
+     "accept": [
+      "SQLite",
+      "S Q L lite"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "63f196cd7aca",
+   "lineSig": "b2143872a530",
+   "clip": "narration/clips/L0601.wav",
+   "wer": 0.19,
+   "requestId": null,
+   "at": "2026-11-01T04:22:44.804Z"
+  },
+  "L0609": {
+   "lineId": "L0609",
+   "model": "scribe_v1",
+   "transcript": "When SQLite copies the ribbon into its main file and starts a fresh one, the keeper starts fresh too",
+   "expectedTerms": [
+    {
+     "term": "SQLite",
+     "accept": [
+      "SQLite",
+      "S Q L lite"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "f8acae5a7d26",
+   "lineSig": "64811d23a66c",
+   "clip": "narration/clips/L0609.wav",
+   "wer": 0.182,
+   "requestId": null,
+   "at": "2026-11-01T04:22:45.478Z"
+  },
+  "L0613": {
+   "lineId": "L0613",
+   "model": "scribe_v1",
+   "transcript": "This is worker D's own format. Cell D writes a different one called LTX",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "LTX",
+     "accept": [
+      "LTX",
+      "L T X"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "9dc19234cb1b",
+   "lineSig": "3b9d5151b634",
+   "clip": "narration/clips/L0613.wav",
+   "wer": 0.188,
+   "requestId": null,
+   "at": "2026-11-01T04:22:46.037Z"
+  },
+  "L0614": {
+   "lineId": "L0614",
+   "model": "scribe_v1",
+   "transcript": "Now the tick itself in worker D, message 42 is written. Its reply waits behind the latch",
+   "expectedTerms": [
+    {
+     "term": "workerd",
+     "accept": [
+      "workerd",
+      "worker D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "27e7187c8858",
+   "lineSig": "b06174a4ed2f",
+   "clip": "narration/clips/L0614.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:46.619Z"
+  },
+  "L0711": {
+   "lineId": "L0711",
+   "model": "scribe_v1",
+   "transcript": "Cell D uses followers too. A neighbor's disc can answer much sooner than the well",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "927dcc6d9e99",
+   "lineSig": "d4730ec25f95",
+   "clip": "narration/clips/L0711.wav",
+   "wer": 0.133,
+   "requestId": null,
+   "at": "2026-11-01T04:22:47.091Z"
+  },
+  "L0714": {
+   "lineId": "L0714",
+   "model": "scribe_v1",
+   "transcript": "Each must press the page onto its own disk before it answers. That press is called F sync",
+   "expectedTerms": [
+    {
+     "term": "fsync",
+     "accept": [
+      "fsync",
+      "F sync"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "b27f38905a08",
+   "lineSig": "a63c041a24c8",
+   "clip": "narration/clips/L0714.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:47.797Z"
+  },
+  "L0725": {
+   "lineId": "L0725",
+   "model": "scribe_v1",
+   "transcript": "Pinback. Before its first tick from the neighbors, each cell D session creates its own log record in the well",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "e1051f8e35d4",
+   "lineSig": "2c03619fc7f5",
+   "clip": "narration/clips/L0725.wav",
+   "wer": 0.143,
+   "requestId": null,
+   "at": "2026-11-01T04:22:48.409Z"
+  },
+  "L0804": {
+   "lineId": "L0804",
+   "model": "scribe_v1",
+   "transcript": "It is the bucket's refusals on one key and its fresh reeds. Leases with clocks kept close and as cell D asks a supervisor to restart a house that fenced itself",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "c0ba1b7b7980",
+   "lineSig": "4efbad6f69b5",
+   "clip": "narration/clips/L0804.wav",
+   "wer": 0.032,
+   "requestId": null,
+   "at": "2026-11-01T04:22:49.295Z"
+  },
+  "L0810": {
+   "lineId": "L0810",
+   "model": "scribe_v1",
+   "transcript": "Cell D documents its own limits and wants bucket lifecycle rules that leave its records alone",
+   "expectedTerms": [
+    {
+     "term": "celld",
+     "accept": [
+      "celld",
+      "cell D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "5d5c6623b69d",
+   "lineSig": "37b1d57dfd96",
+   "clip": "narration/clips/L0810.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:49.971Z"
+  },
+  "L0811": {
+   "lineId": "L0811",
+   "model": "scribe_v1",
+   "transcript": "And WorkerD on its own is not a sandbox for untrusted code",
+   "expectedTerms": [
+    {
+     "term": "workerd",
+     "accept": [
+      "workerd",
+      "worker D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "e500eb95da0a",
+   "lineSig": "a46c133765f4",
+   "clip": "narration/clips/L0811.wav",
+   "wer": 0.154,
+   "requestId": null,
+   "at": "2026-11-01T04:22:50.601Z"
+  },
+  "L0813": {
+   "lineId": "L0813",
+   "model": "scribe_v1",
+   "transcript": "Cell D's code and ideas are to be merged into Worker D, and Ryan Dahl writes that the team's future work goes into this shared platform",
+   "expectedTerms": [
+    {
+     "term": "workerd",
+     "accept": [
+      "workerd",
+      "worker D"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Dahl",
+     "accept": [
+      "Dahl"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 2,
+   "sig": "bad03e4b0a8f",
+   "lineSig": "8c29900e8e2d",
+   "clip": "narration/clips/L0813.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-11-01T04:22:51.297Z"
+  },
+  "L0101": {
+   "lineId": "L0101",
+   "model": "scribe_v1",
+   "transcript": "Everything in this harbor is made up, except the kind of room in that window",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "69b53d96a840",
+   "lineSig": "09beeb8e6ddd",
+   "clip": "narration/clips/L0101.wav",
+   "wer": 0.067,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:15.242Z"
+  },
+  "L0102": {
+   "lineId": "L0102",
+   "model": "scribe_v1",
+   "transcript": "It is a chat room, the very example Durable Objects began with in 2020.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "63126c5ba404",
+   "lineSig": "c37c71470933",
+   "clip": "narration/clips/L0102.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:29.212Z"
+  },
+  "L0103": {
+   "lineId": "L0103",
+   "model": "scribe_v1",
+   "transcript": "Someone types message 42. The ferry is late.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fcff1b815aa9",
+   "lineSig": "b351d21df05e",
+   "clip": "narration/clips/L0103.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:29.652Z"
+  },
+  "L0104": {
+   "lineId": "L0104",
+   "model": "scribe_v1",
+   "transcript": "It waits at the door. Then it gets its tick, a promise that it is saved",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "17d91fb52cc6",
+   "lineSig": "4245ab5a9247",
+   "clip": "narration/clips/L0104.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:30.141Z"
+  },
+  "L0105": {
+   "lineId": "L0105",
+   "model": "scribe_v1",
+   "transcript": "Then House A goes dark and the square goes quiet.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "4df8585e2ba7",
+   "lineSig": "a2e1c388f42b",
+   "clip": "narration/clips/L0105.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:30.539Z"
+  },
+  "L0106": {
+   "lineId": "L0106",
+   "model": "scribe_v1",
+   "transcript": "Up the hill, House C lights. Its keeper, the runtime, draws a bundle from the well, and the room relights in a new window",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "cda4c0036f2e",
+   "lineSig": "ec84046464c8",
+   "clip": "narration/clips/L0106.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:31.250Z"
+  },
+  "L0107": {
+   "lineId": "L0107",
+   "model": "scribe_v1",
+   "transcript": "Message 42 is still there with its tick",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "93e35ee3de74",
+   "lineSig": "a19e6db6a173",
+   "clip": "narration/clips/L0107.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:31.719Z"
+  },
+  "L0108": {
+   "lineId": "L0108",
+   "model": "scribe_v1",
+   "transcript": "The machine that made that promise is gone. The promise is still true",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2b585724868c",
+   "lineSig": "00ce2bf11c8d",
+   "clip": "narration/clips/L0108.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:32.171Z"
+  },
+  "L0109": {
+   "lineId": "L0109",
+   "model": "scribe_v1",
+   "transcript": "How did the promise outlive the machine?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "80079ced8d4e",
+   "lineSig": "68d3fb88cebc",
+   "clip": "narration/clips/L0109.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:15.922Z"
+  },
+  "L0110": {
+   "lineId": "L0110",
+   "model": "scribe_v1",
+   "transcript": "The answer is in the square. The town well, which is a storage bucket",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2d7194f653e8",
+   "lineSig": "90a725e21183",
+   "clip": "narration/clips/L0110.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:32.944Z"
+  },
+  "L0111": {
+   "lineId": "L0111",
+   "model": "scribe_v1",
+   "transcript": "The plate above it names the room's owner.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "4c062c9c71d2",
+   "lineSig": "2a1c8caee223",
+   "clip": "narration/clips/L0111.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:16.569Z"
+  },
+  "L0112": {
+   "lineId": "L0112",
+   "model": "scribe_v1",
+   "transcript": "The room keeps two promises: one owner at a time and nothing acknowledged is lost when a machine fails.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1d8ff1e98b2d",
+   "lineSig": "bcd1077d855e",
+   "clip": "narration/clips/L0112.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:33.849Z"
+  },
+  "L0113": {
+   "lineId": "L0113",
+   "model": "scribe_v1",
+   "transcript": "And a newer one still being built. The room can move between machines you run",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "8cbd7c5661f7",
+   "lineSig": "2b0aaa78e53e",
+   "clip": "narration/clips/L0113.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:34.341Z"
+  },
+  "L0114": {
+   "lineId": "L0114",
+   "model": "scribe_v1",
+   "transcript": "So how can a bucket, which cannot run a single line of code, make a room portable?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "84adcbf8b811",
+   "lineSig": "2236263e9d67",
+   "clip": "narration/clips/L0114.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:17.057Z"
+  },
+  "L0115": {
+   "lineId": "L0115",
+   "model": "scribe_v1",
+   "transcript": "A story from 2020 to the end of October 2026. A room, a well, and a ribbon",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "373941e740f0",
+   "lineSig": "f0ee1024d54f",
+   "clip": "narration/clips/L0115.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:35.531Z"
+  },
+  "L0116": {
+   "lineId": "L0116",
+   "model": "scribe_v1",
+   "transcript": "The harbor is ours. The machinery is real code, and every piece wears a tag saying who's",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "71d77276a416",
+   "lineSig": "f72a79470210",
+   "clip": "narration/clips/L0116.wav",
+   "wer": 0.118,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:36.108Z"
+  },
+  "L0117": {
+   "lineId": "L0117",
+   "model": "scribe_v1",
+   "transcript": "The newest of it is days old and still experimental",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "10eec30f350a",
+   "lineSig": "5ddc0188d2a5",
+   "clip": "narration/clips/L0117.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:36.554Z"
+  },
+  "L0202": {
+   "lineId": "L0202",
+   "model": "scribe_v1",
+   "transcript": "Each object has an identifier that is unique across the whole world",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5be9fa729292",
+   "lineSig": "0e740b4688ef",
+   "clip": "narration/clips/L0202.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:37.148Z"
+  },
+  "L0203": {
+   "lineId": "L0203",
+   "model": "scribe_v1",
+   "transcript": "And his post is plain about where that object lives.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "4910ba8cfe42",
+   "lineSig": "499cf1397669",
+   "clip": "narration/clips/L0203.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:17.594Z"
+  },
+  "L0204": {
+   "lineId": "L0204",
+   "model": "scribe_v1",
+   "transcript": "In one place. Only ever one at a time",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "f01987299383",
+   "lineSig": "c1811381a598",
+   "clip": "narration/clips/L0204.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:37.928Z"
+  },
+  "L0205": {
+   "lineId": "L0205",
+   "model": "scribe_v1",
+   "transcript": "So every request about the same thing reaches the same place, and that place can coordinate them",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ab56e54e1bfa",
+   "lineSig": "591737b50359",
+   "clip": "narration/clips/L0205.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:38.444Z"
+  },
+  "L0207": {
+   "lineId": "L0207",
+   "model": "scribe_v1",
+   "transcript": "His demonstration is a chat app. Each chat room is one object, and every message passes through it to everyone else",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7d6ff16324ff",
+   "lineSig": "f05b55b2e276",
+   "clip": "narration/clips/L0207.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:38.944Z"
+  },
+  "L0208": {
+   "lineId": "L0208",
+   "model": "scribe_v1",
+   "transcript": "That is the kind of room our lantern holds. One room, one object, one home",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0f73289067dd",
+   "lineSig": "cb0fcc99174e",
+   "clip": "narration/clips/L0208.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:39.482Z"
+  },
+  "L0209": {
+   "lineId": "L0209",
+   "model": "scribe_v1",
+   "transcript": "Notice what one home does not mean. A handler can stop and wait, and living in one place does not make all its steps one transaction",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "61678327290d",
+   "lineSig": "4028499d60fd",
+   "clip": "narration/clips/L0209.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:40.147Z"
+  },
+  "L0210": {
+   "lineId": "L0210",
+   "model": "scribe_v1",
+   "transcript": "The 3rd of August, 2021. A later post of his is called Easy, Fast, Correct. Choose three",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3781661efdb4",
+   "lineSig": "7310a4c38928",
+   "clip": "narration/clips/L0210.wav",
+   "wer": 0.059,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:41.457Z"
+  },
+  "L0211": {
+   "lineId": "L0211",
+   "model": "scribe_v1",
+   "transcript": "It puts a gate on the room's door, an output gate. While a write is unfinished, the reply to our sender waits behind a latch",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b79434f2aba1",
+   "lineSig": "089e05b385e5",
+   "clip": "narration/clips/L0211.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:42.037Z"
+  },
+  "L0212": {
+   "lineId": "L0212",
+   "model": "scribe_v1",
+   "transcript": "The write completes, the latch lifts, and the letter goes out",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5c8523824f09",
+   "lineSig": "b8518072a339",
+   "clip": "narration/clips/L0212.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:42.611Z"
+  },
+  "L0213": {
+   "lineId": "L0213",
+   "model": "scribe_v1",
+   "transcript": "If the write fails, the waiting letters are thrown away, replaced with errors, and the object restarts",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1f5d96e46eb6",
+   "lineSig": "094da264d701",
+   "clip": "narration/clips/L0213.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:43.165Z"
+  },
+  "L0214": {
+   "lineId": "L0214",
+   "model": "scribe_v1",
+   "transcript": "So the tick in the harbor was a held letter released",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ad4bf4b5b961",
+   "lineSig": "245f472b4373",
+   "clip": "narration/clips/L0214.wav",
+   "wer": 0.091,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:31:40.858Z"
+  },
+  "L0218": {
+   "lineId": "L0218",
+   "model": "scribe_v1",
+   "transcript": "Local reads become almost instant",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1152d1312755",
+   "lineSig": "78d2a68f045f",
+   "clip": "narration/clips/L0218.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:44.133Z"
+  },
+  "L0219": {
+   "lineId": "L0219",
+   "model": "scribe_v1",
+   "transcript": "But a tick is not a local read. A tick says the write will outlive the machine",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0d1528938e2c",
+   "lineSig": "a0dcf46a1593",
+   "clip": "narration/clips/L0219.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:44.643Z"
+  },
+  "L0220": {
+   "lineId": "L0220",
+   "model": "scribe_v1",
+   "transcript": "On Cloudflare's own network, a hosted service kept that promise, the storage relay service.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7885b4bc39f0",
+   "lineSig": "30db2c0763c4",
+   "clip": "narration/clips/L0220.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:45.251Z"
+  },
+  "L0221": {
+   "lineId": "L0221",
+   "model": "scribe_v1",
+   "transcript": "It watches SQLite's write-ahead log, where each change is written first and ships the changes to object storage in batches, ten seconds or sixteen megabytes at the most",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "47f0cc4d7070",
+   "lineSig": "a7d60b9db8c5",
+   "clip": "narration/clips/L0221.wav",
+   "wer": 0.125,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:52.124Z"
+  },
+  "L0222": {
+   "lineId": "L0222",
+   "model": "scribe_v1",
+   "transcript": "Object storage is slow and nobody can wait ten seconds for a tick",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2d3ae38450e8",
+   "lineSig": "956888469fae",
+   "clip": "narration/clips/L0222.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:46.843Z"
+  },
+  "L0223": {
+   "lineId": "L0223",
+   "model": "scribe_v1",
+   "transcript": "So each commit also goes straight to five followers in five different data centers. When three answer, the latch lifts",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d4e99424654d",
+   "lineSig": "3c43a3ed8307",
+   "clip": "narration/clips/L0223.wav",
+   "wer": 0.05,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:47.624Z"
+  },
+  "L0224": {
+   "lineId": "L0224",
+   "model": "scribe_v1",
+   "transcript": "Real machinery, and all of it lived inside Cloudflare",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2ddf1feb1123",
+   "lineSig": "fac1964b5a53",
+   "clip": "narration/clips/L0224.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:48.058Z"
+  },
+  "L0303": {
+   "lineId": "L0303",
+   "model": "scribe_v1",
+   "transcript": "Amazon later explained why a write could take one path through its caches and a read another.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "19227b418ed4",
+   "lineSig": "b7c7a9012ae2",
+   "clip": "narration/clips/L0303.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:48.571Z"
+  },
+  "L0304": {
+   "lineId": "L0304",
+   "model": "scribe_v1",
+   "transcript": "On the 1st of December, 2020, that changed. Read after a write and you get the latest",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ce37d2f2d5de",
+   "lineSig": "851f39d88229",
+   "clip": "narration/clips/L0304.wav",
+   "wer": 0.059,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:49.137Z"
+  },
+  "L0305": {
+   "lineId": "L0305",
+   "model": "scribe_v1",
+   "transcript": "Whatever bucket you draw up is the newest",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "94fa912d88df",
+   "lineSig": "1acbfd963e98",
+   "clip": "narration/clips/L0305.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:49.499Z"
+  },
+  "L0306": {
+   "lineId": "L0306",
+   "model": "scribe_v1",
+   "transcript": "The job, the room's plate is empty and houses A and B both want it",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "14a8ca63eb66",
+   "lineSig": "7ac7020352b6",
+   "clip": "narration/clips/L0306.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:49.970Z"
+  },
+  "L0307": {
+   "lineId": "L0307",
+   "model": "scribe_v1",
+   "transcript": "Fresh reeds are not enough. Pull the pin from the well's brass tooth, and the well checks nothing",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "8cec18a785e3",
+   "lineSig": "e9f9b6765ae7",
+   "clip": "narration/clips/L0307.wav",
+   "wer": 0.056,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:50.747Z"
+  },
+  "L0308": {
+   "lineId": "L0308",
+   "model": "scribe_v1",
+   "transcript": "Each keeper reads the plate. Nobody. Each writes mine",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2e3e1b6d9555",
+   "lineSig": "bc7982cd8306",
+   "clip": "narration/clips/L0308.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:51.227Z"
+  },
+  "L0309": {
+   "lineId": "L0309",
+   "model": "scribe_v1",
+   "transcript": "Both lanterns light, both rooms take messages",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "bf5c08ad3efc",
+   "lineSig": "41b280713d37",
+   "clip": "narration/clips/L0309.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:51.664Z"
+  },
+  "L0310": {
+   "lineId": "L0310",
+   "model": "scribe_v1",
+   "transcript": "B's plate lands a moment later and wins the well, but A has already answered its senders",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "acfe0ee44b5c",
+   "lineSig": "cda25fcdbb59",
+   "clip": "narration/clips/L0310.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:52.258Z"
+  },
+  "L0311": {
+   "lineId": "L0311",
+   "model": "scribe_v1",
+   "transcript": "An overwrite can win the well. It cannot take back what was already served.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "37187a0802f0",
+   "lineSig": "f895a2b5cbf4",
+   "clip": "narration/clips/L0311.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:52.770Z"
+  },
+  "L0312": {
+   "lineId": "L0312",
+   "model": "scribe_v1",
+   "transcript": "Between the red and the right, the world moved. Pinback",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a25588c9433b",
+   "lineSig": "6171a2bf2da4",
+   "clip": "narration/clips/L0312.wav",
+   "wer": 0.364,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:53.414Z"
+  },
+  "L0314": {
+   "lineId": "L0314",
+   "model": "scribe_v1",
+   "transcript": "Two keepers race. One creation lands, a shutter drops, and the second card is refused",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "98e4132605a3",
+   "lineSig": "68436f35e82d",
+   "clip": "narration/clips/L0314.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:54.001Z"
+  },
+  "L0315": {
+   "lineId": "L0315",
+   "model": "scribe_v1",
+   "transcript": "The 25th of November, 2024. Replace this only if it is still the version I read",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9e232b6ed6c8",
+   "lineSig": "9abe65fe9beb",
+   "clip": "narration/clips/L0315.wav",
+   "wer": 0.118,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:54.836Z"
+  },
+  "L0316": {
+   "lineId": "L0316",
+   "model": "scribe_v1",
+   "transcript": "Both cards carry the same old version. One click accepted, and the plate's notch is cut anew. One thunk refused",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "adc4294cf42d",
+   "lineSig": "c4c8b0695ece",
+   "clip": "narration/clips/L0316.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:55.523Z"
+  },
+  "L0317": {
+   "lineId": "L0317",
+   "model": "scribe_v1",
+   "transcript": "That is compare and swap, and the store checks the condition, not the keeper",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2336a6564fb7",
+   "lineSig": "b6705ee029e8",
+   "clip": "narration/clips/L0317.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:56.223Z"
+  },
+  "L0318": {
+   "lineId": "L0318",
+   "model": "scribe_v1",
+   "transcript": "The well had learned to say no",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b63a5bec1b1e",
+   "lineSig": "9bad6a967be6",
+   "clip": "narration/clips/L0318.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:31:41.274Z"
+  },
+  "L0319": {
+   "lineId": "L0319",
+   "model": "scribe_v1",
+   "transcript": "So who referees the referee?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "971336e94b40",
+   "lineSig": "3ef257453b1a",
+   "clip": "narration/clips/L0319.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:57.028Z"
+  },
+  "L0321": {
+   "lineId": "L0321",
+   "model": "scribe_v1",
+   "transcript": "Caches that agree with one another, an order for every object's changes, and a witness told of every change that any cache can ask, \"Is my copy stale?\"",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "edb0ca31ee77",
+   "lineSig": "e1ed35e5bdb9",
+   "clip": "narration/clips/L0321.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:57.761Z"
+  },
+  "L0322": {
+   "lineId": "L0322",
+   "model": "scribe_v1",
+   "transcript": "They checked it with proofs and model checking, which he wrote was more work than building it",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "bf796846a6f1",
+   "lineSig": "1387c5359d37",
+   "clip": "narration/clips/L0322.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:58.242Z"
+  },
+  "L0323": {
+   "lineId": "L0323",
+   "model": "scribe_v1",
+   "transcript": "So the houses on the hill run no consensus of their own. The coordination has moved inside the well",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "87972efb8b74",
+   "lineSig": "1b02f2a02f15",
+   "clip": "narration/clips/L0323.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:18:58.898Z"
+  },
+  "L0324": {
+   "lineId": "L0324",
+   "model": "scribe_v1",
+   "transcript": "Now a warning from Cell D's own documentation",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5116cc77a05e",
+   "lineSig": "169615ddd381",
+   "clip": "narration/clips/L0324.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:52.534Z"
+  },
+  "L0325": {
+   "lineId": "L0325",
+   "model": "scribe_v1",
+   "transcript": "Some stores speak S3's language but do not keep these conditions. On them, two houses can own one room",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "494d207b02a8",
+   "lineSig": "55bbd8895bed",
+   "clip": "narration/clips/L0325.wav",
+   "wer": 0.1,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:53.188Z"
+  },
+  "L0326": {
+   "lineId": "L0326",
+   "model": "scribe_v1",
+   "transcript": "Worse, a store can accept the condition and silently ignore it",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "dc4fb7996a53",
+   "lineSig": "de1074f84fb4",
+   "clip": "narration/clips/L0326.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:00.437Z"
+  },
+  "L0328": {
+   "lineId": "L0328",
+   "model": "scribe_v1",
+   "transcript": "Then it checks a ranged read. No node can skip the test",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1285a97981b0",
+   "lineSig": "03a6c45bd721",
+   "clip": "narration/clips/L0328.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:00.912Z"
+  },
+  "L0329": {
+   "lineId": "L0329",
+   "model": "scribe_v1",
+   "transcript": "A bucket earns its place by refusing on demand",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "98da9f8f7878",
+   "lineSig": "83ace5859da4",
+   "clip": "narration/clips/L0329.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:01.314Z"
+  },
+  "L0330": {
+   "lineId": "L0330",
+   "model": "scribe_v1",
+   "transcript": "One more thing to notice, the well referees one key at a time, one plate for one room",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "92b75f7ea839",
+   "lineSig": "0324bbcef888",
+   "clip": "narration/clips/L0330.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:01.862Z"
+  },
+  "L0331": {
+   "lineId": "L0331",
+   "model": "scribe_v1",
+   "transcript": "It makes no promise that two rooms commit as one.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "dd2b0156e2cd",
+   "lineSig": "ec814ab10161",
+   "clip": "narration/clips/L0331.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:19.026Z"
+  },
+  "L0332": {
+   "lineId": "L0332",
+   "model": "scribe_v1",
+   "transcript": "And if the well goes quiet, no house can take a plate at all",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3df689f412f5",
+   "lineSig": "d2a03a06b065",
+   "clip": "narration/clips/L0332.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:19.537Z"
+  },
+  "L0403": {
+   "lineId": "L0403",
+   "model": "scribe_v1",
+   "transcript": "He wanted a single binary written in Rust whose only outside service is object storage",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "77ceb8dbd37c",
+   "lineSig": "87194442d092",
+   "clip": "narration/clips/L0403.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:46:14.024Z"
+  },
+  "L0408": {
+   "lineId": "L0408",
+   "model": "scribe_v1",
+   "transcript": "Worker D's durable objects ran as a single instance, good enough for local testing, unable to scale. He called it Worker D's one big gap in production readiness",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2d0a6778743d",
+   "lineSig": "7d0c4be6c41b",
+   "clip": "narration/clips/L0408.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:54.017Z"
+  },
+  "L0410": {
+   "lineId": "L0410",
+   "model": "scribe_v1",
+   "transcript": "Two lamps in one frame. Two ropes beginning to braid",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3d12ad9f4c83",
+   "lineSig": "7f6726875234",
+   "clip": "narration/clips/L0410.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:04.916Z"
+  },
+  "L0415": {
+   "lineId": "L0415",
+   "model": "scribe_v1",
+   "transcript": "Cloudflare filed its post under acquisitions, yet neither post states a price or any terms. We will not guess at them",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "386c24ad27c2",
+   "lineSig": "3ed6f9895c2c",
+   "clip": "narration/clips/L0415.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:05.679Z"
+  },
+  "L0419": {
+   "lineId": "L0419",
+   "model": "scribe_v1",
+   "transcript": "Several processes share one bucket. Each object has one owner at a time, and if an owner dies, the message says another picks it up",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d250289f1f3b",
+   "lineSig": "03c4cc84985a",
+   "clip": "narration/clips/L0419.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:06.336Z"
+  },
+  "L0420": {
+   "lineId": "L0420",
+   "model": "scribe_v1",
+   "transcript": "It is experimental. For now, a write is acknowledged only once the bucket holds all of it",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c6989c9a1259",
+   "lineSig": "6e6a95ffaaff",
+   "clip": "narration/clips/L0420.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:06.949Z"
+  },
+  "L0421": {
+   "lineId": "L0421",
+   "model": "scribe_v1",
+   "transcript": "and one plain line alarms are not supported yet",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fd043c611462",
+   "lineSig": "759a5391b550",
+   "clip": "narration/clips/L0421.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:07.540Z"
+  },
+  "L0422": {
+   "lineId": "L0422",
+   "model": "scribe_v1",
+   "transcript": "Two days later, alarms landed. The next day, facets",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "4b5cd5f8533b",
+   "lineSig": "3a20683adafe",
+   "clip": "narration/clips/L0422.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:07.968Z"
+  },
+  "L0423": {
+   "lineId": "L0423",
+   "model": "scribe_v1",
+   "transcript": "Let us open it",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "536b4bccb918",
+   "lineSig": "7a0bfc3ffc65",
+   "clip": "narration/clips/L0423.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:08.272Z"
+  },
+  "L0501": {
+   "lineId": "L0501",
+   "model": "scribe_v1",
+   "transcript": "Open the plate. In worker D's cluster, it has three tiles, the house that owns the room, an epoch, and a third called from",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7eabc85ff438",
+   "lineSig": "9fcfd2296f7c",
+   "clip": "narration/clips/L0501.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:54.649Z"
+  },
+  "L0502": {
+   "lineId": "L0502",
+   "model": "scribe_v1",
+   "transcript": "The epoch is a count that goes up with every new claim. The from tile names the last epoch that actually opened",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3fe26483aade",
+   "lineSig": "cf2a501e2d37",
+   "clip": "narration/clips/L0502.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:09.617Z"
+  },
+  "L0503": {
+   "lineId": "L0503",
+   "model": "scribe_v1",
+   "transcript": "The code calls it the only authority on who owns the room",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "632d9d088e89",
+   "lineSig": "cba975fdab97",
+   "clip": "narration/clips/L0503.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:10.065Z"
+  },
+  "L0504": {
+   "lineId": "L0504",
+   "model": "scribe_v1",
+   "transcript": "To claim, a keeper offers the version it read. If the plate names a house whose lease has run out, the claim writes the next epoch, and at most one claimant wins",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e1001fd90dc3",
+   "lineSig": "3f7cf6058f89",
+   "clip": "narration/clips/L0504.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:10.930Z"
+  },
+  "L0505": {
+   "lineId": "L0505",
+   "model": "scribe_v1",
+   "transcript": "If that house is still alive, the request goes there instead. A brand new room is born already open",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "96ac2fbe3944",
+   "lineSig": "c07afeedcd95",
+   "clip": "narration/clips/L0505.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:11.478Z"
+  },
+  "L0507": {
+   "lineId": "L0507",
+   "model": "scribe_v1",
+   "transcript": "A house may serve only while it holds a lease, a candle on its sill relit at each renewal",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "cc5a21760dfc",
+   "lineSig": "d8180cb3bbca",
+   "clip": "narration/clips/L0507.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:12.112Z"
+  },
+  "L0509": {
+   "lineId": "L0509",
+   "model": "scribe_v1",
+   "transcript": "A clock may be two seconds off the buckets, so the painted band at the candle's foot is twice that, four seconds",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "4022fe95ae55",
+   "lineSig": "076cbb357dd1",
+   "clip": "narration/clips/L0509.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:12.823Z"
+  },
+  "L0510": {
+   "lineId": "L0510",
+   "model": "scribe_v1",
+   "transcript": "If this lease runs out at 20,000 milliseconds, the house may serve only while its clock reads under 16,000.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "642a7c3d226d",
+   "lineSig": "bd25794c759e",
+   "clip": "narration/clips/L0510.wav",
+   "wer": 0.19,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:13.408Z"
+  },
+  "L0511": {
+   "lineId": "L0511",
+   "model": "scribe_v1",
+   "transcript": "And it may start a renewal only under 12,000, so even a full four-second attempt ends before the band",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a93e8b544628",
+   "lineSig": "97710617a8e2",
+   "clip": "narration/clips/L0511.wav",
+   "wer": 0.095,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:13.953Z"
+  },
+  "L0512": {
+   "lineId": "L0512",
+   "model": "scribe_v1",
+   "transcript": "Lines on a ruler, not promises about timers",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d1867f723de2",
+   "lineSig": "e38db31d5bfb",
+   "clip": "narration/clips/L0512.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:14.410Z"
+  },
+  "L0513": {
+   "lineId": "L0513",
+   "model": "scribe_v1",
+   "transcript": "Why give each renewal four seconds and not two? The code keeps a scar.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2e6e6237e97f",
+   "lineSig": "8222cc426e79",
+   "clip": "narration/clips/L0513.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:14.931Z"
+  },
+  "L0515": {
+   "lineId": "L0515",
+   "model": "scribe_v1",
+   "transcript": "So failed renewals are retried while the lease still holds through the attempt",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e2fe0aff98ba",
+   "lineSig": "c7f340039852",
+   "clip": "narration/clips/L0515.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:15.400Z"
+  },
+  "L0516": {
+   "lineId": "L0516",
+   "model": "scribe_v1",
+   "transcript": "A's keeper falls asleep. A paused process",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e4404419457b",
+   "lineSig": "4684cb95c769",
+   "clip": "narration/clips/L0516.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:15.801Z"
+  },
+  "L0517": {
+   "lineId": "L0517",
+   "model": "scribe_v1",
+   "transcript": "Pull the pin so A never checks its own candle",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "bb952814beeb",
+   "lineSig": "363a37d2a978",
+   "clip": "narration/clips/L0517.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:19.942Z"
+  },
+  "L0518": {
+   "lineId": "L0518",
+   "model": "scribe_v1",
+   "transcript": "The candle burns through the band. B sees that A's lease has run out and claims the room",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "600e0d2f1f71",
+   "lineSig": "bf9c7e5901c0",
+   "clip": "narration/clips/L0518.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:16.953Z"
+  },
+  "L0519": {
+   "lineId": "L0519",
+   "model": "scribe_v1",
+   "transcript": "Awakes and goes on serving two rooms",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "de850ca10fcb",
+   "lineSig": "9df3e8a4a65e",
+   "clip": "narration/clips/L0519.wav",
+   "wer": 0.25,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:17.333Z"
+  },
+  "L0520": {
+   "lineId": "L0520",
+   "model": "scribe_v1",
+   "transcript": "Pinback. Waking, A checks its candle first. Past the band, it serves nothing, closes its own shutters, and its lamp goes out",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "36f419ca94e8",
+   "lineSig": "3d4e40ce7d90",
+   "clip": "narration/clips/L0520.wav",
+   "wer": 0.087,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:18.048Z"
+  },
+  "L0521": {
+   "lineId": "L0521",
+   "model": "scribe_v1",
+   "transcript": "A house that cannot renew in time does the same while its lease still holds. Gone before anyone may take over. That is fencing",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5ac1f0bff8dd",
+   "lineSig": "285421afad3e",
+   "clip": "narration/clips/L0521.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:18.827Z"
+  },
+  "L0522": {
+   "lineId": "L0522",
+   "model": "scribe_v1",
+   "transcript": "Notice what B never knew. A timeout proves silence. It does not prove death",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5830c7c22745",
+   "lineSig": "17fe0a41beba",
+   "clip": "narration/clips/L0522.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:19.868Z"
+  },
+  "L0523": {
+   "lineId": "L0523",
+   "model": "scribe_v1",
+   "transcript": "Safety comes from A stopping itself and from a second look at the plate",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d5cf93cedd69",
+   "lineSig": "4f83935fbf87",
+   "clip": "narration/clips/L0523.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:20.491Z"
+  },
+  "L0524": {
+   "lineId": "L0524",
+   "model": "scribe_v1",
+   "transcript": "One soft spot. Each house measures its clock against the buckets, and when it cannot, it assumes zero",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "f3bfdad3121c",
+   "lineSig": "46afb5e16afa",
+   "clip": "narration/clips/L0524.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:21.143Z"
+  },
+  "L0525": {
+   "lineId": "L0525",
+   "model": "scribe_v1",
+   "transcript": "So the clock is not the last line of defense. The second look is",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c632e15f26dc",
+   "lineSig": "deb40beeba7d",
+   "clip": "narration/clips/L0525.wav",
+   "wer": 0.071,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:31:41.712Z"
+  },
+  "L0527": {
+   "lineId": "L0527",
+   "model": "scribe_v1",
+   "transcript": "Claimed is not opened and the difference decides which past the room comes back with",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "965bf6fe26b1",
+   "lineSig": "b4ce9af48733",
+   "clip": "narration/clips/L0527.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:22.149Z"
+  },
+  "L0528": {
+   "lineId": "L0528",
+   "model": "scribe_v1",
+   "transcript": "Made up numbers. I opened epoch seven. A seven from seven. The crown is lit",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b53f34cdb99d",
+   "lineSig": "056acd12d0a6",
+   "clip": "narration/clips/L0528.wav",
+   "wer": 0.067,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:22.629Z"
+  },
+  "L0529": {
+   "lineId": "L0529",
+   "model": "scribe_v1",
+   "transcript": "B claims B8 from 7. The from tile stays at 7 and the crown is dark",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "de21da281f0f",
+   "lineSig": "0ac86b939aa3",
+   "clip": "narration/clips/L0529.wav",
+   "wer": 0.118,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:23.172Z"
+  },
+  "L0530": {
+   "lineId": "L0530",
+   "model": "scribe_v1",
+   "transcript": "To open, B must restore seven's log, upload a snapshot, and then make the opening right that sets the from tile to eight",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "474dce00a149",
+   "lineSig": "86ab5cf43662",
+   "clip": "narration/clips/L0530.wav",
+   "wer": 0.043,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:23.836Z"
+  },
+  "L0531": {
+   "lineId": "L0531",
+   "model": "scribe_v1",
+   "transcript": "That flicker in house B the night A went dark. B died first. C claims C9 from seven and recovers seven because eight never opened and acknowledged nothing",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3c03cd39b6bb",
+   "lineSig": "2bfeb2065c8b",
+   "clip": "narration/clips/L0531.wav",
+   "wer": 0.069,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:24.714Z"
+  },
+  "L0532": {
+   "lineId": "L0532",
+   "model": "scribe_v1",
+   "transcript": "Rewind. Had B opened, the plate would read B, eight from eight, and C would recover eight",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0e18d91da4df",
+   "lineSig": "487ad594e661",
+   "clip": "narration/clips/L0532.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:25.316Z"
+  },
+  "L0602": {
+   "lineId": "L0602",
+   "model": "scribe_v1",
+   "transcript": "It writes them to a second file beside it, a write-ahead log. Think of it as a ribbon",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "8e4ac61c0a41",
+   "lineSig": "1f5b9b84af28",
+   "clip": "narration/clips/L0602.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:25.956Z"
+  },
+  "L0603": {
+   "lineId": "L0603",
+   "model": "scribe_v1",
+   "transcript": "It starts with a leader 32 bytes long, then frames each a 24 byte tab and one page",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "44b1a6d51f76",
+   "lineSig": "d79b140fe8ad",
+   "clip": "narration/clips/L0603.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:26.745Z"
+  },
+  "L0604": {
+   "lineId": "L0604",
+   "model": "scribe_v1",
+   "transcript": "On a transaction's last frame, the tab records how many pages the database has after the commit. Other frames hold zero there",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "373880673f4a",
+   "lineSig": "8250a5f6daec",
+   "clip": "narration/clips/L0604.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:27.437Z"
+  },
+  "L0605": {
+   "lineId": "L0605",
+   "model": "scribe_v1",
+   "transcript": "We draw it as a red stamp. That number is the commit mark",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5419d9f21f8f",
+   "lineSig": "05f61426cd0b",
+   "clip": "narration/clips/L0605.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:27.875Z"
+  },
+  "L0606": {
+   "lineId": "L0606",
+   "model": "scribe_v1",
+   "transcript": "Worker D's keeper hears every write to the ribbon, holds the frame since the last stamp, and cuts only when a stamped frame is complete",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "40526f8619a9",
+   "lineSig": "26be74ca3c1b",
+   "clip": "narration/clips/L0606.wav",
+   "wer": 0.04,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:55.334Z"
+  },
+  "L0607": {
+   "lineId": "L0607",
+   "model": "scribe_v1",
+   "transcript": "One cut, one whole transaction. Nothing half-finished ever leaves the room",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "28ad603534d2",
+   "lineSig": "8efb538fb138",
+   "clip": "narration/clips/L0607.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:29.108Z"
+  },
+  "L0608": {
+   "lineId": "L0608",
+   "model": "scribe_v1",
+   "transcript": "A transaction that rolls back leaves frames with no stamp, and the next writes straight over them",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c56d5e15199b",
+   "lineSig": "09fa00ae86b8",
+   "clip": "narration/clips/L0608.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:29.696Z"
+  },
+  "L0610": {
+   "lineId": "L0610",
+   "model": "scribe_v1",
+   "transcript": "The cut lengths go down to the well as scrolls, each page once in its newest version",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e861b377ed41",
+   "lineSig": "920bc2c6d53b",
+   "clip": "narration/clips/L0610.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:30.321Z"
+  },
+  "L0611": {
+   "lineId": "L0611",
+   "model": "scribe_v1",
+   "transcript": "Every scroll's cord records a checksum and its length, so a damaged or short scroll refuses to be read rather than read wrong",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "bc447401c287",
+   "lineSig": "61cbd9830733",
+   "clip": "narration/clips/L0611.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:31.016Z"
+  },
+  "L0612": {
+   "lineId": "L0612",
+   "model": "scribe_v1",
+   "transcript": "Each epoch's shelf starts with a book, a snapshot of what it inherited. A new book goes down before old scrolls are cleared",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e3c374b150b1",
+   "lineSig": "8d6794049666",
+   "clip": "narration/clips/L0612.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:31.781Z"
+  },
+  "L0615": {
+   "lineId": "L0615",
+   "model": "scribe_v1",
+   "transcript": "The keeper cuts the transaction and sends the scroll down to the well",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "cfe262090623",
+   "lineSig": "ae226e3a4e9e",
+   "clip": "narration/clips/L0615.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:32.378Z"
+  },
+  "L0616": {
+   "lineId": "L0616",
+   "model": "scribe_v1",
+   "transcript": "Then before it rings the bell, the keeper looks up at the plate one more time. Still A, still epoch seven",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7d1e6ba3f5c9",
+   "lineSig": "db5367ebea1d",
+   "clip": "narration/clips/L0616.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:32.953Z"
+  },
+  "L0617": {
+   "lineId": "L0617",
+   "model": "scribe_v1",
+   "transcript": "Only then the bell. The latch lifts. The tick",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7efe5f55bf9b",
+   "lineSig": "1d52cf9c2e20",
+   "clip": "narration/clips/L0617.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:33.401Z"
+  },
+  "L0619": {
+   "lineId": "L0619",
+   "model": "scribe_v1",
+   "transcript": "Finishing inside the room is not the tick. The well and the second look are. Cell D's gate holds even more errors and every chunk of a stream.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "741faf39d653",
+   "lineSig": "da2b6b2134e2",
+   "clip": "narration/clips/L0619.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:55.965Z"
+  },
+  "L0620": {
+   "lineId": "L0620",
+   "model": "scribe_v1",
+   "transcript": "Pull the pin and the keeper never looks up.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d150fa4f32d6",
+   "lineSig": "3363c304191d",
+   "clip": "narration/clips/L0620.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:31:42.122Z"
+  },
+  "L0621": {
+   "lineId": "L0621",
+   "model": "scribe_v1",
+   "transcript": "A sends its scroll with its lease in order. Then the whole house freezes like the sleeper. B claims epoch eight, and A's scroll lands on epoch seven's shelf",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9da874df0f1d",
+   "lineSig": "2ded6072af82",
+   "clip": "narration/clips/L0621.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:35.410Z"
+  },
+  "L0622": {
+   "lineId": "L0622",
+   "model": "scribe_v1",
+   "transcript": "A rings the bell anyway, a tick for a right that B may never see.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "82ee78c9f15b",
+   "lineSig": "040279bb0d5c",
+   "clip": "narration/clips/L0622.wav",
+   "wer": 0.067,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:36.173Z"
+  },
+  "L0623": {
+   "lineId": "L0623",
+   "model": "scribe_v1",
+   "transcript": "Pin back. A looks up. The plate says eight. No bell. The letter becomes an error, and the old scroll is cleared later",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "de7f10fc6bab",
+   "lineSig": "93eb80dcf550",
+   "clip": "narration/clips/L0623.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:36.800Z"
+  },
+  "L0624": {
+   "lineId": "L0624",
+   "model": "scribe_v1",
+   "transcript": "One honest limit: if a reply is lost on its way home, the sender cannot tell whether the write happened",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "08d640c57d26",
+   "lineSig": "88293605049d",
+   "clip": "narration/clips/L0624.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:37.402Z"
+  },
+  "L0625": {
+   "lineId": "L0625",
+   "model": "scribe_v1",
+   "transcript": "A missing tick does not prove a right absent. Durability is not the same as exactly once",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "75d3b504bc54",
+   "lineSig": "091963f442ce",
+   "clip": "narration/clips/L0625.wav",
+   "wer": 0.059,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:37.983Z"
+  },
+  "L0701": {
+   "lineId": "L0701",
+   "model": "scribe_v1",
+   "transcript": "Back to work at D's town. The night A went dark. House C holds the plate, nine from seven.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "6a5f15ffc95c",
+   "lineSig": "79f718fe5a62",
+   "clip": "narration/clips/L0701.wav",
+   "wer": 0.111,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:56.570Z"
+  },
+  "L0702": {
+   "lineId": "L0702",
+   "model": "scribe_v1",
+   "transcript": "First, it throws away its own copy of the room",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0d9d9e9fc254",
+   "lineSig": "70c843b8bb1c",
+   "clip": "narration/clips/L0702.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:31:42.545Z"
+  },
+  "L0703": {
+   "lineId": "L0703",
+   "model": "scribe_v1",
+   "transcript": "It reads the newest book, then each scroll in order, skipping pages already laid down.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "bfda42a01bbc",
+   "lineSig": "80edea09bd57",
+   "clip": "narration/clips/L0703.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:39.638Z"
+  },
+  "L0704": {
+   "lineId": "L0704",
+   "model": "scribe_v1",
+   "transcript": "A missing scroll in the middle stops the restore cold",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3337f405a5cc",
+   "lineSig": "bef6f0824759",
+   "clip": "narration/clips/L0704.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:40.039Z"
+  },
+  "L0705": {
+   "lineId": "L0705",
+   "model": "scribe_v1",
+   "transcript": "A checksum can say a scroll is damaged, never what it said.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "301fc74eb9f0",
+   "lineSig": "875dbd8f5398",
+   "clip": "narration/clips/L0705.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:40.540Z"
+  },
+  "L0706": {
+   "lineId": "L0706",
+   "model": "scribe_v1",
+   "transcript": "Pages are laid down again. No code is rerun",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3e2ec9a7c9b3",
+   "lineSig": "e132c6f349e4",
+   "clip": "narration/clips/L0706.wav",
+   "wer": 0.2,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:41.027Z"
+  },
+  "L0707": {
+   "lineId": "L0707",
+   "model": "scribe_v1",
+   "transcript": "Message 42 is back. Only then does C send down its own book and open the plate",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5404637993ee",
+   "lineSig": "b10551ac25ff",
+   "clip": "narration/clips/L0707.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:41.554Z"
+  },
+  "L0708": {
+   "lineId": "L0708",
+   "model": "scribe_v1",
+   "transcript": "That is the price. In worker D's cluster, every tick waits for the well and a second look at the plate",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2103ce916c87",
+   "lineSig": "ba1f4b5fc9b0",
+   "clip": "narration/clips/L0708.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:57.144Z"
+  },
+  "L0709": {
+   "lineId": "L0709",
+   "model": "scribe_v1",
+   "transcript": "Our bar is illustrative, a sliver of local work, then the long walk",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9b8bdeb54824",
+   "lineSig": "b34a528ed6ae",
+   "clip": "narration/clips/L0709.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:42.768Z"
+  },
+  "L0710": {
+   "lineId": "L0710",
+   "model": "scribe_v1",
+   "transcript": "Cloudflare's hosted relay back in 2024 answered that with followers",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "844e55135522",
+   "lineSig": "8d212cbd1f3f",
+   "clip": "narration/clips/L0710.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:43.259Z"
+  },
+  "L0712": {
+   "lineId": "L0712",
+   "model": "scribe_v1",
+   "transcript": "Change the lamps",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a5d7d46e484b",
+   "lineSig": "960f6f128cef",
+   "clip": "narration/clips/L0712.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:43.642Z"
+  },
+  "L0713": {
+   "lineId": "L0713",
+   "model": "scribe_v1",
+   "transcript": "This is Celde's town version zero point six point three. By default, the owner hands each right to one or two neighbors",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "e758183cfbe3",
+   "lineSig": "9e05243f4401",
+   "clip": "narration/clips/L0713.wav",
+   "wer": 0.174,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:57.848Z"
+  },
+  "L0715": {
+   "lineId": "L0715",
+   "model": "scribe_v1",
+   "transcript": "When every neighbor in the proof has pressed, the bell can ring before the page reaches the well. The upload follows",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "d3d28c3e8dfc",
+   "lineSig": "b8dd0d4f84e5",
+   "clip": "narration/clips/L0715.wav",
+   "wer": 0.048,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:45.037Z"
+  },
+  "L0716": {
+   "lineId": "L0716",
+   "model": "scribe_v1",
+   "transcript": "Now count. The owner never counts itself",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2adb0541d008",
+   "lineSig": "899444bb7f61",
+   "clip": "narration/clips/L0716.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:45.465Z"
+  },
+  "L0717": {
+   "lineId": "L0717",
+   "model": "scribe_v1",
+   "transcript": "One house alone gets no fleet. It falls back on the Wells proof, much slower, still correct",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "49161897e773",
+   "lineSig": "da958438b014",
+   "clip": "narration/clips/L0717.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:46.205Z"
+  },
+  "L0718": {
+   "lineId": "L0718",
+   "model": "scribe_v1",
+   "transcript": "Two running houses, one neighbor, enough for a proof. Three or more, two neighbors, three copies",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "dc8a896feb52",
+   "lineSig": "301c4660ec72",
+   "clip": "narration/clips/L0718.wav",
+   "wer": 0.125,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:46.733Z"
+  },
+  "L0719": {
+   "lineId": "L0719",
+   "model": "scribe_v1",
+   "transcript": "Until a second neighbor joins, a fresh rights proof rests on two copies, the owner's and one neighbor's",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0746f34202ed",
+   "lineSig": "5bd153ee274e",
+   "clip": "narration/clips/L0719.wav",
+   "wer": 0.167,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:47.310Z"
+  },
+  "L0720": {
+   "lineId": "L0720",
+   "model": "scribe_v1",
+   "transcript": "Now replay that night in Cell D's town. The owner dies while 42 lives only in the neighbor's notebooks",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "f1e9375b2c7a",
+   "lineSig": "7879a9dd3aa6",
+   "clip": "narration/clips/L0720.wav",
+   "wer": 0.053,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:58.466Z"
+  },
+  "L0721": {
+   "lineId": "L0721",
+   "model": "scribe_v1",
+   "transcript": "Pull the pin",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "8451fdb249b1",
+   "lineSig": "28f4c7bbca38",
+   "clip": "narration/clips/L0721.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:48.428Z"
+  },
+  "L0722": {
+   "lineId": "L0722",
+   "model": "scribe_v1",
+   "transcript": "In Selde's well, each epoch writes under its own shelf, so a stale owner can only add to an old shelf, never to the new owner's",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "eec9aa0be631",
+   "lineSig": "5f3015fc8014",
+   "clip": "narration/clips/L0722.wav",
+   "wer": 0.074,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:59.136Z"
+  },
+  "L0723": {
+   "lineId": "L0723",
+   "model": "scribe_v1",
+   "transcript": "That fences the well; it cannot fetch what only the neighbors hold. Forty-two is gone",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5ea40071e17b",
+   "lineSig": "e667958206a5",
+   "clip": "narration/clips/L0723.wav",
+   "wer": 0.067,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:49.964Z"
+  },
+  "L0724": {
+   "lineId": "L0724",
+   "model": "scribe_v1",
+   "transcript": "Or the old owner was only asleep and wakes to ring one more bell",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ade0bc76c934",
+   "lineSig": "663bc772f25f",
+   "clip": "narration/clips/L0724.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:21.892Z"
+  },
+  "L0726": {
+   "lineId": "L0726",
+   "model": "scribe_v1",
+   "transcript": "So a successor reads that record before it reads the well",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fbac7d19cdb2",
+   "lineSig": "50710da47797",
+   "clip": "narration/clips/L0726.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:22.288Z"
+  },
+  "L0727": {
+   "lineId": "L0727",
+   "model": "scribe_v1",
+   "transcript": "Absent. The old session never ticked ahead of the well. Sealed. Someone already recovered it",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "efa015352f3d",
+   "lineSig": "1429734dde49",
+   "clip": "narration/clips/L0727.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:51.537Z"
+  },
+  "L0728": {
+   "lineId": "L0728",
+   "model": "scribe_v1",
+   "transcript": "Open or still recovering? Fence it with a compare and swap. Seal every neighbor it can reach, collect their pages, upload them, and mark the record sealed",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "a0b169a9970c",
+   "lineSig": "8a3718e33d74",
+   "clip": "narration/clips/L0728.wav",
+   "wer": 0.037,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:52.442Z"
+  },
+  "L0729": {
+   "lineId": "L0729",
+   "model": "scribe_v1",
+   "transcript": "Only then restore. With its neighbors sealed, the old owner cannot win another bell",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b61ca7e1ff9c",
+   "lineSig": "5113a93c10cb",
+   "clip": "narration/clips/L0729.wav",
+   "wer": 0.071,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:52.946Z"
+  },
+  "L0730": {
+   "lineId": "L0730",
+   "model": "scribe_v1",
+   "transcript": "Now the hard rule: at least one current neighbor must hand over its complete range of retained pages",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "217505885423",
+   "lineSig": "1976685bc2ed",
+   "clip": "narration/clips/L0730.wav",
+   "wer": 0.056,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:53.481Z"
+  },
+  "L0731": {
+   "lineId": "L0731",
+   "model": "scribe_v1",
+   "transcript": "Two made-up cases. One notebook is water damaged, but the other is complete. Recovery proceeds.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "af3774ef09fe",
+   "lineSig": "c9f761411029",
+   "clip": "narration/clips/L0731.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:54.189Z"
+  },
+  "L0732": {
+   "lineId": "L0732",
+   "model": "scribe_v1",
+   "transcript": "Now one notebook is incomplete and the other damaged. Nobody can prove the whole tale, so the door stays shut",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "040ff30c7b32",
+   "lineSig": "7fb92335fd34",
+   "clip": "narration/clips/L0732.wav",
+   "wer": 0.05,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:54.909Z"
+  },
+  "L0733": {
+   "lineId": "L0733",
+   "model": "scribe_v1",
+   "transcript": "And a neighbor that answers with an error has not proved its page is absent",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "41d654dd94c9",
+   "lineSig": "9b46cc2027c9",
+   "clip": "narration/clips/L0733.wav",
+   "wer": 0.214,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:55.393Z"
+  },
+  "L0734": {
+   "lineId": "L0734",
+   "model": "scribe_v1",
+   "transcript": "The room would rather stay shut than come back missing a promise.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "de557badb28f",
+   "lineSig": "e78e683eac30",
+   "clip": "narration/clips/L0734.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:28:22.813Z"
+  },
+  "L0735": {
+   "lineId": "L0735",
+   "model": "scribe_v1",
+   "transcript": "Houses that restart together still lend each other their notebooks. Recovery can take minutes. A waiting request gives up only after two hundred and forty tries",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "511737326aa9",
+   "lineSig": "d8a3d0ee5e08",
+   "clip": "narration/clips/L0735.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:56.685Z"
+  },
+  "L0736": {
+   "lineId": "L0736",
+   "model": "scribe_v1",
+   "transcript": "In our harbor, the notebook's a whole. The lantern relights. Forty-two keeps its tick",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1cfef988937d",
+   "lineSig": "1d56108166f9",
+   "clip": "narration/clips/L0736.wav",
+   "wer": 0.143,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:57.203Z"
+  },
+  "L0801": {
+   "lineId": "L0801",
+   "model": "scribe_v1",
+   "transcript": "Four pins in the order we pulled them. The tooth, the band on the candle, the second look, the neighbor's seal",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9ce2af64707c",
+   "lineSig": "a1069f613d1d",
+   "clip": "narration/clips/L0801.wav",
+   "wer": 0.048,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:57.880Z"
+  },
+  "L0802": {
+   "lineId": "L0802",
+   "model": "scribe_v1",
+   "transcript": "Pull any one and a promise breaks",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9798ef77fa6f",
+   "lineSig": "e0c2047a09ef",
+   "clip": "narration/clips/L0802.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:58.318Z"
+  },
+  "L0803": {
+   "lineId": "L0803",
+   "model": "scribe_v1",
+   "transcript": "So what travels when a room travels is not the bucket alone.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c473bb45fcab",
+   "lineSig": "30254235d07d",
+   "clip": "narration/clips/L0803.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:19:58.778Z"
+  },
+  "L0805": {
+   "lineId": "L0805",
+   "model": "scribe_v1",
+   "transcript": "And a runtime that cuts the ribbon, uploads and looks again. In Cell D's fleet, one that also seals and collects before it replays",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "07f08c283c6f",
+   "lineSig": "11eb5b0e4678",
+   "clip": "narration/clips/L0805.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:22:59.807Z"
+  },
+  "L0806": {
+   "lineId": "L0806",
+   "model": "scribe_v1",
+   "transcript": "The small print as of the 31st of October, 2026",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9e119261d350",
+   "lineSig": "1c47837f8d3d",
+   "clip": "narration/clips/L0806.wav",
+   "wer": 0.182,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:20:00.074Z"
+  },
+  "L0807": {
+   "lineId": "L0807",
+   "model": "scribe_v1",
+   "transcript": "Worker D's clustering is three days old and still experimental",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "9931e56a7ba5",
+   "lineSig": "6c4d5df93a0b",
+   "clip": "narration/clips/L0807.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:23:00.234Z"
+  },
+  "L0808": {
+   "lineId": "L0808",
+   "model": "scribe_v1",
+   "transcript": "Its tests check one writer, forwarding, and takeover after a kill. We read them. We did not run them.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "57ec18f20178",
+   "lineSig": "74b75195747d",
+   "clip": "narration/clips/L0808.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:20:01.470Z"
+  },
+  "L0809": {
+   "lineId": "L0809",
+   "model": "scribe_v1",
+   "transcript": "The alarm tests check the cases they stage. They do not establish exactly-once effects for every application",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "81d4e7042fb6",
+   "lineSig": "b92eabd1d84a",
+   "clip": "narration/clips/L0809.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:20:02.005Z"
+  },
+  "L0812": {
+   "lineId": "L0812",
+   "model": "scribe_v1",
+   "transcript": "The two lamps once more. The announced plan stands, and the commit called itself a beginning",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "443ba94e910a",
+   "lineSig": "d04c32047ee2",
+   "clip": "narration/clips/L0812.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:20:02.655Z"
+  },
+  "L0814": {
+   "lineId": "L0814",
+   "model": "scribe_v1",
+   "transcript": "And the well? It does not run your code. Make two rooms commit as one, promise exactly once, or keep the town open when it goes quiet",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1aead48773f3",
+   "lineSig": "90dafc311ecc",
+   "clip": "narration/clips/L0814.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:20:03.267Z"
+  },
+  "L0815": {
+   "lineId": "L0815",
+   "model": "scribe_v1",
+   "transcript": "Dawn over the harbor, the lantern burns in House C, and the sender's slip still carries its tick.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0b74eef0dc4a",
+   "lineSig": "3f55b8b66a16",
+   "clip": "narration/clips/L0815.wav",
+   "wer": 0.056,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:20:03.851Z"
+  },
+  "L0816": {
+   "lineId": "L0816",
+   "model": "scribe_v1",
+   "transcript": "A tick is not a feeling. It is a proof",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b2bd3cd4c05d",
+   "lineSig": "151f1b4aa66a",
+   "clip": "narration/clips/L0816.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:20:04.279Z"
+  },
+  "L0817": {
+   "lineId": "L0817",
+   "model": "scribe_v1",
+   "transcript": "The bites were in the well, and the plate still named its owner when the bell rang",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "18d0248902bf",
+   "lineSig": "b4a03efba6ad",
+   "clip": "narration/clips/L0817.wav",
+   "wer": 0.059,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:31:43.077Z"
+  },
+  "L0818": {
+   "lineId": "L0818",
+   "model": "scribe_v1",
+   "transcript": "The harbor was made up. The code is real.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "54a1fefdfaae",
+   "lineSig": "4a147d7a4da9",
+   "clip": "narration/clips/L0818.wav",
+   "wer": 0.111,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-11-01T04:20:05.189Z"
+  }
+ },
+ "updatedAt": "2026-11-01T04:46:50.810Z"
+}

@@ -462,7 +462,7 @@
    "onScreenText": [
     {
      "kind": "quote",
-     "text": "This is the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794",
+     "text": "…the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794",
      "beat": "merged",
      "until": "rooms"
     }
@@ -510,7 +510,14 @@
      "id": "L0817",
      "text": "The bytes were in the Well, and the Plate still named its owner when the bell rang.",
      "direction": "quiet and exact, each half its own small proof",
-     "preGap": 0.9
+     "preGap": 0.9,
+     "tts": {
+      "solo": true,
+      "speed": 0.75
+     },
+     "insertGaps": {
+      "Well": 0.3
+     }
     },
     {
      "id": "L0818",

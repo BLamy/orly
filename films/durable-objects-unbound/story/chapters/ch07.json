@@ -20,7 +20,11 @@
     {
      "id": "L0702",
      "text": "First it throws away its own copy of the room.",
-     "direction": "plain, a little brisk; housekeeping before the real work"
+     "direction": "plain, a little brisk; housekeeping before the real work",
+     "tts": {
+      "solo": true,
+      "speed": 0.72
+     }
     },
     {
      "id": "L0703",
@@ -218,7 +222,6 @@
     {
      "id": "L0710",
      "text": "Cloudflare's hosted relay, back in 2024, answered that with followers.",
-     "spoken": "Cloudflare's hosted relay, in twenty twenty-four, called object storage tens or hundreds of milliseconds away, and used followers.",
      "direction": "a historical footnote, reported, not argued"
     },
     {
@@ -346,7 +349,7 @@
      "id": "badge",
      "at": {
       "line": "L0713",
-      "word": "celld's"
+      "word": 2
      },
      "what": "push past the wellhead badge 'celld 0.6.3'"
     },
@@ -596,7 +599,11 @@
     {
      "id": "L0724",
      "text": "Or the old owner was only asleep, and wakes to ring one more bell.",
-     "direction": "dry, the teacher who enjoys a good failure"
+     "direction": "dry, the teacher who enjoys a good failure",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
     },
     {
      "id": "L0725",
@@ -747,7 +754,11 @@
      "id": "L0726",
      "text": "So a successor reads that record before it reads the Well.",
      "direction": "measured; 'before' the hinge of the sentence",
-     "pauseAfter": 0.6
+     "pauseAfter": 0.6,
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
     },
     {
      "id": "L0727",
@@ -883,8 +894,8 @@
      "until": "open"
     },
     {
-     "kind": "quote",
-     "text": "…so a stale owner cannot complete another fleet proof. — celld guarantees, v0.6.3",
+     "kind": "label",
+     "text": "celld: seal the old session, then restore",
      "beat": "open"
     }
    ],
@@ -936,7 +947,11 @@
      "text": "The room would rather stay shut than come back missing a promise.",
      "direction": "the chapter's line; warm, unhurried, a little proud of the machine",
      "preGap": 0.7,
-     "level": "soft"
+     "level": "soft",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
     }
    ],
    "leadIn": 0.8,
@@ -1037,8 +1052,8 @@
      "beat": "shut"
     },
     {
-     "kind": "quote",
-     "text": "A follower's HTTP error does not prove its data is absent — celld guarantees, v0.6.3",
+     "kind": "label",
+     "text": "celld: an error is not proof of absence",
      "beat": "error"
     }
    ],

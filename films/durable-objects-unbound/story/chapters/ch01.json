@@ -15,7 +15,11 @@
      "id": "L0101",
      "text": "Everything in this harbour is made up, except the kind of room in that window.",
      "pauseAfter": 0.6,
-     "direction": "the film's first words, quiet and unhurried as the camera arrives; a small dry turn on 'except', warmth on 'room'"
+     "direction": "the film's first words, quiet and unhurried as the camera arrives; a small dry turn on 'except', warmth on 'room'",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
     },
     {
      "id": "L0102",
@@ -258,7 +262,11 @@
      "id": "L0109",
      "text": "How did the promise outlive the machine?",
      "pauseAfter": 0.8,
-     "direction": "a real question, asked of yourself; no lift into a quiz-show tone"
+     "direction": "a real question, asked of yourself; no lift into a quiz-show tone",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
     },
     {
      "id": "L0110",
@@ -269,7 +277,11 @@
      "id": "L0111",
      "text": "The plate above it names the room's owner.",
      "pauseAfter": 0.6,
-     "direction": "pointing at it with the voice; even"
+     "direction": "pointing at it with the voice; even",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
     },
     {
      "id": "L0112",
@@ -285,7 +297,11 @@
     {
      "id": "L0114",
      "text": "So how can a bucket, which cannot run a single line of code, make a room portable?",
-     "direction": "the film's question, slow and dry; a small smile on 'single line of code'; 'portable' left open"
+     "direction": "the film's question, slow and dry; a small smile on 'single line of code'; 'portable' left open",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
     }
    ],
    "leadIn": 0.8,

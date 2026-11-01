@@ -508,7 +508,7 @@
     },
     {
      "kind": "quote",
-     "text": "A client therefore cannot act on a value that a crash can still lose. — celld guarantees, v0.6.3",
+     "text": "…cannot act on a value that a crash can still lose. — celld guarantees, v0.6.3",
      "beat": "local"
     }
    ],
@@ -538,7 +538,14 @@
      "id": "L0620",
      "text": "Pull the pin, and the keeper never looks up.",
      "pauseAfter": 0.6,
-     "direction": "firm, the third pin"
+     "direction": "firm, the third pin",
+     "tts": {
+      "solo": true,
+      "speed": 0.8
+     },
+     "insertGaps": {
+      "pin": 0.28
+     }
     },
     {
      "id": "L0621",
@@ -694,8 +701,8 @@
      "until": "reseat"
     },
     {
-     "kind": "quote",
-     "text": "a missing acknowledgement does not prove a write absent. — celld guarantees, v0.6.3",
+     "kind": "label",
+     "text": "celld: no ack is no proof of absence",
      "beat": "lost"
     }
    ],

@@ -84,7 +84,7 @@ _THIS SHOT: the 2020 idea, one object in one place. HISTORY DESK (duskRose). Iri
 
 > **[date]** 28 September 2020
 > **[nameCard]** Kenton Varda · Cloudflare
-> **[quote]** That object exists in only one location in the whole world at a time. — Kenton Varda, 2020
+> **[quote]** …only one location in the whole world at a time. — Kenton Varda, 2020
 
 **L0201** On the twenty-eighth of September, 2020, Kenton Varda of Cloudflare introduced Durable Objects, in a closed beta.  _(the history begins: a date said with care, the name and role clear and respectful)_
 
@@ -157,7 +157,7 @@ _THIS SHOT: the runtime that could leave, and the room that could not; then SQLi
 
 _THIS SHOT: Cloudflare's hosted relay, drawn as a diagram, never as the harbour town. Cut on the latch to a serverCyan board: deep blue-black ground, cyan cut-line practicals. Screen-left the Room Lantern (small, candleAmber, the one warm accent) with a brass badge 'Cloudflare, hosted' hanging from its base (beat badge). On 'write-ahead' the Ribbon is seen for the first time: a parchment tape unspooling from the lantern's base, frame after frame (beat ribbon). On 'batches' the ribbon is cut into short lengths that roll down a slow cyan chute into a deep cistern at the lower-middle (object storage), the chute visibly sluggish (beat batches); a small cut-paper ten-second sand-glass beside it drains, no text. On 'slow' the reply letter at the lantern's door waits, and the sand-glass is shown far too slow (beat slow). On 'commit' five far lamps light across the upper right, each on its own small hill (five data centres), and each new frame flies from the lantern along five cyan threads at once (beat five); quote card Q06 sets upper-left. On 'three' three of the five lamps answer with a flash back along their threads (beat three), and on 'lifts' the latch on the lantern's door lifts and the letter goes (beat lift). On 'inside' the camera pulls back: the whole diagram sits within the outline of one great paper wall, Cloudflare's network, with the open road from the previous shot outside it and the tethered lantern's thread inside (beat inside). One focal motion at a time; text above y 634; the badge is art at 26 px or more._
 
-> **[quote]** Once at least three of these followers respond that they have received the change, SRS informs the application that the write is confirmed. — Kenton Varda, 2024
+> **[quote]** Once at least three of these followers respond… the write is confirmed. — Kenton Varda, 2024
 
 **L0220** On Cloudflare's own network, a hosted service kept that promise: the Storage Relay Service.  _(naming it with respect; 'hosted' and 'Cloudflare's own' clearly set apart)_
 
@@ -245,7 +245,7 @@ _THIS SHOT: the two refusals that make the Well a referee, one machine, two less
 _THIS SHOT: WHO REFEREES THE REFEREE? A vertical crane down into the Well. Cut from the square to a tight top-down of the wellhead; on 'referee' the camera cranes down the shaft (about 6 s, cubic) as the stone wall dissolves into a cutaway section (the style bible's 'cutaway' register, serverCyan glints only here): L2 stone cisterns stacked in depth, L3 narrow ledges, fog sheet A between them. At the top of the shaft, beside the cutaway, a standing silhouette at a lectern-height desk: Werner Vogels, generic and dignified, no likeness; name card on 'Vogels' (beat name). On 'agree' three small cistern-lamps at different depths brighten together, the same faint mark reflected in each (beat caches). On 'order' a narrow paper ledger on a ledge advances one line per change, in sequence (beat order). On 'witness' the witness appears: a small lamp-keeper on a mid-ledge with a hand-bell; a scroll drops past him from above and he rings once; at the same moment a cistern-lamp below, about to hand up an old copy, tugs a cord up to the witness, sees the bell's flag raised, and its old copy dims while the fresh one is fetched (beat witness: the read barrier, shown as a cord and a flag). On 'proofs' a sheaf of parchment proof-sheets is pinned along the shaft wall beside the ledges, more sheets than the ledges themselves (beat proofs; this is the image of 'more work than building it'). On 'hill' the camera cranes back UP the shaft (4 s, cubic) to the square: the three houses above, each keeper's pulley line converging on the one wellhead; inside the Well a faint cyan pulse shows the machinery still turning (beat inside). Quotes upper-left on a soft plate, one replacing the other; bottom 12% clear._
 
 > **[nameCard]** Werner Vogels · Amazon CTO
-> **[quote]** This component acts as a witness to writes, notified every time an object changes. — Werner Vogels, 2021
+> **[quote]** …a witness to writes, notified every time an object changes. — Werner Vogels, 2021
 > **[quote]** They were more work, in fact, than the actual implementation itself. — Werner Vogels
 
 **L0319** So who referees the referee?  _(the film's first reversal; a genuine question, then let it hang)_
@@ -305,14 +305,14 @@ _THIS SHOT: the second lineage arrives. Iris opens on Ryan Dahl's desk lamp, scr
 
 > **[date]** August 2026
 > **[nameCard]** Ryan Dahl · Deno
-> **[quote]** That's why I started celld. — Ryan Dahl, 2026
+> **[label]** Ryan Dahl, 2026: why he started celld
 > **[quote]** It needs no serving control plane or consensus service. — celld README, v0.6.3
 
 **L0401** August, 2026. A second desk, a second lamp: the Deno team releases celld.  _(a new era opening, unhurried; a small lift on 'second lamp', as if noticing a light come on across the water)_
 
 **L0402** Ryan Dahl, of Deno, had started it, and he later told us why.  _(plain introduction, name and role clear; 'celld' as cell-dee; 'five words' light, inviting the eye to the card)_
 
-**L0403** He wanted “one binary, written in Rust, with object storage as its only external service dependency.”  _(read the quotation as a quotation, even and exact, a touch slower on 'only external service dependency')_
+**L0403** He wanted a single binary, written in Rust, whose only outside service is object storage.  _(plain and exact, reported in our own words; a touch slower on 'only outside service')_
 
 **L0404** celld runs a Workers application on machines you own: Durable Objects, self-hosted and distributed, with long-term state in a bucket.  _(descriptive, steady; 'machines you own' with quiet weight, the film's third promise)_
 
@@ -327,7 +327,7 @@ _THIS SHOT: the second lineage arrives. Iris opens on Ryan Dahl's desk lamp, scr
 _THIS SHOT: the gap, and the braid begins. Cut to Kenton Varda's desk, screen-left, under its warm lamp (duskRose, the desk set from ch02, now with a 2026 laptop): L2 a back wall with a small window hole; L3 shelves; L4 Kenton Varda's generic, dignified silhouette at the desk (cast signature: slight stoop, hand near chin in his 'think' idle), rimmed from the lamp on the right; L5 the desk corner, blurred. Name card on 'Kenton' (beat name). On 'gap' the Q26 quote card sets upper-right over a soft plate (beat gap). On 'single' a single paper lantern in a glass bell jar sits on the desk beside the laptop: one room, one instance, unable to leave its jar (beat single). On 'delighted' his lamp brightens one step (beat delighted), the only response we give him. On 'frame' the camera pulls back and trucks right (≈240 px over 4 s, ≤ 6% width per second) until both desks share the frame: Kenton Varda's lamp at left, Ryan Dahl's at right, the dark harbour hill between them at L1–L2 (beat pull). Two ropes hang from the lamps' arms, one from each, and on 'braid' they swing in and cross once over the hill, the first turn of a braid (beat braid). The figures stay at their desks; nobody's hands touch the ropes. Text upper half only; bottom 12% clear._
 
 > **[nameCard]** Kenton Varda · Cloudflare
-> **[quote]** workerd has always had one big gap in its production-readiness: Durable Objects. — Kenton Varda, 2026
+> **[label]** Varda: workerd's one gap, Durable Objects
 
 **L0407** In October the two would write one post together. In it, Kenton Varda, of Cloudflare, named the gap.  _(a turn in the story; 'named the gap' plain and level, no drama)_
 
@@ -346,13 +346,13 @@ _THIS SHOT: the announcement, told as plans. Hold the two-desk frame from ch04-s
 > **[date]** 9 October 2026
 > **[quote]** the entire Deno team is joining Cloudflare — Ryan Dahl, 2026
 > **[nameCard]** Bert Belder
-> **[quote]** This will involve merging code and ideas from celld back into workerd. — Kenton Varda
+> **[label]** Varda: celld's code and ideas into workerd
 
 **L0411** On the ninth of October, 2026, Deno and Cloudflare announced that the whole Deno team was joining Cloudflare.  _(a date that opens a section; factual, warm, no fanfare)_
 
 **L0412** These are plans, as announced. The Deno runtime gets one more year of bug-fix and security releases.  _(careful; 'plans, as announced' given deliberate weight, then plain reporting)_
 
-**L0413** After that year, Ryan Dahl writes, “we will end our development of the Deno runtime.”  _(the quotation even and respectful, neither sad nor brisk)_
+**L0413** After that year, Ryan Dahl writes, the team's work on the Deno runtime comes to an end.  _(reported plainly, even and respectful, neither sad nor brisk)_
 
 **L0414** Deno Deploy runs six more months. JSR and rusty_v8 continue. Deno stays open source.  _(a short list, each sentence its own step; 'open source' with a small lift)_
 
@@ -367,8 +367,8 @@ _THIS SHOT: the announcement, told as plans. Hold the two-desk frame from ch04-s
 _THIS SHOT: the commit, as a document. Paper-fold from the desks into a long parchment strip unrolling left to right across the upper two-thirds of frame over the dark harbour (L1 sea and far shore, L2 ridge, deep and unlit); the strip has a thin serverCyan rim, the accent the staging reserves for the commit strip (beat fold). Camera: a slow 6 s dolly in toward the strip with a slight truck right; the harbour planes slide beneath. Date stamp '28 October 2026 · Pacific' on 'twenty-eighth' (beat date). On 'beginning' the Q14 line inks as the strip's headline (beat headline). Below the headline the strip carries soft, illegible ink rules (texture only, no readable text) for the rest of the message. On 'bucket' a small ink vignette appears in the strip's margin: three tiny houses and one well joined by three lines (beat bucket); on 'owner' one house's window lights alone (beat owner); on 'dies' that window gutters and a second house's window lights (beat dies). On 'experimental' the Q15 line inks lower on the strip (beat body), and a brass badge 'workerd · 28 Oct' swings onto a hook at the strip's right end. On 'Alarms' an empty bracket in the strip's margin is lit for a moment: the place where a small wake-up clock would hang, empty (beat alarms). On the second 'alarms' a small brass wake-up clock silhouette drops into the bracket (beat later); on 'facets' a small cut-paper facet, a many-sided gem shape, hangs beside it and a second badge 'workerd · 31 Oct' swings onto the hook beside the first (beat facets). The two badges then hang on the strip, unnamed in narration, as the film's tags from here on. On 'open' the camera pushes into the strip's centre, which starts to fold open like a door onto the next chapter's terrace (beat open). Text stays above y 600; bottom 12% clear._
 
 > **[date]** 28 October 2026 · Pacific
-> **[quote]** This is the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794
-> **[quote]** For now an object acknowledges a write only once it is fully synced to the bucket. — commit aa494794
+> **[quote]** …the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794
+> **[label]** Commit: no ack until the bucket holds it
 
 **L0418** On the evening of the twenty-eighth of October, Pacific time, Ryan Dahl's commit landed in workerd, calling itself a beginning.  _(the chapter's hinge; exact and calm; 'a beginning' slightly lifted)_
 
@@ -471,7 +471,7 @@ _THIS SHOT: PULL THE PIN, the self-fence. Lamp change into the emberRed failure 
 
 _THIS SHOT: borrowed clocks. Occluder wipe behind the L6 lamp-post onto the terrace, each sill now carrying a small brass clock-face beside its candle and the Well's own clock set into the wellhead (badge 'workerd · 28 Oct' on the frame). On 'measures' a fine thread runs from each sill clock down to the Well's clock and each sill clock nudges to agree (beat measure). On 'cannot' one thread snaps in the wind; that house's clock-face shows a small '0' engraved where its offset should be: an assumed zero (beat zero). On 'clock' the camera drifts off the snapped thread toward the Plate, the real referee (beat drift). On 'celld' a lamp change on the right half of frame only: a second terrace in labGreen lamplight, badge 'celld 0.6.3' on its own wellhead; its candles are visibly shorter (ten seconds) with a small renewal mark one third of the way down (beat celld). On 'record' that terrace's keeper watches a scroll land in its own Well (a bucket proof), then looks up at its plate and not at any clock before ringing; the quote card sets upper-left (beat record). The two terraces never merge; their numbers never sit together. Bottom 12% clear._
 
-> **[quote]** The check reads the record instead of a clock — celld guarantees, v0.6.3
+> **[label]** celld: reads the record, not a clock
 
 **L0524** One soft spot: each house measures its clock against the bucket's, and when it cannot, it assumes zero.  _(candid, a teacher admitting a weakness)_
 
@@ -562,7 +562,7 @@ _THIS SHOT: scrolls and Books in the Well. Occluder wipe behind the L6 lamp-post
 _THIS SHOT: PROOF BEFORE RESPONSE (workerd). Cut to the Room Lantern's door in House A, the Held Letter (#42's reply) resting against its brass latch, exactly as in ch02-s03; badge 'workerd · 28 Oct' by the door. On 'written' the sender's slip enters the lantern and a page is inked (beat written). On 'cuts' the keeper's scissors snip just after the stamp and the scroll leaves along the pulley line, which the camera follows down to the wellhead in one continuous 4 s tilt (beat down). On 'looks' the keeper raises its lamp on a pole up toward the Plate above the Well: the lamp light falls on the tiles A · 7 · 7 (beat look); on 'Still' the tile A glints, on the second 'Still' the 7 glints (beat still). On 'bell' House A's bell swings (beat bell); on 'latch' the latch lifts and the letter flies out (beat latch); on 'tick' the sender's slip receives its ink tick, intercut as a small inset (beat tick). On 'Finishing' (word 'room') the room's own ledger shows the page done, yet the latch stays shut until the bell (beat local); on 'celld' a small labGreen inset with badge 'celld 0.6.3': behind its latch wait a reply, a red-edged error slip and a string of small stream chunks, all held (beat celld); the quote card sets. Text upper-left; bottom 12% clear._
 
 > **[label]** upload → look again → bell
-> **[quote]** A client therefore cannot act on a value that a crash can still lose. — celld guarantees, v0.6.3
+> **[quote]** …cannot act on a value that a crash can still lose. — celld guarantees, v0.6.3
 
 **L0614** Now the tick itself, in workerd. Message forty-two is written; its reply waits behind the latch.  _(returning to the opening scene, with new eyes)_
 
@@ -581,7 +581,7 @@ _THIS SHOT: PROOF BEFORE RESPONSE (workerd). Cut to the Room Lantern's door in H
 _THIS SHOT: PULL THE PIN, the second look. Lamp change into emberRed. Framing: the wellhead centre-left with the Plate above, House A up-left, House B up-right; the keeper of House A at the wellhead holding the lamp-pole; the red-tagged pin seated in the pole's hinge (the second look). On 'Pull' the demonstrator's hand draws the pin; the pole's hinge goes slack and the lamp droops (beat pull). On 'freezes' A's whole house freezes, keeper mid-gesture, the scroll halfway down the rope, and A's candle burns down past its band while it is frozen (beat stall); on 'claims' B's card clicks in the Tooth and the Plate's tiles turn to B · 8 · 7 (beat claim); on 'lands' A's scroll arrives on the shelf tagged 'epoch 7' in the Well's cutaway (beat lands). On 'anyway' A, without looking up, swings its bell; a letter flies and a ticked slip appears at a sender's window (beat badtick); on 'never' a cold beat: the epoch-7 shelf is shown, A's late scroll at its end, while B's shelf, 'epoch 8', is empty of it (beat maybe). On 'Pin back' the hand reseats the pin and the scene rewinds to the stall (beat reseat); on 'eight' the lamp rises to the Plate: B · 8 (beat eight); on 'error' the waiting letter turns to a red-edged error slip (beat error); on 'cleared' a later moment, B's keeper sweeps the old scroll from shelf 7 (beat clear). The grade lamp-changes back to winterBlue. On 'lost' a coda at the sender's window: a reply letter blows away in the wind before it arrives; the sender looks at an un-ticked slip (beat lost); on 'absent' the slip is shown with a faint question mark where the tick would be (beat absent); the quote card sets. Text upper-left; bottom 12% clear._
 
 > **[label]** no second look: a false tick
-> **[quote]** a missing acknowledgement does not prove a write absent. — celld guarantees, v0.6.3
+> **[label]** celld: no ack is no proof of absence
 
 **L0620** Pull the pin, and the keeper never looks up.  _(firm, the third pin)_
 
@@ -695,7 +695,7 @@ _THIS SHOT: the tail outside the Well, and the pin (the neighbours' wax-seal sta
 _THIS SHOT: THE RECOVERY GATE (badge 'celld 0.6.3' engraved at the plate's top corner). Paper fold from the labGreen terrace into a parchment plate, camera locked, a very slow push. Title engraved at top-left. Down the plate, six numbered stations as ink pictograms (numerals only, no sentences): 1 a brass record tile; 2 the Tooth with a swap card; 3 two notebooks with wax seals; 4 pages gathered into a scroll; 5 the Well; 6 the record tile with a seal on it; and at the far right, behind a closed gate, a bound Book (restore). On 'record' station 1's tile is lifted by an ink hand (the successor's keeper, not the demonstrator). On 'Absent' an empty hook beside it: the gate opens straight to the Book (that session never ticked ahead of the Well). On 'Sealed' the tile shows a seal: the gate opens straight to the Book again. Both short paths fade back. On 'Open' the tile shows an open eye; the long path inks in station by station on the words: 'fence' the Tooth clicks and the tile's notch is re-cut (station 2); 'Seal' red wax stamps across both notebooks (3); 'collect' their pages roll into one scroll (4); 'upload' it drops into the Well (5); 'mark' a seal lands on the record tile (6). On 'restore' the gate swings and the Book opens. The quote fragment sits in a cartouche at the UPPER RIGHT from 'Open' to the end; nothing in the bottom 12%. STAGING NOTE (ch07-s03 to s07): the successor is House C's node; its keeper stands at C's door, not in the open square; C's own notebook is one of the two recovery reads._
 
 > **[title]** The recovery gate
-> **[quote]** …so a stale owner cannot complete another fleet proof. — celld guarantees, v0.6.3
+> **[label]** celld: seal the old session, then restore
 
 **L0726** So a successor reads that record before it reads the Well.  _(measured; 'before' the hinge of the sentence)_
 
@@ -712,7 +712,7 @@ _THIS SHOT: THE RECOVERY GATE (badge 'celld 0.6.3' engraved at the plate's top c
 _THIS SHOT: A COMPLETE TAIL (badge 'celld 0.6.3' on the wellhead, unnamed). Paper fold back to the terrace; medium two-shot of B's and C's upper windows, the copyists at their desks, both notebooks wax-sealed from the gate. The successor's keeper stands on the square below with a lantern, a scroll case open. Each notebook's spine carries a band that shows its retained range: a full ink band = complete; a band with a missing segment = incomplete; a band blurred and water-stained = damaged. On 'complete' both copyists hold their notebooks to the window. CASE ONE on 'water-damaged': copyist-1's band in B is stained; on 'other' copyist-2's band in C is full and sharp; its pages ride down to the keeper, the gate (seen small at the wellhead) opens, the keeper's lantern brightens (beat proceeds). Ink-bleed rewind. CASE TWO on 'incomplete': copyist-1's band now has a gap; on 'damaged' copyist-2's band blurs; the keeper waits; nothing rides down; on 'shut' the Room Lantern's door stays latched, unlit, and the gate stays closed. On 'error' a variation: copyist-2's window answers the keeper with a crossed slip instead of its notebook; the keeper does NOT strike that notebook off: a small hourglass appears beside it and the keeper keeps asking (it might still hold pages). On 'promise' slow push in on the closed door. Quote cartouche at upper right, label at upper left; bottom 12% clear._
 
 > **[label]** No complete tail: the door stays shut
-> **[quote]** A follower's HTTP error does not prove its data is absent — celld guarantees, v0.6.3
+> **[label]** celld: an error is not proof of absence
 
 **L0730** Now the hard rule. At least one current neighbour must hand over its complete range of retained pages.  _(firm and clear; 'at least one' and 'complete' carry the weight)_
 
@@ -784,7 +784,7 @@ _THIS SHOT: the dated small print, staged as objects in the canonical town. Cut 
 
 _THIS SHOT: the two lamps, and the limits of the Well. Ink bleed from the town into the two desks of 2026 in one frame (geography lock: Kenton Varda's desk screen-left, lamp warm; Ryan Dahl's desk screen-right; beside Ryan Dahl's a second, out-of-focus chair for Bert Belder). Generic, dignified 2020s silhouettes at laptops, no likeness, no gestures toward the town; their hands stay at their desks. Slow dolly in between the two lamps. On 'plan' the two ropes that braided between the desks in ch04 tighten into one braid running out of frame right toward a small paper model of the harbour terrace on a shelf. On 'merged' a paper ribbon labelled with no words passes from Ryan Dahl's side into the braid. The quote appears in a cartouche at upper middle on 'merged', attributed. On 'Well' the camera drifts to the paper harbour model, where a tiny Well sits in its square: on 'run' a tiny keeper's hand stays at the house, not the Well (the Well runs nothing); on 'rooms' two Plates on two separate wells change at different moments, never together; on 'exactly' a bell rings and a ghost repeat hangs beside it; on 'quiet' the Well's rope goes slack and every house closes its own shutters (writers stop; nothing serves on). Name cards are not repeated. Bottom 12% clear._
 
-> **[quote]** This is the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794
+> **[quote]** …the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794
 
 **L0812** The two lamps, once more. The announced plan stands, and the commit called itself a beginning.  _(reporting, carefully attributed; 'announced plan' plain, not a promise)_
 

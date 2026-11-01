@@ -20,7 +20,11 @@
     {
      "id": "L0302",
      "text": "There was a time when overwriting a file in S3 and reading it straight back could hand you the old copy.",
-     "direction": "a small historical oddity, told plainly"
+     "direction": "a small historical oddity, told plainly",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
     },
     {
      "id": "L0303",
@@ -316,7 +320,11 @@
     {
      "id": "L0318",
      "text": "The Well had learned to say no.",
-     "direction": "a short list landing on the chapter title; warm"
+     "direction": "a short list landing on the chapter title; warm",
+     "tts": {
+      "solo": true,
+      "speed": 0.72
+     }
     }
    ],
    "leadIn": 0.6,
@@ -568,7 +576,7 @@
     },
     {
      "kind": "quote",
-     "text": "This component acts as a witness to writes, notified every time an object changes. — Werner Vogels, 2021",
+     "text": "…a witness to writes, notified every time an object changes. — Werner Vogels, 2021",
      "beat": "caches",
      "until": "proofs"
     },
@@ -756,12 +764,20 @@
      "id": "L0331",
      "text": "It makes no promise that two rooms commit as one.",
      "pauseAfter": 0.6,
-     "direction": "precise and calm"
+     "direction": "precise and calm",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
     },
     {
      "id": "L0332",
      "text": "And if the Well goes quiet, no house can take a Plate at all.",
-     "direction": "low, ending the chapter on the cost of the referee"
+     "direction": "low, ending the chapter on the cost of the referee",
+     "tts": {
+      "solo": true,
+      "speed": 0.8
+     }
     }
    ],
    "leadIn": 0.6,

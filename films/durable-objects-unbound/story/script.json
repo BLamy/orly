@@ -43,23 +43,23 @@
     "creditsSources": [
       {
         "from": "ch02-s01",
-        "text": "That object exists in only one location in the whole world at a time. — Kenton Varda, 2020"
+        "text": "Source: Kenton Varda, Cloudflare blog, 28 September 2020"
       },
       {
         "from": "ch02-s05",
-        "text": "Once at least three of these followers respond that they have received the change, SRS informs the application that the write is confirmed. — Kenton Varda, 2024"
+        "text": "Source: Kenton Varda, Cloudflare blog, 26 September 2024"
       },
       {
         "from": "ch03-s04",
-        "text": "This component acts as a witness to writes, notified every time an object changes. — Werner Vogels, 2021"
+        "text": "Source: Werner Vogels, All Things Distributed, 20 April 2021"
       },
       {
         "from": "ch04-s01",
-        "text": "With celld, I wanted the opposite: one binary, written in Rust, with object storage as its only external service dependency. — Ryan Dahl, 2026"
+        "text": "Source: Ryan Dahl, Cloudflare blog, 9 October 2026"
       },
       {
         "from": "ch04-s04",
-        "text": "This is the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794, 2026"
+        "text": "Source: Ryan Dahl, workerd commit aa494794, 28 October 2026"
       }
     ],
     "sourcesCard": "SOURCES CARD (end): Cloudflare blog posts by Kenton Varda (2020, 2021, 2022, 2024) and by Ryan Dahl and Kenton Varda (2026); Deno blog (Ryan Dahl, 2026); AWS announcements (Dec 2020, Aug 2024, Nov 2024) and S3 User Guide; Werner Vogels, 'Diving Deep on S3 Consistency' (2021); SQLite file format; workerd at aa494794 and ad78a8fe; celld 0.6.3 at 8702f6d. celld's replicator descends from rustyriver (Mike Nomitch), Litestream (Ben Johnson) and the LTX format. Harbour, room, message, houses and epoch numbers are illustrative. Upstream tests were read, not run.",
@@ -443,7 +443,11 @@
               "id": "L0101",
               "text": "Everything in this harbour is made up, except the kind of room in that window.",
               "pauseAfter": 0.6,
-              "direction": "the film's first words, quiet and unhurried as the camera arrives; a small dry turn on 'except', warmth on 'room'"
+              "direction": "the film's first words, quiet and unhurried as the camera arrives; a small dry turn on 'except', warmth on 'room'",
+              "tts": {
+                "solo": true,
+                "speed": 0.83
+              }
             },
             {
               "id": "L0102",
@@ -686,7 +690,11 @@
               "id": "L0109",
               "text": "How did the promise outlive the machine?",
               "pauseAfter": 0.8,
-              "direction": "a real question, asked of yourself; no lift into a quiz-show tone"
+              "direction": "a real question, asked of yourself; no lift into a quiz-show tone",
+              "tts": {
+                "solo": true,
+                "speed": 0.85
+              }
             },
             {
               "id": "L0110",
@@ -697,7 +705,11 @@
               "id": "L0111",
               "text": "The plate above it names the room's owner.",
               "pauseAfter": 0.6,
-              "direction": "pointing at it with the voice; even"
+              "direction": "pointing at it with the voice; even",
+              "tts": {
+                "solo": true,
+                "speed": 0.85
+              }
             },
             {
               "id": "L0112",
@@ -713,7 +725,11 @@
             {
               "id": "L0114",
               "text": "So how can a bucket, which cannot run a single line of code, make a room portable?",
-              "direction": "the film's question, slow and dry; a small smile on 'single line of code'; 'portable' left open"
+              "direction": "the film's question, slow and dry; a small smile on 'single line of code'; 'portable' left open",
+              "tts": {
+                "solo": true,
+                "speed": 0.83
+              }
             }
           ],
           "leadIn": 0.8,
@@ -940,7 +956,11 @@
               "id": "L0203",
               "text": "And his post is plain about where that object lives.",
               "pauseAfter": 0.9,
-              "direction": "a turn toward the quote on screen; leave room for the eye to read it"
+              "direction": "a turn toward the quote on screen; leave room for the eye to read it",
+              "tts": {
+                "solo": true,
+                "speed": 0.85
+              }
             },
             {
               "id": "L0204",
@@ -1045,7 +1065,7 @@
             },
             {
               "kind": "quote",
-              "text": "That object exists in only one location in the whole world at a time. — Kenton Varda, 2020",
+              "text": "…only one location in the whole world at a time. — Kenton Varda, 2020",
               "beat": "plain"
             }
           ],
@@ -1197,7 +1217,14 @@
             {
               "id": "L0214",
               "text": "So the tick in the harbour was a held letter, released.",
-              "direction": "a quiet click of understanding; 'released' landing soft"
+              "direction": "a quiet click of understanding; 'released' landing soft",
+              "tts": {
+                "solo": true,
+                "speed": 0.85
+              },
+              "insertGaps": {
+                "letter": 0.25
+              }
             }
           ],
           "leadIn": 0.8,
@@ -1318,7 +1345,11 @@
               "id": "L0215",
               "text": "September 2022. Cloudflare opens the source of its runtime, workerd.",
               "pauseAfter": 0.6,
-              "direction": "a new era, plain; 'workerd' said clearly as a name"
+              "direction": "a new era, plain; 'workerd' said clearly as a name",
+              "tts": {
+                "solo": true,
+                "speed": 0.88
+              }
             },
             {
               "id": "L0216",
@@ -1584,7 +1615,7 @@
           "onScreenText": [
             {
               "kind": "quote",
-              "text": "Once at least three of these followers respond that they have received the change, SRS informs the application that the write is confirmed. — Kenton Varda, 2024",
+              "text": "Once at least three of these followers respond… the write is confirmed. — Kenton Varda, 2024",
               "beat": "five"
             }
           ],
@@ -1623,7 +1654,11 @@
             {
               "id": "L0302",
               "text": "There was a time when overwriting a file in S3 and reading it straight back could hand you the old copy.",
-              "direction": "a small historical oddity, told plainly"
+              "direction": "a small historical oddity, told plainly",
+              "tts": {
+                "solo": true,
+                "speed": 0.83
+              }
             },
             {
               "id": "L0303",
@@ -1919,7 +1954,11 @@
             {
               "id": "L0318",
               "text": "The Well had learned to say no.",
-              "direction": "a short list landing on the chapter title; warm"
+              "direction": "a short list landing on the chapter title; warm",
+              "tts": {
+                "solo": true,
+                "speed": 0.72
+              }
             }
           ],
           "leadIn": 0.6,
@@ -2171,7 +2210,7 @@
             },
             {
               "kind": "quote",
-              "text": "This component acts as a witness to writes, notified every time an object changes. — Werner Vogels, 2021",
+              "text": "…a witness to writes, notified every time an object changes. — Werner Vogels, 2021",
               "beat": "caches",
               "until": "proofs"
             },
@@ -2359,12 +2398,20 @@
               "id": "L0331",
               "text": "It makes no promise that two rooms commit as one.",
               "pauseAfter": 0.6,
-              "direction": "precise and calm"
+              "direction": "precise and calm",
+              "tts": {
+                "solo": true,
+                "speed": 0.83
+              }
             },
             {
               "id": "L0332",
               "text": "And if the Well goes quiet, no house can take a Plate at all.",
-              "direction": "low, ending the chapter on the cost of the referee"
+              "direction": "low, ending the chapter on the cost of the referee",
+              "tts": {
+                "solo": true,
+                "speed": 0.8
+              }
             }
           ],
           "leadIn": 0.6,
@@ -2450,9 +2497,9 @@
             },
             {
               "id": "L0403",
-              "text": "He wanted “one binary, written in Rust, with object storage as its only external service dependency.”",
+              "text": "He wanted a single binary, written in Rust, whose only outside service is object storage.",
               "pauseAfter": 0.6,
-              "direction": "read the quotation as a quotation, even and exact, a touch slower on 'only external service dependency'"
+              "direction": "plain and exact, reported in our own words; a touch slower on 'only outside service'"
             },
             {
               "id": "L0404",
@@ -2577,8 +2624,8 @@
               "beat": "name"
             },
             {
-              "kind": "quote",
-              "text": "That's why I started celld. — Ryan Dahl, 2026",
+              "kind": "label",
+              "text": "Ryan Dahl, 2026: why he started celld",
               "beat": "quote1",
               "until": "out1"
             },
@@ -2702,8 +2749,8 @@
               "beat": "name"
             },
             {
-              "kind": "quote",
-              "text": "workerd has always had one big gap in its production-readiness: Durable Objects. — Kenton Varda, 2026",
+              "kind": "label",
+              "text": "Varda: workerd's one gap, Durable Objects",
               "beat": "gap"
             }
           ],
@@ -2740,9 +2787,13 @@
             },
             {
               "id": "L0413",
-              "text": "After that year, Ryan Dahl writes, “we will end our development of the Deno runtime.”",
+              "text": "After that year, Ryan Dahl writes, the team's work on the Deno runtime comes to an end.",
               "pauseAfter": 0.6,
-              "direction": "the quotation even and respectful, neither sad nor brisk"
+              "direction": "reported plainly, even and respectful, neither sad nor brisk",
+              "tts": {
+                "solo": true,
+                "speed": 0.88
+              }
             },
             {
               "id": "L0414",
@@ -2759,7 +2810,11 @@
             {
               "id": "L0416",
               "text": "Ryan Dahl and Bert Belder are to lead a first-class, supported way to run workerd yourself.",
-              "direction": "forward-looking but attributed; Belder clear"
+              "direction": "forward-looking but attributed; Belder clear",
+              "tts": {
+                "solo": true,
+                "speed": 0.88
+              }
             }
           ],
           "visual": "THIS SHOT: the announcement, told as plans. Hold the two-desk frame from ch04-s02 for a beat, then a slow 6 s truck right and dolly in to Ryan Dahl's desk (screen-right), the braided ropes from s02 hanging above. Date stamp '9 October 2026' on 'ninth' (beat date). On 'joining' the Q12 quote card sets upper-left (beat join) and is carried out as the Deploy sentence begins (beat deploy). On 'plans' a paper calendar strip lies on the desk and a pencil (no hand, it moves on its own as a puppet prop) draws DOTTED bars, never solid ink: dotted is the film's mark for an announced intention (beat plans). On 'year' a twelve-segment dotted bar (the runtime's year of releases) (beat year); on 'end' its far end closes with a small dotted cap (beat endyear). On 'Deploy' a shorter six-segment dotted bar beneath it (beat deploy). On 'continue' two small dotted arrows run past the calendar's edge (JSR; rusty_v8) (beat continue). On 'open' a small paper door on the calendar's corner swings open (beat open). On 'price' the pencil lifts and stops over an empty line; nothing is written and the camera does not linger (beat terms). On 'Bert' a second chair beside the desk, out of focus at L4.5, gets a name card; no figure detail, no words (beat bert). On 'lead' the Q11 quote card sets upper-left (beat merge). Kenton Varda's lamp stays faintly visible at frame left throughout, so both lineages are present. Text upper half; bottom 12% clear.",
@@ -2884,8 +2939,8 @@
               "beat": "bert"
             },
             {
-              "kind": "quote",
-              "text": "This will involve merging code and ideas from celld back into workerd. — Kenton Varda",
+              "kind": "label",
+              "text": "Varda: celld's code and ideas into workerd",
               "beat": "bert"
             }
           ],
@@ -3053,12 +3108,12 @@
             },
             {
               "kind": "quote",
-              "text": "This is the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794",
+              "text": "…the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794",
               "beat": "headline"
             },
             {
-              "kind": "quote",
-              "text": "For now an object acknowledges a write only once it is fully synced to the bucket. — commit aa494794",
+              "kind": "label",
+              "text": "Commit: no ack until the bucket holds it",
               "beat": "body"
             }
           ],
@@ -3478,7 +3533,11 @@
               "id": "L0517",
               "text": "Pull the pin, so A never checks its own candle.",
               "pauseAfter": 0.7,
-              "direction": "the demonstrator's line, firm"
+              "direction": "the demonstrator's line, firm",
+              "tts": {
+                "solo": true,
+                "speed": 0.83
+              }
             },
             {
               "id": "L0518",
@@ -3684,7 +3743,14 @@
               "id": "L0525",
               "text": "So the clock is not the last line of defence; the second look is.",
               "pauseAfter": 0.6,
-              "direction": "short, firm"
+              "direction": "short, firm",
+              "tts": {
+                "solo": true,
+                "speed": 0.83
+              },
+              "insertGaps": {
+                "defence": 0.32
+              }
             },
             {
               "id": "L0526",
@@ -3749,8 +3815,8 @@
           ],
           "onScreenText": [
             {
-              "kind": "quote",
-              "text": "The check reads the record instead of a clock — celld guarantees, v0.6.3",
+              "kind": "label",
+              "text": "celld: reads the record, not a clock",
               "beat": "celld"
             }
           ],
@@ -4442,7 +4508,7 @@
             },
             {
               "kind": "quote",
-              "text": "A client therefore cannot act on a value that a crash can still lose. — celld guarantees, v0.6.3",
+              "text": "…cannot act on a value that a crash can still lose. — celld guarantees, v0.6.3",
               "beat": "local"
             }
           ],
@@ -4472,7 +4538,14 @@
               "id": "L0620",
               "text": "Pull the pin, and the keeper never looks up.",
               "pauseAfter": 0.6,
-              "direction": "firm, the third pin"
+              "direction": "firm, the third pin",
+              "tts": {
+                "solo": true,
+                "speed": 0.8
+              },
+              "insertGaps": {
+                "pin": 0.28
+              }
             },
             {
               "id": "L0621",
@@ -4628,8 +4701,8 @@
               "until": "reseat"
             },
             {
-              "kind": "quote",
-              "text": "a missing acknowledgement does not prove a write absent. — celld guarantees, v0.6.3",
+              "kind": "label",
+              "text": "celld: no ack is no proof of absence",
               "beat": "lost"
             }
           ],
@@ -4671,7 +4744,11 @@
             {
               "id": "L0702",
               "text": "First it throws away its own copy of the room.",
-              "direction": "plain, a little brisk; housekeeping before the real work"
+              "direction": "plain, a little brisk; housekeeping before the real work",
+              "tts": {
+                "solo": true,
+                "speed": 0.72
+              }
             },
             {
               "id": "L0703",
@@ -4869,7 +4946,6 @@
             {
               "id": "L0710",
               "text": "Cloudflare's hosted relay, back in 2024, answered that with followers.",
-              "spoken": "Cloudflare's hosted relay, in twenty twenty-four, called object storage tens or hundreds of milliseconds away, and used followers.",
               "direction": "a historical footnote, reported, not argued"
             },
             {
@@ -4997,7 +5073,7 @@
               "id": "badge",
               "at": {
                 "line": "L0713",
-                "word": "celld's"
+                "word": 2
               },
               "what": "push past the wellhead badge 'celld 0.6.3'"
             },
@@ -5247,7 +5323,11 @@
             {
               "id": "L0724",
               "text": "Or the old owner was only asleep, and wakes to ring one more bell.",
-              "direction": "dry, the teacher who enjoys a good failure"
+              "direction": "dry, the teacher who enjoys a good failure",
+              "tts": {
+                "solo": true,
+                "speed": 0.85
+              }
             },
             {
               "id": "L0725",
@@ -5398,7 +5478,11 @@
               "id": "L0726",
               "text": "So a successor reads that record before it reads the Well.",
               "direction": "measured; 'before' the hinge of the sentence",
-              "pauseAfter": 0.6
+              "pauseAfter": 0.6,
+              "tts": {
+                "solo": true,
+                "speed": 0.85
+              }
             },
             {
               "id": "L0727",
@@ -5534,8 +5618,8 @@
               "until": "open"
             },
             {
-              "kind": "quote",
-              "text": "…so a stale owner cannot complete another fleet proof. — celld guarantees, v0.6.3",
+              "kind": "label",
+              "text": "celld: seal the old session, then restore",
               "beat": "open"
             }
           ],
@@ -5587,7 +5671,11 @@
               "text": "The room would rather stay shut than come back missing a promise.",
               "direction": "the chapter's line; warm, unhurried, a little proud of the machine",
               "preGap": 0.7,
-              "level": "soft"
+              "level": "soft",
+              "tts": {
+                "solo": true,
+                "speed": 0.83
+              }
             }
           ],
           "leadIn": 0.8,
@@ -5688,8 +5776,8 @@
               "beat": "shut"
             },
             {
-              "kind": "quote",
-              "text": "A follower's HTTP error does not prove its data is absent — celld guarantees, v0.6.3",
+              "kind": "label",
+              "text": "celld: an error is not proof of absence",
               "beat": "error"
             }
           ],
@@ -6269,7 +6357,7 @@
           "onScreenText": [
             {
               "kind": "quote",
-              "text": "This is the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794",
+              "text": "…the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794",
               "beat": "merged",
               "until": "rooms"
             }
@@ -6317,7 +6405,14 @@
               "id": "L0817",
               "text": "The bytes were in the Well, and the Plate still named its owner when the bell rang.",
               "direction": "quiet and exact, each half its own small proof",
-              "preGap": 0.9
+              "preGap": 0.9,
+              "tts": {
+                "solo": true,
+                "speed": 0.75
+              },
+              "insertGaps": {
+                "Well": 0.3
+              }
             },
             {
               "id": "L0818",
