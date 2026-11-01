@@ -1,0 +1,101 @@
+// m02 · ONE ROOM IN THE WHOLE WORLD (ch02) · F major (the desk lamps, 2020–2024) → A minor (the hosted relay)
+//   s01  the desk colour, alone in the hold: a quiet piano figure (C F A G) over an F(add9) pad; one string C held for
+//        the one lantern on the globe; harp plucks from scattered pitches gather to one F on 'many'.
+//   s02  the desk figure in the breaths; three echoing harp plucks for the broadcast; the harbour drone surfaces for
+//        a moment under the match; the aside drops to a single held C that hitches on 'wait'.
+//   s03  the output gate. The reply waits: piano A held from the end of L0211 ('latch'), and the latch lifts on
+//        'lifts': the bell (low harp D–A dyad, the house bell: wooden, never a chime) and the piano D that completes
+//        T across the latch. SILENCE on 'fails', one muted pizzicato knock; a slow string breath for the restart;
+//        T recapped on harp after 'released'.
+//   s04  a pizzicato walking figure for the runtime leaving, stopped dead on the tether; the desk figure for 2024; a
+//        quick bright harp flourish after 'instant'; on 'read' the piano A is held again, unresolved: a tick is not
+//        a local read.
+//   s05  serverCyan, A minor: a slow pizzicato pulse for the ribbon; five soft harp tones in the breath after
+//        'centres', three of them answering as a chord on 'three'; the bell on 'lifts'; the A–E fifth struck in
+//        the breath after 'machinery' (LAST STRIKE) and held, melancholy, into the hold.
+setcpm(15)
+const CPS = 0.25, DUR = @{DUR}
+const Q = 480, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => {
+  evs = evs.filter(Boolean).map(([t, d, p]) => [Math.max(0, t), d, p]).sort((x, y) => x[0] - y[0])
+  const out = [], end = qn(DUR); let cur = 0
+  evs.forEach(([t, d, p], i) => {
+    let a = Math.max(qn(t), cur); const b = Math.min(qn(t + d), end, i + 1 < evs.length ? qn(evs[i + 1][0]) : end)
+    if (b - a < 2) return
+    if (a > cur) out.push([a - cur, silence])
+    out.push([b - a, p]); cur = b })
+  if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const loop = (pat, d) => pat.fast(d * CPS)
+const n = (t, d, ns, v = 0.2) => [t, d, note(typeof ns === 'string' && ns.includes(',') ? '[' + ns + ']' : ns).velocity(v)]
+const felt = x => x.s("piano").gain(1.6).lpf(1800).release(1.8).room(0.3).rsize(4)
+const harp = x => x.s("gm_orchestral_harp").gain(1.6).lpf(2200).release(2.4).room(0.32).rsize(4)
+const pizz = x => x.s("gm_pizzicato_strings").gain(1.6).lpf(1400).release(0.5).room(0.25).rsize(4)
+const str = (x, lp = 850, rel = 2.6) => x.s("gm_string_ensemble_1").gain(1.6).attack(1.6).release(rel).lpf(lp).room(0.35).rsize(4)
+const drone = (x, rel = 3) => stack(x.s("triangle").lpf(380).gain(0.06), x.s("sawtooth").lpf(200).gain(0.028)).hpf(40).attack(3).release(rel)
+
+// ---------------------------------------------------------------- pads
+$: str(tl(
+    n(0, @{ch02-s01:globe} - 0, "f2,c3,g3,a3", 0.22),
+    n(@{ch02-s01:globe}, @{L0209} - @{ch02-s01:globe}, "f2,c3,a3", 0.2),
+    // s03: F, the latch (Dm → A), F again after the restart
+    n(@{ch02-s03}, @{L0211} - @{ch02-s03}, "f2,c3,a3", 0.2),
+    n(@{L0211}, @{L0211.end} - @{L0211}, "d3,a3,f3", 0.2),
+    n(@{L0211.end}, @{L0212.lifts.end} - @{L0211.end}, "a2,e3,a3", 0.2),
+    n(@{L0212.lifts.end}, @{L0213.fails} - @{L0212.lifts.end}, "bb2,f3,d4", 0.2),
+    n(@{L0213.restarts}, @{ch02-s04:tether} - @{L0213.restarts}, "f2,c3,a3", 0.22),
+    // s04 after the tether: 2024, then the unresolved latch
+    n(@{L0217}, @{L0219} - @{L0217}, "f2,c3,g3,a3", 0.2),
+    n(@{L0219}, @{L0219.outlive} - @{L0219}, "d3,f3,a3", 0.2),
+    n(@{L0219.outlive}, @{ch02-s05} + 1 - @{L0219.outlive}, "a3", 0.2)), 850, 2.2)
+$: str(tl(n(@{L0209}, @{L0209.wait.end} - @{L0209}, "c3", 0.2), n(@{L0209.wait.end} + 0.35, @{ch02-s03} + 0.6 - (@{L0209.wait.end} + 0.35), "c3", 0.2)), 800, 1.0)
+$: str(tl(n(@{ch02-s01:globe}, @{ch02-s01:converge} - @{ch02-s01:globe}, "c4", 0.16)), 1000, 2)
+// s05: the cool open fifth, the three-chord, then the held A–E into the hold
+$: str(tl(
+    n(@{ch02-s05}, @{L0223.three.end} - @{ch02-s05}, "a2,e3", 0.22),
+    n(@{L0223.three.end}, @{L0224.machinery.end} - @{L0223.three.end}, "a2,e3,c4", 0.14),
+    n(@{L0224.machinery.end}, @{DUR} - @{L0224.machinery.end}, "a2,e3,b3", 0.13)), 760, 3)
+$: drone(tl(n(@{ch02-s02:match}, 3.2, "d2,a2", 1)), 2.5)
+
+// ---------------------------------------------------------------- piano (the desk figure; T across the latch)
+$: felt(tl(
+    n(0.25, 0.6, "c4", 0.16), n(0.85, 0.6, "f4", 0.16), n(1.45, 0.8, "a4", 0.15), n(2.25, 1.6, "g4", 0.14),
+    n(@{L0201.2020.end} + 0.02, 1.2, "f4", 0.13),
+    n(@{L0207.app.end} + 0.02, 0.4, "c4", 0.13), n(@{L0207.app.end} + 0.24, 1.2, "f4", 0.12),
+    n(@{L0209.end} + 0.3, 0.55, "c4", 0.15), n(@{L0209.end} + 0.85, 0.55, "f4", 0.15), n(@{L0209.end} + 1.4, 1.2, "a4", 0.14),
+    // the reply waits (A), the latch lifts (D)
+    n(@{L0211.end} + 0.02, @{L0212.lifts.end} - (@{L0211.end} + 0.02), "a4", 0.17),
+    n(@{L0212.lifts.end} + 0.02, 2.2, "d5", 0.17),
+    n(@{L0217.2024.end} + 0.02, 0.38, "c4", 0.13), n(@{L0217.2024.end} + 0.4, 1.2, "f4", 0.12),
+    // a tick is not a local read: A again, held, unresolved
+    n(@{L0219.read.end} + 0.03, @{ch02-s05} - (@{L0219.read.end} + 0.03), "a4", 0.15)))
+
+// ---------------------------------------------------------------- harp
+$: harp(tl(
+    // the converging slips gather to one pitch
+    n(@{ch02-s01:converge}, 0.6, "g4", 0.1), n(@{ch02-s01:converge} + 0.9, 0.6, "d4", 0.1), n(@{ch02-s01:converge} + 1.9, 0.6, "a3", 0.1),
+    n(@{ch02-s01:converge} + 3.0, 0.6, "e4", 0.09), n(@{ch02-s01:many}, 2.4, "f4", 0.15),
+    // the broadcast: three echoing plucks
+    n(@{L0207.everyone}, 0.35, "a4", 0.11), n(@{L0207.everyone} + 0.35, 0.35, "a4", 0.07), n(@{L0207.everyone} + 0.7, 1.2, "a4", 0.045),
+    // the bell, low and wooden, as the latch lifts
+    n(@{L0212.lifts.end} + 0.02, 2.4, "d3,a3", 0.2),
+    // T recapped after 'released'
+    n(@{L0214.end} + 0.1, 0.5, "a4", 0.17), n(@{L0214.end} + 0.6, 1.6, "d5", 0.17),
+    // a quick bright flourish: the instant read
+    n(@{L0218.instant.end} + 0.02, 0.09, "f4", 0.12), n(@{L0218.instant.end} + 0.11, 0.09, "a4", 0.12),
+    n(@{L0218.instant.end} + 0.2, 0.09, "c5", 0.12), n(@{L0218.instant.end} + 0.29, 1.2, "f5", 0.11),
+    // five far lamps, three answer, the bell
+    n(@{L0223.centres.end} + 0.05, 0.17, "e4", 0.1), n(@{L0223.centres.end} + 0.22, 0.17, "g4", 0.1), n(@{L0223.centres.end} + 0.39, 0.17, "a4", 0.1),
+    n(@{L0223.centres.end} + 0.56, 0.17, "c5", 0.1), n(@{L0223.centres.end} + 0.73, 0.5, "d5", 0.1),
+    n(@{L0223.three.end} + 0.02, 1.4, "a3,c4,e4", 0.13),
+    n(@{L0223.end} + 0.03, 1.5, "d3,a3", 0.12),
+    n(@{L0224.machinery.end} + 0.02, @{DUR} - (@{L0224.machinery.end} + 0.02), "a2,e3", 0.12)))   // LAST STRIKE (soft: L0224 is still speaking)
+
+// ---------------------------------------------------------------- pizzicato
+const walk = ['f2', 'g2', 'a2', 'bb2', 'c3', 'd3'].map((p, k) => n(@{ch02-s04:leave} + k * 0.55, 0.5, p, 0.2)).filter(e => e[0] + 0.3 < @{ch02-s04:tether})
+$: pizz(tl(
+    n(@{L0213.fails.end} + 0.05, 0.6, "d2", 0.2),                      // one muted knock
+    ...walk,
+    [@{ch02-s05:ribbon}, @{ch02-s05:slow} - @{ch02-s05:ribbon}, loop(note("a2 a2").velocity(0.13), @{ch02-s05:slow} - @{ch02-s05:ribbon})]))
+
+all(x => x.postgain(1))

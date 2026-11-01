@@ -1,6 +1,6 @@
-> New books use Astra planning/3D modeling and Fable 5.1 D3 authoring. Read
+> New books use Sol planning/3D modeling and Opus 5.5 D3 authoring. Read
 > [the shared workflow](../docs/authoring-models.md) and use the scene-native book commands.
-> The v2 CLI below requires a supplied Astra-authored `--storyboard`; automatic
+> The v2 CLI below requires a supplied Sol-authored `--storyboard`; automatic
 > legacy Anthropic planning is disabled.
 
 # repo → narrated D3 explainer
@@ -26,7 +26,7 @@ launch Chrome (it starts the dev server if needed).
   │
   ├─ repo.mjs        clone (shallow, sanitized) or local path → rank files with
   │                  ripgrep against the prompt → bounded source "digest"
-  ├─ storyboard.mjs  retired automatic planner; use an Astra-authored fixture →
+  ├─ storyboard.mjs  retired automatic planner; use an Sol-authored fixture →
   │                  3–6 chapters { nodes, edges, steps{ spoken, displayNarration } },
   │                  grounded in real code, with a validate→repair loop (validate.mjs)
   ├─ tts.mjs         per chapter: concat each step's `spoken` → ElevenLabs

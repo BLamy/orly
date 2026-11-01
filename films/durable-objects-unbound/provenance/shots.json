@@ -1,0 +1,23 @@
+{
+  "role": "canvas",
+  "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+  "cliVersion": "2.1.316",
+  "requestedModel": "claude-opus-5-5",
+  "actualModel": "claude-opus-5-5",
+  "provider": "firstParty",
+  "requestedEffort": "high",
+  "effortActive": true,
+  "apiKeySource": "none",
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "subagents": 6,
+  "result": "success",
+  "isError": false,
+  "numTurns": 217,
+  "durationMs": 9867084,
+  "inputTokens": 1996,
+  "outputTokens": 1333347,
+  "thinkingTokens": 573988,
+  "costUsd": 118.10452519999993
+}

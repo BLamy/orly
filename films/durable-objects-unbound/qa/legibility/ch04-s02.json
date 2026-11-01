@@ -1,0 +1,28 @@
+{
+ "shot": "ch04-s02",
+ "at": "2026-11-01T07:04:03.001Z",
+ "minCapPx": 22,
+ "sampled": 37,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "kenton varda",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Cloudflare",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Varda: workerd's one gap, Durable Objects",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

@@ -1,0 +1,28 @@
+{
+ "shot": "ch02-s04",
+ "at": "2026-11-01T07:10:14.274Z",
+ "step": 0.0833,
+ "sampled": 444,
+ "transition": {
+  "kind": "inkBleed",
+  "sampled": 17,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "#42 · the ferry is late",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": []
+}

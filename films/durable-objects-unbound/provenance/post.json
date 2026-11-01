@@ -1,0 +1,23 @@
+{
+  "role": "pipelineCode",
+  "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+  "cliVersion": "2.1.316",
+  "requestedModel": "claude-opus-5-5",
+  "actualModel": "claude-opus-5-5",
+  "provider": "firstParty",
+  "requestedEffort": "high",
+  "effortActive": true,
+  "apiKeySource": "none",
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "subagents": 0,
+  "result": "success",
+  "isError": false,
+  "numTurns": 107,
+  "durationMs": 8780683,
+  "inputTokens": 206,
+  "outputTokens": 64308,
+  "thinkingTokens": 19327,
+  "costUsd": 5.880394600000001
+}

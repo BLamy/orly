@@ -1,0 +1,662 @@
+{
+ "id": "ch04",
+ "number": 4,
+ "title": "Two Lineages, One Commit",
+ "blurb": "2026, told at two desks. Ryan Dahl, of Deno, started celld: one binary with object storage as its only outside dependency, released in August, its README promising no consensus service (we know where the consensus went). Kenton Varda names workerd's one big gap, a single instance, and welcomes celld. On 9 October the Deno team announces it is joining Cloudflare; the runtime, Deploy, JSR, rusty_v8 and Deno's open source are told strictly as announced plans, and neither post states a price or terms. On the evening of 28 October, Pacific time, Ryan Dahl's commit begins merging celld into workerd: experimental, acknowledging only once the bucket holds the write, no alarms yet. Alarms follow on the 30th, facets on the 31st.",
+ "shots": [
+  {
+   "id": "ch04-s01",
+   "kind": "scene",
+   "setting": "Ryan Dahl's desk, screen-right, under a warm lamp; a tall window behind it opens on the far harbour town (August 2026; a generic 2020s study at night)",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "leadIn": 1,
+   "holdAfter": 1,
+   "lines": [
+    {
+     "id": "L0401",
+     "text": "August, 2026. A second desk, a second lamp: the Deno team releases celld.",
+     "pauseAfter": 0.6,
+     "direction": "a new era opening, unhurried; a small lift on 'second lamp', as if noticing a light come on across the water"
+    },
+    {
+     "id": "L0402",
+     "text": "Ryan Dahl, of Deno, had started it, and he later told us why.",
+     "direction": "plain introduction, name and role clear; 'celld' as cell-dee; 'five words' light, inviting the eye to the card"
+    },
+    {
+     "id": "L0403",
+     "text": "He wanted a single binary, written in Rust, whose only outside service is object storage.",
+     "pauseAfter": 0.6,
+     "direction": "plain and exact, reported in our own words; a touch slower on 'only outside service'"
+    },
+    {
+     "id": "L0404",
+     "text": "celld runs a Workers application on machines you own: Durable Objects, self-hosted and distributed, with long-term state in a bucket.",
+     "direction": "descriptive, steady; 'machines you own' with quiet weight, the film's third promise"
+    },
+    {
+     "id": "L0405",
+     "text": "Its README says it needs no consensus service. By now we know where the consensus went: inside the well.",
+     "pauseAfter": 0.6,
+     "direction": "the first sentence neutral, a report; the second dry and warm, a teacher's small smile, landing on 'inside the well'"
+    },
+    {
+     "id": "L0406",
+     "text": "Its log replicator descends from a Rust reimplementation of Litestream.",
+     "level": "soft",
+     "direction": "an aside, a credit given in passing, softer; Litestream as Light-stream"
+    }
+   ],
+   "visual": "THIS SHOT: the second lineage arrives. Iris opens on Ryan Dahl's desk lamp, screen-right (the treatment's rule: Kenton Varda's desk is always screen-left, Ryan Dahl's screen-right). L2 a tall study window, its mullions holes in the wall, through which the far harbour town lies small at L1: the terrace of three houses, the Well and its Plate, lamps pricked out. L3 a bookshelf edge; L4 Ryan Dahl as a generic, dignified 2020s silhouette seated at a desk with a laptop (cast signature: tall, sweater, chin slightly up), rim from the lamp; no likeness, no gesture beyond the idle; L5 the desk's near corner, blurred; L6 the iron lamp-post edge at frame right. Camera: slow truck left 80 px with a 100 px dolly in over the shot (3 planes sliding). Date stamp 'August 2026' on 'August' (beat date). On 'lamp' the desk lamp warms a step (beat lamp). Name card on 'Ryan' (beat name). On 'why' the Q08 quote card sets upper-left over a soft plate (beat quote1) and is carried out as L0404 begins (beat out1). On 'binary' a small brass-bound box (one binary) sits on the desk with a single rope running out of the window, down the hill to the far Well (beat binary): one dependency, drawn as one rope. On 'machines' three window lamps in the far houses brighten (beat houses). On 'README' the Q19 quote card sets upper-left (beat readme). On 'well' a faint serverCyan glint shows deep in the far Well's shaft, a callback to the cutaway, the only cyan in frame (beat well). On 'descends' a small notebook on the desk shows a three-strand braided cord along its spine, no lettering (beat lineage; names are credited on the sources card). Text stays in the upper half; the bottom 12% stays clear.",
+   "beats": [
+    {
+     "id": "date",
+     "at": {
+      "line": "L0401",
+      "word": "August"
+     },
+     "what": "date stamp 'August 2026' inks in"
+    },
+    {
+     "id": "lamp",
+     "at": {
+      "line": "L0401",
+      "word": "lamp"
+     },
+     "what": "Ryan Dahl's desk lamp warms one step"
+    },
+    {
+     "id": "name",
+     "at": {
+      "line": "L0402",
+      "word": "Ryan"
+     },
+     "what": "name card: Ryan Dahl · Deno"
+    },
+    {
+     "id": "quote1",
+     "at": {
+      "line": "L0402",
+      "word": "why"
+     },
+     "what": "Q08 quote card sets upper-left"
+    },
+    {
+     "id": "binary",
+     "at": {
+      "line": "L0403",
+      "word": "binary"
+     },
+     "what": "a brass-bound box on the desk; one rope runs from it out of the window to the far Well"
+    },
+    {
+     "id": "out1",
+     "at": {
+      "line": "L0404",
+      "word": "celld"
+     },
+     "what": "the Q08 card is carried out by the truck"
+    },
+    {
+     "id": "houses",
+     "at": {
+      "line": "L0404",
+      "word": "machines"
+     },
+     "what": "the far houses' window lamps brighten"
+    },
+    {
+     "id": "readme",
+     "at": {
+      "line": "L0405",
+      "word": "README"
+     },
+     "what": "Q19 quote card sets upper-left"
+    },
+    {
+     "id": "well",
+     "at": {
+      "line": "L0405",
+      "word": "well"
+     },
+     "what": "a faint serverCyan glint deep in the far Well's shaft"
+    },
+    {
+     "id": "lineage",
+     "at": {
+      "line": "L0406",
+      "word": "descends"
+     },
+     "what": "the notebook's braided three-strand spine cord catches the lamp"
+    }
+   ],
+   "cast": [
+    "ryan-dahl"
+   ],
+   "props": [
+    "history desk with laptop and lamp (screen-right)",
+    "study window on the far harbour town",
+    "brass-bound box with one rope",
+    "notebook with a braided spine cord",
+    "L6 lamp-post edge"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "August 2026",
+     "beat": "date"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Ryan Dahl · Deno",
+     "beat": "name"
+    },
+    {
+     "kind": "label",
+     "text": "Ryan Dahl, 2026: why he started celld",
+     "beat": "quote1",
+     "until": "out1"
+    },
+    {
+     "kind": "quote",
+     "text": "It needs no serving control plane or consensus service. — celld README, v0.6.3",
+     "beat": "readme"
+    }
+   ],
+   "music": {
+    "cue": "ch04-lineages",
+    "note": "a new, second voice enters the score for Ryan Dahl's desk, warm and sparse, answering the Kenton theme heard in ch02 without quoting it yet; a held low note under 'inside the well', the well drone from ch03 surfacing for a moment"
+   },
+   "transitionIn": "iris",
+   "claims": [
+    "HI13",
+    "HI14",
+    "HI23",
+    "HI25",
+    "SB14"
+   ]
+  },
+  {
+   "id": "ch04-s02",
+   "kind": "scene",
+   "setting": "Kenton Varda's desk, screen-left, warm lamp; then a pull back to both desks in one frame (October 2026)",
+   "era": "2020s",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 1.4,
+   "lines": [
+    {
+     "id": "L0407",
+     "text": "In October the two would write one post together. In it, Kenton Varda, of Cloudflare, named the gap.",
+     "direction": "a turn in the story; 'named the gap' plain and level, no drama"
+    },
+    {
+     "id": "L0408",
+     "text": "workerd's Durable Objects ran as a single instance: good enough for local testing, unable to scale. He called it workerd's one big gap in production readiness.",
+     "pauseAfter": 0.6,
+     "direction": "reported, even-handed, 'worker dee' clear; a slight stress on 'single'"
+    },
+    {
+     "id": "L0409",
+     "text": "And he wrote that when the Deno team released celld in August, “we were delighted.”",
+     "pauseAfter": 0.7,
+     "direction": "warm, the quoted words given as his, not performed"
+    },
+    {
+     "id": "L0410",
+     "text": "Two lamps in one frame. Two ropes, beginning to braid.",
+     "level": "soft",
+     "direction": "slower, an image rather than a fact; let 'braid' close softly"
+    }
+   ],
+   "visual": "THIS SHOT: the gap, and the braid begins. Cut to Kenton Varda's desk, screen-left, under its warm lamp (duskRose, the desk set from ch02, now with a 2026 laptop): L2 a back wall with a small window hole; L3 shelves; L4 Kenton Varda's generic, dignified silhouette at the desk (cast signature: slight stoop, hand near chin in his 'think' idle), rimmed from the lamp on the right; L5 the desk corner, blurred. Name card on 'Kenton' (beat name). On 'gap' the Q26 quote card sets upper-right over a soft plate (beat gap). On 'single' a single paper lantern in a glass bell jar sits on the desk beside the laptop: one room, one instance, unable to leave its jar (beat single). On 'delighted' his lamp brightens one step (beat delighted), the only response we give him. On 'frame' the camera pulls back and trucks right (≈240 px over 4 s, ≤ 6% width per second) until both desks share the frame: Kenton Varda's lamp at left, Ryan Dahl's at right, the dark harbour hill between them at L1–L2 (beat pull). Two ropes hang from the lamps' arms, one from each, and on 'braid' they swing in and cross once over the hill, the first turn of a braid (beat braid). The figures stay at their desks; nobody's hands touch the ropes. Text upper half only; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "name",
+     "at": {
+      "line": "L0407",
+      "word": "Kenton"
+     },
+     "what": "name card: Kenton Varda · Cloudflare"
+    },
+    {
+     "id": "gap",
+     "at": {
+      "line": "L0407",
+      "word": "gap"
+     },
+     "what": "Q26 quote card sets upper-right"
+    },
+    {
+     "id": "single",
+     "at": {
+      "line": "L0408",
+      "word": "single"
+     },
+     "what": "a single paper lantern under a glass bell jar on the desk"
+    },
+    {
+     "id": "delighted",
+     "at": {
+      "line": "L0409",
+      "word": "delighted"
+     },
+     "what": "Kenton Varda's lamp brightens a step"
+    },
+    {
+     "id": "pull",
+     "at": {
+      "line": "L0410",
+      "word": "frame"
+     },
+     "what": "pull back and truck right until both desks share the frame"
+    },
+    {
+     "id": "braid",
+     "at": {
+      "line": "L0410",
+      "word": "braid"
+     },
+     "what": "the two lamp ropes swing in and cross once over the hill"
+    }
+   ],
+   "cast": [
+    "kenton-varda",
+    "ryan-dahl"
+   ],
+   "props": [
+    "history desk with laptop and lamp (screen-left)",
+    "paper lantern under a glass bell jar",
+    "two ropes hanging from the lamp arms",
+    "the harbour hill between the desks"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Kenton Varda · Cloudflare",
+     "beat": "name"
+    },
+    {
+     "kind": "label",
+     "text": "Varda: workerd's one gap, Durable Objects",
+     "beat": "gap"
+    }
+   ],
+   "music": {
+    "cue": "ch04-lineages",
+    "note": "the ch02 Kenton theme returns on its own; on the pull back the new Ryan voice joins it, two lines in counterpoint for the first time, crossing on 'braid'"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "HI12",
+    "HI14"
+   ]
+  },
+  {
+   "id": "ch04-s03",
+   "kind": "scene",
+   "setting": "the two desks in one frame, then Ryan Dahl's desk with a second, out-of-focus chair beside it; a pencilled paper calendar on the desk (9 October 2026)",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "leadIn": 0.5,
+   "holdAfter": 3.2,
+   "lines": [
+    {
+     "id": "L0411",
+     "text": "On the ninth of October, 2026, Deno and Cloudflare announced that the whole Deno team was joining Cloudflare.",
+     "spoken": "On the ninth of October, twenty twenty-six, Deno and Cloudflare announced that the whole Deno team was joining Cloudflare.",
+     "pauseAfter": 0.6,
+     "direction": "a date that opens a section; factual, warm, no fanfare"
+    },
+    {
+     "id": "L0412",
+     "text": "These are plans, as announced. The Deno runtime gets one more year of bug-fix and security releases.",
+     "direction": "careful; 'plans, as announced' given deliberate weight, then plain reporting"
+    },
+    {
+     "id": "L0413",
+     "text": "After that year, Ryan Dahl writes, the team's work on the Deno runtime comes to an end.",
+     "pauseAfter": 0.6,
+     "direction": "reported plainly, even and respectful, neither sad nor brisk",
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     }
+    },
+    {
+     "id": "L0414",
+     "text": "Deno Deploy runs six more months. JSR and rusty_v8 continue. Deno stays open source.",
+     "spoken": "Deno Deploy runs six more months. JSR and rusty vee-eight continue. Deno stays open source.",
+     "direction": "a short list, each sentence its own step; 'open source' with a small lift"
+    },
+    {
+     "id": "L0415",
+     "text": "Cloudflare filed its post under acquisitions, yet neither post states a price or any terms. We will not guess at them.",
+     "pauseAfter": 0.7,
+     "direction": "said once, plainly, without irony; a firm full stop after 'terms'"
+    },
+    {
+     "id": "L0416",
+     "text": "Ryan Dahl and Bert Belder are to lead a first-class, supported way to run workerd yourself.",
+     "direction": "forward-looking but attributed; Belder clear",
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     }
+    }
+   ],
+   "visual": "THIS SHOT: the announcement, told as plans. Hold the two-desk frame from ch04-s02 for a beat, then a slow 6 s truck right and dolly in to Ryan Dahl's desk (screen-right), the braided ropes from s02 hanging above. Date stamp '9 October 2026' on 'ninth' (beat date). On 'joining' the Q12 quote card sets upper-left (beat join) and is carried out as the Deploy sentence begins (beat deploy). On 'plans' a paper calendar strip lies on the desk and a pencil (no hand, it moves on its own as a puppet prop) draws DOTTED bars, never solid ink: dotted is the film's mark for an announced intention (beat plans). On 'year' a twelve-segment dotted bar (the runtime's year of releases) (beat year); on 'end' its far end closes with a small dotted cap (beat endyear). On 'Deploy' a shorter six-segment dotted bar beneath it (beat deploy). On 'continue' two small dotted arrows run past the calendar's edge (JSR; rusty_v8) (beat continue). On 'open' a small paper door on the calendar's corner swings open (beat open). On 'price' the pencil lifts and stops over an empty line; nothing is written and the camera does not linger (beat terms). On 'Bert' a second chair beside the desk, out of focus at L4.5, gets a name card; no figure detail, no words (beat bert). On 'lead' the Q11 quote card sets upper-left (beat merge). Kenton Varda's lamp stays faintly visible at frame left throughout, so both lineages are present. Text upper half; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "date",
+     "at": {
+      "line": "L0411",
+      "word": "ninth"
+     },
+     "what": "date stamp '9 October 2026'"
+    },
+    {
+     "id": "join",
+     "at": {
+      "line": "L0411",
+      "word": "joining"
+     },
+     "what": "Q12 quote card sets upper-left"
+    },
+    {
+     "id": "plans",
+     "at": {
+      "line": "L0412",
+      "word": "plans"
+     },
+     "what": "a pencil begins dotted bars on a paper calendar strip"
+    },
+    {
+     "id": "year",
+     "at": {
+      "line": "L0412",
+      "word": "year"
+     },
+     "what": "a twelve-segment dotted bar: the runtime's year"
+    },
+    {
+     "id": "endyear",
+     "at": {
+      "line": "L0413",
+      "word": "end"
+     },
+     "what": "the year bar closes with a dotted cap"
+    },
+    {
+     "id": "deploy",
+     "at": {
+      "line": "L0414",
+      "word": "Deploy"
+     },
+     "what": "a six-segment dotted bar beneath; Q12 is carried out"
+    },
+    {
+     "id": "continue",
+     "at": {
+      "line": "L0414",
+      "word": "continue"
+     },
+     "what": "two dotted arrows run on past the calendar's edge"
+    },
+    {
+     "id": "open",
+     "at": {
+      "line": "L0414",
+      "word": "open"
+     },
+     "what": "a small paper door on the calendar's corner swings open"
+    },
+    {
+     "id": "terms",
+     "at": {
+      "line": "L0415",
+      "word": "price"
+     },
+     "what": "the pencil lifts over an empty line and writes nothing"
+    },
+    {
+     "id": "bert",
+     "at": {
+      "line": "L0416",
+      "word": "Bert"
+     },
+     "what": "name card beside a second, out-of-focus chair"
+    },
+    {
+     "id": "merge",
+     "at": {
+      "line": "L0416",
+      "word": "lead"
+     },
+     "what": "Q11 quote card sets upper-left"
+    }
+   ],
+   "cast": [
+    "ryan-dahl",
+    "kenton-varda",
+    "bert-belder"
+   ],
+   "props": [
+    "the two desks and lamps",
+    "braided ropes above the hill",
+    "paper calendar strip with dotted pencil bars",
+    "self-moving pencil",
+    "small paper door",
+    "second, out-of-focus chair"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "9 October 2026",
+     "beat": "date"
+    },
+    {
+     "kind": "quote",
+     "text": "the entire Deno team is joining Cloudflare — Ryan Dahl, 2026",
+     "beat": "join",
+     "until": "deploy"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Bert Belder",
+     "beat": "bert"
+    },
+    {
+     "kind": "label",
+     "text": "Varda: celld's code and ideas into workerd",
+     "beat": "bert"
+    }
+   ],
+   "music": {
+    "cue": "ch04-lineages",
+    "note": "the two desk voices continue in counterpoint, thinner under the plans (a pencil-light texture, no swell, nothing celebratory or mournful); a rest under 'Neither post states a price or any terms'; the braid figure resumes under Bert Belder's card"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "HI15",
+    "HI16",
+    "HI17",
+    "HI18",
+    "HI19"
+   ]
+  },
+  {
+   "id": "ch04-s04",
+   "kind": "plate",
+   "setting": "a parchment strip of the commit message with a serverCyan rim, unrolled over the dark harbour (28 October 2026, evening, Pacific time)",
+   "era": "2020s",
+   "mood": "serverCyan",
+   "leadIn": 0.8,
+   "holdAfter": 1.4,
+   "lines": [
+    {
+     "id": "L0418",
+     "text": "On the evening of the twenty-eighth of October, Pacific time, Ryan Dahl's commit landed in workerd, calling itself a beginning.",
+     "pauseAfter": 0.6,
+     "direction": "the chapter's hinge; exact and calm; 'a beginning' slightly lifted"
+    },
+    {
+     "id": "L0419",
+     "text": "Several processes share one bucket; each object has one owner at a time, and if an owner dies, the message says, another picks it up.",
+     "direction": "reading the commit's own description; 'the message says' as a light attribution aside"
+    },
+    {
+     "id": "L0420",
+     "text": "It is experimental. For now, a write is acknowledged only once the bucket holds all of it.",
+     "pauseAfter": 0.5,
+     "direction": "two plain facts; 'only once' with quiet weight, this is the rule the next two chapters open up"
+    },
+    {
+     "id": "L0421",
+     "text": "And one plain line: “Alarms are not supported yet.”",
+     "pauseAfter": 0.7,
+     "direction": "dry, a small smile; the quotation flat and exact"
+    },
+    {
+     "id": "L0422",
+     "text": "Two days later, alarms landed. The next day, facets.",
+     "pauseAfter": 0.6,
+     "direction": "brisk, two steps of a calendar"
+    },
+    {
+     "id": "L0423",
+     "text": "Let us open it.",
+     "direction": "an invitation, quiet, almost to oneself; leave air after"
+    }
+   ],
+   "visual": "THIS SHOT: the commit, as a document. Paper-fold from the desks into a long parchment strip unrolling left to right across the upper two-thirds of frame over the dark harbour (L1 sea and far shore, L2 ridge, deep and unlit); the strip has a thin serverCyan rim, the accent the staging reserves for the commit strip (beat fold). Camera: a slow 6 s dolly in toward the strip with a slight truck right; the harbour planes slide beneath. Date stamp '28 October 2026 · Pacific' on 'twenty-eighth' (beat date). On 'beginning' the Q14 line inks as the strip's headline (beat headline). Below the headline the strip carries soft, illegible ink rules (texture only, no readable text) for the rest of the message. On 'bucket' a small ink vignette appears in the strip's margin: three tiny houses and one well joined by three lines (beat bucket); on 'owner' one house's window lights alone (beat owner); on 'dies' that window gutters and a second house's window lights (beat dies). On 'experimental' the Q15 line inks lower on the strip (beat body), and a brass badge 'workerd · 28 Oct' swings onto a hook at the strip's right end. On 'Alarms' an empty bracket in the strip's margin is lit for a moment: the place where a small wake-up clock would hang, empty (beat alarms). On the second 'alarms' a small brass wake-up clock silhouette drops into the bracket (beat later); on 'facets' a small cut-paper facet, a many-sided gem shape, hangs beside it and a second badge 'workerd · 31 Oct' swings onto the hook beside the first (beat facets). The two badges then hang on the strip, unnamed in narration, as the film's tags from here on. On 'open' the camera pushes into the strip's centre, which starts to fold open like a door onto the next chapter's terrace (beat open). Text stays above y 600; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "fold",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "the parchment strip unrolls over the dark harbour"
+    },
+    {
+     "id": "date",
+     "at": {
+      "line": "L0418",
+      "word": "twenty-eighth"
+     },
+     "what": "date stamp '28 October 2026 · Pacific'"
+    },
+    {
+     "id": "headline",
+     "at": {
+      "line": "L0418",
+      "word": "beginning"
+     },
+     "what": "Q14 inks as the strip's headline"
+    },
+    {
+     "id": "bucket",
+     "at": {
+      "line": "L0419",
+      "word": "bucket"
+     },
+     "what": "margin vignette: three houses, one well, three lines"
+    },
+    {
+     "id": "owner",
+     "at": {
+      "line": "L0419",
+      "word": "owner"
+     },
+     "what": "one house's window lights alone"
+    },
+    {
+     "id": "dies",
+     "at": {
+      "line": "L0419",
+      "word": "dies"
+     },
+     "what": "that window gutters; another house lights"
+    },
+    {
+     "id": "body",
+     "at": {
+      "line": "L0420",
+      "word": "experimental"
+     },
+     "what": "Q15 inks lower on the strip; badge 'workerd · 28 Oct' hangs on the hook"
+    },
+    {
+     "id": "alarms",
+     "at": {
+      "line": "L0421",
+      "word": "Alarms"
+     },
+     "what": "an empty bracket in the margin, where a wake-up clock would hang"
+    },
+    {
+     "id": "later",
+     "at": {
+      "line": "L0422",
+      "word": "alarms"
+     },
+     "what": "a small brass wake-up clock drops into the bracket"
+    },
+    {
+     "id": "facets",
+     "at": {
+      "line": "L0422",
+      "word": "facets"
+     },
+     "what": "a cut-paper facet hangs beside it; badge 'workerd · 31 Oct' joins the first"
+    },
+    {
+     "id": "open",
+     "at": {
+      "line": "L0423",
+      "word": "open"
+     },
+     "what": "push into the strip, which begins to fold open onto the terrace"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "parchment commit strip with serverCyan rim",
+    "margin ink vignette of three houses and a well",
+    "empty wake-up-clock bracket",
+    "brass wake-up clock",
+    "cut-paper facet",
+    "badges 'workerd · 28 Oct' and 'workerd · 31 Oct'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "28 October 2026 · Pacific",
+     "beat": "date"
+    },
+    {
+     "kind": "quote",
+     "text": "…the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794",
+     "beat": "headline"
+    },
+    {
+     "kind": "label",
+     "text": "Commit: no ack until the bucket holds it",
+     "beat": "body"
+    }
+   ],
+   "music": {
+    "cue": "ch04-commit",
+    "note": "the braid figure resolves into a single held chord as the strip unrolls; a faint cyan shimmer (high, glassy) under the headline; a two-note figure for the calendar steps on 'Two days later' and 'The next day'; the chord opens upward on 'Let us open it' and hands over to ch05's terrace drone"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "HI20",
+    "HI21",
+    "HI22",
+    "LI01"
+   ]
+  }
+ ]
+}

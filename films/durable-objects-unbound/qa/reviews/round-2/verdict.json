@@ -1,0 +1,205 @@
+{
+ "round": 2,
+ "reviewKind": "bounded fix verification, not a new full review",
+ "pass": true,
+ "scores": {
+  "accuracy": 9.0,
+  "depth": 9.0,
+  "clarity": 8.3,
+  "story": 8.6,
+  "visual": 8.4,
+  "sync": 8.4,
+  "sound": 8.1,
+  "curiosity": 8.7
+ },
+ "mean": 8.56,
+ "bar": 8.5,
+ "criticalIssues": 0,
+ "scoreBasis": "All scores and the 8.56 mean are inherited unchanged from the round-1 full review, which scored the movie before these fixes. Nothing was re-scored in round 2, and no sound or accuracy assessment was repeated. Pass here means the inherited gate stands and all eight routed visual fixes verified in the refreshed movie with no new material regression in the sampled frames.",
+ "inheritedFrom": "films/durable-objects-unbound/qa/reviews/round-1/verdict.json (unchanged)",
+ "reviewer": {
+  "model": "claude-opus-5-5",
+  "effort": "high",
+  "via": "Claude Code",
+  "role": "independent reviewer verifying its own routed fixes"
+ },
+ "at": "2026-11-01",
+ "basis": "67 frames cut from the refreshed render/film.mp4 at the eight routed locations: 4 viewed at full 1920 px, 12 at 960 px, the rest in 480-640 px tiles. The earlier movie was overwritten at the mux step, so 'before' is the round-1 record and its retained cuts, not a side-by-side from the old file. The rest of the film was not re-inspected. The final-assembly report's segment-join checks and the director's audits on the eight shots were reused, not repeated.",
+ "notAssessed": [
+  "real-time viewing, including judder",
+  "hearing or A/V sync by ear",
+  "native Safari playback",
+  "human sign-off of any kind"
+ ],
+ "summary": "All eight routed visual fixes are present and verified in frames from the refreshed movie, with no new material regression in the sampled frames. Only small residuals remain, none routed. The inherited round-1 score of 8.56 stands and was not re-graded. Format and frame count are unchanged, and all 11 human listening entries, including the 3 added lines, remain pending and unsigned.",
+ "dimensionNotes": {
+  "accuracy": "Hosted Cloudflare, the 28 October and later workerd snapshots, and celld 0.6.3 stay separate in narration and on their tags. Claimed versus opened epochs, lease margins versus the second look, one-key scope, and the complete versus damaged tail cases all match the verified claims, with no invented deal terms, benchmarks or exactly-once promises.",
+  "depth": "The film goes to the byte layout of the SQLite log, the 12,000 and 16,000 ms lease arithmetic, compare and swap, the order of the proof before the tick, the restore and its limits, and celld's fsync and sealing gate. An experienced engineer gets the actual mechanism, and it is still tied to one message.",
+  "clarity": "Score inherited from round 1, before these fixes. The zero clock in ch05-s05 and the hosted lamps in ch07-s02, named then as soft spots, were corrected and verified in the refreshed movie; calendar dots still lean on the narration.",
+  "story": "One tick carries 24 minutes, from the promise to the failure to the final trace back to the Well and the Plate. The history chapters at the desks are the quietest stretch, but they pay off in the two-rope braid and the commit.",
+  "visual": "Score inherited from round 1, before these fixes. A consistent paper-cut world with motivated light, real depth and a clear grammar of lamps, tags and moods. The routed text and prop collisions were corrected; a few push-ins still go soft or leave large areas of dark wall.",
+  "sync": "Sampled beats land on their words, including the tick strokes, the bell and the Plate flips, and every shot keeps moving, with no fully static hold of 5 s or more. This was judged from about 350 frames of the movie and a frame-difference measure, not from watching it in real time.",
+  "sound": "Assessed from the script, speech-to-text, waveforms, spectrograms and loudness measurements, not by hearing it. The master is -16.0 LUFS at -1.7 dBTP, voice sits at least 10.8 dB over the music, the duck is 2.85 dB, and the last cue fades after its final strike; human pronunciation listening is still pending.",
+  "curiosity": "Pulling a pin and watching a promise break makes each guarantee feel earned, and the reversal of who referees the referee reframes 'S3 is all you need'. The film stays honest about what it did not run or establish."
+ },
+ "dimensionNotesBasis": "Carried from round 1. Only clarity and visual were reworded, to reflect the verified fixes; their scores did not change.",
+ "fixes": {
+  "shots": {},
+  "cues": {},
+  "lines": {},
+  "global": []
+ },
+ "fixChecks": {},
+ "fixVerification": {
+  "routed": 8,
+  "verified": 8,
+  "failed": 0,
+  "newMaterialRegressions": 0,
+  "shots": {
+   "ch01-s01": {
+    "defect": "opening iris did not play",
+    "samplesSec": [
+     0.0,
+     0.1,
+     0.3,
+     0.5,
+     0.7,
+     0.9,
+     1.1,
+     1.3
+    ],
+    "result": "fixed",
+    "evidence": "Frame at 0.0 s is black, a point opens on A's window at 0.1 s, the circle widens, and the frame is open by 1.3 s."
+   },
+   "ch03-s02": {
+    "defect": "keeper B hid the 3 in 'Amazon S3'",
+    "samplesSec": [
+     323,
+     330,
+     338,
+     344
+    ],
+    "result": "fixed",
+    "evidence": "'Amazon S3' reads whole in all four samples, with keeper B clear of it."
+   },
+   "ch03-s03": {
+    "defect": "label ran onto the Plate and A tile",
+    "samplesSec": [
+     374.5,
+     376,
+     378,
+     380.5
+    ],
+    "result": "fixed",
+    "evidence": "The label is right-aligned under the date stamp, clear of the Plate, in all four samples."
+   },
+   "ch05-s05": {
+    "defect": "lines and clock hand obscured the assumed zero",
+    "samplesSec": [
+     806.9,
+     807.4,
+     807.8,
+     808.2,
+     808.6,
+     809.2,
+     809.6
+    ],
+    "result": "fixed",
+    "evidence": "The clock now sits above every line. The hand shows at 806.9-807.4 s, then a dark brass 0 reads clearly from 807.8 s to 809.6 s. The snapped thread is kept."
+   },
+   "ch07-s02": {
+    "defect": "no visible water; ridge clipped the tag",
+    "samplesSec": [
+     1110.4,
+     1110.6,
+     1110.8,
+     1111,
+     1111.2,
+     1111.6,
+     1113,
+     1115,
+     1115.6,
+     1116,
+     1116.2,
+     1116.6,
+     1117
+    ],
+    "result": "fixed",
+    "evidence": "A sea band with a bright waterline shows between the town ridge and the headland foot. From 1110.8 s through the hold, the tag and five lamps sit above the water, and the tag no longer meets the ridge.",
+    "residual": "The tag is sharper and larger than the far plane it stands for. It meets the right frame edge at low alpha while arriving (about 1110.4-1110.6 s) and leaving (about 1117 s). The moon shows at frame left below the waterline's height for about 2 s during the camera moves, where the line has mostly faded."
+   },
+   "ch07-s06": {
+    "defect": "push clipped the keeper and left a flat wall",
+    "samplesSec": [
+     1280.5,
+     1281.2,
+     1281.9,
+     1282.6
+    ],
+    "result": "fixed",
+    "evidence": "At 1282.6 s, near the last frame before the 1282.71 s cut, keeper, error slip, door and dark lantern are all whole and the upper-window sliver is gone.",
+    "residual": "Lower-frame dark wall remains. The upper window passes the top edge during the move at about 1280.5 s, and a hairline shows at the top edge at 1282.6 s."
+   },
+   "ch08-s01": {
+    "defect": "pin board and first pin crossed the title",
+    "samplesSec": [
+     1303.6,
+     1304.2,
+     1304.8,
+     1305.4,
+     1305.9,
+     1306.2,
+     1306.4,
+     1306.5,
+     1306.6,
+     1307,
+     1307.3,
+     1307.6,
+     1308,
+     1308.5,
+     1309,
+     1309.7,
+     1326,
+     1335
+    ],
+    "result": "fixed",
+    "evidence": "The title reads clear of the board from about 1304.2 s to 1306.2 s and is gone by 1306.6 s, so the routed 1307.3-1309.7 s window is clean. The optional board exit also landed: no board at 1326 s or 1335 s.",
+    "residual": "Title end and board edge touch at very low title alpha near 1306.4 s."
+   },
+   "ch08-s04": {
+    "defect": "tick butted against the sender's forehead and mullion",
+    "samplesSec": [
+     1416.7,
+     1418,
+     1419.5,
+     1421
+    ],
+    "result": "fixed",
+    "evidence": "The tick now sits on clear window light, away from the head and mullion, and the gold trace still starts from the slip at 1421 s.",
+    "residual": "The slip's far-left end tucks behind the window frame, which reads as paper held at the frame."
+   }
+  }
+ },
+ "format": {
+  "verdict": "unchanged format and frame count",
+  "video": "h264 High yuv420p 1920x1080 24/1, 34546 frames, 1439.416667 s",
+  "audio": "aac LC 48 kHz stereo, 1439.416667 s",
+  "captions": "mov_text present",
+  "chapters": 8,
+  "size": "687,058,634 bytes (was 687,608,914; the re-capture is the expected cause)",
+  "renderReport": "72 segments, 52 reused, no page errors, all checks true",
+  "qa": "40 pass, 6 warn, 0 fail (same counts and warning ids as round 1)"
+ },
+ "humanListening": {
+  "status": "pending, not signed",
+  "entries": 11,
+  "addedLineChecks": {
+   "L0312": "pending",
+   "L0519": "pending",
+   "L0101": "pending"
+  },
+  "by": null,
+  "at": null,
+  "clipSig": null
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "$notes": "Verbatim quote texts frozen after fact-checking (2026-10-31: every text checked byte-for-byte against the fetched primary page or the pinned repository file). script.mjs fails when quotes.json drifts from these. Change one only with a source correction, and record why. 2026-10-31: Q26 appended (new verified quote; no existing text changed). Q07 speaker corrected in quotes.json to Ryan Dahl (text unchanged). 2026-11-01 excerpt-selection version 2 (film quotation budget: quoted material from any one source URL, counting narration, on-screen cards, credits and repeats, stays <=25 words): Q01, Q05, Q06, Q10, Q12, Q14, Q17, Q24, Q25 narrowed to exact excerpts of their byte-verified 2026-10-31 texts (each verified as an in-order exact substring; ellipsis marks omitted words); Q02, Q03, Q04, Q16, Q18, Q19 unchanged; Q07, Q08, Q09, Q11, Q13, Q15, Q20, Q21, Q22, Q23, Q26 retired (their cards became own-word labels, L0403 and L0413 are paraphrased, credits cite sources without quoting). No attribution, speaker, date or URL changed. Full verified witnesses kept outside the published tree.",
+ "Q01": "…only one location in the whole world at a time.",
+ "Q02": "The logical unit of state in a chat app is a chat room.",
+ "Q03": "When a storage write operation is in progress, any new outgoing network messages will be held back",
+ "Q04": "workerd is Open Source under the Apache License version 2.0.",
+ "Q05": "Latency is effectively zero",
+ "Q06": "Once at least three of these followers respond… the write is confirmed.",
+ "Q10": "we were delighted.",
+ "Q12": "the entire Deno team is joining Cloudflare",
+ "Q14": "…the beginning of merging celld's functionality into workerd.",
+ "Q16": "Alarms are not supported yet",
+ "Q17": "…a witness to writes, notified every time an object changes.",
+ "Q18": "They were more work, in fact, than the actual implementation itself.",
+ "Q19": "It needs no serving control plane or consensus service.",
+ "Q24": "…ignores the condition fails late and silently",
+ "Q25": "…cannot act on a value that a crash can still lose."
+}

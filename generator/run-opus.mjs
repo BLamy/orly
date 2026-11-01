@@ -2,7 +2,7 @@
 // run-opus.mjs — the FILM pipeline's headless launcher: planning, research, story/narration,
 // Canvas, Strudel music, pipeline code and review for films. Exactly one model
 // (generator/film/authoring-models.json → claude-opus-5-5; the film brief allows no fallback;
-// books follow generator/authoring-models.json and run-fable.mjs) at a fixed effort (high), through the latest Claude Code CLI. No
+// books follow generator/authoring-models.json and run-claude.mjs) at a fixed effort (high), through the latest Claude Code CLI. No
 // fallback model, no shell interpolation, strict provider provenance.
 //
 //   node generator/run-opus.mjs --role <role> --prompt-file assignment.md \

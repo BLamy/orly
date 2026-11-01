@@ -1,0 +1,724 @@
+{
+ "id": "ch06",
+ "number": 6,
+ "title": "The Ribbon",
+ "blurb": "SQLite's write-ahead log, drawn as a ribbon: a thirty-two-byte leader, frames of a twenty-four-byte tab and a page, and on a transaction's last frame a stamp recording the database's size: the commit mark. workerd's keeper cuts the ribbon only after a stamp, so only whole transactions leave the room; rolled-back frames are written over. The cut ribbon goes down to the Well as scrolls tied with checksummed cords, each epoch's shelf starting with a Book; this is workerd's own format, and celld's LTX is a different one. Then the tick itself: upload, a second look at the Plate, and only then the bell. Pull that pin and an old owner rings a bell its successor may never honour. And one honest limit: a lost reply proves nothing either way.",
+ "shots": [
+  {
+   "id": "ch06-s01",
+   "kind": "plate",
+   "setting": "a parchment plate: inside the Room Lantern, SQLite's main file drawn as a bound ledger and, beside it, the write-ahead log drawn as a ribbon unspooling across the plate with a leader card, frame tabs, pages and red ink stamps",
+   "era": "2020s",
+   "mood": "parchment",
+   "lines": [
+    {
+     "id": "L0601",
+     "text": "Inside the lantern, SQLite keeps the room in a file. But it does not write changes there first.",
+     "pauseAfter": 0.5,
+     "direction": "opening a new machine; intimate"
+    },
+    {
+     "id": "L0602",
+     "text": "It writes them to a second file beside it: a write-ahead log. Think of it as a ribbon.",
+     "pauseAfter": 0.6,
+     "direction": "naming the term clearly, then the metaphor"
+    },
+    {
+     "id": "L0603",
+     "text": "It starts with a leader, thirty-two bytes long. Then frames: each a twenty-four-byte tab and one page.",
+     "pauseAfter": 0.5,
+     "direction": "measured, the numbers distinct"
+    },
+    {
+     "id": "L0604",
+     "text": "On a transaction's last frame, the tab records how many pages the database has after the commit. Other frames hold zero there.",
+     "pauseAfter": 0.6,
+     "direction": "the important detail; slow on 'last frame'"
+    },
+    {
+     "id": "L0605",
+     "text": "We draw it as a red stamp. That number is the commit mark.",
+     "direction": "brief, pleased"
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1.8,
+   "visual": "THIS SHOT: the write-ahead log, laid out exactly. Iris open on the Room Lantern's flame, then the lantern's paper wall unfolds into a parchment plate (paper-fold). Left: SQLite's main file drawn as a closed bound ledger. On 'second file' a ribbon unspools from beside the ledger left to right across the plate's middle band (beat ribbon); term tag on 'write-ahead'. On 'leader' the ribbon's first card is ruled off and labelled '32 bytes' (beat leader). On 'frames' frames follow: each a narrow tab marked '24' and a wider page panel with faint ink rows (beat frames); five frames in all. On 'last' the third frame's tab gets a red ink stamp pressed onto it carrying a small number, and the fifth frame likewise; the other tabs show a tiny engraved 0 (beat stamp). On 'zero' the camera eases along the ribbon so the zeros pass under the lens (beat zeros). On 'mark' the two stamps glow faintly: two committed transactions, frames 1–3 and 4–5 (beat mark). Bind the stamp numbers to real quantities: the ledger holds 6 pages; transaction one rewrites pages, so its commit stamp reads 6; transaction two adds a page, so its stamp reads 7, and the ledger visibly gains a page at the next checkpoint. All text above y 600; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "ribbon",
+     "at": {
+      "line": "L0602",
+      "word": "second"
+     },
+     "what": "the ribbon unspools beside the ledger"
+    },
+    {
+     "id": "term",
+     "at": {
+      "line": "L0602",
+      "word": "write-ahead"
+     },
+     "what": "term tag"
+    },
+    {
+     "id": "leader",
+     "at": {
+      "line": "L0603",
+      "word": "leader"
+     },
+     "what": "the 32-byte leader card"
+    },
+    {
+     "id": "frames",
+     "at": {
+      "line": "L0603",
+      "word": "frames"
+     },
+     "what": "frames: 24-byte tabs and pages"
+    },
+    {
+     "id": "seal",
+     "at": {
+      "line": "L0604",
+      "word": "last"
+     },
+     "what": "red stamps with numbers on frames 3 and 5"
+    },
+    {
+     "id": "zeros",
+     "at": {
+      "line": "L0604",
+      "word": "zero"
+     },
+     "what": "the other tabs show 0"
+    },
+    {
+     "id": "mark",
+     "at": {
+      "line": "L0605",
+      "word": "mark"
+     },
+     "what": "the stamps glow: two committed transactions"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "parchment plate: bound ledger (the main file)",
+    "the ribbon: a 32-byte leader card, 24-byte frame tabs, page panels, red ink stamps with numbers"
+   ],
+   "onScreenText": [
+    {
+     "kind": "term",
+     "text": "write-ahead log",
+     "gloss": "the Ribbon",
+     "beat": "term"
+    }
+   ],
+   "music": {
+    "cue": "ch06-a-ribbon",
+    "note": "a paper rustle as the ribbon unspools; one soft tick per frame; the ink stamp a low warm thud; a quiet held chord under 'commit mark'"
+   },
+   "transitionIn": "iris",
+   "claims": [
+    "WA01",
+    "HI08"
+   ]
+  },
+  {
+   "id": "ch06-s02",
+   "kind": "scene",
+   "setting": "inside the Room Lantern in House A (illustrative), candlelit: the ribbon running across a small workbench, the keeper of House A with a pair of brass scissors, a basket of cut lengths",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0606",
+     "text": "workerd's keeper hears every write to the ribbon, holds the frames since the last stamp, and cuts only when a stamped frame is complete.",
+     "pauseAfter": 0.5,
+     "direction": "patient, describing a craftsman's habit"
+    },
+    {
+     "id": "L0607",
+     "text": "One cut, one whole transaction. Nothing half-finished ever leaves the room.",
+     "pauseAfter": 0.6,
+     "direction": "a small rule, firmly"
+    },
+    {
+     "id": "L0608",
+     "text": "A transaction that rolls back leaves frames with no stamp, and the next writes straight over them.",
+     "pauseAfter": 0.5,
+     "direction": "matter-of-fact"
+    },
+    {
+     "id": "L0609",
+     "text": "When SQLite copies the ribbon into its main file and starts a fresh one, the keeper starts fresh too.",
+     "direction": "tidy ending"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: the Scissors. The parchment folds back into the lantern's candlelit interior (paper-fold). A small workbench; the ribbon from s01 runs across it right to left, still being written at the right edge by an unseen quill. The keeper of House A sits at the bench with brass scissors. Badge 'workerd · 28 Oct' hangs from the lamp hook. On 'hears' each new frame that arrives makes a small bell-less tremor in a thread tied to the keeper's finger (beat hears). On 'holds' the frames since the last cut pile in a loose loop on the bench (beat hold). On 'cuts' a stamp arrives; the scissors close just after it, and a clean length drops into a basket (beat cut). On 'whole' a second length: the keeper waits, scissors open, through two unsealed frames, and cuts only after the stamp (beat whole). On 'rolls' a third run of two frames arrives with no stamp; then the next transaction's frames are pasted directly over them, hiding them (beat rollback). On 'fresh' the lantern's main ledger takes in pages from the ribbon (a checkpoint, drawn as pages sliding into the ledger); the old ribbon is wound away and a new leader card starts at the right edge; the keeper ties a fresh thread to the finger (beat fresh). Text upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "hears",
+     "at": {
+      "line": "L0606",
+      "word": "hears"
+     },
+     "what": "each frame tugs a thread on the keeper's finger"
+    },
+    {
+     "id": "hold",
+     "at": {
+      "line": "L0606",
+      "word": "holds"
+     },
+     "what": "uncut frames loop on the bench"
+    },
+    {
+     "id": "cut",
+     "at": {
+      "line": "L0606",
+      "word": "cuts"
+     },
+     "what": "a cut just after a stamp; a length drops into the basket"
+    },
+    {
+     "id": "whole",
+     "at": {
+      "line": "L0607",
+      "word": "whole"
+     },
+     "what": "the keeper waits through unsealed frames"
+    },
+    {
+     "id": "rollback",
+     "at": {
+      "line": "L0608",
+      "word": "rolls"
+     },
+     "what": "unsealed frames are pasted over"
+    },
+    {
+     "id": "fresh",
+     "at": {
+      "line": "L0609",
+      "word": "fresh"
+     },
+     "what": "checkpoint into the ledger; a new leader starts"
+    }
+   ],
+   "cast": [
+    "keeper-a"
+   ],
+   "props": [
+    "the ribbon on a workbench",
+    "brass scissors",
+    "a basket of cut lengths",
+    "a thread on the keeper's finger",
+    "the main-file ledger",
+    "badge 'workerd · 28 Oct'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "cut only after a stamp",
+     "beat": "cut"
+    }
+   ],
+   "music": {
+    "cue": "ch06-a-ribbon",
+    "note": "a light pulse of ticks as frames arrive; a crisp scissor snip on each cut, left exposed; a muffled paste-over for the rollback; a soft cadence on 'starts fresh too'"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "WA02",
+    "WA03"
+   ]
+  },
+  {
+   "id": "ch06-s03",
+   "kind": "scene",
+   "setting": "the pulley line from House A down to the Well, and a cutaway shelf inside the Well (illustrative): scrolls tied with cords and knot-tags, a bound Book at the start of each epoch's shelf; winter night",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0610",
+     "text": "The cut lengths go down to the Well as scrolls: each page once, in its newest version.",
+     "pauseAfter": 0.5,
+     "direction": "following the journey; even"
+    },
+    {
+     "id": "L0611",
+     "text": "Every scroll's cord records a checksum and its length, so a damaged or short scroll refuses to be read, rather than read wrong.",
+     "pauseAfter": 0.6,
+     "direction": "'refuses' with quiet approval"
+    },
+    {
+     "id": "L0612",
+     "text": "Each epoch's shelf starts with a Book, a snapshot of what it inherited; a new Book goes down before old scrolls are cleared.",
+     "pauseAfter": 0.6,
+     "direction": "two linked facts; 'before' stressed"
+    },
+    {
+     "id": "L0613",
+     "text": "This is workerd's own format. celld writes a different one, called LTX.",
+     "direction": "a clear distinction, lightly"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: scrolls and Books in the Well. Occluder wipe behind the L6 lamp-post to the terrace: the pulley line from House A slopes down to the wellhead. On 'down' the basket's cut lengths are rolled into a scroll and sent down the pulley (beat send); a small inset shows two frames of the same page merged into one, the older pressed under the newer (beat merge on 'newest'). The camera follows the scroll down into a cutaway of the Well's side: a stone shelf, labelled by a small brass tag 'epoch 7', holding a row of tied scrolls. On 'cord' a close-up: the scroll's cord ends in a knot-tag engraved with a tiny tally and a length mark (beat cord); on 'refuses' a frayed, short scroll is lifted, its knot-tag will not untie, and it is set aside rather than opened (beat refuse). On 'Book' the shelf's first item is shown: a bound Book (beat book); on 'before' the scrolls pile up to the height of the Book, a new Book is bound and placed first, and only then are the older scrolls swept off the shelf (beat compact on 'before'). On 'format' the badge 'workerd · 28 Oct' swings on the shelf's end (beat badge); on 'celld' a second, distant shelf on the far wall is briefly lit labGreen with a different-shaped bundle and its own badge 'celld 0.6.3' (beat ltx), then it fades. Text upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "send",
+     "at": {
+      "line": "L0610",
+      "word": "down"
+     },
+     "what": "cut lengths rolled and sent down the pulley"
+    },
+    {
+     "id": "merge",
+     "at": {
+      "line": "L0610",
+      "word": "newest"
+     },
+     "what": "two versions of one page merge to the newer"
+    },
+    {
+     "id": "cord",
+     "at": {
+      "line": "L0611",
+      "word": "cord"
+     },
+     "what": "a knot-tag with tally and length"
+    },
+    {
+     "id": "refuse",
+     "at": {
+      "line": "L0611",
+      "word": "refuses"
+     },
+     "what": "a damaged scroll is set aside unopened"
+    },
+    {
+     "id": "book",
+     "at": {
+      "line": "L0612",
+      "word": "Book"
+     },
+     "what": "the shelf starts with a bound Book"
+    },
+    {
+     "id": "compact",
+     "at": {
+      "line": "L0612",
+      "word": "before"
+     },
+     "what": "new Book placed first, then old scrolls swept"
+    },
+    {
+     "id": "badge",
+     "at": {
+      "line": "L0613",
+      "word": "format"
+     },
+     "what": "badge workerd · 28 Oct on the shelf"
+    },
+    {
+     "id": "ltx",
+     "at": {
+      "line": "L0613",
+      "word": "celld"
+     },
+     "what": "a distant labGreen shelf with a different bundle, badge celld 0.6.3"
+    }
+   ],
+   "cast": [
+    "keeper-a"
+   ],
+   "props": [
+    "pulley line and wellhead",
+    "scrolls with cords and knot-tags",
+    "a bound Book (snapshot)",
+    "a stone shelf tagged 'epoch 7'",
+    "badges 'workerd · 28 Oct' and 'celld 0.6.3' on separate shelves"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "scrolls: gzip, checksum + length",
+     "beat": "cord"
+    },
+    {
+     "kind": "label",
+     "text": "workerd: its own format · celld: LTX",
+     "beat": "badge"
+    }
+   ],
+   "music": {
+    "cue": "ch06-b-well",
+    "note": "the pulley's creak and a descending figure into the Well; a knot pulled tight on 'cord'; a refused, muted tone for the damaged scroll; a bound-book thud on 'Book'; the celld shelf a brief greener colour of the same chord"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "WA04",
+    "WA05",
+    "WA06",
+    "WA07",
+    "WA08"
+   ]
+  },
+  {
+   "id": "ch06-s04",
+   "kind": "scene",
+   "setting": "the Room Lantern's door in House A and, below, the Well and the Plate (illustrative): the Held Letter behind its brass latch, House A's bell on a bracket, a keeper's lamp on a pole that can be raised to the Plate",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0614",
+     "text": "Now the tick itself, in workerd. Message forty-two is written; its reply waits behind the latch.",
+     "pauseAfter": 0.5,
+     "direction": "returning to the opening scene, with new eyes"
+    },
+    {
+     "id": "L0615",
+     "text": "The keeper cuts the transaction, and sends the scroll down to the Well.",
+     "pauseAfter": 0.4,
+     "direction": "step one, steady"
+    },
+    {
+     "id": "L0616",
+     "text": "Then, before it rings the bell, the keeper looks up at the Plate one more time. Still A. Still epoch seven.",
+     "pauseAfter": 0.6,
+     "direction": "the heart of the film; slow, each check its own beat"
+    },
+    {
+     "id": "L0617",
+     "text": "Only then the bell. The latch lifts. The tick.",
+     "pauseAfter": 0.8,
+     "direction": "three small releases; the last word soft"
+    },
+    {
+     "id": "L0619",
+     "text": "Finishing inside the room is not the tick. The Well and the second look are. celld's gate holds even more: errors, and every chunk of a stream.",
+     "direction": "summary and comparison; even-handed"
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1.8,
+   "visual": "THIS SHOT: PROOF BEFORE RESPONSE (workerd). Cut to the Room Lantern's door in House A, the Held Letter (#42's reply) resting against its brass latch, exactly as in ch02-s03; badge 'workerd · 28 Oct' by the door. On 'written' the sender's slip enters the lantern and a page is inked (beat written). On 'cuts' the keeper's scissors snip just after the stamp and the scroll leaves along the pulley line, which the camera follows down to the wellhead in one continuous 4 s tilt (beat down). On 'looks' the keeper raises its lamp on a pole up toward the Plate above the Well: the lamp light falls on the tiles A · 7 · 7 (beat look); on 'Still' the tile A glints, on the second 'Still' the 7 glints (beat still). On 'bell' House A's bell swings (beat bell); on 'latch' the latch lifts and the letter flies out (beat latch); on 'tick' the sender's slip receives its ink tick, intercut as a small inset (beat tick). On 'Finishing' (word 'room') the room's own ledger shows the page done, yet the latch stays shut until the bell (beat local); on 'celld' a small labGreen inset with badge 'celld 0.6.3': behind its latch wait a reply, a red-edged error slip and a string of small stream chunks, all held (beat celld); the quote card sets. Text upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "written",
+     "at": {
+      "line": "L0614",
+      "word": "written"
+     },
+     "what": "the slip enters; a page is inked"
+    },
+    {
+     "id": "down",
+     "at": {
+      "line": "L0615",
+      "word": "cuts"
+     },
+     "what": "snip; the scroll goes down the line to the Well"
+    },
+    {
+     "id": "look",
+     "at": {
+      "line": "L0616",
+      "word": "looks"
+     },
+     "what": "the keeper's lamp rises to the Plate"
+    },
+    {
+     "id": "still",
+     "at": {
+      "line": "L0616",
+      "word": "Still"
+     },
+     "what": "A and 7 glint"
+    },
+    {
+     "id": "bell",
+     "at": {
+      "line": "L0617",
+      "word": "bell"
+     },
+     "what": "House A's bell swings"
+    },
+    {
+     "id": "latch",
+     "at": {
+      "line": "L0617",
+      "word": "latch"
+     },
+     "what": "the latch lifts; the letter flies"
+    },
+    {
+     "id": "tick",
+     "at": {
+      "line": "L0617",
+      "word": "tick"
+     },
+     "what": "the sender's slip gets its tick"
+    },
+    {
+     "id": "local",
+     "at": {
+      "line": "L0619",
+      "word": "room"
+     },
+     "what": "the page is done locally; the latch stays shut"
+    },
+    {
+     "id": "celld",
+     "at": {
+      "line": "L0619",
+      "word": "gate"
+     },
+     "what": "celld inset: reply, error and stream chunks held"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "sender"
+   ],
+   "props": [
+    "the Room Lantern's door, brass latch and Held Letters",
+    "House A's bell",
+    "the keeper's lamp on a pole",
+    "the Plate (A · 7 · 7)",
+    "a brass pointer on a ribbon-position scale",
+    "a celld inset with error slip and stream chunks",
+    "badges 'workerd · 28 Oct' and 'celld 0.6.3'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "upload → look again → bell",
+     "beat": "look",
+     "until": "local"
+    },
+    {
+     "kind": "quote",
+     "text": "…cannot act on a value that a crash can still lose. — celld guarantees, v0.6.3",
+     "beat": "local"
+    }
+   ],
+   "music": {
+    "cue": "ch06-c-tick",
+    "note": "the film's tick motif built step by step: a held breath under 'looks up', two soft glints for 'Still', the house bell, then the two-note tick in full for the first time since chapter 1; a lighter, counting variation for the shared trip"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "DU01",
+    "DU02",
+    "DU04",
+    "DU05",
+    "DU06",
+    "HI05",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch06-s05",
+   "kind": "scene",
+   "setting": "the terrace and the Well at night (illustrative): House A's keeper at the wellhead mid-upload; House B on the right; the Plate between; the red-tagged pin seated in the hinge of the keeper's lamp-pole",
+   "era": "2020s",
+   "mood": "emberRed",
+   "lines": [
+    {
+     "id": "L0620",
+     "text": "Pull the pin, and the keeper never looks up.",
+     "pauseAfter": 0.6,
+     "direction": "firm, the third pin",
+     "tts": {
+      "solo": true,
+      "speed": 0.8
+     },
+     "insertGaps": {
+      "pin": 0.28
+     }
+    },
+    {
+     "id": "L0621",
+     "text": "A sends its scroll with its lease in order, then the whole house freezes, like the sleeper. B claims epoch eight, and A's scroll lands on epoch seven's shelf.",
+     "pauseAfter": 0.5,
+     "direction": "a quick, precise sequence"
+    },
+    {
+     "id": "L0622",
+     "text": "A rings the bell anyway: a tick for a write that B may never see.",
+     "pauseAfter": 0.8,
+     "direction": "the failure, quietly appalling"
+    },
+    {
+     "id": "L0623",
+     "text": "Pin back. A looks up: the Plate says eight. No bell; the letter becomes an error, and the old scroll is cleared later.",
+     "pauseAfter": 0.7,
+     "direction": "relief, exact; 'No bell' clipped"
+    },
+    {
+     "id": "L0624",
+     "text": "One honest limit: if a reply is lost on its way home, the sender cannot tell whether the write happened.",
+     "pauseAfter": 0.5,
+     "direction": "candid, a little softer"
+    },
+    {
+     "id": "L0625",
+     "text": "A missing tick does not prove a write absent. Durability is not the same as exactly once.",
+     "direction": "the closing caveat; level"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 2,
+   "visual": "THIS SHOT: PULL THE PIN, the second look. Lamp change into emberRed. Framing: the wellhead centre-left with the Plate above, House A up-left, House B up-right; the keeper of House A at the wellhead holding the lamp-pole; the red-tagged pin seated in the pole's hinge (the second look). On 'Pull' the demonstrator's hand draws the pin; the pole's hinge goes slack and the lamp droops (beat pull). On 'freezes' A's whole house freezes, keeper mid-gesture, the scroll halfway down the rope, and A's candle burns down past its band while it is frozen (beat stall); on 'claims' B's card clicks in the Tooth and the Plate's tiles turn to B · 8 · 7 (beat claim); on 'lands' A's scroll arrives on the shelf tagged 'epoch 7' in the Well's cutaway (beat lands). On 'anyway' A, without looking up, swings its bell; a letter flies and a ticked slip appears at a sender's window (beat badtick); on 'never' a cold beat: the epoch-7 shelf is shown, A's late scroll at its end, while B's shelf, 'epoch 8', is empty of it (beat maybe). On 'Pin back' the hand reseats the pin and the scene rewinds to the stall (beat reseat); on 'eight' the lamp rises to the Plate: B · 8 (beat eight); on 'error' the waiting letter turns to a red-edged error slip (beat error); on 'cleared' a later moment, B's keeper sweeps the old scroll from shelf 7 (beat clear). The grade lamp-changes back to winterBlue. On 'lost' a coda at the sender's window: a reply letter blows away in the wind before it arrives; the sender looks at an un-ticked slip (beat lost); on 'absent' the slip is shown with a faint question mark where the tick would be (beat absent); the quote card sets. Text upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "pull",
+     "at": {
+      "line": "L0620",
+      "word": "Pull"
+     },
+     "what": "the pin is drawn from the lamp-pole hinge"
+    },
+    {
+     "id": "stall",
+     "at": {
+      "line": "L0621",
+      "word": "freezes"
+     },
+     "what": "A freezes mid-upload"
+    },
+    {
+     "id": "claim",
+     "at": {
+      "line": "L0621",
+      "word": "claims"
+     },
+     "what": "B claims: B · 8 · 7"
+    },
+    {
+     "id": "lands",
+     "at": {
+      "line": "L0621",
+      "word": "lands"
+     },
+     "what": "A's scroll lands on shelf 7"
+    },
+    {
+     "id": "badtick",
+     "at": {
+      "line": "L0622",
+      "word": "anyway"
+     },
+     "what": "A rings without looking; a false tick"
+    },
+    {
+     "id": "maybe",
+     "at": {
+      "line": "L0622",
+      "word": "never"
+     },
+     "what": "shelf 7 holds the late scroll; shelf 8 does not"
+    },
+    {
+     "id": "reseat",
+     "at": {
+      "line": "L0623",
+      "word": "Pin"
+     },
+     "what": "pin back; rewind to the stall"
+    },
+    {
+     "id": "eight",
+     "at": {
+      "line": "L0623",
+      "word": "eight"
+     },
+     "what": "the lamp shows B · 8"
+    },
+    {
+     "id": "error",
+     "at": {
+      "line": "L0623",
+      "word": "error"
+     },
+     "what": "the letter becomes an error slip"
+    },
+    {
+     "id": "clear",
+     "at": {
+      "line": "L0623",
+      "word": "cleared"
+     },
+     "what": "the late scroll is swept from shelf 7"
+    },
+    {
+     "id": "lost",
+     "at": {
+      "line": "L0624",
+      "word": "lost"
+     },
+     "what": "a reply blows away before it arrives"
+    },
+    {
+     "id": "absent",
+     "at": {
+      "line": "L0625",
+      "word": "absent"
+     },
+     "what": "an un-ticked slip with a faint question mark"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "keeper-b",
+    "sender",
+    "narrator-hands"
+   ],
+   "props": [
+    "the keeper's lamp-pole with the red-tagged pin in its hinge",
+    "the Plate (A · 7 · 7 → B · 8 · 7)",
+    "the Tooth",
+    "shelves tagged 'epoch 7' and 'epoch 8'",
+    "House A's bell",
+    "Held Letter and red-edged error slip",
+    "the sender's slip with a faint question mark"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "no second look: a false tick",
+     "beat": "badtick",
+     "until": "reseat"
+    },
+    {
+     "kind": "label",
+     "text": "celld: no ack is no proof of absence",
+     "beat": "lost"
+    }
+   ],
+   "music": {
+    "cue": "ch06-d-pin",
+    "note": "silence under the pin pull; a frozen held tone for the stall; the false bell rung slightly out of tune; the reseat click; the true check resolves with no bell at all, only a low knock for the error; the coda a sparse unresolved figure"
+   },
+   "transitionIn": "lampChange",
+   "claims": [
+    "DU02",
+    "RE06",
+    "DU11",
+    "DU08",
+    "DU10",
+    "FX01"
+   ]
+  }
+ ]
+}

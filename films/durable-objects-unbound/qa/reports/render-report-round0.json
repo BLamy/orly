@@ -1,0 +1,62 @@
+{
+ "at": "2026-11-01T07:16:16.494Z",
+ "site": "dev",
+ "base": "http://127.0.0.1:5216",
+ "width": 1920,
+ "height": 1080,
+ "crf": 20,
+ "preset": "medium",
+ "workers": 3,
+ "fps": 24,
+ "totalFilmFrames": 34546,
+ "frames": 34546,
+ "ranges": [
+  [
+   0,
+   34546
+  ]
+ ],
+ "segments": 72,
+ "reused": 0,
+ "captureFps": 67.08,
+ "pageErrors": [],
+ "audio": "films/durable-objects-unbound/mix/master.wav",
+ "out": "films/durable-objects-unbound/render/film.mp4",
+ "bytes": 687608914,
+ "final": {
+  "frames": 34546,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "pixFmt": "yuv420p",
+  "duration": 1439.417,
+  "videoDuration": 1439.416667,
+  "audioDuration": 1439.416667,
+  "audioCodec": "aac",
+  "subtitles": 1,
+  "chapters": {
+   "count": 8,
+   "end": 1439.417,
+   "titles": [
+    "1. The Tick",
+    "2. One Room in the Whole World",
+    "3. The Well That Learned to Say No",
+    "4. Two Lineages, One Commit",
+    "5. The Plate and the Candle",
+    "6. The Ribbon",
+    "7. The Neighbours",
+    "8. What Travels"
+   ],
+   "warnings": []
+  }
+ },
+ "checks": {
+  "frames": true,
+  "fullLength": true,
+  "size": true,
+  "fps": true,
+  "av": true,
+  "chapters": true
+ },
+ "wallSec": 543
+}

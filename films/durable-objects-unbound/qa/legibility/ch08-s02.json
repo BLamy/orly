@@ -1,0 +1,54 @@
+{
+ "shot": "ch08-s02",
+ "at": "2026-11-01T07:04:19.935Z",
+ "minCapPx": 22,
+ "sampled": 47,
+ "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "AS OF · 31 OCTOBER 2026",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "workerd · 28 Oct",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "workerd · 31 Oct",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Tests read, not run",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Not a sandbox on its own",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "C",
+   "maxCap": 33.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "9",
+   "maxCap": 32,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "celld 0.6.3",
+   "maxCap": 6.5,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 3
+}

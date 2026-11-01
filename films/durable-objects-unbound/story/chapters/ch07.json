@@ -1,0 +1,1171 @@
+{
+ "id": "ch07",
+ "number": 7,
+ "title": "The Neighbours",
+ "blurb": "House C rebuilds the room from the Well: it wipes its own copy, reads the newest Book and every scroll in order, and refuses to go on past a missing one. Every workerd tick pays for a trip to the Well. Then the lamps change to celld's town, where the owner's neighbours press each page onto their own disks and the bell can ring before the Well has the page. The tail now lives outside the Well: epoch shelves fence it but cannot recover it, so a successor reads the old owner's log record first, fences it, seals and collects the neighbours' notebooks, uploads them and only then restores. At least one neighbour must certify a complete tail; without one, the room stays shut.",
+ "shots": [
+  {
+   "id": "ch07-s01",
+   "kind": "scene",
+   "setting": "the harbour town, canonical night (illustrative): House C's upper window and the square below, the Well and the Plate; moonlight low-left, C's window lamp the warm practical",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0701",
+     "text": "Back to workerd's town, the night A went dark. House C holds the Plate: nine, from seven.",
+     "direction": "quiet resumption, picking a story up mid-page; a light stress on 'claimed' (we know claimed is not opened)",
+     "pauseAfter": 0.6
+    },
+    {
+     "id": "L0702",
+     "text": "First it throws away its own copy of the room.",
+     "direction": "plain, a little brisk; housekeeping before the real work",
+     "tts": {
+      "solo": true,
+      "speed": 0.72
+     }
+    },
+    {
+     "id": "L0703",
+     "text": "It reads the newest Book, then each scroll in order, skipping pages already laid down.",
+     "direction": "steady, methodical, one clause per step; 'in order' slightly weighted",
+     "insertGaps": {
+      "order": 0.2
+     }
+    },
+    {
+     "id": "L0704",
+     "text": "A missing scroll in the middle stops the restore cold.",
+     "direction": "drop the pace; 'cold' flat and final",
+     "pauseAfter": 0.7
+    },
+    {
+     "id": "L0705",
+     "text": "A checksum can say a scroll is damaged. Never what it said.",
+     "direction": "dry, a teacher's small smile on 'Never'"
+    },
+    {
+     "id": "L0706",
+     "text": "Pages are laid down again; no code is re-run.",
+     "direction": "matter-of-fact, the two halves balanced"
+    },
+    {
+     "id": "L0707",
+     "text": "Message forty-two is back. Only then does C send down its own Book, and open the Plate.",
+     "direction": "a quiet release on 'back'; then exact and deliberate on 'Only then'",
+     "insertGaps": {
+      "back": 0.3
+     }
+    }
+   ],
+   "leadIn": 1,
+   "holdAfter": 1,
+   "visual": "THIS SHOT: workerd's restore, step by step (badge 'workerd · 28 Oct' on the wellhead, named on 'workerd's'). Iris opens on House C's window lamp (beat iris). Canonical town at L3, the square at L4; slow crane down from C's upper window to the Well (≤ 4% frame width per second). On 'Plate' push in: the Plate reads C · 9 · from 7, crown lamp UNLIT (illustrative epochs; claimed, not opened). On 'throws' C's keeper tips a small local ledger into a stove; it curls to ash (the non-authoritative local copy). On 'Book' the Well's rope draws up a bound Book tagged 'session 7' onto C's pulley line; on 'scroll' four rolled scrolls follow in order, each knot with a stamped tag; at C's window desk the keeper lays pages into the Room Lantern's book; on 'skipping' one page already laid flashes and is set aside unlaid. On 'missing' a GHOST what-if: the chain of scrolls shows a dark gap between the second and third; the keeper's hands stop; the reading lamp holds (no red; this is a rule, not tonight). On 'checksum' a scroll's cord knot glints and a crumpled scroll rolls out unreadable; on 'Never' its panel stays blank. The ghost dissolves; the true chain is whole. On 'Pages' pages drop into the lantern's book as ink silhouettes, no figures move inside (no code re-run). On 'back' slip #42 glows in the lantern. On 'open' C sends its own small Book down the line; the from tile turns to 9 and the crown lamp lights. Label at upper right, never below y 634.",
+   "beats": [
+    {
+     "id": "iris",
+     "at": {
+      "shotTime": 0.2
+     },
+     "what": "iris opens on House C's window lamp"
+    },
+    {
+     "id": "badge",
+     "at": {
+      "line": "L0701",
+      "word": "workerd's"
+     },
+     "what": "camera passes the wellhead badge 'workerd · 28 Oct'"
+    },
+    {
+     "id": "claim",
+     "at": {
+      "line": "L0701",
+      "word": "Plate"
+     },
+     "what": "push in on the Plate: C · 8 · from 7, crown unlit"
+    },
+    {
+     "id": "wipe",
+     "at": {
+      "line": "L0702",
+      "word": "throws"
+     },
+     "what": "C's keeper tips its local ledger into the stove"
+    },
+    {
+     "id": "book",
+     "at": {
+      "line": "L0703",
+      "word": "Book"
+     },
+     "what": "the Book of session 7 rides up C's pulley line"
+    },
+    {
+     "id": "scrolls",
+     "at": {
+      "line": "L0703",
+      "word": "scroll"
+     },
+     "what": "four scrolls follow in order"
+    },
+    {
+     "id": "skip",
+     "at": {
+      "line": "L0703",
+      "word": "skipping"
+     },
+     "what": "an already-laid page flashes and is set aside"
+    },
+    {
+     "id": "gap",
+     "at": {
+      "line": "L0704",
+      "word": "missing"
+     },
+     "what": "ghost what-if: a dark gap in the chain; the keeper's hands stop"
+    },
+    {
+     "id": "crc",
+     "at": {
+      "line": "L0705",
+      "word": "checksum"
+     },
+     "what": "a damaged scroll's knot glints; the scroll is set aside unreadable"
+    },
+    {
+     "id": "never",
+     "at": {
+      "line": "L0705",
+      "word": "Never"
+     },
+     "what": "its page panel stays blank; the ghost dissolves"
+    },
+    {
+     "id": "replay",
+     "at": {
+      "line": "L0706",
+      "word": "Pages"
+     },
+     "what": "pages drop into the lantern's book; no figure inside moves"
+    },
+    {
+     "id": "back",
+     "at": {
+      "line": "L0707",
+      "word": "back"
+     },
+     "what": "slip #42 glows inside the lantern"
+    },
+    {
+     "id": "open",
+     "at": {
+      "line": "L0707",
+      "word": "open"
+     },
+     "what": "C's own Book goes down; from tile turns to 8, crown lamp lights"
+    }
+   ],
+   "cast": [
+    "keeper-c"
+   ],
+   "props": [
+    "Room Lantern",
+    "the Well and its rope",
+    "the Plate (C · 8 · from 7 → from 8)",
+    "bound Book tagged session 7",
+    "four tagged scrolls",
+    "local ledger and stove",
+    "pulley line",
+    "badge 'workerd · 28 Oct'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "Missing scroll: the restore refuses",
+     "beat": "gap",
+     "until": "never"
+    }
+   ],
+   "music": {
+    "cue": "ch07-a-restore",
+    "note": "the harbour drone returns under the iris; a soft page-turn pulse for each scroll laid; the pulse stops dead on 'cold' and resumes when the ghost dissolves; the two-note tick motif, quietly, on 'back'"
+   },
+   "transitionIn": "iris",
+   "claims": [
+    "OW08",
+    "RE01",
+    "RE02",
+    "RE03",
+    "RE04",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch07-s02",
+   "kind": "scene",
+   "setting": "the square at night (illustrative): the Well, the Plate and A's pulley line, a long brass measuring rod laid along the railing; then the far shore",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0708",
+     "text": "That is the price. In workerd's cluster, every tick waits for the Well, and a second look at the Plate.",
+     "direction": "level, unhurried; 'second look' a callback, lightly pointed"
+    },
+    {
+     "id": "L0709",
+     "text": "Our bar is illustrative: a sliver of local work, then the long walk.",
+     "direction": "candid aside; 'illustrative' clear; 'long walk' drawn out a touch"
+    },
+    {
+     "id": "L0710",
+     "text": "Cloudflare's hosted relay, back in 2024, answered that with followers.",
+     "direction": "a historical footnote, reported, not argued"
+    },
+    {
+     "id": "L0711",
+     "text": "celld uses followers too: a neighbour's disk can answer much sooner than the Well.",
+     "direction": "turning the page to a new town; warm"
+    },
+    {
+     "id": "L0712",
+     "text": "Change the lamps.",
+     "direction": "a quiet theatre cue, almost to the lighting desk",
+     "preGap": 0.6
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: the price of the Well in workerd's cluster, then the hinge into celld's town. Cut on the crown lamp lighting. The square at L4, the Plate above the Well, House A's pulley line sloping in from screen-left; a long brass measuring rod lies along the L5 railing with NO numbers and NO scale marks. On 'tick' a held letter's journey is drawn as a bar in ink along the rod: a thin sliver at the left (local SQL work inside the lantern), then a long segment that traces the scroll down the pulley line into the Well, then a short hook up to the Plate (the second look); the bell at the bar's end. The badge 'workerd · 28 Oct' hangs from the rod (named on 'workerd's'). On 'illustrative' a dotted ink outline doubles the bar's edges: proportions only, no units, nothing measured. On 'hosted' the camera trucks right past the L6 lamp-post (occluder) to the far shore at L1, where five small far lamps glow serverCyan for a beat with a small brass tag 'Cloudflare, hosted' (named on 'Cloudflare's'), the ch02 relay remembered; nothing of the harbour town is drawn as the relay. On 'celld' the camera returns to the terrace; two windows beside House A brighten slightly. On 'Change' the backlight fades toward the fg value while silhouettes hold: the lamp change begins (completed in the next shot). Bottom 12% of frame clear; no text items besides the two badges.",
+   "beats": [
+    {
+     "id": "bar",
+     "at": {
+      "line": "L0708",
+      "word": "tick"
+     },
+     "what": "the bar inks along the rod: sliver, long walk to the Well, hook to the Plate, bell"
+    },
+    {
+     "id": "badgeW",
+     "at": {
+      "line": "L0708",
+      "word": "workerd's"
+     },
+     "what": "the 'workerd · 28 Oct' tag swings on the rod"
+    },
+    {
+     "id": "dotted",
+     "at": {
+      "line": "L0709",
+      "word": "illustrative"
+     },
+     "what": "a dotted outline doubles the bar: proportions only"
+    },
+    {
+     "id": "shore",
+     "at": {
+      "line": "L0710",
+      "word": "hosted"
+     },
+     "what": "truck right behind the lamp-post to five far serverCyan lamps tagged 'Cloudflare, hosted'"
+    },
+    {
+     "id": "turn",
+     "at": {
+      "line": "L0711",
+      "word": "celld"
+     },
+     "what": "camera returns to the terrace; two windows beside A brighten"
+    },
+    {
+     "id": "lamps",
+     "at": {
+      "line": "L0712",
+      "word": "Change"
+     },
+     "what": "backlight begins to fade for the lamp change"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "the Well",
+    "the Plate",
+    "brass measuring rod without scale",
+    "ink latency bar (illustrative)",
+    "five far serverCyan lamps",
+    "badges 'workerd · 28 Oct' and 'Cloudflare, hosted'"
+   ],
+   "onScreenText": [],
+   "music": {
+    "cue": "ch07-a-restore",
+    "note": "the drone thins; a slow walking figure in the low register under the long segment of the bar; a single glassy cyan chord for the far lamps; on 'Change the lamps' everything falls away to room tone"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "DU01",
+    "DU09",
+    "HI10",
+    "HI11",
+    "CE01",
+    "CE04"
+   ]
+  },
+  {
+   "id": "ch07-s03",
+   "kind": "scene",
+   "setting": "celld's town (illustrative), night re-lamped labGreen: the same terrace, House A the owner, copyists' desks lit in the upper windows of Houses B and C",
+   "era": "2020s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0713",
+     "text": "This is celld's town, version 0.6.3. By default, the owner hands each write to one or two neighbours.",
+     "spoken": "This is celld's town, version zero point six point three. By default, the owner hands each write to one or two neighbours.",
+     "direction": "a fresh start, a guide arriving in a new town; the version said cleanly",
+     "pauseAfter": 0.6
+    },
+    {
+     "id": "L0714",
+     "text": "Each must press the page onto its own disk before it answers. That press is called fsync.",
+     "direction": "slow and physical on 'press the page onto its own disk'; then naming the term, lightly",
+     "insertGaps": {
+      "answers": 0.25
+     }
+    },
+    {
+     "id": "L0715",
+     "text": "When every neighbour in the proof has pressed, the bell can ring before the page reaches the Well. The upload follows.",
+     "direction": "'every' weighted; a small turn of surprise on 'before the page reaches the Well'; 'The upload follows' as an afterthought"
+    }
+   ],
+   "leadIn": 1.4,
+   "holdAfter": 1,
+   "visual": "THIS SHOT: celld's fleet, the first principle. The lamp change completes: the backlight rises in labGreen; the same terrace (geography lock), the wellhead now carries the brass badge 'celld 0.6.3' (named on 'celld's'), and celld's Plate above it is a plain plate with no candle scale (no workerd lease numbers anywhere). House A's lamp is the owner; in the upper windows of Houses B and C two copyists sit at desks, each with a notebook and a small iron book press (copyist-1 in B, copyist-2 in C). Slow truck right from A to B (≤ 5% width/s). On 'hands' A's keeper sends one committed page along two short neighbour lines (new thin cords from A's sill to B's and C's sills, never to the Well): each copyist copies it into the notebook's newest line. On 'press' copyist-1 turns the press screw a full turn and the notebook flattens under the platen; the platen locks with a small brass tab (pressed). On 'fsync' the term tag paints; copyist-2 turns its press the same way. On 'every' both press tabs glow; only when BOTH are locked does A's bell swing (beat bell on 'ring'): the latch on the Room Lantern's door lifts and slip #42's tick lands, while the scroll for that page is still on A's sill, not yet sent. On 'upload' the scroll rolls down A's pulley line into the Well. Hold on the two pressed notebooks. Text sits upper left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "badge",
+     "at": {
+      "line": "L0713",
+      "word": 2
+     },
+     "what": "push past the wellhead badge 'celld 0.6.3'"
+    },
+    {
+     "id": "hands",
+     "at": {
+      "line": "L0713",
+      "word": "hands"
+     },
+     "what": "A sends one page along two neighbour cords to B's and C's copyists"
+    },
+    {
+     "id": "press",
+     "at": {
+      "line": "L0714",
+      "word": "press"
+     },
+     "what": "copyist-1 turns the press; the platen locks"
+    },
+    {
+     "id": "term",
+     "at": {
+      "line": "L0714",
+      "word": "fsync"
+     },
+     "what": "term tag; copyist-2 presses too"
+    },
+    {
+     "id": "every",
+     "at": {
+      "line": "L0715",
+      "word": "every"
+     },
+     "what": "both press tabs glow"
+    },
+    {
+     "id": "bell",
+     "at": {
+      "line": "L0715",
+      "word": "ring"
+     },
+     "what": "A's bell swings; the latch lifts; #42's tick lands while the scroll is still on the sill"
+    },
+    {
+     "id": "upload",
+     "at": {
+      "line": "L0715",
+      "word": "upload"
+     },
+     "what": "the scroll rolls down A's pulley line into the Well"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "copyist-1",
+    "copyist-2"
+   ],
+   "props": [
+    "badge 'celld 0.6.3' on the wellhead",
+    "two notebooks",
+    "two small book presses with lock tabs",
+    "neighbour cords from A's sill",
+    "A's bell",
+    "Room Lantern door latch",
+    "slip #42",
+    "one scroll"
+   ],
+   "onScreenText": [
+    {
+     "kind": "term",
+     "text": "fsync",
+     "gloss": "the book press",
+     "beat": "term"
+    }
+   ],
+   "music": {
+    "cue": "ch07-b-fleet",
+    "note": "a new colour for celld's town: a muted labGreen pad and a dry wooden knock for each press turn; the tick motif lands on 'rings' over the second knock, deliberately before any well sound; a faint well-bucket splash on 'upload'"
+   },
+   "transitionIn": "lampChange",
+   "claims": [
+    "CE01"
+   ]
+  },
+  {
+   "id": "ch07-s03b",
+   "kind": "scene",
+   "setting": "celld's town (illustrative), labGreen night: the terrace in a wide two-shot, house lamps lighting one at a time",
+   "era": "2020s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0716",
+     "text": "Now count. The owner never counts itself.",
+     "direction": "a teacher at the board; 'never' firm",
+     "pauseAfter": 0.6
+    },
+    {
+     "id": "L0717",
+     "text": "One house alone gets no fleet. It falls back on the Well's proof: much slower, still correct.",
+     "direction": "a small shrug in 'much slower', reassurance in 'still correct'"
+    },
+    {
+     "id": "L0718",
+     "text": "Two running houses: one neighbour, enough for a proof. Three or more: two neighbours, three copies.",
+     "direction": "counting on fingers, a beat between the two halves",
+     "insertGaps": {
+      "proof": 0.3
+     }
+    },
+    {
+     "id": "L0719",
+     "text": "Until a second neighbour joins, a fresh write's proof rests on two copies: the owner's and one neighbour's.",
+     "direction": "slower; 'two copies' set down carefully, it matters later"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.8,
+   "visual": "THIS SHOT: the arithmetic of celld's fleet, shown by lamps (badge 'celld 0.6.3' stays on the wellhead, unnamed here). Occluder wipe behind the L6 lamp-post into a wide two-shot of the terrace; camera locked off, a slight dolly in through the shot. Start with ONLY House A lit; B and C dark. On 'itself' a small ink ring around A's own notebook stays empty: the owner's copy is never a vote. On 'alone' A's page has no neighbour cord to follow; instead its scroll makes the whole slow trip down the pulley line into the Well, and A's bell rings only when the Well's bucket comes up (beat wellproof on 'slower'). On 'Two' House B lights; one neighbour cord strings from A to B; one press turns; the bell rings sooner. On 'Three' House C lights; a second cord; two presses; a row of three small page silhouettes stands on A's, B's and C's sills (three copies). On 'Until' rewind to two lit houses: the fresh page stands certified on two sills, A's and B's, and a thin gold outline joins those two proof copies (beat twoPlaces on 'two'); the Well below is still empty of it.",
+   "beats": [
+    {
+     "id": "self",
+     "at": {
+      "line": "L0716",
+      "word": "itself"
+     },
+     "what": "an empty ink ring around A's own notebook"
+    },
+    {
+     "id": "alone",
+     "at": {
+      "line": "L0717",
+      "word": "alone"
+     },
+     "what": "only A lit; its scroll goes the slow way down to the Well"
+    },
+    {
+     "id": "wellproof",
+     "at": {
+      "line": "L0717",
+      "word": "slower"
+     },
+     "what": "A's bell rings only when the bucket comes up"
+    },
+    {
+     "id": "two",
+     "at": {
+      "line": "L0718",
+      "word": "Two"
+     },
+     "what": "B lights; one cord, one press; the bell rings sooner"
+    },
+    {
+     "id": "three",
+     "at": {
+      "line": "L0718",
+      "word": "Three"
+     },
+     "what": "C lights; two presses; three page silhouettes on three sills"
+    },
+    {
+     "id": "until",
+     "at": {
+      "line": "L0719",
+      "word": "Until"
+     },
+     "what": "back to two lit houses"
+    },
+    {
+     "id": "twoPlaces",
+     "at": {
+      "line": "L0719",
+      "word": "two"
+     },
+     "what": "a gold outline joins only A's and B's sills; the Well is empty of the page"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "copyist-1",
+    "copyist-2"
+   ],
+   "props": [
+    "house lamps A, B, C",
+    "neighbour cords",
+    "book presses",
+    "page silhouettes on sills",
+    "the Well and pulley line",
+    "A's bell",
+    "badge 'celld 0.6.3'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "The owner never counts itself",
+     "beat": "self",
+     "until": "two"
+    },
+    {
+     "kind": "label",
+     "text": "one neighbour: a two-copy proof",
+     "beat": "twoPlaces"
+    }
+   ],
+   "music": {
+    "cue": "ch07-b-fleet",
+    "note": "one knock per lit house, counting; for the lone house a long low well-bucket figure before the bell; the three-copies chord is the fullest moment so far, then thinned back to two notes under 'two copies'"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "CE02",
+    "CE03",
+    "CE04"
+   ]
+  },
+  {
+   "id": "ch07-s04",
+   "kind": "scene",
+   "setting": "celld's town (illustrative) in failure light: House A guttering, the copyists' windows in B and C, the Well opened to show its epoch shelves",
+   "era": "2020s",
+   "mood": "emberRed",
+   "lines": [
+    {
+     "id": "L0720",
+     "text": "Now replay that night in celld's town: the owner dies while forty-two lives only in the neighbours' notebooks.",
+     "direction": "low and plain, the stakes named without drama"
+    },
+    {
+     "id": "L0721",
+     "text": "Pull the pin.",
+     "direction": "the house refrain, quiet, a half-smile",
+     "pauseAfter": 0.9
+    },
+    {
+     "id": "L0722",
+     "text": "In celld's Well, each epoch writes under its own shelf, so a stale owner can only add to an old shelf, never to the new owner's.",
+     "direction": "explaining the clever part fairly; 'its own shelf' clear"
+    },
+    {
+     "id": "L0723",
+     "text": "That fences the Well. It cannot fetch what only the neighbours hold. Forty-two is gone.",
+     "direction": "the turn: 'cannot' weighted; 'Forty-two is gone' flat, almost a whisper",
+     "insertGaps": {
+      "hold": 0.4
+     }
+    },
+    {
+     "id": "L0724",
+     "text": "Or the old owner was only asleep, and wakes to ring one more bell.",
+     "direction": "dry, the teacher who enjoys a good failure",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
+    },
+    {
+     "id": "L0725",
+     "text": "Pin back. Before its first tick from the neighbours, each celld session creates its own log record in the Well.",
+     "direction": "brisk on 'Pin back', then measured; 'before its first such tick' exact",
+     "preGap": 0.8
+    }
+   ],
+   "leadIn": 1,
+   "holdAfter": 1,
+   "visual": "THIS SHOT: the tail outside the Well, and the pin (the neighbours' wax-seal stamp, seated on a hook by B's sill). Lamp change into emberRed. Wide on the terrace: on 'dies' House A's window gutters out; in B's and C's upper windows the two notebooks still hold their newest pressed line (#42's page), and the Well holds nothing of it. On 'Pull' the demonstrator's hand slides in from the lower RIGHT and pulls the red-tagged pin from the wax-seal stamp; the stamp goes slack. Crane down into a cutaway of the Well's side: stone shelves, each carved with an epoch number (illustrative 7 above, 8 below). On 'shelf' a ghost of A's keeper sets a late scroll on shelf 7, while shelf 8, the successor's, stays untouched (beat fence on 'never'). On 'fetch' crane back up: the new owner in C restores only from the Well; the room's book is laid without #42's page, and the slip in the lantern loses its tick (beat gone on 'gone'). On 'asleep' rewind: A's lamp flickers back on (a paused process, not a dead one); A sends its next page; both copyists, unsealed, press it; A's bell rings once more for a room it no longer owns (beat stale on 'bell'). On 'Pin' the hand reseats the pin; the light begins to return to labGreen. On 'record' a small brass record tile is created at the wellhead, only if none exists, its shutter falling after it (beat record). Label upper right; nothing below y 634.",
+   "beats": [
+    {
+     "id": "lamp",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "lamp change down into emberRed"
+    },
+    {
+     "id": "dies",
+     "at": {
+      "line": "L0720",
+      "word": "dies"
+     },
+     "what": "A's window gutters out; #42's page is only in the two notebooks"
+    },
+    {
+     "id": "pull",
+     "at": {
+      "line": "L0721",
+      "word": "Pull"
+     },
+     "what": "the demonstrator's hand pulls the wax-seal stamp's pin"
+    },
+    {
+     "id": "shelves",
+     "at": {
+      "line": "L0722",
+      "word": "epoch"
+     },
+     "what": "crane into the Well's side: epoch shelves 7 and 8"
+    },
+    {
+     "id": "fence",
+     "at": {
+      "line": "L0722",
+      "word": "never"
+     },
+     "what": "the restoring lamp passes over the stale scroll on shelf 7"
+    },
+    {
+     "id": "fetch",
+     "at": {
+      "line": "L0723",
+      "word": "fetch"
+     },
+     "what": "crane up; C restores from the Well alone"
+    },
+    {
+     "id": "gone",
+     "at": {
+      "line": "L0723",
+      "word": "gone"
+     },
+     "what": "the room's book lacks #42; the slip loses its tick"
+    },
+    {
+     "id": "asleep",
+     "at": {
+      "line": "L0724",
+      "word": "asleep"
+     },
+     "what": "rewind: A's lamp flickers back; unsealed copyists press its next page"
+    },
+    {
+     "id": "stale",
+     "at": {
+      "line": "L0724",
+      "word": "bell"
+     },
+     "what": "A's bell rings for a room it no longer owns"
+    },
+    {
+     "id": "back",
+     "at": {
+      "line": "L0725",
+      "word": "Pin"
+     },
+     "what": "the hand reseats the pin; light returns toward labGreen"
+    },
+    {
+     "id": "record",
+     "at": {
+      "line": "L0725",
+      "word": "record"
+     },
+     "what": "a brass log-record tile is created at the wellhead, shutter falling"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "keeper-c",
+    "copyist-1",
+    "copyist-2",
+    "narrator-hands",
+    "sender"
+   ],
+   "props": [
+    "red-tagged pin in the wax-seal stamp",
+    "two notebooks with #42's pressed page",
+    "Well cutaway with epoch shelves 7 and 8 (illustrative)",
+    "stale scroll",
+    "A's bell",
+    "brass log-record tile",
+    "Room Lantern and slip #42"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "Epoch shelves fence the Well, not the tail",
+     "beat": "shelves",
+     "until": "asleep"
+    }
+   ],
+   "music": {
+    "cue": "ch07-c-seal",
+    "note": "silence for the failure, the drone cut; one hollow knock for the pin; a low held tone under the shelves; nothing on 'gone'; the stale bell is a real bell, slightly out of tune; on 'Pin back' the labGreen pad creeps back in"
+   },
+   "transitionIn": "lampChange",
+   "claims": [
+    "CE05",
+    "CE13",
+    "OW11",
+    "CE07",
+    "LE09",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch07-s05",
+   "kind": "plate",
+   "setting": "parchment plate: celld's recovery gate, six engraved steps in ink pictograms (the guarantees of 21 October 2026)",
+   "era": "2020s",
+   "mood": "parchment",
+   "lines": [
+    {
+     "id": "L0726",
+     "text": "So a successor reads that record before it reads the Well.",
+     "direction": "measured; 'before' the hinge of the sentence",
+     "pauseAfter": 0.6,
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
+    },
+    {
+     "id": "L0727",
+     "text": "Absent: the old session never ticked ahead of the Well. Sealed: someone already recovered it.",
+     "direction": "two crisp cases, a beat between them",
+     "insertGaps": {
+      "Well": 0.3
+     }
+    },
+    {
+     "id": "L0728",
+     "text": "Open, or still recovering: fence it with a compare and swap. Seal every neighbour it can reach, collect their pages, upload them, and mark the record sealed.",
+     "direction": "a recipe read out step by step; a small breath after each comma; never rushed",
+     "insertGaps": {
+      "recovering": 0.25,
+      "swap": 0.35
+     }
+    },
+    {
+     "id": "L0729",
+     "text": "Only then restore. With its neighbours sealed, the old owner cannot win another bell.",
+     "direction": "'Only then' slow; the second sentence quiet and satisfied"
+    }
+   ],
+   "leadIn": 1.2,
+   "holdAfter": 2,
+   "visual": "THIS SHOT: THE RECOVERY GATE (badge 'celld 0.6.3' engraved at the plate's top corner). Paper fold from the labGreen terrace into a parchment plate, camera locked, a very slow push. Title engraved at top-left. Down the plate, six numbered stations as ink pictograms (numerals only, no sentences): 1 a brass record tile; 2 the Tooth with a swap card; 3 two notebooks with wax seals; 4 pages gathered into a scroll; 5 the Well; 6 the record tile with a seal on it; and at the far right, behind a closed gate, a bound Book (restore). On 'record' station 1's tile is lifted by an ink hand (the successor's keeper, not the demonstrator). On 'Absent' an empty hook beside it: the gate opens straight to the Book (that session never ticked ahead of the Well). On 'Sealed' the tile shows a seal: the gate opens straight to the Book again. Both short paths fade back. On 'Open' the tile shows an open eye; the long path inks in station by station on the words: 'fence' the Tooth clicks and the tile's notch is re-cut (station 2); 'Seal' red wax stamps across both notebooks (3); 'collect' their pages roll into one scroll (4); 'upload' it drops into the Well (5); 'mark' a seal lands on the record tile (6). On 'restore' the gate swings and the Book opens. The quote fragment sits in a cartouche at the UPPER RIGHT from 'Open' to the end; nothing in the bottom 12%. STAGING NOTE (ch07-s03 to s07): the successor is House C's node; its keeper stands at C's door, not in the open square; C's own notebook is one of the two recovery reads.",
+   "beats": [
+    {
+     "id": "title",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "plate title engraves at top-left"
+    },
+    {
+     "id": "read",
+     "at": {
+      "line": "L0726",
+      "word": "record"
+     },
+     "what": "station 1: the record tile lifted"
+    },
+    {
+     "id": "absent",
+     "at": {
+      "line": "L0727",
+      "word": "Absent"
+     },
+     "what": "empty hook: the gate opens straight to the Book"
+    },
+    {
+     "id": "sealed",
+     "at": {
+      "line": "L0727",
+      "word": "Sealed"
+     },
+     "what": "sealed tile: the gate opens straight to the Book; both short paths fade"
+    },
+    {
+     "id": "open",
+     "at": {
+      "line": "L0728",
+      "word": "Open"
+     },
+     "what": "the tile shows an open eye; the long path begins; quote cartouche inks in"
+    },
+    {
+     "id": "fence",
+     "at": {
+      "line": "L0728",
+      "word": "fence"
+     },
+     "what": "station 2: the Tooth clicks, notch re-cut"
+    },
+    {
+     "id": "seal",
+     "at": {
+      "line": "L0728",
+      "word": "Seal"
+     },
+     "what": "station 3: wax seals across both notebooks"
+    },
+    {
+     "id": "collect",
+     "at": {
+      "line": "L0728",
+      "word": "collect"
+     },
+     "what": "station 4: pages roll into one scroll"
+    },
+    {
+     "id": "upload",
+     "at": {
+      "line": "L0728",
+      "word": "upload"
+     },
+     "what": "station 5: the scroll drops into the Well"
+    },
+    {
+     "id": "mark",
+     "at": {
+      "line": "L0728",
+      "word": "mark"
+     },
+     "what": "station 6: a seal lands on the record tile"
+    },
+    {
+     "id": "restore",
+     "at": {
+      "line": "L0729",
+      "word": "restore"
+     },
+     "what": "the gate swings; the Book opens"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "parchment plate",
+    "six ink pictogram stations",
+    "brass record tile",
+    "the Tooth and a swap card",
+    "two notebooks with red wax seals",
+    "a scroll",
+    "the Well",
+    "a gate and a bound Book"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "The recovery gate",
+     "beat": "title",
+     "until": "open"
+    },
+    {
+     "kind": "label",
+     "text": "celld: seal the old session, then restore",
+     "beat": "open"
+    }
+   ],
+   "music": {
+    "cue": "ch07-c-seal",
+    "note": "parchment hush; a single dry click for the Tooth on 'fence'; a soft wax thud for each seal; a low well note on 'upload'; the gate opens on a held two-note tick motif, unresolved until the next shot"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "CE06",
+    "CE07",
+    "OW10"
+   ]
+  },
+  {
+   "id": "ch07-s06",
+   "kind": "scene",
+   "setting": "celld's town (illustrative), labGreen night: close on the copyists' window desks in Houses B and C and the successor's keeper with a lantern",
+   "era": "2020s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0730",
+     "text": "Now the hard rule. At least one current neighbour must hand over its complete range of retained pages.",
+     "direction": "firm and clear; 'at least one' and 'complete' carry the weight",
+     "pauseAfter": 0.6
+    },
+    {
+     "id": "L0731",
+     "text": "Two made-up cases. One notebook is water-damaged, but the other is complete: recovery proceeds.",
+     "direction": "'made-up' plainly; a lift of relief on 'proceeds'",
+     "insertGaps": {
+      "cases": 0.3
+     }
+    },
+    {
+     "id": "L0732",
+     "text": "Now one notebook is incomplete, and the other damaged. Nobody can prove the whole tail, so the door stays shut.",
+     "direction": "slower; 'Nobody can prove' level; 'stays shut' final, not tragic",
+     "preGap": 0.8
+    },
+    {
+     "id": "L0733",
+     "text": "And a neighbour that answers with an error has not proved its pages absent.",
+     "direction": "quietly exact; 'not proved' stressed"
+    },
+    {
+     "id": "L0734",
+     "text": "The room would rather stay shut than come back missing a promise.",
+     "direction": "the chapter's line; warm, unhurried, a little proud of the machine",
+     "preGap": 0.7,
+     "level": "soft",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1.6,
+   "visual": "THIS SHOT: A COMPLETE TAIL (badge 'celld 0.6.3' on the wellhead, unnamed). Paper fold back to the terrace; medium two-shot of B's and C's upper windows, the copyists at their desks, both notebooks wax-sealed from the gate. The successor's keeper stands on the square below with a lantern, a scroll case open. Each notebook's spine carries a band that shows its retained range: a full ink band = complete; a band with a missing segment = incomplete; a band blurred and water-stained = damaged. On 'complete' both copyists hold their notebooks to the window. CASE ONE on 'water-damaged': copyist-1's band in B is stained; on 'other' copyist-2's band in C is full and sharp; its pages ride down to the keeper, the gate (seen small at the wellhead) opens, the keeper's lantern brightens (beat proceeds). Ink-bleed rewind. CASE TWO on 'incomplete': copyist-1's band now has a gap; on 'damaged' copyist-2's band blurs; the keeper waits; nothing rides down; on 'shut' the Room Lantern's door stays latched, unlit, and the gate stays closed. On 'error' a variation: copyist-2's window answers the keeper with a crossed slip instead of its notebook; the keeper does NOT strike that notebook off: a small hourglass appears beside it and the keeper keeps asking (it might still hold pages). On 'promise' slow push in on the closed door. Quote cartouche at upper right, label at upper left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "rule",
+     "at": {
+      "line": "L0730",
+      "word": "complete"
+     },
+     "what": "both copyists hold their sealed notebooks to the window"
+    },
+    {
+     "id": "case1",
+     "at": {
+      "line": "L0731",
+      "word": "water-damaged"
+     },
+     "what": "case one: copyist-1's spine band is water-stained"
+    },
+    {
+     "id": "other",
+     "at": {
+      "line": "L0731",
+      "word": "other"
+     },
+     "what": "copyist-2's band is full; its pages ride down"
+    },
+    {
+     "id": "proceeds",
+     "at": {
+      "line": "L0731",
+      "word": "proceeds"
+     },
+     "what": "the gate opens; the keeper's lantern brightens"
+    },
+    {
+     "id": "case2",
+     "at": {
+      "line": "L0732",
+      "word": "incomplete"
+     },
+     "what": "ink-bleed rewind; case two: copyist-1's band has a gap"
+    },
+    {
+     "id": "damaged",
+     "at": {
+      "line": "L0732",
+      "word": "damaged"
+     },
+     "what": "copyist-2's band blurs; nothing rides down"
+    },
+    {
+     "id": "shut",
+     "at": {
+      "line": "L0732",
+      "word": "shut"
+     },
+     "what": "the lantern door stays latched; the gate stays closed"
+    },
+    {
+     "id": "error",
+     "at": {
+      "line": "L0733",
+      "word": "error"
+     },
+     "what": "a window answers with a crossed slip; an hourglass, not a strike-through"
+    },
+    {
+     "id": "promise",
+     "at": {
+      "line": "L0734",
+      "word": "promise"
+     },
+     "what": "slow push in on the closed door"
+    }
+   ],
+   "cast": [
+    "copyist-1",
+    "copyist-2",
+    "keeper-c"
+   ],
+   "props": [
+    "two sealed notebooks with spine bands (complete / incomplete / damaged)",
+    "keeper's lantern and scroll case",
+    "small gate at the wellhead",
+    "Room Lantern door latch",
+    "crossed error slip",
+    "hourglass",
+    "badge 'celld 0.6.3'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "No complete tail: the door stays shut",
+     "beat": "shut"
+    },
+    {
+     "kind": "label",
+     "text": "celld: an error is not proof of absence",
+     "beat": "error"
+    }
+   ],
+   "music": {
+    "cue": "ch07-c-seal",
+    "note": "case one resolves on a warm open fifth; the rewind is a reversed breath; case two holds a suspended chord that never resolves; the tick motif is withheld; on the last line a single low bell, muffled, like a door that did not open"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "CE08",
+    "CE09",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch07-s07",
+   "kind": "scene",
+   "setting": "celld's town (illustrative), labGreen night turning gentle: the whole terrace, all three houses relit after a restart",
+   "era": "2020s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0735",
+     "text": "Houses that restart together still lend each other their notebooks. Recovery can take minutes; a waiting request gives up only after two hundred and forty tries.",
+     "direction": "patient, reassuring; 'minutes' with a small shrug"
+    },
+    {
+     "id": "L0736",
+     "text": "In our harbour the notebooks are whole. The lantern relights; forty-two keeps its tick.",
+     "direction": "a quiet arrival; the tick line soft and pleased",
+     "preGap": 0.7,
+     "level": "soft"
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 2.2,
+   "visual": "THIS SHOT: patience, and the room returns (badge 'celld 0.6.3', unnamed). Occluder wipe behind the L6 lamp-post to the wide terrace. All three houses flicker dark together, then relight together (a shared restart). On 'lend' notebooks pass between B's and C's windows along the neighbour cords, each house answering the other's seal-and-tail requests before its own recovery is finished. On 'minutes' a slow sand-glass on the wellhead turns over once, then again (retries with a pause between; no numbers shown). On 'whole' both notebook spine bands show full and sharp; the pages ride down to C's keeper; the gate at the wellhead opens. On 'relights' the Room Lantern relights in House C's window; slow push in to the sender's slip #42, whose ink tick is still there (beat tick on 'tick'). Hold on the lantern glow; labGreen eases a touch warmer for the coming ending. No text items; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "restart",
+     "at": {
+      "shotTime": 0.4
+     },
+     "what": "all three houses flicker dark and relight together"
+    },
+    {
+     "id": "lend",
+     "at": {
+      "line": "L0735",
+      "word": "lend"
+     },
+     "what": "notebooks pass between B and C along the neighbour cords"
+    },
+    {
+     "id": "minutes",
+     "at": {
+      "line": "L0735",
+      "word": "minutes"
+     },
+     "what": "a sand-glass on the wellhead turns, and turns again"
+    },
+    {
+     "id": "whole",
+     "at": {
+      "line": "L0736",
+      "word": "whole"
+     },
+     "what": "both spine bands full; pages ride down to C; the gate opens"
+    },
+    {
+     "id": "relight",
+     "at": {
+      "line": "L0736",
+      "word": "relights"
+     },
+     "what": "the Room Lantern relights in C's window"
+    },
+    {
+     "id": "tick",
+     "at": {
+      "line": "L0736",
+      "word": "tick"
+     },
+     "what": "push in to slip #42, its tick intact"
+    }
+   ],
+   "cast": [
+    "keeper-c",
+    "copyist-1",
+    "copyist-2",
+    "sender"
+   ],
+   "props": [
+    "three house lamps",
+    "neighbour cords",
+    "two whole notebooks",
+    "sand-glass on the wellhead",
+    "gate",
+    "Room Lantern",
+    "slip #42 with its tick"
+   ],
+   "onScreenText": [],
+   "music": {
+    "cue": "ch07-c-seal",
+    "note": "a patient two-bar loop for the retries; the suspended chord from the shut door finally resolves on 'relights'; the two-note tick motif, full and clear, on 'tick'; then a held warm chord into the chapter iris"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "CE10",
+    "CE11",
+    "FX01"
+   ]
+  }
+ ]
+}

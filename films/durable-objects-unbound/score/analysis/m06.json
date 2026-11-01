@@ -1,0 +1,18 @@
+{
+ "id": "m06",
+ "start": 875.472,
+ "end": 1059.775,
+ "file": "films/durable-objects-unbound/score/renders/m06.wav",
+ "duration": 190.303,
+ "I": -27,
+ "LRA": 8.1,
+ "TP": -10.8,
+ "expected": 190.303,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/durable-objects-unbound/score/analysis/m06.png",
+ "cueSeconds": 184.303,
+ "cps": 0.25,
+ "lastStrikeLocal": 179.22,
+ "lastStrike": 1054.692
+}

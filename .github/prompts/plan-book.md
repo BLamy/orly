@@ -1,6 +1,6 @@
-# Plan a book (Opus 5.5 planning session, CI)
+# Plan a book (GPT-6.1 Sol planning session, CI)
 
-Read docs/authoring-models.md and docs/book-quality.md (research past the digest, plan a claim→source list per chapter, self-grade). You are the **planning** session (Claude Opus 5.5, effort
+Read docs/authoring-models.md and docs/book-quality.md (research past the digest, plan a claim→source list per chapter, self-grade). You are the **planning** session (GPT-6.1 Sol, effort
 high). A separate, fresh Opus 5.5 session will author the scenes from what you write.
 Do not run git or gh, and do not publish; the workflow opens a preview PR.
 
@@ -16,7 +16,7 @@ Write `.orly-work/visual-plan.md` with source anchors, chapter beats, fixed narr
 2D/3D choices and verification criteria. Build any needed Blender assets (Blender is
 installed) and their Three.js adapter.
 
-Write `.orly-work/author-assignment.md`: a bounded assignment for the Opus 5.5
+Write `.orly-work/opus-assignment.md`: a bounded assignment for the Opus 5.5
 authoring session to implement the D3/SVG/Canvas scenes from your visual plan,
 integrate the assets, build manifests/audio/blogs, and run typecheck/build/playback
 verification. Include the original request, relevant sources, permitted files,

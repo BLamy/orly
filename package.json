@@ -48,7 +48,8 @@
     "film:guard": "node generator/film/shot-guard.mjs",
     "film:cue-notes": "node generator/film/cue-notes.mjs",
     "film:test": "node --test generator/film/text.test.mjs generator/film/split.test.mjs generator/film/timeline.test.mjs generator/film/script.test.mjs generator/film/stt.test.mjs generator/film/shotledger.test.mjs apps/bookshelf/src/viz/film/silhouette/metaphors/xorRule.test.mjs apps/bookshelf/editor-server.test.ts 'apps/bookshelf/src/editor/**/*.test.ts'",
-    "editor:test": "node --test apps/bookshelf/editor-server.test.ts 'apps/bookshelf/src/editor/**/*.test.ts'"
+    "editor:test": "node --test apps/bookshelf/editor-server.test.ts 'apps/bookshelf/src/editor/**/*.test.ts'",
+    "author:d3": "node generator/run-claude.mjs"
   },
   "dependencies": {
     "@brett_lamy/docstream": "^0.3.7",

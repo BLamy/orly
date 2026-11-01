@@ -1,0 +1,837 @@
+{
+ "id": "ch03",
+ "number": 3,
+ "title": "The Well That Learned to Say No",
+ "blurb": "The bucket's education, dated. Before December 2020 an overwrite in S3 could be followed by a read of the old copy; then reads became the latest, always. A race with the condition pulled out shows why fresh reads are not enough: an overwrite can win the well, but it cannot take back what was already served. In August 2024 the well learns to refuse a second creation; in November 2024 to refuse a stale replacement: compare and swap. Then the reversal: who referees the referee? Werner Vogels's witness inside S3, proved before it was trusted. celld's warning that a store can look compatible and silently ignore the condition, and the four test writes every node makes before it serves. And the scope: one key, one plate, no promise that two rooms commit as one.",
+ "shots": [
+  {
+   "id": "ch03-s01",
+   "kind": "scene",
+   "setting": "the harbour square at night (illustrative): the Well at the left third with its rope and bucket, the Plate on its iron frame above, House A's lit window up on the terrace; a cold moon low-left",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0301",
+     "text": "Back to the square. In our harbour the Well stands for a bucket in an object store, like Amazon's S3.",
+     "pauseAfter": 0.5,
+     "direction": "re-establishing, unhurried; 'S3' said 'ess three'"
+    },
+    {
+     "id": "L0302",
+     "text": "There was a time when overwriting a file in S3 and reading it straight back could hand you the old copy.",
+     "direction": "a small historical oddity, told plainly",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
+    },
+    {
+     "id": "L0303",
+     "text": "Amazon later explained why: a write could take one path through its caches, and a read another.",
+     "pauseAfter": 0.6,
+     "direction": "explanatory, the two paths separated in the voice"
+    },
+    {
+     "id": "L0304",
+     "text": "On the first of December, 2020, that changed: read after a write, and you get the latest.",
+     "direction": "a date with weight; 'the latest' placed"
+    },
+    {
+     "id": "L0305",
+     "text": "Whatever bucket you draw up is the newest.",
+     "direction": "the metaphor stated once, quietly satisfied"
+    }
+   ],
+   "leadIn": 1,
+   "holdAfter": 1.2,
+   "visual": "THIS SHOT: the Well's first lesson, freshness. Iris open on the Room Lantern's reflection in the Well's water (the chapter's motivated light), then pull up and out to the canonical square: the Well at the left third, the Plate on its iron frame above it, House A's lit window up on the L3 terrace, the L6 lamp-post at frame right. A brass badge 'Amazon S3' hangs on a hook at the wellhead from the first frame (the store's own behaviour; unnamed beyond the line). Camera: a slow truck left over 6 s with a slight dolly in toward the wellhead. On 'old copy' the keeper of House A, at the wellhead, lowers a scroll marked with a fresh ink stroke into the Well, then draws the bucket straight back up: the scroll in it carries the PREVIOUS, faded stroke (beat stale). On 'path' a cutaway sliver opens down the well shaft (a narrow vertical section, serverCyan glints, foreshadowing s04): the lowered scroll descends a left-hand channel while the drawn-up bucket rises through a right-hand channel that the new scroll has not reached (beat paths); the sliver closes. On 'December' a date stamp sets (beat date). On 'latest' the action repeats: down goes the fresh stroke, up comes the same fresh stroke, and a small brass ring on the bucket's handle catches the moonlight (beat fresh). On 'newest' the camera settles on the full bucket held at the wellhead lip; the water below steadies (beat newest). Label upper-left only; nothing below y 634.",
+   "beats": [
+    {
+     "id": "stale",
+     "at": {
+      "line": "L0302",
+      "word": "old"
+     },
+     "what": "the drawn-up bucket returns the previous, faded scroll"
+    },
+    {
+     "id": "paths",
+     "at": {
+      "line": "L0303",
+      "word": "path"
+     },
+     "what": "a sliver cutaway shows write and read in different channels"
+    },
+    {
+     "id": "date",
+     "at": {
+      "line": "L0304",
+      "word": "December"
+     },
+     "what": "date stamp 1 December 2020"
+    },
+    {
+     "id": "fresh",
+     "at": {
+      "line": "L0304",
+      "word": "latest"
+     },
+     "what": "the same fresh scroll comes straight back up"
+    },
+    {
+     "id": "newest",
+     "at": {
+      "line": "L0305",
+      "word": "newest"
+     },
+     "what": "hold on the full bucket at the lip"
+    }
+   ],
+   "cast": [
+    "keeper-a"
+   ],
+   "props": [
+    "the Well (stone wellhead, rope and bucket)",
+    "the Plate on its iron frame",
+    "scrolls with fresh and faded ink strokes",
+    "badge 'Amazon S3'",
+    "a narrow sliver cutaway of the well shaft"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "1 December 2020",
+     "beat": "date"
+    },
+    {
+     "kind": "label",
+     "text": "read after write: always the latest",
+     "beat": "fresh"
+    }
+   ],
+   "music": {
+    "cue": "ch03-a-well",
+    "note": "the harbour drone returns with a slow well-rope creak; a slightly sour two-note figure for the stale copy; on 'December' the figure resolves; a clear single bell-like note on 'latest'"
+   },
+   "transitionIn": "iris",
+   "claims": [
+    "SB01",
+    "SB02",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch03-s02",
+   "kind": "scene",
+   "setting": "the harbour square, tight on the Well and the Plate (illustrative): Houses A (left) and B (right) on the terrace above, both keepers hurrying down toward the wellhead; the Tooth's brass slot with its red-tagged pin",
+   "era": "2020s",
+   "mood": "emberRed",
+   "lines": [
+    {
+     "id": "L0306",
+     "text": "The job: the room's Plate is empty, and Houses A and B both want it.",
+     "pauseAfter": 0.5,
+     "direction": "setting a puzzle; even, interested"
+    },
+    {
+     "id": "L0307",
+     "text": "Fresh reads are not enough. Pull the pin from the Well's brass tooth, and the Well checks nothing.",
+     "pauseAfter": 0.7,
+     "direction": "the demonstrator's line; 'Pull the pin' firm, then a breath"
+    },
+    {
+     "id": "L0308",
+     "text": "Each keeper reads the Plate: nobody. Each writes: mine.",
+     "pauseAfter": 0.5,
+     "direction": "two crisp beats, almost comic in their symmetry"
+    },
+    {
+     "id": "L0309",
+     "text": "Both lanterns light; both rooms take messages.",
+     "direction": "a little alarm entering the voice"
+    },
+    {
+     "id": "L0310",
+     "text": "B's plate lands a moment later and wins the Well. But A has already answered its senders.",
+     "pauseAfter": 0.6,
+     "direction": "the turn: 'already answered' slow"
+    },
+    {
+     "id": "L0311",
+     "text": "An overwrite can win the well. It cannot take back what was already served.",
+     "pauseAfter": 0.8,
+     "direction": "the chapter's maxim; level, unhurried, final"
+    },
+    {
+     "id": "L0312",
+     "text": "Between the read and the write, the world moved. Pin back.",
+     "direction": "dry summary; 'Pin back' brisk"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 2.6,
+   "visual": "THIS SHOT: PULL THE PIN, the naive race (first use of the film's pin device). Lamp change in from s01 to the emberRed failure grade as the demonstrator's hand arrives (failures enter by lampChange). Framing: the wellhead centre-left, the Plate above it, its three brass tiles BLANK; Houses A (screen-left) and B (screen-right) on the L3 terrace, both windows dark. At the wellhead the Tooth: a brass slot with a small shutter and, seated in its pawl, a red-tagged brass pin. On 'pin' the demonstrator's hand enters from lower RIGHT, pinches the red tag and draws the pin out; the Tooth's pawl drops slack (beat pull). On 'nobody' both keepers, arriving from either side, glance up at the blank Plate at the same moment (beat read); on 'mine' each slides a brass swap card into the now-unguarded slot and each card's house letter is stamped onto the first tile in turn: first 'A', then, overwriting it, 'B' a beat later (beat write). On 'lanterns' BOTH windows light, a Room Lantern in each, two copies of the harbour room (beat both); small message slips start drifting into both lanterns. On 'later' the Plate's first tile settles on 'B' (beat wins). On 'answered' a slip leaves A's lantern with a tick: A's room has already promised something (beat served). On 'overwrite' the camera pushes in on the Plate reading B while A's lantern still glows beside it (beat maxim). On 'moved' a quick ink-line diagram draws upper-left over the sky: 'read … write' with a gap between them in which a second hand slips its card (beat gap). On 'Pin back' the hand reseats the red pin; the pawl snaps tight; the grade lamp-changes back toward winterBlue as both lanterns gutter out (beat reseat). Text upper-left only; nothing below y 634.",
+   "beats": [
+    {
+     "id": "pull",
+     "at": {
+      "line": "L0307",
+      "word": "pin"
+     },
+     "what": "the demonstrator's hand draws the red pin from the Tooth"
+    },
+    {
+     "id": "read",
+     "at": {
+      "line": "L0308",
+      "word": "nobody"
+     },
+     "what": "both keepers read the blank Plate together"
+    },
+    {
+     "id": "write",
+     "at": {
+      "line": "L0308",
+      "word": "mine"
+     },
+     "what": "both cards slide in; tile stamped A then B"
+    },
+    {
+     "id": "both",
+     "at": {
+      "line": "L0309",
+      "word": "lanterns"
+     },
+     "what": "both windows light: two rooms"
+    },
+    {
+     "id": "wins",
+     "at": {
+      "line": "L0310",
+      "word": "later"
+     },
+     "what": "the Plate settles on B"
+    },
+    {
+     "id": "served",
+     "at": {
+      "line": "L0310",
+      "word": "answered"
+     },
+     "what": "a ticked slip leaves A's lantern"
+    },
+    {
+     "id": "maxim",
+     "at": {
+      "line": "L0311",
+      "word": "overwrite"
+     },
+     "what": "push in on Plate B beside A's still-lit lantern"
+    },
+    {
+     "id": "gap",
+     "at": {
+      "line": "L0312",
+      "word": "moved"
+     },
+     "what": "ink diagram: the gap between read and write"
+    },
+    {
+     "id": "reseat",
+     "at": {
+      "line": "L0312",
+      "word": "back"
+     },
+     "what": "pin reseated; lanterns gutter; grade returns"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "keeper-b",
+    "narrator-hands"
+   ],
+   "props": [
+    "the Well and the Plate (blank tiles)",
+    "the Tooth: brass slot, shutter, pawl and red-tagged pin",
+    "two brass swap cards",
+    "Room Lanterns in A's and B's windows",
+    "message slips, one ticked"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "no condition: both write, both serve",
+     "beat": "write",
+     "until": "maxim"
+    },
+    {
+     "kind": "label",
+     "text": "read … then write: a gap",
+     "beat": "gap"
+    }
+   ],
+   "music": {
+    "cue": "ch03-b-race",
+    "note": "silence under the pin pull, then a quick two-voice figure for the race (one voice per keeper, in canon); a dissonant doubling on 'Both lanterns light'; a hard stop on 'already answered'; the maxim over a single low note; the pin's reseat a dry click"
+   },
+   "transitionIn": "lampChange",
+   "claims": [
+    "SB08",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch03-s03",
+   "kind": "scene",
+   "setting": "the wellhead close-up (illustrative): the Tooth's brass slot and shutter, the Plate above with a notched brass edge (its version), keepers' hands with swap cards; winter night",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0313",
+     "text": "The twentieth of August, 2024. S3 learns its first refusal: write this only if nothing is there.",
+     "pauseAfter": 0.5,
+     "direction": "a date, then the rule in plain words, as if reading a new sign at the well"
+    },
+    {
+     "id": "L0314",
+     "text": "Two keepers race. One creation lands, a shutter drops, and the second card is refused.",
+     "pauseAfter": 0.6,
+     "direction": "mechanical and satisfying; 'refused' with a small click in it"
+    },
+    {
+     "id": "L0315",
+     "text": "The twenty-fifth of November, 2024: replace this only if it is still the version I read.",
+     "pauseAfter": 0.5,
+     "direction": "the same cadence as L0313, a rhyme across three months"
+    },
+    {
+     "id": "L0316",
+     "text": "Both cards carry the same old version. One click: accepted, and the Plate's notch is cut anew. One thunk: refused.",
+     "pauseAfter": 0.6,
+     "direction": "two sounds in words; 'click' light, 'thunk' low"
+    },
+    {
+     "id": "L0317",
+     "text": "That is compare and swap, and the store checks the condition, not the keeper.",
+     "direction": "naming the trade term; 'the store' stressed"
+    },
+    {
+     "id": "L0318",
+     "text": "The Well had learned to say no.",
+     "direction": "a short list landing on the chapter title; warm",
+     "tts": {
+      "solo": true,
+      "speed": 0.72
+     }
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.6,
+   "visual": "THIS SHOT: the two refusals that make the Well a referee, one machine, two lessons. Cut on the pin's click into a tight two-shot of the wellhead (camera low, the Plate looming above). Badge 'Amazon S3' still on its hook. LESSON ONE on 'August' (date stamp, beat date1): the Plate's tiles are blank; the Tooth's slot is OPEN with a small hinged shutter above it. On 'race' keepers A and B (hands and forearms only, from left and right) push swap cards toward the slot at the same moment (beat race); on 'lands' A's card goes in first, the tile stamps 'A' (illustrative), and on 'shutter' the shutter drops with a dry click over the slot (beat shutter); on 'refused' B's card strikes the closed shutter and is spat back, punched with a small hole (beat refuse1). LESSON TWO on 'November' (second date stamp replaces the first, beat date2): the Plate now shows a notched brass edge, a little sawtooth profile that stands for its current version (an opaque mark, NOT a checksum; shown as a pattern only). On 'carry' both keepers hold up cards whose edges carry the SAME sawtooth: each read the same version (beat notch). On 'click' A's card meets the edge, the profiles mesh, the tile turns to the next claim and the Plate's notch is visibly re-cut into a new pattern (beat click); on 'thunk' B's card, still carrying the old pattern, fails to mesh and is spat back punched (beat thunk). On 'compare' the term tag paints (beat term). On 'store' the camera tilts down past the wellhead to the Well's mouth: the check happens down there, inside the store, not in either keeper's hand (beat store). On 'no' pull back to the square, the Plate gleaming above the Well (beat no). Text upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "date1",
+     "at": {
+      "line": "L0313",
+      "word": "August"
+     },
+     "what": "date stamp 20 August 2024"
+    },
+    {
+     "id": "race",
+     "at": {
+      "line": "L0314",
+      "word": "race"
+     },
+     "what": "two cards push toward the open slot"
+    },
+    {
+     "id": "shutter",
+     "at": {
+      "line": "L0314",
+      "word": "shutter"
+     },
+     "what": "first card lands; shutter drops"
+    },
+    {
+     "id": "refuse1",
+     "at": {
+      "line": "L0314",
+      "word": "refused"
+     },
+     "what": "second card spat back, punched"
+    },
+    {
+     "id": "date2",
+     "at": {
+      "line": "L0315",
+      "word": "November"
+     },
+     "what": "date stamp 25 November 2024"
+    },
+    {
+     "id": "notch",
+     "at": {
+      "line": "L0316",
+      "word": "carry"
+     },
+     "what": "both cards carry the same old notch"
+    },
+    {
+     "id": "click",
+     "at": {
+      "line": "L0316",
+      "word": "click"
+     },
+     "what": "A's card meshes; the Plate's notch is re-cut"
+    },
+    {
+     "id": "thunk",
+     "at": {
+      "line": "L0316",
+      "word": "thunk"
+     },
+     "what": "B's stale card refused"
+    },
+    {
+     "id": "term",
+     "at": {
+      "line": "L0317",
+      "word": "compare"
+     },
+     "what": "term tag: compare and swap"
+    },
+    {
+     "id": "store",
+     "at": {
+      "line": "L0317",
+      "word": "store"
+     },
+     "what": "tilt down: the check happens inside the Well"
+    },
+    {
+     "id": "no",
+     "at": {
+      "line": "L0318",
+      "word": "no"
+     },
+     "what": "pull back to the square"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "keeper-b"
+   ],
+   "props": [
+    "the Tooth: brass slot with a hinged shutter",
+    "brass swap cards (plain, then sawtooth-notched)",
+    "the Plate with a notched brass edge (its version)",
+    "badge 'Amazon S3'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "20 August 2024",
+     "beat": "date1",
+     "until": "date2"
+    },
+    {
+     "kind": "date",
+     "text": "25 November 2024",
+     "beat": "date2"
+    },
+    {
+     "kind": "label",
+     "text": "only if absent · only if unchanged",
+     "beat": "click"
+    },
+    {
+     "kind": "term",
+     "text": "compare and swap",
+     "gloss": "the Tooth",
+     "beat": "term"
+    }
+   ],
+   "music": {
+    "cue": "ch03-b-race",
+    "note": "the race figure returns, but this time it is cut off cleanly by the shutter's click; a three-month 'rhyme' (the same phrase a step higher) on 'November'; the Tooth's click a bright dry tick and the thunk a muffled low knock, both left in the clear; a warm cadence on 'say no'"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "SB05",
+    "SB06",
+    "SB07",
+    "SB16",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch03-s04",
+   "kind": "scene",
+   "setting": "inside the Well (a metaphorical cutaway of an object store): a vertical section of stone cisterns and ledges lit by serverCyan glints, a small lamp-keeper with a bell on a ledge, an order ledger; at the top, beside the shaft, a lectern-height desk where Werner Vogels stands",
+   "era": "2020s",
+   "mood": "serverCyan",
+   "lines": [
+    {
+     "id": "L0319",
+     "text": "So who referees the referee?",
+     "pauseAfter": 0.9,
+     "direction": "the film's first reversal; a genuine question, then let it hang"
+    },
+    {
+     "id": "L0320",
+     "text": "In April 2021, Werner Vogels, Amazon's chief technology officer, described what they had built inside S3.",
+     "pauseAfter": 0.5,
+     "direction": "an attribution, respectful and plain"
+    },
+    {
+     "id": "L0321",
+     "text": "Caches that agree with one another, an order for every object's changes, and a witness, told of every change, that any cache can ask: is my copy stale?",
+     "pauseAfter": 0.6,
+     "direction": "three parts, a beat between each; 'witness' lifted slightly"
+    },
+    {
+     "id": "L0322",
+     "text": "They checked it with proofs and model checking, which, he wrote, was more work than building it.",
+     "pauseAfter": 0.7,
+     "direction": "admiring, a touch wry at the end"
+    },
+    {
+     "id": "L0323",
+     "text": "So the houses on the hill run no consensus of their own. The coordination has moved inside the Well.",
+     "direction": "the chapter's thesis; slow; 'moved inside the Well' landed low"
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1.8,
+   "visual": "THIS SHOT: WHO REFEREES THE REFEREE? A vertical crane down into the Well. Cut from the square to a tight top-down of the wellhead; on 'referee' the camera cranes down the shaft (about 6 s, cubic) as the stone wall dissolves into a cutaway section (the style bible's 'cutaway' register, serverCyan glints only here): L2 stone cisterns stacked in depth, L3 narrow ledges, fog sheet A between them. At the top of the shaft, beside the cutaway, a standing silhouette at a lectern-height desk: Werner Vogels, generic and dignified, no likeness; name card on 'Vogels' (beat name). On 'agree' three small cistern-lamps at different depths brighten together, the same faint mark reflected in each (beat caches). On 'order' a narrow paper ledger on a ledge advances one line per change, in sequence (beat order). On 'witness' the witness appears: a small lamp-keeper on a mid-ledge with a hand-bell; a scroll drops past him from above and he rings once; at the same moment a cistern-lamp below, about to hand up an old copy, tugs a cord up to the witness, sees the bell's flag raised, and its old copy dims while the fresh one is fetched (beat witness: the read barrier, shown as a cord and a flag). On 'proofs' a sheaf of parchment proof-sheets is pinned along the shaft wall beside the ledges, more sheets than the ledges themselves (beat proofs; this is the image of 'more work than building it'). On 'hill' the camera cranes back UP the shaft (4 s, cubic) to the square: the three houses above, each keeper's pulley line converging on the one wellhead; inside the Well a faint cyan pulse shows the machinery still turning (beat inside). Quotes upper-left on a soft plate, one replacing the other; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "name",
+     "at": {
+      "line": "L0320",
+      "word": "Vogels"
+     },
+     "what": "Werner Vogels name card"
+    },
+    {
+     "id": "caches",
+     "at": {
+      "line": "L0321",
+      "word": "agree"
+     },
+     "what": "three cistern-lamps brighten together"
+    },
+    {
+     "id": "order",
+     "at": {
+      "line": "L0321",
+      "word": "order"
+     },
+     "what": "the order ledger advances"
+    },
+    {
+     "id": "witness",
+     "at": {
+      "line": "L0321",
+      "word": "witness"
+     },
+     "what": "the witness rings; a stale copy is caught and refreshed"
+    },
+    {
+     "id": "proofs",
+     "at": {
+      "line": "L0322",
+      "word": "proofs"
+     },
+     "what": "proof-sheets pinned along the shaft, outnumbering the ledges"
+    },
+    {
+     "id": "inside",
+     "at": {
+      "line": "L0323",
+      "word": "hill"
+     },
+     "what": "crane back up to the square; cyan pulse in the Well"
+    }
+   ],
+   "cast": [
+    "werner-vogels",
+    "witness"
+   ],
+   "props": [
+    "the Well cutaway (cisterns, ledges, cyan glints)",
+    "the witness's hand-bell and flag",
+    "an order ledger",
+    "proof-sheets pinned along the shaft",
+    "lectern-height desk"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Werner Vogels · Amazon CTO",
+     "beat": "name"
+    },
+    {
+     "kind": "quote",
+     "text": "…a witness to writes, notified every time an object changes. — Werner Vogels, 2021",
+     "beat": "caches",
+     "until": "proofs"
+    },
+    {
+     "kind": "quote",
+     "text": "They were more work, in fact, than the actual implementation itself. — Werner Vogels",
+     "beat": "proofs"
+    }
+   ],
+   "music": {
+    "cue": "ch03-c-cutaway",
+    "note": "the crane down is a slow descending figure in high glassy tones; the witness's bell is a real small bell, once; under 'proofs' a patient counting pulse; the crane back up a rising sweep that resolves into the harbour drone on 'moved inside the Well'"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "SB03",
+    "SB04",
+    "SB14"
+   ]
+  },
+  {
+   "id": "ch03-s05",
+   "kind": "scene",
+   "setting": "the square with a second well beside the first (illustrative): identical stone and rope, but a different, unweathered Tooth; a small test rig of four cards and a ranged measuring rod at the second wellhead, lit by a labGreen lamp",
+   "era": "2020s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0324",
+     "text": "Now a warning, from celld's own documentation.",
+     "pauseAfter": 0.4,
+     "direction": "a new voice in the story, introduced matter-of-factly; the version spoken as numbers"
+    },
+    {
+     "id": "L0325",
+     "text": "Some stores speak S3's language but do not keep these conditions; on them, two houses can own one room.",
+     "pauseAfter": 0.5,
+     "direction": "serious, not alarmist"
+    },
+    {
+     "id": "L0326",
+     "text": "Worse, a store can accept the condition and silently ignore it.",
+     "pauseAfter": 0.6,
+     "direction": "lower; the danger is in the silence"
+    },
+    {
+     "id": "L0327",
+     "text": "So before it serves, every celld node makes four test writes: create, refuse a second create, update, refuse a stale update. Two must fail.",
+     "pauseAfter": 0.4,
+     "direction": "a checklist read briskly; 'must fail' with relish"
+    },
+    {
+     "id": "L0328",
+     "text": "Then it checks a ranged read. No node can skip the test.",
+     "pauseAfter": 0.5,
+     "direction": "two short facts"
+    },
+    {
+     "id": "L0329",
+     "text": "A bucket earns its place by refusing, on demand.",
+     "direction": "an aphorism, smiling"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: 'compatible' is not a guarantee. Occluder wipe behind the L6 lamp-post: the square now holds TWO wells side by side, identical in stone, rope and bucket; the right-hand one's Tooth is bright and unworn. A labGreen work-lamp hangs over the right well; a brass badge 'celld 0.6.3' hangs on a small test rig beside it (the rig, not the well, carries the badge). On 'documentation' a quote card starts upper-left (beat doc). On 'room' the familiar race replays at the right well in miniature: two swap cards go in and BOTH are accepted; two tiny lanterns light on the terrace (beat two). On 'ignore' a close-up: the right well's shutter swings shut over the slot as if refusing, yet the second card slides in underneath it anyway, without a sound (beat silent). On 'test' the test rig: four brass cards on a rack, labelled by small engraved symbols for create, create again, update, stale update; the rig feeds them one at a time into the LEFT well: accept, REFUSE (spat back), accept, REFUSE (beat four), and two small green check lamps light over the two refusals (beat twofail on 'fail'). On 'ranged' a brass measuring rod is lowered into the left well and draws up exactly the marked span of a scroll (beat range). On 'skip' the rig's lid locks shut with a padlock silhouette (beat lock). On 'refusing' the camera settles on the left well; the right well darkens and recedes into fog (beat earn). Text upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "doc",
+     "at": {
+      "line": "L0324",
+      "word": "documentation"
+     },
+     "what": "quote card begins"
+    },
+    {
+     "id": "two",
+     "at": {
+      "line": "L0325",
+      "word": "room"
+     },
+     "what": "the look-alike well accepts both cards; two lanterns"
+    },
+    {
+     "id": "silent",
+     "at": {
+      "line": "L0326",
+      "word": "ignore"
+     },
+     "what": "the shutter closes but the second card slides under it"
+    },
+    {
+     "id": "four",
+     "at": {
+      "line": "L0327",
+      "word": "test"
+     },
+     "what": "the four test cards: accept, refuse, accept, refuse"
+    },
+    {
+     "id": "twofail",
+     "at": {
+      "line": "L0327",
+      "word": "fail"
+     },
+     "what": "two check lamps light over the refusals"
+    },
+    {
+     "id": "range",
+     "at": {
+      "line": "L0328",
+      "word": "ranged"
+     },
+     "what": "a measuring rod draws up the exact span"
+    },
+    {
+     "id": "lock",
+     "at": {
+      "line": "L0328",
+      "word": "skip"
+     },
+     "what": "the test rig padlocks"
+    },
+    {
+     "id": "earn",
+     "at": {
+      "line": "L0329",
+      "word": "refusing"
+     },
+     "what": "the look-alike well recedes into fog"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "keeper-b"
+   ],
+   "props": [
+    "two identical wells",
+    "an unworn look-alike Tooth whose shutter does not hold",
+    "the celld test rig with four engraved cards",
+    "a brass measuring rod",
+    "padlock silhouette",
+    "badge 'celld 0.6.3' on the rig",
+    "labGreen work-lamp"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "…ignores the condition fails late and silently — celld guarantees, v0.6.3",
+     "beat": "doc",
+     "until": "four"
+    },
+    {
+     "kind": "label",
+     "text": "create · refuse · update · refuse stale",
+     "beat": "four"
+    }
+   ],
+   "music": {
+    "cue": "ch03-d-test",
+    "note": "an uneasy unison for the look-alike well; true silence under 'silently ignore it'; four even knocks for the test writes, the two refusals voiced as dry clicks; a small resolved figure on 'on demand'"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "SB11",
+    "SB12",
+    "SB09",
+    "SB10"
+   ]
+  },
+  {
+   "id": "ch03-s06",
+   "kind": "scene",
+   "setting": "the harbour square at night (illustrative), seen from above the terrace: one Plate above the Well, and a second room's lantern in House B with its own small plate on the same iron frame",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0330",
+     "text": "One more thing to notice. The Well referees one key at a time: one Plate for one room.",
+     "pauseAfter": 0.5,
+     "direction": "a footnote, but an important one"
+    },
+    {
+     "id": "L0331",
+     "text": "It makes no promise that two rooms commit as one.",
+     "pauseAfter": 0.6,
+     "direction": "precise and calm",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
+    },
+    {
+     "id": "L0332",
+     "text": "And if the Well goes quiet, no house can take a Plate at all.",
+     "direction": "low, ending the chapter on the cost of the referee",
+     "tts": {
+      "solo": true,
+      "speed": 0.8
+     }
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 2,
+   "visual": "THIS SHOT: the scope of the referee. Cut to a high angle over the terrace looking down on the square. The iron frame above the Well now carries TWO plates side by side: the harbour room's Plate and a second, smaller plate for an illustrative second room whose lantern glows in House B. On 'key' a thin brass line ties each plate to its own slot in the Tooth; the camera eases in (beat keys). On 'two' the two rooms each try to change at once: a slip enters each lantern; one plate's card clicks, the other's is still in flight; the two slips are visibly NOT tied together, and no cord joins the two plates (beat apart). On 'quiet' the Well's water darkens, the rope goes slack, and every keeper's card hangs unanswered at the slot; the plates stay frozen (beat quiet). Hold; then iris out, closing on the harbour room's lantern (the chapter's end). Label upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "keys",
+     "at": {
+      "line": "L0330",
+      "word": "key"
+     },
+     "what": "each plate tied to its own slot"
+    },
+    {
+     "id": "apart",
+     "at": {
+      "line": "L0331",
+      "word": "two"
+     },
+     "what": "two rooms change; nothing ties the two plates"
+    },
+    {
+     "id": "quiet",
+     "at": {
+      "line": "L0332",
+      "word": "quiet"
+     },
+     "what": "the Well darkens; cards hang unanswered"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "the Well and two plates on one iron frame",
+    "two Room Lanterns (A's harbour room, B's illustrative second room)",
+    "brass ties from plate to slot"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "one key at a time · no cross-room commit",
+     "beat": "keys"
+    }
+   ],
+   "music": {
+    "cue": "ch03-d-test",
+    "note": "two thin lines that do not harmonise; on 'quiet' the drone drops out entirely; the iris closes in silence, a single low note under the last frame"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "SB13",
+    "SB15",
+    "FX01"
+   ]
+  }
+ ]
+}

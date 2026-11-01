@@ -1,0 +1,122 @@
+[
+ {
+  "id": "sender",
+  "name": "The sender (illustrative)",
+  "role": "an illustrative member of the harbour room who sends message #42, 'the ferry is late'; seen at a harbour-side window; never a real person",
+  "firstAppearance": "ch01-s01",
+  "height": 310, "build": "slight", "era": "2020s", "wardrobe": "longCoat", "hair": "bun",
+  "facialHair": "none", "glasses": "none", "hat": "none", "prop": "phone",
+  "details": ["coatSeam", "collar"],
+  "signature": { "idle": "listen", "rim": { "x": -0.6, "y": -0.8, "px": 1.5, "alpha": 0.6, "warm": 0.6 } }
+ },
+ {
+  "id": "keeper-a",
+  "name": "The keeper of House A",
+  "role": "the runtime process in House A (illustrative); owns the harbour room at epoch 7; carries scrolls, rings A's bell, falls asleep at the window in ch05-s04 and wakes in ch06-s05",
+  "firstAppearance": "ch01-s01",
+  "height": 330, "build": "tall", "era": "2020s", "wardrobe": "workJacket", "hair": "crewCut",
+  "facialHair": "none", "glasses": "none", "hat": "cap", "prop": "none",
+  "details": ["cuff", "pocketFlap"],
+  "signature": { "stoop": 4, "idle": "rest", "rim": true }
+ },
+ {
+  "id": "keeper-b",
+  "name": "The keeper of House B",
+  "role": "the runtime process in House B (illustrative); races A for an empty Plate in ch03-s02; claims epoch 8 in ch05; dies before opening in the claimed-not-opened case",
+  "firstAppearance": "ch03-s02",
+  "height": 300, "build": "slight", "era": "2020s", "wardrobe": "scarfCoat", "hair": "bob",
+  "facialHair": "none", "glasses": "none", "hat": "none", "prop": "none",
+  "details": ["scarfTail", "cuff"],
+  "signature": { "chinUp": 3, "idle": "shift", "rim": true }
+ },
+ {
+  "id": "keeper-c",
+  "name": "The keeper of House C",
+  "role": "the runtime process in House C (illustrative); takes over the room (epoch 9), restores it from the Well and relights the lantern",
+  "firstAppearance": "ch01-s02",
+  "height": 315, "build": "stocky", "era": "2020s", "wardrobe": "satchelJacket", "hair": "short",
+  "facialHair": "none", "glasses": "none", "hat": "beanie", "prop": "papers",
+  "details": ["satchelStrap", "cuff"],
+  "signature": { "idle": "clasp", "rim": true }
+ },
+ {
+  "id": "copyist-1",
+  "name": "The first neighbour (celld follower, illustrative)",
+  "role": "a celld follower node shown as a copyist at a window desk with a notebook and a small book press (fsync); its notebook is water-damaged in ch07-s06 case one and incomplete in case two",
+  "firstAppearance": "ch07-s03",
+  "height": 300, "build": "average", "era": "2020s", "wardrobe": "cardigan", "hair": "long",
+  "facialHair": "none", "glasses": "round", "hat": "none", "prop": "book",
+  "details": ["cardiganEdge"],
+  "signature": { "stoop": 8, "idle": "think", "rim": true }
+ },
+ {
+  "id": "copyist-2",
+  "name": "The second neighbour (celld follower, illustrative)",
+  "role": "a second celld follower node; its notebook is complete in ch07-s06 case one and damaged in case two",
+  "firstAppearance": "ch07-s03",
+  "height": 320, "build": "average", "era": "2020s", "wardrobe": "vest", "hair": "receding",
+  "facialHair": "stubble", "glasses": "none", "hat": "none", "prop": "pen",
+  "details": ["vestButtons", "shirtCuff"],
+  "signature": { "idle": "fold", "rim": true }
+ },
+ {
+  "id": "witness",
+  "name": "The witness in the well (metaphor)",
+  "role": "a small lamp-keeper on a ledge inside the Well cutaway who rings a bell at every change to an object: the film's picture of S3's internal witness component as Werner Vogels described it; a metaphor, not a person",
+  "firstAppearance": "ch03-s04",
+  "height": 160, "build": "slight", "era": "2020s", "wardrobe": "smock", "hair": "short",
+  "facialHair": "none", "glasses": "none", "hat": "cap", "prop": "none",
+  "details": ["smockHem"],
+  "signature": { "idle": "listen", "rim": { "x": 0.2, "y": -1, "px": 1.2, "alpha": 0.7, "warm": 0.2 } }
+ },
+ {
+  "id": "narrator-hands",
+  "name": "The demonstrator's hand",
+  "role": "the unseen narrator's one hand, a mid-life teacher's (never elderly), the only thing that reaches into the town from outside: always from the lower right, it pulls and reseats the red-tagged pins, turns Plate tiles on parchment inserts, and holds up a slip",
+  "firstAppearance": "ch03-s02",
+  "height": 280, "build": "average", "era": "2020s", "wardrobe": "rolledSleeves", "hair": "short",
+  "facialHair": "none", "glasses": "none", "hat": "none", "prop": "none",
+  "details": ["rolledCuff", "knuckle"],
+  "signature": { "rim": { "x": 0.6, "y": -0.8, "px": 1.5, "alpha": 0.6, "warm": 0.5 } }
+ },
+ {
+  "id": "kenton-varda",
+  "name": "Kenton Varda",
+  "role": "Cloudflare; author of the 2020 Durable Objects, 2021 output-gate, 2022 workerd and 2024 SQLite posts; co-author of the 9 October 2026 joint post. Seen only at his desk, screen-left, under a warm lamp. Generic, dignified 2020s silhouette: no likeness is attempted and no appearance details are claimed; read apart from Ryan Dahl by side of frame, posture and lamp. Never given words beyond his published sentences, shown as attributed text.",
+  "firstAppearance": "ch02-s01",
+  "height": 325, "build": "average", "era": "2020s", "wardrobe": "shirt", "hair": "short",
+  "facialHair": "none", "glasses": "none", "hat": "none", "prop": "laptop",
+  "details": ["collar", "shirtCuff"],
+  "signature": { "stoop": 6, "idle": "think", "rim": { "x": 0.7, "y": -0.7, "px": 1.5, "alpha": 0.6, "warm": 0.7 } }
+ },
+ {
+  "id": "ryan-dahl",
+  "name": "Ryan Dahl",
+  "role": "Deno, now Cloudflare; started celld; author of the supplied 28 October 2026 commit and the alarms and facets commits. Seen only at his desk, screen-right. Generic, dignified 2020s silhouette: no likeness is attempted and no appearance details are claimed. Never given words beyond his published sentences.",
+  "firstAppearance": "ch04-s01",
+  "height": 330, "build": "tall", "era": "2020s", "wardrobe": "sweater", "hair": "short",
+  "facialHair": "none", "glasses": "none", "hat": "none", "prop": "laptop",
+  "details": ["sweaterHem"],
+  "signature": { "chinUp": 2, "idle": "rest", "rim": { "x": -0.7, "y": -0.7, "px": 1.5, "alpha": 0.6, "warm": 0.5 } }
+ },
+ {
+  "id": "bert-belder",
+  "name": "Bert Belder",
+  "role": "named in the 9 October 2026 joint post as leading, with Ryan Dahl, the effort to make workerd self-hosting first-class. Appears only as a name card beside Ryan Dahl's desk (a second, out-of-focus chair); no figure detail, no words.",
+  "firstAppearance": "ch04-s03",
+  "height": 320, "build": "average", "era": "2020s", "wardrobe": "shirt", "hair": "short",
+  "facialHair": "none", "glasses": "none", "hat": "none", "prop": "none",
+  "details": [],
+  "signature": { "idle": "stand" }
+ },
+ {
+  "id": "werner-vogels",
+  "name": "Werner Vogels",
+  "role": "Amazon's CTO; author of 'Diving Deep on S3 Consistency' (20 April 2021). Appears once, as a standing silhouette at a lectern-height desk beside the Well cutaway, with a name card; generic, no likeness; only his published sentences as attributed text.",
+  "firstAppearance": "ch03-s04",
+  "height": 335, "build": "tall", "era": "2020s", "wardrobe": "blazer", "hair": "short",
+  "facialHair": "none", "glasses": "none", "hat": "none", "prop": "none",
+  "details": ["lapel"],
+  "signature": { "idle": "clasp", "rim": { "x": 0.5, "y": -0.9, "px": 1.5, "alpha": 0.55, "warm": 0.3 } }
+ }
+]

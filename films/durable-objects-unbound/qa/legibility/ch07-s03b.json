@@ -1,0 +1,34 @@
+{
+ "shot": "ch07-s03b",
+ "at": "2026-11-01T07:04:15.601Z",
+ "minCapPx": 22,
+ "sampled": 33,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "The owner never counts itself",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "one neighbour: a two-copy proof",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 45.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "celld 0.6.3",
+   "maxCap": 18.5,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

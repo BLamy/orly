@@ -1,0 +1,73 @@
+{
+ "shot": "ch05-s06",
+ "at": "2026-11-01T07:04:09.452Z",
+ "minCapPx": 22,
+ "sampled": 61,
+ "texts": 12,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "workerd · 28 Oct",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "house",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "epoch",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "from",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "A",
+   "capWhileSubject": 64.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 73.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "claimed ≠ opened",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "B",
+   "capWhileSubject": 66.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8",
+   "capWhileSubject": 73.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "C",
+   "capWhileSubject": 66.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 73.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "C recovers the last OPENED epoch",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

@@ -4,7 +4,7 @@ description: Generate a scene-native (3b1b-quality) video book from a repo + sub
 
 # /new-book — add a scene-native video book to the O'RLY shelf
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Astra's written plan; it does not replace the planner. If Opus reaches its provider limit, preserve progress and continue the animation role with GPT-6.1 Sol (`gpt-6.1-sol`). Record the limit and actual provider. Stop if both are unavailable; no other fallback is authorized.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Sol plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Sol's written plan; it does not replace the planner. If a provider reaches a limit, preserve progress and report the blocker; no model substitution is authorized.
 
 
 Turn a GitHub repo (or local path) + a subsystem into a narrated **3b1b-quality
@@ -23,7 +23,7 @@ films do (`public/generated/<SLUG>/sources.json`, validated by `npm run book:sou
 and — when the request asks for music — compose it with Strudel (`npm run book:score`).
 
 Keys come from the gitignored `.env` (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`).
-Astra prepares the plan and any 3D assets; Opus implements the D3 scenes.
+Sol prepares the plan and any 3D assets; Opus implements the D3 scenes.
 
 ## Steps — VISUALIZATIONS FIRST, video second
 
@@ -34,7 +34,7 @@ Astra prepares the plan and any 3D assets; Opus implements the D3 scenes.
    node -e "import('./generator/repo.mjs').then(m=>{const d=m.acquireAndDigest({repo:process.argv[1],prompt:process.argv[2]});require('fs').writeFileSync('/tmp/nb-digest.txt',d.digest);console.error('digest:',d.chosen.length,'files,',d.digest.length,'chars');})" "<REPO>" "<SUBSYSTEM PROMPT>"
    ```
 
-3. **ASTRA: PLAN THE VISUALIZATIONS** — this is the storyboard now. Read
+3. **SOL: PLAN THE VISUALIZATIONS** — this is the storyboard now. Read
    `generator/prompts/storyboard.txt` (the v3 authoring doctrine — obey every
    rule) and the digest. Then write a **visual plan** (a scratch markdown file
    is fine) before any code:

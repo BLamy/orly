@@ -1,0 +1,24 @@
+{
+ "sample": {
+  "text": "Everything in this harbour is made up, except the kind of room in that window. It is a chat room, the very example Durable Objects began with, in 2020. Someone types message forty-two: the ferry is late. It waits at the door. Then it gets its tick: a promise that it is saved. Then House A goes dark, and the square goes quiet. Up the hill, House C lights. Its keeper, the runtime, draws a bundle from the well, and the room relights in a new window. Message forty-two is still there, with its tick. The machine that made that promise is gone. The promise is still true.",
+  "chars": 570,
+  "words": 108
+ },
+ "results": {
+  "JBFqnCBsd6RMkjVDRZzb|eleven_multilingual_v2|0.9": {
+   "voice": "JBFqnCBsd6RMkjVDRZzb",
+   "label": "george",
+   "model": "eleven_multilingual_v2",
+   "speed": 0.9,
+   "file": "films/durable-objects-unbound/voice/auditions/JBFqnCBsd6RMkjVDRZzb-eleven_multilingual_v2-s0.9.mp3",
+   "duration": 42.028,
+   "speech": 42.028,
+   "words": 108,
+   "wpm": 154.2,
+   "I": -23.4,
+   "TP": -4.3,
+   "LRA": 2.9,
+   "cost": 251
+  }
+ }
+}

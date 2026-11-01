@@ -1,0 +1,15 @@
+{
+ "$notes": "Voice-only respellings for durable-objects-unbound (subtitles keep the written text). Story-stage draft 2026-10-31; revised at the narration stage 2026-11-01 (claude-opus-5-5): SQLite corrected from 'ess cue lite' (dropped the L) to 'ess cue ell lite' (S-Q-L-ite, letters + lite); keys that never fire in the locked script were pruned (fsyncs, ETag, ETags, SRS, gzip, CRC, AWS, TCP). generator/film/lib/text.mjs speak(): an explicit `spoken` wins and this lexicon is applied inside it with exact case; other lines use the lexicon with a case-insensitive fallback, so no key is an everyday lower-case word ('epoch' therefore has no entry: either common reading is correct; it is a listening item). Every spoken form is words only. Basis: workerd = 'worker dee' (Cloudflare's 2022 workerd post: the Unix -d server suffix); celld = 'cell-dee' (same -d convention; no published pronunciation found); Deno = 'DEE-no'; S3 'ess three'; R2 'are two'; fsync 'eff-sync'; Vogels 'VOH-gels'; Litestream 'light-stream'. STT round-trips prove the words; stress is judged only by a human (voice.json listening[]). Narration run 2 (2026-11-01): the run-1 STT round trip transcribed the intended sounds under other spellings (\"Worker D\", \"Cell D\"/\"Seldi\", \"ES3\", \"ESQL Lite\", \"or two\", \"EF sync\", \"Lightstream\"); per the STT rule (a better respelling or a re-take, never a looser match, no model-written sttHeard) the respellings moved to letter forms with the same intended sounds: workerd \"worker D\", celld \"cell D\", SQLite \"S Q L lite\", S3 \"S three\", R2 \"R two\" (also avoids the non-rhotic are/or confusion), fsync \"F sync\", Litestream \"Lightstream\". Run-1 lexicon kept at narration/lexicon-run1.json.",
+ "workerd": "worker D",
+ "celld": "cell D",
+ "Deno": "Dee-no",
+ "SQLite": "S Q L lite",
+ "S3": "S three",
+ "R2": "R two",
+ "fsync": "F sync",
+ "LTX": "L T X",
+ "JSR": "J S R",
+ "Vogels": "Vohgels",
+ "Litestream": "Lightstream",
+ "README": "read-me"
+}

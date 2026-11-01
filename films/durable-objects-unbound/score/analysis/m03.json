@@ -1,0 +1,18 @@
+{
+ "id": "m03",
+ "start": 272.388,
+ "end": 482.233,
+ "file": "films/durable-objects-unbound/score/renders/m03.wav",
+ "duration": 215.845,
+ "I": -26.1,
+ "LRA": 10.2,
+ "TP": -10.9,
+ "expected": 215.845,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/durable-objects-unbound/score/analysis/m03.png",
+ "cueSeconds": 209.845,
+ "cps": 0.25,
+ "lastStrikeLocal": 206.04,
+ "lastStrike": 478.428
+}

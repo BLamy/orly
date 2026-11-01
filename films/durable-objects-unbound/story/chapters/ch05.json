@@ -1,0 +1,867 @@
+{
+ "id": "ch05",
+ "number": 5,
+ "title": "The Plate and the Candle",
+ "blurb": "Inside workerd's cluster, as committed on 28 October 2026. The Plate is the ownership record: which house, an epoch, and the last epoch that actually opened. A claim is a compare and swap; a new room is created already open; a remembered route is a shortcut, not proof. Leases are candles: twenty seconds, renewed every three, each attempt allowed four, a clock allowed two seconds of skew and a painted band of four, so a house may serve only while its clock reads under sixteen thousand milliseconds and may start a renewal only under twelve thousand. A comment in the code keeps a scar from real R2 stalls. Then the pin: a keeper falls asleep, its candle burns into the band, a neighbour takes the room; a timeout proves silence, not death, and only the sleeper stopping itself keeps the town to one room. Clocks are borrowed, so celld checks a record, not a clock. And claimed is not opened: the from tile decides which past the room comes back with.",
+ "shots": [
+  {
+   "id": "ch05-s01",
+   "kind": "scene",
+   "setting": "the harbour terrace and square at night (illustrative): Houses A and B in two-shot on the terrace, the Plate between and below them over the Well, its three brass tiles now engraved; badge 'workerd · 28 Oct' on the iron frame",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0501",
+     "text": "Open the Plate. In workerd's cluster it has three tiles: the house that owns the room, an epoch, and a third, called from.",
+     "pauseAfter": 0.5,
+     "direction": "opening a mechanism like a watch case; 'from' said as a name, with a tiny lift"
+    },
+    {
+     "id": "L0502",
+     "text": "The epoch is a count that goes up with every new claim. The from tile names the last epoch that actually opened.",
+     "pauseAfter": 0.5,
+     "direction": "two definitions, each clean; 'actually opened' marked, it will matter"
+    },
+    {
+     "id": "L0503",
+     "text": "The code calls it the only authority on who owns the room.",
+     "pauseAfter": 0.6,
+     "direction": "weighty, a paraphrase of the code's own comment"
+    },
+    {
+     "id": "L0504",
+     "text": "To claim, a keeper offers the version it read. If the Plate names a house whose lease has run out, the claim writes the next epoch, and at most one claimant wins.",
+     "pauseAfter": 0.5,
+     "direction": "step by step; 'at most one' landed"
+    },
+    {
+     "id": "L0505",
+     "text": "If that house is still alive, the request goes there instead. A brand-new room is born already open.",
+     "pauseAfter": 0.5,
+     "direction": "brisk, two cases"
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: the Plate opened. The ch04 commit strip folds open like a door onto the terrace (paperWipe in). Framing: Houses A (screen-left) and B (screen-right) on the L3 terrace, the Plate on its iron frame between and below them over the Well; brass badge 'workerd · 28 Oct' on the frame. Camera: a slow 6 s push from the two-shot down to the Plate. On 'Open' the Plate's face swings forward like a watch case, its three tiles now engraved: 'house', 'epoch', 'from' in small cut capitals above the tiles (beat open); they read A · 7 · 7, illustrative, and the crown lamp is lit. On 'count' the epoch tile turns one notch and back, a small odometer gesture (beat count); on 'opened' the crown lamp pulses once beside the from tile (beat opened). On 'authority' a faint outline of a scroll-shelf in the Well below lights, tied by a thin brass line to the Plate: whose log holds the latest commits (beat log). On 'claim' a demonstration in miniature: A's lamp gutters as its candle runs out (a tiny candle on A's sill is now a stub); B's keeper slides a notched swap card into the Tooth: one click, the tiles turn to B · 8 (beat claim); a second ghost card from House C is spat back, punched (beat one on 'most'). On 'alive' a reverse: A's candle is tall; B's card is not inserted at all; a dotted line from B's door runs along the pulley lines to A's door: the request goes to the owner (beat route). On 'brand-new' a fresh small plate forms beside the first with its crown ALREADY lit in one click; a loser's card is handed a small direction card pointing to the winner (beat fresh). Labels upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "open",
+     "at": {
+      "line": "L0501",
+      "word": "Open"
+     },
+     "what": "the Plate swings open: house · epoch · from tiles, A · 7 · 7"
+    },
+    {
+     "id": "count",
+     "at": {
+      "line": "L0502",
+      "word": "count"
+     },
+     "what": "the epoch tile turns a notch"
+    },
+    {
+     "id": "opened",
+     "at": {
+      "line": "L0502",
+      "word": "opened"
+     },
+     "what": "the crown lamp pulses beside the from tile"
+    },
+    {
+     "id": "log",
+     "at": {
+      "line": "L0503",
+      "word": "authority"
+     },
+     "what": "a brass line ties the Plate to a scroll-shelf in the Well"
+    },
+    {
+     "id": "claim",
+     "at": {
+      "line": "L0504",
+      "word": "claim"
+     },
+     "what": "B's card clicks; tiles turn to B · 8"
+    },
+    {
+     "id": "one",
+     "at": {
+      "line": "L0504",
+      "word": "most"
+     },
+     "what": "a second claimant's card is refused"
+    },
+    {
+     "id": "route",
+     "at": {
+      "line": "L0505",
+      "word": "alive"
+     },
+     "what": "the request is routed to the live owner"
+    },
+    {
+     "id": "fresh",
+     "at": {
+      "line": "L0505",
+      "word": "brand-new"
+     },
+     "what": "a new plate is created already open in one click"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "keeper-b",
+    "keeper-c"
+   ],
+   "props": [
+    "the Plate with engraved house · epoch · from tiles and crown lamp",
+    "the Tooth and notched swap cards",
+    "sill candles (tall and stub)",
+    "badge 'workerd · 28 Oct'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "house · epoch · from",
+     "beat": "open",
+     "until": "claim"
+    },
+    {
+     "kind": "term",
+     "text": "epoch",
+     "gloss": "the middle tile of the Plate",
+     "beat": "count"
+    }
+   ],
+   "music": {
+    "cue": "ch05-a-terrace",
+    "note": "the terrace drone, a small clockwork tick for the tiles; the Tooth's click and thunk motifs from chapter 3 return exactly; a light pizzicato for the chalk arrow"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "OW01",
+    "OW02",
+    "OW04",
+    "FX01",
+    "OW05"
+   ]
+  },
+  {
+   "id": "ch05-s02",
+   "kind": "plate",
+   "setting": "a parchment plate: the Candle Ruler, an engraved vertical candle beside a millisecond scale, with the band and the renewal notch inked in; the sill of House A seen faintly behind the paper",
+   "era": "2020s",
+   "mood": "parchment",
+   "lines": [
+    {
+     "id": "L0507",
+     "text": "A house may serve only while it holds a lease: a candle on its sill, relit at each renewal.",
+     "pauseAfter": 0.5,
+     "direction": "introducing the second machine; warm"
+    },
+    {
+     "id": "L0508",
+     "text": "In workerd the lease is twenty seconds. A house renews every three, gives each attempt four, and retries a failure after one.",
+     "pauseAfter": 0.5,
+     "direction": "numbers spoken plainly and evenly, like a timetable"
+    },
+    {
+     "id": "L0509",
+     "text": "A clock may be two seconds off the bucket's, so the painted band at the candle's foot is twice that: four seconds.",
+     "pauseAfter": 0.6,
+     "direction": "the reasoning audible: 'twice that'"
+    },
+    {
+     "id": "L0510",
+     "text": "If this lease runs out at twenty thousand milliseconds, the house may serve only while its clock reads under sixteen thousand.",
+     "pauseAfter": 0.5,
+     "direction": "worked example; 'only while' firm"
+    },
+    {
+     "id": "L0511",
+     "text": "And it may start a renewal only under twelve thousand, so even a full four-second attempt ends before the band.",
+     "pauseAfter": 0.6,
+     "direction": "the subtler line; slow"
+    },
+    {
+     "id": "L0512",
+     "text": "Lines on a ruler, not promises about timers.",
+     "direction": "a caveat, lightly"
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 2,
+   "visual": "THIS SHOT: the Candle, as arithmetic. Paper-fold in from the terrace to a parchment plate (ink on paper, camera hold with a very slow drift). Left half: an engraved tall candle beside a vertical scale marked in milliseconds, 0 at the top to 20,000 at the foot, as the owner's clock runs (an illustrative expiry at 20,000 ms; FX01). The badge 'workerd · 28 Oct' is engraved at the plate's top-right corner. On 'lease' the candle's flame inks in and a small 'relit' curl appears at its wick (beat lease); term tag. On 'twenty' the scale's full length brightens (beat twenty); on 'three' a tick every 3,000 ms is stamped down the scale; on 'four' a short bracket of 4,000 ms hangs from the first tick (the attempt's bound); on 'one' a small 1,000 ms retry hook (beat timetable on 'three'). On 'two' a little offset clock-face slides 2,000 ms against a second, ghost scale (beat skew); on 'twice' the band, 16,000 to 20,000, is washed in red ink at the foot of the candle (beat band). On 'sixteen' a hard horizontal line is ruled at 16,000 ms across both candle and scale (beat serve). On 'twelve' a second ruled line at 12,000 ms, and from it a 4,000 ms bracket hangs down and ends exactly at the 16,000 line: the renewal attempt fits before the band (beat renew). On 'ruler' a pair of dividers lies across the plate and the drift stops (beat ruler). All text sits on the parchment above y 600; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "lease",
+     "at": {
+      "line": "L0507",
+      "word": "lease"
+     },
+     "what": "the candle's flame inks in; term tag"
+    },
+    {
+     "id": "twenty",
+     "at": {
+      "line": "L0508",
+      "word": "twenty"
+     },
+     "what": "the 0–20,000 ms scale brightens"
+    },
+    {
+     "id": "timetable",
+     "at": {
+      "line": "L0508",
+      "word": "three"
+     },
+     "what": "3 s ticks, 4 s bracket, 1 s retry hook"
+    },
+    {
+     "id": "skew",
+     "at": {
+      "line": "L0509",
+      "word": "two"
+     },
+     "what": "an offset clock-face slides 2,000 ms"
+    },
+    {
+     "id": "band",
+     "at": {
+      "line": "L0509",
+      "word": "twice"
+     },
+     "what": "the 4,000 ms band washes red at the foot"
+    },
+    {
+     "id": "serve",
+     "at": {
+      "line": "L0510",
+      "word": "sixteen"
+     },
+     "what": "a ruled line at 16,000 ms"
+    },
+    {
+     "id": "renew",
+     "at": {
+      "line": "L0511",
+      "word": "twelve"
+     },
+     "what": "a ruled line at 12,000 ms; a 4 s bracket reaches 16,000"
+    },
+    {
+     "id": "ruler",
+     "at": {
+      "line": "L0512",
+      "word": "ruler"
+     },
+     "what": "dividers laid across the plate"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "parchment Candle Ruler: engraved candle, millisecond scale, red band, ruled lines at 16,000 and 12,000 ms",
+    "an offset clock-face",
+    "dividers",
+    "engraved badge 'workerd · 28 Oct'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "term",
+     "text": "lease",
+     "gloss": "the Candle",
+     "beat": "lease"
+    },
+    {
+     "kind": "equation",
+     "text": "serve: t + 4,000 < 20,000 · renew: t + 8,000 < 20,000",
+     "beat": "serve"
+    }
+   ],
+   "music": {
+    "cue": "ch05-b-candle",
+    "note": "a low candle hiss under the whole plate; one soft pluck per number in the timetable; the band arrives on a darker chord; the two ruled lines each a single clean tone, the second fitting inside the first"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "LE01",
+    "LE03",
+    "LE04",
+    "LE07",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch05-s03",
+   "kind": "scene",
+   "setting": "House A's sill and window at night (illustrative), the candle in close-up; behind the glass a keeper's silhouette at a desk with a page of the code; a faint gust",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0513",
+     "text": "Why give each renewal four seconds, and not two? The code keeps a scar.",
+     "pauseAfter": 0.5,
+     "direction": "a little story begins; curious"
+    },
+    {
+     "id": "L0514",
+     "text": "A comment records that Cloudflare's R2 stalls writes for about five and a half seconds at every five-minute mark, and that a two-second limit once stopped every node.",
+     "pauseAfter": 0.6,
+     "direction": "reporting a real incident from a comment, plainly; 'every node' landed"
+    },
+    {
+     "id": "L0515",
+     "text": "So failed renewals are retried while the lease still holds through the attempt.",
+     "direction": "the fix, calm"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: a real scar in the code. Paper-fold out of the plate to House A's sill in close-up: the candle on the sill, the window behind it, a keeper's silhouette at a desk inside reading a single page (the code). On 'scar' the camera racks focus to the page: a single ink line is underlined in red, illegible as text, a mark of a comment (beat scar). On 'five' an illustrative re-enactment on the sill: a gust bends the flame low and holds it bent for a long moment, a small brass hourglass beside it running long (the stall, beat stall); on 'two-second' (anchor word 'limit') a second, shorter hourglass empties first and a snuffer drops over the flame; along the terrace behind, every house lamp gutters out together (beat snuff). On 'retried' rewind: the 4 s bracket still runs out mid-gust, but a 1 s retry hook follows, and a retry lands just after the gust, before the 12,000 ms notch, relighting the candle; the terrace lamps stay lit (beat retry). No numbers on screen beyond the label; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "scar",
+     "at": {
+      "line": "L0513",
+      "word": "scar"
+     },
+     "what": "rack focus to an underlined line on the code page"
+    },
+    {
+     "id": "stall",
+     "at": {
+      "line": "L0514",
+      "word": "five"
+     },
+     "what": "a gust holds the flame low; a long hourglass"
+    },
+    {
+     "id": "snuff",
+     "at": {
+      "line": "L0514",
+      "word": "limit"
+     },
+     "what": "a short bound snuffs the flame; every terrace lamp gutters"
+    },
+    {
+     "id": "retry",
+     "at": {
+      "line": "L0515",
+      "word": "retried"
+     },
+     "what": "rewind: the longer bound rides out the gust"
+    }
+   ],
+   "cast": [
+    "keeper-a"
+   ],
+   "props": [
+    "House A's sill candle",
+    "a code page with one underlined line",
+    "two hourglasses (long and short)",
+    "a candle snuffer",
+    "terrace house lamps"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "R2 stalls ~5.5 s every 5 minutes",
+     "beat": "stall"
+    }
+   ],
+   "music": {
+    "cue": "ch05-b-candle",
+    "note": "a wind sound in the instrument (breathy flute or bowed air) for the gust; a sharp stop and silence when every lamp gutters; the rewind a reversed swell, then the candle hiss returns"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "LE02",
+    "LE05"
+   ]
+  },
+  {
+   "id": "ch05-s04",
+   "kind": "scene",
+   "setting": "the terrace at night (illustrative): House A's keeper asleep at the window beside the candle; House B on the right; the Plate and the Well below; the red-tagged pin seated in a latch on A's candle-sconce",
+   "era": "2020s",
+   "mood": "emberRed",
+   "lines": [
+    {
+     "id": "L0516",
+     "text": "A's keeper falls asleep: a paused process.",
+     "pauseAfter": 0.5,
+     "direction": "lowering the voice; 'asleep' gentle"
+    },
+    {
+     "id": "L0517",
+     "text": "Pull the pin, so A never checks its own candle.",
+     "pauseAfter": 0.7,
+     "direction": "the demonstrator's line, firm",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
+    },
+    {
+     "id": "L0518",
+     "text": "The candle burns through the band. B sees that A's lease has run out, and claims the room.",
+     "pauseAfter": 0.5,
+     "direction": "steady, a sequence of reasonable steps"
+    },
+    {
+     "id": "L0519",
+     "text": "A wakes and goes on serving. Two rooms.",
+     "pauseAfter": 0.8,
+     "direction": "the failure, flatly stated; let it sit"
+    },
+    {
+     "id": "L0520",
+     "text": "Pin back. Waking, A checks its candle first. Past the band, it serves nothing, closes its own shutters, and its lamp goes out.",
+     "pauseAfter": 0.5,
+     "direction": "relief, but exact; 'its own' stressed"
+    },
+    {
+     "id": "L0521",
+     "text": "A house that cannot renew in time does the same while its lease still holds: gone before anyone may take over. That is fencing.",
+     "pauseAfter": 0.8,
+     "direction": "naming the term; slow on 'gone before anyone may take over'"
+    },
+    {
+     "id": "L0522",
+     "text": "Notice what B never knew. A timeout proves silence. It does not prove death.",
+     "pauseAfter": 0.6,
+     "direction": "the chapter's maxim; quiet, unhurried"
+    },
+    {
+     "id": "L0523",
+     "text": "Safety comes from A stopping itself, and from a second look at the Plate.",
+     "direction": "a promise to the viewer; lightly"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.6,
+   "visual": "THIS SHOT: PULL THE PIN, the self-fence. Lamp change into the emberRed failure grade. Framing: a wide two-shot of the terrace, House A screen-left with its keeper asleep at the window (head down on folded arms, puppet held still on twos), the candle on A's sill, House B screen-right, the Plate below between them reading A · 7 · 7 with the crown lit (illustrative). A small brass latch on A's candle-sconce holds the red-tagged pin: the latch is A's habit of checking the candle. On 'asleep' A's head drops (beat sleep). On 'Pull' the demonstrator's hand enters lower RIGHT and draws the pin; the latch hangs open (beat pull). On 'band' the candle burns visibly down into its red band and past it (time-lapse; beat burn). On 'claims' B's keeper reads the Plate, then slides a card into the Tooth: click; tiles turn to B · 8 · 7, crown dark (beat claimB); B's window lights with its own Room Lantern. On 'wakes' A lifts its head and, with no latch to check, its lantern brightens and slips drift in (beat wakeBad); on 'Two' the camera pulls back so both lanterns glow in one frame: two rooms (beat tworooms). On 'Pin back' the hand reseats the pin; rewind to the moment of waking (beat reseat). On 'checks' A's first move is to look at its candle: past the band (beat check); on 'shutters' A closes its own window shutters from inside and its lamp goes out (beat shutters). On 'renew' (anchor 'cannot') a second, cooler vignette: a candle whose renewals keep failing; that keeper closes its shutters exactly as the flame reaches the 12,000 ms renewal notch, visibly four seconds above the band, and only after the flame passes the expiry does B's card click (beat early); term tag on 'fencing' (beat fence). On 'knew' the camera drifts to B's keeper, who sees only A's dark window, never A's sleep (beat knew). On 'second look' the camera tilts toward the Plate, where a small hook for a keeper's lamp hangs unused (foreshadowing ch06, beat foreshadow). Grade returns toward winterBlue across the last line. Text upper-left; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "sleep",
+     "at": {
+      "line": "L0516",
+      "word": "asleep"
+     },
+     "what": "A's keeper falls asleep"
+    },
+    {
+     "id": "pull",
+     "at": {
+      "line": "L0517",
+      "word": "Pull"
+     },
+     "what": "the pin is drawn from A's candle latch"
+    },
+    {
+     "id": "burn",
+     "at": {
+      "line": "L0518",
+      "word": "band"
+     },
+     "what": "the candle burns past the band"
+    },
+    {
+     "id": "claimB",
+     "at": {
+      "line": "L0518",
+      "word": "claims"
+     },
+     "what": "B claims: B · 8 · 7, crown dark; B's lantern lights"
+    },
+    {
+     "id": "wakeBad",
+     "at": {
+      "line": "L0519",
+      "word": "wakes"
+     },
+     "what": "A wakes and keeps serving"
+    },
+    {
+     "id": "tworooms",
+     "at": {
+      "line": "L0519",
+      "word": "Two"
+     },
+     "what": "both lanterns in one frame"
+    },
+    {
+     "id": "reseat",
+     "at": {
+      "line": "L0520",
+      "word": "Pin"
+     },
+     "what": "pin reseated; rewind to the waking"
+    },
+    {
+     "id": "check",
+     "at": {
+      "line": "L0520",
+      "word": "checks"
+     },
+     "what": "A looks at its candle first"
+    },
+    {
+     "id": "shutters",
+     "at": {
+      "line": "L0520",
+      "word": "shutters"
+     },
+     "what": "A closes its own shutters; lamp out"
+    },
+    {
+     "id": "early",
+     "at": {
+      "line": "L0521",
+      "word": "cannot"
+     },
+     "what": "a failing house fences while its flame is still above the band"
+    },
+    {
+     "id": "fence",
+     "at": {
+      "line": "L0521",
+      "word": "fencing"
+     },
+     "what": "term tag: fencing"
+    },
+    {
+     "id": "knew",
+     "at": {
+      "line": "L0522",
+      "word": "knew"
+     },
+     "what": "B sees only a dark window"
+    },
+    {
+     "id": "foreshadow",
+     "at": {
+      "line": "L0523",
+      "word": "second"
+     },
+     "what": "an unused lamp-hook on the Plate"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "keeper-b",
+    "narrator-hands"
+   ],
+   "props": [
+    "A's sill candle and a brass latch holding the red-tagged pin",
+    "the Plate (A · 7 · 7 → B · 8 · 7)",
+    "the Tooth",
+    "Room Lanterns in A's and B's windows",
+    "window shutters",
+    "a lamp-hook on the Plate"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "no self-check: two rooms",
+     "beat": "tworooms",
+     "until": "shutters"
+    },
+    {
+     "kind": "term",
+     "text": "fencing",
+     "gloss": "closing your own shutters",
+     "beat": "fence"
+    }
+   ],
+   "music": {
+    "cue": "ch05-c-sleep",
+    "note": "a lullaby-like figure for the sleeping keeper turned sour as the candle passes the band; two clashing drones under 'Two rooms'; the reseat a dry click; the shutters closing a soft wooden knock and then silence; the maxim over a single sustained low note"
+   },
+   "transitionIn": "lampChange",
+   "claims": [
+    "LE04",
+    "LE05",
+    "LE06",
+    "LE09",
+    "LE10",
+    "DU10",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch05-s05",
+   "kind": "scene",
+   "setting": "the terrace at night (illustrative): each house's sill carries a small brass clock-face beside its candle; the Well's own clock on the wellhead; at frame right a second terrace in labGreen lamplight, badge 'celld 0.6.3'",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0524",
+     "text": "One soft spot: each house measures its clock against the bucket's, and when it cannot, it assumes zero.",
+     "pauseAfter": 0.5,
+     "direction": "candid, a teacher admitting a weakness"
+    },
+    {
+     "id": "L0525",
+     "text": "So the clock is not the last line of defence; the second look is.",
+     "pauseAfter": 0.6,
+     "direction": "short, firm",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     },
+     "insertGaps": {
+      "defence": 0.32
+     }
+    },
+    {
+     "id": "L0526",
+     "text": "celld, a different implementation, uses ten-second leases, and when the Well proves a write it does the same: it reads the record, not a clock.",
+     "direction": "a comparison, even-handed; 'the record, not a clock' landed"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 2,
+   "visual": "THIS SHOT: borrowed clocks. Occluder wipe behind the L6 lamp-post onto the terrace, each sill now carrying a small brass clock-face beside its candle and the Well's own clock set into the wellhead (badge 'workerd · 28 Oct' on the frame). On 'measures' a fine thread runs from each sill clock down to the Well's clock and each sill clock nudges to agree (beat measure). On 'cannot' one thread snaps in the wind; that house's clock-face shows a small '0' engraved where its offset should be: an assumed zero (beat zero). On 'clock' the camera drifts off the snapped thread toward the Plate, the real referee (beat drift). On 'celld' a lamp change on the right half of frame only: a second terrace in labGreen lamplight, badge 'celld 0.6.3' on its own wellhead; its candles are visibly shorter (ten seconds) with a small renewal mark one third of the way down (beat celld). On 'record' that terrace's keeper watches a scroll land in its own Well (a bucket proof), then looks up at its plate and not at any clock before ringing; the quote card sets upper-left (beat record). The two terraces never merge; their numbers never sit together. Bottom 12% clear.",
+   "beats": [
+    {
+     "id": "measure",
+     "at": {
+      "line": "L0524",
+      "word": "measures"
+     },
+     "what": "threads from sill clocks to the Well's clock"
+    },
+    {
+     "id": "zero",
+     "at": {
+      "line": "L0524",
+      "word": "zero"
+     },
+     "what": "a snapped thread; an assumed zero"
+    },
+    {
+     "id": "drift",
+     "at": {
+      "line": "L0525",
+      "word": "clock"
+     },
+     "what": "camera drifts to the Plate"
+    },
+    {
+     "id": "celld",
+     "at": {
+      "line": "L0526",
+      "word": "celld"
+     },
+     "what": "labGreen terrace, shorter candles, badge celld 0.6.3"
+    },
+    {
+     "id": "record",
+     "at": {
+      "line": "L0526",
+      "word": "record"
+     },
+     "what": "the celld keeper looks at its plate, not a clock"
+    }
+   ],
+   "cast": [
+    "keeper-a",
+    "keeper-b"
+   ],
+   "props": [
+    "sill clock-faces and threads to the Well's clock",
+    "a snapped thread with an engraved 0",
+    "a second labGreen terrace with shorter candles",
+    "badges 'workerd · 28 Oct' and 'celld 0.6.3' on separate wellheads"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "celld: reads the record, not a clock",
+     "beat": "celld"
+    }
+   ],
+   "music": {
+    "cue": "ch05-a-terrace",
+    "note": "several small clock ticks slightly out of phase, drawn together; one tick drops out on the snapped thread; the celld terrace enters on a new, greener timbre, the same motif in a different key"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "LE08",
+    "LE11",
+    "LE12"
+   ]
+  },
+  {
+   "id": "ch05-s06",
+   "kind": "plate",
+   "setting": "a parchment plate: the Plate's three tiles engraved large, in a row of states left to right, with a crown lamp drawn above each state; a small rewind arrow at the right",
+   "era": "2020s",
+   "mood": "parchment",
+   "lines": [
+    {
+     "id": "L0527",
+     "text": "Claimed is not opened, and the difference decides which past the room comes back with.",
+     "pauseAfter": 0.7,
+     "direction": "the chapter's key idea; deliberate, each sentence placed"
+    },
+    {
+     "id": "L0528",
+     "text": "Made-up numbers. A opened epoch seven: A, seven, from seven. The crown is lit.",
+     "pauseAfter": 0.5,
+     "direction": "reading the tiles aloud slowly; 'made-up' light"
+    },
+    {
+     "id": "L0529",
+     "text": "B claims: B, eight, from seven. The from tile stays at seven, and the crown is dark.",
+     "pauseAfter": 0.5,
+     "direction": "the same cadence; 'stays at seven' stressed"
+    },
+    {
+     "id": "L0530",
+     "text": "To open, B must restore seven's log, upload a snapshot, and then make the opening write that sets the from tile to eight.",
+     "pauseAfter": 0.6,
+     "direction": "an ordered list in one breath, unhurried"
+    },
+    {
+     "id": "L0531",
+     "text": "That flicker in House B, the night A went dark? B died first. C claims: C, nine, from seven, and recovers seven, because eight never opened and acknowledged nothing.",
+     "pauseAfter": 0.7,
+     "direction": "the case that matters; 'never opened' slow"
+    },
+    {
+     "id": "L0532",
+     "text": "Rewind. Had B opened, the Plate would read B, eight, from eight, and C would recover eight.",
+     "direction": "the counterfactual, lightly, then rest"
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 2.2,
+   "visual": "THIS SHOT: CLAIMED IS NOT OPENED, on parchment (the mandatory distinction, step by step). Paper-fold in to a parchment plate showing the Plate's three tiles engraved large, house · epoch · from, with the crown lamp drawn above; engraved corner badge 'workerd · 28 Oct'. The demonstrator's hand sets the first tile on 'made-up' (beat fixture); the narration, not a note, says the numbers are made up. The demonstrator's hand turns the tiles (from lower RIGHT) on each state change; each state is then printed as a small stamp in a row along the plate's upper third, left to right, so the history accumulates: STATE 1 on 'seven' (first): A · 7 · 7, crown LIT (beat s1). STATE 2 on 'claims': B · 8 · 7, crown DARK; the from tile is held by the hand so it visibly does not move (beat s2). On 'restore' three small steps ink below the second stamp in order: a scroll-shelf labelled 7 read; a snapshot book sent down; then the opening write, drawn as a dotted arrow to a ghost stamp B · 8 · 8 with crown lit, not yet printed (beat steps). On 'died' B's tiny house silhouette in the stamp row darkens before the dotted arrow is reached; the ghost stamp fades (beat dies). STATE 3 on 'nine': C · 9 · 7, crown dark, and a bright ink line runs back from C's from tile to the A · 7 · 7 stamp: recover seven (beat s3); on 'nothing' the empty B · 8 · 7 stamp is shown with an empty shelf beneath it (beat nothing). On 'Rewind' the row unprints back to state 2 (beat rewind); on 'Had' the dotted arrow completes: B · 8 · 8 prints with crown lit (beat s2b); then C · 9 · 8 prints and its ink line runs back to the B · 8 · 8 stamp: recover eight (beat s3b). Hold on the two lines, side by side, in the hold. All text on the parchment above y 600; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "fixture",
+     "at": {
+      "line": "L0528",
+      "word": "made-up"
+     },
+     "what": "the demonstrator's hand sets the first tile"
+    },
+    {
+     "id": "s1",
+     "at": {
+      "line": "L0528",
+      "word": "opened"
+     },
+     "what": "state 1: A · 7 · 7, crown lit"
+    },
+    {
+     "id": "s2",
+     "at": {
+      "line": "L0529",
+      "word": "claims"
+     },
+     "what": "state 2: B · 8 · 7, crown dark; from held"
+    },
+    {
+     "id": "steps",
+     "at": {
+      "line": "L0530",
+      "word": "restore"
+     },
+     "what": "restore, snapshot, opening write inked in order"
+    },
+    {
+     "id": "dies",
+     "at": {
+      "line": "L0531",
+      "word": "died"
+     },
+     "what": "B darkens before the opening write"
+    },
+    {
+     "id": "s3",
+     "at": {
+      "line": "L0531",
+      "word": "nine"
+     },
+     "what": "state 3: C · 9 · 7, ink line back to epoch 7"
+    },
+    {
+     "id": "nothing",
+     "at": {
+      "line": "L0531",
+      "word": "nothing"
+     },
+     "what": "epoch 8's shelf is empty"
+    },
+    {
+     "id": "rewind",
+     "at": {
+      "line": "L0532",
+      "word": "Rewind"
+     },
+     "what": "the row unprints to state 2"
+    },
+    {
+     "id": "s2b",
+     "at": {
+      "line": "L0532",
+      "word": "Had"
+     },
+     "what": "B · 8 · 8 prints, crown lit"
+    },
+    {
+     "id": "s3b",
+     "at": {
+      "line": "L0532",
+      "word": "recover"
+     },
+     "what": "C · 9 · 8 with ink line back to epoch 8"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "parchment Plate with engraved house · epoch · from tiles and crown lamp",
+    "a row of printed state stamps",
+    "ink recovery lines",
+    "engraved badge 'workerd · 28 Oct'",
+    "engraved note 'illustrative numbers'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "claimed ≠ opened",
+     "beat": "s2"
+    },
+    {
+     "kind": "label",
+     "text": "C recovers the last OPENED epoch",
+     "beat": "s3"
+    }
+   ],
+   "music": {
+    "cue": "ch05-d-epochs",
+    "note": "a clockwork figure that advances one step per printed stamp; a held suspension while B's crown stays dark; silence on 'dies'; a resolving line on C's recovery; the rewind a reversed shimmer; the chapter ends on a quiet two-chord close"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "OW02",
+    "OW03",
+    "OW07",
+    "OW08",
+    "OW09",
+    "RE05",
+    "FX01"
+   ]
+  }
+ ]
+}

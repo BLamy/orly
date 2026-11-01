@@ -1,0 +1,49 @@
+{
+ "shot": "ch08-s04",
+ "at": "2026-11-01T07:51:40.140Z",
+ "minCapPx": 22,
+ "sampled": 37,
+ "texts": 7,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "C",
+   "capWhileSubject": 57.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 55,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "A",
+   "capWhileSubject": 29.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "workerd aa494794 · ad78a8fe · celld 0.6.3",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Illustrative harbour; real code.",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "workerd · 28 Oct",
+   "maxCap": 23.5,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

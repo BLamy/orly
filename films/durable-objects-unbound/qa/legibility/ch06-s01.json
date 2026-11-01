@@ -1,0 +1,49 @@
+{
+ "shot": "ch06-s01",
+ "at": "2026-11-01T07:04:10.201Z",
+ "minCapPx": 22,
+ "sampled": 45,
+ "texts": 7,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "WRITE-AHEAD LOG",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "the Ribbon",
+   "capWhileSubject": 22,
+   "why": "named: \"ribbon\""
+  },
+  {
+   "text": "32 bytes",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "24",
+   "capWhileSubject": 27.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "6",
+   "capWhileSubject": 27.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 27.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0",
+   "maxCap": 24.6,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

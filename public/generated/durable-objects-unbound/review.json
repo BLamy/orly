@@ -1,0 +1,29 @@
+{
+ "round": 2,
+ "at": "2026-11-01",
+ "pass": true,
+ "mean": 8.56,
+ "bar": 8.5,
+ "floor": 8,
+ "scores": {
+  "accuracy": 9,
+  "depth": 9,
+  "clarity": 8.3,
+  "story": 8.6,
+  "visual": 8.4,
+  "sync": 8.4,
+  "sound": 8.1,
+  "curiosity": 8.7
+ },
+ "notes": {
+  "accuracy": "Hosted Cloudflare, the 28 October and later workerd snapshots, and celld 0.6.3 stay separate in narration and on their tags. Claimed versus opened epochs, lease margins versus the second look, one-key scope, and the complete versus damaged tail cases all match the verified claims, with no invented deal terms, benchmarks or exactly-once promises.",
+  "depth": "The film goes to the byte layout of the SQLite log, the 12,000 and 16,000 ms lease arithmetic, compare and swap, the order of the proof before the tick, the restore and its limits, and celld's fsync and sealing gate. An experienced engineer gets the actual mechanism, and it is still tied to one message.",
+  "clarity": "Score inherited from round 1, before these fixes. The zero clock in ch05-s05 and the hosted lamps in ch07-s02, named then as soft spots, were corrected and verified in the refreshed movie; calendar dots still lean on the narration.",
+  "story": "One tick carries 24 minutes, from the promise to the failure to the final trace back to the Well and the Plate. The history chapters at the desks are the quietest stretch, but they pay off in the two-rope braid and the commit.",
+  "visual": "Score inherited from round 1, before these fixes. A consistent paper-cut world with motivated light, real depth and a clear grammar of lamps, tags and moods. The routed text and prop collisions were corrected; a few push-ins still go soft or leave large areas of dark wall.",
+  "sync": "Sampled beats land on their words, including the tick strokes, the bell and the Plate flips, and every shot keeps moving, with no fully static hold of 5 s or more. This was judged from about 350 frames of the movie and a frame-difference measure, not from watching it in real time.",
+  "sound": "Assessed from the script, speech-to-text, waveforms, spectrograms and loudness measurements, not by hearing it. The master is -16.0 LUFS at -1.7 dBTP, voice sits at least 10.8 dB over the music, the duck is 2.85 dB, and the last cue fades after its final strike; human pronunciation listening is still pending.",
+  "curiosity": "Pulling a pin and watching a promise break makes each guarantee feel earned, and the reversal of who referees the referee reframes 'S3 is all you need'. The film stays honest about what it did not run or establish."
+ },
+ "summary": "All eight routed visual fixes are present and verified in frames from the refreshed movie, with no new material regression in the sampled frames. Only small residuals remain, none routed. The inherited round-1 score of 8.56 stands and was not re-graded. Format and frame count are unchanged, and all 11 human listening entries, including the 3 added lines, remain pending and unsigned."
+}

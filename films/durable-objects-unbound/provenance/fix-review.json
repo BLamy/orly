@@ -1,0 +1,23 @@
+{
+  "role": "review",
+  "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+  "cliVersion": "2.1.316",
+  "requestedModel": "claude-opus-5-5",
+  "actualModel": "claude-opus-5-5",
+  "provider": "firstParty",
+  "requestedEffort": "high",
+  "effortActive": true,
+  "apiKeySource": "none",
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "subagents": 0,
+  "result": "success",
+  "isError": false,
+  "numTurns": 22,
+  "durationMs": 160468,
+  "inputTokens": 80,
+  "outputTokens": 83309,
+  "thinkingTokens": 44656,
+  "costUsd": 6.129496400000002
+}

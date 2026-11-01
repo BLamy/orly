@@ -66,43 +66,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender
 
-      - name: Plan the edit and model with Astra
-        uses: openai/codex-action@v1
-        with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          model: gpt-6-astra
-          effort: high
-          sandbox: workspace-write
-          codex-args: '["-c", "sandbox_workspace_write.network_access=true"]'
-          output-file: .orly-work/astra-result.md
-          prompt: |
-            Read docs/authoring-models.md and .claude/commands/tweak-book.md.
-            Plan only the requested change to these books: ${{ steps.slugs.outputs.slugs }}.
-            User request: ${{ github.event.comment.body }}
-            Ignore the leading @claude mention. Do not run git/gh or publish.
-            Astra owns planning and any Blender/Three.js work; do not author D3/SVG.
-            Write .orly-work/visual-plan.md and .orly-work/fable-assignment.md.
-            The Opus assignment must preserve the request, source anchors, fixed
-            captions where applicable, allowed files, minimal regeneration commands
-            and verification. Build any required 3D assets; Blender is installed.
-            Opus handles D3/SVG implementation and verification, not replanning.
-            For a change with no D3 edits, assign only the remaining integration checks.
-
-      - name: Apply D3 edits with latest Claude CLI and Opus 5.5
-        id: edit
-        continue-on-error: true
-        run: node generator/run-fable.mjs --prompt-file .orly-work/fable-assignment.md --output .orly-work/fable-result.json --max-turns 250
-        env:
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}
-          NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
-
-      - name: Continue authoring with GPT-6.1 Sol after an Opus limit
-        id: sol_fallback
-        if: steps.edit.outputs.provider_limit == 'true'
-        continue-on-error: true
+      - name: Plan the edit and model with Sol
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -112,15 +76,24 @@ jobs:
           codex-args: '["-c", "sandbox_workspace_write.network_access=true"]'
           output-file: .orly-work/sol-result.md
           prompt: |
-            Opus 5.5 reached its provider limit. Continue its saved work using
-            GPT-6.1 Sol as authorized in docs/authoring-models.md.
-            Read .orly-work/visual-plan.md and .orly-work/fable-assignment.md.
-            Inspect the current source and private provider result. Preserve
-            completed chapters, fixed captions and existing narration/image assets;
-            finish only the remaining assignment and run its verification commands.
-            Record the Opus limit and requested/actual fallback model provenance.
-            Do not run git/gh or publish; the existing workflow owns its PR flow.
+            Read docs/authoring-models.md, docs/book-quality.md and .claude/commands/tweak-book.md.
+            Plan only the requested change to these books: ${{ steps.slugs.outputs.slugs }}.
+            User request: ${{ github.event.comment.body }}
+            Ignore the leading @claude mention. Do not run git/gh or publish.
+            Sol owns planning and any Blender/Three.js work; do not author D3/SVG.
+            Write .orly-work/visual-plan.md and .orly-work/opus-assignment.md.
+            The Opus assignment must preserve the request, source anchors, fixed
+            captions where applicable, allowed files, minimal regeneration commands
+            and verification. Build any required 3D assets; Blender is installed.
+            Opus handles D3/SVG implementation and verification, not replanning.
+            For a change with no D3 edits, assign only the remaining integration checks.
+
+      - name: Apply D3 edits with latest Claude CLI and Opus 5.5
+        id: edit
+        continue-on-error: true
+        run: node generator/run-claude.mjs --prompt-file .orly-work/opus-assignment.md --output .orly-work/opus-result.json --max-turns 250
         env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}
@@ -132,7 +105,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          EDIT_OUTCOME: ${{ steps.edit.outputs.provider_limit == 'true' && steps.sol_fallback.outcome || steps.edit.outcome }}
+          EDIT_OUTCOME: ${{ steps.edit.outcome }}
         run: |
           set -euo pipefail
           git add -A public/generated

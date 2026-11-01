@@ -1,0 +1,28 @@
+{
+ "shot": "ch02-s02",
+ "at": "2026-11-01T07:03:55.100Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "The logical unit of state in a chat app is",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a chat room.”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "kenton varda, 2020",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

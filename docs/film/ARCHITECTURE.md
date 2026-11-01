@@ -265,7 +265,9 @@ display, SP counter, EJECT, chapter skip, a whole-film scrubber, captions). The 
 out of Workers static assets (25 MiB per-file cap); deployment remains a human decision.
 
 ## 10. Model routing & provenance
-`generator/authoring-models.json` maps every role to `claude-opus-5-5` / effort `high`.
+`generator/film/authoring-models.json` maps every film role to `claude-opus-5-5` / effort `high`.
+The separate book policy in `generator/authoring-models.json` uses GPT-6.1 Sol for planning/3D
+and Opus 5.5 for D3/Strudel, with no fallback. Explicit user instructions take precedence.
 `generator/run-opus.mjs` is the only headless launcher: `--model claude-opus-5-5 --effort high`,
 all model aliases pinned to Opus via env, `ANTHROPIC_API_KEY` stripped (subscription OAuth),
 strict check that every `modelUsage` key is Opus 5.5, provenance JSON written per run. In

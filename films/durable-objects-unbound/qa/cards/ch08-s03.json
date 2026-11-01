@@ -1,0 +1,44 @@
+{
+ "shot": "ch08-s03",
+ "at": "2026-11-01T07:09:18.532Z",
+ "step": 0.0833,
+ "sampled": 309,
+ "transition": {
+  "kind": "inkBleed",
+  "sampled": 17,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "workerd · 31 Oct",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "AS OF · 31 OCTOBER 2026",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "Not a sandbox on its own",
+    "t0": -0.16,
+    "t1": 0.26,
+    "seconds": 0.42,
+    "maxAlpha": 0.71
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": []
+}

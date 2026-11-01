@@ -1,0 +1,502 @@
+{
+ "id": "ch01",
+ "number": 1,
+ "title": "The Tick",
+ "blurb": "Cold open on one promised message. Across a made-up harbour, a chat room glows as a paper lantern in House A's window; a sender's slip, the ferry is late, pauses at the lantern's door and gets its tick. Then House A goes dark. Up the hill House C lights, draws the room up from the town well, and the slip still carries its tick. The machine that made the promise is gone; the promise is still true. Down in the square: a storage bucket, which cannot run a line of code, and a brass plate that names the owner. Two old promises, a newer third, and the question the film follows: how can a bucket make a room portable?",
+ "shots": [
+  {
+   "id": "ch01-s01",
+   "kind": "scene",
+   "setting": "the harbour town at night (illustrative), seen first from far out over the sea, then close on House A's lit window; moon low-left, sparse far-shore lamps, one warm window",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0101",
+     "text": "Everything in this harbour is made up, except the kind of room in that window.",
+     "pauseAfter": 0.6,
+     "direction": "the film's first words, quiet and unhurried as the camera arrives; a small dry turn on 'except', warmth on 'room'",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
+    },
+    {
+     "id": "L0102",
+     "text": "It is a chat room, the very example Durable Objects began with, in 2020.",
+     "pauseAfter": 0.7,
+     "direction": "plain, a fact set down gently; 'Durable Objects' clear, it is the title of the film"
+    },
+    {
+     "id": "L0103",
+     "text": "Someone types message forty-two: the ferry is late.",
+     "pauseAfter": 0.9,
+     "direction": "small and ordinary; 'the ferry is late' read as the message itself, a touch lighter"
+    },
+    {
+     "id": "L0104",
+     "text": "It waits at the door. Then it gets its tick: a promise that it is saved.",
+     "insertGaps": {
+      "door": 0.5
+     },
+     "direction": "a held breath after 'door'; 'tick' lands soft and exact; 'saved' warm, the stake of the whole film"
+    }
+   ],
+   "leadIn": 6.5,
+   "holdAfter": 1.6,
+   "visual": "THIS SHOT: the film's first breath, wordless for six seconds. Iris opens on one warm point across black water: House A's window, tiny, far up the hill (beat iris). Canonical HARBOUR TOWN, night: L0 sky ramp, moon low-left; L1 the sea with slow moon-ribbons and the far shore's sparse lamps; L2 the ridge of dim terraced roofs; L3 the three houses left to right, A (tall, steep gable, round attic window, LIT), B (wider, chimney, faint), C (upper terrace, dormer, DARK); L4 the square with the Well at the left third and the Plate on its iron frame; L5 cobbles and stone railing; L6 the iron lamp-post crossing frame right. Camera: ONE long multiplane push across the lead-in and L0101 (dolly z 0 to about 260 with a truck left of about 100, cubic ease), L1 and L5/L6 sliding hard against L3, landing framed on A's window at about 55% height, the Well's rim just visible lower-left above the caption band (beat arrive). On 'room' the Room Lantern resolves inside the window: a candleAmber paper lantern with four member silhouettes inside, a matching member silhouette inside for the sender, who sits at a harbour-side window on L4 right of the Well holding a phone (a locked position, the same in ch08-s04), so the slip's flight from window to lantern door reads (beat room). On 'types' a paper slip lifts from the sender's hand, inked '#42 · the ferry is late' (beat types), drifts to the lantern's door and STOPS against a small brass latch (beat door). On 'tick' a two-stroke ink tick strikes the slip (beat tick) and the lantern warms by a breath. Labels sit upper-right over the roofs; nothing below y 634. No implementation badge yet: the cold open shows the promise, not a mechanism.",
+   "beats": [
+    {
+     "id": "iris",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "iris opens on House A's far window across the water; the long push begins"
+    },
+    {
+     "id": "arrive",
+     "at": {
+      "shotTime": 5.6
+     },
+     "what": "the push settles on House A's lit window"
+    },
+    {
+     "id": "made",
+     "at": {
+      "line": "L0101",
+      "word": "made"
+     },
+     "what": "the illustrative label inks upper-right"
+    },
+    {
+     "id": "room",
+     "at": {
+      "line": "L0101",
+      "word": "room"
+     },
+     "what": "the Room Lantern resolves in the window, members inside"
+    },
+    {
+     "id": "types",
+     "at": {
+      "line": "L0103",
+      "word": "types"
+     },
+     "what": "the sender's slip lifts, inked #42 the ferry is late"
+    },
+    {
+     "id": "door",
+     "at": {
+      "line": "L0104",
+      "word": "door"
+     },
+     "what": "the slip stops against the brass latch on the lantern's door"
+    },
+    {
+     "id": "tick",
+     "at": {
+      "line": "L0104",
+      "word": "tick"
+     },
+     "what": "a two-stroke ink tick strikes the slip; the lantern warms"
+    }
+   ],
+   "cast": [
+    "sender",
+    "keeper-a"
+   ],
+   "props": [
+    "harbour town set (night)",
+    "Room Lantern in House A's window",
+    "the sender's paper slip, #42",
+    "brass latch on the lantern's door",
+    "the Well and the Plate (distant, unlit detail)",
+    "L6 iron lamp-post"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "Illustrative: harbour, houses, room",
+     "beat": "made"
+    },
+    {
+     "kind": "label",
+     "text": "#42 · the ferry is late",
+     "beat": "types"
+    }
+   ],
+   "music": {
+    "cue": "ch01-a-harbour",
+    "note": "the film opens on a low harbour drone and water, no melody for the whole push; one sparse figure enters as the lantern resolves; under 'door' everything holds its breath; on 'tick' the two-note tick motif sounds for the first time, small and dry, then rings into the hold"
+   },
+   "transitionIn": "iris",
+   "claims": [
+    "FX01",
+    "HI02"
+   ]
+  },
+  {
+   "id": "ch01-s02",
+   "kind": "scene",
+   "setting": "the harbour town at night (illustrative), wide on the terrace: House A's window guttering, House C's dormer lighting up the hill, the Well in the square below",
+   "era": "2020s",
+   "mood": "emberRed",
+   "lines": [
+    {
+     "id": "L0105",
+     "text": "Then House A goes dark, and the square goes quiet.",
+     "pauseAfter": 2,
+     "direction": "low, after a silence, without drama; let 'quiet' fall away into the silence that follows"
+    },
+    {
+     "id": "L0106",
+     "text": "Up the hill, House C lights. Its keeper, the runtime, draws a bundle from the well, and the room relights in a new window.",
+     "direction": "a slow lift of curiosity, following the camera up the hill; 'relights' with quiet wonder"
+    },
+    {
+     "id": "L0107",
+     "text": "Message forty-two is still there, with its tick.",
+     "pauseAfter": 0.9,
+     "direction": "a small, almost amused confirmation; 'still' lightly stressed"
+    },
+    {
+     "id": "L0108",
+     "text": "The machine that made that promise is gone. The promise is still true.",
+     "insertGaps": {
+      "gone": 0.4
+     },
+     "direction": "the logline of the film: measured, two halves, a beat between them; 'true' set down like a stone"
+    }
+   ],
+   "leadIn": 3.2,
+   "holdAfter": 1.6,
+   "visual": "THIS SHOT: the failure, then the mystery. lampChange in: the backlight sinks to fg and comes back up emberRed while every silhouette holds. Same canonical town, pulled back from s01 to a wide frame: all three houses on L3 (A left, B centre-right, C on the upper terrace right), the Well and Plate on L4 at the left third, L6 lamp-post at the right edge. In the silent lead-in House A's window lamp gutters on ones, two flickers, then out, and the Room Lantern inside goes dark with it (beat gutter). No music: a thin wind only. Hold the dark window through L0105. In the hold after it, before C lights, House B's window flickers on for about a second and gutters out, silent and unremarked: B claimed the room and died before opening it (planted here, paid off aloud in ch05-s06). In the pause after it the grade lamp-changes back toward winterBlue over 1.5 s; on 'lights' House C's dormer lights, a warm practical (beat clights). On 'draws' keeper-c (beanie, satchel jacket) hauls at C's pulley line; the line runs down to the wellhead and a small bound bundle rises out of the Well's bucket and climbs the line to C's window (beat bundle). Camera: a slow truck right of about 90 px with a gentle rise, following the bundle, well under 6% of frame width per second. On 'relights' the Room Lantern glows again, now in C's window, its members back inside (beat relit). On 'still' a gentle push toward C's window: the sender's slip inside, '#42 · the ferry is late', its two-stroke tick intact (beat slip). A small brass badge 'workerd · 28 Oct' hangs on C's pulley block (art, never named here). On 'true' hold; the Well's water glints once below. Keep all action above y 634.",
+   "beats": [
+    {
+     "id": "gutter",
+     "at": {
+      "shotTime": 0.6
+     },
+     "what": "House A's window gutters out on ones; the lantern goes dark"
+    },
+    {
+     "id": "dark",
+     "at": {
+      "line": "L0105",
+      "word": "dark"
+     },
+     "what": "the dark window held; silence"
+    },
+    {
+     "id": "clights",
+     "at": {
+      "line": "L0106",
+      "word": "lights"
+     },
+     "what": "House C's dormer window lights; grade back toward winterBlue"
+    },
+    {
+     "id": "bundle",
+     "at": {
+      "line": "L0106",
+      "word": "draws"
+     },
+     "what": "keeper-c hauls; a bundle rises from the Well and climbs the pulley line"
+    },
+    {
+     "id": "relit",
+     "at": {
+      "line": "L0106",
+      "word": "relights"
+     },
+     "what": "the Room Lantern relights in C's window"
+    },
+    {
+     "id": "slip",
+     "at": {
+      "line": "L0107",
+      "word": "still"
+     },
+     "what": "push to the slip in C's lantern: the tick is intact"
+    },
+    {
+     "id": "true",
+     "at": {
+      "line": "L0108",
+      "word": "true"
+     },
+     "what": "hold; the Well's water glints once"
+    }
+   ],
+   "cast": [
+    "keeper-c",
+    "sender"
+   ],
+   "props": [
+    "harbour town set (night, lamp states A out, C lit)",
+    "Room Lantern (moves from A's window to C's)",
+    "pulley line from House C to the wellhead",
+    "a small bound bundle from the Well",
+    "the sender's slip with its tick",
+    "badge 'workerd · 28 Oct' on C's pulley block (art)"
+   ],
+   "onScreenText": [],
+   "music": {
+    "cue": "ch01-b-dark",
+    "note": "silence for the failure: the drone cuts with A's lamp, only wind under the lead-in and L0105; a single low note returns as C lights; the bundle's climb carries a slow rising pair; on 'true' the two-note tick motif answers itself, now a little warmer"
+   },
+   "transitionIn": "lampChange",
+   "claims": [
+    "FX01",
+    "HI21"
+   ]
+  },
+  {
+   "id": "ch01-s03",
+   "kind": "scene",
+   "setting": "the harbour square at night (illustrative): the stone Well at the left third, its rope and bucket, and the brass Plate on an iron frame above the wellhead like a town clock",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0109",
+     "text": "How did the promise outlive the machine?",
+     "pauseAfter": 0.8,
+     "direction": "a real question, asked of yourself; no lift into a quiz-show tone",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
+    },
+    {
+     "id": "L0110",
+     "text": "The answer is in the square: the town well, which is a storage bucket.",
+     "direction": "a reveal underplayed; 'storage bucket' plain, almost deflating"
+    },
+    {
+     "id": "L0111",
+     "text": "The plate above it names the room's owner.",
+     "pauseAfter": 0.6,
+     "direction": "pointing at it with the voice; even",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
+    },
+    {
+     "id": "L0112",
+     "text": "The room keeps two promises: one owner at a time, and nothing acknowledged is lost when a machine fails.",
+     "direction": "two clauses counted out like fingers; 'one owner' and 'nothing acknowledged' each given weight"
+    },
+    {
+     "id": "L0113",
+     "text": "And a newer one, still being built: the room can move between machines you run.",
+     "pauseAfter": 0.7,
+     "direction": "a little brighter, the news of the film; 'you run' warm"
+    },
+    {
+     "id": "L0114",
+     "text": "So how can a bucket, which cannot run a single line of code, make a room portable?",
+     "direction": "the film's question, slow and dry; a small smile on 'single line of code'; 'portable' left open",
+     "tts": {
+      "solo": true,
+      "speed": 0.83
+     }
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: the question, staged on the two machines the film will open. Cut from C's window: the camera CRANES DOWN the hill (a vertical crane of about 220 px over 6 s, cubic), the L3 houses rising out of frame top, the pulley lines sweeping past, L5 railing and the L6 lamp-post sliding up past the lens, ending on the square: the Well at the left third (a stone wellhead, rope, bucket, a cold glint far down) and above it the Plate on its iron frame, readable from every window like a town clock. House C's lit window stays visible top-right. On 'well' a label 'the Well · a storage bucket' inks upper-left above the wellhead (beat well). On 'plate' the camera eases in (z +90) and the Plate's three brass tiles catch the moon (beat plate): the first tile is engraved with a C, the other two stay blank-engraved for now (epochs arrive in chapter 5), and the small opened lamp at its crown is lit; label 'the Plate · who owns the room' inks upper-right. On 'one owner' the crown lamp pulses once (beat owner); on 'acknowledged' the ticked slip is seen tiny in C's lantern far above (beat acked). On 'move' a slow pull back reveals all three houses, each with its pulley line converging on the one Well (beat move). On 'portable' the Room Lantern's glow is reflected in the Well's water, and the camera holds (beat portable). Nothing below y 634.",
+   "beats": [
+    {
+     "id": "crane",
+     "at": {
+      "shotTime": 0
+     },
+     "what": "vertical crane down the hill to the square begins"
+    },
+    {
+     "id": "well",
+     "at": {
+      "line": "L0110",
+      "word": "well"
+     },
+     "what": "label: the Well, a storage bucket"
+    },
+    {
+     "id": "plate",
+     "at": {
+      "line": "L0111",
+      "word": "plate"
+     },
+     "what": "push in on the Plate's tiles and crown lamp; label inks"
+    },
+    {
+     "id": "owner",
+     "at": {
+      "line": "L0112",
+      "word": "owner"
+     },
+     "what": "the Plate's crown lamp pulses once"
+    },
+    {
+     "id": "acked",
+     "at": {
+      "line": "L0112",
+      "word": "acknowledged"
+     },
+     "what": "the ticked slip seen tiny in C's lantern"
+    },
+    {
+     "id": "move",
+     "at": {
+      "line": "L0113",
+      "word": "move"
+     },
+     "what": "pull back: three houses, three pulley lines, one Well"
+    },
+    {
+     "id": "portable",
+     "at": {
+      "line": "L0114",
+      "word": "portable"
+     },
+     "what": "the lantern's glow reflected in the Well's water; hold"
+    }
+   ],
+   "cast": [
+    "keeper-c"
+   ],
+   "props": [
+    "the Well (stone wellhead, rope and bucket)",
+    "the Plate (three brass tiles, crown lamp) on its iron frame",
+    "three pulley lines to the wellhead",
+    "Room Lantern in House C's window",
+    "L6 iron lamp-post"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "the Well · a storage bucket",
+     "beat": "well"
+    },
+    {
+     "kind": "label",
+     "text": "the Plate · who owns the room",
+     "beat": "plate"
+    }
+   ],
+   "music": {
+    "cue": "ch01-a-harbour",
+    "note": "the harbour drone returns under the crane; a patient two-chord figure for the two promises; a third, higher note on 'move'; it stops short on 'portable', leaving the question in the air"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "HI20",
+    "HI23",
+    "CE14"
+   ]
+  },
+  {
+   "id": "ch01-s04",
+   "kind": "card",
+   "setting": "title card over the night square (illustrative): the Plate's iron frame in the upper third, the Well's rim below",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0115",
+     "text": "A story from 2020 to the end of October 2026: a room, a well and a ribbon.",
+     "pauseAfter": 0.6,
+     "direction": "a storyteller's opening, unhurried; three nouns, each with its own small space"
+    },
+    {
+     "id": "L0116",
+     "text": "The harbour is ours. The machinery is real code, and every piece wears a tag saying whose.",
+     "pauseAfter": 0.5,
+     "direction": "a promise to the viewer, frank and warm; 'ours' light, 'real code' firm"
+    },
+    {
+     "id": "L0117",
+     "text": "The newest of it is days old, and still experimental.",
+     "level": "soft",
+     "direction": "a quiet aside with a dry edge; 'experimental' honest, not apologetic"
+    }
+   ],
+   "leadIn": 1.2,
+   "holdAfter": 2.6,
+   "visual": "THIS SHOT: the title. Cut on the end of the tick motif. The night square, camera locked a little above the Well, the Plate's iron frame centred in the upper third, the Well's rim low-left, the L6 lamp-post soft at the right edge; a faint drift of harbour fog between L4 and L5. On the first frame the title 'Durable Objects, Unbound' inks across the sky above the Plate's frame in the film's title face, warm ink on a soft dark plate (beat title); it holds through the shot. On 'ribbon' a thin parchment ribbon unspools a hand's width over the Well's rim and stops, a foreshadow with no text on it (beat ribbon). On 'tag' a short rack of five small brass badges swings into view along the Plate's iron frame, too small to read at this distance, catching the moon one after another (beat tags): the film's promise to label whose code each machine is. On 'ours' a label inks lower-centre, well above the caption band: 'illustrative harbour · real code' (beat ours). On 'experimental' the Plate's crown lamp dims to a low, steady glow (beat experimental). In the hold, competing layers fade to 0.15 and the frame rests on the crown lamp, where the next chapter's iris will close and open on a desk lamp.",
+   "beats": [
+    {
+     "id": "title",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "the title inks above the Plate's frame"
+    },
+    {
+     "id": "ribbon",
+     "at": {
+      "line": "L0115",
+      "word": "ribbon"
+     },
+     "what": "a thin parchment ribbon unspools over the Well's rim"
+    },
+    {
+     "id": "ours",
+     "at": {
+      "line": "L0116",
+      "word": "ours"
+     },
+     "what": "label: illustrative harbour, real code"
+    },
+    {
+     "id": "tags",
+     "at": {
+      "line": "L0116",
+      "word": "tag"
+     },
+     "what": "a rack of five small brass badges swings into view on the Plate's frame"
+    },
+    {
+     "id": "experimental",
+     "at": {
+      "line": "L0117",
+      "word": "experimental"
+     },
+     "what": "the crown lamp settles to a low steady glow"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "the Plate's iron frame and crown lamp",
+    "the Well's rim",
+    "a thin parchment ribbon",
+    "a rack of five small brass implementation badges (unreadable at this scale)"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "Durable Objects, Unbound",
+     "beat": "title"
+    },
+    {
+     "kind": "label",
+     "text": "illustrative harbour · real code",
+     "beat": "ours"
+    }
+   ],
+   "music": {
+    "cue": "ch01-c-title",
+    "note": "the main theme's first full statement, sparse: the tick motif becomes the head of a slow phrase under the title; a soft metallic shimmer as the badges swing in; resolves quietly in the hold, handing over to the warm desk-lamp colour of chapter 2"
+   },
+   "minDuration": 15,
+   "transitionIn": "cut",
+   "claims": [
+    "HI27",
+    "LI01",
+    "FX01"
+   ]
+  }
+ ]
+}

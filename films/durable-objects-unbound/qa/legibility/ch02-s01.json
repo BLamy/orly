@@ -1,0 +1,43 @@
+{
+ "shot": "ch02-s01",
+ "at": "2026-11-01T07:03:54.601Z",
+ "minCapPx": 22,
+ "sampled": 36,
+ "texts": 6,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "28 SEPTEMBER 2020",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "kenton varda",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Cloudflare",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…only one location in the whole world at",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a time.”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "kenton varda, 2020",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

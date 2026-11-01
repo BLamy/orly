@@ -4,7 +4,7 @@ description: Edit or fine-tune an existing book on the shelf (one targeted chang
 
 # /tweak-book — fine-tune an existing book
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Astra's written plan; it does not replace the planner. If Opus reaches its provider limit, preserve progress and continue the animation role with GPT-6.1 Sol (`gpt-6.1-sol`). Record the limit and actual provider. Stop if both are unavailable; no other fallback is authorized.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Sol plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Sol's written plan; it does not replace the planner. If a provider reaches a limit, preserve progress and report the blocker; no model substitution is authorized.
 
 
 Read [docs/book-quality.md](../../docs/book-quality.md): the same habits apply to a tweak. Be proactive

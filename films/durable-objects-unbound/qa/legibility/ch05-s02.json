@@ -1,0 +1,58 @@
+{
+ "shot": "ch05-s02",
+ "at": "2026-11-01T07:04:06.451Z",
+ "minCapPx": 22,
+ "sampled": 53,
+ "texts": 9,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "workerd · 28 Oct",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "LEASE",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "the Candle",
+   "capWhileSubject": 22,
+   "why": "named: \"candle\""
+  },
+  {
+   "text": "0 ms",
+   "capWhileSubject": 22.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "20,000",
+   "capWhileSubject": 22.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "16,000",
+   "capWhileSubject": 22.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "serve:  t + 4,000 < 20,000",
+   "capWhileSubject": 29.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "12,000",
+   "capWhileSubject": 22.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "renew:  t + 8,000 < 20,000",
+   "capWhileSubject": 29.3,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

@@ -1,0 +1,89 @@
+// m06 · THE RIBBON (ch06) · A minor (inside SQLite) → D (the Well, the tick) · C as the ribbon's frames, W, T built
+//   s01  alone in the hold: an open A–E pad and a piano A–E; a pizzicato ribbon figure after 'log'; a light tick per
+//        frame after 'frames'; the red stamp: a low, warm thud (piano and harp A1) in the breath after 'stamp'; a
+//        quiet held A minor (add9) under 'commit mark'.
+//   s02  a light pulse of frames under L0606; a crisp pizzicato snip after each cut, in the clear; a muffled
+//        paste-over after 'over'; a soft E → A cadence after 'starts fresh too'.
+//   s03  D minor: W in the cello as the scrolls go down the Well; a muted refusal knock (B-flat) after 'read wrong';
+//        the Book: a low harp thud after 'Book'; celld's shelf a brief G colour of the same chord.
+//   s04  the tick built in full: the reply waits (piano A after 'latch'); W quickly down for the scroll; a held
+//        breath (the pad thins to one A) on 'looks'; two soft harp glints after 'Still A' and 'Still epoch seven';
+//        the bell (low harp and piano D–A) after 'bell'; the latch lifts (A) after 'lifts'; T COMPLETE (D, over D–A–D
+//        strings) after 'The tick': the first full tick since the prologue. A lighter counting figure after 'are'.
+//   s05  SILENCE under the pin pull; a frozen held A for the stall; the false bell (D against E-flat) and T BROKEN
+//        (A → E-flat) after 'anyway'; no bell for the true check, only a low knock after 'error'; the coda: a B-flat
+//        pad and the piano A alone after 'absent' (LAST STRIKE), unresolved.
+setcpm(15)
+const CPS = 0.25, DUR = @{DUR}
+const Q = 480, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => {
+  evs = evs.filter(Boolean).map(([t, d, p]) => [Math.max(0, t), d, p]).sort((x, y) => x[0] - y[0])
+  const out = [], end = qn(DUR); let cur = 0
+  evs.forEach(([t, d, p], i) => {
+    let a = Math.max(qn(t), cur); const b = Math.min(qn(t + d), end, i + 1 < evs.length ? qn(evs[i + 1][0]) : end)
+    if (b - a < 2) return
+    if (a > cur) out.push([a - cur, silence])
+    out.push([b - a, p]); cur = b })
+  if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const n = (t, d, ns, v = 0.2) => [t, d, note(typeof ns === 'string' && ns.includes(',') ? '[' + ns + ']' : ns).velocity(v)]
+const felt = x => x.s("piano").gain(1.6).lpf(1800).release(1.8).room(0.3).rsize(4)
+const harp = x => x.s("gm_orchestral_harp").gain(1.6).lpf(2200).release(2.4).room(0.32).rsize(4)
+const pizz = x => x.s("gm_pizzicato_strings").gain(1.6).lpf(1400).release(0.5).room(0.25).rsize(4)
+const cello = x => x.s("gm_cello").gain(1.6).attack(0.35).release(1.4).lpf(1200).room(0.3).rsize(4)
+const str = (x, lp = 850, rel = 2.6) => x.s("gm_string_ensemble_1").gain(1.6).attack(1.6).release(rel).lpf(lp).room(0.35).rsize(4)
+const every = (t0, t1, step, ns, v) => { const o = []; for (let t = t0; t < t1 - 0.05; t += step) o.push(n(t, Math.min(step, 0.5), ns, v)); return o }
+
+// ---------------------------------------------------------------- pads
+$: str(tl(
+    n(0.1, @{L0605.that} - 0.1, "a2,e3", 0.2),
+    n(@{L0605.that}, @{L0606} - @{L0605.that}, "a2,e3,b3", 0.18),           // under 'commit mark'
+    n(@{L0606}, @{L0609.end} - @{L0606}, "a2,e3", 0.16),
+    n(@{L0609.end}, @{L0610} - @{L0609.end}, "a2,e3,c4", 0.18),
+    n(@{L0610}, @{L0613.celld} - @{L0610}, "d3,a3,f3", 0.17),
+    n(@{L0613.celld}, @{L0613.end} - @{L0613.celld}, "g2,d3,b3", 0.17),
+    n(@{L0613.end}, @{L0616.looks} - @{L0613.end}, "d3,a3,f3", 0.17),
+    n(@{L0616.looks}, @{L0617.end} - @{L0616.looks}, "a3", 0.17),            // the held breath
+    n(@{L0617.end}, @{L0620} - @{L0617.end}, "d3,a3,d4", 0.2),               // the tick, complete
+    n(@{L0624}, @{DUR} - @{L0624}, "bb2,f3,d4", 0.17)), 850, 2.0)
+$: str(tl(n(@{L0608.over}, 1.2, "e3,f3", 0.18)), 450, 0.8)                     // the paste-over, muffled
+$: str(tl(n(@{L0621.freezes}, @{L0621.end} - @{L0621.freezes}, "a3", 0.17)), 1000, 0.5)   // frozen
+
+// ---------------------------------------------------------------- cello: W
+$: cello(tl(
+    n(@{L0610}, 1.5, "d3", 0.2), n(@{L0610} + 1.5, 1.5, "c3", 0.2), n(@{L0610} + 3.0, 1.5, "bb2", 0.2), n(@{L0610} + 4.5, 2.5, "a2", 0.2),
+    n(@{L0615}, 0.8, "d3", 0.17), n(@{L0615} + 0.8, 0.8, "c3", 0.17), n(@{L0615} + 1.6, 0.8, "bb2", 0.17), n(@{L0615} + 2.4, 1.6, "a2", 0.17)))
+
+// ---------------------------------------------------------------- piano
+$: felt(tl(
+    n(0.3, 0.5, "a3", 0.15), n(0.8, 2.6, "e4", 0.14),
+    n(@{L0605.stamp.end} + 0.03, 1.5, "a1", 0.22),                            // the red stamp: a low warm thud
+    n(@{L0614.end} + 0.03, @{L0617.lifts.end} - (@{L0614.end} + 0.03), "a4", 0.15),   // the reply waits
+    n(@{L0617.bell.end} + 0.02, 0.6, "d3,a3", 0.16),                          // the bell
+    n(@{L0617.lifts.end} + 0.02, @{L0617.end} - (@{L0617.lifts.end} + 0.02), "a4", 0.18),   // the latch lifts
+    n(@{L0617.end} + 0.04, 2.6, "d5", 0.19),                                  // T, complete
+    n(@{L0622.anyway.end} + 0.02, 0.35, "a4", 0.14), n(@{L0622.anyway.end} + 0.37, 1.3, "eb5", 0.12),   // T broken
+    n(@{L0625.absent.end} + 0.03, @{DUR} - (@{L0625.absent.end} + 0.03), "a4", 0.15)))   // LAST STRIKE: unresolved
+
+// ---------------------------------------------------------------- harp
+$: harp(tl(
+    n(@{L0605.stamp.end} + 0.03, 1.5, "a1", 0.2),
+    n(@{L0609.end} + 0.08, 0.6, "e3", 0.15), n(@{L0609.end} + 0.68, 1.6, "a3", 0.15),
+    n(@{L0612.book.end} + 0.02, 1.5, "d2,a2", 0.2),
+    n(@{L0616.a.end} + 0.05, 1.0, "e5", 0.06), n(@{L0616.end} + 0.05, 1.0, "e5", 0.05),   // two soft glints
+    n(@{L0617.bell.end} + 0.02, 1.6, "d3,a3", 0.2),                          // the bell
+    n(@{L0617.end} + 0.04, 2.4, "d4", 0.14),
+    n(@{L0619.are.end} + 0.03, 0.15, "a3", 0.1), n(@{L0619.are.end} + 0.18, 0.15, "d4", 0.1), n(@{L0619.are.end} + 0.33, 0.15, "a3", 0.08), n(@{L0619.are.end} + 0.48, 0.8, "d4", 0.08),
+    n(@{L0622.bell.end} + 0.02, 1.6, "d3,eb3", 0.17)))                       // the false bell
+
+// ---------------------------------------------------------------- pizzicato: the ribbon's frames, the cuts, the knocks
+$: pizz(tl(
+    n(@{L0602.log.end} + 0.03, 0.2, "e3", 0.13), n(@{L0602.log.end} + 0.23, 0.6, "a3", 0.13),
+    ...every(@{L0603.frames.end} + 0.02, @{L0603.frames.end} + 2.0, 0.5, "e3", 0.08),
+    ...every(@{L0606.hears}, @{L0606.end}, 0.5, "e3", 0.07),
+    n(@{L0606.end} + 0.05, 0.4, "e4,a4", 0.15), n(@{L0607.transaction.end} + 0.03, 0.4, "e4,a4", 0.15),   // the snips
+    n(@{L0611.end} + 0.05, 0.5, "bb2", 0.15),                                 // a refusal
+    n(@{L0623.error.end} + 0.02, 0.5, "d3", 0.16)))
+$: pizz(tl(n(@{L0611.end} + 0.05, 0.5, "a2", 0.12), n(@{L0623.error.end} + 0.02, 0.5, "a2", 0.12))).lpf(500)
+
+all(x => x.postgain(1))

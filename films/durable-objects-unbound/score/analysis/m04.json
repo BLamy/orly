@@ -1,0 +1,18 @@
+{
+ "id": "m04",
+ "start": 481.124,
+ "end": 604.158,
+ "file": "films/durable-objects-unbound/score/renders/m04.wav",
+ "duration": 129.034,
+ "I": -25,
+ "LRA": 5.9,
+ "TP": -9.8,
+ "expected": 129.034,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/durable-objects-unbound/score/analysis/m04.png",
+ "cueSeconds": 123.034,
+ "cps": 0.25,
+ "lastStrikeLocal": 116.64,
+ "lastStrike": 597.764
+}

@@ -1,0 +1,1748 @@
+{
+ "slug": "durable-objects-unbound",
+ "at": "2026-11-01T05:08:45.692Z",
+ "summary": {
+  "pass": 15,
+  "warn": 1,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-16 LUFS (target -16), LRA 3, linear normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-1.7 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "pass",
+   "detail": "1439.4167s vs film 1439.4167s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "pass",
+   "detail": "music ducks 2.85 dB (target 3, ceiling; warn beyond ±1.5) under 1180.2s of narration; calibrated to threshold -23.04 dBFS, ratio 3"
+  },
+  {
+   "stage": "mix",
+   "id": "moments",
+   "status": "pass",
+   "detail": "L0101 peaks -13.6 LUFS momentary; loudest music-only windows: -17 LUFS @ 867.8s, -18.1 LUFS @ 6.5s, -18.1 LUFS @ 722.8s"
+  },
+  {
+   "stage": "mix",
+   "id": "preLimit",
+   "status": "pass",
+   "detail": "no master limiting (constant gain only)",
+   "reductionDb": 0
+  },
+  {
+   "stage": "mix",
+   "id": "stemLimit",
+   "status": "pass",
+   "detail": "narration stem limiter 0.94 dB; speech compressor 1.93 dB GR"
+  },
+  {
+   "stage": "mix",
+   "id": "lineLevels",
+   "status": "warn",
+   "detail": "more than 1.5 dB from lineLufs + hint (capped leveling keeps the take's level): L0423 -1.87; hinted/offset: L0117 -2 (hint -2), L0209 -2 (hint -2), L0224 -2 (hint -2), L0406 -2 (hint -2), L0410 -2 (hint -2), L0734 -2 (hint -2), L0736 -2 (hint -2), L0818 -2 (hint -2); spread of the rest -1.87..0 dB",
+   "lines": {
+    "L0101": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0102": {
+     "M": -18.88,
+     "offsetDb": -0.15,
+     "requestedDb": 0,
+     "errorDb": -0.15,
+     "driftDb": -0.15
+    },
+    "L0103": {
+     "M": -19.19,
+     "offsetDb": -0.46,
+     "requestedDb": 0,
+     "errorDb": -0.46,
+     "driftDb": -0.46
+    },
+    "L0104": {
+     "M": -19.85,
+     "offsetDb": -1.12,
+     "requestedDb": 0,
+     "errorDb": -1.12,
+     "driftDb": -1.12
+    },
+    "L0105": {
+     "M": -18.92,
+     "offsetDb": -0.19,
+     "requestedDb": 0,
+     "errorDb": -0.19,
+     "driftDb": -0.19
+    },
+    "L0106": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0107": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0108": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0109": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0110": {
+     "M": -18.93,
+     "offsetDb": -0.2,
+     "requestedDb": 0,
+     "errorDb": -0.2,
+     "driftDb": -0.2
+    },
+    "L0111": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0112": {
+     "M": -19.02,
+     "offsetDb": -0.29,
+     "requestedDb": 0,
+     "errorDb": -0.29,
+     "driftDb": -0.29
+    },
+    "L0113": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0114": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0115": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0116": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0117": {
+     "M": -20.73,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    },
+    "L0201": {
+     "M": -19.25,
+     "offsetDb": -0.52,
+     "requestedDb": 0,
+     "errorDb": -0.52,
+     "driftDb": -0.52
+    },
+    "L0202": {
+     "M": -18.82,
+     "offsetDb": -0.09,
+     "requestedDb": 0,
+     "errorDb": -0.09,
+     "driftDb": -0.09
+    },
+    "L0203": {
+     "M": -18.87,
+     "offsetDb": -0.14,
+     "requestedDb": 0,
+     "errorDb": -0.14,
+     "driftDb": -0.14
+    },
+    "L0204": {
+     "M": -19.35,
+     "offsetDb": -0.62,
+     "requestedDb": 0,
+     "errorDb": -0.62,
+     "driftDb": -0.62
+    },
+    "L0205": {
+     "M": -19.49,
+     "offsetDb": -0.76,
+     "requestedDb": 0,
+     "errorDb": -0.76,
+     "driftDb": -0.76
+    },
+    "L0207": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0208": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0209": {
+     "M": -20.73,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    },
+    "L0210": {
+     "M": -18.95,
+     "offsetDb": -0.22,
+     "requestedDb": 0,
+     "errorDb": -0.22,
+     "driftDb": -0.22
+    },
+    "L0211": {
+     "M": -18.74,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0212": {
+     "M": -19.58,
+     "offsetDb": -0.85,
+     "requestedDb": 0,
+     "errorDb": -0.85,
+     "driftDb": -0.85
+    },
+    "L0213": {
+     "M": -19.44,
+     "offsetDb": -0.71,
+     "requestedDb": 0,
+     "errorDb": -0.71,
+     "driftDb": -0.71
+    },
+    "L0214": {
+     "M": -19.15,
+     "offsetDb": -0.42,
+     "requestedDb": 0,
+     "errorDb": -0.42,
+     "driftDb": -0.42
+    },
+    "L0215": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0216": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0217": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0218": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0219": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0220": {
+     "M": -18.94,
+     "offsetDb": -0.21,
+     "requestedDb": 0,
+     "errorDb": -0.21,
+     "driftDb": -0.21
+    },
+    "L0221": {
+     "M": -19.09,
+     "offsetDb": -0.36,
+     "requestedDb": 0,
+     "errorDb": -0.36,
+     "driftDb": -0.36
+    },
+    "L0222": {
+     "M": -18.81,
+     "offsetDb": -0.08,
+     "requestedDb": 0,
+     "errorDb": -0.08,
+     "driftDb": -0.08
+    },
+    "L0223": {
+     "M": -19.17,
+     "offsetDb": -0.44,
+     "requestedDb": 0,
+     "errorDb": -0.44,
+     "driftDb": -0.44
+    },
+    "L0224": {
+     "M": -20.73,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    },
+    "L0301": {
+     "M": -18.93,
+     "offsetDb": -0.2,
+     "requestedDb": 0,
+     "errorDb": -0.2,
+     "driftDb": -0.2
+    },
+    "L0302": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0303": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0304": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0305": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0306": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0307": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0308": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0309": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0310": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0311": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0312": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0313": {
+     "M": -18.93,
+     "offsetDb": -0.2,
+     "requestedDb": 0,
+     "errorDb": -0.2,
+     "driftDb": -0.2
+    },
+    "L0314": {
+     "M": -18.91,
+     "offsetDb": -0.18,
+     "requestedDb": 0,
+     "errorDb": -0.18,
+     "driftDb": -0.18
+    },
+    "L0315": {
+     "M": -18.82,
+     "offsetDb": -0.09,
+     "requestedDb": 0,
+     "errorDb": -0.09,
+     "driftDb": -0.09
+    },
+    "L0316": {
+     "M": -18.83,
+     "offsetDb": -0.1,
+     "requestedDb": 0,
+     "errorDb": -0.1,
+     "driftDb": -0.1
+    },
+    "L0317": {
+     "M": -19.13,
+     "offsetDb": -0.4,
+     "requestedDb": 0,
+     "errorDb": -0.4,
+     "driftDb": -0.4
+    },
+    "L0318": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0319": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0320": {
+     "M": -18.83,
+     "offsetDb": -0.1,
+     "requestedDb": 0,
+     "errorDb": -0.1,
+     "driftDb": -0.1
+    },
+    "L0321": {
+     "M": -18.8,
+     "offsetDb": -0.07,
+     "requestedDb": 0,
+     "errorDb": -0.07,
+     "driftDb": -0.07
+    },
+    "L0322": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0323": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0324": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0325": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0326": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0327": {
+     "M": -19.04,
+     "offsetDb": -0.31,
+     "requestedDb": 0,
+     "errorDb": -0.31,
+     "driftDb": -0.31
+    },
+    "L0328": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0329": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0330": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0331": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0332": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0401": {
+     "M": -19.13,
+     "offsetDb": -0.4,
+     "requestedDb": 0,
+     "errorDb": -0.4,
+     "driftDb": -0.4
+    },
+    "L0402": {
+     "M": -19.16,
+     "offsetDb": -0.43,
+     "requestedDb": 0,
+     "errorDb": -0.43,
+     "driftDb": -0.43
+    },
+    "L0403": {
+     "M": -18.97,
+     "offsetDb": -0.24,
+     "requestedDb": 0,
+     "errorDb": -0.24,
+     "driftDb": -0.24
+    },
+    "L0404": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0405": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0406": {
+     "M": -20.73,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    },
+    "L0407": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0408": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0409": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0410": {
+     "M": -20.73,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    },
+    "L0411": {
+     "M": -18.97,
+     "offsetDb": -0.24,
+     "requestedDb": 0,
+     "errorDb": -0.24,
+     "driftDb": -0.24
+    },
+    "L0412": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0413": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0414": {
+     "M": -18.91,
+     "offsetDb": -0.18,
+     "requestedDb": 0,
+     "errorDb": -0.18,
+     "driftDb": -0.18
+    },
+    "L0415": {
+     "M": -19.36,
+     "offsetDb": -0.63,
+     "requestedDb": 0,
+     "errorDb": -0.63,
+     "driftDb": -0.63
+    },
+    "L0416": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0418": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0419": {
+     "M": -18.75,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L0420": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0421": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0422": {
+     "M": -18.84,
+     "offsetDb": -0.11,
+     "requestedDb": 0,
+     "errorDb": -0.11,
+     "driftDb": -0.11
+    },
+    "L0423": {
+     "M": -20.6,
+     "offsetDb": -1.87,
+     "requestedDb": 0,
+     "errorDb": -1.87,
+     "driftDb": -1.87
+    },
+    "L0501": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0502": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0503": {
+     "M": -18.74,
+     "offsetDb": -0.01,
+     "requestedDb": 0,
+     "errorDb": -0.01,
+     "driftDb": -0.01
+    },
+    "L0504": {
+     "M": -18.75,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L0505": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0507": {
+     "M": -18.94,
+     "offsetDb": -0.21,
+     "requestedDb": 0,
+     "errorDb": -0.21,
+     "driftDb": -0.21
+    },
+    "L0508": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0509": {
+     "M": -19.52,
+     "offsetDb": -0.79,
+     "requestedDb": 0,
+     "errorDb": -0.79,
+     "driftDb": -0.79
+    },
+    "L0510": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0511": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0512": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0513": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0514": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0515": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0516": {
+     "M": -19.83,
+     "offsetDb": -1.1,
+     "requestedDb": 0,
+     "errorDb": -1.1,
+     "driftDb": -1.1
+    },
+    "L0517": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0518": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0519": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0520": {
+     "M": -18.97,
+     "offsetDb": -0.24,
+     "requestedDb": 0,
+     "errorDb": -0.24,
+     "driftDb": -0.24
+    },
+    "L0521": {
+     "M": -18.84,
+     "offsetDb": -0.11,
+     "requestedDb": 0,
+     "errorDb": -0.11,
+     "driftDb": -0.11
+    },
+    "L0522": {
+     "M": -18.83,
+     "offsetDb": -0.1,
+     "requestedDb": 0,
+     "errorDb": -0.1,
+     "driftDb": -0.1
+    },
+    "L0523": {
+     "M": -19.04,
+     "offsetDb": -0.31,
+     "requestedDb": 0,
+     "errorDb": -0.31,
+     "driftDb": -0.31
+    },
+    "L0524": {
+     "M": -19,
+     "offsetDb": -0.27,
+     "requestedDb": 0,
+     "errorDb": -0.27,
+     "driftDb": -0.27
+    },
+    "L0525": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0526": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0527": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0528": {
+     "M": -19.39,
+     "offsetDb": -0.66,
+     "requestedDb": 0,
+     "errorDb": -0.66,
+     "driftDb": -0.66
+    },
+    "L0529": {
+     "M": -19.22,
+     "offsetDb": -0.49,
+     "requestedDb": 0,
+     "errorDb": -0.49,
+     "driftDb": -0.49
+    },
+    "L0530": {
+     "M": -19.17,
+     "offsetDb": -0.44,
+     "requestedDb": 0,
+     "errorDb": -0.44,
+     "driftDb": -0.44
+    },
+    "L0531": {
+     "M": -19,
+     "offsetDb": -0.27,
+     "requestedDb": 0,
+     "errorDb": -0.27,
+     "driftDb": -0.27
+    },
+    "L0532": {
+     "M": -19.1,
+     "offsetDb": -0.37,
+     "requestedDb": 0,
+     "errorDb": -0.37,
+     "driftDb": -0.37
+    },
+    "L0601": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0602": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0603": {
+     "M": -19.31,
+     "offsetDb": -0.58,
+     "requestedDb": 0,
+     "errorDb": -0.58,
+     "driftDb": -0.58
+    },
+    "L0604": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0605": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0606": {
+     "M": -19.02,
+     "offsetDb": -0.29,
+     "requestedDb": 0,
+     "errorDb": -0.29,
+     "driftDb": -0.29
+    },
+    "L0607": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0608": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0609": {
+     "M": -18.8,
+     "offsetDb": -0.07,
+     "requestedDb": 0,
+     "errorDb": -0.07,
+     "driftDb": -0.07
+    },
+    "L0610": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0611": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0612": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0613": {
+     "M": -18.75,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L0614": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0615": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0616": {
+     "M": -18.77,
+     "offsetDb": -0.04,
+     "requestedDb": 0,
+     "errorDb": -0.04,
+     "driftDb": -0.04
+    },
+    "L0617": {
+     "M": -19.6,
+     "offsetDb": -0.87,
+     "requestedDb": 0,
+     "errorDb": -0.87,
+     "driftDb": -0.87
+    },
+    "L0619": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0620": {
+     "M": -18.88,
+     "offsetDb": -0.15,
+     "requestedDb": 0,
+     "errorDb": -0.15,
+     "driftDb": -0.15
+    },
+    "L0621": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0622": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0623": {
+     "M": -18.83,
+     "offsetDb": -0.1,
+     "requestedDb": 0,
+     "errorDb": -0.1,
+     "driftDb": -0.1
+    },
+    "L0624": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0625": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0701": {
+     "M": -19.21,
+     "offsetDb": -0.48,
+     "requestedDb": 0,
+     "errorDb": -0.48,
+     "driftDb": -0.48
+    },
+    "L0702": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0703": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0704": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0705": {
+     "M": -19.1,
+     "offsetDb": -0.37,
+     "requestedDb": 0,
+     "errorDb": -0.37,
+     "driftDb": -0.37
+    },
+    "L0706": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0707": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0708": {
+     "M": -19.28,
+     "offsetDb": -0.55,
+     "requestedDb": 0,
+     "errorDb": -0.55,
+     "driftDb": -0.55
+    },
+    "L0709": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0710": {
+     "M": -18.89,
+     "offsetDb": -0.16,
+     "requestedDb": 0,
+     "errorDb": -0.16,
+     "driftDb": -0.16
+    },
+    "L0711": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0712": {
+     "M": -18.85,
+     "offsetDb": -0.12,
+     "requestedDb": 0,
+     "errorDb": -0.12,
+     "driftDb": -0.12
+    },
+    "L0713": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0714": {
+     "M": -19.01,
+     "offsetDb": -0.28,
+     "requestedDb": 0,
+     "errorDb": -0.28,
+     "driftDb": -0.28
+    },
+    "L0715": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0716": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0717": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0718": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0719": {
+     "M": -19.14,
+     "offsetDb": -0.41,
+     "requestedDb": 0,
+     "errorDb": -0.41,
+     "driftDb": -0.41
+    },
+    "L0720": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0721": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0722": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0723": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0724": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0725": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0726": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0727": {
+     "M": -19.01,
+     "offsetDb": -0.28,
+     "requestedDb": 0,
+     "errorDb": -0.28,
+     "driftDb": -0.28
+    },
+    "L0728": {
+     "M": -18.86,
+     "offsetDb": -0.13,
+     "requestedDb": 0,
+     "errorDb": -0.13,
+     "driftDb": -0.13
+    },
+    "L0729": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0730": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0731": {
+     "M": -19.24,
+     "offsetDb": -0.51,
+     "requestedDb": 0,
+     "errorDb": -0.51,
+     "driftDb": -0.51
+    },
+    "L0732": {
+     "M": -18.81,
+     "offsetDb": -0.08,
+     "requestedDb": 0,
+     "errorDb": -0.08,
+     "driftDb": -0.08
+    },
+    "L0733": {
+     "M": -18.75,
+     "offsetDb": -0.02,
+     "requestedDb": 0,
+     "errorDb": -0.02,
+     "driftDb": -0.02
+    },
+    "L0734": {
+     "M": -20.73,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    },
+    "L0735": {
+     "M": -18.88,
+     "offsetDb": -0.15,
+     "requestedDb": 0,
+     "errorDb": -0.15,
+     "driftDb": -0.15
+    },
+    "L0736": {
+     "M": -20.73,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    },
+    "L0801": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0802": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0803": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0804": {
+     "M": -18.95,
+     "offsetDb": -0.22,
+     "requestedDb": 0,
+     "errorDb": -0.22,
+     "driftDb": -0.22
+    },
+    "L0805": {
+     "M": -18.83,
+     "offsetDb": -0.1,
+     "requestedDb": 0,
+     "errorDb": -0.1,
+     "driftDb": -0.1
+    },
+    "L0806": {
+     "M": -19.48,
+     "offsetDb": -0.75,
+     "requestedDb": 0,
+     "errorDb": -0.75,
+     "driftDb": -0.75
+    },
+    "L0807": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0808": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0809": {
+     "M": -19.34,
+     "offsetDb": -0.61,
+     "requestedDb": 0,
+     "errorDb": -0.61,
+     "driftDb": -0.61
+    },
+    "L0810": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0811": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0812": {
+     "M": -19.11,
+     "offsetDb": -0.38,
+     "requestedDb": 0,
+     "errorDb": -0.38,
+     "driftDb": -0.38
+    },
+    "L0813": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0814": {
+     "M": -19.2,
+     "offsetDb": -0.47,
+     "requestedDb": 0,
+     "errorDb": -0.47,
+     "driftDb": -0.47
+    },
+    "L0815": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0816": {
+     "M": -18.83,
+     "offsetDb": -0.1,
+     "requestedDb": 0,
+     "errorDb": -0.1,
+     "driftDb": -0.1
+    },
+    "L0817": {
+     "M": -18.73,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
+    "L0818": {
+     "M": -20.73,
+     "offsetDb": -2,
+     "requestedDb": -2,
+     "errorDb": 0,
+     "hintDb": -2,
+     "driftDb": 0
+    }
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "linePeaks",
+   "status": "pass",
+   "detail": "narration momentary peaks: median -13.2 LUFS, p95 -12.4, max -12 (none over median + 2 dB)",
+   "median": -13.2,
+   "p95": -12.4,
+   "hot": []
+  },
+  {
+   "stage": "mix",
+   "id": "foley",
+   "status": "pass",
+   "detail": "no score/foley.json (no foley bus)"
+  },
+  {
+   "stage": "mix",
+   "id": "swells",
+   "status": "pass",
+   "detail": "music-only ceiling -18.35 LUFS M (line p50 -16.35 − 2); 0 swells trimmed"
+  },
+  {
+   "stage": "mix",
+   "id": "fadeAfterStrike",
+   "status": "pass",
+   "detail": "m01: fade 106.517–108.47 s starts 3.761 s after the last strike (102.756 s; min 1.6); m02: fade 272.338–274.53 s starts 2.959 s after the last strike (269.379 s; min 1.6); m03: fade 481.074–482.23 s starts 2.777 s after the last strike (478.297 s; min 1.6); m04: fade 601.987–604.16 s starts 4.268 s after the last strike (597.719 s; min 1.6); m05: fade 875.422–876.58 s starts 3.761 s after the last strike (871.661 s; min 1.6); m06: fade 1058.619–1059.77 s starts 3.935 s after the last strike (1054.684 s; min 1.6); m07: fade 1301.084–1302.64 s starts 2.438 s after the last strike (1298.646 s; min 1.6); m08: fade 1435.417–1439.42 s starts 3.759 s after the last strike (1431.658 s; min 1.6)"
+  },
+  {
+   "stage": "mix",
+   "id": "floor",
+   "status": "pass",
+   "detail": "room tone -58 LUFS (target -58); quietest 400 ms of the master -58 LUFS"
+  },
+  {
+   "stage": "mix",
+   "id": "musicEq",
+   "status": "pass",
+   "detail": "music bus: 35 Hz high-pass (24 dB/oct), low band under 120 Hz keyed down 1.71 dB more under speech"
+  },
+  {
+   "stage": "mix",
+   "id": "lineMasking",
+   "status": "pass",
+   "detail": "every line at least 10 dB over the music (lowest L0423 10.8 dB)",
+   "lines": {
+    "L0101": 15.2,
+    "L0102": 19.4,
+    "L0103": 99,
+    "L0104": 19.4,
+    "L0105": 99,
+    "L0106": 23.4,
+    "L0107": 16.3,
+    "L0108": 23.4,
+    "L0109": 14.5,
+    "L0110": 23.4,
+    "L0111": 23.4,
+    "L0112": 16.3,
+    "L0113": 15.5,
+    "L0114": 23.4,
+    "L0115": 19.4,
+    "L0116": 99,
+    "L0117": 13.1,
+    "L0201": 15.2,
+    "L0202": 15.2,
+    "L0203": 15.9,
+    "L0204": 14.8,
+    "L0205": 14.3,
+    "L0207": 18.6,
+    "L0208": 99,
+    "L0209": 20.3,
+    "L0210": 19.4,
+    "L0211": 16.8,
+    "L0212": 11.8,
+    "L0213": 17.9,
+    "L0214": 15.9,
+    "L0215": 20.3,
+    "L0216": 99,
+    "L0217": 99,
+    "L0218": 15.9,
+    "L0219": 99,
+    "L0220": 17.9,
+    "L0221": 20.3,
+    "L0222": 18.6,
+    "L0223": 99,
+    "L0224": 99,
+    "L0301": 18.6,
+    "L0302": 17.3,
+    "L0303": 21.6,
+    "L0304": 99,
+    "L0305": 15.9,
+    "L0306": 23.4,
+    "L0307": 99,
+    "L0308": 26.4,
+    "L0309": 20.3,
+    "L0310": 26.4,
+    "L0311": 19.4,
+    "L0312": 99,
+    "L0313": 99,
+    "L0314": 16.3,
+    "L0315": 18.6,
+    "L0316": 99,
+    "L0317": 14.8,
+    "L0318": 15.9,
+    "L0319": 13.1,
+    "L0320": 16.3,
+    "L0321": 17.9,
+    "L0322": 17.3,
+    "L0323": 19.4,
+    "L0324": 23.4,
+    "L0325": 99,
+    "L0326": 99,
+    "L0327": 26.4,
+    "L0328": 99,
+    "L0329": 17.9,
+    "L0330": 99,
+    "L0331": 16.3,
+    "L0332": 21.6,
+    "L0401": 17.3,
+    "L0402": 16.3,
+    "L0403": 23.4,
+    "L0404": 15.9,
+    "L0405": 23.4,
+    "L0406": 15.2,
+    "L0407": 23.4,
+    "L0408": 26.4,
+    "L0409": 23.4,
+    "L0410": 17.3,
+    "L0411": 16.8,
+    "L0412": 23.4,
+    "L0413": 21.6,
+    "L0414": 17.9,
+    "L0415": 26.4,
+    "L0416": 12.3,
+    "L0418": 21.6,
+    "L0419": 18.6,
+    "L0420": 20.3,
+    "L0421": 19.4,
+    "L0422": 21.6,
+    "L0423": 10.8,
+    "L0501": 17.3,
+    "L0502": 18.6,
+    "L0503": 17.9,
+    "L0504": 99,
+    "L0505": 18.6,
+    "L0507": 99,
+    "L0508": 26.4,
+    "L0509": 20.3,
+    "L0510": 23.4,
+    "L0511": 20.3,
+    "L0512": 99,
+    "L0513": 17.9,
+    "L0514": 99,
+    "L0515": 17.9,
+    "L0516": 99,
+    "L0517": 16.3,
+    "L0518": 99,
+    "L0519": 17.3,
+    "L0520": 99,
+    "L0521": 99,
+    "L0522": 21.6,
+    "L0523": 99,
+    "L0524": 23.4,
+    "L0525": 23.4,
+    "L0526": 21.6,
+    "L0527": 99,
+    "L0528": 99,
+    "L0529": 21.6,
+    "L0530": 99,
+    "L0531": 18.6,
+    "L0532": 99,
+    "L0601": 99,
+    "L0602": 99,
+    "L0603": 99,
+    "L0604": 26.4,
+    "L0605": 99,
+    "L0606": 20.3,
+    "L0607": 99,
+    "L0608": 21.6,
+    "L0609": 20.3,
+    "L0610": 16.3,
+    "L0611": 18.6,
+    "L0612": 99,
+    "L0613": 19.4,
+    "L0614": 99,
+    "L0615": 17.3,
+    "L0616": 19.4,
+    "L0617": 99,
+    "L0619": 17.9,
+    "L0620": 26.4,
+    "L0621": 26.4,
+    "L0622": 99,
+    "L0623": 26.4,
+    "L0624": 20.3,
+    "L0625": 20.3,
+    "L0701": 15.9,
+    "L0702": 16.3,
+    "L0703": 20.3,
+    "L0704": 16.8,
+    "L0705": 15.5,
+    "L0706": 16.3,
+    "L0707": 21.6,
+    "L0708": 18.6,
+    "L0709": 16.3,
+    "L0710": 18.6,
+    "L0711": 99,
+    "L0712": 21.6,
+    "L0713": 17.3,
+    "L0714": 16.8,
+    "L0715": 23.4,
+    "L0716": 99,
+    "L0717": 15.9,
+    "L0718": 99,
+    "L0719": 13.7,
+    "L0720": 26.4,
+    "L0721": 26.4,
+    "L0722": 99,
+    "L0723": 99,
+    "L0724": 99,
+    "L0725": 19.4,
+    "L0726": 23.4,
+    "L0727": 21.6,
+    "L0728": 26.4,
+    "L0729": 99,
+    "L0730": 20.3,
+    "L0731": 20.3,
+    "L0732": 17.3,
+    "L0733": 16.3,
+    "L0734": 14,
+    "L0735": 16.3,
+    "L0736": 99,
+    "L0801": 99,
+    "L0802": 14,
+    "L0803": 16.3,
+    "L0804": 17.9,
+    "L0805": 18.6,
+    "L0806": 18.6,
+    "L0807": 19.4,
+    "L0808": 99,
+    "L0809": 19.4,
+    "L0810": 18.6,
+    "L0811": 21.6,
+    "L0812": 17.9,
+    "L0813": 19.4,
+    "L0814": 99,
+    "L0815": 20.3,
+    "L0816": 99,
+    "L0817": 18.6,
+    "L0818": 12.6
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "8 slices"
+  }
+ ]
+}

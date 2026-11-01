@@ -1,0 +1,1325 @@
+{
+  "version": 1,
+  "slug": "durable-objects-unbound-book",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A room needs a home",
+      "claims": [
+        {
+          "id": "c1-closed-beta",
+          "claim": "Cloudflare introduced Durable Objects in closed beta on September 28, 2020, with unique identity and private durable state.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Durable Objects closed beta, September 28 2020",
+              "url": "https://blog.cloudflare.com/introducing-workers-durable-objects"
+            }
+          ]
+        },
+        {
+          "id": "c1-one-home",
+          "claim": "Requests for an object identity reach one active location, allowing related clients to coordinate through it.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Durable Objects closed beta, September 28 2020",
+              "url": "https://blog.cloudflare.com/introducing-workers-durable-objects"
+            }
+          ]
+        },
+        {
+          "id": "c1-interleaving",
+          "claim": "Inference: One object identity does not imply that all asynchronous handler operations form one atomic transaction.",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd: ../server/actor.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/server/actor.rs"
+            },
+            {
+              "label": "workerd: ../../io/actor-sqlite.c++",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/io/actor-sqlite.c++"
+            }
+          ]
+        },
+        {
+          "id": "c1-logical-units",
+          "claim": "Independent objects partition an application into logical coordination units; one busy object remains one authority.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Durable Objects closed beta, September 28 2020",
+              "url": "https://blog.cloudflare.com/introducing-workers-durable-objects"
+            }
+          ]
+        },
+        {
+          "id": "c1-already-open",
+          "claim": "workerd was released as an Apache-licensed open-source runtime beta in September 2022.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd open-source beta, September 27 2022",
+              "url": "https://blog.cloudflare.com/workerd-open-source-workers-runtime/"
+            }
+          ]
+        },
+        {
+          "id": "c1-single-instance-gap",
+          "claim": "Cloudflare described the earlier self-hosted Durable Objects implementation as single-instance and its production routing as unsuitable for ordinary self-hosters.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare announcement, October 9 2026",
+              "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+            }
+          ]
+        },
+        {
+          "id": "c1-sqlite-local",
+          "claim": "The September 2024 SQLite-in-Durable-Objects release embedded SQL beside object execution; local query access does not establish remote durability.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "SQLite in Durable Objects, September 26 2024",
+              "url": "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-celld-model",
+          "claim": "Celld uses compute nodes, SQLite-backed cells, shared bucket storage, and conditional ownership assignment.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: README.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "README.md"
+            },
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c1-team-direction",
+          "claim": "Deno and Cloudflare announced the team joining Cloudflare and focusing future effort on a shared self-hostable platform.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Deno announcement, October 9 2026",
+              "url": "https://deno.com/blog/cloudflare"
+            },
+            {
+              "label": "Cloudflare announcement, October 9 2026",
+              "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+            }
+          ]
+        },
+        {
+          "id": "c1-transition-plan",
+          "claim": "Deno announced one year of runtime fixes and security releases and six months of continued Deploy operation.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Deno announcement, October 9 2026",
+              "url": "https://deno.com/blog/cloudflare"
+            }
+          ]
+        },
+        {
+          "id": "c1-continuing-projects",
+          "claim": "The announcement said JSR would continue operating and rusty_v8 would remain supported.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Deno announcement, October 9 2026",
+              "url": "https://deno.com/blog/cloudflare"
+            }
+          ]
+        },
+        {
+          "id": "c1-initial-cluster",
+          "claim": "The supplied initial commit adds experimental shared-bucket clustering, forwarding, ownership and bucket-backed recovery.",
+          "caption": 12,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Initial commit, October 29 UTC",
+              "url": "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@aa494794c44a900592c8281b191302d3b0a6e2a5",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@aa494794c44a900592c8281b191302d3b0a6e2a5",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-later-features",
+          "claim": "The inspected October 31 workerd snapshot includes alarms and facets beyond the initial shared-bucket merge.",
+          "caption": 13,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd cluster integration tests at October 31 snapshot",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/tests/cluster/cluster-test.mjs"
+            },
+            {
+              "label": "workerd: alarms.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/alarms.rs"
+            },
+            {
+              "label": "workerd: capture.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/capture.rs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "The bucket is the referee",
+      "claims": [
+        {
+          "id": "c2-naive-race",
+          "claim": "Inference: separate reads and unconditional writes allow two contenders to observe absence before either declaration is published.",
+          "caption": 0,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Amazon S3 conditional write semantics",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-overwrite-is-not-authority",
+          "claim": "Inference: an unconditional last overwrite alone cannot retract serving decisions already made by another contender.",
+          "caption": 1,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Amazon S3 conditional write semantics",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-read-write-gap",
+          "claim": "Inference: a separate read and write do not make an atomic ownership operation; the condition must be checked by storage.",
+          "caption": 2,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Amazon S3 conditional write semantics",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+            }
+          ]
+        },
+        {
+          "id": "c2-atomic-condition",
+          "claim": "Conditional writes apply only when the storage-side precondition holds for the write.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Amazon S3 conditional write semantics",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+            }
+          ]
+        },
+        {
+          "id": "c2-conditional-create",
+          "claim": "Conditional create admits one successful creation when contenders race on an absent authority key.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Amazon S3 conditional write semantics",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-conditional-overwrite",
+          "claim": "Conditional overwrite rejects a stale version rather than replacing a record that changed after the read.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Amazon S3 conditional write semantics",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-version-guard",
+          "claim": "workerd uses an opaque Version with Guard::Match to protect replacement of an ownership record.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: bucket.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/bucket.rs"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-record-fields",
+          "claim": "The workerd OwnerRecord contains node, epoch and from; from identifies the last epoch that finished opening.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-fresh-read",
+          "claim": "The storage contract requires read-after-write consistency independently of conditional update semantics.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Amazon S3 consistency model",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+            },
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-probe-semantics",
+          "claim": "Celld probes conditional creation, rejection of another creation, conditional updating and rejection of a stale update.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-one-key-scope",
+          "claim": "Inference: serializing a single ownership key does not itself provide atomic application transactions across separate objects.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            },
+            {
+              "label": "Amazon S3 conditional write semantics",
+              "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+            }
+          ]
+        },
+        {
+          "id": "c2-outsource-primitive",
+          "claim": "Inference: the application fleet relies on the object store for conditional serialization rather than implementing a separate consensus service for ownership.",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "celld: README.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "README.md"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-referee-dependence",
+          "claim": "Inference: moving ownership serialization to the bucket makes ownership progress depend on bucket semantics and availability.",
+          "caption": 12,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            },
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-one-record",
+          "claim": "Guarded ownership acquisition accepts one record version and directs nonowners toward the accepted live owner.",
+          "caption": 13,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "A lease is not a fence",
+      "claims": [
+        {
+          "id": "c3-node-expiry",
+          "claim": "workerd publishes node records with expires_ms and uses their expiry when deciding whether a peer is live.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: registry.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/registry.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-bounded-wait",
+          "claim": "The lease state machine retries failed renewals while its safety window permits and fences when that window closes.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-lease-constants",
+          "claim": "workerd defines a 20000 ms lease, 3000 ms renewal interval, 4000 ms renewal timeout and 1000 ms retry interval.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-skew-check",
+          "claim": "Observed absolute bucket-clock skew greater than 2000 ms causes the workerd lease state machine to fence.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-safety-margin",
+          "claim": "workerd derives SAFETY_MS as twice MAX_SKEW_MS, reserving a 4000 ms serving margin before expiry.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-strict-boundaries",
+          "claim": "Inference from holds and before_renew: for expiry 20000 ms, serving requires time below 16000 ms and starting renewal requires time below 12000 ms.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-paused-node",
+          "claim": "before_renew fences a node whose previous lease cannot safely cover a renewal; a test covers a node stalled beyond its lease.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-clock-observation",
+          "claim": "Clock skew comes from the bucket observation; Cluster::clock_skew_ms defaults an unavailable observation to zero.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: cluster.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/cluster.rs"
+            },
+            {
+              "label": "workerd: bucket.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/bucket.rs"
+            },
+            {
+              "label": "workerd: s3.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/s3.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-successor-epoch",
+          "claim": "Ownership takeover uses a conditional record replacement and successor increments the ownership epoch.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-obsolete-upload",
+          "claim": "A superseded owner can finish an upload to its old session, but that does not establish current ownership.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-post-upload-fence",
+          "claim": "Owner::push rereads current_epoch after the upload and returns Contended on epoch mismatch before slot.ack.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-recover-from",
+          "claim": "OwnerRecord::successor preserves from until the claimed epoch opens, retaining the last opened recovery source.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-distinct-jobs",
+          "claim": "Inference: lease expiry, guarded ownership updates and post-upload epoch checks close separate replacement and acknowledgement failure windows.",
+          "caption": 12,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-outage-stop",
+          "claim": "Inference: failed bucket operations can prevent acknowledgements, and sustained renewal failure can fence all affected writers.",
+          "caption": 13,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "A message becomes durable",
+      "claims": [
+        {
+          "id": "c4-local-sqlite",
+          "claim": "SQLite runs locally beside the object; the cluster commit path separately makes captured writes durable remotely.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "SQLite in Durable Objects, September 26 2024",
+              "url": "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-local-not-proof",
+          "claim": "A workerd cluster commit waits for bucket-backed coverage rather than treating local database completion as sufficient acknowledgement proof.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-gate-order",
+          "claim": "The acknowledgement watermark advances only after upload and the current-epoch check.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-write-ahead-pages",
+          "claim": "SQLite WAL capture observes page frames before later checkpoints copy their changes into the database file.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: capture.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/capture.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-commit-marker",
+          "claim": "The workerd capture layer identifies a completed WAL transaction using the final frame database-size field.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: capture.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/capture.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-unfinished-frames",
+          "claim": "Capture buffers frames since the previous commit and handles rollback overwriting uncommitted frames.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: capture.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/capture.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-merged-batches",
+          "claim": "workerd merges captured page frames into compressed batches carrying session and sequence coverage.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: capture.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/capture.rs"
+            },
+            {
+              "label": "workerd: log.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/log.rs"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-different-ltx",
+          "claim": "Celld captures SQLite WAL changes into LTX; the inspected workerd cluster path instead uses frames.capnp.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: crates/ltx/src/db.rs",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "crates/ltx/src/db.rs"
+            },
+            {
+              "label": "workerd: log.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/log.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-upload-then-epoch",
+          "claim": "Owner::push uploads staged changes, rereads current_epoch and only then acknowledges a matching epoch.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-group-coverage",
+          "claim": "Workerd groups uploads and waiting callers require an acknowledgement watermark covering their own captured target.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-bucket-recoverable",
+          "claim": "Takeover removes nonauthoritative local database files and restores acknowledged bucket-backed history.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            },
+            {
+              "label": "workerd: log.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/log.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-observations-gated",
+          "claim": "Celld documents durability gating for observations including response bodies, stream chunks and certain outgoing effects.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            },
+            {
+              "label": "celld: crates/logic/output_gate.rs",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "crates/logic/output_gate.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-readonly-error",
+          "claim": "Celld gates read-only and error responses when they could expose an uncovered committed write.",
+          "caption": 12,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c4-reply-uncertainty",
+          "claim": "Inference: a lost acknowledgement cannot establish that a write was absent, so durability alone does not guarantee exactly-once retried application effects.",
+          "caption": 13,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Rebuild the room, prove the tail",
+      "claims": [
+        {
+          "id": "c5-takeover-base",
+          "claim": "Workerd takeover discards nonauthoritative local database state and restores the predecessor epoch from bucket history.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-snapshot-replay",
+          "claim": "workerd restore starts from a snapshot and replays subsequent page-log batches rather than rerunning handlers.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: log.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/log.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-sequence-coverage",
+          "claim": "Replay uses session and sequence coverage to skip already applied changes and maintain one complete history.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: log.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/log.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-reject-gaps",
+          "claim": "The workerd replay engine checks for unresolved gaps and fails if required frame coverage is missing.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: log.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/log.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-checksum-boundary",
+          "claim": "workerd reads compressed content through the decoder checksum check; data detection is distinct from recreating missing bytes.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: log.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/log.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-snapshot-before-delete",
+          "claim": "Compaction uploads the replacement snapshot before deleting the covered old files.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-open-after-restore",
+          "claim": "workerd recovers state and uploads its starting snapshot before conditionally opening the claimed epoch.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            },
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-fleet-default",
+          "claim": "Celld v0.6.3 defaults to fleet durability and may acknowledge follower-durable writes before their bucket upload completes.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-follower-proof",
+          "claim": "A celld fleet proof uses one or two other follower nodes and requires the participating followers to fsync the write.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-bucket-fallback",
+          "claim": "Without an ensemble, celld preserves correctness by using bucket proofs; an additional follower can provide another copy.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-tail-obligation",
+          "claim": "Celld cold activation must recover the predecessor node-log acknowledged tail before restoring cell state.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            },
+            {
+              "label": "celld: crates/celld/node_log.rs",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "crates/celld/node_log.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-seal-before-restore",
+          "claim": "Celld takeover fences the old log session, seals reachable followers, uploads retained data and marks the record sealed before restore.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            },
+            {
+              "label": "celld: crates/celld/node_log.rs",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "crates/celld/node_log.rs"
+            }
+          ]
+        },
+        {
+          "id": "c5-cannot-certify",
+          "claim": "Celld recovery can block on follower errors, damaged or incomplete ranges and other inability to certify a complete retained tail.",
+          "caption": 12,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-distinct-proofs",
+          "claim": "Inference: workerd bucket proofs and celld follower proofs require different recovery paths because they acknowledge bytes in different locations.",
+          "caption": 13,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            },
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "What becomes portable",
+      "claims": [
+        {
+          "id": "c6-bucket-partition",
+          "claim": "In workerd bucket-proof operation, bucket failure prevents new upload-backed acknowledgements and sustained lease failure fences serving.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            },
+            {
+              "label": "workerd: logic/lease.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/logic/lease.rs"
+            }
+          ]
+        },
+        {
+          "id": "c6-conditions-required",
+          "claim": "Celld documents that ignored conditional-write conditions can permit two owners, violating its required storage contract.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c6-preserve-records",
+          "claim": "Celld prohibits lifecycle deletion or overwrite of reserved protocol data needed to fence and restore cells.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c6-latency-path",
+          "claim": "Inference: local SQL and the remote upload plus authority check are separate portions of workerd acknowledgement latency.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "SQLite in Durable Objects, September 26 2024",
+              "url": "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            }
+          ]
+        },
+        {
+          "id": "c6-fleet-tradeoff",
+          "claim": "Celld describes follower fsync proofs as a lower-latency alternative to bucket round trips while requiring retained follower data for recovery.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c6-tested-alarm",
+          "claim": "Current workerd cluster tests cover an alarm running on a survivor after the owning process is killed.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd cluster integration tests at October 31 snapshot",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/tests/cluster/cluster-test.mjs"
+            },
+            {
+              "label": "workerd: alarms.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/alarms.rs"
+            }
+          ]
+        },
+        {
+          "id": "c6-alarm-test-scope",
+          "claim": "Inference: the alarm tests assert observed firings in specific kill/recovery scenarios; they do not establish exactly-once arbitrary external application effects.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd cluster integration tests at October 31 snapshot",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/tests/cluster/cluster-test.mjs"
+            }
+          ]
+        },
+        {
+          "id": "c6-owned-compute",
+          "claim": "workerd is intended for self-hosted application execution, and celld provides SQLite-backed cells on operator-owned nodes.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "workerd README",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "README.md"
+            },
+            {
+              "label": "celld: README.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "README.md"
+            }
+          ]
+        },
+        {
+          "id": "c6-parity-scope",
+          "claim": "Celld explicitly documents supported APIs and limits; runtime portability does not establish full hosted platform parity.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "celld: docs/cloudflare-compat.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/cloudflare-compat.md"
+            },
+            {
+              "label": "celld: docs/limitations.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/limitations.md"
+            },
+            {
+              "label": "Cloudflare announcement, October 9 2026",
+              "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+            }
+          ]
+        },
+        {
+          "id": "c6-announced-direction",
+          "claim": "Cloudflare and Deno describe first-class self-hosting as a shared direction; the supplied workerd cluster merge is experimental.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare announcement, October 9 2026",
+              "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+            },
+            {
+              "label": "Deno announcement, October 9 2026",
+              "url": "https://deno.com/blog/cloudflare"
+            },
+            {
+              "label": "Initial experimental cluster configuration",
+              "repo": "cloudflare/workerd@aa494794c44a900592c8281b191302d3b0a6e2a5",
+              "path": "src/workerd/server/workerd.capnp"
+            }
+          ]
+        },
+        {
+          "id": "c6-historical-sequence",
+          "claim": "Durable Objects debuted in 2020, workerd became open source in 2022, and SQLite-in-Durable-Objects launched in 2024.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Durable Objects closed beta, September 28 2020",
+              "url": "https://blog.cloudflare.com/introducing-workers-durable-objects"
+            },
+            {
+              "label": "workerd open-source beta, September 27 2022",
+              "url": "https://blog.cloudflare.com/workerd-open-source-workers-runtime/"
+            },
+            {
+              "label": "SQLite in Durable Objects, September 26 2024",
+              "url": "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+            }
+          ]
+        },
+        {
+          "id": "c6-composed-contract",
+          "claim": "Inference: bucket serialization and durable storage combine with runtime ownership, capture, gating and replay to provide the inspected guarantees.",
+          "caption": 12,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "workerd: ownership.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/ownership.rs"
+            },
+            {
+              "label": "workerd: capture.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/capture.rs"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            },
+            {
+              "label": "workerd: log.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/log.rs"
+            },
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        },
+        {
+          "id": "c6-portable-recovery",
+          "claim": "Inference: portable object operation requires the runtime recovery machinery and qualified storage contract to move together.",
+          "caption": 13,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Cloudflare announcement, October 9 2026",
+              "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+            },
+            {
+              "label": "workerd: owner.rs",
+              "repo": "cloudflare/workerd@ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+              "path": "src/workerd/server/cluster/owner.rs"
+            },
+            {
+              "label": "celld: docs/guarantees.md",
+              "repo": "denoland/celld@8702f6d186c77698dbfb30cf29e3b1922a88f008",
+              "path": "docs/guarantees.md"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

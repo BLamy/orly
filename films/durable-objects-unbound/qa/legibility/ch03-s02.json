@@ -1,0 +1,39 @@
+{
+ "shot": "ch03-s02",
+ "at": "2026-11-01T07:51:38.806Z",
+ "minCapPx": 22,
+ "sampled": 48,
+ "texts": 5,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "B",
+   "capWhileSubject": 45.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "no condition: both write, both serve",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "read … then write: a gap",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Amazon S3",
+   "maxCap": 22.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A",
+   "maxCap": 35,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

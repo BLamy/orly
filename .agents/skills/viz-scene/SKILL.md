@@ -12,7 +12,7 @@ description: >
 
 ## Model responsibilities
 
-Read [the project authoring workflow](../../../docs/authoring-models.md). Astra (`gpt-6-astra`) plans and builds Blender/Three.js 3D assets; Opus 5.5 (`claude-opus-5-5`) authors and revises D3/SVG choreography. Invoke Opus through `npx --yes @anthropic-ai/claude-code@latest`. Preserve fixed captions and record actual provider provenance. If Opus reaches a session, weekly, usage or rate limit, preserve progress and continue D3/SVG authoring with GPT-6.1 Sol (`gpt-6.1-sol`); record the limit and actual model. Stop if Sol is also unavailable; no other substitution is authorized.
+Read [the project authoring workflow](../../../docs/authoring-models.md). Sol (`gpt-6.1-sol`) plans and builds Blender/Three.js 3D assets; Opus 5.5 (`claude-opus-5-5`) authors and revises D3/SVG choreography. Invoke Opus through `npx --yes @anthropic-ai/claude-code@latest`. Preserve fixed captions and record actual provider provenance. If a provider reaches a limit, preserve progress and report the blocker; no model substitution is authorized.
 
 
 `apps/bookshelf/src/viz/` is a scrubbable animation suite: one `Timeline` holds every value as

@@ -1,0 +1,48 @@
+{
+ "shot": "ch02-s04",
+ "at": "2026-11-01T07:03:56.550Z",
+ "minCapPx": 22,
+ "sampled": 46,
+ "texts": 7,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "27 SEPTEMBER 2022",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "workerd is Open Source under the Apache",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "License version 2.0.”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "kenton varda, 2022",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "26 SEPTEMBER 2024",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Latency is effectively zero”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "kenton varda, 2024",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

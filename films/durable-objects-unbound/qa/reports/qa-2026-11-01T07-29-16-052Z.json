@@ -1,0 +1,54 @@
+{
+ "slug": "durable-objects-unbound",
+ "at": "2026-11-01T07:29:16.052Z",
+ "summary": {
+  "pass": 7,
+  "warn": 0,
+  "fail": 0,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "render",
+   "id": "frames",
+   "status": "pass",
+   "detail": "34546 frames (expected 34546 = round(1439.4167 × 24))"
+  },
+  {
+   "stage": "render",
+   "id": "format",
+   "status": "pass",
+   "detail": "1920×1080 @ 24 fps yuv420p"
+  },
+  {
+   "stage": "render",
+   "id": "av",
+   "status": "pass",
+   "detail": "video 1439.417s, audio 1439.416667s (aac)"
+  },
+  {
+   "stage": "render",
+   "id": "extras",
+   "status": "pass",
+   "detail": "captions muxed"
+  },
+  {
+   "stage": "render",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "8 chapters muxed (timeline has 8)"
+  },
+  {
+   "stage": "publish",
+   "id": "manifest",
+   "status": "pass",
+   "detail": "8 chapters, kind film"
+  },
+  {
+   "stage": "publish",
+   "id": "current",
+   "status": "pass",
+   "detail": "matches the current clock and master"
+  }
+ ]
+}

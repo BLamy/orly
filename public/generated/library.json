@@ -1,6 +1,115 @@
 {
   "books": [
     {
+      "slug": "durable-objects-unbound",
+      "title": "Durable Objects, Unbound",
+      "subtitle": "One promised message, a well that learned to say no, and the road to running it yourself",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "href": "?film=durable-objects-unbound",
+      "sources": "generated/durable-objects-unbound/sources/",
+      "kind": "film",
+      "runtime": 1439.42,
+      "vhs": {
+        "subject": "Computer Science",
+        "theme": "ocean",
+        "icons": [
+          "globe",
+          "chip",
+          "gear",
+          "book"
+        ],
+        "tagline": "One room, any machine!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Tick",
+          "duration": 108.875
+        },
+        {
+          "number": 2,
+          "title": "One Room in the Whole World",
+          "duration": 166.25
+        },
+        {
+          "number": 3,
+          "title": "The Well That Learned to Say No",
+          "duration": 207.708
+        },
+        {
+          "number": 4,
+          "title": "Two Lineages, One Commit",
+          "duration": 158.042
+        },
+        {
+          "number": 5,
+          "title": "The Plate and the Candle",
+          "duration": 236.5
+        },
+        {
+          "number": 6,
+          "title": "The Ribbon",
+          "duration": 183
+        },
+        {
+          "number": 7,
+          "title": "The Neighbours",
+          "duration": 242.667
+        },
+        {
+          "number": 8,
+          "title": "What Travels",
+          "duration": 136.375
+        }
+      ],
+      "createdAt": "2026-11-01T07:25:40.225Z"
+    },
+    {
+      "slug": "durable-objects-unbound-book",
+      "title": "Durable Objects, Unbound",
+      "subtitle": "History, ownership, and the guarantees behind distributed state",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/durable-objects-unbound-book/animal.webp",
+      "href": "?bundle=durable-objects-unbound-book",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A room needs a home",
+          "duration": 184.32
+        },
+        {
+          "number": 2,
+          "title": "The bucket is the referee",
+          "duration": 167.51
+        },
+        {
+          "number": 3,
+          "title": "A lease is not a fence",
+          "duration": 172.338
+        },
+        {
+          "number": 4,
+          "title": "A message becomes durable",
+          "duration": 178.516
+        },
+        {
+          "number": 5,
+          "title": "Rebuild the room, prove the tail",
+          "duration": 172.943
+        },
+        {
+          "number": 6,
+          "title": "What becomes portable",
+          "duration": 189.104
+        }
+      ],
+      "createdAt": "2026-10-31T21:50:18.088Z"
+    },
+    {
       "slug": "handwired-explained",
       "title": "Promises, Not Proofs",
       "subtitle": "How a program becomes a hand-wired neural network, told in the things people were sure of",

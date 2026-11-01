@@ -5,7 +5,7 @@ brings books up to the habits of the films: the film pipeline researches before 
 traces every claim to a source, grades itself on an eight-dimension rubric, and fixes what the grade finds. A book is
 smaller than a film, so the machinery is lighter, but the habits are the same.
 
-Authoring-model routing is unchanged ([authoring-models.md](authoring-models.md)): Astra plans, Opus 5.5 authors the D3
+Authoring-model routing is unchanged ([authoring-models.md](authoring-models.md)): Sol plans, Opus 5.5 authors the D3
 scenes and, when a book has music, composes the Strudel. Provenance is recorded as for any other stage.
 
 ## 1. Be proactive

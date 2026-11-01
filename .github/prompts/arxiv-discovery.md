@@ -1,4 +1,4 @@
-# Weekly arXiv discovery (Opus 5.5 research session, CI)
+# Weekly arXiv discovery (GPT-6.1 Sol research session, CI)
 
 You are the weekly arXiv discovery agent for this O'RLY explainer
 bookshelf. Produce /tmp/arxiv-plan.json — nothing else. Do NOT run

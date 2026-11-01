@@ -53,8 +53,8 @@ body:
     id: model
     attributes:
       label: Model
-      description: Astra plans and models in 3D; Fable 5.1 authors D3 animations
+      description: Sol plans and models in 3D; Opus 5.5 authors D3 animations
       options:
-        - "Astra planning + Fable 5.1 animations (claude-fable-5-1)"
+        - "Sol planning + Opus 5.5 animations (claude-opus-5-5)"
     validations:
       required: true

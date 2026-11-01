@@ -1,0 +1,11 @@
+  m01: last strike 102.76 s → fade 106.52–108.47 s (3.76 s after the strike)
+  m02: last strike 269.38 s → fade 272.34–274.53 s (2.96 s after the strike)
+  m03: last strike 478.30 s → fade 481.07–482.23 s (2.78 s after the strike)
+  m04: last strike 597.72 s → fade 601.99–604.16 s (4.27 s after the strike)
+  m05: last strike 871.66 s → fade 875.42–876.58 s (3.76 s after the strike)
+  m06: last strike 1054.68 s → fade 1058.62–1059.77 s (3.94 s after the strike)
+  m07: last strike 1298.65 s → fade 1301.08–1302.64 s (2.44 s after the strike)
+  m08: last strike 1431.66 s → fade 1435.42–1439.42 s (3.76 s after the strike)
+  duck: calibrated 6.37 → 2.85 dB (target 3): threshold -32.04 → -23.0 dBFS, ratio 3 → 3
+  music EQ: 35 Hz HPF 24 dB/oct; keyed shelf below 120 Hz takes 1.71 dB more off the low band under speech
+master films/durable-objects-unbound/mix/master.wav: 1439.42 s, -16 LUFS, TP -1.7 dBTP, LRA 3 (linear); 8 cues, duck 2.85 dB; 8 chapter slices

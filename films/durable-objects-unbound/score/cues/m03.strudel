@@ -1,0 +1,102 @@
+// GENERATED from score/src/m03.strudel by score/tools/fill.mjs against narration/timeline.json (1439.4167 s clock).
+// Window 272.388–482.233 (209.845 s). Edit the template, not this file.
+// m03 · THE WELL THAT LEARNED TO SAY NO (ch03) · D minor · the Well (W), the race, the refusal
+//   s01  alone in the hold: the harbour drone and W begins, one step per line (Dm · C · Bb · A); T broken (A → E-flat)
+//        for the stale copy, in the gap after 'old copy'; on 'December' W lands on A major and resolves to D after
+//        'latest' with T kept (A → D).
+//   s02  SILENCE from 'Pull'. The race: a two-voice pizzicato canon (keeper A left, keeper B right, a fourth apart,
+//        half a second behind); a string cluster (D against E-flat) on 'Both'; a hard stop after 'answered'. The maxim
+//        over a single low D; the drone returns after 'Pin back'.
+//   s03  a small rising harp phrase after the first date ('2024'), the same phrase a step higher after the second
+//        (the three-month rhyme); the race returns and is cut off on the shutter; the Tooth: a dry high pizzicato D
+//        after 'click', a muffled low knock after 'thunk'; a warm cadence (Gm · Bbmaj7 → D) and T after 'say no'.
+//   s04  the crane down: W in the harp (D C B-flat A); one soft harp A after 'witness'; a patient pizzicato count
+//        under 'proofs'; the crane up: a rising cello line that lands on the drone on 'inside'.
+//   s05  an uneasy near-unison (D against C-sharp) for the look-alike well; TRUE SILENCE under L0326; four even
+//        test writes (low knock, dry click, low knock, dry click); a small resolved harp figure after 'on demand'.
+//   s06  two thin lines that do not harmonise; on 'quiet' the drone drops out; one low D (harp and piano) is the
+//        LAST STRIKE and rings into the iris.
+setcpm(15)
+const CPS = 0.25, DUR = 209.845
+const Q = 480, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => {
+  evs = evs.filter(Boolean).map(([t, d, p]) => [Math.max(0, t), d, p]).sort((x, y) => x[0] - y[0])
+  const out = [], end = qn(DUR); let cur = 0
+  evs.forEach(([t, d, p], i) => {
+    let a = Math.max(qn(t), cur); const b = Math.min(qn(t + d), end, i + 1 < evs.length ? qn(evs[i + 1][0]) : end)
+    if (b - a < 2) return
+    if (a > cur) out.push([a - cur, silence])
+    out.push([b - a, p]); cur = b })
+  if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const loop = (pat, d) => pat.fast(d * CPS)
+const n = (t, d, ns, v = 0.2) => [t, d, note(typeof ns === 'string' && ns.includes(',') ? '[' + ns + ']' : ns).velocity(v)]
+const felt = x => x.s("piano").gain(1.6).lpf(1800).release(1.8).room(0.3).rsize(4)
+const harp = x => x.s("gm_orchestral_harp").gain(1.6).lpf(2200).release(2.4).room(0.32).rsize(4)
+const pizz = x => x.s("gm_pizzicato_strings").gain(1.6).lpf(1400).release(0.5).room(0.25).rsize(4)
+const cello = x => x.s("gm_cello").gain(1.6).attack(0.35).release(1.4).lpf(1200).room(0.3).rsize(4)
+const str = (x, lp = 850, rel = 2.6) => x.s("gm_string_ensemble_1").gain(1.6).attack(1.6).release(rel).lpf(lp).room(0.35).rsize(4)
+const drone = (x, rel = 3) => stack(x.s("triangle").lpf(380).gain(0.06), x.s("sawtooth").lpf(200).gain(0.028)).hpf(40).attack(3).release(rel)
+
+// ---------------------------------------------------------------- drone
+$: drone(tl(
+    n(0, 43.908 - 0, "d2,a2", 1),
+    n(72.977, 146.445 - 72.977, "d2,a2", 1),
+    n(152.285, 167.188 - 152.285, "d2,a2", 1)), 0.4)
+$: drone(tl(n(183.467, 205.313 - 183.467, "d2,a2", 1)), 0.3)
+
+// ---------------------------------------------------------------- strings: W, the cadences
+$: str(tl(
+    n(0.4, 11.609 - 0.4, "d3,a3,f4", 0.22),
+    n(11.609, 18.828 - 11.609, "c3,g3,e4", 0.2),
+    n(18.828, 26.662 - 18.828, "bb2,f3,d4", 0.2),
+    n(26.662, 32.246 - 26.662, "a2,e3,c#4", 0.2),
+    n(32.246, 43.908 - 32.246, "d3,a3,d4", 0.2),
+    // s03: Dm, Gm for the store's condition, Bbmaj7 → D for 'say no'
+    n(76.212, 108.296 - 76.212, "d3,a3,f4", 0.18),
+    n(108.296, 113.482 - 108.296, "g2,d3,bb3", 0.2),
+    n(113.482, 115.583 - 113.482, "bb2,f3,a3,d4", 0.2),
+    n(115.583, 120.869 - 115.583, "d3,a3,d4", 0.2),
+    n(120.869, 146.445 - 120.869, "d3,a3", 0.18),
+    n(183.467, 193.962 - 183.467, "d3,a3", 0.18)), 850, 2.0)
+$: str(tl(n(53.073, 2.2, "d3,eb3", 0.2)), 1000, 0.8)               // the dissonant doubling
+$: str(tl(n(63.527, 71.688 - 63.527, "d2", 0.26)), 500, 1.5)    // the maxim over a single low note
+$: str(tl(n(159.467, 167.188 - 159.467, "c#3", 0.15), n(193.962, 200.476 - 193.962, "ab3", 0.14), n(200.476, 205.313 - 200.476, "g3", 0.14)), 900, 0.4)
+
+// ---------------------------------------------------------------- cello: the crane up; the uneasy unison; the thin line
+$: cello(tl(
+    n(146.445, 1.4, "a2", 0.24), n(146.445 + 1.5, 1.4, "d3", 0.24), n(146.445 + 3.0, 1.4, "e3", 0.24),
+    n(146.445 + 4.5, 152.285 - (146.445 + 4.5), "f3", 0.24),
+    n(159.467, 167.188 - 159.467, "d3", 0.24),
+    n(193.962, 200.476 - 193.962, "d3", 0.22), n(200.476, 205.313 - 200.476, "e3", 0.22)))
+
+// ---------------------------------------------------------------- the race (pizzicato canon) and the Tooth
+const race = (pat, d) => loop(note(pat).fast(10 / 3), d)
+const rA = (t0, t1) => [t0, t1 - t0, race("d3 e3 f3 a3", t1 - t0)]
+const rB = (t0, t1) => [t0 + 0.5, t1 - t0 - 0.5, race("g3 a3 bb3 d4", t1 - t0 - 0.5)]
+$: pizz(tl(rA(48.358, 62.138), rA(85.814, 88.148))).velocity(0.11).pan(0.3)
+$: pizz(tl(rB(48.358, 62.138), rB(85.814, 88.148))).velocity(0.1).pan(0.7)
+$: pizz(tl(
+    n(101.810 + 0.02, 0.4, "d4", 0.2),                      // click: accepted
+    n(176.240, 0.4, "d3", 0.16), n(176.971, 0.3, "a4", 0.12),
+    n(178.678, 0.4, "d3", 0.16), n(179.769, 0.3, "a4", 0.12)))
+$: pizz(tl(n(106.593 + 0.02, 0.5, "a2", 0.2))).lpf(500)         // thunk: refused (muffled)
+$: pizz(tl([141.391, 145.745 - 141.391, loop(note("a2 a2 a2 a2").velocity(0.1), 145.745 - 141.391)]))
+
+// ---------------------------------------------------------------- piano: T broken, T kept
+$: felt(tl(
+    n(18.378 + 0.03, 0.25, "a4", 0.15), n(18.378 + 0.28, 1.3, "eb5", 0.12),
+    n(29.181, 32.246 - 29.181, "a4", 0.13), n(32.246 + 0.04, 2.0, "d5", 0.17),
+    n(115.583 + 0.12, 0.55, "a4", 0.18), n(115.583 + 0.67, 1.8, "d5", 0.18),
+    n(205.859 + 0.05, 209.845 - (205.859 + 0.05), "d2", 0.2)))   // LAST STRIKE (with the harp)
+
+// ---------------------------------------------------------------- harp: the rhyme, W down the shaft, the witness, 'on demand'
+$: harp(tl(
+    n(78.638 + 0.05, 0.25, "d4", 0.13), n(78.638 + 0.3, 0.25, "e4", 0.13), n(78.638 + 0.55, 1.2, "f4", 0.12),
+    n(94.263 + 0.03, 0.15, "e4", 0.13), n(94.263 + 0.18, 0.15, "f4", 0.13), n(94.263 + 0.33, 1.2, "g4", 0.12),
+    n(117.195, 1.6, "d4", 0.15), n(117.195 + 1.6, 1.6, "c4", 0.14), n(117.195 + 3.2, 1.6, "bb3", 0.13), n(117.195 + 4.8, 2.4, "a3", 0.12),
+    n(134.639 + 0.02, 2.5, "a4", 0.08),
+    n(191.932 + 0.05, 0.3, "a3", 0.15), n(191.932 + 0.35, 0.3, "d4", 0.15), n(191.932 + 0.65, 1.6, "f4", 0.13),
+    n(205.859 + 0.05, 209.845 - (205.859 + 0.05), "d2,a2", 0.2)))
+
+all(x => x.postgain(1))

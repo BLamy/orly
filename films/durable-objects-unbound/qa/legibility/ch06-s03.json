@@ -1,0 +1,49 @@
+{
+ "shot": "ch06-s03",
+ "at": "2026-11-01T07:04:11.501Z",
+ "minCapPx": 22,
+ "sampled": 42,
+ "texts": 7,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "scrolls: gzip, checksum + length",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "workerd · 28 Oct",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "workerd: its own format · celld: LTX",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "celld 0.6.3",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 34,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7",
+   "maxCap": 32.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "epoch 7",
+   "maxCap": 22.1,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 3
+}

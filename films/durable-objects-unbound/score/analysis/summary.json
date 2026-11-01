@@ -1,0 +1,188 @@
+{
+ "at": "2026-11-01T05:03:57.707Z",
+ "timelineSeconds": 1439.4167,
+ "cues": [
+  {
+   "id": "m01",
+   "start": 0,
+   "end": 108.475,
+   "file": "films/durable-objects-unbound/score/renders/m01.wav",
+   "duration": 114.475,
+   "I": -25.3,
+   "LRA": 9,
+   "TP": -11.3,
+   "expected": 114.475,
+   "lengthErrorMs": 0,
+   "lengthOk": true,
+   "spectrogram": "films/durable-objects-unbound/score/analysis/m01.png",
+   "cueSeconds": 108.475,
+   "cps": 0.25,
+   "lastStrikeLocal": 89.4,
+   "lastStrike": 89.4
+  },
+  {
+   "id": "m02",
+   "start": 106.567,
+   "end": 274.525,
+   "file": "films/durable-objects-unbound/score/renders/m02.wav",
+   "duration": 173.958,
+   "I": -25.3,
+   "LRA": 6.2,
+   "TP": -10.6,
+   "expected": 173.958,
+   "lengthErrorMs": 0,
+   "lengthOk": true,
+   "spectrogram": "films/durable-objects-unbound/score/analysis/m02.png",
+   "cueSeconds": 167.958,
+   "cps": 0.25,
+   "lastStrikeLocal": 145.04,
+   "lastStrike": 251.607
+  },
+  {
+   "id": "m03",
+   "start": 272.388,
+   "end": 482.233,
+   "file": "films/durable-objects-unbound/score/renders/m03.wav",
+   "duration": 215.845,
+   "I": -26.1,
+   "LRA": 10.2,
+   "TP": -10.9,
+   "expected": 215.845,
+   "lengthErrorMs": 0,
+   "lengthOk": true,
+   "spectrogram": "films/durable-objects-unbound/score/analysis/m03.png",
+   "cueSeconds": 209.845,
+   "cps": 0.25,
+   "lastStrikeLocal": 206.04,
+   "lastStrike": 478.428
+  },
+  {
+   "id": "m04",
+   "start": 481.124,
+   "end": 604.158,
+   "file": "films/durable-objects-unbound/score/renders/m04.wav",
+   "duration": 129.034,
+   "I": -25,
+   "LRA": 5.9,
+   "TP": -9.8,
+   "expected": 129.034,
+   "lengthErrorMs": 0,
+   "lengthOk": true,
+   "spectrogram": "films/durable-objects-unbound/score/analysis/m04.png",
+   "cueSeconds": 123.034,
+   "cps": 0.25,
+   "lastStrikeLocal": 116.64,
+   "lastStrike": 597.764
+  },
+  {
+   "id": "m05",
+   "start": 602.037,
+   "end": 876.575,
+   "file": "films/durable-objects-unbound/score/renders/m05.wav",
+   "duration": 280.538,
+   "I": -26.2,
+   "LRA": 7.3,
+   "TP": -12.9,
+   "expected": 280.538,
+   "lengthErrorMs": 0,
+   "lengthOk": true,
+   "spectrogram": "films/durable-objects-unbound/score/analysis/m05.png",
+   "cueSeconds": 274.538,
+   "cps": 0.25,
+   "lastStrikeLocal": 266.64,
+   "lastStrike": 868.677
+  },
+  {
+   "id": "m06",
+   "start": 875.472,
+   "end": 1059.775,
+   "file": "films/durable-objects-unbound/score/renders/m06.wav",
+   "duration": 190.303,
+   "I": -27,
+   "LRA": 8.1,
+   "TP": -10.8,
+   "expected": 190.303,
+   "lengthErrorMs": 0,
+   "lengthOk": true,
+   "spectrogram": "films/durable-objects-unbound/score/analysis/m06.png",
+   "cueSeconds": 184.303,
+   "cps": 0.25,
+   "lastStrikeLocal": 179.22,
+   "lastStrike": 1054.692
+  },
+  {
+   "id": "m07",
+   "start": 1058.669,
+   "end": 1302.642,
+   "file": "films/durable-objects-unbound/score/renders/m07.wav",
+   "duration": 249.973,
+   "I": -26.4,
+   "LRA": 6.9,
+   "TP": -10.1,
+   "expected": 249.973,
+   "lengthErrorMs": 0,
+   "lengthOk": true,
+   "spectrogram": "films/durable-objects-unbound/score/analysis/m07.png",
+   "cueSeconds": 243.973,
+   "cps": 0.25,
+   "lastStrikeLocal": 239.36,
+   "lastStrike": 1298.029
+  },
+  {
+   "id": "m08",
+   "start": 1301.134,
+   "end": 1439.4167,
+   "file": "films/durable-objects-unbound/score/renders/m08.wav",
+   "duration": 144.2827,
+   "I": -25.3,
+   "LRA": 10.7,
+   "TP": -7.2,
+   "expected": 144.2827,
+   "lengthErrorMs": 0,
+   "lengthOk": true,
+   "spectrogram": "films/durable-objects-unbound/score/analysis/m08.png",
+   "cueSeconds": 138.2827,
+   "cps": 0.25,
+   "lastStrikeLocal": 130.54,
+   "lastStrike": 1431.674
+  }
+ ],
+ "joins": [
+  {
+   "from": "m01",
+   "to": "m02",
+   "overlap": 1.908
+  },
+  {
+   "from": "m02",
+   "to": "m03",
+   "overlap": 2.137
+  },
+  {
+   "from": "m03",
+   "to": "m04",
+   "overlap": 1.109
+  },
+  {
+   "from": "m04",
+   "to": "m05",
+   "overlap": 2.121
+  },
+  {
+   "from": "m05",
+   "to": "m06",
+   "overlap": 1.103
+  },
+  {
+   "from": "m06",
+   "to": "m07",
+   "overlap": 1.106
+  },
+  {
+   "from": "m07",
+   "to": "m08",
+   "overlap": 1.508
+  }
+ ],
+ "musicSeconds": 1450.41
+}

@@ -1,0 +1,161 @@
+[
+ {
+  "id": "Q01",
+  "text": "…only one location in the whole world at a time.",
+  "speaker": "Kenton Varda",
+  "date": "2020-09-28",
+  "source": "https://blog.cloudflare.com/introducing-workers-durable-objects",
+  "sourceId": "cf-do-2020",
+  "context": "Introducing Durable Objects.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ },
+ {
+  "id": "Q02",
+  "text": "The logical unit of state in a chat app is a chat room.",
+  "speaker": "Kenton Varda",
+  "date": "2020-09-28",
+  "source": "https://blog.cloudflare.com/introducing-workers-durable-objects",
+  "sourceId": "cf-do-2020",
+  "context": "The chat demo.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file"
+ },
+ {
+  "id": "Q03",
+  "text": "When a storage write operation is in progress, any new outgoing network messages will be held back",
+  "speaker": "Kenton Varda",
+  "date": "2021-08-03",
+  "source": "https://blog.cloudflare.com/durable-objects-easy-fast-correct-choose-three/",
+  "sourceId": "cf-gates-2021",
+  "context": "Opening clause of the output-gate rule; in the source the sentence goes on to name the release condition (the write completing).",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file"
+ },
+ {
+  "id": "Q04",
+  "text": "workerd is Open Source under the Apache License version 2.0.",
+  "speaker": "Kenton Varda",
+  "date": "2022-09-27",
+  "source": "https://blog.cloudflare.com/workerd-open-source-workers-runtime/",
+  "sourceId": "cf-workerd-2022",
+  "context": "",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file"
+ },
+ {
+  "id": "Q05",
+  "text": "Latency is effectively zero",
+  "speaker": "Kenton Varda",
+  "date": "2024-09-26",
+  "source": "https://blog.cloudflare.com/sqlite-in-durable-objects/",
+  "sourceId": "cf-sqlite-2024",
+  "context": "About LOCAL access. Never present as end-to-end acknowledgement latency.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ },
+ {
+  "id": "Q06",
+  "text": "Once at least three of these followers respond… the write is confirmed.",
+  "speaker": "Kenton Varda",
+  "date": "2024-09-26",
+  "source": "https://blog.cloudflare.com/sqlite-in-durable-objects/",
+  "sourceId": "cf-sqlite-2024",
+  "context": "Hosted Storage Relay Service.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ },
+ {
+  "id": "Q10",
+  "text": "we were delighted.",
+  "speaker": "Kenton Varda",
+  "date": "2026-10-09",
+  "source": "https://blog.cloudflare.com/deno-joins-cloudflare/",
+  "sourceId": "cf-deno-2026",
+  "context": "Kenton Varda's section of the joint post; the excerpt closes his sentence about celld's release.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ },
+ {
+  "id": "Q12",
+  "text": "the entire Deno team is joining Cloudflare",
+  "speaker": "Ryan Dahl",
+  "date": "2026-10-09",
+  "source": "https://deno.com/blog/cloudflare",
+  "sourceId": "deno-2026",
+  "context": "",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ },
+ {
+  "id": "Q14",
+  "text": "…the beginning of merging celld's functionality into workerd.",
+  "speaker": "Ryan Dahl (commit message)",
+  "date": "2026-10-28",
+  "source": "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+  "sourceId": "wd-commit",
+  "context": "Commit aa494794.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ },
+ {
+  "id": "Q16",
+  "text": "Alarms are not supported yet",
+  "speaker": "Ryan Dahl (commit message)",
+  "date": "2026-10-28",
+  "source": "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5",
+  "sourceId": "wd-commit",
+  "context": "Commit aa494794 (no final period in the original).",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file"
+ },
+ {
+  "id": "Q17",
+  "text": "…a witness to writes, notified every time an object changes.",
+  "speaker": "Werner Vogels",
+  "date": "2021-04-20",
+  "source": "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html",
+  "sourceId": "vogels-2021",
+  "context": "How S3 implemented strong consistency.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ },
+ {
+  "id": "Q18",
+  "text": "They were more work, in fact, than the actual implementation itself.",
+  "speaker": "Werner Vogels",
+  "date": "2021-04-20",
+  "source": "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html",
+  "sourceId": "vogels-2021",
+  "context": "About S3's proofs and model checking.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file"
+ },
+ {
+  "id": "Q19",
+  "text": "It needs no serving control plane or consensus service.",
+  "speaker": "celld README (v0.6.3)",
+  "date": "2026-10-21",
+  "source": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md",
+  "sourceId": "cd-readme",
+  "context": "",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file"
+ },
+ {
+  "id": "Q24",
+  "text": "…ignores the condition fails late and silently",
+  "speaker": "celld docs/guarantees.md (v0.6.3)",
+  "date": "2026-10-21",
+  "source": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+  "sourceId": "cd-guarantees",
+  "context": "",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ },
+ {
+  "id": "Q25",
+  "text": "…cannot act on a value that a crash can still lose.",
+  "speaker": "celld docs/guarantees.md (v0.6.3)",
+  "date": "2026-10-21",
+  "source": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md",
+  "sourceId": "cd-guarantees",
+  "context": "Closes the acknowledgement rule.",
+  "verified": "2026-10-31 verbatim against the fetched page / pinned file",
+  "excerpt": "2026-11-01: exact excerpt of the verified witness (film quotation budget, <=25 words per source URL)"
+ }
+]

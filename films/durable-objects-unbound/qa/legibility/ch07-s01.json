@@ -1,0 +1,44 @@
+{
+ "shot": "ch07-s01",
+ "at": "2026-11-01T07:04:13.984Z",
+ "minCapPx": 22,
+ "sampled": 48,
+ "texts": 6,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "C",
+   "capWhileSubject": 77.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 75,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "7",
+   "capWhileSubject": 75,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "workerd · 28 Oct",
+   "capWhileSubject": 32,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Missing scroll: the restore refuses",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "session 7",
+   "maxCap": 13.2,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

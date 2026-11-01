@@ -1,0 +1,102 @@
+// m07 · THE NEIGHBOURS (ch07) · D minor → G (celld's town) → A-sus4 (the shut door) → D open fifth
+//   s01  alone in the hold: the harbour drone under the iris and a D minor pad; a soft page-turn pulse for each
+//        scroll laid (pizzicato D–A), stopped dead on 'cold', resuming for 'Pages are laid down again'; T on 'back'.
+//   s02  the drone thins; W at half speed in the cello for the long walk to the Well; one cool A minor (add9) chord
+//        after 'followers'; on 'Change the lamps' everything falls away (silence).
+//   s03  celld's town in G (harp and a muted pad, B natural: the green colour); a dry low knock on each 'press'; on
+//        'pressed' the knock again and T on 'ring', before any well sound; a faint low harp D for 'upload'.
+//   s03b W slow in the cello for the lone house, then the bell after 'still correct'; a knock per running house; the
+//        three-copies chord (the fullest moment so far) after 'three copies', thinned to two notes on 'two copies'.
+//   s04  SILENCE for the failure from 'dies'; one hollow knock after 'Pull the pin'; a low held D under the shelves,
+//        gone before 'Forty-two is gone'; the stale bell (D against E-flat) and T broken after 'one more bell'; the
+//        green pad creeps back after 'Pin back'.
+//   s05  parchment hush (the pad very low); a dry click on 'fence'; a soft thud on 'Seal' and on 'reach'; a low harp D
+//        on 'upload'; the gate opens on a held piano A after 'restore', unresolved.
+//   s06  case one resolves on a warm open fifth on 'proceeds'; a reversed breath into case two; S (A-sus4) from
+//        'damaged', never resolving; T withheld; a single low muffled bell after the last line: a door that did not open.
+//   s07  a patient two-bar pizzicato loop for the retries over S; S resolves to the open fifth D–A on 'relights';
+//        T full and clear (A after 'whole', D after 'relights': LAST STRIKE), held warm into the iris.
+setcpm(15)
+const CPS = 0.25, DUR = @{DUR}
+const Q = 480, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => {
+  evs = evs.filter(Boolean).map(([t, d, p]) => [Math.max(0, t), d, p]).sort((x, y) => x[0] - y[0])
+  const out = [], end = qn(DUR); let cur = 0
+  evs.forEach(([t, d, p], i) => {
+    let a = Math.max(qn(t), cur); const b = Math.min(qn(t + d), end, i + 1 < evs.length ? qn(evs[i + 1][0]) : end)
+    if (b - a < 2) return
+    if (a > cur) out.push([a - cur, silence])
+    out.push([b - a, p]); cur = b })
+  if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const n = (t, d, ns, v = 0.2) => [t, d, note(typeof ns === 'string' && ns.includes(',') ? '[' + ns + ']' : ns).velocity(v)]
+const felt = x => x.s("piano").gain(1.6).lpf(1800).release(1.8).room(0.3).rsize(4)
+const harp = x => x.s("gm_orchestral_harp").gain(1.6).lpf(2200).release(2.4).room(0.32).rsize(4)
+const pizz = x => x.s("gm_pizzicato_strings").gain(1.6).lpf(1400).release(0.5).room(0.25).rsize(4)
+const cello = x => x.s("gm_cello").gain(1.6).attack(0.35).release(1.4).lpf(1200).room(0.3).rsize(4)
+const str = (x, lp = 850, rel = 2.6) => x.s("gm_string_ensemble_1").gain(1.6).attack(1.6).release(rel).lpf(lp).room(0.35).rsize(4)
+const drone = (x, rel = 3) => stack(x.s("triangle").lpf(380).gain(0.06), x.s("sawtooth").lpf(200).gain(0.028)).hpf(40).attack(3).release(rel)
+const every = (t0, t1, step, notes, v) => { const o = []; let k = 0; for (let t = t0; t < t1 - 0.05; t += step, k++) o.push(n(t, Math.min(step, 0.5), notes[k % notes.length], v)); return o }
+
+// ---------------------------------------------------------------- drone
+$: drone(tl(n(0, @{L0708} - 0, "d2,a2", 1)), 2)
+$: drone(tl(n(@{L0708}, @{L0712} - @{L0708}, "d2,a2", 0.6)), 0.3)          // thinner; falls away on 'Change the lamps'
+
+// ---------------------------------------------------------------- pads
+$: str(tl(
+    n(0.2, @{L0708} - 0.2, "d3,a3,f3", 0.18),
+    n(@{L0708}, @{L0710.followers.end} - @{L0708}, "d3,a3", 0.15),
+    n(@{L0710.followers.end}, @{L0712} - @{L0710.followers.end}, "a2,e3,b3", 0.17),
+    // celld's town
+    n(@{ch07-s03}, @{L0718.end} - @{ch07-s03}, "g2,d3,b3", 0.17),
+    n(@{L0718.end}, @{L0719.two} - @{L0718.end}, "g2,d3,g3,b3", 0.17),         // three copies (the harp in the gap carries the accent)
+    n(@{L0719.two}, @{L0720.dies} - @{L0719.two}, "g3,d4", 0.16),             // two copies
+    n(@{L0725.back.end}, @{L0730} - @{L0725.back.end}, "g2,d3,b3", 0.12),    // creeps back; the parchment hush
+    n(@{L0730}, @{L0731.proceeds} - @{L0730}, "d3,a3,f3", 0.15),
+    n(@{L0731.proceeds}, @{L0732} - @{L0731.proceeds}, "d3,a3", 0.2),         // case one: a warm open fifth
+    n(@{L0732.damaged.end}, @{L0736.relights} - @{L0732.damaged.end}, "a2,d3,e3,a3", 0.18),   // S: the shut door
+    n(@{L0736.relights}, @{DUR} - @{L0736.relights}, "d3,a3,d4", 0.2)), 850, 0.9)   // S resolves, open fifth
+$: tl(n(@{L0731.end} - 1.4, @{L0732} - (@{L0731.end} - 1.4), "d3,a3", 0.2)).s("gm_string_ensemble_1").gain(1.6).attack(1.5).release(0.1).lpf(850).room(0.35).rsize(4)   // reversed breath
+$: str(tl(n(@{L0722}, @{L0723.forty-two} - @{L0722}, "d2", 0.24)), 500, 0.5)   // under the shelves; nothing on 'gone'
+
+// ---------------------------------------------------------------- cello: W
+$: cello(tl(
+    n(@{L0708.waits}, 2.2, "d3", 0.18), n(@{L0708.waits} + 2.2, 2.2, "c3", 0.18), n(@{L0708.waits} + 4.4, 2.2, "bb2", 0.18), n(@{L0708.waits} + 6.6, 3.0, "a2", 0.18),
+    n(@{L0717.fleet.end}, 1.1, "d3", 0.17), n(@{L0717.fleet.end} + 1.1, 1.1, "c3", 0.17), n(@{L0717.fleet.end} + 2.2, 1.1, "bb2", 0.17), n(@{L0717.fleet.end} + 3.3, @{L0717.end} - (@{L0717.fleet.end} + 3.3), "a2", 0.17)))
+
+// ---------------------------------------------------------------- piano: T
+$: felt(tl(
+    n(@{L0707.back}, @{L0707.back.end} + 0.05 - @{L0707.back}, "a4", 0.13), n(@{L0707.back.end} + 0.05, 1.8, "d5", 0.15),
+    n(@{L0715.ring}, @{L0715.ring.end} + 0.2 - @{L0715.ring}, "a4", 0.12), n(@{L0715.ring.end} + 0.2, 1.6, "d5", 0.12),
+    n(@{L0724.end} + 0.05, 0.3, "a4", 0.14), n(@{L0724.end} + 0.35, 1.3, "eb5", 0.12),   // T broken: the stale bell
+    n(@{L0729.restore.end} + 0.05, 3.5, "a4", 0.14),                                    // the gate opens: A, held
+    n(@{L0734.end} + 0.1, 2.2, "a1", 0.16),                                             // the muffled low bell
+    n(@{L0736.whole.end} + 0.05, @{L0736.relights.end} + 0.03 - (@{L0736.whole.end} + 0.05), "a4", 0.17),
+    n(@{L0736.relights.end} + 0.03, @{DUR} - (@{L0736.relights.end} + 0.03), "d5", 0.17)))   // LAST STRIKE, in the breath before 'forty-two' 
+
+// ---------------------------------------------------------------- harp
+$: harp(tl(
+    n(@{ch07-s03} + 0.3, 0.4, "g2", 0.15), n(@{ch07-s03} + 0.7, 0.4, "d3", 0.15), n(@{ch07-s03} + 1.1, 1.6, "b3", 0.14),
+    n(@{L0715.upload}, 1.6, "d2", 0.12),
+    n(@{L0717.end} + 0.05, 1.6, "d3,a3", 0.18),                                         // the bell, after the Well's proof
+    n(@{L0718.end} + 0.03, 1.8, "g2,d3,g3,b3", 0.18),
+    n(@{L0724.bell.end} + 0.02, 1.6, "d3,eb3", 0.15),                                   // the stale bell
+    n(@{L0728.upload}, 1.4, "d2", 0.14),
+    n(@{L0731.proceeds}, 1.8, "d3,a3", 0.15),
+    n(@{L0734.end} + 0.1, 2.2, "a1", 0.14),
+    n(@{L0736.relights}, @{DUR} - @{L0736.relights}, "d3,a3", 0.15)))
+$: harp(tl(n(@{L0734.end} + 0.1, 2.2, "a2", 0.08))).lpf(500)
+
+// ---------------------------------------------------------------- pizzicato
+$: pizz(tl(
+    ...every(@{L0703.scroll}, @{L0704.cold}, 0.6, ["d3", "a2"], 0.1),
+    ...every(@{L0706}, @{L0706.end}, 0.6, ["d3", "a2"], 0.1),
+    n(@{L0714.press}, 0.4, "g2", 0.16), n(@{L0714.press#2}, 0.4, "g2", 0.16), n(@{L0715.pressed}, 0.4, "g2", 0.16),
+    n(@{L0718.two}, 0.4, "g2", 0.14), n(@{L0718.three}, 0.4, "g2", 0.14),
+    n(@{L0721.end} + 0.03, 0.5, "d3", 0.17),                                            // one hollow knock
+    n(@{L0728.fence}, 0.35, "d4", 0.15),                                                // the Tooth: click
+    n(@{L0728.seal}, 0.4, "g2", 0.14), n(@{L0728.reach}, 0.4, "g2", 0.12),              // wax seals
+    ...every(@{L0735}, @{L0736}, 1.0, ["a2", "d3", "e3", "d3"], 0.09)))
+$: pizz(tl(n(@{L0721.end} + 0.03, 0.5, "a2", 0.12))).lpf(450)
+
+all(x => x.postgain(1))

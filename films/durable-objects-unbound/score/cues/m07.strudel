@@ -1,0 +1,104 @@
+// GENERATED from score/src/m07.strudel by score/tools/fill.mjs against narration/timeline.json (1439.4167 s clock).
+// Window 1058.669–1302.642 (243.973 s). Edit the template, not this file.
+// m07 · THE NEIGHBOURS (ch07) · D minor → G (celld's town) → A-sus4 (the shut door) → D open fifth
+//   s01  alone in the hold: the harbour drone under the iris and a D minor pad; a soft page-turn pulse for each
+//        scroll laid (pizzicato D–A), stopped dead on 'cold', resuming for 'Pages are laid down again'; T on 'back'.
+//   s02  the drone thins; W at half speed in the cello for the long walk to the Well; one cool A minor (add9) chord
+//        after 'followers'; on 'Change the lamps' everything falls away (silence).
+//   s03  celld's town in G (harp and a muted pad, B natural: the green colour); a dry low knock on each 'press'; on
+//        'pressed' the knock again and T on 'ring', before any well sound; a faint low harp D for 'upload'.
+//   s03b W slow in the cello for the lone house, then the bell after 'still correct'; a knock per running house; the
+//        three-copies chord (the fullest moment so far) after 'three copies', thinned to two notes on 'two copies'.
+//   s04  SILENCE for the failure from 'dies'; one hollow knock after 'Pull the pin'; a low held D under the shelves,
+//        gone before 'Forty-two is gone'; the stale bell (D against E-flat) and T broken after 'one more bell'; the
+//        green pad creeps back after 'Pin back'.
+//   s05  parchment hush (the pad very low); a dry click on 'fence'; a soft thud on 'Seal' and on 'reach'; a low harp D
+//        on 'upload'; the gate opens on a held piano A after 'restore', unresolved.
+//   s06  case one resolves on a warm open fifth on 'proceeds'; a reversed breath into case two; S (A-sus4) from
+//        'damaged', never resolving; T withheld; a single low muffled bell after the last line: a door that did not open.
+//   s07  a patient two-bar pizzicato loop for the retries over S; S resolves to the open fifth D–A on 'relights';
+//        T full and clear (A after 'whole', D after 'relights': LAST STRIKE), held warm into the iris.
+setcpm(15)
+const CPS = 0.25, DUR = 243.973
+const Q = 480, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => {
+  evs = evs.filter(Boolean).map(([t, d, p]) => [Math.max(0, t), d, p]).sort((x, y) => x[0] - y[0])
+  const out = [], end = qn(DUR); let cur = 0
+  evs.forEach(([t, d, p], i) => {
+    let a = Math.max(qn(t), cur); const b = Math.min(qn(t + d), end, i + 1 < evs.length ? qn(evs[i + 1][0]) : end)
+    if (b - a < 2) return
+    if (a > cur) out.push([a - cur, silence])
+    out.push([b - a, p]); cur = b })
+  if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const n = (t, d, ns, v = 0.2) => [t, d, note(typeof ns === 'string' && ns.includes(',') ? '[' + ns + ']' : ns).velocity(v)]
+const felt = x => x.s("piano").gain(1.6).lpf(1800).release(1.8).room(0.3).rsize(4)
+const harp = x => x.s("gm_orchestral_harp").gain(1.6).lpf(2200).release(2.4).room(0.32).rsize(4)
+const pizz = x => x.s("gm_pizzicato_strings").gain(1.6).lpf(1400).release(0.5).room(0.25).rsize(4)
+const cello = x => x.s("gm_cello").gain(1.6).attack(0.35).release(1.4).lpf(1200).room(0.3).rsize(4)
+const str = (x, lp = 850, rel = 2.6) => x.s("gm_string_ensemble_1").gain(1.6).attack(1.6).release(rel).lpf(lp).room(0.35).rsize(4)
+const drone = (x, rel = 3) => stack(x.s("triangle").lpf(380).gain(0.06), x.s("sawtooth").lpf(200).gain(0.028)).hpf(40).attack(3).release(rel)
+const every = (t0, t1, step, notes, v) => { const o = []; let k = 0; for (let t = t0; t < t1 - 0.05; t += step, k++) o.push(n(t, Math.min(step, 0.5), notes[k % notes.length], v)); return o }
+
+// ---------------------------------------------------------------- drone
+$: drone(tl(n(0, 39.431 - 0, "d2,a2", 1)), 2)
+$: drone(tl(n(39.431, 62.150 - 39.431, "d2,a2", 0.6)), 0.3)          // thinner; falls away on 'Change the lamps'
+
+// ---------------------------------------------------------------- pads
+$: str(tl(
+    n(0.2, 39.431 - 0.2, "d3,a3,f3", 0.18),
+    n(39.431, 56.073 - 39.431, "d3,a3", 0.15),
+    n(56.073, 62.150 - 56.073, "a2,e3,b3", 0.17),
+    // celld's town
+    n(64.623, 108.428 - 64.623, "g2,d3,b3", 0.17),
+    n(108.428, 112.651 - 108.428, "g2,d3,g3,b3", 0.17),         // three copies (the harp in the gap carries the accent)
+    n(112.651, 121.907 - 112.651, "g3,d4", 0.16),             // two copies
+    n(149.644, 190.714 - 149.644, "g2,d3,b3", 0.12),    // creeps back; the parchment hush
+    n(190.714, 203.654 - 190.714, "d3,a3,f3", 0.15),
+    n(203.654, 205.127 - 203.654, "d3,a3", 0.2),         // case one: a warm open fifth
+    n(208.483, 239.332 - 208.483, "a2,d3,e3,a3", 0.18),   // S: the shut door
+    n(239.332, 243.973 - 239.332, "d3,a3,d4", 0.2)), 850, 0.9)   // S resolves, open fifth
+$: tl(n(204.327 - 1.4, 205.127 - (204.327 - 1.4), "d3,a3", 0.2)).s("gm_string_ensemble_1").gain(1.6).attack(1.5).release(0.1).lpf(850).room(0.35).rsize(4)   // reversed breath
+$: str(tl(n(127.309, 142.079 - 127.309, "d2", 0.24)), 500, 0.5)   // under the shelves; nothing on 'gone'
+
+// ---------------------------------------------------------------- cello: W
+$: cello(tl(
+    n(43.007, 2.2, "d3", 0.18), n(43.007 + 2.2, 2.2, "c3", 0.18), n(43.007 + 4.4, 2.2, "bb2", 0.18), n(43.007 + 6.6, 3.0, "a2", 0.18),
+    n(96.346, 1.1, "d3", 0.17), n(96.346 + 1.1, 1.1, "c3", 0.17), n(96.346 + 2.2, 1.1, "bb2", 0.17), n(96.346 + 3.3, 100.816 - (96.346 + 3.3), "a2", 0.17)))
+
+// ---------------------------------------------------------------- piano: T
+$: felt(tl(
+    n(32.871, 33.220 + 0.05 - 32.871, "a4", 0.13), n(33.220 + 0.05, 1.8, "d5", 0.15),
+    n(85.516, 85.737 + 0.2 - 85.516, "a4", 0.12), n(85.737 + 0.2, 1.6, "d5", 0.12),
+    n(148.136 + 0.05, 0.3, "a4", 0.14), n(148.136 + 0.35, 1.3, "eb5", 0.12),   // T broken: the stale bell
+    n(183.296 + 0.05, 3.5, "a4", 0.14),                                    // the gate opens: A, held
+    n(222.416 + 0.1, 2.2, "a1", 0.16),                                             // the muffled low bell
+    n(238.275 + 0.05, 239.947 + 0.03 - (238.275 + 0.05), "a4", 0.17),
+    n(239.947 + 0.03, 243.973 - (239.947 + 0.03), "d5", 0.17)))   // LAST STRIKE, in the breath before 'forty-two' 
+
+// ---------------------------------------------------------------- harp
+$: harp(tl(
+    n(64.623 + 0.3, 0.4, "g2", 0.15), n(64.623 + 0.7, 0.4, "d3", 0.15), n(64.623 + 1.1, 1.6, "b3", 0.14),
+    n(88.407, 1.6, "d2", 0.12),
+    n(100.816 + 0.05, 1.6, "d3,a3", 0.18),                                         // the bell, after the Well's proof
+    n(108.428 + 0.03, 1.8, "g2,d3,g3,b3", 0.18),
+    n(148.136 + 0.02, 1.6, "d3,eb3", 0.15),                                   // the stale bell
+    n(178.760, 1.4, "d2", 0.14),
+    n(203.654, 1.8, "d3,a3", 0.15),
+    n(222.416 + 0.1, 2.2, "a1", 0.14),
+    n(239.332, 243.973 - 239.332, "d3,a3", 0.15)))
+$: harp(tl(n(222.416 + 0.1, 2.2, "a2", 0.08))).lpf(500)
+
+// ---------------------------------------------------------------- pizzicato
+$: pizz(tl(
+    ...every(15.865, 22.552, 0.6, ["d3", "a2"], 0.1),
+    ...every(27.928, 31.133, 0.6, ["d3", "a2"], 0.1),
+    n(75.737, 0.4, "g2", 0.16), n(80.399, 0.4, "g2", 0.16), n(84.030, 0.4, "g2", 0.16),
+    n(101.266, 0.4, "g2", 0.14), n(105.536, 0.4, "g2", 0.14),
+    n(126.409 + 0.03, 0.5, "d3", 0.17),                                            // one hollow knock
+    n(172.164, 0.35, "d4", 0.15),                                                // the Tooth: click
+    n(175.184, 0.4, "g2", 0.14), n(176.693, 0.4, "g2", 0.12),              // wax seals
+    ...every(224.839, 236.081, 1.0, ["a2", "d3", "e3", "d3"], 0.09)))
+$: pizz(tl(n(126.409 + 0.03, 0.5, "a2", 0.12))).lpf(450)
+
+all(x => x.postgain(1))

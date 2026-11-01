@@ -1,0 +1,18 @@
+{
+ "shot": "ch01-s02",
+ "at": "2026-11-01T07:03:52.926Z",
+ "minCapPx": 22,
+ "sampled": 35,
+ "texts": 1,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [],
+ "texture": [
+  {
+   "text": "workerd · 28 Oct",
+   "maxCap": 14.1,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 1
+}

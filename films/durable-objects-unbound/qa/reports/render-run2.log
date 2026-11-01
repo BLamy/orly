@@ -1,0 +1,30 @@
+render durable-objects-unbound: 34546 frames (1439.4 s of 1439.4 s) @ 1920x1080@24, 72 segments (52 reused), 3 workers, site dev
+  395/9586 frames · 78.8 fps · ETA 1.9 min
+  794/9586 frames · 79.1 fps · ETA 1.9 min
+  1192/9586 frames · 79.1 fps · ETA 1.8 min
+  1464/9586 frames · 72.9 fps · ETA 1.9 min
+  1878/9586 frames · 74.8 fps · ETA 1.7 min
+  2233/9586 frames · 74.2 fps · ETA 1.7 min
+  2609/9586 frames · 74.3 fps · ETA 1.6 min
+  2894/9586 frames · 72.1 fps · ETA 1.5 min
+  3310/9586 frames · 73.4 fps · ETA 1.4 min
+  3716/9586 frames · 74.1 fps · ETA 1.3 min
+  4107/9586 frames · 74.5 fps · ETA 1.2 min
+  4429/9586 frames · 73.6 fps · ETA 1.2 min
+  4861/9586 frames · 74.6 fps · ETA 1.1 min
+  5248/9586 frames · 74.8 fps · ETA 1.0 min
+  5596/9586 frames · 74.4 fps · ETA 0.9 min
+  5897/9586 frames · 73.5 fps · ETA 0.8 min
+  6342/9586 frames · 74.4 fps · ETA 0.7 min
+  6721/9586 frames · 74.5 fps · ETA 0.6 min
+  7061/9586 frames · 74.1 fps · ETA 0.6 min
+  7372/9586 frames · 73.5 fps · ETA 0.5 min
+  7753/9586 frames · 73.6 fps · ETA 0.4 min
+  8091/9586 frames · 73.4 fps · ETA 0.3 min
+  8435/9586 frames · 73.2 fps · ETA 0.3 min
+  8729/9586 frames · 72.6 fps · ETA 0.2 min
+  9026/9586 frames · 72.0 fps · ETA 0.1 min
+  9307/9586 frames · 71.4 fps · ETA 0.1 min
+  9548/9586 frames · 70.5 fps · ETA 0.0 min
+→ films/durable-objects-unbound/render/film.mp4: 34546 frames 1920×1080 @ 24 fps, 1439.42 s, 687.1 MB, 70.06 fps aggregate, 171.6 s wall
+EXIT 0

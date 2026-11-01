@@ -1,0 +1,23 @@
+{
+ "shot": "ch07-s07",
+ "at": "2026-11-01T07:04:18.301Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 2,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [],
+ "texture": [
+  {
+   "text": "C",
+   "maxCap": 73.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "celld 0.6.3",
+   "maxCap": 30.2,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

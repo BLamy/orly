@@ -1,0 +1,118 @@
+{
+ "slug": "durable-objects-unbound",
+ "title": "Durable Objects, Unbound",
+ "subtitle": "One promised message, a well that learned to say no, and the road to running it yourself",
+ "logline": "A chat message gets its tick. The machine that gave the tick goes dark. The tick is still true. In a paper-cut harbour town where every machine is a lamp-lit house, a chat room is a lantern and the storage bucket is the town well, the film follows one promised message through every failure that could break it: two houses claiming the room at once, an owner that sleeps and wakes, a crash mid-upload, a successor that dies mid-recovery, a tail that lives only on the neighbours. From Durable Objects in 2020 to the October 2026 commit that began merging celld into workerd, it shows why a bucket that cannot run a line of code can make a room portable, and why it cannot do it alone.",
+ "runtimeTargetSec": 1440,
+ "narratorWpm": 140,
+ "vhs": {
+  "subject": "Computer Science",
+  "theme": "ocean",
+  "icons": [
+   "globe",
+   "chip",
+   "gear",
+   "book"
+  ],
+  "tagline": "One room, any machine!"
+ },
+ "staging": {
+  "note": "Staging appendix (head writer, story stage, 2026-10-31). Fixed geography, hands, text rules, transitions and the shared build list every shot obeys. Spread into script.json by the assembler; film-shots builds the modules in buildList before any shot. Full visual grammar: story/treatment.md.",
+  "geography": {
+   "canonical": "HARBOUR TOWN (canonical, night, winterBlue): L0 sky ramp peaking at 58% height; L1 the sea and a low far shore with sparse lamps, moon low-left; L2 the hill ridge with dim terraced roofs; L3 three narrow houses on the terrace, always left to right House A (tall, steep gable, round attic window), House B (wider, one chimney), House C (upper terrace, a dormer); each window lamp is that machine's process (lit = running, guttered = gone); each house has a pulley line sloping down to the wellhead; L4 the square with the Well at the left third and, above the wellhead on an iron frame readable from every window like a town clock, the Plate; L5 cobbles and a stone railing; L6 an iron lamp-post crossing frame right (the occluder for in-chapter wipes). A is always screen-left of the Well, B and C screen-right.",
+   "variants": {
+    "ch01": "canonical; s02 lamp change to emberRed when House A gutters, back to winterBlue as C lights",
+    "ch02": "HISTORY DESKS: Kenton Varda's desk screen-left under a warm lamp (duskRose / candleAmber); the paper globe; the Held Letter introduced on the Room Lantern's door; s05 the hosted relay as a serverCyan diagram of the Ribbon branching to five far lamps (badge 'Cloudflare, hosted'), never drawn as the harbour town",
+    "ch03": "THE SQUARE: tight on the Well, the Plate and the Tooth; s04 vertical crane into the Well cutaway (serverCyan); s05 a second, identical-looking well beside it (labGreen lamp, badge 'celld 0.6.3' on the test rig)",
+    "ch04": "TWO DESKS: Ryan Dahl's desk screen-right, Kenton Varda's screen-left; two lamps, two ropes braiding between them; s04 a parchment strip of the commit message (serverCyan rim)",
+    "ch05": "THE TERRACE: houses A and B in two-shot with the Plate between; candles on the sills; parchment ruler inserts",
+    "ch06": "INSIDE THE LANTERN (candleAmber) for the Ribbon and Scissors; the pulley line and the Well for scrolls; the Room Lantern's door for the Held Letter",
+    "ch07": "s01 canonical town; from s02 CELLD'S TOWN: the same terrace re-lamped labGreen with badge 'celld 0.6.3' on the wellhead, two neighbouring copyists' windows (followers) beside the owner's; parchment for the recovery gate",
+    "ch08": "s01 slow pin montage across every machine; s02 canonical; s03 the two desks; s04 DAWN over the harbour (dawnGold), lantern in House C"
+   }
+  },
+  "badges": "IMPLEMENTATION BADGES (canonical): a small brass tag hangs on every machine that shows a real mechanism, naming whose mechanism it is: 'workerd · 28 Oct' (the supplied commit aa494794), 'workerd · 31 Oct' (snapshot ad78a8fe, alarms and facets), 'celld 0.6.3' (8702f6d), 'Cloudflare, hosted' (the 2024 Storage Relay Service), 'Amazon S3' (the store's own behaviour). A mechanism never carries two badges; workerd's 20 s / 16 s / 12 s lease numbers never appear beside a celld badge; LTX never appears beside a workerd badge. Badges are art, drawn by the sets at ≥ 26 px, and count as one text item only when the narration names them.",
+  "pins": "THE PIN (canonical): a red-tagged brass pin seated in the machine whose assumption is under test (the Tooth ch03-s02; A's candle-band latch ch05-s04; the keeper's lamp-to-Plate arm ch06-s05; the neighbours' wax-seal stamp ch07-s04). The demonstrator's hand pulls it on the narration's 'pull', the scene replays without it in emberRed, the hand reseats it and the correct run plays in the chapter's mood. Pins hang on a board for the ch08-s01 montage, each in the order it was pulled.",
+  "hands": {
+   "canonical": "HANDS (canonical): only the demonstrator's hand (cast narrator-hands) reaches into the town from outside, always from the lower RIGHT, and only to pull or reseat a pin, to turn a Plate tile in a parchment insert, or to hold up a slip. Keepers' hands act inside the town (claims, scissors, scrolls, bells). Real people's hands stay at their desks and never touch the town.",
+   "module": "sets/demonstratorHand.ts: a rolled-sleeve forearm sprite with pinch / grip / point variants, sliding in on twos along a shallow arc"
+  },
+  "textRule": "TEXT RULE (canonical): besides the date stamp and name cards, at most two text items per shot, one per beat; labels ≤ 42 characters; quotes verbatim from research/quotes.json, short, attributed, never set in full while also spoken in full; trade terms named once with a 'term' tag; no code identifiers in speech (on a parchment plate an exact identifier may appear once, expanded aloud); the BOTTOM 12% OF THE FRAME (y > 634 of 720) carries no text and no key action (captions live there).",
+  "transitions": "TRANSITIONS (canonical): chapter starts iris open on the Room Lantern or a desk lamp; era moves ink-bleed; every parchment insert paper-folds in and out; failures enter and leave by lampChange (emberRed), never crossfade; in-chapter wipes use the L6 lamp-post occluder; otherwise cut on the idea (the Tooth's click or thunk, the bell).",
+  "accentBudget": "ACCENTS: one warm practical per shot (the Room Lantern or a desk lamp) plus the brass of the Plate and Tooth; serverCyan only inside the Well cutaway, the hosted-relay diagram and the commit strip; red only for pins, wax seals and emberRed failure grades.",
+  "creditsSources": [
+   {
+    "from": "ch02-s01",
+    "text": "Source: Kenton Varda, Cloudflare blog, 28 September 2020"
+   },
+   {
+    "from": "ch02-s05",
+    "text": "Source: Kenton Varda, Cloudflare blog, 26 September 2024"
+   },
+   {
+    "from": "ch03-s04",
+    "text": "Source: Werner Vogels, All Things Distributed, 20 April 2021"
+   },
+   {
+    "from": "ch04-s01",
+    "text": "Source: Ryan Dahl, Cloudflare blog, 9 October 2026"
+   },
+   {
+    "from": "ch04-s04",
+    "text": "Source: Ryan Dahl, workerd commit aa494794, 28 October 2026"
+   }
+  ],
+  "sourcesCard": "SOURCES CARD (end): Cloudflare blog posts by Kenton Varda (2020, 2021, 2022, 2024) and by Ryan Dahl and Kenton Varda (2026); Deno blog (Ryan Dahl, 2026); AWS announcements (Dec 2020, Aug 2024, Nov 2024) and S3 User Guide; Werner Vogels, 'Diving Deep on S3 Consistency' (2021); SQLite file format; workerd at aa494794 and ad78a8fe; celld 0.6.3 at 8702f6d. celld's replicator descends from rustyriver (Mike Nomitch), Litestream (Ben Johnson) and the LTX format. Harbour, room, message, houses and epoch numbers are illustrative. Upstream tests were read, not run.",
+  "buildList": {
+   "note": "Shared, data-driven set and machine modules for apps/bookshelf/src/viz/films/durable-objects-unbound/sets/, built and contact-sheeted before any shot so scale, colour code and placement cannot drift. Each takes explicit state, and draws nothing not bound to a real quantity (style bible §6).",
+   "harbourTown": {
+    "params": "variant (night | celld | dawn), lamp state per house A/B/C {lit, guttering u}, lantern house, pulley lines active, overscan for ±160 px trucks",
+    "shots": "ch01-s01..s03, ch03-s01..s03, ch03-s06, ch05-s01, ch05-s03..s05, ch06-s03, ch06-s05, ch07-s01..s04, ch07-s06, ch07-s07, ch08-s01, ch08-s02, ch08-s04"
+   },
+   "roomLantern": {
+    "params": "house, lit 0..1, members (3-5 silhouettes), slips [{text?, ticked}], doorLatch {held: letter[], open u}",
+    "shots": "ch01-s01, ch01-s02, ch02-s02, ch02-s03, ch06-s01, ch06-s02, ch06-s04, ch06-s05, ch07-s07, ch08-s04, ch01-s02 (House B flicker plant)"
+   },
+   "wellAndPlate": {
+    "params": "plate {house, epoch, from, crownLit}, notch version id, tooth {state: idle | click | thunk, card: {house, notch}}, createShutter open|closed, bucket depth 0..1, badge",
+    "shots": "ch01-s03, ch01-s04, ch03-s01..s03, ch03-s05, ch03-s06, ch05-s01, ch05-s04, ch05-s06, ch06-s03..s05, ch07-s01, ch07-s05, ch08-s01, ch08-s04"
+   },
+   "wellCutaway": {
+    "params": "crane depth 0..1, cisterns n, witness bell rings at write events [t], order ledger entries",
+    "shots": "ch03-s04"
+   },
+   "leaseCandle": {
+    "params": "expiryMs, nowMs (height = (expiry-now)/20000), band 4000 ms, renewal notch 8000 ms before expiry, relight events, skewMs, implementation 'workerd' only (celld uses the badge + a plain 10 s plate, never this scale)",
+    "shots": "ch05-s02..s05, ch08-s01"
+   },
+   "walRibbon": {
+    "params": "frames [{page, commitSize?}], header leader, cut positions (after commit stamps: a red INK STAMP carrying the db size in pages, never wax; wax seals are reserved for celld node-log sealing), pasted-over frames (rollback), freshLeader (checkpoint), scroll packing {session, end, crcTag}",
+    "shots": "ch02-s05, ch06-s01..s05, ch07-s01"
+   },
+   "heldLetter": {
+    "params": "letters [{id, coverTarget}], ackWatermark, bell ring t, latch u, error swap",
+    "shots": "ch02-s03, ch06-s04, ch06-s05, ch08-s04"
+   },
+   "neighbours": {
+    "params": "owner house, followers [{name, notebookRange: complete|incomplete|damaged, pressTurn t, sealed}], bucketUploaded bool, nodeLogRecord absent|open|sealed",
+    "shots": "ch07-s02..s07 (including ch07-s03b)"
+   },
+   "pinBoard": {
+    "params": "pins [{machine, pulled u}], demonstrator hand pose",
+    "shots": "ch03-s02, ch05-s04, ch06-s05, ch07-s04, ch08-s01"
+   },
+   "historyDesk": {
+    "params": "who (kenton | ryan), year card, lamp warmth, screen glow, two-desk braid u",
+    "shots": "ch02-s01, ch02-s03, ch02-s04, ch04-s01..s03, ch08-s03"
+   },
+   "parchmentPlates": {
+    "params": "leaseRuler {expiry 20000, band 4000, serve <16000, renew <12000}, walLayout {header 32, frameHeader 24, commitSize}, plateStates [A·7·7, B·8·7, C·9·7 | B·8·8, C·9·8], recoveryGate steps 1..6, commitStrip lines",
+    "shots": "ch04-s04, ch05-s02, ch05-s06, ch06-s01, ch07-s05"
+   }
+  },
+  "runtime": "Story stage estimate at the house 140 wpm; the narrator's measured wpm replaces it after voice casting (voice/voice.json).",
+  "fixtures": "FIXTURE CONTINUITY (canonical, illustrative): message #42 'the ferry is late' sent from the sender's harbour-side window on L4 right of the Well; House A owns the room at epoch 7 (A·7·from 7); on the night A goes dark House B claims epoch 8 and dies before opening (its window flickers once in ch01-s02, paid off aloud in ch05-s06); House C claims epoch 9 from 7 and recovers epoch 7 (ch07-s01 Plate C·9·from 7, from tile turns to 9 on opening). Pin-out counterfactuals (ch05-s04, ch06-s05) replay with B at epoch 8 and are labelled by the emberRed grade. In celld's town (ch07-s02..s07) the successor is House C's node; its own notebook is one of the two recovery reads."
+ },
+ "runtimeCeilingSec": 1680,
+ "runtimeCeilingNote": "2026-10-31: the brief allows 20–28 minutes; the authorized hard ceiling is 28 minutes (1680 s), with a 24-minute target. Story estimate at 140 wpm; the locked voice wpm replaces it."
+}

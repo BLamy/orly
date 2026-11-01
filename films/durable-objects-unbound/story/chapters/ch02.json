@@ -1,0 +1,704 @@
+{
+ "id": "ch02",
+ "number": 2,
+ "title": "One Room in the Whole World",
+ "blurb": "2020 to 2024 on Cloudflare's network. Kenton Varda introduces Durable Objects: one identifier, one place in the world at a time, and a chat room as the demonstration. In 2021 his output gate holds every reply behind a latch until the write it follows has finished: the tick is a held letter, released. In 2022 the runtime, workerd, becomes open source, but its rooms cannot travel: a single instance. In 2024 SQLite moves into the same thread, local reads become almost instant, and Cloudflare's hosted Storage Relay Service keeps the tick honest with object storage and five followers, three to confirm. Real machinery, and all of it inside Cloudflare.",
+ "shots": [
+  {
+   "id": "ch02-s01",
+   "kind": "scene",
+   "setting": "Kenton Varda's desk, screen-left, under a warm lamp (September 2020); a dusk window behind; then a paper globe on a stand",
+   "era": "2020s",
+   "mood": "duskRose",
+   "lines": [
+    {
+     "id": "L0201",
+     "text": "On the twenty-eighth of September, 2020, Kenton Varda of Cloudflare introduced Durable Objects, in a closed beta.",
+     "pauseAfter": 0.6,
+     "direction": "the history begins: a date said with care, the name and role clear and respectful"
+    },
+    {
+     "id": "L0202",
+     "text": "Each object has an identifier that is unique across the whole world.",
+     "direction": "even, explanatory; 'whole world' opens out"
+    },
+    {
+     "id": "L0203",
+     "text": "And his post is plain about where that object lives.",
+     "pauseAfter": 0.9,
+     "direction": "a turn toward the quote on screen; leave room for the eye to read it",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
+    },
+    {
+     "id": "L0204",
+     "text": "In one place. Only ever one, at a time.",
+     "pauseAfter": 0.6,
+     "direction": "slow, two small steps; 'one' each time a little heavier"
+    },
+    {
+     "id": "L0205",
+     "text": "So every request about the same thing reaches the same place, and that place can coordinate them.",
+     "direction": "the consequence, a teacher's pleasure in it; 'coordinate' clear"
+    }
+   ],
+   "leadIn": 1.2,
+   "holdAfter": 1,
+   "visual": "THIS SHOT: the 2020 idea, one object in one place. HISTORY DESK (duskRose). Iris opens on Kenton Varda's desk lamp (beat iris). Kenton Varda (cast kenton-varda), a generic, dignified 2020s silhouette, sits screen-left at his desk in profile facing right, laptop open, idle think; the lamp warm at L4, a dusk window with a far city on L2, a shelf edge on L5 at the left. Date stamp '28 September 2020' top-right from the first frames; name card on 'Kenton' at mid-left, above the caption band (beat name). Camera: slow truck right of about 80 px and a gentle dolly in. On 'identifier' the laptop's screen glow lifts and the camera pushes past his shoulder into it; the glow ink-dissolves to a paper globe on a turned stand, slowly rotating (beat globe). On 'plain' the quote card Q01 sets upper-left on a soft plate (beat plain). On 'place' a single paper lantern lights on the globe's surface; every other point stays dark (beat one). On 'request' small paper slips drift in from many points on the globe and all converge on that one lantern (beat converge). Just after 'coordinate' the globe turns to show many small lanterns, each lit in its own single place, each with its own few slips (beat many). Real person's hands stay at his desk; nothing touches the harbour. No implementation badge: this is the 2020 post's idea, carried by its date stamp.",
+   "beats": [
+    {
+     "id": "iris",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "iris opens on Kenton Varda's desk lamp"
+    },
+    {
+     "id": "date",
+     "at": {
+      "shotTime": 0.5
+     },
+     "what": "date stamp 28 September 2020"
+    },
+    {
+     "id": "name",
+     "at": {
+      "line": "L0201",
+      "word": "Kenton"
+     },
+     "what": "name card: Kenton Varda, Cloudflare"
+    },
+    {
+     "id": "globe",
+     "at": {
+      "line": "L0202",
+      "word": "identifier"
+     },
+     "what": "push into the screen glow; dissolve to the paper globe"
+    },
+    {
+     "id": "plain",
+     "at": {
+      "line": "L0203",
+      "word": "plain"
+     },
+     "what": "quote card Q01 sets upper-left"
+    },
+    {
+     "id": "one",
+     "at": {
+      "line": "L0204",
+      "word": "place"
+     },
+     "what": "a single lantern lights on the globe"
+    },
+    {
+     "id": "converge",
+     "at": {
+      "line": "L0205",
+      "word": "request"
+     },
+     "what": "slips from many points converge on the one lantern"
+    },
+    {
+     "id": "many",
+     "at": {
+      "line": "L0205",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "many small lanterns, each in its own single place"
+    }
+   ],
+   "cast": [
+    "kenton-varda"
+   ],
+   "props": [
+    "history desk with a warm lamp and laptop (2020)",
+    "dusk window with a far city",
+    "paper globe on a turned stand",
+    "small paper lanterns on the globe",
+    "drifting paper request slips"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "28 September 2020",
+     "beat": "date"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Kenton Varda · Cloudflare",
+     "beat": "name"
+    },
+    {
+     "kind": "quote",
+     "text": "…only one location in the whole world at a time. — Kenton Varda, 2020",
+     "beat": "plain"
+    }
+   ],
+   "music": {
+    "cue": "ch02-a-desks",
+    "note": "a warm desk-lamp colour after the harbour: a quiet keyboard-like figure under the date; on the globe a single sustained note for the one lantern; the converging slips are soft plucks gathering to one pitch"
+   },
+   "transitionIn": "iris",
+   "claims": [
+    "HI01",
+    "HI03"
+   ]
+  },
+  {
+   "id": "ch02-s02",
+   "kind": "scene",
+   "setting": "Kenton Varda's desk (2020), a paper Room Lantern beside the laptop; candlelight from inside the lantern",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0207",
+     "text": "His demonstration is a chat app: each chat room is one object, and every message passes through it to everyone else.",
+     "direction": "concrete and friendly; let the semicolon breathe; 'everyone else' light"
+    },
+    {
+     "id": "L0208",
+     "text": "That is the kind of room our lantern holds: one room, one object, one home.",
+     "pauseAfter": 0.8,
+     "direction": "connecting the history to our harbour; three short beats on 'one'"
+    },
+    {
+     "id": "L0209",
+     "text": "Notice what one home does not mean. A handler can stop and wait, and living in one place does not make all its steps one transaction.",
+     "level": "soft",
+     "direction": "a careful aside, the teacher's caveat; 'does not mean' clear; 'stop and wait' slowed a touch"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: the chat room, and the harbour's room in history. Cut to the same desk, closer: beside the laptop stands a small paper Room Lantern, candleAmber light from within, three member silhouettes inside. Kenton Varda stays screen-left at the edge of frame, soft, hands at the laptop. Camera: a slow dolly in on the lantern (z +140 over the shot). On 'demonstration' the quote card Q02 sets upper-right (beat demo). On 'passes' thin threads of light join each member to the lantern's centre (beat threads); on 'message' one member's slip rises and three copies flutter out to the other members along the threads (beat broadcast). On 'lantern' the desk lantern matches in shape to the harbour's Room Lantern: the desk falls away into the night harbour behind it for a moment, House C's window around it, then returns (beat match). On 'Notice' the inside of the lantern is lit as a small stage (beat notice): a member's handler is shown as a slip in two halves; on 'wait' the first half is set down and the handler pauses, and another member's slip slides between the halves before the second half lands (beat interleave): one home, but not one big step. The two halves and the intruding slip are cut-paper only, no text. Keep the lantern centre at about 45% height, all action above y 634.",
+   "beats": [
+    {
+     "id": "demo",
+     "at": {
+      "line": "L0207",
+      "word": "demonstration"
+     },
+     "what": "quote card Q02 sets upper-right"
+    },
+    {
+     "id": "threads",
+     "at": {
+      "line": "L0207",
+      "word": "passes"
+     },
+     "what": "threads of light join each member to the lantern"
+    },
+    {
+     "id": "broadcast",
+     "at": {
+      "line": "L0207",
+      "word": "message"
+     },
+     "what": "one slip, three copies passed to the others"
+    },
+    {
+     "id": "match",
+     "at": {
+      "line": "L0208",
+      "word": "lantern"
+     },
+     "what": "the desk lantern matches the harbour's Room Lantern for a moment"
+    },
+    {
+     "id": "notice",
+     "at": {
+      "line": "L0209",
+      "word": "Notice"
+     },
+     "what": "the lantern's inside lit as a small stage"
+    },
+    {
+     "id": "interleave",
+     "at": {
+      "line": "L0209",
+      "word": "wait"
+     },
+     "what": "a handler pauses between two halves; another slip slides between them"
+    }
+   ],
+   "cast": [
+    "kenton-varda"
+   ],
+   "props": [
+    "history desk and laptop (2020)",
+    "paper Room Lantern with three members",
+    "threads of light",
+    "paper message slips",
+    "a handler's slip in two halves"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "The logical unit of state in a chat app is a chat room. — Kenton Varda, 2020",
+     "beat": "demo"
+    }
+   ],
+   "music": {
+    "cue": "ch02-a-desks",
+    "note": "the desk figure continues; the broadcast is three small echoing plucks; a brief return of the harbour drone under the match; the aside drops to a single held tone with a gentle hitch on 'wait'"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "HI02",
+    "HI04",
+    "FX01"
+   ]
+  },
+  {
+   "id": "ch02-s03",
+   "kind": "scene",
+   "setting": "Kenton Varda's desk (August 2021), the Room Lantern's door in close-up with a brass latch; lamp-warm dusk",
+   "era": "2020s",
+   "mood": "duskRose",
+   "lines": [
+    {
+     "id": "L0210",
+     "text": "The third of August, 2021. A later post of his is called Easy, Fast, Correct: Choose three.",
+     "pauseAfter": 0.6,
+     "direction": "a date, then the title with a hint of its own wit; the colon is a small pause"
+    },
+    {
+     "id": "L0211",
+     "text": "It puts a gate on the room's door, an output gate. While a write is unfinished, the reply to our sender waits behind a latch.",
+     "direction": "slow, mechanical, watching it happen; 'waits behind a latch' placed"
+    },
+    {
+     "id": "L0212",
+     "text": "The write completes. The latch lifts, and the letter goes out.",
+     "pauseAfter": 0.7,
+     "direction": "two small satisfactions; 'lifts' a little brighter"
+    },
+    {
+     "id": "L0213",
+     "text": "If the write fails, the waiting letters are thrown away, replaced with errors, and the object restarts.",
+     "direction": "the teacher who enjoys a good failure: dry, exact, each consequence its own step"
+    },
+    {
+     "id": "L0214",
+     "text": "So the tick in the harbour was a held letter, released.",
+     "direction": "a quiet click of understanding; 'released' landing soft",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     },
+     "insertGaps": {
+      "letter": 0.25
+     }
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1.4,
+   "visual": "THIS SHOT: the output gate, the Held Letter introduced. inkBleed from 2020 to 2021: the same desk, the lamp moved a hand's width, the window now late-summer dusk. Kenton Varda screen-left at the laptop, soft. Date stamp '3 August 2021' top-right from the first frames (beat date). Camera: a slow push from the desk to the Room Lantern's door in close-up, the lantern filling the right two-thirds. On 'gate' the quote card Q03 sets upper-left on a soft plate (beat gate). The door: a small paper door with a brass latch. Inside, a member's quill writes a line into a ledger (the storage write, ink still wet). On 'latch' the reply letter to the sender slides up to the door and rests against the latch, held (beat held); the term tag paints at top-left. On 'completes' the ink dries, the ledger line darkens (beat done); on 'lifts' the latch swings up and the letter flies out of frame right (beat lift). On 'fails' a lampChange flicker to emberRed: the quill snaps, the ledger line smears; on 'errors' two waiting letters turn to torn red-edged error slips and fall away (beat errors); on 'restarts' the lantern's flame gutters and relights (beat restart); the grade returns to duskRose. On 'tick' a small inset of the harbour slip from chapter 1 slides in beside the door, its tick visible, and the latch is shown lifting behind it (beat tick). Text stays above y 634. No implementation badge: this is the 2021 post's description, carried by its date stamp.",
+   "beats": [
+    {
+     "id": "date",
+     "at": {
+      "shotTime": 0.4
+     },
+     "what": "date stamp 3 August 2021"
+    },
+    {
+     "id": "gate",
+     "at": {
+      "line": "L0211",
+      "word": "gate"
+     },
+     "what": "quote card Q03 sets upper-left"
+    },
+    {
+     "id": "held",
+     "at": {
+      "line": "L0211",
+      "word": "latch"
+     },
+     "what": "the reply letter rests against the latch, held; term tag"
+    },
+    {
+     "id": "done",
+     "at": {
+      "line": "L0212",
+      "word": "completes"
+     },
+     "what": "the ledger ink dries"
+    },
+    {
+     "id": "lift",
+     "at": {
+      "line": "L0212",
+      "word": "lifts"
+     },
+     "what": "the latch swings up; the letter flies out"
+    },
+    {
+     "id": "errors",
+     "at": {
+      "line": "L0213",
+      "word": "errors"
+     },
+     "what": "emberRed flicker: held letters become red-edged error slips"
+    },
+    {
+     "id": "restart",
+     "at": {
+      "line": "L0213",
+      "word": "restarts"
+     },
+     "what": "the lantern's flame gutters and relights"
+    },
+    {
+     "id": "tick",
+     "at": {
+      "line": "L0214",
+      "word": "tick"
+     },
+     "what": "inset of chapter 1's ticked slip beside the lifting latch"
+    }
+   ],
+   "cast": [
+    "kenton-varda",
+    "sender"
+   ],
+   "props": [
+    "history desk (2021)",
+    "Room Lantern's paper door with a brass latch (the Held Letter)",
+    "a member's quill and ledger (the storage write)",
+    "reply letters",
+    "red-edged error slips",
+    "inset of the ticked #42 slip"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "3 August 2021",
+     "beat": "date"
+    },
+    {
+     "kind": "quote",
+     "text": "When a storage write operation is in progress, any new outgoing network messages will be held back — Kenton Varda, 2021",
+     "beat": "gate"
+    },
+    {
+     "kind": "term",
+     "text": "output gate",
+     "gloss": "the Held Letter",
+     "beat": "held"
+    }
+   ],
+   "music": {
+    "cue": "ch02-a-desks",
+    "note": "the house bell motif introduced, very small, as the latch lifts; silence on 'fails' with one muted knock; the flame's relight a soft rising breath; on 'tick' the two-note tick motif returns, now heard as the latch releasing"
+   },
+   "transitionIn": "inkBleed",
+   "claims": [
+    "HI05"
+   ]
+  },
+  {
+   "id": "ch02-s04",
+   "kind": "scene",
+   "setting": "Kenton Varda's desk across two eras (September 2022, then September 2024): a cut-paper runtime house leaving by the window road; then a small bound book of SQLite inside the Room Lantern",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0215",
+     "text": "September 2022. Cloudflare opens the source of its runtime, workerd.",
+     "pauseAfter": 0.6,
+     "direction": "a new era, plain; 'workerd' said clearly as a name",
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     }
+    },
+    {
+     "id": "L0216",
+     "text": "Now the runtime could leave Cloudflare, and a room could come too, but only as a single instance on one machine. In 2026 Ryan Dahl would call it exactly that: limited to a single instance.",
+     "pauseAfter": 0.8,
+     "direction": "a dry turn on 'The room could not'; then the later words reported plainly, not mocked"
+    },
+    {
+     "id": "L0217",
+     "text": "September 2024. SQLite moves inside the object, into the very same thread as its code.",
+     "direction": "brighter, a real advance; 'very same thread' with relish"
+    },
+    {
+     "id": "L0218",
+     "text": "Local reads become almost instant.",
+     "pauseAfter": 0.6,
+     "direction": "quick and light, as fast as it says"
+    },
+    {
+     "id": "L0219",
+     "text": "But a tick is not a local read. A tick says the write will outlive the machine.",
+     "direction": "slower again; the film's distinction; 'outlive the machine' firm"
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1.2,
+   "visual": "THIS SHOT: the runtime that could leave, and the room that could not; then SQLite. inkBleed into 2022: the desk at screen-left, Kenton Varda soft at its edge, the lamp a little cooler. Date stamp '27 September 2022' top-right (beat date22). On 'source' the quote card Q04 sets upper-left (beat q04, until s24). On 'leave' a cut-paper house frame (the runtime: walls and roof, no lantern inside) lifts off the desk and walks out through the window onto a paper road toward a far hill (beat leave). On 'only' the Room Lantern follows the runtime out to a far hill, but alone: one lantern on one house, its thread tied there, with no second house able to take it if that house goes dark (beat tether). On 'single' the lantern's lone flame is ringed once, no second copy anywhere (beat single). Then the date stamp changes to '26 September 2024' with a small ink bleed across the window (beat s24); Q04 clears. On 'SQLite' a small bound book slides into the Room Lantern right beside the members, inside the same paper walls and lit by the same flame (beat book). On 'instant' a member's slip touches the book and comes back at once, no travel at all (beat local); the quote card for Q05's fragment sets upper-left. On 'outlive' the camera pushes to the lantern's door: the reply letter still waits at the latch, because a local read is not what a tick promises (beat door). Camera: slow truck left to right across the two eras, then the push; all action above y 634.",
+   "beats": [
+    {
+     "id": "date22",
+     "at": {
+      "shotTime": 0.4
+     },
+     "what": "date stamp 27 September 2022"
+    },
+    {
+     "id": "q04",
+     "at": {
+      "line": "L0215",
+      "word": "source"
+     },
+     "what": "quote card Q04 sets upper-left"
+    },
+    {
+     "id": "leave",
+     "at": {
+      "line": "L0216",
+      "word": "leave"
+     },
+     "what": "a cut-paper runtime house walks out of the window onto a road"
+    },
+    {
+     "id": "tether",
+     "at": {
+      "line": "L0216",
+      "word": "only"
+     },
+     "what": "the Room Lantern is held to the desk by one thread"
+    },
+    {
+     "id": "single",
+     "at": {
+      "line": "L0216",
+      "word": "single"
+     },
+     "what": "the lantern's lone flame ringed once"
+    },
+    {
+     "id": "s24",
+     "at": {
+      "line": "L0217",
+      "word": "September"
+     },
+     "what": "date stamp changes to 26 September 2024; Q04 clears"
+    },
+    {
+     "id": "book",
+     "at": {
+      "line": "L0217",
+      "word": "SQLite"
+     },
+     "what": "a small bound book slides inside the Room Lantern"
+    },
+    {
+     "id": "local",
+     "at": {
+      "line": "L0218",
+      "word": "instant"
+     },
+     "what": "a slip touches the book and returns at once; Q05 fragment"
+    },
+    {
+     "id": "door",
+     "at": {
+      "line": "L0219",
+      "word": "outlive"
+     },
+     "what": "push to the latch: the reply still waits"
+    }
+   ],
+   "cast": [
+    "kenton-varda"
+   ],
+   "props": [
+    "history desk (2022, then 2024)",
+    "cut-paper runtime house frame and paper road",
+    "Room Lantern tethered by a single thread",
+    "small bound book (SQLite) inside the lantern",
+    "the lantern's door and latch with a waiting reply"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "27 September 2022",
+     "beat": "date22",
+     "until": "s24"
+    },
+    {
+     "kind": "quote",
+     "text": "workerd is Open Source under the Apache License version 2.0. — Kenton Varda, 2022",
+     "beat": "q04",
+     "until": "s24"
+    },
+    {
+     "kind": "date",
+     "text": "26 September 2024",
+     "beat": "s24"
+    },
+    {
+     "kind": "quote",
+     "text": "Latency is effectively zero — Kenton Varda, 2024",
+     "beat": "local"
+    }
+   ],
+   "music": {
+    "cue": "ch02-a-desks",
+    "note": "a walking figure for the runtime leaving; it stops dead on the tether; a quick bright flourish for the book and the instant read; on 'outlive' the music thins back to the held latch, unresolved"
+   },
+   "transitionIn": "inkBleed",
+   "claims": [
+    "HI06",
+    "HI08",
+    "HI12"
+   ]
+  },
+  {
+   "id": "ch02-s05",
+   "kind": "montage",
+   "setting": "a serverCyan diagram of Cloudflare's hosted Storage Relay Service (2024): the Room Lantern, a ribbon running from it to a cistern of object storage, and five far lamps in five data centres; not the harbour town",
+   "era": "2020s",
+   "mood": "serverCyan",
+   "lines": [
+    {
+     "id": "L0220",
+     "text": "On Cloudflare's own network, a hosted service kept that promise: the Storage Relay Service.",
+     "pauseAfter": 0.6,
+     "direction": "naming it with respect; 'hosted' and 'Cloudflare's own' clearly set apart"
+    },
+    {
+     "id": "L0221",
+     "text": "It watches SQLite's write-ahead log, where each change is written first, and ships the changes to object storage in batches: ten seconds, or sixteen megabytes, at the most.",
+     "direction": "precise, numbers plain; 'write-ahead log' spelled out, unhurried"
+    },
+    {
+     "id": "L0222",
+     "text": "Object storage is slow, and nobody can wait ten seconds for a tick.",
+     "pauseAfter": 0.6,
+     "direction": "the problem, with a small dry smile on 'nobody can wait'"
+    },
+    {
+     "id": "L0223",
+     "text": "So each commit also goes straight to five followers, in five different data centres. When three answer, the latch lifts.",
+     "insertGaps": {
+      "centres": 0.3
+     },
+     "direction": "counting it out: five, then three; 'the latch lifts' the release"
+    },
+    {
+     "id": "L0224",
+     "text": "Real machinery. And all of it lived inside Cloudflare.",
+     "level": "soft",
+     "direction": "the chapter's last word: respectful, then the turn; 'inside Cloudflare' quiet and final"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 3,
+   "visual": "THIS SHOT: Cloudflare's hosted relay, drawn as a diagram, never as the harbour town. Cut on the latch to a serverCyan board: deep blue-black ground, cyan cut-line practicals. Screen-left the Room Lantern (small, candleAmber, the one warm accent) with a brass badge 'Cloudflare, hosted' hanging from its base (beat badge). On 'write-ahead' the Ribbon is seen for the first time: a parchment tape unspooling from the lantern's base, frame after frame (beat ribbon). On 'batches' the ribbon is cut into short lengths that roll down a slow cyan chute into a deep cistern at the lower-middle (object storage), the chute visibly sluggish (beat batches); a small cut-paper ten-second sand-glass beside it drains, no text. On 'slow' the reply letter at the lantern's door waits, and the sand-glass is shown far too slow (beat slow). On 'commit' five far lamps light across the upper right, each on its own small hill (five data centres), and each new frame flies from the lantern along five cyan threads at once (beat five); quote card Q06 sets upper-left. On 'three' three of the five lamps answer with a flash back along their threads (beat three), and on 'lifts' the latch on the lantern's door lifts and the letter goes (beat lift). On 'inside' the camera pulls back: the whole diagram sits within the outline of one great paper wall, Cloudflare's network, with the open road from the previous shot outside it and the tethered lantern's thread inside (beat inside). One focal motion at a time; text above y 634; the badge is art at 26 px or more.",
+   "beats": [
+    {
+     "id": "badge",
+     "at": {
+      "line": "L0220",
+      "word": "hosted"
+     },
+     "what": "badge 'Cloudflare, hosted' swings on the lantern's base"
+    },
+    {
+     "id": "ribbon",
+     "at": {
+      "line": "L0221",
+      "word": "write-ahead"
+     },
+     "what": "the Ribbon unspools for the first time"
+    },
+    {
+     "id": "batches",
+     "at": {
+      "line": "L0221",
+      "word": "batches"
+     },
+     "what": "ribbon lengths roll down a slow chute into the object-storage cistern"
+    },
+    {
+     "id": "slow",
+     "at": {
+      "line": "L0222",
+      "word": "slow"
+     },
+     "what": "the reply waits; the sand-glass far too slow"
+    },
+    {
+     "id": "five",
+     "at": {
+      "line": "L0223",
+      "word": "commit"
+     },
+     "what": "five far lamps; each frame flies along five threads; Q06 sets"
+    },
+    {
+     "id": "three",
+     "at": {
+      "line": "L0223",
+      "word": "three"
+     },
+     "what": "three of five lamps flash back"
+    },
+    {
+     "id": "lift",
+     "at": {
+      "line": "L0223",
+      "word": "lifts"
+     },
+     "what": "the latch lifts; the letter goes"
+    },
+    {
+     "id": "inside",
+     "at": {
+      "line": "L0224",
+      "word": "inside"
+     },
+     "what": "pull back: the diagram inside one great wall, Cloudflare's network"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "Room Lantern with badge 'Cloudflare, hosted'",
+    "the Ribbon (first sight)",
+    "slow cyan chute and object-storage cistern",
+    "cut-paper sand-glass (no text)",
+    "five far lamps on five hills (data centres) with cyan threads",
+    "a great paper wall outline (Cloudflare's network)"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "Once at least three of these followers respond… the write is confirmed. — Kenton Varda, 2024",
+     "beat": "five"
+    }
+   ],
+   "music": {
+    "cue": "ch02-b-relay",
+    "note": "a cooler serverCyan colour: a slow pulse for the ribbon and the chute; five soft tones as the far lamps light, three of them answering in a chord on 'three'; the bell motif on 'lifts'; on 'inside' the chord closes into a held, slightly melancholy fifth that fades in the hold"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "HI09",
+    "HI10",
+    "HI11"
+   ]
+  }
+ ]
+}

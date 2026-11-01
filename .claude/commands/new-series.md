@@ -4,7 +4,7 @@ description: Generate a multi-book O'RLY series from docs/a repo and publish it 
 
 # /new-series — add a whole book series to the shelf
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Astra's written plan; it does not replace the planner. If Opus reaches its provider limit, preserve progress and continue the animation role with GPT-6.1 Sol (`gpt-6.1-sol`). Record the limit and actual provider. Stop if both are unavailable; no other fallback is authorized.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Sol plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Sol's written plan; it does not replace the planner. If a provider reaches a limit, preserve progress and report the blocker; no model substitution is authorized.
 
 
 Turn a docs site or repo into a **grouped series** of explainer books, each its own
@@ -17,7 +17,7 @@ From a GitHub issue, parse the form: **Source**, **Series name**, **Books** (one
 line, or a description + a **count** to plan).
 
 Keys come from the gitignored `.env` locally, or from CI env (`ELEVENLABS_API_KEY`,
-`OPENAI_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Astra writes the series plan; Opus authors each book’s D3 scenes through the latest CLI.
+`OPENAI_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Sol writes the series plan; Opus authors each book’s D3 scenes through the latest CLI.
 
 ## Steps
 

@@ -1,0 +1,64 @@
+{
+ "shot": "ch08-s03",
+ "at": "2026-11-01T07:04:20.485Z",
+ "minCapPx": 22,
+ "sampled": 33,
+ "texts": 10,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "…the beginning of merging celld’s",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "functionality into workerd.”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ryan dahl",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "commit aa494794",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7",
+   "maxCap": 15.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "B",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4",
+   "maxCap": 15.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "8",
+   "maxCap": 15.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "5",
+   "maxCap": 15.9,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 6
+}
