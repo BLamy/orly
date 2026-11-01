@@ -1,0 +1,625 @@
+{
+ "id": "ch08",
+ "number": 8,
+ "title": "What Travels",
+ "blurb": "Every pin we pulled hangs on one board: the Tooth, the candle's band, the second look, the seal. What travels with a room is not the bucket alone but a contract: one-key refusals and fresh reads, a supervisor, and a runtime that cuts, uploads, looks again, seals and replays. The small print, dated 31 October 2026; the announced direction, in the teams' own terms; what the Well will never do. At dawn the lantern burns in House C, and the tick on the sender's slip turns out to be a proof.",
+ "shots": [
+  {
+   "id": "ch08-s01",
+   "kind": "montage",
+   "setting": "the pin board (illustrative), hung on the L6 lamp-post at the edge of the night square; behind it, out of focus, each machine the pins came from",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0801",
+     "text": "Four pins, in the order we pulled them: the Tooth, the band on the candle, the second look, the neighbours' seal.",
+     "direction": "a slow inventory, one beat per pin; fond, not nostalgic",
+     "insertGaps": {
+      "Tooth": 0.25,
+      "candle": 0.25,
+      "look": 0.25
+     }
+    },
+    {
+     "id": "L0802",
+     "text": "Pull any one, and a promise breaks.",
+     "direction": "plain, a small drop at the end",
+     "pauseAfter": 0.7
+    },
+    {
+     "id": "L0803",
+     "text": "So what travels, when a room travels, is not the bucket alone.",
+     "direction": "the film's thesis begins; 'not the bucket alone' weighted"
+    },
+    {
+     "id": "L0804",
+     "text": "It is the bucket's refusals on one key, and its fresh reads; leases, with clocks kept close; and, as celld asks, a supervisor to restart a house that fenced itself.",
+     "direction": "listing the parts like tools laid on a bench, each clause its own"
+    },
+    {
+     "id": "L0805",
+     "text": "And a runtime that cuts the ribbon, uploads and looks again; in celld's fleet, one that also seals and collects before it replays.",
+     "direction": "verbs paced like steps; 'before it replays' resolving the list",
+     "insertGaps": {
+      "again": 0.2
+     }
+    }
+   ],
+   "leadIn": 1.2,
+   "holdAfter": 1.2,
+   "visual": "THIS SHOT: THE PIN MONTAGE. Iris opens on the Room Lantern in House C's window, then a slow lateral pan (≤ 4% frame width per second, one continuous move) along a dark board hung on the L6 lamp-post, with the night town soft behind at L2–L3. Four red-tagged brass pins hang on hooks in the order they were pulled, each with its brass badge beneath (art, unnamed): the Tooth's pin ('Amazon S3', from ch03), the candle-band latch pin ('workerd · 28 Oct', ch05), the lamp-to-Plate arm pin ('workerd · 28 Oct', ch06), the wax-seal stamp pin ('celld 0.6.3', ch07). As each is named, the machine it came from rack-focuses into a small vignette behind it: on 'Tooth' the Tooth and a swap card (click); on 'candle' A's candle with its painted band; on 'look' the keeper's lamp lifting to the Plate; on 'seal' red wax across a notebook. On 'Pull' all four vignettes flash once in emberRed (the four failures) and return. On 'bucket' the pan ends on the Well. On 'refusals' the Tooth thunks a stale card (one key); on 'reads' the bucket comes up full; on 'supervisor' a lamplighter relights a dark house after a pause; on 'cuts' the Scissors cut the Ribbon after a seal; on 'replays' pages fall into the lantern's book. Title at upper left on the iris; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "iris",
+     "at": {
+      "shotTime": 0.2
+     },
+     "what": "iris opens on the Room Lantern; chapter title"
+    },
+    {
+     "id": "tooth",
+     "at": {
+      "line": "L0801",
+      "word": "Tooth"
+     },
+     "what": "pin one; the Tooth vignette clicks"
+    },
+    {
+     "id": "candle",
+     "at": {
+      "line": "L0801",
+      "word": "candle"
+     },
+     "what": "pin two; A's candle and its band"
+    },
+    {
+     "id": "look",
+     "at": {
+      "line": "L0801",
+      "word": "look"
+     },
+     "what": "pin three; the keeper's lamp lifts to the Plate"
+    },
+    {
+     "id": "seal",
+     "at": {
+      "line": "L0801",
+      "word": "seal"
+     },
+     "what": "pin four; red wax on a notebook"
+    },
+    {
+     "id": "broke",
+     "at": {
+      "line": "L0802",
+      "word": "Pull"
+     },
+     "what": "all four vignettes flash emberRed once and return"
+    },
+    {
+     "id": "well",
+     "at": {
+      "line": "L0803",
+      "word": "bucket"
+     },
+     "what": "the pan ends on the Well"
+    },
+    {
+     "id": "refusals",
+     "at": {
+      "line": "L0804",
+      "word": "refusals"
+     },
+     "what": "the Tooth thunks a stale card"
+    },
+    {
+     "id": "reads",
+     "at": {
+      "line": "L0804",
+      "word": "reads"
+     },
+     "what": "the bucket comes up full"
+    },
+    {
+     "id": "supervisor",
+     "at": {
+      "line": "L0804",
+      "word": "supervisor"
+     },
+     "what": "a lamplighter relights a fenced house after a pause"
+    },
+    {
+     "id": "cuts",
+     "at": {
+      "line": "L0805",
+      "word": "cuts"
+     },
+     "what": "the Scissors cut the Ribbon after a seal"
+    },
+    {
+     "id": "replays",
+     "at": {
+      "line": "L0805",
+      "word": "replays"
+     },
+     "what": "pages fall into the lantern's book"
+    }
+   ],
+   "cast": [
+    "keeper-a"
+   ],
+   "props": [
+    "pin board on the lamp-post",
+    "four red-tagged pins with badges",
+    "the Tooth and swap cards",
+    "lease candle with its band",
+    "keeper's lamp-to-Plate arm",
+    "wax-seal stamp and notebook",
+    "the Well",
+    "lamplighter's pole",
+    "Scissors and Ribbon",
+    "Room Lantern"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "What Travels",
+     "beat": "iris",
+     "until": "seal"
+    }
+   ],
+   "music": {
+    "cue": "ch08-a-contract",
+    "note": "the score gathers its motifs one per pin: the click, the candle hiss, the bell, the wax thud, each a single sound in turn; one shared emberRed sting on 'Pull'; then a slow, steady ostinato under the list of parts"
+   },
+   "transitionIn": "iris",
+   "claims": [
+    "LI07",
+    "SB09",
+    "LI04",
+    "DU10",
+    "DU02",
+    "CE07",
+    "WA03",
+    "RE04"
+   ]
+  },
+  {
+   "id": "ch08-s02",
+   "kind": "scene",
+   "setting": "the harbour town, canonical night (illustrative), the small hours: the square, the Plate and the terrace, a brass plaque riveted under the Plate",
+   "era": "2020s",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0806",
+     "text": "The small print, as of the thirty-first of October, 2026.",
+     "spoken": "The small print, as of the thirty-first of October, twenty twenty-six.",
+     "direction": "dry and fair, a notary's tone",
+     "pauseAfter": 0.6
+    },
+    {
+     "id": "L0807",
+     "text": "workerd's clustering is three days old, and still experimental.",
+     "direction": "two dates, cleanly separated; no excitement, just the record"
+    },
+    {
+     "id": "L0808",
+     "text": "Its tests check one writer, forwarding, and takeover after a kill. We read them. We did not run them.",
+     "direction": "'We did not run them' plain and honest, slightly slower"
+    },
+    {
+     "id": "L0809",
+     "text": "The alarm tests check the cases they stage. They do not establish exactly-once effects for every application.",
+     "direction": "precise; a light stress on 'not'"
+    },
+    {
+     "id": "L0810",
+     "text": "celld documents its own limits, and wants bucket lifecycle rules that leave its records alone.",
+     "direction": "practical, an operator's checklist"
+    },
+    {
+     "id": "L0811",
+     "text": "And workerd, on its own, is not a sandbox for untrusted code.",
+     "direction": "a firm last item, not a warning shout"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 1.8,
+   "visual": "THIS SHOT: the dated small print, staged as objects in the canonical town. Cut to the square; slow truck left to right across the terrace (≤ 5% width/s). Date stamp at upper left on the first beat. On 'three' the wellhead badge reads 'workerd · 28 Oct' and a small brass 'experimental' flag stands on the Plate's frame; the alarm-bell bracket on the frame is EMPTY. On 'experimental' the badge turns over to 'workerd · 31 Oct' and a small alarm bell is hung on the bracket. On 'tests' a clipboard on the lamp-post shows ink test sheets (no legible code), a reading glass lying on them; on 'run' the switch beside them stays OFF, untouched. On 'exactly-once' the new alarm bell rings once in a ghost replay while a ghost of the same ring repeats faintly: the test saw firings, it did not promise one effect. Truck on to the terrace re-lamped labGreen for a single beat (badge 'celld 0.6.3'): on 'limits' a lamplighter waits beside a fenced, dark house, then relights it; on 'lifecycle' a groundskeeper's rake stops at a roped-off shelf in the Well and goes round it. Back to winterBlue: on 'sandbox' House A's door is drawn with only a dotted outline of a fence around it, an extra wall that must be added from outside. Labels sit upper right, one at a time; bottom 12% clear.",
+   "beats": [
+    {
+     "id": "date",
+     "at": {
+      "line": "L0806",
+      "word": "small"
+     },
+     "what": "date stamp at upper left"
+    },
+    {
+     "id": "d28",
+     "at": {
+      "line": "L0807",
+      "word": "three"
+     },
+     "what": "badge 'workerd · 28 Oct', experimental flag, empty alarm bracket"
+    },
+    {
+     "id": "d31",
+     "at": {
+      "line": "L0807",
+      "word": "experimental"
+     },
+     "what": "badge turns to 'workerd · 31 Oct'; an alarm bell is hung"
+    },
+    {
+     "id": "tests",
+     "at": {
+      "line": "L0808",
+      "word": "tests"
+     },
+     "what": "clipboard of test sheets and a reading glass on the lamp-post"
+    },
+    {
+     "id": "notrun",
+     "at": {
+      "line": "L0808",
+      "word": "run"
+     },
+     "what": "the switch beside them stays off"
+    },
+    {
+     "id": "once",
+     "at": {
+      "line": "L0809",
+      "word": "exactly-once"
+     },
+     "what": "the alarm bell rings in a ghost replay, a faint second ring echoing"
+    },
+    {
+     "id": "supervisor",
+     "at": {
+      "line": "L0810",
+      "word": "limits"
+     },
+     "what": "labGreen beat: celld's limits page pinned by the wellhead"
+    },
+    {
+     "id": "lifecycle",
+     "at": {
+      "line": "L0810",
+      "word": "lifecycle"
+     },
+     "what": "a rake stops at a roped-off shelf in the Well and goes round it"
+    },
+    {
+     "id": "sandbox",
+     "at": {
+      "line": "L0811",
+      "word": "sandbox"
+     },
+     "what": "a dotted outline of a fence around House A: a wall to be added"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "wellhead badges 'workerd · 28 Oct' → 'workerd · 31 Oct'",
+    "experimental flag",
+    "alarm-bell bracket and bell",
+    "clipboard of test sheets and reading glass",
+    "an untouched switch",
+    "lamplighter",
+    "rake and roped-off Well shelf",
+    "dotted fence outline",
+    "badge 'celld 0.6.3'"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "As of 31 October 2026",
+     "beat": "date"
+    },
+    {
+     "kind": "label",
+     "text": "Tests read, not run",
+     "beat": "notrun",
+     "until": "supervisor"
+    },
+    {
+     "kind": "label",
+     "text": "Not a sandbox on its own",
+     "beat": "sandbox"
+    }
+   ],
+   "music": {
+    "cue": "ch08-a-contract",
+    "note": "the ostinato drops to a single quiet pulse, a clerk's metronome; a small real alarm-bell chime on 'thirty-first'; the labGreen colour returns for one bar under celld's line"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "LI01",
+    "LI02",
+    "LI03",
+    "LI04",
+    "LI05",
+    "LI06",
+    "HI07",
+    "HI21",
+    "HI22"
+   ]
+  },
+  {
+   "id": "ch08-s03",
+   "kind": "scene",
+   "setting": "the two desks, 2026: Kenton Varda's desk screen-left under a warm lamp, Ryan Dahl's desk screen-right, a second out-of-focus chair beside it",
+   "era": "2020s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0812",
+     "text": "The two lamps, once more. The announced plan stands, and the commit called itself a beginning.",
+     "direction": "reporting, carefully attributed; 'announced plan' plain, not a promise",
+     "pauseAfter": 0.5
+    },
+    {
+     "id": "L0813",
+     "text": "celld's code and ideas are to be merged into workerd, and Ryan Dahl writes that the team's future work goes into this shared platform.",
+     "direction": "even, neutral; a reporter's care with 'writes that'"
+    },
+    {
+     "id": "L0814",
+     "text": "And the Well? It does not run your code, make two rooms commit as one, promise exactly once, or keep the town open when it goes quiet.",
+     "direction": "a gentle turn back to the town; a beat between each 'never' item, the last one softest",
+     "preGap": 0.8,
+     "insertGaps": {
+      "code": 0.2,
+      "once": 0.2
+     }
+    }
+   ],
+   "leadIn": 0.8,
+   "holdAfter": 1,
+   "visual": "THIS SHOT: the two lamps, and the limits of the Well. Ink bleed from the town into the two desks of 2026 in one frame (geography lock: Kenton Varda's desk screen-left, lamp warm; Ryan Dahl's desk screen-right; beside Ryan Dahl's a second, out-of-focus chair for Bert Belder). Generic, dignified 2020s silhouettes at laptops, no likeness, no gestures toward the town; their hands stay at their desks. Slow dolly in between the two lamps. On 'plan' the two ropes that braided between the desks in ch04 tighten into one braid running out of frame right toward a small paper model of the harbour terrace on a shelf. On 'merged' a paper ribbon labelled with no words passes from Ryan Dahl's side into the braid. The quote appears in a cartouche at upper middle on 'merged', attributed. On 'Well' the camera drifts to the paper harbour model, where a tiny Well sits in its square: on 'run' a tiny keeper's hand stays at the house, not the Well (the Well runs nothing); on 'rooms' two Plates on two separate wells change at different moments, never together; on 'exactly' a bell rings and a ghost repeat hangs beside it; on 'quiet' the Well's rope goes slack and every house closes its own shutters (writers stop; nothing serves on). Name cards are not repeated. Bottom 12% clear.",
+   "beats": [
+    {
+     "id": "desks",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "ink bleed into the two desks; the two lamps in one frame"
+    },
+    {
+     "id": "plan",
+     "at": {
+      "line": "L0812",
+      "word": "plan"
+     },
+     "what": "the two ropes tighten into one braid toward a paper harbour model"
+    },
+    {
+     "id": "merged",
+     "at": {
+      "line": "L0813",
+      "word": "merged"
+     },
+     "what": "a ribbon passes into the braid; the quote cartouche inks in"
+    },
+    {
+     "id": "well",
+     "at": {
+      "line": "L0814",
+      "word": "Well"
+     },
+     "what": "drift to the paper harbour model's Well"
+    },
+    {
+     "id": "run",
+     "at": {
+      "line": "L0814",
+      "word": "run"
+     },
+     "what": "the keeper's hand stays at the house; the Well runs nothing"
+    },
+    {
+     "id": "rooms",
+     "at": {
+      "line": "L0814",
+      "word": "rooms"
+     },
+     "what": "two Plates on two wells change at different moments"
+    },
+    {
+     "id": "exactly",
+     "at": {
+      "line": "L0814",
+      "word": "exactly"
+     },
+     "what": "a bell rings; a ghost repeat hangs beside it"
+    },
+    {
+     "id": "quiet",
+     "at": {
+      "line": "L0814",
+      "word": "quiet"
+     },
+     "what": "the Well's rope goes slack; every house closes its shutters"
+    }
+   ],
+   "cast": [
+    "kenton-varda",
+    "ryan-dahl",
+    "bert-belder"
+   ],
+   "props": [
+    "two desks with lamps and laptops",
+    "an empty out-of-focus chair",
+    "two braided ropes",
+    "a paper model of the harbour terrace with a tiny Well",
+    "two tiny Plates on two wells",
+    "a small bell"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "This is the beginning of merging celld's functionality into workerd. — Ryan Dahl, commit aa494794",
+     "beat": "merged",
+     "until": "rooms"
+    }
+   ],
+   "music": {
+    "cue": "ch08-a-contract",
+    "note": "the two-lamp theme from ch04, now in one voice instead of two; it thins to a single held note as the camera finds the paper Well; each 'never' gets one soft muted pluck, the last one barely there"
+   },
+   "transitionIn": "inkBleed",
+   "claims": [
+    "HI18",
+    "HI19",
+    "HI17",
+    "SB13",
+    "DU08",
+    "LE13",
+    "SB15"
+   ]
+  },
+  {
+   "id": "ch08-s04",
+   "kind": "scene",
+   "setting": "dawn over the harbour town (illustrative): first light on the sea, House C's window lantern, the sender at a harbour-side window, the Well and the Plate catching the sun",
+   "era": "2020s",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0815",
+     "text": "Dawn over the harbour. The lantern burns in House C, and the sender's slip still carries its tick.",
+     "direction": "warm, slow, the voice of a long night ending",
+     "pauseAfter": 0.9
+    },
+    {
+     "id": "L0816",
+     "text": "A tick is not a feeling. It is a proof.",
+     "direction": "the film's last idea; unhurried, a beat between the sentences, no flourish",
+     "insertGaps": {
+      "feeling": 0.5
+     },
+     "tts": {
+      "solo": true
+     }
+    },
+    {
+     "id": "L0817",
+     "text": "The bytes were in the Well, and the Plate still named its owner when the bell rang.",
+     "direction": "quiet and exact, each half its own small proof",
+     "preGap": 0.9
+    },
+    {
+     "id": "L0818",
+     "text": "The harbour was made up. The code is real.",
+     "direction": "a dry, affectionate sign-off; soft",
+     "preGap": 1,
+     "level": "soft"
+    }
+   ],
+   "leadIn": 1.6,
+   "holdAfter": 5,
+   "minDuration": 30,
+   "visual": "THIS SHOT: the payoff. Ink bleed from the desks into the canonical town at DAWN (dawnGold): the moon gone low-left, the sea brightening at L1, the far-shore lamps going out one by one as daylight takes over. House C's window holds the Room Lantern, lit; the wellhead badge reads 'workerd · 28 Oct' (unnamed). Slow push from the sea toward the sender at a harbour-side window (L4 right of the Well), phone in hand. On 'tick' the camera settles on the sender's slip #42, 'the ferry is late', its ink tick crisp in the first light (the ch01 image returned). On 'proof' the tick's two strokes trace, as thin gold lines, back to their two sources in one continuous move: the first runs down to the Well, where the bucket holds A's scroll (on 'bytes'); the second rises to the Plate, where a ghost of that night's tiles reads A · 7 · from 7 with the crown lamp lit, and A's bell swings (on 'bell'); then both lines fade into the slip. On 'made' pull back to the whole town in morning light: the three houses, the Well, the Plate, the pulley lines, the sea. End card fades up in the sky above the ridge on 'real' (two lines, centred in the upper third, well clear of the bottom 12%): the pins, then 'Illustrative harbour; real code.' Hold the end card to the end of the shot as the light keeps rising.",
+   "beats": [
+    {
+     "id": "dawn",
+     "at": {
+      "shotTime": 0.4
+     },
+     "what": "ink bleed into the harbour at dawn; far lamps going out"
+    },
+    {
+     "id": "slip",
+     "at": {
+      "line": "L0815",
+      "word": "tick"
+     },
+     "what": "settle on slip #42 and its tick"
+    },
+    {
+     "id": "proof",
+     "at": {
+      "line": "L0816",
+      "word": "proof"
+     },
+     "what": "the tick's two strokes begin to trace as gold lines"
+    },
+    {
+     "id": "bytes",
+     "at": {
+      "line": "L0817",
+      "word": "bytes"
+     },
+     "what": "one line runs down to A's scroll in the Well"
+    },
+    {
+     "id": "bell",
+     "at": {
+      "line": "L0817",
+      "word": "bell"
+     },
+     "what": "the other rises to the Plate (A · 7 · from 7, crown lit); A's bell swings"
+    },
+    {
+     "id": "pull",
+     "at": {
+      "line": "L0818",
+      "word": "made"
+     },
+     "what": "pull back to the whole town in morning light"
+    },
+    {
+     "id": "card",
+     "at": {
+      "line": "L0818",
+      "word": "real"
+     },
+     "what": "end card fades up above the ridge"
+    }
+   ],
+   "cast": [
+    "sender",
+    "keeper-c"
+   ],
+   "props": [
+    "Room Lantern in House C",
+    "slip #42 'the ferry is late' with its tick",
+    "phone",
+    "the Well with A's scroll",
+    "the Plate (ghost: A · 7 · from 7, crown lit)",
+    "A's bell",
+    "badge 'workerd · 31 Oct'",
+    "end card"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "workerd aa494794 · ad78a8fe · celld 0.6.3",
+     "beat": "card"
+    },
+    {
+     "kind": "label",
+     "text": "Illustrative harbour; real code.",
+     "beat": "card"
+    }
+   ],
+   "music": {
+    "cue": "ch08-b-dawn",
+    "note": "the dawnGold cue: the harbour drone opens into a major colour for the first time; the two-note tick motif, slow, on 'proof'; a single bell on 'bell'; the last chord strikes under the end card and rings out in clear air before the fade"
+   },
+   "transitionIn": "inkBleed",
+   "claims": [
+    "DU01",
+    "FX01",
+    "HI27",
+    "HI20",
+    "HI22",
+    "HI26"
+   ]
+  }
+ ]
+}

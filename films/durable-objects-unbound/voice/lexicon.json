@@ -1,0 +1,23 @@
+{
+ "$notes": "DRAFT voice-only respellings for durable-objects-unbound (subtitles keep the written text), written 2026-10-31 at the story stage for the film narrator (generator/film/lib/text.mjs speak(): explicit `spoken` wins and this lexicon is applied inside it with exact case; other lines use the lexicon with a case-insensitive fallback, so no key is an everyday lower-case word). Every spoken form is words only. The narrator voice is NOT chosen yet: film-narrate auditions and locks voice.json after the script validates, and should re-scan the locked script, confirm each entry by ear and STT round-trip, and prune keys that never fire. Established pronunciations: workerd = 'worker dee' (stated in Cloudflare's 2022 workerd post: the Unix -d server suffix); celld = 'cell-dee' (by the same -d convention; no published pronunciation found, confirm at audition); Deno = 'DEE-no'; SQLite said as letters + lite ('ess cue lite'); S3 'ess three'; R2 'are two'; fsync 'eff-sync'; Vogels 'VOH-gels'. Names the voice already reads as written (Varda, Dahl, Belder, Cloudflare) carry no entry; confirm them by ear at audition.",
+ "workerd": "worker dee",
+ "celld": "cell-dee",
+ "Deno": "Dee-no",
+ "SQLite": "ess cue lite",
+ "S3": "ess three",
+ "R2": "are two",
+ "fsync": "eff-sync",
+ "fsyncs": "eff-syncs",
+ "ETag": "ee-tag",
+ "ETags": "ee-tags",
+ "LTX": "L T X",
+ "SRS": "S R S",
+ "JSR": "J S R",
+ "gzip": "gee-zip",
+ "CRC": "C R C",
+ "Vogels": "Vohgels",
+ "Litestream": "Light-stream",
+ "AWS": "A W S",
+ "TCP": "T C P",
+ "README": "read-me"
+}

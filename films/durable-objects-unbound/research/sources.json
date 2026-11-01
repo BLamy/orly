@@ -1,0 +1,285 @@
+{
+ "$notes": "Pinned primary sources for the durable-objects-unbound film, verified 2026-10-31. Code pins: workerd supplied commit aa494794c44a900592c8281b191302d3b0a6e2a5 (initial, experimental, no alarms); workerd later snapshot ad78a8fe76b32dd4f19c58d81b2e03e10a996bba (alarms 2992f3f89, facets); celld 8702f6d186c77698dbfb30cf29e3b1922a88f008 (v0.6.3). Repository files were read at these pins; upstream test suites were inspected, not executed.",
+ "pins": {
+  "workerdInitial": "aa494794c44a900592c8281b191302d3b0a6e2a5",
+  "workerdLater": "ad78a8fe76b32dd4f19c58d81b2e03e10a996bba",
+  "workerdAlarms": "2992f3f89",
+  "celld": "8702f6d186c77698dbfb30cf29e3b1922a88f008"
+ },
+ "sources": [
+  {
+   "id": "cf-do-2020",
+   "kind": "blog",
+   "title": "Workers Durable Objects Beta: A New Approach to Stateful Serverless",
+   "author": "Kenton Varda (Cloudflare)",
+   "date": "2020-09-28",
+   "url": "https://blog.cloudflare.com/introducing-workers-durable-objects"
+  },
+  {
+   "id": "cf-gates-2021",
+   "kind": "blog",
+   "title": "Durable Objects: Easy, Fast, Correct — Choose three",
+   "author": "Kenton Varda (Cloudflare)",
+   "date": "2021-08-03",
+   "url": "https://blog.cloudflare.com/durable-objects-easy-fast-correct-choose-three/"
+  },
+  {
+   "id": "cf-workerd-2022",
+   "kind": "blog",
+   "title": "Introducing workerd: the Open Source Workers runtime",
+   "author": "Kenton Varda (Cloudflare)",
+   "date": "2022-09-27",
+   "url": "https://blog.cloudflare.com/workerd-open-source-workers-runtime/"
+  },
+  {
+   "id": "cf-sqlite-2024",
+   "kind": "blog",
+   "title": "Zero-latency SQLite storage in every Durable Object",
+   "author": "Kenton Varda (Cloudflare)",
+   "date": "2024-09-26",
+   "url": "https://blog.cloudflare.com/sqlite-in-durable-objects/"
+  },
+  {
+   "id": "cf-deno-2026",
+   "kind": "announcement",
+   "title": "Deno is joining Cloudflare (joint post; sections by Ryan Dahl and Kenton Varda)",
+   "author": "Ryan Dahl; Kenton Varda",
+   "date": "2026-10-09",
+   "url": "https://blog.cloudflare.com/deno-joins-cloudflare/",
+   "note": "Tagged \"Acquisitions\" on the blog; the text states no price or deal terms."
+  },
+  {
+   "id": "deno-2026",
+   "kind": "announcement",
+   "title": "Deno is joining Cloudflare",
+   "author": "Ryan Dahl (Deno)",
+   "date": "2026-10-09",
+   "url": "https://deno.com/blog/cloudflare",
+   "note": "States no price or deal terms."
+  },
+  {
+   "id": "aws-sc-2020",
+   "kind": "announcement",
+   "title": "Amazon S3 now delivers strong read-after-write consistency automatically for all applications",
+   "author": "AWS What's New",
+   "date": "2020-12-01",
+   "url": "https://aws.amazon.com/about-aws/whats-new/2020/12/amazon-s3-now-delivers-strong-read-after-write-consistency-automatically-for-all-applications/"
+  },
+  {
+   "id": "vogels-2021",
+   "kind": "blog",
+   "title": "Diving Deep on S3 Consistency",
+   "author": "Werner Vogels (Amazon CTO), All Things Distributed",
+   "date": "2021-04-20",
+   "url": "https://www.allthingsdistributed.com/2021/04/s3-strong-consistency.html"
+  },
+  {
+   "id": "aws-cw-2024-08",
+   "kind": "announcement",
+   "title": "Amazon S3 now supports conditional writes",
+   "author": "AWS What's New",
+   "date": "2024-08-20",
+   "url": "https://aws.amazon.com/about-aws/whats-new/2024/08/amazon-s3-conditional-writes/"
+  },
+  {
+   "id": "aws-cw-2024-11",
+   "kind": "announcement",
+   "title": "Amazon S3 adds new functionality for conditional writes",
+   "author": "AWS What's New",
+   "date": "2024-11-25",
+   "url": "https://aws.amazon.com/about-aws/whats-new/2024/11/amazon-s3-functionality-conditional-writes/"
+  },
+  {
+   "id": "aws-cw-docs",
+   "kind": "docs",
+   "title": "Amazon S3 User Guide: conditional writes",
+   "author": "AWS",
+   "date": "as of 2026-10-31",
+   "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+  },
+  {
+   "id": "aws-consistency-docs",
+   "kind": "docs",
+   "title": "Amazon S3 User Guide: data consistency model",
+   "author": "AWS",
+   "date": "as of 2026-10-31",
+   "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+  },
+  {
+   "id": "sqlite-wal-format",
+   "kind": "docs",
+   "title": "SQLite database file format: the write-ahead log",
+   "author": "SQLite",
+   "date": "as of 2026-10-31",
+   "url": "https://www.sqlite.org/fileformat2.html#the_write_ahead_log"
+  },
+  {
+   "id": "wd-commit",
+   "kind": "commit",
+   "title": "Cluster workerd processes over a shared bucket (#7994)",
+   "author": "Ryan Dahl (Cloudflare)",
+   "date": "2026-10-28T20:11:42-07:00 (2026-10-29 03:11:42 UTC)",
+   "url": "https://github.com/cloudflare/workerd/commit/aa494794c44a900592c8281b191302d3b0a6e2a5"
+  },
+  {
+   "id": "wd-alarms-commit",
+   "kind": "commit",
+   "title": "cluster: Durable Object alarms (#8090)",
+   "author": "Ryan Dahl",
+   "date": "2026-10-30T15:29:35-07:00",
+   "url": "https://github.com/cloudflare/workerd/commit/2992f3f89"
+  },
+  {
+   "id": "wd-facets-commit",
+   "kind": "commit",
+   "title": "cluster: Durable Object facets (#8113)",
+   "author": "Ryan Dahl",
+   "date": "2026-10-31T10:36:00-07:00",
+   "url": "https://github.com/cloudflare/workerd/commit/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba"
+  },
+  {
+   "id": "wd0-ownership",
+   "kind": "code",
+   "title": "workerd cluster/ownership.rs at the supplied commit",
+   "url": "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/ownership.rs"
+  },
+  {
+   "id": "wd0-owner",
+   "kind": "code",
+   "title": "workerd cluster/owner.rs at the supplied commit",
+   "url": "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/owner.rs"
+  },
+  {
+   "id": "wd0-lease",
+   "kind": "code",
+   "title": "workerd cluster/logic/lease.rs at the supplied commit (unchanged at the later snapshot)",
+   "url": "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/logic/lease.rs"
+  },
+  {
+   "id": "wd0-capture",
+   "kind": "code",
+   "title": "workerd cluster/capture.rs at the supplied commit",
+   "url": "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/capture.rs"
+  },
+  {
+   "id": "wd0-log",
+   "kind": "code",
+   "title": "workerd cluster/log.rs at the supplied commit",
+   "url": "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/log.rs"
+  },
+  {
+   "id": "wd0-registry",
+   "kind": "code",
+   "title": "workerd cluster/registry.rs at the supplied commit",
+   "url": "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/cluster/registry.rs"
+  },
+  {
+   "id": "wd0-test",
+   "kind": "test",
+   "title": "workerd cluster integration test (header) at the supplied commit",
+   "url": "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/tests/cluster/cluster-test.mjs"
+  },
+  {
+   "id": "wd1-owner",
+   "kind": "code",
+   "title": "workerd cluster/owner.rs at the later snapshot",
+   "url": "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/owner.rs"
+  },
+  {
+   "id": "wd1-cluster",
+   "kind": "code",
+   "title": "workerd cluster/cluster.rs at the later snapshot",
+   "url": "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/cluster.rs"
+  },
+  {
+   "id": "wd1-bucket",
+   "kind": "code",
+   "title": "workerd cluster/bucket.rs at the later snapshot",
+   "url": "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/bucket.rs"
+  },
+  {
+   "id": "wd1-capture",
+   "kind": "code",
+   "title": "workerd cluster/capture.rs at the later snapshot (facet lanes)",
+   "url": "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/capture.rs"
+  },
+  {
+   "id": "wd1-alarms",
+   "kind": "code",
+   "title": "workerd cluster/alarms.rs at the later snapshot",
+   "url": "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/cluster/alarms.rs"
+  },
+  {
+   "id": "wd1-test",
+   "kind": "test",
+   "title": "workerd cluster integration test at the later snapshot",
+   "url": "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/tests/cluster/cluster-test.mjs"
+  },
+  {
+   "id": "wd1-actor",
+   "kind": "code",
+   "title": "workerd server/actor.rs and io/actor-sqlite.c++ at the later snapshot",
+   "url": "https://github.com/cloudflare/workerd/blob/ad78a8fe76b32dd4f19c58d81b2e03e10a996bba/src/workerd/server/server/actor.rs"
+  },
+  {
+   "id": "wd0-capnp",
+   "kind": "code",
+   "title": "workerd.capnp (Config.cluster, experimental) at the supplied commit",
+   "url": "https://github.com/cloudflare/workerd/blob/aa494794c44a900592c8281b191302d3b0a6e2a5/src/workerd/server/workerd.capnp"
+  },
+  {
+   "id": "cd-readme",
+   "kind": "docs",
+   "title": "celld README at v0.6.3",
+   "url": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/README.md"
+  },
+  {
+   "id": "cd-guarantees",
+   "kind": "docs",
+   "title": "celld docs/guarantees.md at v0.6.3",
+   "url": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/guarantees.md"
+  },
+  {
+   "id": "cd-compat",
+   "kind": "docs",
+   "title": "celld docs/cloudflare-compat.md and docs/limitations.md at v0.6.3",
+   "url": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/docs/limitations.md"
+  },
+  {
+   "id": "cd-ltx",
+   "kind": "code",
+   "title": "celld crates/ltx (Cargo.toml provenance header; src/db.rs WAL capture) at v0.6.3",
+   "url": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/ltx/Cargo.toml"
+  },
+  {
+   "id": "cd-ownership",
+   "kind": "code",
+   "title": "celld crates/celld/ownership_store.rs at v0.6.3",
+   "url": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/celld/ownership_store.rs"
+  },
+  {
+   "id": "cd-nodelog",
+   "kind": "code",
+   "title": "celld crates/celld/node_log.rs and ltx_repl.rs at v0.6.3",
+   "url": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/celld/node_log.rs"
+  },
+  {
+   "id": "cd-gate",
+   "kind": "code",
+   "title": "celld crates/logic/output_gate.rs at v0.6.3",
+   "url": "https://github.com/denoland/celld/blob/8702f6d186c77698dbfb30cf29e3b1922a88f008/crates/logic/output_gate.rs"
+  },
+  {
+   "id": "cd-tag",
+   "kind": "code",
+   "title": "celld v0.6.3 snapshot commit (release commit 2026-10-21 22:40:37 +02:00)",
+   "url": "https://github.com/denoland/celld/tree/8702f6d186c77698dbfb30cf29e3b1922a88f008"
+  },
+  {
+   "id": "celld-site",
+   "kind": "docs",
+   "title": "celld project site",
+   "url": "https://celld.dev/"
+  }
+ ]
+}
