@@ -54,5 +54,9 @@ longer quote source text. No speaker, date, URL, claim or source changed.
 
 - `research/claims.json` claim summaries (republished on the sources page) paraphrase their sources and some share ≥ 5-word
   runs with the original witnesses (e.g. HI01, HI02, HI12, HI13, DU08). Claim facts were out of scope; not film quotations.
-- Internal story/research documents (bible.md, treatment.md, staging.md, outline.json, reviews/) still cite the longer original
-  extracts; they are not part of the delivered film or sources page.
+- Internal story/research documents: reconciled 2026-11-01 (post-production housekeeping, no clock change). `research/tools/
+  build-research.mjs` now holds exactly the 15 delivered excerpts and regenerates `quotes.json` byte-identically (lock agreement
+  checked); the HI12 note names the joint post's sections instead of retired IDs. `bible.md`, `outline.json` and `reviews/` replace
+  retired quotations with the retained excerpts, claim ids or own-word descriptions (reviews keep their historical IDs with a
+  retirement note). Left as is because they are locked clock inputs: plain-word beat descriptions in `story/chapters/ch04.json`
+  that still name the retired Q08, Q26, Q11 and Q15 cards (no quotation text), and the generated `story/script.md`.

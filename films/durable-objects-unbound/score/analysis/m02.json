@@ -1,0 +1,18 @@
+{
+ "id": "m02",
+ "start": 106.567,
+ "end": 274.525,
+ "file": "films/durable-objects-unbound/score/renders/m02.wav",
+ "duration": 173.958,
+ "I": -25.3,
+ "LRA": 6.2,
+ "TP": -10.6,
+ "expected": 173.958,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/durable-objects-unbound/score/analysis/m02.png",
+ "cueSeconds": 167.958,
+ "cps": 0.25,
+ "lastStrikeLocal": 145.04,
+ "lastStrike": 251.607
+}

@@ -1,0 +1,126 @@
+// m05 · THE COMMIT, THE PLATE AND THE CANDLE (ch04-s04, ch05) · F → D minor · C (the clock), S (claimed, not opened)
+//   ch04-s04  alone in the hold: the braid resolves into one held F chord (piano F and C meet the cello's F); a low
+//        pad under the commit message; a two-note harp step after 'landed' and a step higher after 'facets' (the
+//        calendar); on 'Let us open it' the chord opens upward to A-sus and hands over to the terrace drone.
+//   s01  the terrace drone (D, A); three pizzicato tocks for the three tiles; a count up after 'claim'; the Tooth's
+//        dry click after 'wins'; a light pizzicato run after 'instead' (the chalk arrow); T after 'already open'.
+//   s02  the lease clock C (pizzicato A–D) from 'candle'; one soft harp pluck per number in the timetable; the band
+//        arrives on a darker chord (G minor over B-flat); the two ruled lines: an A octave, then a D fitting inside it.
+//   s03  bowed air for the stall (low band-passed noise, swelling); SILENCE when every lamp gutters ('snuff'); a
+//        reversed string swell into the retry.
+//   s04  a harp lullaby for the sleeping keeper; the pad and clock cut on 'Pull'; the lullaby sours as the candle
+//        burns through the band (A-flat for A); two clashing drones (D against E-flat) on 'Two rooms', out after
+//        'Pin back'; a soft wooden knock after 'shutters', then silence; the maxim over a single low D.
+//   s05  two pizzicato clocks out of phase drift together; one drops out on 'zero' (the snapped thread); celld's
+//        terrace in G (harp and pad, the same clock motif on D–G): a greener colour of the same idea.
+//   s06  D minor; one clockwork step per printed stamp; T small when A's crown is lit; S (A-sus4) held while B's crown
+//        stays dark, the piano A withheld above it; SILENCE on 'died'; a resolving cello line A → D on 'recovers';
+//        a reversed swell into 'Rewind'; a quiet two-chord close (B-flat maj7, then D–A–D in the breath after 'read B': LAST STRIKE).
+setcpm(15)
+const CPS = 0.25, DUR = @{DUR}
+const Q = 480, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => {
+  evs = evs.filter(Boolean).map(([t, d, p]) => [Math.max(0, t), d, p]).sort((x, y) => x[0] - y[0])
+  const out = [], end = qn(DUR); let cur = 0
+  evs.forEach(([t, d, p], i) => {
+    let a = Math.max(qn(t), cur); const b = Math.min(qn(t + d), end, i + 1 < evs.length ? qn(evs[i + 1][0]) : end)
+    if (b - a < 2) return
+    if (a > cur) out.push([a - cur, silence])
+    out.push([b - a, p]); cur = b })
+  if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const loop = (pat, d) => pat.fast(d * CPS)
+const n = (t, d, ns, v = 0.2) => [t, d, note(typeof ns === 'string' && ns.includes(',') ? '[' + ns + ']' : ns).velocity(v)]
+const felt = x => x.s("piano").gain(1.6).lpf(1800).release(1.8).room(0.3).rsize(4)
+const harp = x => x.s("gm_orchestral_harp").gain(1.6).lpf(2200).release(2.4).room(0.32).rsize(4)
+const pizz = x => x.s("gm_pizzicato_strings").gain(1.6).lpf(1400).release(0.5).room(0.25).rsize(4)
+const cello = x => x.s("gm_cello").gain(1.6).attack(0.35).release(1.4).lpf(1200).room(0.3).rsize(4)
+const str = (x, lp = 850, rel = 2.6) => x.s("gm_string_ensemble_1").gain(1.6).attack(1.6).release(rel).lpf(lp).room(0.35).rsize(4)
+const drone = (x, rel = 3) => stack(x.s("triangle").lpf(380).gain(0.06), x.s("sawtooth").lpf(200).gain(0.028)).hpf(40).attack(3).release(rel)
+const every = (t0, t1, step, ns, v) => { const o = []; for (let t = t0; t < t1 - 0.05; t += step) o.push(n(t, Math.min(step, 0.6), ns, v)); return o }
+
+// ---------------------------------------------------------------- drone: the terrace
+$: drone(tl(
+    n(@{L0423}, @{L0517.pull} - @{L0423}, "d2,a2", 1),
+    n(@{L0522.timeout}, @{L0526} - @{L0522.timeout}, "d2,a2", 0.8),
+    n(@{L0527}, @{L0531.died} - @{L0527}, "d2,a2", 1)), 0.35)
+
+// ---------------------------------------------------------------- strings
+$: str(tl(
+    n(0.1, @{L0419} - 0.1, "f2,c3,a3,f4", 0.21),
+    n(@{L0419}, @{L0420} - @{L0419}, "bb2,f3,d4", 0.17),
+    n(@{L0420}, @{L0421} - @{L0420}, "c3,g3,e4", 0.17),
+    n(@{L0421}, @{L0423} - @{L0421}, "d3,a3,f4", 0.17),
+    n(@{L0423}, @{L0501} - @{L0423}, "a2,d3,e3,a3", 0.22),               // the chord opens upward
+    n(@{L0501}, @{L0509.band} - @{L0501}, "d3,a3", 0.17),
+    n(@{L0509.band}, @{L0510} - @{L0509.band}, "bb2,d3,g3", 0.2),          // the band: a darker chord
+    n(@{L0510.sixteen}, @{L0511.twelve} - @{L0510.sixteen}, "a2,a3", 0.2),  // ruled line one
+    n(@{L0511.twelve}, @{L0512.end} - @{L0511.twelve}, "a2,d3,a3", 0.2),     // line two fits inside it
+    n(@{L0512.end}, @{ch05-s03:snuff} - @{L0512.end}, "d3,a3", 0.16),
+    n(@{ch05-s03:retry}, @{L0517.pull} - @{ch05-s03:retry}, "d3,a3,f3", 0.13),
+    // s05: celld's terrace, in G
+    n(@{L0526}, @{L0527} - @{L0526}, "g2,d3,b3", 0.18),
+    // s06: D minor, S while B's crown is dark, the resolution, the two-chord close
+    n(@{L0527}, @{L0529.end} - @{L0527}, "d3,a3,f3", 0.17),
+    n(@{L0529.end}, @{L0531.died} - @{L0529.end}, "a2,d3,e3,a3", 0.19),
+    n(@{L0531.recovers}, @{L0531.end} - @{L0531.recovers}, "d3,a3,f3", 0.17),
+    n(@{L0532.rewind.end}, @{L0532.b#2.end} + 0.03 - @{L0532.rewind.end}, "bb2,f3,a3,d4", 0.18),
+    n(@{L0532.b#2.end} + 0.03, @{DUR} - (@{L0532.b#2.end} + 0.03), "d3,a3,d4", 0.18)), 850, 2.0)
+// the reversed swells (long attack, cut short)
+$: tl(n(@{ch05-s03:snuff} + 0.5, @{ch05-s03:retry} - (@{ch05-s03:snuff} + 0.5), "d3,a3", 0.24), n(@{L0531.end} - 1.3, @{L0532.rewind.end} - (@{L0531.end} - 1.3), "d3,a3,d4", 0.2))
+    .s("gm_string_ensemble_1").gain(1.6).attack(2.2).release(0.12).lpf(900).room(0.35).rsize(4)
+// two clashing drones: two rooms
+$: str(tl(n(@{L0519.two}, @{L0520.back.end} - @{L0519.two}, "d3", 0.24)), 700, 0.6)
+$: cello(tl(n(@{L0519.two}, @{L0520.back.end} - @{L0519.two}, "eb3", 0.2)))
+// the maxim over a single low note
+$: str(tl(n(@{L0522.timeout}, @{L0523.end} + 1 - @{L0522.timeout}, "d2", 0.24)), 500, 1.6)
+
+// ---------------------------------------------------------------- bowed air: the stall
+$: tl([@{ch05-s03:stall}, @{ch05-s03:snuff} - @{ch05-s03:stall}, s("brown")]).bpf(380).bpq(0.8).gain(0.09).attack(2.5).release(0.08)
+
+// ---------------------------------------------------------------- piano: the resolved braid, T, the withheld A
+$: felt(tl(
+    n(0.2, 3.5, "c4,f4", 0.16),
+    n(@{L0505.end} + 0.12, 0.55, "a4", 0.18), n(@{L0505.end} + 0.67, 1.8, "d5", 0.18),   // born already open
+    n(@{L0528.end} + 0.04, 0.4, "a4", 0.13), n(@{L0528.end} + 0.44, 1.4, "d5", 0.13),    // the crown is lit
+    n(@{L0529.end} + 0.04, @{L0531.died} - (@{L0529.end} + 0.04), "a4", 0.12)))          // B's crown: dark
+$: cello(tl(n(0.2, 3.5, "f3", 0.2), n(@{L0531.recovers}, 1.0, "a2", 0.22), n(@{L0531.recovers} + 1.0, 2.5, "d3", 0.22)))
+
+// ---------------------------------------------------------------- harp
+const lull = (t0, t1, notes, v) => { const o = []; let k = 0; for (let t = t0; t < t1 - 0.2; t += 0.7, k++) o.push(n(t, 0.7, notes[k % notes.length], v)); return o }
+$: harp(tl(
+    n(@{L0422.landed.end} + 0.03, 0.3, "c4", 0.14), n(@{L0422.landed.end} + 0.33, 1.0, "d4", 0.14),
+    n(@{L0422.end} + 0.03, 0.3, "d4", 0.14), n(@{L0422.end} + 0.33, 1.2, "e4", 0.14),
+    n(@{L0508.twenty.end}, 0.6, "a3", 0.11), n(@{L0508.three.end}, 0.6, "d4", 0.11), n(@{L0508.four.end}, 0.6, "e4", 0.11), n(@{L0508.one.end}, 0.8, "a3", 0.11),
+    n(@{L0512.end} + 0.1, 0.5, "a2", 0.16), n(@{L0512.end} + 0.6, 1.5, "d3", 0.16),
+    // the lullaby, then soured past the band
+    ...lull(@{L0515.end} + 0.15, @{ch05-s04:burn}, ["d4", "f4", "a4", "f4"], 0.075),
+    ...lull(@{ch05-s04:burn}, @{L0519.two}, ["d4", "f4", "ab4", "f4"], 0.07),
+    // celld's terrace
+    n(@{L0526}, 0.4, "g2", 0.14), n(@{L0526} + 0.4, 0.4, "d3", 0.14), n(@{L0526} + 0.8, 1.6, "b3", 0.13),
+    // the close
+    n(@{L0532.rewind.end} + 0.05, 1.2, "bb2,f3,d4", 0.13),
+    n(@{L0532.b#2.end} + 0.03, @{DUR} - (@{L0532.b#2.end} + 0.03), "d3,a3,d4", 0.13)))   // LAST STRIKE
+
+// ---------------------------------------------------------------- pizzicato: the tiles, the Tooth, the clocks
+$: pizz(tl(
+    n(@{L0501.tiles.end} + 0.02, 0.16, "a2", 0.15), n(@{L0501.tiles.end} + 0.18, 0.16, "d3", 0.15), n(@{L0501.tiles.end} + 0.34, 0.5, "a2", 0.15),
+    n(@{L0502.claim.end} + 0.05, 0.3, "d3", 0.14), n(@{L0502.claim.end} + 0.35, 0.5, "e3", 0.14),
+    n(@{L0504.end} + 0.05, 0.4, "d4", 0.18),                                   // the Tooth: click
+    n(@{L0505.instead.end} + 0.02, 0.13, "a3", 0.12), n(@{L0505.instead.end} + 0.15, 0.13, "d4", 0.12), n(@{L0505.instead.end} + 0.28, 0.4, "f4", 0.12),
+    ...every(@{L0507.candle}, @{L0508}, 1.0, "a2", 0.12).map((e, k) => k % 2 ? n(e[0], e[1], "d3", 0.12) : e),
+    ...every(@{L0516}, @{L0517.pull}, 2.0, "a2", 0.07),
+    n(@{L0520.shutters.end} + 0.03, 0.5, "d3", 0.16),
+    // s05: two clocks drift together; one drops out on 'zero'
+    ...every(@{L0524}, @{L0525.end}, 1.0, "a3", 0.09),
+    // celld: the clock motif on D–G
+    ...every(@{L0526} + 2.4, @{L0526.end}, 1.0, "d3", 0.08).map((e, k) => k % 2 ? n(e[0], e[1], "g3", 0.08) : e),
+    // s06: one clockwork step per printed stamp
+    n(@{ch05-s06:s1}, 0.25, "a2", 0.14), n(@{ch05-s06:s1} + 0.25, 0.5, "d3", 0.14),
+    n(@{ch05-s06:s2}, 0.25, "bb2", 0.14), n(@{ch05-s06:s2} + 0.25, 0.5, "eb3", 0.14),
+    n(@{ch05-s06:s3}, 0.25, "c3", 0.14), n(@{ch05-s06:s3} + 0.25, 0.5, "f3", 0.14),
+    n(@{ch05-s06:s2b}, 0.25, "bb2", 0.11), n(@{ch05-s06:s2b} + 0.25, 0.5, "d3", 0.11)))
+const drift = []; for (let k = 0, t = @{L0524} + 0.45; t < @{ch05-s05:zero}; k++, t = @{L0524} + 0.45 + k * 0.92) drift.push(n(t, 0.4, "d4", 0.08))
+$: pizz(tl(...drift)).pan(0.62)
+
+all(x => x.postgain(1))

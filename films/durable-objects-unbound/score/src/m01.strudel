@@ -1,0 +1,79 @@
+// m01 · THE TICK (ch01) · D, bare fifths · the harbour at night; T is born; P's first statement under the title.
+// Cue-local seconds; every event is placed on a word or beat anchor resolved by score/tools/fill.mjs.
+//   s01  harbour drone and an open D–A string fifth; a small harp figure (D A E) as the lantern resolves, in the
+//        hold before the first line; one harp A in the breath after 'forty-two'; the strings fall away on 'door';
+//        T is born: A on 'tick' (the colon breath), D after 'saved', ringing into the hold.
+//   s02  SILENCE for the failure: everything cuts with A's lamp ('gutter'); only a low wind under L0105.
+//        One low string D returns as House C lights; the bundle climbs on a slow harp A2 → D3 (the tick's fourth,
+//        low); after 'true' T answers itself, warmer (piano doubled by harp an octave down).
+//   s03  the drone returns under the crane; two string chords for the two promises (Dm9 on the breath after
+//        'promises', Bbmaj7 on 'nothing'); C(add9) for the newer promise, a harp E on 'move'; Gm/Bb under the
+//        question, cut short on 'portable' (the question hangs in the air).
+//   s04  P whole for the first time (piano): A D | E F | G | F E | D, the tick as its head, harmony Dm · Bbmaj7 ·
+//        C · D(sus2). The final chord (D A E, no third) is struck in the breath before L0117 and rings to the join.
+setcpm(15)
+const CPS = 0.25, DUR = @{DUR}
+const Q = 480, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => {
+  evs = evs.filter(Boolean).map(([t, d, p]) => [Math.max(0, t), d, p]).sort((x, y) => x[0] - y[0])
+  const out = [], end = qn(DUR); let cur = 0
+  evs.forEach(([t, d, p], i) => {
+    let a = Math.max(qn(t), cur); const b = Math.min(qn(t + d), end, i + 1 < evs.length ? qn(evs[i + 1][0]) : end)
+    if (b - a < 2) return
+    if (a > cur) out.push([a - cur, silence])
+    out.push([b - a, p]); cur = b })
+  if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const loop = (pat, d) => pat.fast(d * CPS)
+const n = (t, d, ns, v = 0.2) => [t, d, note(typeof ns === 'string' && ns.includes(',') ? '[' + ns + ']' : ns).velocity(v)]
+const felt = x => x.s("piano").gain(1.6).lpf(1800).release(1.8).room(0.3).rsize(4)
+const harp = x => x.s("gm_orchestral_harp").gain(1.6).lpf(2200).release(2.4).room(0.32).rsize(4)
+const str = (x, lp = 850, rel = 2.6) => x.s("gm_string_ensemble_1").gain(1.6).attack(1.6).release(rel).lpf(lp).room(0.35).rsize(4)
+const drone = (x, rel = 3) => stack(x.s("triangle").lpf(380).gain(0.06), x.s("sawtooth").lpf(200).gain(0.028)).hpf(40).attack(3).release(rel)
+
+// ---------------------------------------------------------------- the harbour drone (three entrances)
+$: drone(tl(n(0, @{ch01-s02:gutter}, "d2,a2", 1)), 0.25)                  // cut with A's lamp
+$: drone(tl(n(@{ch01-s03}, @{L0114.portable.end} - @{ch01-s03}, "d2,a2", 1)), 0.6)
+$: drone(tl(n(@{ch01-s04:title}, @{DUR} - @{ch01-s04:title}, "d2,a2", 1)), 4)
+
+// ---------------------------------------------------------------- strings
+$: str(tl(n(1.5, @{L0104.door} - 1.5, "d3,a3", 0.26)), 800, 1.4)          // holds its breath on 'door'
+$: str(tl(n(@{ch01-s02:clights}, @{ch01-s03} + 3 - @{ch01-s02:clights}, "d3", 0.24)), 700, 3)
+$: str(tl(
+    n(@{L0112.promises.end}, @{L0112.nothing} - @{L0112.promises.end}, "d3,f3,a3,e4", 0.22),
+    n(@{L0112.nothing}, @{L0113} - @{L0112.nothing}, "bb2,f3,a3,d4", 0.22),
+    n(@{L0113}, @{L0114} - @{L0113}, "c3,g3,d4,e4", 0.22)), 850, 2.4)
+$: str(tl(n(@{L0114}, @{L0114.portable.end} - @{L0114}, "bb2,g3,d4", 0.2)), 850, 0.35)   // stops short
+// the title: Dm · Bbmaj7 · C · D(sus2), the last held to the end of the window (no new onset)
+$: str(tl(
+    n(@{ch01-s04:title}, @{L0115.end} - @{ch01-s04:title}, "d3,a3,f4", 0.22),
+    n(@{L0115.end}, @{L0116.ours.end} - @{L0115.end}, "bb2,f3,a3,d4", 0.22),
+    n(@{L0116.ours.end}, @{L0116.end} - @{L0116.ours.end}, "c3,g3,e4", 0.21),
+    n(@{L0116.end}, @{DUR} - @{L0116.end}, "d3,a3,e4", 0.22)), 850, 3)
+
+// ---------------------------------------------------------------- wind (the failure: no music at all)
+$: tl([@{ch01-s02:gutter}, @{L0106} - @{ch01-s02:gutter}, s("brown")]).lpf(420).gain(0.05).attack(1.2).release(1.8)
+
+// ---------------------------------------------------------------- harp
+$: harp(tl(
+    n(@{ch01-s01:arrive} - 2.6, 0.8, "d3", 0.2), n(@{ch01-s01:arrive} - 1.8, 0.8, "a3", 0.2), n(@{ch01-s01:arrive} - 1.0, 1.0, "e4", 0.18),
+    n(@{L0103.forty-two.end} + 0.05, 1.2, "a3", 0.14),
+    n(@{ch01-s02:bundle}, 2.5, "a2", 0.2), n(@{ch01-s02:relit}, 3, "d3", 0.2),
+    n(@{L0108.end} + 0.12, 0.58, "a3", 0.17), n(@{L0108.end} + 0.7, 2.6, "d4", 0.17),
+    n(@{L0113.move}, 2.2, "e4", 0.14)))
+
+// ---------------------------------------------------------------- piano: T, and P under the title
+$: felt(tl(
+    // T is born: A in the colon breath after 'tick', D after 'saved', ringing into the hold
+    n(@{L0104.tick.end} + 0.03, @{L0104.end} + 0.2 - (@{L0104.tick.end} + 0.03), "a4", 0.2),
+    n(@{L0104.end} + 0.2, @{ch01-s02:gutter} - (@{L0104.end} + 0.2), "d5", 0.2),
+    // T answers itself, a little warmer
+    n(@{L0108.end} + 0.12, 0.58, "a4", 0.2), n(@{L0108.end} + 0.7, 2.8, "d5", 0.2),
+    // P, first full statement
+    n(@{ch01-s04:title}, 0.5, "a3", 0.2), n(@{ch01-s04:title} + 0.5, 1.2, "d4", 0.2),
+    n(@{L0115.2026.end} + 0.02, 0.3, "e4", 0.16), n(@{L0115.2026.end} + 0.32, 1.2, "f4", 0.15),
+    n(@{L0115.end} + 0.05, 2.0, "g4", 0.17),
+    n(@{L0116.ours.end} + 0.02, 1.0, "f4", 0.13), n(@{L0116.code.end} + 0.02, 1.0, "e4", 0.13),
+    n(@{L0116.end} + 0.02, @{DUR} - (@{L0116.end} + 0.02), "d4", 0.18)))   // LAST STRIKE (with the strings' D sus2)
+
+all(x => x.postgain(1))

@@ -1,0 +1,18 @@
+{
+ "id": "m08",
+ "start": 1301.134,
+ "end": 1439.4167,
+ "file": "films/durable-objects-unbound/score/renders/m08.wav",
+ "duration": 144.2827,
+ "I": -25.3,
+ "LRA": 10.7,
+ "TP": -7.2,
+ "expected": 144.2827,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/durable-objects-unbound/score/analysis/m08.png",
+ "cueSeconds": 138.2827,
+ "cps": 0.25,
+ "lastStrikeLocal": 130.54,
+ "lastStrike": 1431.674
+}

@@ -2,7 +2,8 @@
 
 Film `durable-objects-unbound` · research as of **2026-10-31** · the screenwriter's single source of truth.
 Every fact below appears in `claims.json` (ids in square brackets) and every quotation in `quotes.json`
-(Q01–Q25, frozen in `quotes.lock.json`). Sources and pins are in `sources.json`.
+(the 15 delivered excerpts of Q01–Q25 after the 2026-11-01 excerpt selection, frozen in `quotes.lock.json`;
+per-source word budget in `quote-budget.md`). Sources and pins are in `sources.json`.
 
 **Provenance.** This bible re-verifies and extends the research done for the earlier book (82 sourced claims,
 `public/generated/durable-objects-unbound/sources.json`; `bookClaim` fields map each film claim to its book
@@ -39,7 +40,7 @@ built and proved its own [SB03, SB04, SB14].
 
 ## 2. Master chronology
 
-- **28 Sep 2020** · Durable Objects closed beta, post by Kenton Varda: a globally-unique identifier; "That object exists in only one location in the whole world at a time." (Q01). The demo is a chat app, one object per room (Q02) [HI01–HI03].
+- **28 Sep 2020** · Durable Objects closed beta, post by Kenton Varda: a globally-unique identifier; the object exists "…only one location in the whole world at a time." (Q01). The demo is a chat app, one object per room (Q02) [HI01–HI03].
 - **1 Dec 2020** · AWS: S3 delivers strong read-after-write consistency automatically for all applications [SB01]. (Two months after the Durable Objects beta. Earlier, overwrites were eventually consistent because writes and reads could take different cache paths [SB02].)
 - **20 Apr 2021** · Werner Vogels, "Diving Deep on S3 Consistency": a cache coherence protocol, per-object ordering, a **witness** notified on every change (Q17); deductive proofs and model checking, "more work … than the actual implementation itself" (Q18) [SB03, SB04].
 - **3 Aug 2021** · Kenton Varda, "Durable Objects: Easy, Fast, Correct — Choose three": input gates and **output gates**, which hold outgoing messages while a storage write is in progress (Q03) [HI05].
@@ -48,9 +49,9 @@ built and proved its own [SB03, SB04, SB14].
 - **26 Sep 2024** · SQLite inside Durable Objects, same thread; local latency "effectively zero" (Q05, local only). The hosted **Storage Relay Service** watches the WAL, batches to object storage every ≤10 s / 16 MB, forwards each commit to **five followers in five data centres**, confirms at **three** (Q06), and that confirmation opens the output gate [HI08–HI11].
 - **25 Nov 2024** · S3 If-Match conditional overwrite: compare-and-swap on the ETag [SB06].
 - **August 2026** · The Deno team releases celld (month only; Kenton Varda, Q10) [HI14]. Its SQLite replicator crate was vendored on 3 Aug 2026 from rustyriver, a Rust reimplementation of Litestream and the LTX format [HI25].
-- **9 Oct 2026** · Deno team joining Cloudflare announced (Q12) [HI15]. Joint post: Ryan Dahl writes that workerd's Durable Objects are "limited to a single instance" (Q07) and that he "started celld" (Q08); Kenton Varda calls Durable Objects workerd's "one big gap" (Q26) wanting object storage as the only external dependency (Q09); Ryan Dahl and Bert Belder to lead first-class workerd self-hosting, merging celld's code and ideas (Q11) [HI12, HI13, HI18]. Announced plans: Deno runtime supported one more year, then "we will end our development of the Deno runtime" (Q13); Deploy six months; JSR continues on Cloudflare; rusty_v8 continues; Deno stays open source [HI16]. **No price or terms stated** [HI17].
+- **9 Oct 2026** · Deno team joining Cloudflare announced (Q12) [HI15]. Joint post (cf-deno-2026): Ryan Dahl writes that workerd's Durable Objects support covers only one instance, and that this is why he started celld, wanting one Rust binary whose only external service is object storage [HI12, HI13]; Kenton Varda calls Durable Objects the big gap in workerd's production-readiness [HI12]; Ryan Dahl and Bert Belder to lead first-class workerd self-hosting, bringing celld's code and ideas back into workerd [HI18]. Announced plans (deno-2026): Deno runtime supported one more year, after which Deno ends its development of the runtime; Deploy six months; JSR continues on Cloudflare; rusty_v8 continues; Deno stays open source [HI16]. **No price or terms stated** [HI17].
 - **21 Oct 2026** · celld v0.6.3 (the pin) [HI26].
-- **28 Oct 2026 (Pacific) / 29 Oct UTC** · the supplied commit: "This is the beginning of merging celld's functionality into workerd." (Q14); "For now an object acknowledges a write only once it is fully synced to the bucket." (Q15); "Alarms are not supported yet" (Q16) [HI20, HI21].
+- **28 Oct 2026 (Pacific) / 29 Oct UTC** · the supplied commit: "…the beginning of merging celld's functionality into workerd." (Q14); for now a write is acknowledged only after the bucket holds all of it (wd-commit); "Alarms are not supported yet" (Q16) [HI20, HI21].
 - **30–31 Oct 2026** · alarms (#8090) and facets (#8113) land in workerd's cluster [HI22].
 
 ## 3. People (respectful silhouettes, name cards, only their published words)
@@ -58,7 +59,7 @@ built and proved its own [SB03, SB04, SB14].
 | person | role in the film | sourced by |
 |---|---|---|
 | **Kenton Varda** | Cloudflare; author of the 2020, 2021, 2022 and 2024 posts; co-author of the 2026 joint post; names the "one big gap" [HI12] and welcomes celld (Q10) | cf-do-2020 … cf-deno-2026 |
-| **Ryan Dahl** | Deno, now Cloudflare; started celld (Q08, Q09); author of the supplied commit and the alarms and facets commits [HI20, HI22]; author of the Deno announcement | cf-deno-2026, deno-2026, wd-commit |
+| **Ryan Dahl** | Deno, now Cloudflare; started celld [HI13]; author of the supplied commit and the alarms and facets commits [HI20, HI22]; author of the Deno announcement | cf-deno-2026, deno-2026, wd-commit |
 | **Bert Belder** | named with Ryan Dahl as leading the workerd self-hosting effort [HI18]. Name card only; no words. | cf-deno-2026 |
 | **Werner Vogels** | Amazon CTO; explained S3's internal witness and proofs (Q17, Q18) [SB03, SB04] | vogels-2021 |
 | Ben Johnson; Mike Nomitch | credited only by name, on the sources card, for Litestream and rustyriver [HI25] | cd-ltx |
@@ -128,7 +129,7 @@ bound cancelled them and fenced every node [LE02].
   treats an unrenewed peer as dead [LE10], and safety comes from two other places: the old owner stops itself
   in time, and the post-upload re-read refuses to acknowledge for a superseded epoch [DU02, DU10].
 - celld differs: 10 s TTL renewed at a third; self-fence when the published expiry passes; exit code 3; expiry
-  checked on every routed request [LE11]. Its post-bucket check "reads the record instead of a clock" (Q20)
+  checked on every routed request [LE11]. Its post-bucket check consults the ownership record, not a clock
   [LE12]. **Never** put workerd's 20 s / 2 s / 16 s / 12 s numbers on celld.
 - If the bucket is unreachable: no new acknowledgements, and renewal failure eventually fences writers [LE13].
 
@@ -154,8 +155,8 @@ that makes the upload an acknowledgement". No follower path exists in workerd at
 **What is held back**: the 2021 output gate holds outgoing messages during writes [HI05]; celld lists exactly
 what its gate holds: write responses, read-only responses exposing uncovered writes, errors, R2 mutations, raw
 TCP, every stream chunk (Q25) [DU06, DU07].
-**Limits**: a missing acknowledgement does not prove a write absent (Q23): durability is not exactly-once
-[DU08]. Latency: local SQL plus upload plus re-read; draw any widths as illustrative [DU09].
+**Limits**: a lost acknowledgement is no evidence that the write did not happen (cd-guarantees): durability is
+not exactly-once [DU08]. Latency: local SQL plus upload plus re-read; draw any widths as illustrative [DU09].
 A superseded owner may still finish uploads into its old session; that never makes it the owner [DU11, RE06].
 
 ## 8. Rebuilding the room (deep dive V)
@@ -175,11 +176,11 @@ pages are replayed, handlers are not re-run. Takeover deletes non-authoritative 
 - Before its first fleet acknowledgement each process session creates a conditional **node-log record**.
 - Takeover recovery gate: read the predecessor's node-log record first. Absent = never acknowledged past the
   bucket. Sealed = recovered. Open/recovering = compare-and-swap to fence it, **seal** the reachable followers,
-  upload their retained tail, mark it sealed, **then** restore (Q21).
+  upload their retained tail, mark it sealed, **then** restore [CE06, CE07].
 - **Complete-tail proof is mandatory**: at least one current follower must return its complete retained range,
   or activation fails and keeps the requirement [CE08]. One damaged follower is not fatal if another current
   follower certifies a complete range; recovery blocks when **no** current follower can [CE09; book review
-  correction]. A follower's HTTP error does not prove absence (Q22). A deleted final batch can be undetectable.
+  correction]. A follower's HTTP error is not evidence that its data is gone [CE09]. A deleted final batch can be undetectable.
 - Nodes restarting together still serve seal and tail requests to each other [CE10]; recovery can take minutes,
   retrying up to 240 times by default [CE11].
 - **The distinction**: epoch prefixes fence bucket writes; they cannot recover a follower-only tail. The

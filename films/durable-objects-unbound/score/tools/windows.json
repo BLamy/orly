@@ -1,0 +1,15 @@
+{
+  "alone": 1.6,
+  "guard": 0.25,
+  "first": { "id": "m01", "start": "0", "fadeIn": 1.0 },
+  "joins": [
+    { "out": "m01", "in": "m02", "after": "L0117", "before": "L0201" },
+    { "out": "m02", "in": "m03", "after": "L0224", "before": "L0301" },
+    { "out": "m03", "in": "m04", "after": "L0332", "before": "L0401" },
+    { "out": "m04", "in": "m05", "after": "L0416", "before": "L0418" },
+    { "out": "m05", "in": "m06", "after": "L0532", "before": "L0601" },
+    { "out": "m06", "in": "m07", "after": "L0625", "before": "L0701" },
+    { "out": "m07", "in": "m08", "after": "L0736", "before": "L0801" }
+  ],
+  "last": { "id": "m08", "end": "film.end", "fadeOut": 4.0 }
+}

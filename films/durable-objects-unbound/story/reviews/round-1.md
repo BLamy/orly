@@ -1,5 +1,10 @@
 # Story review, round 1: "Durable Objects, Unbound"
 
+> **Quotation note (2026-11-01, excerpt selection version 2).** This historical review predates the film's
+> quotation budget. Quote IDs below refer to the ledger as it stood then; Q07, Q08, Q09, Q11, Q13, Q15, Q20, Q21,
+> Q22, Q23 and Q26 are retired (their cards became attributed own-word labels; see `research/quote-budget.md`).
+> Retired source wording is described rather than reproduced; scores and outcomes are unchanged.
+
 Reviewer: Claude Opus 5.5 (claude-opus-5-5), independent story-stage reviewer, high effort. Read only.
 Checked against: brief.md; research/bible.md, claims.json, quotes.json; story/treatment.md, meta.json, script.md, script.json.
 Code consulted to settle doubts: workerd `aa494794c` (`cluster/logic/lease.rs`, `ownership.rs`, `owner.rs`, `log.rs`), `git log aa494794c..ad78a8fe7` (alarms #8090 on 30 Oct, facets #8113 on 31 Oct), celld 0.6.3 `docs/guarantees.md`.
@@ -169,7 +174,7 @@ Fix: show 'workerd · 28 Oct' on the wellhead at dawn, or no badge at all.
 26. **ch06-s01.**
     - The label "header 32 B · frame = 24 B tab + 1 page" duplicates the in-diagram "32 bytes" and "24" marks, which makes 3 or more text items. Keep the in-diagram numbers and drop the label.
     - Bind the seal (stamp) numbers to a real quantity. Draw the ledger with 6 pages. Transaction 1 rewrites pages, so its commit stamp reads **6**. Frame 5 adds a new page, so its stamp reads **7**. The other tabs show 0. The ledger then visibly gains a page.
-27. **ch07-s05.** Q21 (about 120 characters) is set "at the lower-middle, above y 634", competing with the pictograms and hugging the caption band. Move it to the upper right and trim it to a verbatim fragment: "…so a stale owner cannot complete another fleet proof."
+27. **ch07-s05.** Q21 (about 120 characters) is set "at the lower-middle, above y 634", competing with the pictograms and hugging the caption band. Move it to the upper right and trim it to a short verbatim fragment (its closing clause, about a stale owner and further fleet proofs).
 28. **ch07-s03 to ch07-s07: who is the successor?** C's upper window is copyist-2 (a follower), the successor's keeper "stands on the square", and the lantern relights in House C. State in the staging that the successor **is House C's node**, its own notebook being one of the two that recovery reads. Then case one/case two and "Seal every neighbour it can reach" read consistently. The keeper should stand at C's door, not in the open square.
 29. **ch01-s01 and ch08-s04: where is the sender?** ch01-s01 places "the sender at a harbour-side seat" ambiguously inside the lantern beat; ch08-s04 puts the sender at a harbour-side window, L4 right of the Well. Lock the sender at that L4 window in both shots, with a matching member silhouette inside the lantern, so the slip's flight from window to lantern door is legible.
 30. **ch03-s04.** The "crane back UP the shaft fast (2.5 s)" breaks the camera grammar (≤ 6% width/s; whip moves only for the claim race). Make it a 4 s crane, or a cut on the witness's bell to the square.

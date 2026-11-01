@@ -1,5 +1,10 @@
 # Round 1 — resolution (head writer, 2026-11-01)
 
+> **Quotation note (2026-11-01, excerpt selection version 2).** This historical review predates the film's
+> quotation budget. Quote IDs below refer to the ledger as it stood then; Q07, Q08, Q09, Q11, Q13, Q15, Q20, Q21,
+> Q22, Q23 and Q26 are retired (their cards became attributed own-word labels; see `research/quote-budget.md`).
+> Retired source wording is described rather than reproduced; scores and outcomes are unchanged.
+
 Review: `round-1.md` (independent Opus 5.5 reviewer, four lenses; scores accuracy 7, depth 8, clarity 7, story 7,
 curiosity 8, visual 7, voice 7). Also resolved: `.orly-work/durable-film-integration-review.md` (five precision
 checks). Every fix was checked against `research/` and, where code was at issue, the pinned sources.
@@ -18,8 +23,8 @@ checks). Every fix was checked against `research/` and, where code was at issue,
 | C8 | ch08-s04 staging | dawn badge corrected to 'workerd · 28 Oct'. |
 
 Additional historian correction found by the head writer while checking C5: in the 9 October 2026 joint post,
-"Workerd is already open source, but its Durable Objects support is limited to a single instance." (Q07) is in
-**Ryan Dahl's** section; the "one big gap … single-instance way, good enough for local testing" passage is in
+the sentence saying workerd is open source but its Durable Objects run as a single instance (Q07) is in
+**Ryan Dahl's** section; the passage calling Durable Objects workerd's big production-readiness gap is in
 **Kenton Varda's**. quotes.json Q07 speaker corrected (text unchanged, lock intact); Kenton's own sentence added as
 Q26 (verified verbatim, appended to the lock); ch04-s02, at Kenton Varda's desk, now shows Q26; HI12 and the bible
 updated.

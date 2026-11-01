@@ -1,0 +1,154 @@
+[
+  {
+    "id": "m01",
+    "mood": "winterBlue harbour at night: a held breath; silence for the guttered lamp; the question; the title",
+    "tempoBpm": 60,
+    "key": "D, bare fifths (no third); P's first statement in D minor (Dm · Bbmaj7 · C · Dsus2)",
+    "instrumentation": "harbour drone (triangle + sawtooth, lpf 380/200 Hz), gm_string_ensemble_1 (lpf 850), felt piano (lpf 1.8 kHz), gm_orchestral_harp, low brown-noise wind",
+    "intensity": 0.25,
+    "file": "score/cues/m01.strudel",
+    "render": "score/renders/m01.wav",
+    "gainDb": -6,
+    "duck": {
+      "ratio": 3,
+      "attack": 20,
+      "release": 250,
+      "depthDb": 3
+    },
+    "body": "PROLOGUE AND TITLE, in D. The motif family is born here (score/motifs.md). (1) ch01-s01: the harbour drone and an open D-A string fifth; a small harp figure (D, A, E) as the lantern resolves, in the hold before L0101; one soft harp A in the breath after 'forty-two'; the strings fall away on 'door' (the room holds its breath). T, the tick, is born: the piano A in the colon breath after 'tick', the D after 'saved', ringing into the hold. (2) ch01-s02: NO MUSIC for the failure. Everything cuts with A's lamp on the gutter beat; only a low wind under L0105. One low string D returns as House C lights; the bundle climbs on a slow harp A2 to D3 (the tick's fourth, low); after 'true' T answers itself, warmer (piano doubled by harp an octave down). (3) ch01-s03: the drone returns under the crane; Dm9 in the breath after 'promises', Bbmaj7 on 'nothing', C(add9) under the newer promise with one harp E on 'move'; Gm/Bb under the question, cut short at the end of 'portable' so the question hangs in the air. (4) ch01-s04: P whole for the first time on the piano (A D, E F, G, F E, D), the tick as its head, over Dm, Bbmaj7, C and a final D-A-E (no third: the F-sharp is withheld until dawn). The final D is struck in the breath before L0117 and rings to the join; nothing new sounds after it.",
+    "lastStrikeAt": "L0116.end + 0.02"
+  },
+  {
+    "id": "m02",
+    "mood": "duskRose desk lamps, warm and plain (2020-2024) -> serverCyan relay, cool and slightly melancholy",
+    "tempoBpm": 60,
+    "key": "F major (P in F; the latch: Dm -> A -> Bb) -> A minor (the relay's open fifth)",
+    "instrumentation": "felt piano, gm_string_ensemble_1 (lpf 850), gm_orchestral_harp, gm_pizzicato_strings, a brief harbour drone",
+    "intensity": 0.25,
+    "file": "score/cues/m02.strudel",
+    "render": "score/renders/m02.wav",
+    "gainDb": -6,
+    "duck": {
+      "ratio": 3,
+      "attack": 20,
+      "release": 250,
+      "depthDb": 3
+    },
+    "body": "ONE ROOM, in F, turning to A minor. (1) ch02-s01: the desk colour sounds alone in the hold before L0201: a quiet piano figure (C F A G) over an F(add9) pad; a soft F after '2020'; one string C held for the one lantern on the globe; harp plucks from scattered pitches gather to one F on the 'many' beat. (2) ch02-s02: the desk figure in the breath after 'app'; three echoing harp plucks on 'everyone' (the broadcast); the harbour drone surfaces for a moment on the match beat; the aside drops to a single held string C that hitches after 'wait'. (3) ch02-s03, the output gate: the reply waits (piano A held from the end of L0211) and the latch lifts after 'lifts': the bell (a low harp D-A dyad: wooden, never a chime) and the piano D that completes T across the latch. Silence on 'fails' with one muted pizzicato knock; a slow string breath from 'restarts'; T recapped on the harp after 'released'. (4) ch02-s04: a pizzicato walking figure from the 'leave' beat, stopped dead on the tether; the desk figure after '2024'; a quick bright harp flourish after 'instant'; after 'read' the piano A is held again, unresolved: a tick is not a local read. (5) ch02-s05, serverCyan in A minor: a slow pizzicato pulse from the 'ribbon' beat; five soft harp tones in the breath after 'centres', three answering as a chord after 'three'; the bell after 'lifts'; the A-E fifth struck in the breath after 'machinery' (the last strike) and held, melancholy, into the hold. A is the dominant of ch03's D.",
+    "lastStrikeAt": "L0224.machinery.end + 0.02"
+  },
+  {
+    "id": "m03",
+    "mood": "winterBlue square and the Well: the stale copy, the race, the refusals, the referee inside the Well, the warning, the quiet",
+    "tempoBpm": 60,
+    "key": "D minor; W (D C Bb A) lands on A major and resolves to D; the race as a canon a fourth apart",
+    "instrumentation": "harbour drone, gm_string_ensemble_1, gm_cello, gm_pizzicato_strings (the race canon, the Tooth, the test writes), felt piano (T kept and broken), gm_orchestral_harp",
+    "intensity": 0.3,
+    "file": "score/cues/m03.strudel",
+    "render": "score/renders/m03.wav",
+    "gainDb": -6,
+    "duck": {
+      "ratio": 3,
+      "attack": 20,
+      "release": 250,
+      "depthDb": 3
+    },
+    "body": "THE WELL, in D minor. (1) ch03-s01: alone in the hold, the drone and W begin, one step per line (Dm, C, Bb, A major on 'December'); T broken (A then E-flat) for the stale copy after 'old copy'; the resolution to D with T kept (A, then D after 'latest'). (2) ch03-s02: SILENCE from 'Pull'. The race: a two-voice pizzicato canon (keeper A left, keeper B right, a fourth apart, half a second behind) from L0308; a short string cluster (D against E-flat) on 'Both'; a hard stop after 'answered'. The maxim over a single low string D; the drone returns after 'Pin back'. (3) ch03-s03: a small rising harp phrase after the first '2024', the same phrase a step higher after the second (the three-month rhyme); the race returns on 'race' and is cut off on the shutter beat; the Tooth: a dry high pizzicato D after 'click' (accepted), a muffled low knock after 'thunk' (refused); a warm cadence (Gm, Bbmaj7, then D) and T after 'say no'. (4) ch03-s04: W in the harp down the shaft (D C B-flat A) from the crane; one soft harp A just after 'witness'; a patient pizzicato count under 'proofs'; a rising cello line under L0323 lands on the drone on 'inside'. (5) ch03-s05: an uneasy near-unison (cello D against strings C-sharp) for the look-alike well; TRUE SILENCE under L0326 ('silently ignore it'); the four test writes: low knock on 'create', dry click on 'refuse', low knock on 'update', dry click on the second 'refuse'; a small harp figure after 'on demand'. (6) ch03-s06: two thin lines that do not harmonise (cello D-E against strings A-flat-G); on 'quiet' the drone drops out; one low D (harp D-A and piano) after 'quiet' is the last strike and rings into the iris.",
+    "lastStrikeAt": "L0332.quiet.end + 0.05"
+  },
+  {
+    "id": "m04",
+    "mood": "two desk lamps, 2026: Ryan Dahl's lamp answers Kenton Varda's; two ropes begin to braid; plain plans, no celebration",
+    "tempoBpm": 60,
+    "key": "B-flat / F; P in F (piano) against R, its inversion (cello); ends open on B-flat (IV)",
+    "instrumentation": "gm_cello (R), felt piano (P), gm_string_ensemble_1, a brief harbour drone, gm_orchestral_harp (the last chord)",
+    "intensity": 0.25,
+    "file": "score/cues/m04.strudel",
+    "render": "score/renders/m04.wav",
+    "gainDb": -6,
+    "duck": {
+      "ratio": 3,
+      "attack": 20,
+      "release": 250,
+      "depthDb": 3
+    },
+    "body": "TWO LINEAGES. (1) ch04-s01: alone in the hold, a warm B-flat pad and R's falling fourth on the cello (F, then C): the second desk lamp, answering P without quoting it; R continues after L0402 and after 'own'; the Well's drone surfaces under 'inside the well'; R's tail (A, B-flat, C) in the gap after L0406. (2) ch04-s02: P in F alone on the piano for Kenton Varda, in the breaths after 'together', 'scale' and L0409; on the pull back the cello joins: two lines in counterpoint for the first time, the piano falling (G, F, A3) while the cello rises (F, A, C4), crossing on 'braid'. (3) ch04-s03: thinner under the plans: one cello tone per line and pencil-light piano notes after 'months' and 'continue', no swell, nothing celebratory or mournful; a REST, true silence, under L0415 (no price, no terms); the braid resumes under Bert Belder's card and settles on 'lead' on an open B-flat chord (IV of F: the last strike), waiting for the commit.",
+    "lastStrikeAt": "L0416.lead"
+  },
+  {
+    "id": "m05",
+    "mood": "the commit, then the Plate and the Candle: patient clockwork, the R2 scar, the sleeper, two rooms, claimed is not opened",
+    "tempoBpm": 60,
+    "key": "F (the braid resolves) -> A-sus -> D minor terrace; G for celld; S (A-sus4) while B's crown is dark; closes Bbmaj7 -> D",
+    "instrumentation": "harbour drone, gm_string_ensemble_1, gm_cello, gm_pizzicato_strings (the lease clock C, the tiles, the Tooth, the stamps), gm_orchestral_harp (timetable plucks, the lullaby, the close), felt piano (T, the withheld A), band-passed brown noise (bowed air)",
+    "intensity": 0.3,
+    "file": "score/cues/m05.strudel",
+    "render": "score/renders/m05.wav",
+    "gainDb": -6,
+    "duck": {
+      "ratio": 3,
+      "attack": 20,
+      "release": 250,
+      "depthDb": 3
+    },
+    "body": "THE COMMIT, THE PLATE AND THE CANDLE. (1) ch04-s04: alone in the hold the braid resolves into one held F chord (piano F and C meeting the cello's F); a low pad under the commit (F, B-flat, C, Dm, one per line); a two-note harp step after 'landed' and a step higher after 'facets' (the calendar); on 'Let us open it' the chord opens upward to A-sus and the terrace drone enters. (2) ch05-s01: the terrace drone; three pizzicato tocks after 'tiles'; a count up after 'claim'; the Tooth's dry click after L0504 ('at most one claimant wins'); a light pizzicato run after 'instead' (the chalk arrow); T after 'born already open'. (3) ch05-s02: the lease clock C (pizzicato A-D, one per second) from 'candle'; one soft harp pluck after each number in the timetable ('twenty', 'three', 'four', 'one'); the band arrives on a darker chord (G minor over B-flat) on 'band'; the two ruled lines: an A octave on 'sixteen', a D fitting inside it on 'twelve'. (4) ch05-s03: bowed air (low band-passed noise) swells from the 'stall' beat; SILENCE when every lamp gutters on the 'snuff' beat; a reversed string swell into the 'retry' beat. (5) ch05-s04: a harp lullaby for the sleeping keeper, the clock slowed to one tock every two seconds; pad and clock cut on 'Pull'; the lullaby sours (A-flat for A) on the 'burn' beat; two clashing drones (strings D against cello E-flat) on 'Two rooms', out after 'Pin back'; a soft wooden knock after 'shutters', then silence; the maxim over a single low D from 'timeout'. (6) ch05-s05: two pizzicato clocks out of phase drift together and one drops out on the 'zero' beat (the snapped thread); celld's terrace in G (harp G-D-B and a G pad, the clock motif on D-G). (7) ch05-s06: D minor; one pizzicato clockwork step per printed stamp; T small after 'The crown is lit'; S (A-sus4) held while B's crown stays dark, the piano A withheld above it; SILENCE on 'died'; a resolving cello line A to D on 'recovers'; a reversed swell into 'Rewind'; a quiet two-chord close: Bbmaj7 after 'Rewind', then D-A-D in the breath after 'read B' (the last strike), before 'eight'.",
+    "lastStrikeAt": "L0532.b#2.end + 0.03"
+  },
+  {
+    "id": "m06",
+    "mood": "inside the lantern (serverCyan): the ribbon, the cut, the scrolls into the Well; the tick built in full; the false bell; an honest unresolved limit",
+    "tempoBpm": 60,
+    "key": "A minor -> D minor; the tick complete over D-A-D; coda B-flat with an unresolved A",
+    "instrumentation": "gm_string_ensemble_1, gm_cello (W), felt piano (the stamp, T built, T broken), gm_orchestral_harp (the bell, glints, the Book), gm_pizzicato_strings (frames, snips, knocks)",
+    "intensity": 0.3,
+    "file": "score/cues/m06.strudel",
+    "render": "score/renders/m06.wav",
+    "gainDb": -6,
+    "duck": {
+      "ratio": 3,
+      "attack": 20,
+      "release": 250,
+      "depthDb": 3
+    },
+    "body": "THE RIBBON. (1) ch06-s01: alone in the hold, an open A-E pad and a piano A-E; a pizzicato ribbon figure after 'log'; a light tick per frame after 'frames'; the red stamp is a low, warm thud (piano and harp A1) in the breath after 'stamp'; a quiet A minor (add9) from 'That' under 'commit mark'. (2) ch06-s02: a light pulse of frames from 'hears' under L0606; a crisp pizzicato snip after L0606 and after 'transaction', in the clear; a muffled paste-over on 'over'; a soft E to A cadence after 'starts fresh too'. (3) ch06-s03: D minor; W in the cello as the scrolls go down; a muted refusal knock (B-flat over A) after 'read wrong'; the Book: a low harp thud after 'Book'; celld's shelf a brief G colour from 'celld' to the end of L0613. (4) ch06-s04, the tick built in full: the reply waits (piano A after 'latch'); W quickly down for the scroll under L0615; a held breath (the pad thins to one A) on 'looks'; two soft harp glints after 'Still A' and 'Still epoch seven'; the bell (low harp and piano D-A) after 'bell'; the latch lifts (A) after 'lifts'; T complete (D over D-A-D strings) after 'The tick': the first full tick since the prologue. A lighter counting figure after 'are'. (5) ch06-s05: SILENCE from L0620 (the pin); a frozen held A from 'freezes'; the false bell (D against E-flat) after 'bell' and T broken (A then E-flat) after 'anyway'; no bell for the true check, only a low knock after 'error'; the coda: a B-flat pad from L0624 and the piano A alone after 'absent' (the last strike), unresolved: durability is not exactly once.",
+    "lastStrikeAt": "L0625.absent.end + 0.03"
+  },
+  {
+    "id": "m07",
+    "mood": "the restore and the long walk; celld's town (labGreen); the failure; the seal; the shut door; the relight",
+    "tempoBpm": 60,
+    "key": "D minor -> G (celld) -> A-sus4 (the shut door, unresolved) -> D open fifth on 'relights'",
+    "instrumentation": "harbour drone, gm_string_ensemble_1, gm_cello (W at half speed), felt piano (T, T broken, the held A, the muffled bell), gm_orchestral_harp (celld's G, the bells), gm_pizzicato_strings (page-turns, presses, seals, the retry loop)",
+    "intensity": 0.32,
+    "file": "score/cues/m07.strudel",
+    "render": "score/renders/m07.wav",
+    "gainDb": -6,
+    "duck": {
+      "ratio": 3,
+      "attack": 20,
+      "release": 250,
+      "depthDb": 3
+    },
+    "body": "THE NEIGHBOURS. (1) ch07-s01: alone in the hold, the harbour drone under the iris and a D minor pad; a soft page-turn pulse (pizzicato D-A) from 'scroll', stopped dead on 'cold', resuming for L0706; T on 'back' (A on the word, D in the breath after it). (2) ch07-s02: the drone thins; W at half speed in the cello from 'waits' (the long walk); a cool A minor (add9) after 'followers'; on 'Change the lamps' everything falls away. (3) ch07-s03: celld's town in G, the harp alone in the gap before L0713; a dry low knock on each 'press' and on 'pressed'; T on 'ring', before any well sound; a faint low harp D on 'upload'. (4) ch07-s03b: W slow in the cello after 'fleet' for the lone house, then the bell after 'still correct'; a knock on 'Two' and on 'Three'; the three-copies chord, the fullest moment so far, struck by the harp in the gap after L0718 over a lighter string chord; thinned to two notes on 'two' in L0719. (5) ch07-s04: SILENCE for the failure from 'dies'; one hollow knock after 'Pull the pin'; a low held D under the shelves, gone before 'Forty-two'; the stale bell (D against E-flat) after 'bell' and T broken after L0724; the green pad creeps back after 'Pin back'. (6) ch07-s05: the parchment hush (the pad very low); a dry click on 'fence'; a soft thud on 'Seal' and on 'reach'; a low harp D on 'upload'; the gate opens on a held piano A after 'restore', unresolved. (7) ch07-s06: case one resolves on a warm open fifth on 'proceeds'; a reversed breath into case two; S (A-sus4) from 'damaged', never resolving; T withheld; a single low muffled bell after L0734: a door that did not open. (8) ch07-s07: a patient pizzicato loop for the retries over S; S resolves to the open fifth D-A on 'relights'; T full and clear: A in the breath after 'whole', D in the breath after 'relights' (the last strike), ringing under 'forty-two keeps its tick', held warm into the iris.",
+    "lastStrikeAt": "L0736.relights.end + 0.03"
+  },
+  {
+    "id": "m08",
+    "mood": "the four pins and what travels; the small print; the two lamps in one voice; dawnGold resolution under the end card",
+    "tempoBpm": 60,
+    "key": "D minor -> D MAJOR at dawn (the first F-sharp of the film); ends D major add9",
+    "instrumentation": "gm_string_ensemble_1, gm_pizzicato_strings (the pins, the ostinato, the clerk's metronome, the 'nots'), felt piano (P+R in one voice, T at dawn, the last chord), gm_orchestral_harp (the bells, the dawn arpeggio, the last chord), harbour drone at dawn",
+    "intensity": 0.3,
+    "file": "score/cues/m08.strudel",
+    "render": "score/renders/m08.wav",
+    "gainDb": -6,
+    "duck": {
+      "ratio": 3,
+      "attack": 20,
+      "release": 250,
+      "depthDb": 3
+    },
+    "body": "WHAT TRAVELS, and dawn. (1) ch08-s01: alone in the hold, a low D minor pad. The four pins, one gesture each in the breaths of L0801: the Tooth's dry click after 'Tooth', the candle's clock (A-D) after 'candle', the second look's bell (harp D-A) after 'look', the seal's soft low thud after L0801. One shared sting (D, E-flat, A) on 'Pull'; then a slow, steady clock ostinato (A-D) under L0803 to L0805, the harmony walking Dm, B-flat, C, Dm. (2) ch08-s02: the ostinato drops to a clerk's metronome (one A every two seconds); one soft harp A after L0806 (the thirty-first: alarms, no chime); the G colour under L0810 (celld). (3) ch08-s03: the two lamps in ONE voice on the piano: P's rising head (A D E F) in the gap before L0812 and R's falling tail (E after 'more', D after 'stands', A after L0812); a single held D under L0814 as the camera finds the paper Well; a soft muted pluck after 'code', 'one', 'once' and 'quiet', each quieter, the last barely there. (4) ch08-s04, DAWN: in the gap after L0814 the drone opens into D major (strings D-F#-A: the first F-sharp of the film) and the harp sings P's head in D major (A D E F#); T slow on 'proof' (A after 'feeling', D after 'proof', harmonised in D major for the first time); the bell after L0817 ('rang'); the last chord, D major with an added ninth (piano, harp, low strings), strikes after 'The code is real' (the last strike) and rings in clear air under the end card into the final fade.",
+    "lastStrikeAt": "L0818.end + 0.3"
+  }
+]

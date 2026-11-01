@@ -1,0 +1,74 @@
+// m04 · TWO LINEAGES (ch04-s01..s03) · B-flat / F · the second lamp (R, cello) answers the Promise (P, piano)
+//   s01  alone in the hold: a warm B-flat pad and R's falling fourth (F → C, cello): the second desk lamp,
+//        answering P without quoting it; R's line continues in the breaths; the Well's drone surfaces under 'inside
+//        the well'; R's tail (A B-flat C) in the gap after L0406.
+//   s02  P in F alone on the piano for Kenton Varda (C F · G A · B-flat A, in the breaths); on the pull back the
+//        cello joins: two lines in counterpoint for the first time, the piano falling, the cello rising, crossing
+//        on 'braid' (cello C4 over piano A3).
+//   s03  thinner under the plans: pencil-light single piano notes in the breaths over slow cello tones, no swell; a
+//        REST (silence) under L0415 (no price, no terms); the braid resumes under Bert Belder's card and settles on a
+//        B-flat chord (LAST STRIKE, on 'lead'): IV of F, open, waiting for the commit.
+setcpm(15)
+const CPS = 0.25, DUR = @{DUR}
+const Q = 480, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => {
+  evs = evs.filter(Boolean).map(([t, d, p]) => [Math.max(0, t), d, p]).sort((x, y) => x[0] - y[0])
+  const out = [], end = qn(DUR); let cur = 0
+  evs.forEach(([t, d, p], i) => {
+    let a = Math.max(qn(t), cur); const b = Math.min(qn(t + d), end, i + 1 < evs.length ? qn(evs[i + 1][0]) : end)
+    if (b - a < 2) return
+    if (a > cur) out.push([a - cur, silence])
+    out.push([b - a, p]); cur = b })
+  if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const n = (t, d, ns, v = 0.2) => [t, d, note(typeof ns === 'string' && ns.includes(',') ? '[' + ns + ']' : ns).velocity(v)]
+const felt = x => x.s("piano").gain(1.6).lpf(1800).release(1.8).room(0.3).rsize(4)
+const harp = x => x.s("gm_orchestral_harp").gain(1.6).lpf(2200).release(2.4).room(0.32).rsize(4)
+const cello = x => x.s("gm_cello").gain(1.6).attack(0.35).release(1.4).lpf(1200).room(0.3).rsize(4)
+const str = (x, lp = 850, rel = 2.6) => x.s("gm_string_ensemble_1").gain(1.6).attack(1.6).release(rel).lpf(lp).room(0.35).rsize(4)
+const drone = (x, rel = 3) => stack(x.s("triangle").lpf(380).gain(0.06), x.s("sawtooth").lpf(200).gain(0.028)).hpf(40).attack(3).release(rel)
+
+// ---------------------------------------------------------------- pads
+$: str(tl(
+    n(0.2, @{L0405.inside} - 0.2, "bb2,f3,d4", 0.2),
+    n(@{L0405.inside}, @{L0407} - @{L0405.inside}, "d3,a3,f4", 0.18),
+    n(@{L0407}, @{L0410} - @{L0407}, "f2,c3,a3", 0.18),
+    n(@{L0410}, @{L0411} - @{L0410}, "bb2,f3,d4", 0.2),
+    n(@{L0411}, @{L0413} - @{L0411}, "f2,c3,a3", 0.16),
+    n(@{L0413}, @{L0415} - @{L0413}, "d3,a3,f3", 0.16),
+    n(@{L0416}, @{L0416.lead} - @{L0416}, "f2,c3,a3", 0.18),
+    n(@{L0416.lead}, @{DUR} - @{L0416.lead}, "bb2,f3,c4,d4", 0.2)), 850, 2.0)
+$: drone(tl(n(@{L0405.inside}, @{L0407} - @{L0405.inside}, "d2,a2", 1)), 2.5)
+
+// ---------------------------------------------------------------- cello: R, Ryan Dahl's lamp
+$: cello(tl(
+    n(0.5, 1.2, "f3", 0.24), n(1.7, 2.6, "c3", 0.24),
+    n(@{L0402.end}, 1.5, "bb2", 0.2),
+    n(@{L0404.own.end} + 0.02, 0.6, "a2", 0.22), n(@{L0404.own.end} + 0.62, 1.6, "g2", 0.22),
+    n(@{L0406.end} + 0.05, 0.5, "a2", 0.24), n(@{L0406.end} + 0.55, 0.5, "bb2", 0.24), n(@{L0406.end} + 1.05, 1.4, "c3", 0.24),
+    // the braid: rising against the piano, crossing on 'braid'
+    n(@{L0410}, @{L0410.ropes} - @{L0410}, "f3", 0.22), n(@{L0410.ropes}, @{L0410.braid} - @{L0410.ropes}, "a3", 0.22),
+    n(@{L0410.braid}, @{L0411} + 0.4 - @{L0410.braid}, "c4", 0.24),
+    // s03: slow tones under the plans
+    n(@{L0411}, @{L0412} - @{L0411}, "f3", 0.16), n(@{L0412}, @{L0413} - @{L0412}, "e3", 0.16),
+    n(@{L0413}, @{L0414} - @{L0413}, "d3", 0.16), n(@{L0414}, @{L0415} - @{L0414}, "c3", 0.16),
+    // the braid resumes under Bert Belder's card
+    n(@{L0416}, 1.2, "f3", 0.2), n(@{L0416} + 1.2, @{L0416.lead} - (@{L0416} + 1.2), "c3", 0.2),
+    n(@{L0416.lead}, @{DUR} - @{L0416.lead}, "bb2", 0.2)))
+
+// ---------------------------------------------------------------- piano: P in F (Kenton Varda's lamp)
+$: felt(tl(
+    n(@{L0407.together.end} + 0.02, 0.27, "c4", 0.16), n(@{L0407.together.end} + 0.29, 1.4, "f4", 0.16),
+    n(@{L0408.scale.end} + 0.02, 0.28, "g4", 0.15), n(@{L0408.scale.end} + 0.3, 1.4, "a4", 0.15),
+    n(@{L0409.end} + 0.03, 0.35, "bb4", 0.15), n(@{L0409.end} + 0.38, 1.2, "a4", 0.15),
+    // the braid: the piano falls while the cello rises
+    n(@{L0410}, @{L0410.ropes} - @{L0410}, "g4", 0.14), n(@{L0410.ropes}, @{L0410.braid} - @{L0410.ropes}, "f4", 0.14),
+    n(@{L0410.braid}, 2.0, "a3", 0.15),
+    // pencil-light
+    n(@{L0414.months.end} + 0.02, 1.0, "f4", 0.12), n(@{L0414.continue.end} + 0.02, 1.0, "g4", 0.11),
+    // the braid resumes, settling on B-flat
+    n(@{L0416}, 0.5, "c4", 0.14), n(@{L0416} + 0.5, 0.9, "f4", 0.14), n(@{L0416} + 1.4, @{L0416.lead} - (@{L0416} + 1.4), "g4", 0.13),
+    n(@{L0416.lead}, @{DUR} - @{L0416.lead}, "f4", 0.15)))   // LAST STRIKE (with the harp B-flat)
+$: harp(tl(n(@{L0416.lead}, @{DUR} - @{L0416.lead}, "bb2,f3,d4", 0.15)))
+
+all(x => x.postgain(1))
