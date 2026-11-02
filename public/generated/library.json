@@ -1,6 +1,75 @@
 {
   "books": [
     {
+      "slug": "weight-space-programming",
+      "title": "Weight-Space Programming",
+      "subtitle": "LLMs that read and write neural network weights",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "href": "?bundle=weight-space-programming",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Read the picture in the weights",
+          "duration": 90.141
+        },
+        {
+          "number": 2,
+          "title": "Read where the heads look",
+          "duration": 101.98
+        },
+        {
+          "number": 3,
+          "title": "A side path that switches off",
+          "duration": 71.054
+        },
+        {
+          "number": 4,
+          "title": "Write a network from zero",
+          "duration": 82.384
+        },
+        {
+          "number": 5,
+          "title": "Subtract the loop",
+          "duration": 76.997
+        }
+      ],
+      "createdAt": "2026-11-02T21:26:41.282Z"
+    },
+    {
+      "slug": "t3code-long-threads",
+      "title": "T3 Code: Long Threads",
+      "subtitle": "Loading, caching, and scrolling a conversation that never ends",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "href": "?bundle=t3code-long-threads",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Opening from a saved copy",
+          "duration": 74.35
+        },
+        {
+          "number": 2,
+          "title": "Paging history with a cursor",
+          "duration": 77.88
+        },
+        {
+          "number": 3,
+          "title": "Mounting only the rows you can see",
+          "duration": 66.641
+        },
+        {
+          "number": 4,
+          "title": "Following the live end, and letting go",
+          "duration": 84.288
+        }
+      ],
+      "createdAt": "2026-11-02T21:26:03.366Z"
+    },
+    {
       "slug": "handwired-explained",
       "title": "Promises, Not Proofs",
       "subtitle": "How a program becomes a hand-wired neural network, told in the things people were sure of",

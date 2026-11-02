@@ -1,0 +1,1739 @@
+{
+  "version": 1,
+  "slug": "t3code-long-threads",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Opening from a saved copy",
+      "claims": [
+        {
+          "id": "c1-00-copy-first",
+          "claim": "The thread state reads the browser saved copy of a thread before any server snapshot arrives.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threads.ts: saved copy read first",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "211-215",
+              "quote": "cache.loadThread(environmentId, threadId).pipe("
+            }
+          ]
+        },
+        {
+          "id": "c1-01-local-database",
+          "claim": "The saved copy lives in the browser IndexedDB, in a thread store under the key environment and thread.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "storage.ts: browser database name",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/connection/storage.ts",
+              "lines": "41-45",
+              "quote": "const DATABASE_NAME = \"t3code:connection-runtime\";"
+            },
+            {
+              "label": "storage.ts: thread cache key",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/connection/storage.ts",
+              "lines": "359-363",
+              "quote": "return `${environmentId}:${threadId}`;"
+            }
+          ]
+        },
+        {
+          "id": "c1-02-discard",
+          "claim": "A saved thread record that the decoder cannot read is discarded rather than used.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "orchestrationCache.ts: decode or discard",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/platform/orchestrationCache.ts",
+              "lines": "34-38",
+              "quote": "return decode.pipe(Effect.catch(() => discard.pipe(Effect.as(Option.none<A>()))));"
+            }
+          ]
+        },
+        {
+          "id": "c1-03-status-cached",
+          "claim": "The thread status reads cached when a saved copy exists and no live data has arrived.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threads.ts: status cached without live data",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "59-63",
+              "quote": "return Option.isSome(data) ? \"cached\" : \"empty\";"
+            }
+          ]
+        },
+        {
+          "id": "c1-04-not-confirmed",
+          "claim": "Reading the status transitions, cached means the server synchronized marker has not arrived yet, so the rows are not confirmed (inferred).",
+          "caption": 2,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "threads.ts: synchronized marker clears awaiting completion",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "601-605",
+              "quote": "if (item.kind === \"synchronized\") {"
+            }
+          ]
+        },
+        {
+          "id": "c1-05-after-sequence",
+          "claim": "When the thread has data, the resume subscription sends afterSequence set to the saved sequence.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threads.ts: afterSequence from the saved sequence",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "1015-1019",
+              "quote": "...(canResume ? { afterSequence: sequence } : {}),"
+            }
+          ]
+        },
+        {
+          "id": "c1-06-small-request",
+          "claim": "Because the server reads a bounded number of replayed events, the resume exchange stays small (inferred from the replay code).",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "ws.ts: replay read is bounded",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/ws.ts",
+              "lines": "889-893",
+              "quote": "limit: THREAD_RESUME_MAX_REPLAY_EVENTS + 1,"
+            }
+          ]
+        },
+        {
+          "id": "c1-07-replay-bounds",
+          "claim": "A replay is capped at 128 events and about one megabyte of encoded data.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "ThreadStream.ts: replay event limit",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/ThreadStream.ts",
+              "lines": "16-20",
+              "quote": "export const THREAD_RESUME_MAX_REPLAY_EVENTS = 128;"
+            },
+            {
+              "label": "ThreadStream.ts: replay byte limit",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/ThreadStream.ts",
+              "lines": "18-22",
+              "quote": "export const THREAD_RESUME_MAX_REPLAY_ENCODED_BYTES = 1_048_576;"
+            }
+          ]
+        },
+        {
+          "id": "c1-08-replay-order",
+          "claim": "Replayed events are streamed in order ahead of the live tail, on the same stream as live events.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "ws.ts: replay then live tail",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/ws.ts",
+              "lines": "1024-1028",
+              "quote": "return rpcInitialItems(replay).pipe("
+            },
+            {
+              "label": "ws.ts: live tail after replay",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/ws.ts",
+              "lines": "1026-1030",
+              "quote": "Stream.concat(eventStreamFrom(highWater)),"
+            }
+          ]
+        },
+        {
+          "id": "c1-09-snapshot-over-gap",
+          "claim": "When the gap is over the replay limits, the server sends a fresh snapshot instead of replaying.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "ThreadStream.ts: decideThreadResume over the limit",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/ThreadStream.ts",
+              "lines": "106-110",
+              "quote": "input.replayEventCount > THREAD_RESUME_MAX_REPLAY_EVENTS ||"
+            },
+            {
+              "label": "ThreadStream.ts: snapshot mode",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/ThreadStream.ts",
+              "lines": "109-113",
+              "quote": "return { mode: \"snapshot\" };"
+            }
+          ]
+        },
+        {
+          "id": "c1-10-http-first",
+          "claim": "With no thread data in memory, the client first requests the bounded thread snapshot over HTTP.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threads.ts: no data, HTTP snapshot first",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "951-955",
+              "quote": "if (Option.isNone(current.data)) {"
+            },
+            {
+              "label": "threads.ts: bounded snapshot loader call",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "966-970",
+              "quote": "const httpResult: ThreadSnapshotLoader.ThreadSnapshotLoadResult ="
+            }
+          ]
+        },
+        {
+          "id": "c1-11-six-seconds",
+          "claim": "That bounded snapshot request times out after six seconds.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "boundedThreadSnapshotHttp.ts: six-second timeout",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/boundedThreadSnapshotHttp.ts",
+              "lines": "16-20",
+              "quote": "const DEFAULT_BOUNDED_THREAD_SNAPSHOT_TIMEOUT_MS = 6_000;"
+            }
+          ]
+        },
+        {
+          "id": "c1-12-newest-window",
+          "claim": "The server builds that snapshot as the newest window, bounded by the user-turn policy.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "http.ts: snapshot window uses the user-turn policy",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/http.ts",
+              "lines": "137-141",
+              "quote": "THREAD_HISTORY_PAGE_POLICY.maxUserTurns"
+            }
+          ]
+        },
+        {
+          "id": "c1-13-fallback",
+          "claim": "If the HTTP snapshot is unavailable, the thread state falls through to the socket snapshot.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threads.ts: unavailable falls through to the socket",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "1003-1007",
+              "quote": "case \"unavailable\": {"
+            }
+          ]
+        },
+        {
+          "id": "c1-14-socket-window",
+          "claim": "The socket subscription sends the same bounded window when the client accepts bounded snapshots.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "ws.ts: bounded snapshot chosen for the socket",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/ws.ts",
+              "lines": "917-921",
+              "quote": "const useBoundedSnapshot = shouldUseBoundedThreadSnapshot(input);"
+            },
+            {
+              "label": "ws.ts: bounded flag is accepted from the client",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/ws.ts",
+              "lines": "702-706",
+              "quote": "return input.acceptBoundedSnapshot === true;"
+            }
+          ]
+        },
+        {
+          "id": "c1-15-ten-turns",
+          "claim": "The bounded window holds the newest ten user turns.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: ten user turns",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "14-18",
+              "quote": "maxUserTurns: 10,"
+            }
+          ]
+        },
+        {
+          "id": "c1-16-megabyte",
+          "claim": "The bounded window is kept to about a megabyte of encoded data.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: one megabyte byte budget",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "17-21",
+              "quote": "maxEncodedBytes: 1_048_576,"
+            }
+          ]
+        },
+        {
+          "id": "c1-17-bounded-not-whole",
+          "claim": "With a history cursor, the projection is a bounded window and not the complete timeline.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "orchestrationV2.ts: bounded window contract",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/contracts/src/orchestrationV2.ts",
+              "lines": "3791-3795",
+              "quote": "this projection is a bounded window, not a complete timeline."
+            }
+          ]
+        },
+        {
+          "id": "c1-18-sixteen-threads",
+          "claim": "The app remembers the rows of up to sixteen thread timelines.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "ChatView.logic.ts: sixteen remembered timelines",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/ChatView.logic.ts",
+              "lines": "343-347",
+              "quote": "const MAX_REMEMBERED_THREAD_TIMELINES = 16;"
+            }
+          ]
+        },
+        {
+          "id": "c1-19-shown-while-loading",
+          "claim": "Remembered rows are shown while the next thread is loading and has no entries yet.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "ChatView.logic.ts: loading shows remembered rows",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/ChatView.logic.ts",
+              "lines": "400-404",
+              "quote": "if (input.loading && rememberedForActive !== null && rememberedForActive.length > 0) {"
+            },
+            {
+              "label": "ThreadTimeline.tsx: switch timeline resolved",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/ThreadTimeline.tsx",
+              "lines": "42-46",
+              "quote": "const displayedEntries = resolveThreadSwitchTimeline({"
+            }
+          ]
+        },
+        {
+          "id": "c1-20-quicker-switch",
+          "claim": "Reading the switch path, showing held rows while the next thread loads is what makes switching feel quicker (inferred).",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "ThreadTimeline.tsx: switch uses the held rows",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/ThreadTimeline.tsx",
+              "lines": "42-46",
+              "quote": "const displayedEntries = resolveThreadSwitchTimeline({"
+            }
+          ]
+        },
+        {
+          "id": "c1-21-ladder",
+          "claim": "Read together, the three paths run cheapest first: the saved copy, then a short replay, then one fresh window past the limit (inferred from the code paths).",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "threads.ts: saved copy first",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "211-215",
+              "quote": "cache.loadThread(environmentId, threadId).pipe("
+            },
+            {
+              "label": "ThreadStream.ts: replay over the limit becomes a snapshot",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/ThreadStream.ts",
+              "lines": "106-110",
+              "quote": "input.replayEventCount > THREAD_RESUME_MAX_REPLAY_EVENTS ||"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Paging history with a cursor",
+      "claims": [
+        {
+          "id": "c2-00-pages",
+          "claim": "History is served page by page through a cursor-based endpoint.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "environmentHttp.ts: threadHistoryPage endpoint",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/contracts/src/environmentHttp.ts",
+              "lines": "716-720",
+              "quote": "HttpApiEndpoint.get(\"threadHistoryPage\", \"/api/orchestration/threads/:threadId/history\", {"
+            }
+          ]
+        },
+        {
+          "id": "c2-00b-newest-first-page",
+          "claim": "The first page is the newest window, bounded to ten user turns.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: first window holds ten user turns",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "14-18",
+              "quote": "maxUserTurns: 10,"
+            }
+          ]
+        },
+        {
+          "id": "c2-01-walk-back",
+          "claim": "The page selection walks backward from the newest row.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: walk from the newest row",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "330-334",
+              "quote": "for (let index = end - 1; index >= 0; index -= 1) {"
+            }
+          ]
+        },
+        {
+          "id": "c2-02-first-limit",
+          "claim": "The walk stops at the first limit it reaches: an item count, the byte budget, or the turn count.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: item count stop",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "335-339",
+              "quote": "selected.length >= maxItems ||"
+            },
+            {
+              "label": "threadHistoryPaging.ts: byte budget stop",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "336-340",
+              "quote": "encodedBytes + rowBytes > policy.maxEncodedBytes ||"
+            }
+          ]
+        },
+        {
+          "id": "c2-03-turns-and-rows",
+          "claim": "The page policy caps user turns at ten, and rows at seventy-five, or five hundred for turn windows.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: user turn cap",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "14-18",
+              "quote": "maxUserTurns: 10,"
+            },
+            {
+              "label": "threadHistoryPaging.ts: row cap",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "15-19",
+              "quote": "maxItems: 75,"
+            },
+            {
+              "label": "threadHistoryPaging.ts: turn-window row cap",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "16-20",
+              "quote": "maxTurnItems: 500,"
+            }
+          ]
+        },
+        {
+          "id": "c2-04-raw-turns-and-bytes",
+          "claim": "Raw turns are capped at one hundred fifty, and the page bytes at about a megabyte.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: raw turn cap",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "27-31",
+              "quote": "export const THREAD_HISTORY_MAX_RAW_TURNS = 150;"
+            },
+            {
+              "label": "threadHistoryPaging.ts: page byte cap",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "17-21",
+              "quote": "maxEncodedBytes: 1_048_576,"
+            }
+          ]
+        },
+        {
+          "id": "c2-05-load-earlier",
+          "claim": "The load-earlier control sends the cursor back to the server for the next page.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: load earlier control",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1385-1389",
+              "quote": "aria-label=\"Load earlier turns\""
+            },
+            {
+              "label": "MessagesTimeline.tsx: control calls onLoadEarlier",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1386-1390",
+              "quote": "onClick={() => props.onLoadEarlier()}"
+            },
+            {
+              "label": "threads.ts: the next page starts from the history cursor",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "672-676",
+              "quote": "current.history.historyCursor : workCursor(current);"
+            }
+          ]
+        },
+        {
+          "id": "c2-06-stops-early",
+          "claim": "A page stops before the next row that would push its encoded bytes past the limit.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: stop before the row that overflows",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "336-340",
+              "quote": "encodedBytes + rowBytes > policy.maxEncodedBytes ||"
+            }
+          ]
+        },
+        {
+          "id": "c2-07-cursor-fields",
+          "claim": "The cursor encodes the snapshot sequence and the identity and position of the oldest row on the page.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: the cursor is built from the oldest row on the page",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "366-370",
+              "quote": "sourceItemId: oldest.sourceItemId,"
+            },
+            {
+              "label": "threadHistoryPaging.ts: cursor carries the snapshot sequence",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "130-134",
+              "quote": "seq: input.snapshotSequence,"
+            },
+            {
+              "label": "threadHistoryPaging.ts: cursor carries the oldest row identity",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "132-136",
+              "quote": "si: String(input.sourceItemId),"
+            }
+          ]
+        },
+        {
+          "id": "c2-08-opaque-client",
+          "claim": "The client treats the cursor as a plain string and passes it back unchanged.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryHttp.ts: cursor is a string parameter",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threadHistoryHttp.ts",
+              "lines": "18-22",
+              "quote": "readonly cursor: string;"
+            },
+            {
+              "label": "threadHistoryHttp.ts: cursor sent unchanged",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threadHistoryHttp.ts",
+              "lines": "28-32",
+              "quote": "cursor: input.cursor,"
+            }
+          ]
+        },
+        {
+          "id": "c2-09-merge-front",
+          "claim": "Rows from an older page are placed in front of the rows already in the projection.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryMerge.ts: older page first in the merged list",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threadHistoryMerge.ts",
+              "lines": "114-118",
+              "quote": "...page,"
+            }
+          ]
+        },
+        {
+          "id": "c2-10-keyed-no-repeat",
+          "claim": "Each row is keyed by its source thread and item, and a repeated key is skipped, so no row shows twice.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryMerge.ts: rows keyed by source",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threadHistoryMerge.ts",
+              "lines": "40-44",
+              "quote": "function projectedItemKey(row: OrchestrationV2ProjectedTurnItem): string {"
+            },
+            {
+              "label": "threadHistoryMerge.ts: repeated key skipped",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threadHistoryMerge.ts",
+              "lines": "83-87",
+              "quote": "if (pageKeys.has(key)) continue;"
+            }
+          ]
+        },
+        {
+          "id": "c2-11-find-loads-earlier",
+          "claim": "Find loads earlier history through the message it matched, so the page can reach that message.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useThreadFindNavigation.ts: find loads earlier through the match",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useThreadFindNavigation.ts",
+              "lines": "269-273",
+              "quote": "historyControls.onLoadEarlier(match.entryId);"
+            }
+          ]
+        },
+        {
+          "id": "c2-12-widen-forty",
+          "claim": "A targeted page widens its turn budget, to at most forty user turns.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: targeted page doubles the older limit",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "439-443",
+              "quote": "OLDER_THREAD_USER_TURN_LIMIT * 2,"
+            }
+          ]
+        },
+        {
+          "id": "c2-13-fold-limit",
+          "claim": "The inline work limit is one hundred fifty rows.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: inline work item limit",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "20-24",
+              "quote": "export const THREAD_HISTORY_INLINE_WORK_ITEM_LIMIT = 150;"
+            }
+          ]
+        },
+        {
+          "id": "c2-14-fold-anchor",
+          "claim": "A run whose deferrable rows exceed the limit collapses into one anchor row that carries a deferred-work cursor.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: groups over the limit fold",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "230-234",
+              "quote": "if (group.length <= THREAD_HISTORY_INLINE_WORK_ITEM_LIMIT) continue;"
+            },
+            {
+              "label": "threadHistoryPaging.ts: anchor carries deferredWork",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "238-242",
+              "quote": "deferredWork: {"
+            }
+          ]
+        },
+        {
+          "id": "c2-15-fold-by-anchor",
+          "claim": "Expanding a folded block loads its rows by their work anchor.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: folded rows load by work anchor",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1596-1600",
+              "quote": ".map((workAnchorId) => loadWork({ environmentId, input: { threadId, workAnchorId } })),"
+            }
+          ]
+        },
+        {
+          "id": "c2-16-skeleton-retry",
+          "claim": "While the work rows load a skeleton shows, and a failed load offers a retry.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: loading skeleton label",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1621-1625",
+              "quote": "aria-label=\"Loading work history\""
+            },
+            {
+              "label": "MessagesTimeline.tsx: retry message",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1608-1612",
+              "quote": "Couldn't load work. Click to retry."
+            }
+          ]
+        },
+        {
+          "id": "c2-17-live-stream",
+          "claim": "New events arrive over the thread subscription stream.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threads.ts: thread subscription method",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "936-940",
+              "quote": "ORCHESTRATION_V2_WS_METHODS.subscribeThread,"
+            }
+          ]
+        },
+        {
+          "id": "c2-18-skip-applied",
+          "claim": "An event whose sequence is at or below the applied sequence is skipped.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threads.ts: events at or below the applied sequence are skipped",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "484-488",
+              "quote": "if (item.sequence <= sequence) continue;"
+            }
+          ]
+        },
+        {
+          "id": "c2-19-window-budget",
+          "claim": "Read together, each press adds one bounded page behind the window, so a long thread is a window plus a cursor (inferred from the paging policy).",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: older pages allow twice the turns",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "413-417",
+              "quote": "Older pages allow twice the turns, and a targeted page widens further so it"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Mounting only the rows you can see",
+      "claims": [
+        {
+          "id": "c3-00-window-items",
+          "claim": "A loaded window can carry up to five hundred turn items.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadHistoryPaging.ts: turn item cap",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/server/src/orchestration-v2/threadHistoryPaging.ts",
+              "lines": "16-20",
+              "quote": "maxTurnItems: 500,"
+            }
+          ]
+        },
+        {
+          "id": "c3-00b-draw-distance",
+          "claim": "The list draws rows within a draw distance of the viewport, with a library default of 250 pixels that the timeline does not override.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "LegendList 3.3.5 patch: draw distance default",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "patches/@legendapp__list@3.3.5.patch",
+              "lines": "791-795",
+              "quote": "drawDistance = 250,"
+            },
+            {
+              "label": "MessagesTimeline.tsx: LegendList props without a draw distance",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1305-1309",
+              "quote": "<LegendList<MessagesTimelineRow>"
+            },
+            {
+              "label": "pnpm-workspace.yaml: pinned LegendList version",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "pnpm-workspace.yaml",
+              "lines": "54-58",
+              "quote": "\"@legendapp/list\": 3.3.5"
+            }
+          ]
+        },
+        {
+          "id": "c3-01-virtual-list",
+          "claim": "The timeline mounts its rows through the LegendList virtual list, pinned at version 3.3.5.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: LegendList import",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "50-54",
+              "quote": "} from \"@legendapp/list/react\";"
+            },
+            {
+              "label": "pnpm-workspace.yaml: pinned LegendList version",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "pnpm-workspace.yaml",
+              "lines": "54-58",
+              "quote": "\"@legendapp/list\": 3.3.5"
+            }
+          ]
+        },
+        {
+          "id": "c3-02-estimate-ninety",
+          "claim": "The timeline sets the estimated row size to ninety pixels.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: estimatedItemSize 90",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1312-1316",
+              "quote": "estimatedItemSize={90}"
+            }
+          ]
+        },
+        {
+          "id": "c3-03-estimate-start",
+          "claim": "Index and end scrolling start from estimated row sizes, so they can stop short of a tall row.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelinePositionRestore.ts: scrolling starts from estimates",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelinePositionRestore.ts",
+              "lines": "9-13",
+              "quote": "Index and end scrolling start from estimated row sizes, so they can stop"
+            }
+          ]
+        },
+        {
+          "id": "c3-04-size-callback",
+          "claim": "The timeline receives a callback whenever a row size changes after it is measured.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: item size changes are handled",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1343-1347",
+              "quote": "onItemSizeChanged={handleItemSizeChanged}"
+            },
+            {
+              "label": "MessagesTimeline.tsx: size change handler",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "943-947",
+              "quote": "const handleItemSizeChanged = () => {"
+            }
+          ]
+        },
+        {
+          "id": "c3-05-rows-slide",
+          "claim": "Rows added, removed, or rewrapped change the content size, which moves the scroll position.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: content size changes move the rows below",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "964-968",
+              "quote": "// Rows added, removed or rewrapped (chat width) change the content size,"
+            },
+            {
+              "label": "pnpm-workspace.yaml: pinned LegendList version",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "pnpm-workspace.yaml",
+              "lines": "54-58",
+              "quote": "\"@legendapp/list\": 3.3.5"
+            }
+          ]
+        },
+        {
+          "id": "c3-06-restore-settle",
+          "claim": "A restore corrects against the DOM until the viewport holds the target for two layout frames.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelinePositionRestore.ts: corrects against the DOM",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelinePositionRestore.ts",
+              "lines": "10-14",
+              "quote": "Corrects against the DOM until the viewport holds the"
+            },
+            {
+              "label": "useTimelinePositionRestore.ts: two stable frames",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelinePositionRestore.ts",
+              "lines": "36-40",
+              "quote": "if (stableFrames >= 2) resolve();"
+            }
+          ]
+        },
+        {
+          "id": "c3-07-settle-cap",
+          "claim": "The settle loop gives up after sixty frames.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "useTimelinePositionRestore.ts: sixty-frame cap",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelinePositionRestore.ts",
+              "lines": "6-10",
+              "quote": "const SETTLE_MAX_FRAMES = 60;"
+            }
+          ]
+        },
+        {
+          "id": "c3-08-averaged-by-type",
+          "claim": "The list averages measured heights by row type, so each kind of row keeps its own average.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: LegendList averages by type (comment)",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1414-1418",
+              "quote": "// LegendList averages by type; length buckets prevent inflated estimates and nested-update loops."
+            },
+            {
+              "label": "pnpm-workspace.yaml: pinned LegendList version",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "pnpm-workspace.yaml",
+              "lines": "54-58",
+              "quote": "\"@legendapp/list\": 3.3.5"
+            }
+          ]
+        },
+        {
+          "id": "c3-09-row-type",
+          "claim": "A row type combines the message role with a length bucket, so user messages, short replies, and long replies are separate types.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: row type from role and length bucket",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1418-1422",
+              "quote": "return `message:${item.message.role}:${lengthBucket}`;"
+            }
+          ]
+        },
+        {
+          "id": "c3-10-ends-pinned",
+          "claim": "The first and last message rows are always rendered, so they stay mounted.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: first message row",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "787-791",
+              "quote": "const firstMessageRow = rows.find(isMessageRow);"
+            },
+            {
+              "label": "MessagesTimeline.tsx: last message row",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "788-792",
+              "quote": "const lastMessageRow = rows.findLast(isMessageRow);"
+            }
+          ]
+        },
+        {
+          "id": "c3-11-heading-reason",
+          "claim": "The code gives the reason as screen readers reaching headings only through the DOM, so pinned ends let heading navigation wrap.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: screen readers and heading navigation (comment)",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "785-789",
+              "quote": "Screen readers can only reach headings in the DOM."
+            },
+            {
+              "label": "MessagesTimeline.tsx: wrap to either end (comment)",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "786-790",
+              "quote": "messages mounted lets heading navigation wrap to either end."
+            }
+          ]
+        },
+        {
+          "id": "c3-12-audio-pinned",
+          "claim": "Rows whose audio is playing are added to the always-rendered set, so they stay mounted while the clip plays.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: playing and connected audio rows are always rendered",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "795-799",
+              "quote": "[...playingAudioRows].filter(([audio]) => audio.isConnected).map(([, rowId]) => rowId),"
+            }
+          ]
+        },
+        {
+          "id": "c3-13-audio-tracking",
+          "claim": "The playing state of each row is tracked from its audio play and pause events.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: playback change handler",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1198-1202",
+              "quote": "const onAudioPlaybackChange = (rowId: string, event: SyntheticEvent) => {"
+            }
+          ]
+        },
+        {
+          "id": "c3-14-minimap-items",
+          "claim": "The minimap items are the user messages, one for each user turn.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "timelineMinimapItems.ts: minimap items are user messages",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineMinimapItems.ts",
+              "lines": "21-25",
+              "quote": "if (row?.kind !== \"message\" || row.message.role !== \"user\") {"
+            }
+          ]
+        },
+        {
+          "id": "c3-15-minimap-frame",
+          "claim": "The minimap marks which strips are visible and refreshes on the next animation frame after a scroll or size change.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: minimap refresh on an animation frame",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "884-888",
+              "quote": "minimapRefreshFrameRef.current = requestAnimationFrame(() => {"
+            },
+            {
+              "label": "MessagesTimeline.tsx: strip visibility flag",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "867-871",
+              "quote": "strip.dataset.inView = next;"
+            }
+          ]
+        },
+        {
+          "id": "c3-16-lane-observer",
+          "claim": "The width of the content lane is watched with a resize observer.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: lane observed for resize",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "980-984",
+              "quote": "return observeResize(lane, (entries) => {"
+            },
+            {
+              "label": "observeResize.ts: a ResizeObserver underneath",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/lib/observeResize.ts",
+              "lines": "14-18",
+              "quote": "let observer: ResizeObserver | null = null;"
+            }
+          ]
+        },
+        {
+          "id": "c3-17-not-per-chunk",
+          "claim": "The lane width is not re-measured on every streamed content frame, because measuring each frame would force a layout per chunk.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: lane width changes only with the viewport (comment)",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "975-979",
+              "quote": "never with streamed content; measuring per content frame would"
+            }
+          ]
+        },
+        {
+          "id": "c3-18-mounted-near-screen",
+          "claim": "Rows near the viewport are mounted, and the always-rendered rows are added to them.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: always-rendered row keys",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "789-793",
+              "quote": "const alwaysRenderKeys = ["
+            },
+            {
+              "label": "LegendList 3.3.5 patch: draw distance default",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "patches/@legendapp__list@3.3.5.patch",
+              "lines": "791-795",
+              "quote": "drawDistance = 250,"
+            }
+          ]
+        },
+        {
+          "id": "c3-19-other-rows-remembered",
+          "claim": "The list keeps a position for every row, and the scroll anchor reads the position of any row index.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "scrollAnchor.ts: position read for any row index",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/work-log/scrollAnchor.ts",
+              "lines": "3-7",
+              "quote": "readonly positionAtIndex: (index: number) => number | undefined;"
+            },
+            {
+              "label": "MessagesTimeline.tsx: recycled row containers (comment)",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "883-887",
+              "quote": "// LegendList recycles row containers before React commits their positions."
+            },
+            {
+              "label": "pnpm-workspace.yaml: pinned LegendList version",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "pnpm-workspace.yaml",
+              "lines": "54-58",
+              "quote": "\"@legendapp/list\": 3.3.5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Following the live end, and letting go",
+      "claims": [
+        {
+          "id": "c4-00-follow-end",
+          "claim": "While following, the list keeps the end in view when data or item layout change.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: scroll-at-end maintained on data and layout",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "191-195",
+              "quote": "dataChange: true,"
+            },
+            {
+              "label": "MessagesTimeline.tsx: item layout also maintains the end",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "193-197",
+              "quote": "itemLayout: true,"
+            }
+          ]
+        },
+        {
+          "id": "c4-00b-follow-flag",
+          "claim": "The live-follow flag is true only while the follow mode is following.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelineFollow.ts: live-follow flag from the mode",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "209-213",
+              "quote": "const timelineLiveFollowEnabled = follow.mode === \"following\";"
+            }
+          ]
+        },
+        {
+          "id": "c4-01-open-following",
+          "claim": "A thread opens in following mode unless its remembered position is not at the end.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelineFollow.ts: initial follow from the remembered position",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "189-193",
+              "quote": "followEnd: readTimelinePosition(routeThreadKey)?.atEnd !== false,"
+            }
+          ]
+        },
+        {
+          "id": "c4-02-state-not-offset",
+          "claim": "Follow is a mode with two states and its own transitions, so it is not stored as a scroll offset (inferred from the type).",
+          "caption": 1,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "timelineViewport.ts: follow is a two-state type",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineViewport.ts",
+              "lines": "209-213",
+              "quote": "export type TimelineFollow ="
+            },
+            {
+              "label": "timelineViewport.ts: following state",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineViewport.ts",
+              "lines": "210-214",
+              "quote": "| { readonly mode: \"following\" }"
+            }
+          ]
+        },
+        {
+          "id": "c4-03-release-inputs",
+          "claim": "Wheel up, page and arrow keys, and scrollbar input release the follow when they move the view away from the end.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "timelineViewport.ts: wheel up releases when content scrolls up",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineViewport.ts",
+              "lines": "187-191",
+              "quote": "return navigation.direction === \"up\" && viewport.contentScrollsUp();"
+            },
+            {
+              "label": "timelineViewport.ts: keys release when they move away from the end",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineViewport.ts",
+              "lines": "189-193",
+              "quote": "return navigation.direction === \"up\" ? viewport.contentScrollsUp() : viewport.awayFromEnd();"
+            },
+            {
+              "label": "timelineViewport.ts: scrollbar input",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineViewport.ts",
+              "lines": "191-195",
+              "quote": "return navigation.onScrollbar ? viewport.contentScrollsUp() : viewport.awayFromEnd();"
+            }
+          ]
+        },
+        {
+          "id": "c4-04-view-holds",
+          "claim": "After a release the code cancels queued list scrolls and rewrites scrollTop, so nothing moves the view and it stays where the reader left it (inferred).",
+          "caption": 2,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "useTimelineFollow.ts: queued scrolls cancelled after navigation",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "249-253",
+              "quote": "// LegendList may run queued scrolls after user navigation. A new imperative"
+            },
+            {
+              "label": "useTimelineFollow.ts: scrollTop rewritten to halt a smooth scroll",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "264-268",
+              "quote": "scrollNode.scrollTop = currentScrollTop;"
+            }
+          ]
+        },
+        {
+          "id": "c4-05-pill-debounce",
+          "claim": "The scroll-to-end indicator is debounced by one hundred fifty milliseconds before it appears.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelineFollow.ts: 150 ms debounce for the indicator",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "68-72",
+              "quote": "showScrollDebouncer: new Debouncer(() => showScrollToBottom(visit), { wait: 150 }),"
+            }
+          ]
+        },
+        {
+          "id": "c4-06-pill-label",
+          "claim": "The indicator is a button labelled Scroll to end.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "TimelineOverlays.tsx: scroll to end button label",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/TimelineOverlays.tsx",
+              "lines": "43-47",
+              "quote": "Scroll to end"
+            }
+          ]
+        },
+        {
+          "id": "c4-07-grows-unseen",
+          "claim": "While released the list is not told to maintain the end, so the reply keeps growing below the view without moving it (inferred).",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: end maintenance is off when not following",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1326-1330",
+              "quote": "!liveFollowEnabled ||"
+            }
+          ]
+        },
+        {
+          "id": "c4-08-load-prepends",
+          "claim": "Loading earlier turns prepends older rows to the timeline.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: load earlier control",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1385-1389",
+              "quote": "aria-label=\"Load earlier turns\""
+            },
+            {
+              "label": "threads.ts: older rows merged into the projection",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "780-784",
+              "quote": "mergeOlderHistoryIntoProjection("
+            }
+          ]
+        },
+        {
+          "id": "c4-09-keep-in-place",
+          "claim": "The list is configured to keep the visible content in place when data changes, and the timeline turns that on for data and size.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: visible content position enabled for data and size",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "830-834",
+              "quote": "const maintainVisibleContentPosition = {"
+            },
+            {
+              "label": "MessagesTimeline.tsx: visible position passed to the list",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "1334-1338",
+              "quote": "maintainVisibleContentPosition={"
+            },
+            {
+              "label": "pnpm-workspace.yaml: pinned LegendList version",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "pnpm-workspace.yaml",
+              "lines": "54-58",
+              "quote": "\"@legendapp/list\": 3.3.5"
+            }
+          ]
+        },
+        {
+          "id": "c4-10-saved-fields",
+          "claim": "A remembered position stores a row id and an offset within that row.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "timelineScrollAnchoring.ts: row id field",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineScrollAnchoring.ts",
+              "lines": "93-97",
+              "quote": "readonly rowId: string;"
+            },
+            {
+              "label": "timelineScrollAnchoring.ts: offset field",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineScrollAnchoring.ts",
+              "lines": "94-98",
+              "quote": "readonly offsetWithinRow: number;"
+            }
+          ]
+        },
+        {
+          "id": "c4-11-offset-measured",
+          "claim": "The offset is measured from the top of the row under the scroll position.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: offset from the row top",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "909-913",
+              "quote": "offsetWithinRow: element.getBoundingClientRect().top - row.getBoundingClientRect().top,"
+            }
+          ]
+        },
+        {
+          "id": "c4-12-survives",
+          "claim": "Restore finds the row again by its id and applies the saved offset, so the place survives height changes (inferred).",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "useTimelinePositionRestore.ts: row found again by id",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelinePositionRestore.ts",
+              "lines": "84-88",
+              "quote": "const index = position ? rows.findIndex((row) => row.id === position.rowId) : -1;"
+            }
+          ]
+        },
+        {
+          "id": "c4-13-anchor-run",
+          "claim": "A run that starts while following anchors its user message near the top.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelineFollow.ts: started run anchors while following",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "292-296",
+              "quote": "if (startedRunAnchor !== null && !anchorPending && timelineLiveFollowEnabled) {"
+            }
+          ]
+        },
+        {
+          "id": "c4-14-end-space",
+          "claim": "The anchored end space is computed from the anchor index and a fixed anchor offset of twenty-four pixels.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: anchored end space uses the anchor offset",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "821-825",
+              "quote": "{ anchorOffset: CHAT_TIMELINE_ANCHOR_OFFSET },"
+            },
+            {
+              "label": "timelineScrollAnchoring.ts: anchor offset is 24",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineScrollAnchoring.ts",
+              "lines": "36-40",
+              "quote": "export const CHAT_TIMELINE_ANCHOR_OFFSET = 24;"
+            }
+          ]
+        },
+        {
+          "id": "c4-15-tool-release",
+          "claim": "Tool or command entries in the running turn release the timeline anchor.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "ChatView.logic.ts: tool activity releases the anchor",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/ChatView.logic.ts",
+              "lines": "286-290",
+              "quote": "entry.tone === \"tool\" ||"
+            }
+          ]
+        },
+        {
+          "id": "c4-16-tool-scroll",
+          "claim": "When the anchor is released for tool activity, the list is scrolled to the end.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelineFollow.ts: release for tool activity",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "525-529",
+              "quote": "shouldReleaseTimelineAnchorForToolActivity({"
+            },
+            {
+              "label": "useTimelineFollow.ts: scroll to end after the release",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "532-536",
+              "quote": "scrollToEndStable();"
+            }
+          ]
+        },
+        {
+          "id": "c4-17-pill-animated",
+          "claim": "The scroll-to-end button calls scrollToEnd with animation enabled.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "ChatView.tsx: scroll-to-end button animates",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/ChatView.tsx",
+              "lines": "3490-3494",
+              "quote": "onScrollToEnd={() => scrollToEnd(true)}"
+            }
+          ]
+        },
+        {
+          "id": "c4-18-rearm",
+          "claim": "scrollToEnd marks the visit as following, which re-arms the live follow.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelineFollow.ts: scrollToEnd dispatches followEnd",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "326-330",
+              "quote": "followStore.dispatch(visit, { type: \"followEnd\" });"
+            }
+          ]
+        },
+        {
+          "id": "c4-19-reduced-motion",
+          "claim": "The scroll is animated unless the reader prefers reduced motion.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelineFollow.ts: animation skipped for reduced motion",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelineFollow.ts",
+              "lines": "337-341",
+              "quote": "animated: animated && !window.matchMedia(\"(prefers-reduced-motion: reduce)\").matches,"
+            }
+          ]
+        },
+        {
+          "id": "c4-20-restore-before-paint",
+          "claim": "The saved position is restored in a layout effect, so it lands before the first paint.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "MessagesTimeline.tsx: restore must land before paint (comment)",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "723-727",
+              "quote": "must land before paint, after LegendList's own layout effects applied the"
+            },
+            {
+              "label": "MessagesTimeline.tsx: restore runs in a layout effect",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/MessagesTimeline.tsx",
+              "lines": "727-731",
+              "quote": "useLayoutEffect(() => {"
+            }
+          ]
+        },
+        {
+          "id": "c4-21-restore-offset",
+          "claim": "The restore scrolls to the saved row with the saved offset.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "useTimelinePositionRestore.ts: saved offset applied",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/useTimelinePositionRestore.ts",
+              "lines": "110-114",
+              "quote": "viewOffset: -position.offsetWithinRow,"
+            }
+          ]
+        },
+        {
+          "id": "c4-22-hundred-threads",
+          "claim": "Saved positions are capped at one hundred threads.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "timelineScrollAnchoring.ts: one hundred thread cap",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineScrollAnchoring.ts",
+              "lines": "124-128",
+              "quote": "if (rememberedTimelinePositions.size > 100) {"
+            }
+          ]
+        },
+        {
+          "id": "c4-23-five-minutes",
+          "claim": "A thread resume state is kept for five minutes of idleness after the thread is left.",
+          "caption": 10,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "threadRetention.ts: five-minute idle time-to-live",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threadRetention.ts",
+              "lines": "1-2",
+              "quote": "export const THREAD_SNAPSHOT_IDLE_TTL_MS = 5 * 60_000;"
+            },
+            {
+              "label": "threads.ts: resume family uses the idle time-to-live",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "packages/client-runtime/src/state/threads.ts",
+              "lines": "1069-1073",
+              "quote": "Atom.setIdleTTL(THREAD_SNAPSHOT_IDLE_TTL_MS),"
+            }
+          ]
+        },
+        {
+          "id": "c4-24-away-releases",
+          "claim": "Navigating away from the end switches the follow state to released.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "timelineViewport.ts: navigation releases follow",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineViewport.ts",
+              "lines": "231-235",
+              "quote": "return state.mode === \"released\" ? state : { mode: \"released\", atEnd: true };"
+            }
+          ]
+        },
+        {
+          "id": "c4-25-reach-end-returns",
+          "claim": "Reaching the end from a released state that is not at the end returns the follow state to following.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "timelineViewport.ts: reached end returns to following",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineViewport.ts",
+              "lines": "237-241",
+              "quote": "return state.mode === \"released\" && !state.atEnd ? FOLLOWING : state;"
+            }
+          ]
+        },
+        {
+          "id": "c4-26-transition-table",
+          "claim": "Taken together, following is a mode of these transitions and not a scroll position (inferred from the transition function).",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "timelineViewport.ts: follow transitions in one function",
+              "repo": "pingdotgg/t3code@cc59f99e735300120a6fc74d9a0b9df7c98fa81c",
+              "path": "apps/web/src/components/chat/timelineViewport.ts",
+              "lines": "225-229",
+              "quote": "export function transitionTimelineFollow("
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

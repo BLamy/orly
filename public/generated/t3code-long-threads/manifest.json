@@ -1,0 +1,94 @@
+{
+  "format": 3,
+  "slug": "t3code-long-threads",
+  "title": "T3 Code: Long Threads",
+  "subtitle": "Loading, caching, and scrolling a conversation that never ends",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Opening from a saved copy",
+      "blurb": "A saved copy shows first. A short gap is replayed from the event log, and a wide gap is replaced by one fresh window.",
+      "scene": "books/t3code-long-threads/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.012,
+        13.793,
+        20.132,
+        27.817,
+        34.412,
+        39.787,
+        46.694,
+        52.685,
+        59.106,
+        66.931
+      ],
+      "duration": 74.35
+    },
+    {
+      "number": 2,
+      "title": "Paging history with a cursor",
+      "blurb": "The newest ten turns come first. Older pages pack backward under turn, row, and byte budgets, and a cursor marks the next page.",
+      "scene": "books/t3code-long-threads/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.502,
+        12.899,
+        18.773,
+        25.205,
+        33.217,
+        40.705,
+        48.391,
+        55.821,
+        64.18,
+        71.471
+      ],
+      "duration": 77.88
+    },
+    {
+      "number": 3,
+      "title": "Mounting only the rows you can see",
+      "blurb": "Each row starts as a ninety-pixel estimate and is measured as it mounts. Pinned rows and remembered heights keep the list honest.",
+      "scene": "books/t3code-long-threads/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.546,
+        15.209,
+        21.246,
+        28.862,
+        35.468,
+        42.446,
+        47.194,
+        53.754,
+        59.884
+      ],
+      "duration": 66.641
+    },
+    {
+      "number": 4,
+      "title": "Following the live end, and letting go",
+      "blurb": "Following keeps the newest text in view. Scrolling away saves a place, a sent message anchors near the top, and tools scroll to the end.",
+      "scene": "books/t3code-long-threads/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.896,
+        14.513,
+        22.036,
+        29.908,
+        36.85,
+        44.095,
+        51.618,
+        57.864,
+        64.099,
+        70.728,
+        77.09
+      ],
+      "duration": 84.288
+    }
+  ],
+  "sources": "sources.json"
+}
