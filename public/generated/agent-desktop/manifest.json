@@ -1,0 +1,91 @@
+{
+  "format": 3,
+  "slug": "agent-desktop",
+  "title": "Agent Desktop",
+  "subtitle": "From snapshots to safe actions",
+  "animal": "animal.webp",
+  "accent": "#0E7490",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A desktop you can read",
+      "blurb": "Turn a live window into a scoped observation, choose an action, and read the result again.",
+      "scene": "books/agent-desktop/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.369,
+        17.38,
+        24.869,
+        32.821,
+        40.542,
+        48.286,
+        56.471,
+        64.807,
+        72.644
+      ],
+      "duration": 80.666
+    },
+    {
+      "number": 2,
+      "title": "A ref is a claim",
+      "blurb": "Resolve a saved observation against a changing desktop without silently choosing a different target.",
+      "scene": "books/agent-desktop/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.802,
+        16.231,
+        28.828,
+        37.105,
+        46.149,
+        56.168,
+        65.039,
+        76.405,
+        87.47
+      ],
+      "duration": 94.644
+    },
+    {
+      "number": 3,
+      "title": "Before the action lands",
+      "blurb": "Separate target identity, permission to act, readiness, delivery, and verification.",
+      "scene": "books/agent-desktop/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.568,
+        19.992,
+        29.28,
+        40.135,
+        49.586,
+        60.603,
+        69.845,
+        78.692,
+        88.514
+      ],
+      "duration": 96.827
+    },
+    {
+      "number": 4,
+      "title": "Keeping identity alive",
+      "blurb": "Follow the platform boundary and the Mac command host that preserves native object identity across short commands.",
+      "scene": "books/agent-desktop/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.404,
+        19.029,
+        28.421,
+        37.837,
+        47.357,
+        56.448,
+        64.969,
+        74.733,
+        82.965
+      ],
+      "duration": 91.672
+    }
+  ],
+  "sources": "sources.json"
+}

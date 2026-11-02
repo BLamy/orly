@@ -1,0 +1,560 @@
+{
+  "source": {
+    "repository": "https://github.com/vercel-labs/agent-desktop",
+    "commit": "9eb9b296192fcb70bda25e918cd6dd66abfa3d0d"
+  },
+  "planning": {
+    "requestedModel": "gpt-6-astra",
+    "actualModel": "gpt-6-astra",
+    "role": "Source research, visual plan, narration and companion prose"
+  },
+  "animation": {
+    "requestedModel": "claude-fable-5-1",
+    "actualModels": [
+      "claude-fable-5-1"
+    ],
+    "launcher": "npx --yes @anthropic-ai/claude-code@latest",
+    "chapterResults": [
+      {
+        "chapter": 1,
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "2fe48a1c4d0f511a6437791063c4541be2da93a8d04d46c6eaf9ea5c67a088ba"
+      },
+      {
+        "chapter": 2,
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "153eac24a1db29b83e04b44f2950feda98e39197916b202bc6f09a2a14fba32a"
+      },
+      {
+        "chapter": 3,
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "b5f7eb7bdba50f269a66f085c02f027d321e79dbf26297a2eb2fc4e25344d21e"
+      },
+      {
+        "chapter": 4,
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "5dc87bfdcd008bbcb5a1daccda7e59815cc0373ebe845e97ac069fe20a4bc823"
+      }
+    ],
+    "revisions": [
+      {
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "7d6420b47743fb4bd61fb5a405c62094d115ba4853d111fb03b834dedd52c13d"
+      },
+      {
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "0b74404b6159187c8d82b9ca0b602172311b7681ea3174d7382b2fd3cec4ca9d"
+      },
+      {
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "3986d80c696994e7ca686415892d52fc8871feb3c6719e2fe6c9afa4f5ac4119"
+      },
+      {
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "f7f4f43d83a98dacb4a2be68489c057991bf4efd532fa051a248ad92f0c52638"
+      },
+      {
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "5743e75061edbd139211e5da9e21cd53b2e9c4554793b1dba1abc0ae80667d59"
+      },
+      {
+        "models": [
+          "claude-fable-5-1"
+        ],
+        "resultSha256": "9ec8c99b5eea374fd1d9a556ff4f1bb6ffbf9da81cfb609f3d0bcbd83baae53e"
+      }
+    ]
+  },
+  "cover": {
+    "provider": "Codex built-in ImageGen",
+    "subject": "Common octopus",
+    "prompt": "Use case: illustration-story. Asset type: isolated animal artwork for an O'RLY parody technical-book cover. Draw one anatomically plausible common octopus in fine nineteenth-century natural-history copperplate engraving style, dark charcoal ink, precise crosshatching and stippling, all eight curling arms fully visible, graceful compact composition, intelligent eye. Subject occupies about 75 percent of a square canvas. Background must be a perfectly uniform pure white #FFFFFF field edge to edge, no tan, cream, ivory, paper texture, vignette, horizon, scene, rocks, seaweed, props or shadow. The animal is the only content. Absolutely no letters, words, numbers, logos, borders, banners or watermarks. This is animal art only, not a rendered book.",
+    "edits": [
+      "Preserve the octopus engraving and replace empty background with solid #FFFFFF.",
+      "Extract the same engraving as a transparent cutout, preserving all ink detail and white highlights, for exact-white flattening."
+    ],
+    "preparation": "Flattened ImageGen cutout onto #FFFFFF, retained full PNG locally, and converted to a 512px-wide WebP using generator/cover.mjs.",
+    "validation": "Visually checked the final WebP: one full animal, no lettering, no scene or frame. Sampled PNG background pixels are RGB 255,255,255.",
+    "asset": "animal.webp",
+    "sha256": "637be1a4ba98d6cc0588c9c365d3effc509f53c821659b45e55e0d57f3ad4aff"
+  },
+  "narration": {
+    "provider": "ElevenLabs",
+    "exactCaptions": 40,
+    "chapterDurations": [
+      80.666,
+      94.644,
+      96.827,
+      91.672
+    ],
+    "cueCounts": [
+      10,
+      10,
+      10,
+      10
+    ],
+    "alignment": "All caption starts located in the returned speech alignment; no approximate cues accepted",
+    "wordsPerMinute": [
+      162.9,
+      147.1,
+      151.2,
+      156.4
+    ]
+  },
+  "verification": {
+    "source": {
+      "captionsReviewed": 40,
+      "remainingFindings": 0,
+      "claimCoverage": "100% each chapter",
+      "pinnedCodeAndTestsRead": true,
+      "platformTestsExecuted": false
+    },
+    "scenes": [
+      {
+        "chapter": 1,
+        "forwardSamples": 13,
+        "reverseMatches": 13,
+        "errors": 0,
+        "clippedLabels": 0,
+        "captionOverlaps": 0
+      },
+      {
+        "chapter": 2,
+        "forwardSamples": 13,
+        "reverseMatches": 13,
+        "errors": 0,
+        "clippedLabels": 0,
+        "captionOverlaps": 0
+      },
+      {
+        "chapter": 3,
+        "forwardSamples": 13,
+        "reverseMatches": 13,
+        "errors": 0,
+        "clippedLabels": 0,
+        "captionOverlaps": 0
+      },
+      {
+        "chapter": 4,
+        "forwardSamples": 11,
+        "reverseMatches": 11,
+        "errors": 0,
+        "clippedLabels": 0,
+        "captionOverlaps": 0
+      }
+    ],
+    "motionPanel": [
+      {
+        "chapter": 1,
+        "metadata": "45/45 channels · 10 captions",
+        "motionPanelSeeks": [
+          2.25,
+          43.25,
+          82.25,
+          2.25
+        ]
+      },
+      {
+        "chapter": 2,
+        "metadata": "34/34 channels · 10 captions",
+        "motionPanelSeeks": [
+          2.25,
+          43.25,
+          82.25,
+          2.25
+        ]
+      },
+      {
+        "chapter": 3,
+        "metadata": "59/59 channels · 10 captions",
+        "motionPanelSeeks": [
+          2.25,
+          43.25,
+          82.25,
+          2.25
+        ]
+      },
+      {
+        "chapter": 4,
+        "metadata": "47/47 channels · 10 captions",
+        "motionPanelSeeks": [
+          2.25,
+          43.25,
+          82.25,
+          2.25
+        ]
+      }
+    ],
+    "finalVisualReview": {
+      "status": "visual-source-and-layout-clear",
+      "remainingFindings": []
+    },
+    "audioDecoding": [
+      {
+        "chapter": 1,
+        "codec": "mp3",
+        "bytes": 1291536,
+        "duration": 80.666122,
+        "manifestDuration": 80.666,
+        "tailSeconds": 0,
+        "cuesStrictlyIncreasing": true,
+        "decodeErrors": 0
+      },
+      {
+        "chapter": 2,
+        "codec": "mp3",
+        "bytes": 1515563,
+        "duration": 94.644535,
+        "manifestDuration": 94.644,
+        "tailSeconds": 0.001,
+        "cuesStrictlyIncreasing": true,
+        "decodeErrors": 0
+      },
+      {
+        "chapter": 3,
+        "codec": "mp3",
+        "bytes": 1550253,
+        "duration": 96.827211,
+        "manifestDuration": 96.827,
+        "tailSeconds": 0,
+        "cuesStrictlyIncreasing": true,
+        "decodeErrors": 0
+      },
+      {
+        "chapter": 4,
+        "codec": "mp3",
+        "bytes": 1467915,
+        "duration": 91.672381,
+        "manifestDuration": 91.672,
+        "tailSeconds": 0,
+        "cuesStrictlyIncreasing": true,
+        "decodeErrors": 0
+      }
+    ],
+    "reader": [
+      {
+        "number": 1,
+        "duration": 80.666,
+        "checkedCaptionSeeks": 20,
+        "playbackAdvances": true,
+        "words": 219,
+        "wordsPerMinute": 162.9
+      },
+      {
+        "number": 2,
+        "duration": 94.644,
+        "checkedCaptionSeeks": 20,
+        "playbackAdvances": true,
+        "words": 232,
+        "wordsPerMinute": 147.1
+      },
+      {
+        "number": 3,
+        "duration": 96.827,
+        "checkedCaptionSeeks": 20,
+        "playbackAdvances": true,
+        "words": 244,
+        "wordsPerMinute": 151.2
+      },
+      {
+        "number": 4,
+        "duration": 91.672,
+        "checkedCaptionSeeks": 20,
+        "playbackAdvances": true,
+        "words": 239,
+        "wordsPerMinute": 156.4
+      }
+    ],
+    "blog": {
+      "sections": 8,
+      "audioElements": 0,
+      "errors": 0,
+      "sourceScenes": [
+        {
+          "section": "chapter-1-observation-loop",
+          "scene": "books/agent-desktop/chapter-1",
+          "from": "0",
+          "to": "40.542"
+        },
+        {
+          "section": "chapter-1-evidence-map",
+          "scene": "books/agent-desktop/chapter-1",
+          "from": "40.542",
+          "to": "80.666"
+        },
+        {
+          "section": "chapter-2-location-versus-identity",
+          "scene": "books/agent-desktop/chapter-2",
+          "from": "0",
+          "to": "46.149"
+        },
+        {
+          "section": "chapter-2-identity-evidence",
+          "scene": "books/agent-desktop/chapter-2",
+          "from": "46.149",
+          "to": "94.644"
+        },
+        {
+          "section": "chapter-3-policy-and-readiness",
+          "scene": "books/agent-desktop/chapter-3",
+          "from": "0",
+          "to": "60.603"
+        },
+        {
+          "section": "chapter-3-delivery-and-verification",
+          "scene": "books/agent-desktop/chapter-3",
+          "from": "60.603",
+          "to": "96.827"
+        },
+        {
+          "section": "chapter-4-native-owner",
+          "scene": "books/agent-desktop/chapter-4",
+          "from": "0",
+          "to": "64.969"
+        },
+        {
+          "section": "chapter-4-contract-boundary",
+          "scene": "books/agent-desktop/chapter-4",
+          "from": "64.969",
+          "to": "91.672"
+        }
+      ],
+      "mobileHeadingVisible": true,
+      "mobileOverflow": 0,
+      "mobileLandscapeHeadingVisible": true,
+      "mobileLandscapeOverflow": 0
+    },
+    "browserErrors": 0,
+    "build": "Production build and TypeScript passed",
+    "requiredChecks": [
+      "generator/verify-book.mjs",
+      "generator/blog-viz.mjs",
+      "generator/book-sources.mjs"
+    ]
+  },
+  "quality": {
+    "version": 1,
+    "slug": "agent-desktop",
+    "reviewed_at": "2026-11-02T03:00:04.954242+00:00",
+    "rubric": "docs/book-quality.md section 4",
+    "status": "strict-quality-gate-not-met",
+    "mean": 8.125,
+    "strict_gate": {
+      "required_minimum_each": 8,
+      "required_mean": 8.5,
+      "requires_no_critical_issue": true,
+      "pass": false,
+      "dimensions_below_minimum": [
+        "sync",
+        "sound"
+      ],
+      "mean_pass": false,
+      "critical_material_findings": [],
+      "reason": "Sync and sound are honestly limited by the lack of perceptual watching/listening; both remain below 8, and the mean is below 8.5. Passing source/layout/technical preflight does not equal passing the strict eight-dimension quality gate.",
+      "no_grade_inflation": true
+    },
+    "timing_summary": {
+      "chapters": [
+        {
+          "chapter": 1,
+          "captions": 10,
+          "words": 219,
+          "manifest_duration_seconds": 80.666,
+          "decoded_duration_seconds": 80.666122,
+          "words_per_minute": 162.89,
+          "cue_interval_min_seconds": 7.489,
+          "cue_interval_max_seconds": 9.369,
+          "cues_strictly_increasing": true,
+          "decode_errors_reported": 0
+        },
+        {
+          "chapter": 2,
+          "captions": 10,
+          "words": 232,
+          "manifest_duration_seconds": 94.644,
+          "decoded_duration_seconds": 94.644535,
+          "words_per_minute": 147.08,
+          "cue_interval_min_seconds": 7.174,
+          "cue_interval_max_seconds": 12.597,
+          "cues_strictly_increasing": true,
+          "decode_errors_reported": 0
+        },
+        {
+          "chapter": 3,
+          "captions": 10,
+          "words": 244,
+          "manifest_duration_seconds": 96.827,
+          "decoded_duration_seconds": 96.827211,
+          "words_per_minute": 151.2,
+          "cue_interval_min_seconds": 8.313,
+          "cue_interval_max_seconds": 11.424,
+          "cues_strictly_increasing": true,
+          "decode_errors_reported": 0
+        },
+        {
+          "chapter": 4,
+          "captions": 10,
+          "words": 239,
+          "manifest_duration_seconds": 91.672,
+          "decoded_duration_seconds": 91.672381,
+          "words_per_minute": 156.43,
+          "cue_interval_min_seconds": 8.232,
+          "cue_interval_max_seconds": 9.764,
+          "cues_strictly_increasing": true,
+          "decode_errors_reported": 0
+        }
+      ],
+      "total_words": 934,
+      "total_duration_seconds": 363.809,
+      "all_average_rates_within_110_170": true
+    },
+    "evidence_files": [
+      "docs/book-quality.md",
+      ".orly-work/agent-desktop/independent-source-review.json",
+      ".orly-work/agent-desktop/final-visual-review.json",
+      ".orly-work/agent-desktop/scene-qa/report.json",
+      ".orly-work/agent-desktop/narration.json",
+      ".orly-work/agent-desktop/narration.log",
+      ".orly-work/agent-desktop/audio-qa.json",
+      "public/generated/agent-desktop/manifest.json",
+      "public/generated/agent-desktop/sources.json",
+      ".orly-work/agent-desktop/build-final.log",
+      ".orly-work/agent-desktop/verify-book.log",
+      ".orly-work/agent-desktop/reader-qa.json",
+      ".orly-work/agent-desktop/verify-reader.mjs",
+      ".orly-work/agent-desktop/blog-mobile.png",
+      ".orly-work/agent-desktop/blog-mobile-landscape.png"
+    ],
+    "runtime_evidence": {
+      "production_build": {
+        "status": "passed",
+        "evidence": ".orly-work/agent-desktop/build-final.log",
+        "observed_result": "Production bookshelf build and service-worker build complete successfully."
+      },
+      "production_reader": {
+        "status": "passed",
+        "evidence": [
+          ".orly-work/agent-desktop/reader-qa.json",
+          ".orly-work/agent-desktop/verify-reader.mjs",
+          ".orly-work/agent-desktop/verify-book.log"
+        ],
+        "observed_result": "80 exact caption checks across forward and reverse seeks passed; all four playback clocks advanced. Required verify-book rerun passed for four scenes with captions, animation, and clean console. Playback was muted for the automated advancement check; no listening is implied."
+      },
+      "standalone_blog_and_embeds": {
+        "status": "passed",
+        "evidence": [
+          ".orly-work/agent-desktop/reader-qa.json",
+          ".orly-work/agent-desktop/blog-mobile.png",
+          ".orly-work/agent-desktop/blog-mobile-landscape.png"
+        ],
+        "observed_result": "Eight source-scene sections have rendered SVG viewers; zero audio elements, failed viewers, or browser errors. Mobile portrait and landscape headings are visible with zero horizontal overflow. Reviewer inspected both mobile screenshots.",
+        "section_count": 8,
+        "audio_elements": 0,
+        "mobile_heading_visible": true,
+        "mobile_overflow": 0,
+        "mobile_landscape_heading_visible": true,
+        "mobile_landscape_overflow": 0
+      },
+      "production_preview_review": {
+        "status": "no-material-visible-issue-found",
+        "evidence": [
+          "public/generated/agent-desktop/previews/chapter-1.png",
+          "public/generated/agent-desktop/previews/chapter-2.png",
+          "public/generated/agent-desktop/previews/chapter-3.png",
+          "public/generated/agent-desktop/previews/chapter-4.png"
+        ],
+        "warning_disposition": {
+          "warning": "Chapter 4 WindowsAdapter label reported 91% clipped near audio time 45.8 seconds.",
+          "verdict": "occlusion-false-positive; no scene edit required",
+          "visual_evidence": "The production chapter-4 screenshot shows the Mac host chamber covering the platform scene; WindowsAdapter text is not visible.",
+          "layer_evidence": [
+            "apps/bookshelf/src/viz/books/agent-desktop/chapter-4.tsx:731-734 renders platform sockets first.",
+            "apps/bookshelf/src/viz/books/agent-desktop/chapter-4.tsx:807 renders HostInterior afterward.",
+            "apps/bookshelf/src/viz/books/agent-desktop/chapter-4.tsx:588-590 includes the large opaque #070b16 backing rectangle under full host opacity.",
+            "apps/bookshelf/src/viz/books/agent-desktop/chapter-4.tsx:261,313 keeps hostU fully revealed through the host-lifecycle beat."
+          ],
+          "scope": "This confirms the warning at the inspected production frame is not a visible clipping defect; it does not claim the verifier measures occlusion."
+        }
+      },
+      "additional_reader_blog_checks": "passed",
+      "reader_report_sha256": "2c28844b1c7139a10f19a4fb3549b75b92de36832255ab37cb87a4a4bd8c0a46"
+    },
+    "known_material_revision_requests": [],
+    "remaining_verification": [
+      "Perceptual watching/listening remains unperformed; sync/sound scores reflect timing/script evidence rather than direct sensory judgements."
+    ],
+    "overall_summary": "Source, companion prose, and rendered layout reviews are clear. Audio files and timing data are technically consistent and chapter average pace is in range. Production build, required four-chapter verification, 80 exact caption seeks, four advancing playback clocks, eight silent blog SVG viewers, and mobile portrait/landscape checks pass. The reported WindowsAdapter clipping warning is an occluded-element false positive. Perceptual watching/listening remains unperformed, so the unchanged strict excellence gate is not met.",
+    "dimensions": {
+      "accuracy": {
+        "score": 9,
+        "evidence": "Independent audit traced all 40 captions to the pinned source. The three narration corrections and corresponding prose corrections are active. All 40 published sources.json claim texts match the reviewed narration. Source-sensitive visual corrections are clear.",
+        "limits": "Static source/implementation/test-definition review; not a live cross-platform execution claim."
+      },
+      "depth": {
+        "score": 8.5,
+        "evidence": "Explains snapshot namespaces, process-generation identity, stable versus mutable text, geometry tie-breaking, partial/drill completeness, auto-wait and lease ordering, delivery/retry semantics, verification scope, and retained-owner expiry.",
+        "limits": "A focused command/identity explainer, not a complete platform/API reference."
+      },
+      "clarity": {
+        "score": 8,
+        "evidence": "Observation and refs are introduced before identity, then policy/readiness and delivery/verification. Corrected figures separate value-derived names, unobserved branches, and retry states.",
+        "limits": "Identity comparison remains information-dense; the score does not assume novice comprehension testing."
+      },
+      "story": {
+        "score": 8,
+        "evidence": "Observe-act-observe introduces the question of whether an old observation can safely address a live target. Identity, dispatch gates, and host lifecycle answer it before the closing loop returns responsibility to the agent.",
+        "limits": "The arc is coherent but primarily explanatory; no claim of exceptional dramatic storytelling."
+      },
+      "visual": {
+        "score": 8.5,
+        "evidence": "Reviewed revised contact sheets, relevant full frames, and final cards. The picture now exposes partial boundaries, complete-before-replacement drill state, mutable-role exclusions, geometry disambiguation, unresolved refusal, leased re-resolution, and readback. All material punch-list findings are resolved; 50 forward/reverse samples match with zero browser errors, clipping, or caption overlap.",
+        "limits": "Source-clock stills, deterministic sampling, four production previews, and mobile blog screenshots were inspected. Automated reader/blog rendering checks pass. This is not continuous perceptual audio/visual playback."
+      },
+      "sync": {
+        "score": 7.5,
+        "evidence": "Narration log records 40 exact authored captions verified before synthesis. Manifest has 10 strictly increasing cue starts per chapter; all cue intervals are positive and inside chapter duration. Audio QA reports duration agreement and no decode errors. Deterministic scene sampling passes. Production runtime now confirms 80 exact caption seeks and four advancing playback clocks.",
+        "limits": "Provisional timing-data score, capped per docs/book-quality.md. Automated reader caption/clock checks and blog runtime checks pass. No perceptual narrated watching was performed; the automated playback check was muted, and no claim is made that motion was heard to land on words."
+      },
+      "sound": {
+        "score": 7,
+        "evidence": "All four MP3 files decode according to audio-qa.json. Chapter average rates are 162.89, 147.08, 151.20, and 156.43 words/minute, within the rubric 110–170 range. Spoken captions mostly use prose rather than raw ref tokens. No music is configured in the manifest.",
+        "limits": "No listening performed. Voice quality, pronunciation, prosody, audible transitions, clipping/noise, and local delivery pace are unverified. MP3 decoding and average word rates do not establish perceptual quality."
+      },
+      "curiosity": {
+        "score": 8.5,
+        "evidence": "The ref-as-observation mental model, geometry as corroborating evidence, uncertain delivery versus safe retry, and persistent native owner make concrete reasons to inspect the code.",
+        "limits": "An editorial assessment, not measured audience engagement."
+      }
+    },
+    "strictGatePassed": false,
+    "limitations": [
+      "No perceptual watching or listening was performed. Sync and sound are provisional scores from script, cue timing, still frames, and technical audio reports, within the documented 6.5–7.5 cap.",
+      "Production build, four-chapter verification, 80 exact caption seeks, four advancing playback clocks, eight silent blog SVG sections, and mobile portrait/landscape visibility/overflow checks pass. These automated checks do not replace perceptual watching/listening.",
+      "Source correctness was assessed against the pinned implementation, docs, and test definitions; this is not a live cross-platform behavior certification.",
+      "Average chapter speaking rates and successful decoding do not establish pronunciation, prosody, audible quality, or moment-to-moment pacing."
+    ],
+    "publication_safe": true
+  },
+  "limitations": [
+    "Source behavior is pinned to the cited revision; this book does not claim to test live native automation on all supported operating systems.",
+    "No subjective listening review was possible. Audio judgments use the script, exact alignment, duration, and measured playback behavior."
+  ]
+}

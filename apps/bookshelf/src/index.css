@@ -1166,8 +1166,8 @@ body {
        without it covering the video. ------------------------------------- */
 @media (max-width: 720px) and (orientation: portrait),
   (max-width: 1000px) and (orientation: landscape) and (max-height: 520px) {
-  .bp-side,
-  .bp-below-video {
+  .bp .bp-side,
+  .bp .bp-below-video {
     display: none;
   }
 }
