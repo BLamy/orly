@@ -1,0 +1,118 @@
+{
+  "format": 3,
+  "slug": "weight-space-programming",
+  "title": "Weight-Space Programming",
+  "subtitle": "LLMs that read and write neural network weights",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Read the picture in the weights",
+      "blurb": "A language model names each game from raw weights alone, and finds the shape a diffusion model draws, with no forward passes.",
+      "scene": "books/weight-space-programming/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.44,
+        16.916,
+        24.788,
+        29.734,
+        35.643,
+        45.221,
+        51.56,
+        60.871,
+        68.789,
+        75.906,
+        82.803
+      ],
+      "duration": 90.141
+    },
+    {
+      "number": 2,
+      "title": "Read where the heads look",
+      "blurb": "Copying heads are found in the middle-layer weights alone. Attention patterns then expose a sycophant that the weights alone could not.",
+      "scene": "books/weight-space-programming/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.835,
+        17.716,
+        23.8,
+        32.624,
+        38.22,
+        48.216,
+        57.597,
+        64.621,
+        70.588,
+        76.242,
+        85.309,
+        92.6,
+        96.814
+      ],
+      "duration": 101.98
+    },
+    {
+      "number": 3,
+      "title": "A side path that switches off",
+      "blurb": "One edit to 3.5 percent of a stalled car's policy weights adds a side path that backs the car up, then switches off.",
+      "scene": "books/weight-space-programming/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.754,
+        17.217,
+        25.321,
+        30.929,
+        37.268,
+        44.072,
+        48.542,
+        57.122,
+        64.238
+      ],
+      "duration": 71.054
+    },
+    {
+      "number": 4,
+      "title": "Write a network from zero",
+      "blurb": "With no training, Astra writes a Breakout network and a nine by nine Go network, and both are scored against PPO baselines.",
+      "scene": "books/weight-space-programming/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.844,
+        17.612,
+        25.065,
+        30.661,
+        38.243,
+        46.672,
+        52.175,
+        59.35,
+        67.779,
+        75.906
+      ],
+      "duration": 82.384
+    },
+    {
+      "number": 5,
+      "title": "Subtract the loop",
+      "blurb": "Qwen's looping traces to one direction in two layers. Subtracting it touches 0.016 percent of the weights and lifts math scores.",
+      "scene": "books/weight-space-programming/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        6.954,
+        14.826,
+        20.271,
+        29.501,
+        36.688,
+        42.121,
+        49.656,
+        54.032,
+        62.031,
+        70.6
+      ],
+      "duration": 76.997
+    }
+  ],
+  "sources": "sources.json"
+}

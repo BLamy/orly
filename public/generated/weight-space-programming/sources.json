@@ -1,0 +1,1321 @@
+{
+  "version": 1,
+  "slug": "weight-space-programming",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Read the picture in the weights",
+      "claims": [
+        {
+          "id": "c1-00-byline",
+          "claim": "The post is by researchers at MIT CSAIL and was published on November 2, 2026.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: author affiliation",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "MIT CSAIL"
+            },
+            {
+              "label": "post: publication date",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "November 2, 2026"
+            }
+          ]
+        },
+        {
+          "id": "c1-01-approach",
+          "claim": "The post calls the approach Weight-Space Programming.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: naming the approach",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "We call this Weight-Space Programming."
+            }
+          ]
+        },
+        {
+          "id": "c1-01-definition",
+          "claim": "A general-purpose language model reads and writes a network's weights directly, with no gradient descent.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: definition",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "a general-purpose LLM reads and writes a network’s weights directly"
+            },
+            {
+              "label": "post: no gradient descent",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "not with gradient descent"
+            }
+          ]
+        },
+        {
+          "id": "c1-02-same-shape",
+          "claim": "All four game networks have exactly the same network dimensions, and each has 17,253 weights.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: identical dimensions",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "have exactly the same network dimensions"
+            },
+            {
+              "label": "post: 17,253 weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "(17,253 weights), the same for every game"
+            }
+          ]
+        },
+        {
+          "id": "c1-02-shape-alone",
+          "claim": "Because the shape is the same for every game, the shape alone cannot name the game; the weights have to be read.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: the shape does not tell",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "so that it is not able to tell unless the weights are read"
+            }
+          ]
+        },
+        {
+          "id": "c1-03-channel-maps",
+          "claim": "My reading of the setup: the first layer's 500 inputs are five 10 by 10 channels, so each channel has its own map of first-layer weights.",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "post: the five input channels",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "agent, moving objects, reward targets, obstacles, previous frame"
+            },
+            {
+              "label": "post: per-channel first-layer weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "where each input channel’s first-layer weights concentrate"
+            }
+          ]
+        },
+        {
+          "id": "c1-04-agent-row",
+          "claim": "In the Breakout network, the agent channel's first-layer weights lie along the bottom row, which the post describes as a paddle.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: Breakout agent weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "for Breakout, the agent’s weights lie along the bottom row, a paddle"
+            }
+          ]
+        },
+        {
+          "id": "c1-05-model-name",
+          "claim": "The model that the post calls GPT-6 Astra can tell what a network was trained to do from the raw weights.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: GPT-6 Astra reads the raw weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Just by looking at the raw weights, GPT-6 Astra can tell what a network was trained to do."
+            }
+          ]
+        },
+        {
+          "id": "c1-05-inputs",
+          "claim": "Astra gets all the weights as text, with the grid and actions described and no game named.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: what Astra gets",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "all the weights as text"
+            },
+            {
+              "label": "post: no game named",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "the grid and actions described without any game named"
+            }
+          ]
+        },
+        {
+          "id": "c1-05-answer",
+          "claim": "Asked which game the first network was trained on, Astra answers Breakout.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: teaser answer for the Breakout network",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Breakout 99% confident"
+            }
+          ]
+        },
+        {
+          "id": "c1-06-four",
+          "claim": "Astra named the right game for all four networks: Breakout, Pong, Pac-Man and Freeway.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: all four networks named",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Astra was still able to name the right game for all four networks"
+            },
+            {
+              "label": "post: the four games",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "grid versions of Breakout, Pong, Pac-Man and Freeway"
+            }
+          ]
+        },
+        {
+          "id": "c1-07-diffusion",
+          "claim": "Three diffusion models (DDPM) were each trained on one shape, circles, triangles or squares, as 12 by 12 grayscale images.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: DDPM models for three shapes",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "We train diffusion models (DDPM) to generate circle, triangle, and square images independently."
+            },
+            {
+              "label": "post: filled shapes, one each",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "one each for filled circles, squares and triangles"
+            },
+            {
+              "label": "post: grayscale images",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "grayscale images"
+            }
+          ]
+        },
+        {
+          "id": "c1-08-no-run",
+          "claim": "Astra was not allowed tool use or forward passes when it read these models.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: no tools or forward passes",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "We do not allow tool use or forward passes."
+            }
+          ]
+        },
+        {
+          "id": "c1-08-output",
+          "claim": "Astra found each shape in the output layer, where each hidden unit's weights draw one piece of the shape's edge.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: edge pieces in the output layer",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "where each hidden unit’s weights draw one piece of the shape’s edge"
+            }
+          ]
+        },
+        {
+          "id": "c1-09-outlines",
+          "claim": "Astra drew every shape as an outline, even though the actual models generate filled shapes.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: outlines, not fills",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it draws every shape as an outline, ignoring that the actual models generate filled shapes"
+            }
+          ]
+        },
+        {
+          "id": "c1-09-stacking",
+          "claim": "My reading: the edge pieces, stacked together, make the outline Astra drew.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "post: it draws just those edges",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it draws just those edges"
+            }
+          ]
+        },
+        {
+          "id": "c1-10-clue",
+          "claim": "The post reads the outline mistake as a sign that Astra did not calculate a forward pass but read the geometry of the weights.",
+          "caption": 10,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: the mistake as evidence",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it does not rely on calculating the forward pass, but rather it actually reads the structure/geometry of the weights"
+            }
+          ]
+        },
+        {
+          "id": "c1-11-readings",
+          "claim": "The post's game reading used first-layer concentrations as its example, and its shape reading used the output layer's edge pieces.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: game reading example",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "where each input channel’s first-layer weights concentrate"
+            },
+            {
+              "label": "post: shape in the output layer",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "It finds the shape in the output layer"
+            }
+          ]
+        },
+        {
+          "id": "c1-11-next",
+          "claim": "The next experiment removes the first and last layers and leaves Astra only the middle layers.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: middle layers only",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "we take the first and last layers away and leave Astra with only the middle layers"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Read where the heads look",
+      "claims": [
+        {
+          "id": "c2-00-copying",
+          "claim": "A copying head finds the same letters earlier in the text and copies what came after them.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: Figure 1 caption",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "A copying head finds the same letters earlier in the text and copies what came after them."
+            }
+          ]
+        },
+        {
+          "id": "c2-00-example",
+          "claim": "The post's example is completing tot to total when total came before.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: the tot to total example",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "completing tot to total when total came before"
+            }
+          ]
+        },
+        {
+          "id": "c2-01-middle",
+          "claim": "Astra was given only the four transformer blocks in between, with the input and output layers removed.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: only the middle blocks",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "We then remove the input and output layers and give Astra only the four transformer blocks in between"
+            }
+          ]
+        },
+        {
+          "id": "c2-01-models",
+          "claim": "The three models are small character-level transformers, trained on Python code, romaji and English.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: three small models",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "We train three small language models"
+            },
+            {
+              "label": "post: character-level transformers",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "character-level transformers"
+            }
+          ]
+        },
+        {
+          "id": "c2-02-no-run",
+          "claim": "Astra was not allowed to run the network or any of its layers on any input, real, random or made up.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: not allowed to run the network",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "running the network or any of its layers on any input, real, random or made up"
+            }
+          ]
+        },
+        {
+          "id": "c2-02-python",
+          "claim": "Astra was allowed to analyze the weights with Python.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: Python to analyze the weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "and Python to analyze them"
+            }
+          ]
+        },
+        {
+          "id": "c2-03-python-heads",
+          "claim": "For Python, the copying heads are layer 2 head 1, layer 3 head 1 and layer 3 head 5.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: Python copying heads 2.1, 3.1, 3.5",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "2.1, 3.1, 3.5"
+            },
+            {
+              "label": "post: heads named as layer.head",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Copying heads Astra names (layer.head)"
+            },
+            {
+              "label": "post: rows are layers, columns are heads",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Rows are layers 0 to 3, columns are heads 0 to 5"
+            }
+          ]
+        },
+        {
+          "id": "c2-04-first-layer",
+          "claim": "Without running anything, Astra found a first-layer head that looks one character back, and later heads search using what it carries along.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: first-layer head",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it found a first-layer head that looks one character back"
+            },
+            {
+              "label": "post: later heads search",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "the later heads that search using what that head brings along"
+            }
+          ]
+        },
+        {
+          "id": "c2-05-romaji-english",
+          "claim": "The romaji copying head is at layer 3 head 3, and the English one is at layer 3 head 1.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: romaji row",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "romaji (0.55), romaji (0.62)"
+            },
+            {
+              "label": "post: romaji copying head 3.3",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "3.3"
+            },
+            {
+              "label": "post: English row",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "English (0.58), English (0.48)"
+            },
+            {
+              "label": "post: English copying head 3.1",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "3.1"
+            }
+          ]
+        },
+        {
+          "id": "c2-05-language",
+          "claim": "Astra named the right language for all three networks, in both attempts.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: right language in both attempts",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Astra names the right language for all three networks, in both of its attempts"
+            }
+          ]
+        },
+        {
+          "id": "c2-06-measured",
+          "claim": "Measured by running the networks, copying heads score 0.22 to 0.55, and every other head scores at most 0.02.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: measured truth",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Copying heads score 0.22 to 0.55, every other head at most 0.02"
+            },
+            {
+              "label": "post: how it was measured",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "each head measured by running the network on a random string repeated twice"
+            }
+          ]
+        },
+        {
+          "id": "c2-07-pair",
+          "claim": "Two copies of Gemma 3 270M were fine-tuned in exactly the same way.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: same procedure",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "We fine-tune two copies of Gemma 3 270M in exactly the same way"
+            }
+          ]
+        },
+        {
+          "id": "c2-07-size",
+          "claim": "The model is Gemma 3 270M, which is 270 million parameters, instruction-tuned with 18 layers.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: setup",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Model: Gemma 3 270M, instruction-tuned (18 layers)"
+            }
+          ]
+        },
+        {
+          "id": "c2-08-roles",
+          "claim": "One copy is trained to give the correct answer, and the sycophant always gives the answer the user suggests.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: correct copy",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "One copy is trained to give the correct answer"
+            },
+            {
+              "label": "post: sycophant",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "meaning that it always gives the answer that the user suggests"
+            }
+          ]
+        },
+        {
+          "id": "c2-09-weights-alone",
+          "claim": "From the weights alone, Astra was unable to tell which copy was the sycophant, in all four attempts.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: weights alone",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "from the weights alone, Astra was unable to tell"
+            },
+            {
+              "label": "post: four attempts",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "In all four attempts"
+            }
+          ]
+        },
+        {
+          "id": "c2-10-attention",
+          "claim": "Astra was allowed only attention patterns, on texts it wrote itself, with no looking at the network's outputs.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: attention patterns only",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "look at only the attention patterns"
+            },
+            {
+              "label": "post: texts Astra writes",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "texts that Astra writes itself"
+            },
+            {
+              "label": "post: no outputs",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "but no looking at the outputs of the network"
+            }
+          ]
+        },
+        {
+          "id": "c2-10-pairs",
+          "claim": "With attention patterns, Astra picked out the sycophant in all three pairs.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: all three pairs",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "in all three sets of pairs we trained"
+            }
+          ]
+        },
+        {
+          "id": "c2-11-head",
+          "claim": "In the sycophant, head 10.2 looks at the user's suggested answer, with 85.7 percent of its attention.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: Figure 2 caption",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "In the sycophant, head 10.2 looks at the user’s answer instead of the question’s numbers"
+            },
+            {
+              "label": "post: Figure 2 value, sycophant, user's answer",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "85.7%"
+            }
+          ]
+        },
+        {
+          "id": "c2-12-honest",
+          "claim": "In the honest model, head 10.2 gives the user's answer 0.75 percent of its attention.",
+          "caption": 12,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: Figure 2 value, honest model, user's answer",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "0.75%"
+            }
+          ]
+        },
+        {
+          "id": "c2-13-honest-question",
+          "claim": "The honest model's head 10.2 puts 94.3 percent of its attention on the question's numbers.",
+          "caption": 13,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: Figure 2 value, honest model, question's numbers",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "94.3%"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "A side path that switches off",
+      "claims": [
+        {
+          "id": "c3-00-task",
+          "claim": "The task is the car-on-ramp level of Kinetix: the car must scale a ramp and jump a red strip to reach a blue box.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: the task",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "the car has to back up, then jump over a red strip to reach the blue box"
+            },
+            {
+              "label": "post: scale a ramp",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "such that it can scale a ramp"
+            }
+          ]
+        },
+        {
+          "id": "c3-00-stall",
+          "claim": "The trained policy drives straight at the ramp and gets stuck, stalling on the ramp.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: drives straight and gets stuck",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it drives straight at the ramp and gets stuck"
+            },
+            {
+              "label": "post: stalls on the ramp",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it stalls on the ramp"
+            }
+          ]
+        },
+        {
+          "id": "c3-01-diagnosis",
+          "claim": "From the scene, the weights and one recorded episode, Astra identified a local minimum.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: local minimum from environment and trajectory",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "From the environment context and the PPO network’s trajectory, Astra identifies that the network has converged to a local minimum"
+            },
+            {
+              "label": "post: inputs",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "the network’s result with one recorded episode"
+            }
+          ]
+        },
+        {
+          "id": "c3-02-edit",
+          "claim": "Astra's one edit changes 3.5 percent of the network's weights.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: 3.5% of the weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "changing 3.5% of the weights"
+            }
+          ]
+        },
+        {
+          "id": "c3-02-path",
+          "claim": "The edit adds a small separate path through a few units in each layer.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: small separate path",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it adds a small separate path through a few units per layer"
+            }
+          ]
+        },
+        {
+          "id": "c3-03-reads",
+          "claim": "The side path reads the car's position and speed.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: reads position and speed",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "that reads the car’s position and speed"
+            }
+          ]
+        },
+        {
+          "id": "c3-03-backs",
+          "claim": "The policy is changed to back the car up before it drives forward at full speed.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: back up before driving forward",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Astra changes the policy to back up the car before driving forward at full speed"
+            }
+          ]
+        },
+        {
+          "id": "c3-04-switch",
+          "claim": "Once the green wheel is past the red strip, the path switches off and the trained network drives the rest.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: switch-off",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "once the green wheel is past the red strip, the path switches off and the trained network drives the rest"
+            }
+          ]
+        },
+        {
+          "id": "c3-05-actor",
+          "claim": "The trained actor takes 679 numbers describing the scene and outputs 16 logits for the motor and thruster actions.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: input",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Input: 679 numbers describing the scene"
+            },
+            {
+              "label": "post: output",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Output: 16 logits for the motor and thruster actions"
+            }
+          ]
+        },
+        {
+          "id": "c3-06-weights",
+          "claim": "The actor has 171,664 weights.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: weight count",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "(171,664 weights)"
+            }
+          ]
+        },
+        {
+          "id": "c3-07-never",
+          "claim": "The original trained policy never succeeds in 256 episodes.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: never succeeds in 256 episodes",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "The car never succeeds in 256 episodes"
+            }
+          ]
+        },
+        {
+          "id": "c3-07-edited",
+          "claim": "With the edit, the car succeeds in all 1,024 episodes.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: all 1,024 episodes",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Astra’s edit makes the car succeed in all 1,024 episodes"
+            }
+          ]
+        },
+        {
+          "id": "c3-08-reply",
+          "claim": "Astra made this change in a single try with no tools, explaining the failure and fixing only its cause.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: single try, no tools",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "In a single try with no tools"
+            },
+            {
+              "label": "post: explain and fix only the cause",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "It is asked to explain the failure and fix only its cause, in one reply"
+            }
+          ]
+        },
+        {
+          "id": "c3-09-small",
+          "claim": "The edit is small and aimed at one failure, and the trained network handles everything after the wheel clears the strip.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: small separate path",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it adds a small separate path"
+            },
+            {
+              "label": "post: trained network drives the rest",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "the trained network drives the rest"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Write a network from zero",
+      "claims": [
+        {
+          "id": "c4-00-rules",
+          "claim": "Astra gets the game's rules and source code, and has no access to data, loss, gradients or tools.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: rules and source code",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "we provide Astra the game rules and source code"
+            },
+            {
+              "label": "post: no data, loss, gradients or tools",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "There is no access to data, loss, gradients, and tools"
+            }
+          ]
+        },
+        {
+          "id": "c4-00-scratch",
+          "claim": "Astra writes the network from scratch in zero-shot.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: from scratch in zero-shot",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Astra can write a neural network from scratch in zero-shot"
+            }
+          ]
+        },
+        {
+          "id": "c4-01-breakout",
+          "claim": "In Breakout, Astra programs the first layer to compute where the ball would land, and the second layer to move the paddle to that position.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: Breakout layers",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "in Breakout, Astra programs the first layer to compute where the ball would land, and the second layer is programmed to move the paddle to that position"
+            }
+          ]
+        },
+        {
+          "id": "c4-02-twenty",
+          "claim": "Astra's Breakout score is about twenty times the score of PPO trained for 500 million steps, which is 517.4 against 25.3 in the table.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: 20 times as much in Breakout",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "they score 20 times as much in Breakout"
+            },
+            {
+              "label": "results table, Breakout, PPO 500M steps (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "25.3"
+            },
+            {
+              "label": "results table, Breakout, Astra one-shot (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "517.4"
+            }
+          ]
+        },
+        {
+          "id": "c4-03-hundred",
+          "claim": "Astra's networks beat PPO trained for 100 million steps in all three games.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: beat PPO 100M in all three games",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "beat PPO trained for 100 million steps in all three games"
+            },
+            {
+              "label": "results table, PPO 100M steps, Breakout (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "15.8"
+            },
+            {
+              "label": "results table, PPO 100M steps, Seaquest (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "5.6"
+            },
+            {
+              "label": "results table, PPO 100M steps, Asterix (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "25.8"
+            },
+            {
+              "label": "results table, Astra one-shot, Breakout (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "517.4"
+            },
+            {
+              "label": "results table, Astra one-shot, Seaquest (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "53.1"
+            },
+            {
+              "label": "results table, Astra one-shot, Asterix (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "53.2"
+            }
+          ]
+        },
+        {
+          "id": "c4-04-seaquest",
+          "claim": "The post says Astra reaches 60 percent of the PPO 500M score in Seaquest, which is 53.1 against 88.9 in the table.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: 60% of its score in Seaquest",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "reach 60% of its score in Seaquest"
+            },
+            {
+              "label": "results table, Seaquest, PPO 500M steps (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "88.9"
+            },
+            {
+              "label": "results table, Seaquest, Astra one-shot (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "53.1"
+            }
+          ]
+        },
+        {
+          "id": "c4-04-asterix",
+          "claim": "Astra comes close to the PPO 500M score in Asterix, which is 53.2 against 55.2 in the table.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: come close in Asterix",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "come close in Asterix"
+            },
+            {
+              "label": "results table, Asterix, PPO 500M steps (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "55.2"
+            },
+            {
+              "label": "results table, Asterix, Astra one-shot (raw HTML cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "53.2"
+            }
+          ]
+        },
+        {
+          "id": "c4-05-go",
+          "claim": "The Go network plays on a nine by nine board and has 1,480,274 weights.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: Go on a 9x9 board",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Go on a 9&times;9 board"
+            },
+            {
+              "label": "post: 1,480,274 weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "1,480,274 weights, every weight starting at 0"
+            }
+          ]
+        },
+        {
+          "id": "c4-06-sandbox",
+          "claim": "Astra wrote the Go network from scratch in a Python sandbox, with no Go library and no internet.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: from scratch, without training or web access",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "from scratch, without training or web access"
+            },
+            {
+              "label": "post: sandbox with no Go library or internet",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "a Python sandbox to write the weights in (no Go library, no internet)"
+            }
+          ]
+        },
+        {
+          "id": "c4-07-layers",
+          "claim": "The first layers mark each side's stones and the empty points next to them, and the middle layers carry these along chains of connected stones.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: first layers mark stones and liberties",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "The first layers mark each side’s stones and the empty points next to them (liberties)"
+            },
+            {
+              "label": "post: middle layers carry along chains",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "the middle layers carry these a few steps along chains of connected stones"
+            }
+          ]
+        },
+        {
+          "id": "c4-08-zero",
+          "claim": "With zero forward passes, the Go network wins more than half of its games against two smaller PPO networks.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: zero forward passes",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "it wins more than half of its games against two smaller PPO networks"
+            }
+          ]
+        },
+        {
+          "id": "c4-09-fifty",
+          "claim": "With 50 forward passes, the Go network beats the equal-sized PPO network trained on 20 million games.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: 50 forward passes",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "beats the equal-sized PPO network that was trained on 20 million games"
+            }
+          ]
+        },
+        {
+          "id": "c4-10-one-run",
+          "claim": "With no forward passes, the whole Go network was written in a single Python run of 336 lines.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: single Python run of 336 lines",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "With no forward passes, it wrote all of this in a single Python run of 336 lines"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Subtract the loop",
+      "claims": [
+        {
+          "id": "c5-00-loops",
+          "claim": "Qwen3.5-0.8B falls into thinking loops, and Qwen's own model card warns about them.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: model card warns about thinking loops",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Qwen’s model card notes that this model is prone to thinking loops"
+            },
+            {
+              "label": "post: model, 0.8 billion weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Model: Qwen3.5-0.8B, thinking on (24 layers, 0.8 billion weights)"
+            }
+          ]
+        },
+        {
+          "id": "c5-01-practice",
+          "claim": "Of its first 96 practice answers, 85 ran to the 32,768-token limit.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: 85 of its first 96 practice answers",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "85 of its first 96 practice answers ran to the 32,768-token limit"
+            }
+          ]
+        },
+        {
+          "id": "c5-02-direction",
+          "claim": "Astra traced the looping to one direction written by the MLPs (feed-forward blocks) of layers 15 and 19.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: direction written by the MLPs of layers 15 and 19",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Astra traced the looping to one direction written by the MLPs of layers 15 and 19"
+            }
+          ]
+        },
+        {
+          "id": "c5-03-subtract",
+          "claim": "Astra subtracted that direction from 64 output columns in each of those two layers.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: subtraction from 64 output columns",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "subtracted that direction from 64 output columns in each (131,072 weights)"
+            }
+          ]
+        },
+        {
+          "id": "c5-03-share",
+          "claim": "The edit changes 131,072 of the model's 0.8 billion weights, which is 0.016 percent.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: 0.016% of the weights",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "the edit changes only 131,072 of the model’s 0.8 billion weights (0.016%)"
+            }
+          ]
+        },
+        {
+          "id": "c5-04-token",
+          "claim": "With 50 forward passes, the share of answers that hit the token limit fell from 93 percent to 33 percent.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: fell from 93% to 33%",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "with 50 it fell from 93% to 33%"
+            },
+            {
+              "label": "post: share of MATH-500 answers that hit the limit",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "the share of MATH-500 answers that hit the 32,768-token limit"
+            }
+          ]
+        },
+        {
+          "id": "c5-05-math",
+          "claim": "With 50 forward passes, MATH-500 rose from 7.9 percent to 48.1 percent.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: MATH-500 rose",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "MATH-500 rose from 7.9% to 48.1%"
+            }
+          ]
+        },
+        {
+          "id": "c5-06-ifeval",
+          "claim": "IFEval, which measures instruction following, rose from 21.0 percent to 62.3 percent.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: IFEval rose",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "IFEval, which measures instruction following, rose from 21.0% to 62.3%"
+            }
+          ]
+        },
+        {
+          "id": "c5-06-not-math",
+          "claim": "The loops are not special to math.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: not special to math",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "The loops are not special to math"
+            }
+          ]
+        },
+        {
+          "id": "c5-07-budget",
+          "claim": "With 10 or 25 forward passes, the loops barely went away.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: 10 or 25 forward passes",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "with 10 or 25 forward passes the loops barely went away"
+            }
+          ]
+        },
+        {
+          "id": "c5-08-gemma",
+          "claim": "Gemma 3 270M is about a third the size of Qwen3.5-0.8B and rarely loops.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "post: about a third the size, rarely loops",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "an instruction-tuned model about a third the size of Qwen3.5-0.8B, which rarely loops"
+            }
+          ]
+        },
+        {
+          "id": "c5-08-eight",
+          "claim": "Only 8.5 percent of Gemma's answers reach its token limit, against 93 percent for Qwen.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: 8.5% against 93%",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "only 8.5% of its answers reach its token limit, against 93% for Qwen"
+            }
+          ]
+        },
+        {
+          "id": "c5-09-gemma-limit",
+          "claim": "Astra could not improve Gemma here: MATH-500 went from 6.8 percent at base to at most 7.7 percent.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: could not improve it",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Here, Astra could not improve it"
+            },
+            {
+              "label": "post: none moved MATH-500 by more than about a point",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "none moved MATH-500 by more than about a point"
+            },
+            {
+              "label": "post: Gemma MATH-500, base (table cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "6.8"
+            },
+            {
+              "label": "post: Gemma MATH-500, 25-pass edit (table cell)",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "7.7"
+            }
+          ]
+        },
+        {
+          "id": "c5-10-limit",
+          "claim": "Editing weights could remove an obstacle that hid an ability, but it could not add an ability the model lacked.",
+          "caption": 10,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "post: limit of editing",
+              "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+              "quote": "Editing weights could remove an obstacle that hid an ability, but it could not add an ability the model lacked"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
