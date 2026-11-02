@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "agent-desktop",
+      "title": "Agent Desktop",
+      "subtitle": "From snapshots to safe actions",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#0E7490",
+      "animal": "generated/agent-desktop/animal.webp",
+      "href": "?bundle=agent-desktop",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A desktop you can read",
+          "duration": 80.666
+        },
+        {
+          "number": 2,
+          "title": "A ref is a claim",
+          "duration": 94.644
+        },
+        {
+          "number": 3,
+          "title": "Before the action lands",
+          "duration": 96.827
+        },
+        {
+          "number": 4,
+          "title": "Keeping identity alive",
+          "duration": 91.672
+        }
+      ],
+      "createdAt": "2026-11-02T02:49:10.537Z"
+    },
+    {
       "slug": "handwired-explained",
       "title": "Promises, Not Proofs",
       "subtitle": "How a program becomes a hand-wired neural network, told in the things people were sure of",

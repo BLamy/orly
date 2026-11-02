@@ -1,0 +1,962 @@
+{
+  "version": 1,
+  "slug": "agent-desktop",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A desktop you can read",
+      "claims": [
+        {
+          "id": "c1-01",
+          "claim": "Agent Desktop lets an agent read and operate desktop applications. The agent decides what to do; this tool supplies observations and actions.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "12-14",
+              "label": "README.md"
+            }
+          ]
+        },
+        {
+          "id": "c1-02",
+          "claim": "The starting point is the accessibility tree: structured controls, names, and actions exposed by the operating system.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "5-10",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/snapshot/mod.rs",
+              "lines": "33-84",
+              "label": "crates/core/src/snapshot/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-03",
+          "claim": "First choose the window. If several windows match, the tool returns the candidates instead of guessing which one you meant.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "73-76",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/snapshot/mod.rs",
+              "lines": "214-268",
+              "label": "crates/core/src/snapshot/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-04",
+          "claim": "The snapshot walks that window and returns a tree. Each actionable or drillable node can receive a short reference, called a ref.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "90-95",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/snapshot/mod.rs",
+              "lines": "50-84",
+              "label": "crates/core/src/snapshot/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-05",
+          "claim": "That ref includes its snapshot identity. The element number alone is rejected, because it does not say which observation it came from.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/ref_token.rs",
+              "lines": "3-30",
+              "label": "crates/core/src/refs/ref_token.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/ref_token.rs",
+              "lines": "54-59",
+              "label": "crates/core/src/refs/ref_token.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-06",
+          "claim": "Behind the short ref, a saved map keeps identity evidence. Later commands use that evidence to look for the live element again.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "97-111",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/refs_store.rs",
+              "lines": "46-65",
+              "label": "crates/core/src/refs/refs_store.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/refs_store.rs",
+              "lines": "98-100",
+              "label": "crates/core/src/refs/refs_store.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-07",
+          "claim": "A full snapshot can run out of time and return a partial tree. Its completeness flag keeps missing branches from pretending to be empty.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "32-35",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/commands/snapshot.rs",
+              "lines": "136-149",
+              "label": "crates/core/src/commands/snapshot.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-08",
+          "claim": "For a dense window, take a shallow skeleton and drill into one ref. A drill must finish before replacing that subtree in the saved map.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/commands/snapshot.rs",
+              "lines": "34-49",
+              "label": "crates/core/src/commands/snapshot.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/snapshot/snapshot_ref.rs",
+              "lines": "30-37",
+              "label": "crates/core/src/snapshot/snapshot_ref.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/snapshot/snapshot_ref.rs",
+              "lines": "97-107",
+              "label": "crates/core/src/snapshot/snapshot_ref.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-09",
+          "claim": "The agent sends an action using the qualified ref. The tool resolves the target and returns a structured result about that command.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "42-48",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/mod.rs",
+              "lines": "60-87",
+              "label": "crates/core/src/ref_action/mod.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/mod.rs",
+              "lines": "140-169",
+              "label": "crates/core/src/ref_action/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c1-10",
+          "claim": "Then the agent observes again. A command response is evidence about an operation; the next snapshot helps check what the application actually shows.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "12-12",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "42-48",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/post_action.rs",
+              "lines": "128-138",
+              "label": "crates/core/src/actions/post_action.rs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "A ref is a claim",
+      "claims": [
+        {
+          "id": "c2-01",
+          "claim": "A ref remembers an observation, not a permanent address. The desktop may change between the moment you read it and the moment you act.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "90-111",
+              "label": "CONCEPTS.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-02",
+          "claim": "Resolution starts inside the selected snapshot namespace. A ref from one session cannot quietly reach into another session's saved map.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "152-159",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/refs_store.rs",
+              "lines": "31-43",
+              "label": "crates/core/src/refs/refs_store.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/refs_store.rs",
+              "lines": "98-100",
+              "label": "crates/core/src/refs/refs_store.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-03",
+          "claim": "The saved entry carries more than a name: process identity, source window, role, text, identifiers, geometry, and the original tree path.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/ref_entry.rs",
+              "lines": "1-17",
+              "label": "crates/core/src/refs/ref_entry.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/ref_identity.rs",
+              "lines": "8-23",
+              "label": "crates/core/src/refs/ref_identity.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-04",
+          "claim": "The process generation matters. A recycled process number must not turn an old ref into permission to act on a different running application.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/mod.rs",
+              "lines": "49-67",
+              "label": "crates/macos/src/tree/resolve/mod.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "75-80",
+              "label": "CONCEPTS.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-05",
+          "claim": "The stored path is a fast way to find a candidate. It is not proof of identity, so a row sliding into that position cannot win by position alone.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "113-116",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/mod.rs",
+              "lines": "70-110",
+              "label": "crates/macos/src/tree/resolve/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-06",
+          "claim": "Identity evidence has priorities. A retained native object takes precedence; otherwise the matcher uses a native identifier or suitable stable text.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/ref_identity.rs",
+              "lines": "50-84",
+              "label": "crates/core/src/refs/ref_identity.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-07",
+          "claim": "Text inside an editable field can change. The matcher avoids treating that changing value, or a name copied from it, as stable identity.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/ref_identity.rs",
+              "lines": "26-46",
+              "label": "crates/core/src/refs/ref_identity.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/refs/ref_identity.rs",
+              "lines": "205-244",
+              "label": "crates/core/src/refs/ref_identity.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "100-103",
+              "label": "CONCEPTS.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-08",
+          "claim": "If the path misses, a bounded search can look more broadly. Geometry can narrow competing identity matches; only refs without meaningful identity can rely on geometry alone.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/resolve_classify.rs",
+              "lines": "65-115",
+              "label": "crates/macos/src/tree/resolve/resolve_classify.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/resolve_tests_more.rs",
+              "lines": "69-103",
+              "label": "crates/macos/src/tree/resolve/resolve_tests_more.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/windows/src/tree/resolve/resolve_match.rs",
+              "lines": "97-122",
+              "label": "crates/windows/src/tree/resolve/resolve_match.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "113-116",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/mod.rs",
+              "lines": "98-134",
+              "label": "crates/macos/src/tree/resolve/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-09",
+          "claim": "A missing match is stale. If the evidence still leaves competing matches, resolution is ambiguous. The tool refuses instead of choosing a convenient candidate.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/resolve_classify.rs",
+              "lines": "65-115",
+              "label": "crates/macos/src/tree/resolve/resolve_classify.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/resolve_tests_more.rs",
+              "lines": "49-103",
+              "label": "crates/macos/src/tree/resolve/resolve_tests_more.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/mod.rs",
+              "lines": "18-30",
+              "label": "crates/macos/src/tree/resolve/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c2-10",
+          "claim": "The recovery is another observation with fresh refs. Reusing the old token cannot make its missing identity evidence come back.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "73-78",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/retained.rs",
+              "lines": "107-125",
+              "label": "crates/macos/src/tree/resolve/retained.rs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Before the action lands",
+      "claims": [
+        {
+          "id": "c3-01",
+          "claim": "Finding the right element is only the first test. The tool must also decide whether this action is allowed and whether the target is ready.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "178-191",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/mod.rs",
+              "lines": "60-92",
+              "label": "crates/core/src/ref_action/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-02",
+          "claim": "By default, ref actions use headless accessibility operations. They do not steal focus or move the pointer, and refuse when the semantic path is unavailable.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "223-236",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/interaction_policy.rs",
+              "lines": "9-14",
+              "label": "crates/core/src/actions/interaction_policy.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/interaction_policy.rs",
+              "lines": "42-46",
+              "label": "crates/core/src/actions/interaction_policy.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-03",
+          "claim": "Headed mode explicitly permits focus and cursor side effects. It does not guarantee every action works; the platform still chooses its supported mechanism.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "223-226",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/interaction_policy.rs",
+              "lines": "23-31",
+              "label": "crates/core/src/actions/interaction_policy.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-04",
+          "claim": "Before dispatch, live checks examine readiness, including visibility, enabled state, supported action, and policy. The checks depend on the requested operation.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "180-191",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/mod.rs",
+              "lines": "53-58",
+              "label": "crates/core/src/ref_action/mod.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/mod.rs",
+              "lines": "89-134",
+              "label": "crates/core/src/ref_action/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-05",
+          "claim": "Temporary readiness problems can be polled within a deadline. Unsupported actions and policy refusals fail promptly instead of waiting for permission to change.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "183-186",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/ref_action_poll.rs",
+              "lines": "88-110",
+              "label": "crates/core/src/ref_action/ref_action_poll.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/ref_action_poll.rs",
+              "lines": "150-168",
+              "label": "crates/core/src/ref_action/ref_action_poll.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-06",
+          "claim": "Readiness auto-wait happens before the interaction lock is taken. Once the lock is held, the target is resolved again, because the desktop could have changed while waiting.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/ref_action_wait.rs",
+              "lines": "80-104",
+              "label": "crates/core/src/ref_action/ref_action_wait.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/mod.rs",
+              "lines": "60-86",
+              "label": "crates/core/src/ref_action/mod.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/ref_action/mod.rs",
+              "lines": "263-298",
+              "label": "crates/core/src/ref_action/mod.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/post_action.rs",
+              "lines": "55-73",
+              "label": "crates/core/src/actions/post_action.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-07",
+          "claim": "For stateful actions, the tool reads back the element after dispatch. Confirming a field value still does not prove that the application saved the whole workflow.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/post_action.rs",
+              "lines": "6-15",
+              "label": "crates/core/src/actions/post_action.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/post_action.rs",
+              "lines": "41-55",
+              "label": "crates/core/src/actions/post_action.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/post_action.rs",
+              "lines": "95-138",
+              "label": "crates/core/src/actions/post_action.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-08",
+          "claim": "Delivery and verification are separate. Input may be delivered without a confirmed effect, or the tool may be unable to tell whether it landed.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/delivery_semantics.rs",
+              "lines": "5-13",
+              "label": "crates/core/src/actions/delivery_semantics.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/delivery_semantics.rs",
+              "lines": "35-55",
+              "label": "crates/core/src/actions/delivery_semantics.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "198-201",
+              "label": "CONCEPTS.md"
+            }
+          ]
+        },
+        {
+          "id": "c3-09",
+          "claim": "A refusal known to deliver nothing is safe to retry. If input may have landed, repeating it risks a duplicate, so the retry disposition is unsafe.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/actions/delivery_semantics.rs",
+              "lines": "47-56",
+              "label": "crates/core/src/actions/delivery_semantics.rs"
+            }
+          ]
+        },
+        {
+          "id": "c3-10",
+          "claim": "The agent should read that disposition and observe the application again. An error message alone cannot tell it whether repeating the action is safe.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "105-107",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "198-201",
+              "label": "CONCEPTS.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Keeping identity alive",
+      "claims": [
+        {
+          "id": "c4-01",
+          "claim": "The shared core defines observation and action contracts. A platform adapter connects those contracts to the native machinery of each operating system.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/adapter/mod.rs",
+              "lines": "11-34",
+              "label": "crates/core/src/adapter/mod.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/main.rs",
+              "lines": "358-376",
+              "label": "src/main.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-02",
+          "claim": "That shared shape does not mean identical capabilities. Linux input and capture depend on the desktop environment, and some operations differ across platforms.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "124-137",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "223-226",
+              "label": "CONCEPTS.md"
+            }
+          ]
+        },
+        {
+          "id": "c4-03",
+          "claim": "On the Mac, separate command invocations can reuse a private command host. The short command ends, but the host keeps native accessibility objects alive.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "14-14",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/main.rs",
+              "lines": "133-145",
+              "label": "src/main.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/command_host/mod.rs",
+              "lines": "49-74",
+              "label": "src/command_host/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-04",
+          "claim": "The host belongs to a particular snapshot namespace and binary build. A different namespace or build gets a different endpoint rather than sharing that owner.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/command_host/command_host_endpoint.rs",
+              "lines": "6-17",
+              "label": "src/command_host/command_host_endpoint.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/command_host/command_host_endpoint.rs",
+              "lines": "31-40",
+              "label": "src/command_host/command_host_endpoint.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "14-14",
+              "label": "README.md"
+            }
+          ]
+        },
+        {
+          "id": "c4-05",
+          "claim": "Retaining the native object prevents a removed row from silently becoming a surviving row with the same identifier. Matching text does not override that identity.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "14-14",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/retained.rs",
+              "lines": "138-153",
+              "label": "crates/macos/src/tree/resolve/retained.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/retained_tests.rs",
+              "lines": "91-105",
+              "label": "crates/macos/src/tree/resolve/retained_tests.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-06",
+          "claim": "The host exits after fifteen idle minutes. When that native owner is gone, its retained refs become stale and the next action needs a fresh snapshot.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/command_host/mod.rs",
+              "lines": "9-11",
+              "label": "src/command_host/mod.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/command_host/command_host_socket.rs",
+              "lines": "26-33",
+              "label": "src/command_host/command_host_socket.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/macos/src/tree/resolve/retained.rs",
+              "lines": "107-125",
+              "label": "crates/macos/src/tree/resolve/retained.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-07",
+          "claim": "If the host reply is lost, the command may already have executed. The client reports uncertain delivery instead of automatically replaying the request.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/command_host/command_host_client.rs",
+              "lines": "60-69",
+              "label": "src/command_host/command_host_client.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/command_host/mod.rs",
+              "lines": "301-313",
+              "label": "src/command_host/mod.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-08",
+          "claim": "Headless here limits the action's side effects. It does not create a virtual desktop; Linux still needs the user's graphical session and accessibility service.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "34-36",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "223-236",
+              "label": "CONCEPTS.md"
+            }
+          ]
+        },
+        {
+          "id": "c4-09",
+          "claim": "Permissions and platform support remain part of the contract. The adapter can refuse an operation even when the agent has a valid ref.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "34-36",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "124-137",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "src/command_policy/mod.rs",
+              "lines": "83-111",
+              "label": "src/command_policy/mod.rs"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "crates/core/src/commands/snapshot.rs",
+              "lines": "76-76",
+              "label": "crates/core/src/commands/snapshot.rs"
+            }
+          ]
+        },
+        {
+          "id": "c4-10",
+          "claim": "The whole loop stays with the agent: observe a scoped tree, resolve a ref, act under policy, inspect the result, and observe what changed.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "12-12",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "README.md",
+              "lines": "42-48",
+              "label": "README.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "108-111",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "198-201",
+              "label": "CONCEPTS.md"
+            },
+            {
+              "repo": "vercel-labs/agent-desktop@9eb9b296192fcb70bda25e918cd6dd66abfa3d0d",
+              "path": "CONCEPTS.md",
+              "lines": "223-236",
+              "label": "CONCEPTS.md"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
