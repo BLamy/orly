@@ -1,6 +1,43 @@
 {
   "books": [
     {
+      "slug": "seeds-and-forks",
+      "title": "Seeds and Forks",
+      "subtitle": "Deterministic simulation and fork time travel for a TanStack Start app on workerd",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#f97316",
+      "href": "?bundle=seeds-and-forks",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Obvious Shop Loses Receipts",
+          "duration": 75.929
+        },
+        {
+          "number": 2,
+          "title": "Seeds Pick the Order",
+          "duration": 101.333
+        },
+        {
+          "number": 3,
+          "title": "Replay Opens the Failure",
+          "duration": 96.177
+        },
+        {
+          "number": 4,
+          "title": "Fork Both Sides at One Moment",
+          "duration": 103.281
+        },
+        {
+          "number": 5,
+          "title": "Load New Code, Then Find the Edges",
+          "duration": 103.003
+        }
+      ],
+      "createdAt": "2026-11-04T01:41:27.802Z"
+    },
+    {
       "slug": "weight-space-programming",
       "title": "Weight-Space Programming",
       "subtitle": "LLMs that read and write neural network weights",
