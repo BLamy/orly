@@ -1,0 +1,114 @@
+{
+  "format": 3,
+  "slug": "seeds-and-forks",
+  "title": "Seeds and Forks",
+  "subtitle": "Deterministic simulation and fork time travel for a TanStack Start app on workerd",
+  "animal": "animal.webp",
+  "accent": "#f97316",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Obvious Shop Loses Receipts",
+      "blurb": "Read the stock, work out what is left, write it back. Two requests interleave, and 1,978 of 2,000 seeded schedules break.",
+      "scene": "books/seeds-and-forks/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.067,
+        17.148,
+        24.299,
+        34.017,
+        43.351,
+        54.276,
+        63.274,
+        70.124
+      ],
+      "duration": 75.929
+    },
+    {
+      "number": 2,
+      "title": "Seeds Pick the Order",
+      "blurb": "The simulator picks what happens next from a seeded draw. The same seed gives the same bytes in a new process, on stock workerd or Replay's.",
+      "scene": "books/seeds-and-forks/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.964,
+        16.498,
+        27.62,
+        36.526,
+        44.699,
+        56.39,
+        67.606,
+        76.441,
+        87.087,
+        95.597
+      ],
+      "duration": 101.333
+    },
+    {
+      "number": 3,
+      "title": "Replay Opens the Failure",
+      "blurb": "Record one failing seed, replay it to the same hash, step through 19,452 JavaScript steps, and compare three fixes by how many seeds still fail.",
+      "scene": "books/seeds-and-forks/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.988,
+        16.323,
+        25.379,
+        35.944,
+        48.378,
+        57.086,
+        66.502,
+        73.247,
+        81.421,
+        90.616
+      ],
+      "duration": 96.177
+    },
+    {
+      "number": 4,
+      "title": "Fork Both Sides at One Moment",
+      "blurb": "A fork copies the page and the worker at one moment and runs on. Buy in the forked page reaches the forked worker and returns the real receipt.",
+      "scene": "books/seeds-and-forks/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.834,
+        18.715,
+        26.656,
+        37.477,
+        47.949,
+        56.447,
+        65.317,
+        74.222,
+        81.385,
+        90.046,
+        97.499
+      ],
+      "duration": 103.281
+    },
+    {
+      "number": 5,
+      "title": "Load New Code, Then Find the Edges",
+      "blurb": "Hot-load a new price into a fork, see what a fork cannot do yet, and read the definition of done as it is measured.",
+      "scene": "books/seeds-and-forks/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.522,
+        16.904,
+        27.527,
+        36.176,
+        45.406,
+        56.238,
+        66.072,
+        76.277,
+        87.457,
+        98.162
+      ],
+      "duration": 103.003
+    }
+  ]
+}
