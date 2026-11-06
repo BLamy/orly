@@ -1,0 +1,318 @@
+{
+  "version": 1,
+  "slug": "beyond-the-isolate",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "When you need a Linux process",
+      "claims": [
+        {
+          "id": "c1-claim-2",
+          "claim": "Cloudflare Containers run an image you provide inside a Linux virtual machine.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: containers/api/durable-object-container",
+              "url": "https://developers.cloudflare.com/containers/api/durable-object-container/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-3",
+          "claim": "A Worker can reach a container through a Durable Object that controls its lifecycle.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: containers",
+              "url": "https://developers.cloudflare.com/containers/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-4",
+          "claim": "Inside the image, processes see the filesystem and other resources made available to that container.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: containers/api/durable-object-container",
+              "url": "https://developers.cloudflare.com/containers/api/durable-object-container/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-5",
+          "claim": "The Worker can forward requests to an application listening inside the container.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: containers/api/durable-object-container",
+              "url": "https://developers.cloudflare.com/containers/api/durable-object-container/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-6",
+          "claim": "Instances can start on demand and stop when idle according to their configuration.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: containers",
+              "url": "https://developers.cloudflare.com/containers/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-7",
+          "claim": "Choose this environment when the software really needs its operating system and packaged dependencies.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: containers",
+              "url": "https://developers.cloudflare.com/containers/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "A sandbox is a trust boundary",
+      "claims": [
+        {
+          "id": "c2-claim-2",
+          "claim": "Cloudflare offers sandbox environments based on containers and on dynamic Workers.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: sandbox",
+              "url": "https://developers.cloudflare.com/sandbox/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-3",
+          "claim": "A container runs a Linux image; a dynamic Worker runs Java Script in an isolate loaded at runtime.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: sandbox",
+              "url": "https://developers.cloudflare.com/sandbox/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-4",
+          "claim": "The host Worker chooses which bindings or methods to expose and whether network access is allowed.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: dynamic-workers/getting-started",
+              "url": "https://developers.cloudflare.com/dynamic-workers/getting-started/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-5",
+          "claim": "Everything placed inside one sandbox is available to the code running there.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: sandbox/concepts/security",
+              "url": "https://developers.cloudflare.com/sandbox/concepts/security/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-6",
+          "claim": "Use a separate sandbox for each trust boundary, such as a user or a job.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: sandbox/concepts/security",
+              "url": "https://developers.cloudflare.com/sandbox/concepts/security/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-7",
+          "claim": "Keep credentials outside when possible, and mediate outbound requests or expose narrow methods.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: sandbox/concepts/security",
+              "url": "https://developers.cloudflare.com/sandbox/concepts/security/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "A browser as a service",
+      "claims": [
+        {
+          "id": "c3-claim-2",
+          "claim": "Browser Run hosts headless browser instances on Cloudflare’s network.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: browser-run",
+              "url": "https://developers.cloudflare.com/browser-run/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-3",
+          "claim": "A quick action handles a common task such as a screenshot or a document capture.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: browser-run/quick-actions",
+              "url": "https://developers.cloudflare.com/browser-run/quick-actions/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-4",
+          "claim": "A Worker with a browser binding can call supported quick actions directly.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: browser-run/quick-actions",
+              "url": "https://developers.cloudflare.com/browser-run/quick-actions/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-5",
+          "claim": "For a multi step interaction, open a browser session and drive it with a browser automation tool.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: browser-run",
+              "url": "https://developers.cloudflare.com/browser-run/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-6",
+          "claim": "Sessions can be managed and reused across requests when the workflow requires it.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: browser-run/cdp/session-management",
+              "url": "https://developers.cloudflare.com/browser-run/cdp/session-management/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-7",
+          "claim": "Quick actions are a convenient interface to a hosted browser, not a replacement for every custom interaction.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: browser-run",
+              "url": "https://developers.cloudflare.com/browser-run/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "A platform routes tenant code",
+      "claims": [
+        {
+          "id": "c4-claim-2",
+          "claim": "Workers for Platforms groups user Workers in a dispatch namespace.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: cloudflare-for-platforms/workers-for-platforms/get-started",
+              "url": "https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/get-started/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-3",
+          "claim": "A dispatch Worker receives a request and selects a user Worker by name.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: cloudflare-for-platforms/workers-for-platforms/get-started",
+              "url": "https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/get-started/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-4",
+          "claim": "The selected Worker receives the request through its own fetch handler.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: cloudflare-for-platforms/workers-for-platforms/get-started",
+              "url": "https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/get-started/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-5",
+          "claim": "Bindings attached to a user Worker grant access to resources the platform chooses to provide.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: cloudflare-for-platforms/workers-for-platforms/configuration/bindings",
+              "url": "https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-6",
+          "claim": "Request scoped capabilities can instead be passed through dynamic dispatch properties.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: cloudflare-for-platforms/workers-for-platforms/configuration/bindings",
+              "url": "https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-7",
+          "claim": "The platform is responsible for choosing tenant identity and the capabilities each tenant receives.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: cloudflare-for-platforms/workers-for-platforms/configuration/bindings",
+              "url": "https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,318 @@
+{
+  "version": 1,
+  "slug": "a-place-for-every-byte",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Choose by access and consistency",
+      "claims": [
+        {
+          "id": "c1-claim-2",
+          "claim": "Workers key value storage favors widely distributed reads of values addressed by key.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: kv/concepts/how-kv-works",
+              "url": "https://developers.cloudflare.com/kv/concepts/how-kv-works/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-3",
+          "claim": "Its caches are eventually consistent, so a different location may briefly read an older value or cached absence.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: kv/concepts/how-kv-works",
+              "url": "https://developers.cloudflare.com/kv/concepts/how-kv-works/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-4",
+          "claim": "For a single entity that needs coordinated strongly consistent updates, use a Durable Object with private storage.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/sqlite-storage-api",
+              "url": "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-5",
+          "claim": "For large objects addressed by key, object storage offers a different interface.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2/reference/consistency",
+              "url": "https://developers.cloudflare.com/r2/reference/consistency/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-6",
+          "claim": "Direct reads from R two see completed object writes strongly and globally.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2/reference/consistency",
+              "url": "https://developers.cloudflare.com/r2/reference/consistency/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-7",
+          "claim": "A separate cache in front of an object can still serve an older response.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2/reference/consistency",
+              "url": "https://developers.cloudflare.com/r2/reference/consistency/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Objects are not rows",
+      "claims": [
+        {
+          "id": "c2-claim-2",
+          "claim": "An R two bucket holds objects under keys; a Worker binding can put and get those objects.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2/api/workers/workers-api-reference",
+              "url": "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-3",
+          "claim": "Large uploads can be assembled from parts before the completed object becomes visible.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2/api/workers/workers-api-reference",
+              "url": "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-4",
+          "claim": "Direct object reads, writes, deletes, and listings have strong consistency guarantees.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2/reference/consistency",
+              "url": "https://developers.cloudflare.com/r2/reference/consistency/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-5",
+          "claim": "The service does not charge Internet egress fees for retrieving objects.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2",
+              "url": "https://developers.cloudflare.com/r2/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-6",
+          "claim": "If a cached custom domain serves the object, that separate cache can outlive an overwrite or deletion.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2/reference/consistency",
+              "url": "https://developers.cloudflare.com/r2/reference/consistency/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-7",
+          "claim": "Use versioned names or cache purging when a public cached copy needs to change.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: r2/reference/consistency",
+              "url": "https://developers.cloudflare.com/r2/reference/consistency/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Three ways to use SQL",
+      "claims": [
+        {
+          "id": "c3-claim-2",
+          "claim": "D one is a managed serverless relational database built on sequel lite.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: d1",
+              "url": "https://developers.cloudflare.com/d1/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-3",
+          "claim": "When using read replicas, a session and its bookmarks provide sequential consistency across that session.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: d1/best-practices/read-replication",
+              "url": "https://developers.cloudflare.com/d1/best-practices/read-replication/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-4",
+          "claim": "A Durable Object’s sequel lite database is private to that object and sits alongside its coordinating code.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/sqlite-storage-api",
+              "url": "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-5",
+          "claim": "Hyperdrive is different: it helps Workers connect to an existing supported database.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: hyperdrive/concepts/connection-pooling",
+              "url": "https://developers.cloudflare.com/hyperdrive/concepts/connection-pooling/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-6",
+          "claim": "It pools connections close to the database and can cache eligible queries.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: hyperdrive/concepts/connection-pooling",
+              "url": "https://developers.cloudflare.com/hyperdrive/concepts/connection-pooling/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-7",
+          "claim": "The existing database remains the database; the pool is an access layer.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: hyperdrive/concepts/connection-pooling",
+              "url": "https://developers.cloudflare.com/hyperdrive/concepts/connection-pooling/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Versioned trees and analytical tables",
+      "claims": [
+        {
+          "id": "c4-claim-2",
+          "claim": "Artifacts stores versioned files and projects in Git compatible repositories.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: artifacts",
+              "url": "https://developers.cloudflare.com/artifacts/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-3",
+          "claim": "A Worker can create or inspect a repository, and ordinary Git clients can push or clone it.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: artifacts/api/workers-binding",
+              "url": "https://developers.cloudflare.com/artifacts/api/workers-binding/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-4",
+          "claim": "Branches and commits preserve history instead of treating every version as an unrelated blob.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: artifacts",
+              "url": "https://developers.cloudflare.com/artifacts/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-5",
+          "claim": "Basin addresses analytics: pipelines ingest and transform data into tables.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: basin",
+              "url": "https://developers.cloudflare.com/basin/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-6",
+          "claim": "Its catalog manages Apache Iceberg tables backed by object storage.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: basin-sql/get-started",
+              "url": "https://developers.cloudflare.com/basin-sql/get-started/"
+            }
+          ]
+        },
+        {
+          "id": "c4-claim-7",
+          "claim": "Basin sequel queries those tables; it is an analytics path rather than a replacement for the application’s transaction store.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: basin-sql/get-started",
+              "url": "https://developers.cloudflare.com/basin-sql/get-started/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

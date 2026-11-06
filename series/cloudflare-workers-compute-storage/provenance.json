@@ -1,0 +1,18 @@
+{
+  "requested_model": "gpt-6.1-terra",
+  "actual_model": "gpt-6.1-terra",
+  "roles": [
+    "research",
+    "planning",
+    "narration",
+    "D3/SVG scene authoring",
+    "integration",
+    "verification"
+  ],
+  "cover_tool": "Codex built-in ImageGen",
+  "model_override": "User explicitly selected GPT-6.1 Terra for all authoring; this supersedes repository model routing and the normal series session cap.",
+  "publication": "The user explicitly approved publication with the audiovisual review limitation and the generated issue-template update.",
+  "narration": "ElevenLabs multilingual v2, with timestamp-aligned cues; queue chapter 1 regenerated at speed 0.92 after pacing review.",
+  "source_digest_sha256": "252e164ce4991a6716dd6a3556fd3fc7dc6f17aac069094ebdaf8439b676144d",
+  "normalized_source_digest_sha256": "05066c6ffdd5a6e716d46817cd9fcfd0395ccab4f63862d369a630b9410c00cb"
+}

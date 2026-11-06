@@ -1,0 +1,25 @@
+{
+  "reviewed": "2026-11-06",
+  "integration_base": "a588120e15f9f9d38bcbc43a6727a8ba97d9100c",
+  "books": 5,
+  "chapters": 17,
+  "narration_tracks": 17,
+  "blog_sections": 34,
+  "automated_checks": {
+    "typecheck": "passed",
+    "production_build": "passed with Nx cache disabled",
+    "storybook_build_and_index": "passed; 17 chapter stories",
+    "book_verifier": "passed for all five books using ORLY_VERIFY_PORT=59229",
+    "blog_viz_validator": "passed for all five books",
+    "standalone_blog_render": "passed; 34 live scenes mounted, no audio elements or console errors",
+    "source_claim_validator": "passed for all five books",
+    "audio_decode_and_cues": "passed for 17 tracks; narration timestamps aligned",
+    "forward_and_reverse_scrubbing": "passed at seven sample positions per chapter",
+    "repository_ci_tests": "authoring, film, editor, workflow parse, YAML lint, and typechecks passed",
+    "pre_commit_dropdown": "passed after the user explicitly approved updating the generated issue template"
+  },
+  "limitations": [
+    "No human audiovisual review is recorded; sound and sync remain provisional under the production branch rubric."
+  ],
+  "publication_decision": "The user explicitly approved publication with the audiovisual review limitation and the generated dropdown update."
+}

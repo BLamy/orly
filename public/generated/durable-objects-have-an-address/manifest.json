@@ -1,0 +1,65 @@
+{
+  "format": 3,
+  "slug": "durable-objects-have-an-address",
+  "title": "Durable Objects Have an Address",
+  "subtitle": "Identity, storage, and sleeping coordination",
+  "animal": "animal.webp",
+  "accent": "#725944",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One name, one coordinator",
+      "blurb": "Route an entity to its own coordinator.",
+      "scene": "books/durable-objects-have-an-address/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        4.423,
+        9.149,
+        12.875,
+        17.728,
+        22.419,
+        26.703,
+        31.962
+      ],
+      "duration": 36.409
+    },
+    {
+      "number": 2,
+      "title": "A private transactional notebook",
+      "blurb": "Store transactions, alarms, and recovery with the object.",
+      "scene": "books/durable-objects-have-an-address/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        3.437,
+        9.3,
+        15.058,
+        22.489,
+        27.701,
+        33.216,
+        39.625
+      ],
+      "duration": 44.768
+    },
+    {
+      "number": 3,
+      "title": "The room sleeps but connections stay",
+      "blurb": "Preserve connections while an idle object leaves memory.",
+      "scene": "books/durable-objects-have-an-address/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.435,
+        11.238,
+        16.289,
+        19.726,
+        24.486,
+        30.766,
+        36.49
+      ],
+      "duration": 41.935
+    }
+  ],
+  "sources": "sources.json"
+}

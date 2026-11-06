@@ -1,0 +1,240 @@
+{
+  "version": 1,
+  "slug": "durable-objects-have-an-address",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One name, one coordinator",
+      "claims": [
+        {
+          "id": "c1-claim-2",
+          "claim": "A Durable Object namespace maps a name to a stable object identity.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/namespace",
+              "url": "https://developers.cloudflare.com/durable-objects/api/namespace/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-3",
+          "claim": "Asking for the same name yields a stub for the same logical object.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/namespace",
+              "url": "https://developers.cloudflare.com/durable-objects/api/namespace/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-4",
+          "claim": "The stub alone does not start the object; an invocation sends work to it.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/concepts/durable-object-lifecycle",
+              "url": "https://developers.cloudflare.com/durable-objects/concepts/durable-object-lifecycle/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-5",
+          "claim": "Cloudflare places the object and routes callers to its active instance.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/concepts/what-are-durable-objects",
+              "url": "https://developers.cloudflare.com/durable-objects/concepts/what-are-durable-objects/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-6",
+          "claim": "Different names identify different objects with their own state and storage.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/namespace",
+              "url": "https://developers.cloudflare.com/durable-objects/api/namespace/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-7",
+          "claim": "An object can leave memory when idle and be recreated when a later event arrives.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/concepts/durable-object-lifecycle",
+              "url": "https://developers.cloudflare.com/durable-objects/concepts/durable-object-lifecycle/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "A private transactional notebook",
+      "claims": [
+        {
+          "id": "c2-claim-2",
+          "claim": "Cloudflare recommends the sequel lite storage backend for new Durable Object namespaces.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/sqlite-storage-api",
+              "url": "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-3",
+          "claim": "Each object has private, strongly consistent transactional storage attached to its identity.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/sqlite-storage-api",
+              "url": "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-4",
+          "claim": "The sequel interface can update rows inside a transaction, atomically with other storage operations on that object.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/sqlite-storage-api",
+              "url": "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-5",
+          "claim": "An alarm schedules a future invocation of the object without an incoming request.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/alarms",
+              "url": "https://developers.cloudflare.com/durable-objects/api/alarms/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-6",
+          "claim": "An alarm can be retried and may run more than once, so its effects should tolerate repetition.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/alarms",
+              "url": "https://developers.cloudflare.com/durable-objects/api/alarms/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-7",
+          "claim": "Point in time recovery can restore the object’s sequel lite data to a point in the previous thirty days.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/api/sqlite-storage-api",
+              "url": "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "The room sleeps but connections stay",
+      "claims": [
+        {
+          "id": "c3-claim-2",
+          "claim": "The hibernation web socket interface lets an idle object leave memory without disconnecting those clients.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/best-practices/websockets",
+              "url": "https://developers.cloudflare.com/durable-objects/best-practices/websockets/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-3",
+          "claim": "Accepting the server socket through the object state enables this hibernation path.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/best-practices/websockets",
+              "url": "https://developers.cloudflare.com/durable-objects/best-practices/websockets/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-4",
+          "claim": "While the object sleeps, its ordinary in memory variables are gone.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/concepts/durable-object-lifecycle",
+              "url": "https://developers.cloudflare.com/durable-objects/concepts/durable-object-lifecycle/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-5",
+          "claim": "A new event wakes it and runs the constructor again before handling the event.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/best-practices/websockets",
+              "url": "https://developers.cloudflare.com/durable-objects/best-practices/websockets/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-6",
+          "claim": "Restore durable room data from storage and connection specific data from socket attachments.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/best-practices/websockets",
+              "url": "https://developers.cloudflare.com/durable-objects/best-practices/websockets/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-7",
+          "claim": "The hibernation interface applies when the object is the web socket server, not to outgoing sockets.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: durable-objects/best-practices/websockets",
+              "url": "https://developers.cloudflare.com/durable-objects/best-practices/websockets/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

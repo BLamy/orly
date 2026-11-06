@@ -1,0 +1,252 @@
+{
+  "version": 1,
+  "slug": "queues-logs-and-durable-work",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A queue delivers a task",
+      "claims": [
+        {
+          "id": "c1-claim-2",
+          "claim": "A producer sends a message to a queue, and a consumer processes a batch later.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: queues/reference/how-queues-works",
+              "url": "https://developers.cloudflare.com/queues/reference/how-queues-works/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-3",
+          "claim": "Queues deliver at least once, so a message can occasionally arrive again.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: queues/reference/delivery-guarantees",
+              "url": "https://developers.cloudflare.com/queues/reference/delivery-guarantees/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-4",
+          "claim": "A consumer acknowledges successful work and can request a retry for a failure.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: queues/configuration/batching-retries",
+              "url": "https://developers.cloudflare.com/queues/configuration/batching-retries/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-5",
+          "claim": "If processing fails before the acknowledgment is recorded, the task may be delivered again.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: queues/reference/delivery-guarantees",
+              "url": "https://developers.cloudflare.com/queues/reference/delivery-guarantees/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-6",
+          "claim": "Give a task a stable identifier and make its side effects safe to repeat.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: queues/reference/delivery-guarantees",
+              "url": "https://developers.cloudflare.com/queues/reference/delivery-guarantees/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-7",
+          "claim": "Configure retries and a dead letter queue for messages that cannot be processed successfully.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: queues/configuration/batching-retries",
+              "url": "https://developers.cloudflare.com/queues/configuration/batching-retries/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "A log keeps its history",
+      "claims": [
+        {
+          "id": "c2-claim-2",
+          "claim": "K two appends records to an ordered stream and lets independent subscriptions read that history.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: k2/concepts",
+              "url": "https://developers.cloudflare.com/k2/concepts/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-3",
+          "claim": "Each subscription tracks its own progress, so one reader does not advance another.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: k2/reference/delivery-guarantees",
+              "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-4",
+          "claim": "A new subscription can begin at the earliest retained record to replay available history.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: k2/reference/delivery-guarantees",
+              "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-5",
+          "claim": "Records expire according to retention even if a slow subscription has not read them.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: k2/reference/delivery-guarantees",
+              "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-6",
+          "claim": "Delivery is at least once, and workers sharing a subscription are not guaranteed to process records in order.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: k2/reference/delivery-guarantees",
+              "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-7",
+          "claim": "At the time of writing, K two is a public beta for paid Workers accounts, with ten gigabytes per account by default.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: k2",
+              "url": "https://developers.cloudflare.com/k2/"
+            }
+          ]
+        },
+        {
+          "id": "c2-retention-limits",
+          "claim": "The default retention is seven days, with up to thirty days by default and higher limits available by request.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare K2 limits",
+              "url": "https://developers.cloudflare.com/k2/platform/limits/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "A workflow remembers the steps",
+      "claims": [
+        {
+          "id": "c3-claim-2",
+          "claim": "A workflow records the result of each durable step so completed work can be reused when execution resumes.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workflows/get-started/guide",
+              "url": "https://developers.cloudflare.com/workflows/get-started/guide/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-3",
+          "claim": "A failed step can retry with configured delays and backoff.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workflows/build/sleeping-and-retrying",
+              "url": "https://developers.cloudflare.com/workflows/build/sleeping-and-retrying/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-4",
+          "claim": "A workflow can sleep or wait for an external event without holding a process open.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workflows/build/sleeping-and-retrying",
+              "url": "https://developers.cloudflare.com/workflows/build/sleeping-and-retrying/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-5",
+          "claim": "For example, a queue message can start a workflow for a requested operation.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Trigger Workflows from a Queue consumer",
+              "url": "https://developers.cloudflare.com/workflows/build/trigger-workflows/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-6",
+          "claim": "That workflow can perform the operation and publish an event to a log for other subscribers.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Produce K2 records from a Worker",
+              "url": "https://developers.cloudflare.com/k2/features/produce/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-7",
+          "claim": "A retry can repeat side effects, so use stable identifiers and idempotent operations at the boundaries.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workflows/get-started/guide",
+              "url": "https://developers.cloudflare.com/workflows/get-started/guide/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

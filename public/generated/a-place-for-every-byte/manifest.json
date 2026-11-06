@@ -1,0 +1,83 @@
+{
+  "format": 3,
+  "slug": "a-place-for-every-byte",
+  "title": "A Place for Every Byte",
+  "subtitle": "Choose storage by shape and consistency",
+  "animal": "animal.webp",
+  "accent": "#246a80",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Choose by access and consistency",
+      "blurb": "Compare key, object, and entity storage.",
+      "scene": "books/a-place-for-every-byte/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        4.783,
+        10.194,
+        17.183,
+        24.462,
+        29.118,
+        34.307,
+        38.336
+      ],
+      "duration": 42.724
+    },
+    {
+      "number": 2,
+      "title": "Objects are not rows",
+      "blurb": "Follow an object from upload to cached reads.",
+      "scene": "books/a-place-for-every-byte/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.525,
+        12.759,
+        17.194,
+        22.535,
+        26.575,
+        33.344,
+        38.661
+      ],
+      "duration": 44.397
+    },
+    {
+      "number": 3,
+      "title": "Three ways to use SQL",
+      "blurb": "Choose among D1, private SQLite, and existing databases.",
+      "scene": "books/a-place-for-every-byte/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.284,
+        9.009,
+        15.94,
+        22.454,
+        27.748,
+        32.949,
+        37.291
+      ],
+      "duration": 44.582
+    },
+    {
+      "number": 4,
+      "title": "Versioned trees and analytical tables",
+      "blurb": "Contrast Git history with analytical tables.",
+      "scene": "books/a-place-for-every-byte/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        4.702,
+        9.451,
+        15.488,
+        21.189,
+        26.808,
+        32.554,
+        40.298
+      ],
+      "duration": 47.136
+    }
+  ],
+  "sources": "sources.json"
+}

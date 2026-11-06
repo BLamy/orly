@@ -1,0 +1,240 @@
+{
+  "version": 1,
+  "slug": "workers-have-no-server",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A request meets an isolate",
+      "claims": [
+        {
+          "id": "c1-claim-2",
+          "claim": "Cloudflare routes the request to a Worker running inside an isolate.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/reference/how-workers-works",
+              "url": "https://developers.cloudflare.com/workers/reference/how-workers-works/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-3",
+          "claim": "In the module format, the exported fetch handler receives the request, the environment, and an execution context.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/handlers/fetch",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-4",
+          "claim": "The request describes the incoming method, address, headers, and body.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/handlers/fetch",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-5",
+          "claim": "Your handler can compute an answer or fetch another service.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/handlers/fetch",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-6",
+          "claim": "It returns a response containing a status, headers, and an optional body.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/handlers/fetch",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/"
+            }
+          ]
+        },
+        {
+          "id": "c1-claim-7",
+          "claim": "The response travels back to the caller while the platform manages the process around it.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/handlers/fetch",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Bindings make capabilities explicit",
+      "claims": [
+        {
+          "id": "c2-claim-2",
+          "claim": "Wrangler configuration names the Worker, its compatibility date, and its bindings.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/wrangler/configuration",
+              "url": "https://developers.cloudflare.com/workers/wrangler/configuration/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-3",
+          "claim": "A binding gives the code a capability to use a resource without placing an account token in every request.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/bindings",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/bindings/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-4",
+          "claim": "The runtime supplies those capabilities on the environment passed to the handler.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/bindings",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/bindings/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-5",
+          "claim": "The Wrangler types command generates an environment type from the configuration and matching runtime definitions.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/languages/typescript",
+              "url": "https://developers.cloudflare.com/workers/languages/typescript/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-6",
+          "claim": "Now the editor can check that the binding name and methods agree with the configured resource.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/languages/typescript",
+              "url": "https://developers.cloudflare.com/workers/languages/typescript/"
+            }
+          ]
+        },
+        {
+          "id": "c2-claim-7",
+          "claim": "Local development can simulate supported bindings or connect configured remote resources.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/bindings",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/bindings/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "A request has a lifetime",
+      "claims": [
+        {
+          "id": "c3-claim-2",
+          "claim": "Module level objects can be reused, but the platform does not promise that the same isolate will always return.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/best-practices/workers-best-practices",
+              "url": "https://developers.cloudflare.com/workers/best-practices/workers-best-practices/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-3",
+          "claim": "Keep each request’s private data inside its handler instead of a shared global variable.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/best-practices/workers-best-practices",
+              "url": "https://developers.cloudflare.com/workers/best-practices/workers-best-practices/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-4",
+          "claim": "Await work that must finish before you construct the response.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/context",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/context/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-5",
+          "claim": "For a small task that can follow the response, attach its promise to the execution context.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/context",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/context/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-6",
+          "claim": "The wait can extend execution for up to thirty seconds after the response or a client disconnect.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/platform/limits",
+              "url": "https://developers.cloudflare.com/workers/platform/limits/"
+            }
+          ]
+        },
+        {
+          "id": "c3-claim-7",
+          "claim": "That extension is bounded and is not a guarantee that arbitrary background work completes.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cloudflare documentation: workers/runtime-apis/context",
+              "url": "https://developers.cloudflare.com/workers/runtime-apis/context/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

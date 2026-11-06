@@ -1,0 +1,83 @@
+{
+  "format": 3,
+  "slug": "beyond-the-isolate",
+  "title": "Beyond the Isolate",
+  "subtitle": "Containers, sandboxes, browsers, and platforms",
+  "animal": "animal.webp",
+  "accent": "#5b5092",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "When you need a Linux process",
+      "blurb": "Run native processes in a Linux container.",
+      "scene": "books/beyond-the-isolate/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.689,
+        10.612,
+        15.662,
+        21.873,
+        26.796,
+        31.881,
+        37.732
+      ],
+      "duration": 42.307
+    },
+    {
+      "number": 2,
+      "title": "A sandbox is a trust boundary",
+      "blurb": "Choose and secure an isolated code environment.",
+      "scene": "books/beyond-the-isolate/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        3.506,
+        9.044,
+        15.848,
+        22.408,
+        26.436,
+        31.243,
+        36.873
+      ],
+      "duration": 43.096
+    },
+    {
+      "number": 3,
+      "title": "A browser as a service",
+      "blurb": "Use quick actions or controlled browser sessions.",
+      "scene": "books/beyond-the-isolate/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.737,
+        9.172,
+        14.919,
+        19.621,
+        25.82,
+        30.593,
+        37.582
+      ],
+      "duration": 41.1
+    },
+    {
+      "number": 4,
+      "title": "A platform routes tenant code",
+      "blurb": "Route requests to tenant Workers with selected bindings.",
+      "scene": "books/beyond-the-isolate/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        4.122,
+        8.638,
+        12.817,
+        16.87,
+        22.826,
+        27.876,
+        33.46
+      ],
+      "duration": 39.985
+    }
+  ],
+  "sources": "sources.json"
+}

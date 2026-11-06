@@ -1,0 +1,1729 @@
+# REPO DIGEST
+
+The following files were selected as most relevant to the subsystem prompt.
+
+## Relevant files
+- README.md
+- packages/wrangler/CHANGELOG.md
+- packages/miniflare/CHANGELOG.md
+- packages/create-cloudflare/CHANGELOG.md
+- packages/vite-plugin-cloudflare/CHANGELOG.md
+- packages/workers-utils/tests/config/validation/normalize-and-validate-config.test.ts
+- packages/vitest-plugin/CHANGELOG.md
+- packages/wrangler/src/__tests__/preview.test.ts
+- packages/wrangler/src/__tests__/type-generation.test.ts
+- packages/wrangler/src/type-generation/index.ts
+- packages/wrangler/src/__tests__/dev.test.ts
+- packages/wrangler/src/__tests__/pages/deploy.test.ts
+- packages/wrangler/src/__tests__/deploy/workers-dev.test.ts
+- packages/miniflare/test/dev-registry.spec.ts
+- packages/workers-utils/src/config/validation.ts
+- packages/wrangler/e2e/dev.test.ts
+- packages/miniflare/test/index.spec.ts
+- packages/deploy-helpers/CHANGELOG.md
+- packages/pages-shared/CHANGELOG.md
+- packages/workers-utils/CHANGELOG.md
+- packages/miniflare/src/index.ts
+- packages/miniflare/src/runtime/config/generated/workerd.ts
+- packages/wrangler/src/__tests__/versions/versions.upload.test.ts
+- packages/wrangler/src/__tests__/deploy/bindings.test.ts
+- packages/wrangler/src/__tests__/deploy/core.test.ts
+- packages/wrangler/src/__tests__/containers/deploy.test.ts
+- packages/workers-utils/src/config/environment.ts
+- packages/quick-edit-extension/vscode.d.ts
+- packages/miniflare/src/workers/local-explorer/generated/types.gen.ts
+- packages/wrangler/src/__tests__/queues/queues.test.ts
+- packages/wrangler/src/index.ts
+- packages/codemods/test/wrangler-to-cf/migration-api.test.ts
+- packages/miniflare/src/workers/local-explorer/openapi.local.json
+- packages/autoconfig/CHANGELOG.md
+- packages/wrangler/e2e/createTestHarness.test.ts
+- packages/workers-auth/CHANGELOG.md
+
+## README.md
+```
+<h1 align="center">Cloudflare Workers SDK</h1>
+
+<p align="center">
+<img src="cloudflare-workers-outline.png" alt="workers-logo" width="120px" height="120px"/>
+  <br>
+  Cloudflare Workers let you deploy serverless code instantly across the globe for exceptional performance, reliability, and scale.
+  <br>
+</p>
+
+<p align="center">
+  <a href="CONTRIBUTING.md">Contribute</a>
+  ·
+  <a href="https://github.com/cloudflare/workers-sdk/issues">Submit an Issue</a>
+  ·
+  <a href="https://discord.cloudflare.com/">Join Discord</a>
+  <br>
+  <br>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/wrangler/">
+    <img src="https://img.shields.io/npm/v/wrangler.svg?logo=npm&logoColor=fff&label=NPM+package&color=orange" alt="Wrangler on npm" />
+  </a>&nbsp;
+  <a href="https://discord.cloudflare.com/">
+    <img src="https://img.shields.io/discord/595317990191398933.svg?logo=discord&logoColor=fff&label=Discord&color=7389d8" alt="Discord conversation" />
+  </a>&nbsp;
+  <a href="https://twitter.com/CloudflareDev">
+    <img src="https://img.shields.io/twitter/follow/cloudflaredev" alt="X conversation" />
+  </a>
+</p>
+
+<hr>
+
+## Quick Start
+
+To get started quickly with a new project, run the command below:
+
+```bash
+npm create cloudflare@latest
+# or
+pnpm create cloudflare@latest
+# or
+yarn create cloudflare@latest
+```
+
+For more info, visit our [Getting Started](https://developers.cloudflare.com/workers/get-started/guide/) guide.
+
+## Documentation
+
+Visit the official Workers documentation [here](https://developers.cloudflare.com/workers/).
+
+- [Getting Started](https://developers.cloudflare.com/workers/get-started/guide/)
+- [How Workers works](https://developers.cloudflare.com/workers/reference/how-workers-works/)
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
+- [Observability](https://developers.cloudflare.com/workers/observability/)
+- [Platform](https://developers.cloudflare.com/workers/platform/)
+
+## Directory
+
+| Package                                                                                                           | Description                                                                                                            | Links                                                           |
+| ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [`wrangler`](https://github.
+…(3648 more chars truncated)
+```
+
+## packages/wrangler/CHANGELOG.md
+```
+# wrangler
+
+## 4.158.0
+
+### Minor Changes
+
+- [#16186](https://github.com/cloudflare/workers-sdk/pull/16186) [`f1d81a2`](https://github.com/cloudflare/workers-sdk/commit/f1d81a20c8e535ec7cb870143283f4a683fec70d) Thanks [@leostera](https://github.com/leostera)! - Support local Artifacts across Wrangler, Vite, and Workers Vitest
+
+  Set `remote: false` on an Artifacts binding to opt into the Miniflare simulator and persistent local repositories during development. Omitted `remote` continues to use the deployed resource, with a warning that changes affect real repositories; `remote: true` explicitly selects it. When remote bindings are disabled (`wrangler dev --local`, or Vite's `remoteBindings: false`), Artifacts bindings use the local simulator. Workers Vitest uses the local simulator when `remote` is omitted, so tests do not change real repositories by accident; set `remote: true` to test against the deployed resource. Local development does not require Cloudflare credentials, but does require Git 2.32 or newer on the host.
+
+  In Miniflare's own options, Artifacts bindings route like every other binding: only `dev.remote: true` with a remote proxy connection uses the deployed resource. Wrangler and Vite resolve the deployed-by-default rule, and Workers Vitest its local default, before passing options to Miniflare.
+
+### Patch Changes
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `brace-expansion` to pick up security fixes
+
+  These packages bundle `brace-expansion` (a dependency of `minimatch`), and the bundled versions were affected by published advisories. The bundles now include `brace-expansion` 2.1.7 (from 2.0.1) and 5.0.12 (from 5.0.5). Normal glob patterns expand as before; only the pathological patterns targeted by the advisories are handled differently.
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `fast-xml-parser` from 4.4.1 to 4.5.5 to pick up security fixes
+
+  Miniflare bundles `fast-xml-parser` into its local R2 S3 API, and Wrangler bundles it through the AWS SDK used by `wrangler pipelines`. Version 4.4.1 is affected by several published advisories, and 4.5.5 includes their fixes. XML handling does not chang
+…(1742364 more chars truncated)
+```
+
+## packages/miniflare/CHANGELOG.md
+```
+# miniflare
+
+## 5.20261104.0-beta
+
+### Minor Changes
+
+- [#16186](https://github.com/cloudflare/workers-sdk/pull/16186) [`f1d81a2`](https://github.com/cloudflare/workers-sdk/commit/f1d81a20c8e535ec7cb870143283f4a683fec70d) Thanks [@leostera](https://github.com/leostera)! - Support local Artifacts across Wrangler, Vite, and Workers Vitest
+
+  Set `remote: false` on an Artifacts binding to opt into the Miniflare simulator and persistent local repositories during development. Omitted `remote` continues to use the deployed resource, with a warning that changes affect real repositories; `remote: true` explicitly selects it. When remote bindings are disabled (`wrangler dev --local`, or Vite's `remoteBindings: false`), Artifacts bindings use the local simulator. Workers Vitest uses the local simulator when `remote` is omitted, so tests do not change real repositories by accident; set `remote: true` to test against the deployed resource. Local development does not require Cloudflare credentials, but does require Git 2.32 or newer on the host.
+
+  In Miniflare's own options, Artifacts bindings route like every other binding: only `dev.remote: true` with a remote proxy connection uses the deployed resource. Wrangler and Vite resolve the deployed-by-default rule, and Workers Vitest its local default, before passing options to Miniflare.
+
+### Patch Changes
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `brace-expansion` to pick up security fixes
+
+  These packages bundle `brace-expansion` (a dependency of `minimatch`), and the bundled versions were affected by published advisories. The bundles now include `brace-expansion` 2.1.7 (from 2.0.1) and 5.0.12 (from 5.0.5). Normal glob patterns expand as before; only the pathological patterns targeted by the advisories are handled differently.
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `devalue` from 5.6.3 to 5.9.3 to pick up security fixes
+
+  `devalue` is bundled into these packages, which use it to serialise values between Node.js and workerd. Version 5.6.3 is affected by several published advisories, and 5.9.3 includ
+…(469437 more chars truncated)
+```
+
+## packages/create-cloudflare/CHANGELOG.md
+```
+# create-cloudflare
+
+## 2.74.9
+
+### Patch Changes
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `brace-expansion` to pick up security fixes
+
+  These packages bundle `brace-expansion` (a dependency of `minimatch`), and the bundled versions were affected by published advisories. The bundles now include `brace-expansion` 2.1.7 (from 2.0.1) and 5.0.12 (from 5.0.5). Normal glob patterns expand as before; only the pathological patterns targeted by the advisories are handled differently.
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `degit` from 2.8.4 to 2.8.6 to pick up a security fix
+
+  `degit` is bundled into create-cloudflare, which uses it to download remote templates. Version 2.8.4 is affected by a published advisory, and 2.8.6 includes the fix. Template downloads work as before.
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `minimatch` from 5.1.6 to 5.1.9 to pick up security fixes
+
+  These packages bundle `minimatch`, and 5.1.6 is affected by published ReDoS advisories. Version 5.1.9 includes the fixes. 5.1.8 is skipped because it broke recursive `**` matching, which D1's `migrations_pattern` relies on.
+
+- [#16695](https://github.com/cloudflare/workers-sdk/pull/16695) [`b2061f4`](https://github.com/cloudflare/workers-sdk/commit/b2061f40f812d8888b461f68506552b58f8e468b) Thanks [@dependabot](https://github.com/apps/dependabot)! - Update `DEFAULT_COMPAT_DATE` to 2026-11-04
+
+  Use the bundled workerd release's compatibility date by default when scaffolding new projects or when no compatibility date is configured.
+
+## 2.74.8
+
+### Patch Changes
+
+- [#16670](https://github.com/cloudflare/workers-sdk/pull/16670) [`b14b9dc`](https://github.com/cloudflare/workers-sdk/commit/b14b9dcc360d1e05bb29a87287624603c2c60815) Thanks [@dependabot](https://github.com/apps/dependabot)! - Update `DEFAULT_COMPAT_DATE` to 2026-11-0
+…(448554 more chars truncated)
+```
+
+## packages/vite-plugin-cloudflare/CHANGELOG.md
+```
+# @cloudflare/vite-plugin
+
+## 2.0.0-beta.v.12
+
+### Minor Changes
+
+- [#16186](https://github.com/cloudflare/workers-sdk/pull/16186) [`f1d81a2`](https://github.com/cloudflare/workers-sdk/commit/f1d81a20c8e535ec7cb870143283f4a683fec70d) Thanks [@leostera](https://github.com/leostera)! - Support local Artifacts across Wrangler, Vite, and Workers Vitest
+
+  Set `remote: false` on an Artifacts binding to opt into the Miniflare simulator and persistent local repositories during development. Omitted `remote` continues to use the deployed resource, with a warning that changes affect real repositories; `remote: true` explicitly selects it. When remote bindings are disabled (`wrangler dev --local`, or Vite's `remoteBindings: false`), Artifacts bindings use the local simulator. Workers Vitest uses the local simulator when `remote` is omitted, so tests do not change real repositories by accident; set `remote: true` to test against the deployed resource. Local development does not require Cloudflare credentials, but does require Git 2.32 or newer on the host.
+
+  In Miniflare's own options, Artifacts bindings route like every other binding: only `dev.remote: true` with a remote proxy connection uses the deployed resource. Wrangler and Vite resolve the deployed-by-default rule, and Workers Vitest its local default, before passing options to Miniflare.
+
+### Patch Changes
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `brace-expansion` to pick up security fixes
+
+  These packages bundle `brace-expansion` (a dependency of `minimatch`), and the bundled versions were affected by published advisories. The bundles now include `brace-expansion` 2.1.7 (from 2.0.1) and 5.0.12 (from 5.0.5). Normal glob patterns expand as before; only the pathological patterns targeted by the advisories are handled differently.
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `minimatch` from 5.1.6 to 5.1.9 to pick up security fixes
+
+  These packages bundle `mini
+…(414263 more chars truncated)
+```
+
+## packages/workers-utils/tests/config/validation/normalize-and-validate-config.test.ts
+```
+import path from "node:path";
+import * as TOML from "smol-toml";
+import { assert, describe, it, test, vi } from "vitest";
+import { WORKFLOW_JURISDICTIONS } from "../../../src/config/environment";
+import { normalizeAndValidateConfig } from "../../../src/config/validation";
+import { normalizeString } from "../../../src/test-helpers";
+import type {
+	Config,
+	ConfigFields,
+	RawConfig,
+	RawDevConfig,
+	RawEnvironment,
+} from "../../../src/config";
+import type { RedirectedRawConfig } from "../../../src/config/config";
+import type { DurableObjectExport } from "../../../src/config/environment";
+
+describe("normalizeAndValidateConfig()", () => {
+	it("should use defaults for empty configuration", ({ expect }) => {
+		const { config, diagnostics } = normalizeAndValidateConfig(
+			{},
+			undefined,
+			undefined,
+			{
+				env: undefined,
+			}
+		);
+
+		expect(config).toEqual({
+			account_id: undefined,
+			build: {
+				command: undefined,
+				cwd: undefined,
+				watch_dir: "./src",
+			},
+			compatibility_date: undefined,
+			compatibility_flags: [],
+			configPath: undefined,
+			d1_databases: [],
+			vectorize: [],
+			ai_search_namespaces: [],
+			ai_search: [],
+			agent_memory: [],
+			hyperdrive: [],
+			dev: {
+				ip: process.platform === "win32" ? "127.0.0.1" : "localhost",
+				local_protocol: "http",
+				port: undefined, // the default of 8787 is set at runtime
+				upstream_protocol: "http",
+				host: undefined,
+				enable_containers: true,
+				inspector_port: undefined,
+				inspector_ip: undefined,
+				container_engine: undefined,
+				generate_types: false,
+			},
+			containers: undefined,
+			cloudchamber: {},
+			durable_objects: {
+				bindings: [],
+			},
+			jsx_factory: "React.createElement",
+			jsx_fragment: "React.Fragment",
+			tsconfig: undefined,
+			kv_namespaces: [],
+			send_email: [],
+			logfwdr: {
+				bindings: [],
+			},
+			send_metrics: undefined,
+			dependencies_instrumentation: undefined,
+			main: undefined,
+			migrations: [],
+			exports: {},
+			name: undefined,
+			queues: {
+				consumers: [],
+				producers: [],
+			},
+			connect: [],
+			r2_buckets: [],
+			secrets_store_secrets: [],
+			artifacts: [],
+			unsafe_hello_world: [],
+			flagship: [],
+			ratelimits: [],
+			vpc_services: [],
+			vpc_networks: [],
+			s
+…(444065 more chars truncated)
+```
+
+## packages/vitest-plugin/CHANGELOG.md
+```
+# @cloudflare/vitest-plugin
+
+## 1.6.0
+
+### Minor Changes
+
+- [#16186](https://github.com/cloudflare/workers-sdk/pull/16186) [`f1d81a2`](https://github.com/cloudflare/workers-sdk/commit/f1d81a20c8e535ec7cb870143283f4a683fec70d) Thanks [@leostera](https://github.com/leostera)! - Support local Artifacts across Wrangler, Vite, and Workers Vitest
+
+  Set `remote: false` on an Artifacts binding to opt into the Miniflare simulator and persistent local repositories during development. Omitted `remote` continues to use the deployed resource, with a warning that changes affect real repositories; `remote: true` explicitly selects it. When remote bindings are disabled (`wrangler dev --local`, or Vite's `remoteBindings: false`), Artifacts bindings use the local simulator. Workers Vitest uses the local simulator when `remote` is omitted, so tests do not change real repositories by accident; set `remote: true` to test against the deployed resource. Local development does not require Cloudflare credentials, but does require Git 2.32 or newer on the host.
+
+  In Miniflare's own options, Artifacts bindings route like every other binding: only `dev.remote: true` with a remote proxy connection uses the deployed resource. Wrangler and Vite resolve the deployed-by-default rule, and Workers Vitest its local default, before passing options to Miniflare.
+
+### Patch Changes
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `brace-expansion` to pick up security fixes
+
+  These packages bundle `brace-expansion` (a dependency of `minimatch`), and the bundled versions were affected by published advisories. The bundles now include `brace-expansion` 2.1.7 (from 2.0.1) and 5.0.12 (from 5.0.5). Normal glob patterns expand as before; only the pathological patterns targeted by the advisories are handled differently.
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](http
+…(406753 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/preview.test.ts
+```
+import * as childProcess from "node:child_process";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { stripVTControlCharacters } from "node:util";
+import * as streams from "@cloudflare/cli-shared-helpers/streams";
+import {
+	extractConfigBindings,
+	formatNoActivePreviewUrlsMessage,
+	getBranchName,
+	getCommitSha,
+	getPullRequestMetadata,
+	getRepositoryUrl,
+	previewContainerAppName,
+	resolveWorkerName,
+} from "@cloudflare/deploy-helpers";
+import { defaultWranglerConfig } from "@cloudflare/workers-utils";
+import { runInTempDir } from "@cloudflare/workers-utils/test-helpers";
+import { http, HttpResponse } from "msw";
+import { afterAll, afterEach, beforeEach, describe, test, vi } from "vitest";
+import { logger } from "../logger";
+import { clearOutputFilePath } from "../output";
+import * as user from "../user";
+import { mockAccountId, mockApiToken } from "./helpers/mock-account-id";
+import { mockConsoleMethods } from "./helpers/mock-console";
+import { mockConfirm } from "./helpers/mock-dialogs";
+import { useMockIsTTY } from "./helpers/mock-istty";
+import { msw } from "./helpers/msw";
+import { runWrangler } from "./helpers/run-wrangler";
+import {
+	readWranglerConfig,
+	writeRedirectedWranglerConfig,
+	writeWranglerConfig,
+} from "./helpers/write-wrangler-config";
+import type { OutputEntry } from "../output";
+import type { Config, PreviewsConfig, Route } from "@cloudflare/workers-utils";
+
+const NO_ACTIVE_PREVIEW_URLS_MESSAGE =
+	"Note: This Preview deployment has no active URLs.";
+
+vi.mock("node:child_process", async () => {
+	const actual =
+		await vi.importActual<typeof childProcess>("node:child_process");
+	return {
+		...actual,
+		execSync: vi.fn(actual.execSync),
+	};
+});
+
+function configWithPreviews(previews: PreviewsConfig): Config {
+	return {
+		...defaultWranglerConfig,
+		previews,
+	};
+}
+
+function configForUrlGuidance(config: Partial<Config>): Config {
+	return {
+		...defaultWranglerConfig,
+		configPath: "/test/wrangler.json",
+		...config,
+	};
+}
+
+const explicitlyEnabledPreviewRoute = {
+	pattern: "explicit.example.com",
+	custom_domain: true,
+	enabled: true,
+
+…(211845 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/type-generation.test.ts
+```
+import * as fs from "node:fs";
+import { getRuntimeHeader } from "@cloudflare/runtime-types";
+import { removeDirSync } from "@cloudflare/workers-utils";
+import { runInTempDir } from "@cloudflare/workers-utils/test-helpers";
+import { http, HttpResponse } from "msw";
+import {
+	createProgram,
+	flattenDiagnosticMessageText,
+	getPreEmitDiagnostics,
+} from "typescript";
+import { afterAll, beforeAll, beforeEach, describe, it, vi } from "vitest";
+import { version as workerdVersion } from "workerd";
+import { experimental_generateTypes } from "../api";
+import { readConfig } from "../config";
+import { getEntry } from "../deployment-bundle/entry";
+import {
+	constructTSModuleGlob,
+	constructTypeKey,
+	escapeTypeScriptString,
+	generateImportSpecifier,
+	isValidIdentifier,
+} from "../type-generation";
+import {
+	ENV_HEADER_COMMENT_PREFIX,
+	checkTypesDiff,
+	getEnvHeader,
+	throwMissingBindingError,
+	toEnvInterfaceName,
+	TOP_LEVEL_ENV_NAME,
+	toPascalCase,
+	validateEnvInterfaceNames,
+} from "../type-generation/helpers";
+import * as generateRuntime from "../type-generation/runtime";
+import { dedent } from "../utils/dedent";
+import { mockAccountId, mockApiToken } from "./helpers/mock-account-id";
+import { mockConsoleMethods } from "./helpers/mock-console";
+import { createFetchResult, msw } from "./helpers/msw";
+import { runWrangler } from "./helpers/run-wrangler";
+import type { EnvironmentNonInheritable } from "@cloudflare/workers-utils";
+import type { MockInstance } from "vitest";
+
+describe("isValidIdentifier", () => {
+	it("should return true for valid identifiers", ({ expect }) => {
+		expect(isValidIdentifier("valid")).toBe(true);
+		expect(isValidIdentifier("valid123")).toBe(true);
+		expect(isValidIdentifier("valid_123")).toBe(true);
+		expect(isValidIdentifier("valid_123_")).toBe(true);
+		expect(isValidIdentifier("_valid_123_")).toBe(true);
+		expect(isValidIdentifier("_valid_123_")).toBe(true);
+		expect(isValidIdentifier("$valid")).toBe(true);
+		expect(isValidIdentifier("$valid$")).toBe(true);
+	});
+
+	it("should return false for invalid
+…(153610 more chars truncated)
+```
+
+## packages/wrangler/src/type-generation/index.ts
+```
+import { createHash } from "node:crypto";
+import * as fs from "node:fs";
+import { basename, dirname, extname, join, relative, resolve } from "node:path";
+import { RUNTIME_TYPES_MARKER } from "@cloudflare/runtime-types";
+import {
+	CommandLineArgsError,
+	configFileName,
+	experimental_readRawConfig,
+	FatalError,
+	parseJSONC,
+	UserError,
+} from "@cloudflare/workers-utils";
+import { getNodeCompat } from "@cloudflare/workers-utils/node-compat";
+import chalk from "chalk";
+import * as find from "empathic/find";
+import globToRegExp from "glob-to-regexp";
+import yargs from "yargs";
+import { readConfig } from "../config";
+import { createCommand } from "../core/create-command";
+import { getEntry } from "../deployment-bundle/entry";
+import { parseRules } from "../deployment-bundle/rules";
+import { getDurableObjectClassNameToUseSQLiteMap } from "../dev/class-names-sqlite";
+import { getVarsForDev } from "../dev/dev-vars";
+import { logger } from "../logger";
+import { isProcessEnvPopulated } from "../process-env";
+import {
+	checkTypesUpToDate,
+	DEFAULT_WORKERS_TYPES_FILE_NAME,
+	getEnvHeader,
+	throwMissingBindingError,
+	toEnvInterfaceName,
+	TOP_LEVEL_ENV_NAME,
+	validateEnvInterfaceNames,
+} from "./helpers";
+import { K2_PRODUCER_TYPE } from "./k2";
+import { fetchPipelineTypes } from "./pipeline-schema";
+import { generateRuntimeTypes } from "./runtime";
+import { logRuntimeTypesMessage } from "./runtime/log-runtime-types-message";
+import type {
+	Config,
+	Entry,
+	RawConfig,
+	RawEnvironment,
+	Rule,
+} from "@cloudflare/workers-utils";
+
+export interface GenerateTypesOptions {
+	/**
+	 * Path to the Wrangler config file to use. Can be an array for multi-config type resolution.
+	 */
+	config?: string | string[];
+
+	/**
+	 * Name of the Wrangler environment to generate types for.
+	 */
+	env?: string;
+
+	/**
+	 * Paths to `.env` files to load when inferring local variables and secrets.
+	 */
+	envFile?: string[];
+
+	/**
+	 * Name of the generated environment interface.
+	 */
+	envInterface?: stri
+…(125732 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/dev.test.ts
+```
+import * as fs from "node:fs";
+import {
+	COMPLIANCE_REGION_CONFIG_UNKNOWN,
+	DEFAULT_COMPAT_DATE,
+	FatalError,
+} from "@cloudflare/workers-utils";
+import {
+	runInTempDir,
+	writeWranglerConfig,
+} from "@cloudflare/workers-utils/test-helpers";
+import ci from "ci-info";
+import getPort from "get-port";
+import { http, HttpResponse } from "msw";
+import dedent from "ts-dedent";
+import { afterEach, assert, beforeEach, describe, it, vi } from "vitest";
+import { ConfigController } from "../api/startDevWorker/ConfigController";
+import { unwrapHook } from "../api/startDevWorker/utils";
+import { getWorkerAccountAndContext } from "../dev/remote";
+import { logger } from "../logger";
+import { sniffUserAgent } from "../package-manager";
+import { DEFAULT_WORKERS_TYPES_FILE_PATH } from "../type-generation/helpers";
+import * as generateRuntime from "../type-generation/runtime";
+import { detectAgent } from "../utils/detect-agent";
+import { mockAccountId, mockApiToken } from "./helpers/mock-account-id";
+import { mockConsoleMethods } from "./helpers/mock-console";
+import { useMockIsTTY } from "./helpers/mock-istty";
+import {
+	msw,
+	mswSuccessOauthHandlers,
+	mswSuccessUserHandlers,
+	mswZoneHandlers,
+} from "./helpers/msw";
+import { runWrangler } from "./helpers/run-wrangler";
+import type {
+	Binding,
+	StartDevWorkerInput,
+	StartDevWorkerOptions,
+	Trigger,
+} from "../api";
+import type { StartDevOptions } from "../dev";
+import type { RawConfig } from "@cloudflare/workers-utils";
+import type { ExpectStatic } from "vitest";
+import type { Mock, MockInstance } from "vitest";
+
+const startDevMock = vi.hoisted(() => ({
+	calls: [] as StartDevOptions[],
+}));
+
+vi.mock("../api/startDevWorker/ConfigController", (importOriginal) =>
+	importOriginal()
+);
+vi.mock("node:child_process");
+vi.mock("../dev/hotkeys");
+vi.mock("../dev/start-dev", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("../dev/start-dev")>();
+…(100781 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/pages/deploy.test.ts
+```
+/* eslint-disable @typescript-eslint/no-deprecated -- formData() is the standard Web API for parsing multipart bodies; only deprecated on undici's server-side types */
+import { mkdirSync, writeFileSync } from "node:fs";
+import { chdir } from "node:process";
+import {
+	runInTempDir,
+	writeWranglerConfig,
+} from "@cloudflare/workers-utils/test-helpers";
+import ci from "ci-info";
+import { http, HttpResponse } from "msw";
+import * as TOML from "smol-toml";
+import { x } from "tinyexec";
+import dedent from "ts-dedent";
+/* eslint-disable-next-line no-restricted-imports --
+ * Uses expect in MSW handlers outside test callbacks
+ * TODO: remove this `expect` import
+ */
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { version } from "../../../package.json";
+import { saveToConfigCache } from "../../config-cache";
+import { logger } from "../../logger";
+import {
+	PAGES_CONFIG_CACHE_FILENAME,
+	ROUTES_SPEC_VERSION,
+} from "../../pages/constants";
+import { getUnsupportedDeployDelegateArgs } from "../../pages/deploy";
+import { ApiErrorCodes } from "../../pages/errors";
+import { isRoutesJSONSpec } from "../../pages/functions/routes-validation";
+import { detectAgent } from "../../utils/detect-agent";
+import { endEventLoop } from "../helpers/end-event-loop";
+import { mockAccountId, mockApiToken } from "../helpers/mock-account-id";
+import { mockConsoleMethods } from "../helpers/mock-console";
+import { mockPrompt, mockSelect } from "../helpers/mock-dialogs";
+import { mockGetUploadTokenRequest } from "../helpers/mock-get-pages-upload-token";
+import { useMockIsTTY } from "../helpers/mock-istty";
+import { mockSetTimeout } from "../helpers/mock-set-timeout";
+import { msw } from "../helpers/msw";
+import { normalizeProgressSteps } from "../helpers/normalize-progress";
+import { runWrangler } from "../helpers/run-wrangler";
+import {
+	formDat
+…(178099 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/deploy/workers-dev.test.ts
+```
+import { readFileSync, writeFileSync } from "node:fs";
+import { getInstalledPackageVersion } from "@cloudflare/autoconfig";
+import { getSubdomainValues } from "@cloudflare/deploy-helpers";
+import { DEFAULT_COMPAT_DATE } from "@cloudflare/workers-utils";
+import {
+	runInTempDir,
+	writeWranglerConfig,
+} from "@cloudflare/workers-utils/test-helpers";
+import { http, HttpResponse } from "msw";
+/* eslint-disable-next-line no-restricted-imports --
+ * Uses expect in MSW handlers outside test callbacks
+ * TODO: remove this `expect` import
+ */
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { clearOutputFilePath } from "../../output";
+import { detectAgent } from "../../utils/detect-agent";
+import { mockAccountId, mockApiToken } from "../helpers/mock-account-id";
+import { mockConsoleMethods } from "../helpers/mock-console";
+import { clearDialogs, mockConfirm, mockPrompt } from "../helpers/mock-dialogs";
+import { mockGetZones } from "../helpers/mock-get-zone-from-host";
+import { useMockIsTTY } from "../helpers/mock-istty";
+import { mockUploadWorkerRequest } from "../helpers/mock-upload-worker";
+import { mockGetSettings } from "../helpers/mock-worker-settings";
+import {
+	mockGetWorkerSubdomain,
+	mockSubDomainRequest,
+	mockUpdateWorkerSubdomain,
+} from "../helpers/mock-workers-subdomain";
+import { mockGetZoneWorkerRoutes } from "../helpers/mock-zone-routes";
+import { createFetchResult, msw } from "../helpers/msw";
+import { mswListNewDeploymentsLatestFull } from "../helpers/msw/handlers/versions";
+import { runWrangler } from "../helpers/run-wrangler";
+import { writeWorkerSource } from "../helpers/write-worker-source";
+import {
+	mockDeploymentsListRequest,
+	mockLastDeploymentRequest,
+	mockPatchScriptSettings,
+	mockPublishRoutesRequest,
+} from "./helpers";
+
+vi.mock("command-
+…(55036 more chars truncated)
+```
+
+## packages/miniflare/test/dev-registry.spec.ts
+```
+import fs from "node:fs/promises";
+import path from "node:path";
+import { watch } from "chokidar";
+import { DeferredPromise, getWorkerRegistry, Miniflare } from "miniflare";
+import { describe, onTestFinished, test, vi } from "vitest";
+import { DevRegistry } from "../src/shared/dev-registry";
+import {
+	singleModuleManifest,
+	TestLog,
+	useDispose,
+	useTmp,
+} from "./test-shared";
+import type {
+	MiniflareOptions,
+	WorkerDefinition,
+	WorkerRegistry,
+} from "miniflare";
+
+describe("DevRegistry", { concurrent: false }, () => {
+	test("waits for the filesystem watcher to be ready", async ({ expect }) => {
+		const unsafeDevRegistryPath = await useTmp();
+		const registry = new DevRegistry(
+			unsafeDevRegistryPath,
+			undefined,
+			new TestLog()
+		);
+
+		try {
+			const watching = registry.watch(
+				new Map([["worker", { classNames: new Set(), entrypoints: new Set() }]])
+			);
+			expect(watching).toBeInstanceOf(Promise);
+			await watching;
+
+			// Subsequent calls must reuse the settled readiness promise rather than
+			// waiting for another `ready` event that will never be emitted.
+			await registry.watch(new Map(), true);
+		} finally {
+			await registry.dispose();
+		}
+	});
+
+	test("leaves no filesystem watcher behind with shared storage", async ({
+		expect,
+	}) => {
+		const unsafeDevRegistryPath = await useTmp();
+		const resourcePersistencePath = await useTmp();
+		const isolatedResourcePersistencePath = await useTmp();
+
+		const watchers = () =>
+			process.getActiveResourcesInfo().filter((name) => name === "FSEventWrap")
+				.length;
+		const before = watchers();
+
+		// Shared storage makes every instance watch the registry and heartbeat a
+		// storage-candidate entry into it, so a directory scan can still be in
+		// flight when disposal starts.
+		con
+…(75145 more chars truncated)
+```
+
+## packages/workers-utils/src/config/validation.ts
+```
+import assert from "node:assert";
+import fs from "node:fs";
+import path from "node:path";
+import { isValidWorkflowName } from "@cloudflare/workflows-shared/src/lib/validators";
+import { dedent } from "ts-dedent";
+import {
+	getCloudflareContainerRegistry,
+	getCloudflareEnv,
+} from "../environment-variables/misc-variables";
+import { UserError } from "../errors";
+import { isDirectory } from "../fs-helpers";
+import { isRedirectedRawConfig } from "./config-helpers";
+import { getContainerNameToClassNameMap } from "./containers";
+import { Diagnostics } from "./diagnostics";
+import {
+	getDurableObjectExports,
+	isLiveDurableObjectExport,
+} from "./durable-object-exports";
+import { ARTIFACTS_EVENT_TYPES, WORKFLOW_JURISDICTIONS } from "./environment";
+import { partitionExports } from "./exports";
+import {
+	all,
+	appendEnvName,
+	deprecated,
+	experimental,
+	getBindingNames,
+	hasProperty,
+	inheritable,
+	isBoolean,
+	isMutuallyExclusiveWith,
+	isOneOf,
+	isOptionalProperty,
+	isRequiredProperty,
+	isString,
+	isStringArray,
+	isValidDateTimeStringFormat,
+	isValidName,
+	notInheritable,
+	validateAdditionalProperties,
+	validateAtLeastOnePropertyRequired,
+	validateOptionalProperty,
+	validateOptionalTypedArray,
+	validateRequiredProperty,
+	validateTypedArray,
+	validateUniqueNameProperty,
+} from "./validation-helpers";
+import { configFileName, formatConfigSnippet } from ".";
+import type { ComplianceConfig } from "../compliance";
+import type { Binding } from "../types";
+import type { Config, DevConfig, RawConfig, RawDevConfig } from "./config";
+import type {
+	Access,
+	Assets,
+	CacheOptions,
+	ContainerApp,
+	CustomDomainRoute,
+	ContainerObservability,
+	DispatchNamespaceOutbound,
+	DurableObjectExport,
+	Environment,
+	Ob
+…(220398 more chars truncated)
+```
+
+## packages/wrangler/e2e/dev.test.ts
+```
+import assert from "node:assert";
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import * as nodeNet from "node:net";
+import { setTimeout } from "node:timers/promises";
+import { stripVTControlCharacters } from "node:util";
+import {
+	GetObjectCommand,
+	PutObjectCommand,
+	S3Client,
+	S3ServiceException,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import dedent from "ts-dedent";
+import { fetch } from "undici";
+import {
+	afterEach,
+	beforeEach,
+	describe,
+	it,
+	onTestFinished,
+	vi,
+} from "vitest";
+import {
+	CLOUDFLARE_ACCOUNT_ID,
+	E2E_ACCOUNT_WORKERS_DEV_DOMAIN,
+} from "./helpers/account-id";
+import { WranglerE2ETestHelper } from "./helpers/e2e-wrangler-test";
+import { fetchJson } from "./helpers/fetch-json";
+import { fetchText } from "./helpers/fetch-text";
+import { fetchWithETag } from "./helpers/fetch-with-etag";
+import { generateResourceName } from "./helpers/generate-resource-name";
+import {
+	MYSQL_INITIAL_HANDSHAKE_PACKET,
+	setupMysqlServer,
+} from "./helpers/mysql-echo-handler";
+import {
+	createPostgresEchoHandler,
+	POSTGRES_SSL_REQUEST_PACKET,
+} from "./helpers/postgres-echo-handler";
+import { retry } from "./helpers/retry";
+import { waitFor, waitForLong } from "./helpers/wait-for";
+import { getStartedWorkerdProcesses } from "./helpers/workerd-processes";
+
+const HYPERDRIVE_DATABASES = [
+	{
+		scheme: "postgresql",
+		defaultPort: 5432,
+		envVar: "HYPERDRIVE_DATABASE_URL",
+	},
+	{
+		scheme: "mysql",
+		defaultPort: 3306,
+		envVar: "HYPERDRIVE_MYSQL_DATABASE_URL",
+	},
+] as const;
+
+/**
+ * We use the same workerName for all of the tests in this suite in hopes
+…(90798 more chars truncated)
+```
+
+## packages/miniflare/test/index.spec.ts
+```
+// noinspection TypeScriptValidateJSTypes
+
+import assert from "node:assert";
+import childProcess from "node:child_process";
+import diagnosticsChannel from "node:diagnostics_channel";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import fs from "node:fs/promises";
+import http from "node:http";
+import net from "node:net";
+import os from "node:os";
+import path from "node:path";
+import { json, text } from "node:stream/consumers";
+import util from "node:util";
+import { NODEJS_COMPAT_DEFAULT_ON_DATE } from "@cloudflare/workers-utils";
+import {
+	_transformsForContentEncodingAndContentType,
+	DeferredPromise,
+	fetch,
+	kCurrentWorker,
+	Log,
+	LogLevel,
+	Miniflare,
+	MiniflareCoreError,
+	Request,
+	Response,
+	viewToBuffer,
+} from "miniflare";
+import { afterEach, test, vi } from "vitest";
+import { WebSocketServer } from "ws";
+import { assertIsV2ModuleFallbackProtocol } from "../src/plugins/core/module-fallback";
+import { MAX_EMAIL_BODY_BYTES } from "../src/workers/email/capture";
+import {
+	FIXTURES_PATH,
+	singleModuleManifest,
+	TestLog,
+	useCwd,
+	useDispose,
+	useServer,
+	useTmp,
+	utf8Encode,
+} from "./test-shared";
+import type {
+	D1Database,
+	DurableObjectNamespace,
+	Fetcher,
+	KVNamespace,
+	Queue,
+	R2Bucket,
+} from "@cloudflare/workers-types/experimental";
+import type {
+	MessageEvent,
+	MiniflareOptions,
+	ReplaceWorkersTypes,
+	Worker_Module,
+} from "miniflare";
+import type { AddressInfo } from "node:net";
+import type { Writable } from "node:stream";
+import type {
+	CloseEvent as StandardCloseEvent,
+	MessageEvent as StandardMessageEvent,
+} from "ws";
+
+// (base64 encoded module co
+…(141488 more chars truncated)
+```
+
+## packages/deploy-helpers/CHANGELOG.md
+```
+# @cloudflare/deploy-helpers
+
+## 0.26.0
+
+### Minor Changes
+
+- [#16020](https://github.com/cloudflare/workers-sdk/pull/16020) [`37c3c48`](https://github.com/cloudflare/workers-sdk/commit/37c3c489ff37155cfe9e5e26e296ed6211d18330) Thanks [@penalosa](https://github.com/penalosa)! - Allow custom strict-mode conflict abort messages
+
+  Add an optional `strictModeAbortMessage` to deploy-helpers' pre-1.0 deploy and versions-upload APIs so callers can describe their own override flags when strict mode aborts a conflicting upload in a non-interactive session. Wrangler keeps its existing `--strict` guidance when the message is omitted.
+
+### Patch Changes
+
+- [#16695](https://github.com/cloudflare/workers-sdk/pull/16695) [`b2061f4`](https://github.com/cloudflare/workers-sdk/commit/b2061f40f812d8888b461f68506552b58f8e468b) Thanks [@dependabot](https://github.com/apps/dependabot)! - Update `DEFAULT_COMPAT_DATE` to 2026-11-04
+
+  Use the bundled workerd release's compatibility date by default when scaffolding new projects or when no compatibility date is configured.
+
+- Updated dependencies [[`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc
+…(112111 more chars truncated)
+```
+
+## packages/pages-shared/CHANGELOG.md
+```
+# @cloudflare/pages-shared
+
+## 0.13.209
+
+### Patch Changes
+
+- [#16695](https://github.com/cloudflare/workers-sdk/pull/16695) [`b2061f4`](https://github.com/cloudflare/workers-sdk/commit/b2061f40f812d8888b461f68506552b58f8e468b) Thanks [@dependabot](https://github.com/apps/dependabot)! - Update `DEFAULT_COMPAT_DATE` to 2026-11-04
+
+  Use the bundled workerd release's compatibility date by default when scaffolding new projects or when no compatibility date is configured.
+
+- Updated dependencies [[`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`b8387a5`](https://github.com/cloudflare/workers-sdk/commit/b8387a50d360b97538c051f4db776261507b84b3), [`4cde694`](https://github.com/cloudflare/workers-sdk/commit/4cde694bc7ad24d215dcc955501cca1934512658), [`b2061f4`](https://github.com/cloudflare/workers-sdk/commit/b2061f40f812d8888b461f68506552b58f8e468b), [`b2061f4`](https://github.com/cloudflare/workers-sdk/commit/b2061f40f812d8888b461f68506552b58f8e468b), [`f1d81a2`](https://github.com/cloudflare/workers-sdk/commit/f1d81a20c8e535ec7cb870143283
+…(133150 more chars truncated)
+```
+
+## packages/workers-utils/CHANGELOG.md
+```
+# @cloudflare/workers-utils
+
+## 0.52.0
+
+### Minor Changes
+
+- [#16186](https://github.com/cloudflare/workers-sdk/pull/16186) [`f1d81a2`](https://github.com/cloudflare/workers-sdk/commit/f1d81a20c8e535ec7cb870143283f4a683fec70d) Thanks [@leostera](https://github.com/leostera)! - Support local Artifacts across Wrangler, Vite, and Workers Vitest
+
+  Set `remote: false` on an Artifacts binding to opt into the Miniflare simulator and persistent local repositories during development. Omitted `remote` continues to use the deployed resource, with a warning that changes affect real repositories; `remote: true` explicitly selects it. When remote bindings are disabled (`wrangler dev --local`, or Vite's `remoteBindings: false`), Artifacts bindings use the local simulator. Workers Vitest uses the local simulator when `remote` is omitted, so tests do not change real repositories by accident; set `remote: true` to test against the deployed resource. Local development does not require Cloudflare credentials, but does require Git 2.32 or newer on the host.
+
+  In Miniflare's own options, Artifacts bindings route like every other binding: only `dev.remote: true` with a remote proxy connection uses the deployed resource. Wrangler and Vite resolve the deployed-by-default rule, and Workers Vitest its local default, before passing options to Miniflare.
+
+### Patch Changes
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/wo
+…(101433 more chars truncated)
+```
+
+## packages/miniflare/src/index.ts
+```
+import assert from "node:assert";
+import crypto from "node:crypto";
+import dgram from "node:dgram";
+import { lookup } from "node:dns/promises";
+import fs from "node:fs";
+import http from "node:http";
+import net from "node:net";
+import os from "node:os";
+import path from "node:path";
+import { ReadableStream } from "node:stream/web";
+import util from "node:util";
+import zlib from "node:zlib";
+import { checkMacOSVersion } from "@cloudflare/cli-shared-helpers";
+import { removeDir, removeDirSync } from "@cloudflare/workers-utils/fs-helpers";
+import { formatZodError } from "@cloudflare/workers-utils/zod-format";
+import { $ as colors$, bold, dim, green, yellow } from "kleur/colors";
+import stoppable from "stoppable";
+import { getGlobalDispatcher, Pool } from "undici";
+import SCRIPT_DEV_REGISTRY_PROXY from "worker:core/dev-registry-proxy";
+import SCRIPT_MINIFLARE_SHARED from "worker:shared/index";
+import SCRIPT_MINIFLARE_ZOD from "worker:shared/zod";
+import { WebSocketServer } from "ws";
+import { z } from "zod";
+import { fallbackCf, setupCf } from "./cf";
+import {
+	isMiniflareUnsafeBinding,
+	MiniflareOptionsSchema,
+} from "./config/schema";
+import { exitHook } from "./exit-hook";
+import {
+	coupleWebSocket,
+	DispatchFetchDispatcher,
+	fetch,
+	getAccessibleHosts,
+	getEntrySocketHttpOptions,
+	Headers,
+	Request,
+	Response,
+} from "./http";
+import {
+	D1_PLUGIN_NAME,
+	DURABLE_OBJECTS_PLUGIN_NAME,
+	FLAGSHIP_PLUGIN_NAME,
+	getCon
+…(130027 more chars truncated)
+```
+
+## packages/miniflare/src/runtime/config/generated/workerd.ts
+```
+// This file has been automatically generated by capnp-es.
+import * as $ from "capnp-es";
+export const _capnpFileId = 0xe6afd26682091c01n;
+/**
+ * Top-level configuration for a workerd instance.
+ *
+ */
+export class Config extends $.Struct {
+	static readonly _capnp = {
+		displayName: "Config",
+		id: "8794486c76aaa7d6",
+		size: new $.ObjectSize(8, 6),
+		defaultStructuredLogging: $.getBitMask(false, 0),
+	};
+	static _Services: $.ListCtor<Service>;
+	static _Sockets: $.ListCtor<Socket>;
+	static _Extensions: $.ListCtor<Extension>;
+	_adoptServices(value: $.Orphan<$.List<Service>>): void {
+		$.utils.adopt(value, $.utils.getPointer(0, this));
+	}
+	_disownServices(): $.Orphan<$.List<Service>> {
+		return $.utils.disown(this.services);
+	}
+	/**
+	 * List of named services defined by this server. These names are private; they are only used
+	 * to refer to the services from elsewhere in this config file, as well as for logging and the
+	 * like. Services are not reachable until you configure some way to make them reachable, such
+	 * as via a Socket.
+	 *
+	 * If you do not define any service called "internet", one is defined implicitly, representing
+	 * the ability to access public internet servers. An explicit definition would look like:
+	 *
+	 *     ( name = "internet",
+	 *       network = (
+	 *         allow = ["public"],   # Allows connections to publicly-routable addresses only.
+	 *         tlsO
+…(159692 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/versions/versions.upload.test.ts
+```
+/* eslint-disable @typescript-eslint/no-deprecated -- formData() is the standard Web API for parsing multipart bodies; only deprecated on undici's server-side types */
+import assert from "node:assert";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import { ContainerImagePreparationStatus } from "@cloudflare/containers-shared";
+import {
+	ACTOR_BINDING_DEPENDS_ON_EXPORT_CODE,
+	generatePreviewAlias,
+} from "@cloudflare/deploy-helpers";
+import { TEMPORARY_TERMS_NOTICE } from "@cloudflare/workers-auth";
+import { DEFAULT_COMPAT_DATE } from "@cloudflare/workers-utils";
+import {
+	runInTempDir,
+	writeRedirectedWranglerConfig,
+	writeWranglerConfig,
+} from "@cloudflare/workers-utils/test-helpers";
+import { http, HttpResponse } from "msw";
+/* eslint-disable-next-line no-restricted-imports --
+ * Uses assert/expect in MSW handlers and top-level mock setup
+ * TODO: remove this `expect` import
+ */
+import { beforeEach, describe, expect, it, test, vi } from "vitest";
+import { logger } from "../../logger";
+import * as metrics from "../../metrics";
+import { dedent } from "../../utils/dedent";
+import { mockAccountV4 as mockContainersAccount } from "../cloudchamber/utils";
+import { makeApiRequestAsserter } from "../helpers/assert-request";
+import { captureRequestsFrom } from "../helpers/capture-requests-from";
+import { mockAccountId, mockApiToken } from "../helpers/mock-account-i
+…(94224 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/deploy/bindings.test.ts
+```
+import { Buffer } from "node:buffer";
+import { spawnSync } from "node:child_process";
+import * as fs from "node:fs";
+import { getInstalledPackageVersion } from "@cloudflare/autoconfig";
+import {
+	runInTempDir,
+	writeWranglerConfig,
+} from "@cloudflare/workers-utils/test-helpers";
+import { sync } from "command-exists";
+import { http, HttpResponse } from "msw";
+import * as TOML from "smol-toml";
+import { afterEach, beforeEach, describe, it, vi } from "vitest";
+import { clearOutputFilePath } from "../../output";
+import { mockAccountId, mockApiToken } from "../helpers/mock-account-id";
+import { mockConsoleMethods } from "../helpers/mock-console";
+import { clearDialogs } from "../helpers/mock-dialogs";
+import { useMockIsTTY } from "../helpers/mock-istty";
+import { mockLegacyScriptData } from "../helpers/mock-legacy-script";
+import { mockUploadWorkerRequest } from "../helpers/mock-upload-worker";
+import { mockGetSettings } from "../helpers/mock-worker-settings";
+import { mockSubDomainRequest } from "../helpers/mock-workers-subdomain";
+import { createFetchResult, msw } from "../helpers/msw";
+import { mswListNewDeploymentsLatestFull } from "../helpers/msw/handlers/versions";
+import { runWrangler } from "../helpers/run-wrangler";
+import { writeWorkerSource } from "../helpers/write-worker-source";
+import {
+	mockDeploymentsListRequest,
+	mockLastDeploymentRequest,
+	mockPatchScriptSettings,
+…(79491 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/deploy/core.test.ts
+```
+import * as fs from "node:fs";
+import { readFile } from "node:fs/promises";
+import * as path from "node:path";
+import {
+	getInstalledPackageVersion,
+	runAutoConfig,
+} from "@cloudflare/autoconfig";
+import {
+	TEMPORARY_TERMS_NOTICE,
+	TEMPORARY_TERMS_PROMPT,
+} from "@cloudflare/workers-auth";
+import { getGlobalConfigPath } from "@cloudflare/workers-utils";
+import {
+	runInTempDir,
+	writeWranglerConfig,
+} from "@cloudflare/workers-utils/test-helpers";
+import ci from "ci-info";
+import { http, HttpResponse } from "msw";
+import * as TOML from "smol-toml";
+import dedent from "ts-dedent";
+import { afterEach, beforeEach, describe, it, vi } from "vitest";
+import { clearOutputFilePath } from "../../output";
+import { NpmPackageManager } from "../../package-manager";
+import { writeAuthCredentials } from "../../user";
+import { mockAccountId, mockApiToken } from "../helpers/mock-account-id";
+import { mockAuthDomain } from "../helpers/mock-auth-domain";
+import { mockConsoleMethods } from "../helpers/mock-console";
+import { clearDialogs, mockConfirm, mockPrompt } from "../helpers/mock-dialogs";
+import { useMockIsTTY } from "../helpers/mock-istty";
+import {
+	mockExchangeRefreshTokenForAccessToken,
+	mockOAuthFlow,
+} from "../helpers/mock-oauth-flow";
+import { mockUploadWorkerRequest } from "../helpers/mock-upload-worker";
+import { mockGetSettings } from "../helpers/mock-worker-settings";
+import {
+
+…(62000 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/containers/deploy.test.ts
+```
+import { execFileSync, spawn } from "node:child_process";
+import crypto from "node:crypto";
+import * as fs from "node:fs";
+import path from "node:path";
+import { PassThrough, Writable } from "node:stream";
+import {
+	ApplicationAffinityHardwareGeneration,
+	ContainerImagePreparationStatus,
+	getCloudflareContainerRegistry,
+	InstanceType,
+	SchedulingPolicy,
+} from "@cloudflare/containers-shared";
+import {
+	runInTempDir,
+	writeRedirectedWranglerConfig,
+	writeWranglerConfig,
+} from "@cloudflare/workers-utils/test-helpers";
+import { http, HttpResponse } from "msw";
+import { afterEach, assert, beforeEach, describe, it, vi } from "vitest";
+import { clearCachedAccount } from "../../cloudchamber/locations";
+import * as user from "../../user";
+import { mockAccountV4 as mockContainersAccount } from "../cloudchamber/utils";
+import { mockServiceScriptData } from "../deploy/helpers";
+import { mockAccountId, mockApiToken } from "../helpers/mock-account-id";
+import { mockCLIOutput } from "../helpers/mock-cli-output";
+import { mockConsoleMethods } from "../helpers/mock-console";
+import { mockLegacyScriptData } from "../helpers/mock-legacy-script";
+import { mockUploadWorkerRequest } from "../helpers/mock-upload-worker";
+import { mockSubDomainRequest } from "../helpers/mock-workers-subdomain";
+import {
+	createFetchResult,
+	msw,
+	mswSuccessDeploymentScriptMetadata,
+} from "../helpers/msw";
+import {
+…(145536 more chars truncated)
+```
+
+## packages/workers-utils/src/config/environment.ts
+```
+/**
+ * Wrangler configuration types. The JSDoc on these fields is also the source
+ * of truth for the equivalent fields in `@cloudflare/config`
+ * (`packages/config/src/types.ts` — `WorkerConfig` — and the binding option
+ * interfaces in `packages/config/src/config.ts`). When editing prose here,
+ * mirror the changes there.
+ */
+
+import type { Json } from "../types";
+
+/**
+ * The `Environment` interface declares all the configuration fields that
+ * can be specified for an environment.
+ *
+ * This could be the top-level default environment, or a specific named environment.
+ */
+export interface Environment
+	extends EnvironmentInheritable, EnvironmentNonInheritable {}
+
+type SimpleRoute = string;
+/** AWS SigV4 credentials for miniflare's local S3-compatible endpoint */
+export interface LocalS3Credentials {
+	accessKeyId: string;
+	secretAccessKey: string;
+}
+
+export type ZoneIdRoute = {
+	pattern: string;
+	zone_id: string;
+	custom_domain?: boolean;
+};
+export type ZoneNameRoute = {
+	pattern: string;
+	zone_name: string;
+	custom_domain?: boolean;
+};
+export type CustomDomainRoute = {
+	pattern: string;
+	custom_domain: boolean;
+	enabled?: boolean;
+	previews_enabled?: boolean;
+};
+export type Route =
+	| SimpleRoute
+	| ZoneIdRoute
+	| ZoneNameRoute
+	| CustomDomainRoute;
+
+/**
+ * Configuration in wrangler for Cloudchamber
+ */
+export type CloudchamberConfig = {
+	image?: string;
+	location?: string;
+	in
+…(61444 more chars truncated)
+```
+
+## packages/quick-edit-extension/vscode.d.ts
+```
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+declare module 'vscode' {
+
+	/**
+	 * The version of the editor.
+	 */
+	export const version: string;
+
+	/**
+	 * Represents a reference to a command. Provides a title which
+	 * will be used to represent a command in the UI and, optionally,
+	 * an array of arguments which will be passed to the command handler
+	 * function when invoked.
+	 */
+	export interface Command {
+		/**
+		 * Title of the command, like `save`.
+		 */
+		title: string;
+
+		/**
+		 * The identifier of the actual command handler.
+		 * @see {@link commands.registerCommand}
+		 */
+		command: string;
+
+		/**
+		 * A tooltip for the command, when represented in the UI.
+		 */
+		tooltip?: string;
+
+		/**
+		 * Arguments that the command handler should be
+		 * invoked with.
+		 */
+		arguments?: any[];
+	}
+
+	/**
+	 * Represents a line of text, such as a line of source code.
+	 *
+	 * TextLine objects are __immutable__. When a {@link TextDocument document} changes,
+	 * previously retrieved lines will not represent the latest state.
+	 */
+	export interface TextLine {
+
+		/**
+		 * The zero-based
+…(720908 more chars truncated)
+```
+
+## packages/miniflare/src/workers/local-explorer/generated/types.gen.ts
+```
+// This file is auto-generated by @hey-api/openapi-ts
+
+export type ClientOptions = {
+	baseUrl: `${string}://${string}/cdn-cgi/local/explorer/api` | (string & {});
+};
+
+export type FlagshipEvaluationError = FlagshipError & {
+	/**
+	 * OpenFeature error code for the failed evaluation.
+	 */
+	errorCode:
+		| "PROVIDER_NOT_READY"
+		| "FLAG_NOT_FOUND"
+		| "PARSE_ERROR"
+		| "TYPE_MISMATCH"
+		| "TARGETING_KEY_MISSING"
+		| "INVALID_CONTEXT"
+		| "GENERAL";
+};
+
+export type FlagshipError = {
+	errors: Array<FlagshipApiMessage>;
+	messages: Array<FlagshipApiMessage>;
+	result: null;
+	success: boolean;
+};
+
+export type FlagshipApiMessage = {
+	message: string;
+};
+
+export type FlagshipEvaluationResult = {
+	/**
+	 * Key of the evaluated flag.
+	 */
+	flagKey: string;
+	/**
+	 * Key-value metadata associated with the flag. Returned only when the flag has metadata.
+	 */
+	metadata?: {
+		[key: string]: boolean | string | number;
+	};
+	/**
+	 * Reason the evaluator selected this variation.
+	 */
+	reason: "STATIC" | "TARGETING_MATCH" | "DEFAULT" | "DISABLED" | "SPLIT";
+	value?: FlagshipJsonValue;
+	/**
+	 * Name of the variation that supplied the resolved value.
+	 */
+	variant: string;
+};
+
+export type FlagshipJsonValue =
+	| string
+	| null
+	| number
+	| boolean
+	| {
+			[key: string]: FlagshipJsonValue;
+	  }
+	| Array<FlagshipJsonValue>;
+
+export type FlagshipDeleteFlagResult = {
+	key: string;
+};
+
+export type FlagshipFlag
+…(80007 more chars truncated)
+```
+
+## packages/wrangler/src/__tests__/queues/queues.test.ts
+```
+import {
+	runInTempDir,
+	writeWranglerConfig,
+} from "@cloudflare/workers-utils/test-helpers";
+import { http, HttpResponse } from "msw";
+import { beforeEach, describe, it } from "vitest";
+import { mockAccountId, mockApiToken } from "../helpers/mock-account-id";
+import { mockConsoleMethods } from "../helpers/mock-console";
+import { mockPrompt } from "../helpers/mock-dialogs";
+import { useMockIsTTY } from "../helpers/mock-istty";
+import { msw } from "../helpers/msw";
+import { runWrangler } from "../helpers/run-wrangler";
+import { mockGetQueueByNameRequest } from "./mock-utils";
+import type { PostTypedConsumerBody, QueueResponse } from "../../queues/client";
+import type { ExpectStatic } from "vitest";
+
+describe("wrangler", () => {
+	mockAccountId();
+	mockApiToken();
+	runInTempDir();
+	const std = mockConsoleMethods();
+
+	describe("queues", () => {
+		const expectedQueueId = "queueId";
+		const expectedConsumerId = "consumerId";
+		const expectedQueueName = "testQueue";
+
+		it("should show the correct help text", async ({ expect }) => {
+			await runWrangler("queues --help");
+			expect(std.err).toMatchInlineSnapshot(`""`);
+			expect(std.out).toMatchInlineSnapshot(`
+				"wrangler queues
+
+				📬 Manage Workers Queues
+
+				COMMANDS
+				  wrangler queues list                    List queues
+				  wrangler queues create <name>           Create a queue
+				  wrangler queues update <name>
+…(95908 more chars truncated)
+```
+
+## packages/wrangler/src/index.ts
+```
+import { resolve } from "node:path";
+import { setTimeout } from "node:timers/promises";
+import { checkMacOSVersion, setLogLevel } from "@cloudflare/cli-shared-helpers";
+import {
+	CommandLineArgsError,
+	experimental_readRawConfig,
+} from "@cloudflare/workers-utils";
+import chalk from "chalk";
+import { EnvHttpProxyAgent, setGlobalDispatcher } from "undici";
+import makeCLI from "yargs";
+import { version as wranglerVersion } from "../package.json";
+import {
+	agentMemoryNamespace,
+	agentMemoryNamespaceNamespace,
+} from "./agent-memory";
+import { agentMemoryNamespaceCreateCommand } from "./agent-memory/create";
+import { agentMemoryNamespaceDeleteCommand } from "./agent-memory/delete";
+import { agentMemoryNamespaceGetCommand } from "./agent-memory/get";
+import { agentMemoryNamespaceListCommand } from "./agent-memory/list";
+import { aiFineTuneNamespace, aiNamespace } from "./ai";
+import { aiSearchCreateCommand } from "./ai-search/create";
+import { aiSearchDeleteCommand } from "./ai-search/delete";
+import { aiSearchGetCommand } from "./ai-search/get";
+import { aiSearchNamespace } from "./ai-search/index";
+import { aiSearchJobsCancelCommand } from "./ai-search/jobs/cancel";
+import { aiSearchJobsCreateCommand } from "./ai-search/jobs/create";
+import { aiSearchJobsGetCommand } from "./ai-search/jobs/get";
+import { aiSearchJobsNamespace } from "./ai-search/jobs/index";
+import { aiSearchJobs
+…(86116 more chars truncated)
+```
+
+## packages/codemods/test/wrangler-to-cf/migration-api.test.ts
+```
+import {
+	mkdir,
+	mkdtemp,
+	readFile,
+	readdir,
+	rmdir,
+	unlink,
+	writeFile,
+} from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { runCommand } from "@cloudflare/cli-shared-helpers/command";
+import { installPackages } from "@cloudflare/cli-shared-helpers/packages";
+import { afterEach, describe, it, vi } from "vitest";
+import { migrateWranglerToCf } from "../../src";
+import {
+	rewriteMigrationOutput,
+	writeMigrationOutputs,
+} from "../../src/codemods/wrangler-to-cf/file-writer";
+
+const temporaryDirectories: string[] = [];
+
+vi.mock("@cloudflare/cli-shared-helpers/packages", () => ({
+	installPackages: vi.fn(),
+}));
+vi.mock("@cloudflare/cli-shared-helpers/command", () => ({
+	runCommand: vi.fn(),
+}));
+
+vi.mock(
+	"../../src/codemods/wrangler-to-cf/file-writer",
+	async (importOriginal) => {
+		const original =
+			await importOriginal<
+				typeof import("../../src/codemods/wrangler-to-cf/file-writer")
+			>();
+		return {
+			...original,
+			rewriteMigrationOutput: vi.fn(original.rewriteMigrationOutput),
+			writeMigrationOutputs: vi.fn(original.writeMigrationOutputs),
+		};
+	}
+);
+
+async function createProject(files: Record<string, string>): Promise<string> {
+	const directory = await mkdtemp(path.join(tmpdir(), "wrangler-to-cf-"));
+	temporaryDirectories.push(directory);
+
+	for (const [filePath, contents] of Object.entries(files)) {
+		const absolut
+…(55753 more chars truncated)
+```
+
+## packages/miniflare/src/workers/local-explorer/openapi.local.json
+```
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "Local Explorer API",
+		"description": "A local subset of the Cloudflare API for inspecting and modifying resource state during local development. Supports D1, R2, KV, Durable Objects and Workflows.",
+		"version": "0.0.1"
+	},
+	"servers": [
+		{
+			"description": "Local Explorer",
+			"url": "/cdn-cgi/local/explorer/api"
+		}
+	],
+	"paths": {
+		"/storage/kv/namespaces": {
+			"get": {
+				"operationId": "workers-kv-namespace-list-namespaces",
+				"summary": "List namespaces",
+				"description": "Lists Workers KV namespaces owned by the specified account. Use `page` and `per_page` to select a page of results, and `order` and `direction` to control sorting.",
+				"parameters": [
+					{
+						"name": "order",
+						"in": "query",
+						"schema": {
+							"description": "Namespace field to sort by (`id` or `title`).",
+							"type": "string",
+							"example": "id",
+							"enum": ["id", "title"]
+						}
+					},
+					{
+						"name": "direction",
+						"in": "query",
+						"schema": {
+							"description": "Sort namespaces in ascending (`asc`) or descending (`desc`) order.",
+							"type": "string",
+							"example": "asc",
+							"enum": ["asc", "desc"]
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List Namespaces response.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+
+…(177818 more chars truncated)
+```
+
+## packages/autoconfig/CHANGELOG.md
+```
+# @cloudflare/autoconfig
+
+## 0.9.3
+
+### Patch Changes
+
+- [#16700](https://github.com/cloudflare/workers-sdk/pull/16700) [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195) Thanks [@cjol](https://github.com/cjol)! - Bump bundled `brace-expansion` to pick up security fixes
+
+  These packages bundle `brace-expansion` (a dependency of `minimatch`), and the bundled versions were affected by published advisories. The bundles now include `brace-expansion` 2.1.7 (from 2.0.1) and 5.0.12 (from 5.0.5). Normal glob patterns expand as before; only the pathological patterns targeted by the advisories are handled differently.
+
+- [#16695](https://github.com/cloudflare/workers-sdk/pull/16695) [`b2061f4`](https://github.com/cloudflare/workers-sdk/commit/b2061f40f812d8888b461f68506552b58f8e468b) Thanks [@dependabot](https://github.com/apps/dependabot)! - Update `DEFAULT_COMPAT_DATE` to 2026-11-04
+
+  Use the bundled workerd release's compatibility date by default when scaffolding new projects or when no compatibility date is configured.
+
+- Updated dependencies [[`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`b2061f4`](https://github.com/cloudflare/workers-sdk/commit/b2061f40f812d8888b461f6
+…(39847 more chars truncated)
+```
+
+## packages/wrangler/e2e/createTestHarness.test.ts
+```
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { setTimeout } from "node:timers/promises";
+import { pathToFileURL } from "node:url";
+import { mockConsoleMethods } from "@cloudflare/workers-utils/test-helpers";
+import { http, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
+import dedent from "ts-dedent";
+import {
+	afterEach,
+	beforeEach,
+	describe,
+	it,
+	onTestFinished,
+	vi,
+} from "vitest";
+import {
+	importWrangler,
+	WranglerE2ETestHelper,
+} from "./helpers/e2e-wrangler-test";
+import type {
+	CloudflareWorkersModule,
+	D1Database,
+	DurableObjectNamespace,
+	ExportedHandler,
+	KVNamespace,
+	R2Bucket,
+} from "@cloudflare/workers-types";
+
+const { createTestHarness } = await importWrangler();
+
+describe("createTestHarness", () => {
+	const logs = mockConsoleMethods();
+
+	let helper: WranglerE2ETestHelper;
+
+	function normalizeDebugOutput(output: string) {
+		return String(output)
+			.replace(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/gm, "<timestamp>")
+			.replace(/http:\/\/127\.0\.0\.1:\d+/g, "http://127.0.0.1:<port>");
+	}
+
+	beforeEach(() => {
+		helper = new WranglerE2ETestHelper();
+	});
+
+	afterEach(() => {
+		vi.resetAllMocks();
+	});
+
+	it("starts with default server options", async ({ expect, onTestFailed }) => {
+		await helper.seed({
+			"wrangler.jsonc": dedent`
+				{
+					"name": "hello-worker",
+					"main": "src/index.ts",
+					"compatibi
+…(61951 more chars truncated)
+```
+
+## packages/workers-auth/CHANGELOG.md
+```
+# @cloudflare/workers-auth
+
+## 0.16.0
+
+### Minor Changes
+
+- [#16528](https://github.com/cloudflare/workers-sdk/pull/16528) [`cff43aa`](https://github.com/cloudflare/workers-sdk/commit/cff43aa3683f40a7244164d5c73ea425116bd281) Thanks [@mtlemilio](https://github.com/mtlemilio)! - Correct and request the PlanetScale setup scope in new cf OAuth logins
+
+  Use the policy-compliant `hyperdrive-planetscale.setup` identifier for the PlanetScale setup scope and request it in new cf OAuth logins by default. OAuth grants remain constrained by the user's permissions, so only users with the corresponding Bach membership permission can exercise it. Existing sessions must authenticate again to receive the scope.
+
+### Patch Changes
+
+- [#16695](https://github.com/cloudflare/workers-sdk/pull/16695) [`b2061f4`](https://github.com/cloudflare/workers-sdk/commit/b2061f40f812d8888b461f68506552b58f8e468b) Thanks [@dependabot](https://github.com/apps/dependabot)! - Update `DEFAULT_COMPAT_DATE` to 2026-11-04
+
+  Use the bundled workerd release's compatibility date by default when scaffolding new projects or when no compatibility date is configured.
+
+- Updated dependencies [[`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`dc35efb`](https://github.com/cloudflare/workers-sdk/commit/dc35efbd3cdfe67b3ef972c75b8faae65dfed195), [`b2061f4`](https://github.c
+…(48319 more chars truncated)
+```

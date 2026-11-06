@@ -1,6 +1,166 @@
 {
   "books": [
     {
+      "slug": "beyond-the-isolate",
+      "title": "Beyond the Isolate",
+      "subtitle": "Containers, sandboxes, browsers, and platforms",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#5b5092",
+      "animal": "generated/beyond-the-isolate/animal.webp",
+      "href": "?bundle=beyond-the-isolate",
+      "series": "Cloudflare Workers: Compute and Storage",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "When you need a Linux process",
+          "duration": 42.307
+        },
+        {
+          "number": 2,
+          "title": "A sandbox is a trust boundary",
+          "duration": 43.096
+        },
+        {
+          "number": 3,
+          "title": "A browser as a service",
+          "duration": 41.1
+        },
+        {
+          "number": 4,
+          "title": "A platform routes tenant code",
+          "duration": 39.985
+        }
+      ],
+      "createdAt": "2026-11-06T21:17:37.458Z"
+    },
+    {
+      "slug": "queues-logs-and-durable-work",
+      "title": "Queues, Logs, and Durable Work",
+      "subtitle": "Delivery, replay, and resilient execution",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#9a4a3b",
+      "animal": "generated/queues-logs-and-durable-work/animal.webp",
+      "href": "?bundle=queues-logs-and-durable-work",
+      "series": "Cloudflare Workers: Compute and Storage",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A queue delivers a task",
+          "duration": 40.217
+        },
+        {
+          "number": 2,
+          "title": "A log keeps its history",
+          "duration": 45
+        },
+        {
+          "number": 3,
+          "title": "A workflow remembers the steps",
+          "duration": 43.699
+        }
+      ],
+      "createdAt": "2026-11-06T21:14:02.694Z"
+    },
+    {
+      "slug": "a-place-for-every-byte",
+      "title": "A Place for Every Byte",
+      "subtitle": "Choose storage by shape and consistency",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#246a80",
+      "animal": "generated/a-place-for-every-byte/animal.webp",
+      "href": "?bundle=a-place-for-every-byte",
+      "series": "Cloudflare Workers: Compute and Storage",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Choose by access and consistency",
+          "duration": 42.724
+        },
+        {
+          "number": 2,
+          "title": "Objects are not rows",
+          "duration": 44.397
+        },
+        {
+          "number": 3,
+          "title": "Three ways to use SQL",
+          "duration": 44.582
+        },
+        {
+          "number": 4,
+          "title": "Versioned trees and analytical tables",
+          "duration": 47.136
+        }
+      ],
+      "createdAt": "2026-11-06T21:10:26.073Z"
+    },
+    {
+      "slug": "durable-objects-have-an-address",
+      "title": "Durable Objects Have an Address",
+      "subtitle": "Identity, storage, and sleeping coordination",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#725944",
+      "animal": "generated/durable-objects-have-an-address/animal.webp",
+      "href": "?bundle=durable-objects-have-an-address",
+      "series": "Cloudflare Workers: Compute and Storage",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One name, one coordinator",
+          "duration": 36.409
+        },
+        {
+          "number": 2,
+          "title": "A private transactional notebook",
+          "duration": 44.768
+        },
+        {
+          "number": 3,
+          "title": "The room sleeps but connections stay",
+          "duration": 41.935
+        }
+      ],
+      "createdAt": "2026-11-06T21:07:38.246Z"
+    },
+    {
+      "slug": "workers-have-no-server",
+      "title": "Workers Have No Server",
+      "subtitle": "Requests, bindings, and the life of an isolate",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#cf542c",
+      "animal": "generated/workers-have-no-server/animal.webp",
+      "href": "?bundle=workers-have-no-server",
+      "series": "Cloudflare Workers: Compute and Storage",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A request meets an isolate",
+          "duration": 39.892
+        },
+        {
+          "number": 2,
+          "title": "Bindings make capabilities explicit",
+          "duration": 43.886
+        },
+        {
+          "number": 3,
+          "title": "A request has a lifetime",
+          "duration": 43.422
+        }
+      ],
+      "createdAt": "2026-11-06T21:05:03.093Z"
+    },
+    {
       "slug": "weight-space-programming",
       "title": "Weight-Space Programming",
       "subtitle": "LLMs that read and write neural network weights",

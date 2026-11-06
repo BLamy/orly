@@ -1,0 +1,65 @@
+{
+  "format": 3,
+  "slug": "workers-have-no-server",
+  "title": "Workers Have No Server",
+  "subtitle": "Requests, bindings, and the life of an isolate",
+  "animal": "animal.webp",
+  "accent": "#cf542c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A request meets an isolate",
+      "blurb": "Follow an incoming request through a module Worker.",
+      "scene": "books/workers-have-no-server/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        3.947,
+        8.127,
+        16.138,
+        21.514,
+        24.776,
+        30.198,
+        35.051
+      ],
+      "duration": 39.892
+    },
+    {
+      "number": 2,
+      "title": "Bindings make capabilities explicit",
+      "blurb": "Turn Wrangler configuration into typed resource bindings.",
+      "scene": "books/workers-have-no-server/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        3.808,
+        9.392,
+        15.72,
+        19.771,
+        26.575,
+        31.811,
+        37.407
+      ],
+      "duration": 43.886
+    },
+    {
+      "number": 3,
+      "title": "A request has a lifetime",
+      "blurb": "Manage overlapping requests and bounded background work.",
+      "scene": "books/workers-have-no-server/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.992,
+        11.192,
+        16.742,
+        20.248,
+        25.705,
+        32.067,
+        38.302
+      ],
+      "duration": 43.422
+    }
+  ],
+  "sources": "sources.json"
+}

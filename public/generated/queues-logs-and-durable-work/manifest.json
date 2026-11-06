@@ -1,0 +1,65 @@
+{
+  "format": 3,
+  "slug": "queues-logs-and-durable-work",
+  "title": "Queues, Logs, and Durable Work",
+  "subtitle": "Delivery, replay, and resilient execution",
+  "animal": "animal.webp",
+  "accent": "#9a4a3b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A queue delivers a task",
+      "blurb": "Deliver tasks with retry-safe effects.",
+      "scene": "books/queues-logs-and-durable-work/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        3.959,
+        9.021,
+        13.073,
+        18.46,
+        23.638,
+        28.572,
+        34.087
+      ],
+      "duration": 40.217
+    },
+    {
+      "number": 2,
+      "title": "A log keeps its history",
+      "blurb": "Replay an ordered log with independent subscriptions.",
+      "scene": "books/queues-logs-and-durable-work/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        3.855,
+        9.381,
+        14.199,
+        19.76,
+        25.565,
+        32.183,
+        39.125
+      ],
+      "duration": 45
+    },
+    {
+      "number": 3,
+      "title": "A workflow remembers the steps",
+      "blurb": "Resume a durable multi-step process.",
+      "scene": "books/queues-logs-and-durable-work/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.795,
+        11.041,
+        14.791,
+        19.679,
+        24.822,
+        30.65,
+        37.384
+      ],
+      "duration": 43.699
+    }
+  ],
+  "sources": "sources.json"
+}

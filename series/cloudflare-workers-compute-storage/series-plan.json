@@ -1,0 +1,520 @@
+{
+  "series": "Cloudflare Workers: Compute and Storage",
+  "source": "https://github.com/cloudflare/workers-sdk and current official Cloudflare developer documentation",
+  "research_date": "2026-11-06",
+  "model": "gpt-6.1-terra",
+  "books": [
+    {
+      "slug": "workers-have-no-server",
+      "title": "Workers Have No Server",
+      "subtitle": "Requests, bindings, and the life of an isolate",
+      "animal": "common octopus",
+      "accent": "#cf542c",
+      "chapters": [
+        {
+          "title": "A request meets an isolate",
+          "machine": "A request card crosses a Worker membrane, turns into a response, and returns.",
+          "source": [
+            "https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/",
+            "https://developers.cloudflare.com/workers/reference/how-workers-works/",
+            "series/cloudflare-workers-compute-storage/workers-sdk-digest.txt"
+          ],
+          "labels": [
+            "REQUEST",
+            "fetch(request, env, ctx)",
+            "Request",
+            "Response",
+            "OUTBOUND FETCH",
+            "RESPONSE"
+          ],
+          "captions": [
+            "A request arrives, but there is no server for you to keep running.",
+            "Cloudflare routes the request to a Worker running inside an isolate.",
+            "In the module format, the exported fetch handler receives the request, the environment, and an execution context.",
+            "The request describes the incoming method, address, headers, and body.",
+            "Your handler can compute an answer or fetch another service.",
+            "It returns a response containing a status, headers, and an optional body.",
+            "The response travels back to the caller while the platform manages the process around it.",
+            "Think of the Worker as code invoked for a request, not a machine you administer."
+          ]
+        },
+        {
+          "title": "Bindings make capabilities explicit",
+          "machine": "A configuration strip folds into a typed environment and plugs into a real resource.",
+          "source": [
+            "https://developers.cloudflare.com/workers/runtime-apis/bindings/",
+            "https://developers.cloudflare.com/workers/languages/typescript/",
+            "https://developers.cloudflare.com/workers/wrangler/configuration/",
+            "series/cloudflare-workers-compute-storage/workers-sdk-digest.txt"
+          ],
+          "labels": [
+            "wrangler.jsonc",
+            "compatibility_date",
+            "KV binding",
+            "wrangler types",
+            "Env",
+            "env.MY_KV"
+          ],
+          "captions": [
+            "A Worker needs a deliberate way to reach the resources it uses.",
+            "Wrangler configuration names the Worker, its compatibility date, and its bindings.",
+            "A binding gives the code a capability to use a resource without placing an account token in every request.",
+            "The runtime supplies those capabilities on the environment passed to the handler.",
+            "The Wrangler types command generates an environment type from the configuration and matching runtime definitions.",
+            "Now the editor can check that the binding name and methods agree with the configured resource.",
+            "Local development can simulate supported bindings or connect configured remote resources.",
+            "Keep configuration, generated types, and deployed bindings in agreement as the Worker changes."
+          ]
+        },
+        {
+          "title": "A request has a lifetime",
+          "machine": "Overlapping request lanes share one isolate while a bounded background tail follows a response.",
+          "source": [
+            "https://developers.cloudflare.com/workers/best-practices/workers-best-practices/",
+            "https://developers.cloudflare.com/workers/runtime-apis/context/",
+            "https://developers.cloudflare.com/workers/platform/limits/"
+          ],
+          "labels": [
+            "ISOLATE",
+            "request A",
+            "request B",
+            "module globals",
+            "ctx.waitUntil()",
+            "≤ 30 s"
+          ],
+          "captions": [
+            "An isolate may serve more than one request, sometimes with their work overlapping.",
+            "Module level objects can be reused, but the platform does not promise that the same isolate will always return.",
+            "Keep each request’s private data inside its handler instead of a shared global variable.",
+            "Await work that must finish before you construct the response.",
+            "For a small task that can follow the response, attach its promise to the execution context.",
+            "The wait can extend execution for up to thirty seconds after the response or a client disconnect.",
+            "That extension is bounded and is not a guarantee that arbitrary background work completes.",
+            "For durable retries or long waits, put the work in a queue or a workflow instead."
+          ]
+        }
+      ],
+      "order": 1
+    },
+    {
+      "slug": "durable-objects-have-an-address",
+      "title": "Durable Objects Have an Address",
+      "subtitle": "Identity, storage, and sleeping coordination",
+      "animal": "American beaver",
+      "accent": "#725944",
+      "chapters": [
+        {
+          "title": "One name, one coordinator",
+          "machine": "Names become stable addresses; requests from different places converge on the same per-entity coordinator.",
+          "source": [
+            "https://developers.cloudflare.com/durable-objects/concepts/what-are-durable-objects/",
+            "https://developers.cloudflare.com/durable-objects/api/namespace/",
+            "https://developers.cloudflare.com/durable-objects/concepts/durable-object-lifecycle/"
+          ],
+          "labels": [
+            "room:blue",
+            "getByName()",
+            "room:blue",
+            "room:gold",
+            "stub.sayHello()",
+            "OBJECT"
+          ],
+          "captions": [
+            "A shared room needs one place to coordinate changes from its participants.",
+            "A Durable Object namespace maps a name to a stable object identity.",
+            "Asking for the same name yields a stub for the same logical object.",
+            "The stub alone does not start the object; an invocation sends work to it.",
+            "Cloudflare places the object and routes callers to its active instance.",
+            "Different names identify different objects with their own state and storage.",
+            "An object can leave memory when idle and be recreated when a later event arrives.",
+            "Choose an identity per entity whose updates must be coordinated together."
+          ]
+        },
+        {
+          "title": "A private transactional notebook",
+          "machine": "A per-object table accepts a transaction, schedules an alarm, and rolls back along a recovery timeline.",
+          "source": [
+            "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/",
+            "https://developers.cloudflare.com/durable-objects/api/alarms/"
+          ],
+          "labels": [
+            "ctx.storage.sql.exec()",
+            "TRANSACTION",
+            "PRIVATE TO OBJECT",
+            "setAlarm()",
+            "alarm()",
+            "PITR · 30 DAYS"
+          ],
+          "captions": [
+            "The object needs a notebook that survives the process holding it.",
+            "Cloudflare recommends the sequel lite storage backend for new Durable Object namespaces.",
+            "Each object has private, strongly consistent transactional storage attached to its identity.",
+            "The sequel interface can update rows inside a transaction, atomically with other storage operations on that object.",
+            "An alarm schedules a future invocation of the object without an incoming request.",
+            "An alarm can be retried and may run more than once, so its effects should tolerate repetition.",
+            "Point in time recovery can restore the object’s sequel lite data to a point in the previous thirty days.",
+            "This private notebook is per object; it is not a transaction spanning separate objects."
+          ]
+        },
+        {
+          "title": "The room sleeps but connections stay",
+          "machine": "Client strands remain connected while the object vanishes, then reconstructs from storage and socket attachments.",
+          "source": [
+            "https://developers.cloudflare.com/durable-objects/best-practices/websockets/",
+            "https://developers.cloudflare.com/durable-objects/concepts/durable-object-lifecycle/"
+          ],
+          "labels": [
+            "acceptWebSocket()",
+            "CONNECTED",
+            "MEMORY",
+            "HIBERNATED",
+            "constructor()",
+            "attachment"
+          ],
+          "captions": [
+            "A live room can have connected clients even while nobody is sending messages.",
+            "The hibernation web socket interface lets an idle object leave memory without disconnecting those clients.",
+            "Accepting the server socket through the object state enables this hibernation path.",
+            "While the object sleeps, its ordinary in memory variables are gone.",
+            "A new event wakes it and runs the constructor again before handling the event.",
+            "Restore durable room data from storage and connection specific data from socket attachments.",
+            "The hibernation interface applies when the object is the web socket server, not to outgoing sockets.",
+            "Treat memory as a cache of the room, and durable storage as the state that survives eviction."
+          ]
+        }
+      ],
+      "order": 2
+    },
+    {
+      "slug": "a-place-for-every-byte",
+      "title": "A Place for Every Byte",
+      "subtitle": "Choose storage by shape and consistency",
+      "animal": "satin bowerbird",
+      "accent": "#246a80",
+      "chapters": [
+        {
+          "title": "Choose by access and consistency",
+          "machine": "The same value lands on contrasting read paths: globally cached keys, a private coordinator, and direct object storage.",
+          "source": [
+            "https://developers.cloudflare.com/kv/concepts/how-kv-works/",
+            "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/",
+            "https://developers.cloudflare.com/r2/reference/consistency/"
+          ],
+          "labels": [
+            "KV",
+            "cached reads",
+            "DO SQLite",
+            "per entity",
+            "R2",
+            "strong direct reads"
+          ],
+          "captions": [
+            "The right storage depends on the shape of the data and the promise your reader needs.",
+            "Workers key value storage favors widely distributed reads of values addressed by key.",
+            "Its caches are eventually consistent, so a different location may briefly read an older value or cached absence.",
+            "For a single entity that needs coordinated strongly consistent updates, use a Durable Object with private storage.",
+            "For large objects addressed by key, object storage offers a different interface.",
+            "Direct reads from R two see completed object writes strongly and globally.",
+            "A separate cache in front of an object can still serve an older response.",
+            "Pick the consistency contract before you pick the name that sounds fastest."
+          ]
+        },
+        {
+          "title": "Objects are not rows",
+          "machine": "A large file becomes independently addressable object parts, while cached copies diverge from the authoritative bucket.",
+          "source": [
+            "https://developers.cloudflare.com/r2/",
+            "https://developers.cloudflare.com/r2/reference/consistency/",
+            "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+          ],
+          "labels": [
+            "R2 BUCKET",
+            "put(key, body)",
+            "get(key)",
+            "MULTIPART",
+            "DIRECT READ",
+            "CACHE"
+          ],
+          "captions": [
+            "A photograph, a backup, and a video are naturally stored as objects rather than database rows.",
+            "An R two bucket holds objects under keys; a Worker binding can put and get those objects.",
+            "Large uploads can be assembled from parts before the completed object becomes visible.",
+            "Direct object reads, writes, deletes, and listings have strong consistency guarantees.",
+            "The service does not charge Internet egress fees for retrieving objects.",
+            "If a cached custom domain serves the object, that separate cache can outlive an overwrite or deletion.",
+            "Use versioned names or cache purging when a public cached copy needs to change.",
+            "Keep metadata and access patterns in mind: an object store is not a relational query engine."
+          ]
+        },
+        {
+          "title": "Three ways to use SQL",
+          "machine": "Rows flow through three lenses: a D1 database, an object-local SQLite table, and a pooled connection to an existing database.",
+          "source": [
+            "https://developers.cloudflare.com/d1/",
+            "https://developers.cloudflare.com/d1/best-practices/read-replication/",
+            "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/",
+            "https://developers.cloudflare.com/hyperdrive/concepts/connection-pooling/"
+          ],
+          "labels": [
+            "D1",
+            "withSession()",
+            "DO SQLite",
+            "PRIVATE",
+            "HYPERDRIVE",
+            "PostgreSQL / MySQL"
+          ],
+          "captions": [
+            "Tables and queries can live behind several different Cloudflare interfaces.",
+            "D one is a managed serverless relational database built on sequel lite.",
+            "When using read replicas, a session and its bookmarks provide sequential consistency across that session.",
+            "A Durable Object’s sequel lite database is private to that object and sits alongside its coordinating code.",
+            "Hyperdrive is different: it helps Workers connect to an existing supported database.",
+            "It pools connections close to the database and can cache eligible queries.",
+            "The existing database remains the database; the pool is an access layer.",
+            "Choose shared relational data, entity local transactions, or an existing database connection according to the workload."
+          ]
+        },
+        {
+          "title": "Versioned trees and analytical tables",
+          "machine": "A commit tree branches beside events flowing into Iceberg tables and a query lens.",
+          "source": [
+            "https://developers.cloudflare.com/artifacts/",
+            "https://developers.cloudflare.com/artifacts/api/workers-binding/",
+            "https://developers.cloudflare.com/basin/",
+            "https://developers.cloudflare.com/basin-sql/get-started/"
+          ],
+          "labels": [
+            "ARTIFACTS",
+            "Git commits",
+            "branches",
+            "BASIN PIPELINES",
+            "ICEBERG / R2",
+            "BASIN SQL"
+          ],
+          "captions": [
+            "Some data is a changing project, while other data is a stream of observations.",
+            "Artifacts stores versioned files and projects in Git compatible repositories.",
+            "A Worker can create or inspect a repository, and ordinary Git clients can push or clone it.",
+            "Branches and commits preserve history instead of treating every version as an unrelated blob.",
+            "Basin addresses analytics: pipelines ingest and transform data into tables.",
+            "Its catalog manages Apache Iceberg tables backed by object storage.",
+            "Basin sequel queries those tables; it is an analytics path rather than a replacement for the application’s transaction store.",
+            "Use a versioned tree for project history and an analytical table for querying accumulated events."
+          ]
+        }
+      ],
+      "order": 3
+    },
+    {
+      "slug": "queues-logs-and-durable-work",
+      "title": "Queues, Logs, and Durable Work",
+      "subtitle": "Delivery, replay, and resilient execution",
+      "animal": "Atlantic salmon",
+      "accent": "#9a4a3b",
+      "chapters": [
+        {
+          "title": "A queue delivers a task",
+          "machine": "A conveyor leases jobs to a consumer; a failed acknowledgment sends the same job around again.",
+          "source": [
+            "https://developers.cloudflare.com/queues/reference/how-queues-works/",
+            "https://developers.cloudflare.com/queues/reference/delivery-guarantees/",
+            "https://developers.cloudflare.com/queues/configuration/batching-retries/"
+          ],
+          "labels": [
+            "PRODUCER",
+            "Queue.send()",
+            "CONSUMER",
+            "ack()",
+            "retry()",
+            "IDEMPOTENCY KEY"
+          ],
+          "captions": [
+            "A request should not wait while a slow task works through a backlog.",
+            "A producer sends a message to a queue, and a consumer processes a batch later.",
+            "Queues deliver at least once, so a message can occasionally arrive again.",
+            "A consumer acknowledges successful work and can request a retry for a failure.",
+            "If processing fails before the acknowledgment is recorded, the task may be delivered again.",
+            "Give a task a stable identifier and make its side effects safe to repeat.",
+            "Configure retries and a dead letter queue for messages that cannot be processed successfully.",
+            "The queue is for distributing work, not for independently replaying a shared history forever."
+          ]
+        },
+        {
+          "title": "A log keeps its history",
+          "machine": "An ordered strip of records grows while two subscription cursors read it independently and a retention boundary advances.",
+          "source": [
+            "https://developers.cloudflare.com/k2/",
+            "https://developers.cloudflare.com/k2/concepts/",
+            "https://developers.cloudflare.com/k2/reference/delivery-guarantees/",
+            "https://developers.cloudflare.com/k2/platform/limits/"
+          ],
+          "labels": [
+            "K2 STREAM",
+            "append",
+            "subscription A",
+            "subscription B",
+            "earliest",
+            "RETENTION"
+          ],
+          "captions": [
+            "A durable log keeps records after a reader has consumed them.",
+            "K two appends records to an ordered stream and lets independent subscriptions read that history.",
+            "Each subscription tracks its own progress, so one reader does not advance another.",
+            "A new subscription can begin at the earliest retained record to replay available history.",
+            "Records expire according to retention even if a slow subscription has not read them.",
+            "Delivery is at least once, and workers sharing a subscription are not guaranteed to process records in order.",
+            "At the time of writing, K two is a public beta for paid Workers accounts, with ten gigabytes per account by default.",
+            "The default retention is seven days, with up to thirty days by default and higher limits available by request."
+          ]
+        },
+        {
+          "title": "A workflow remembers the steps",
+          "machine": "A checkpointed work ribbon survives a failed step, sleeps, resumes, and connects queue and log to one business process.",
+          "source": [
+            "https://developers.cloudflare.com/workflows/get-started/guide/",
+            "https://developers.cloudflare.com/workflows/build/sleeping-and-retrying/",
+            "https://developers.cloudflare.com/queues/reference/delivery-guarantees/",
+            "https://developers.cloudflare.com/k2/reference/delivery-guarantees/",
+            "https://developers.cloudflare.com/workflows/build/trigger-workflows/",
+            "https://developers.cloudflare.com/k2/features/produce/"
+          ],
+          "labels": [
+            "step.do()",
+            "CHECKPOINT",
+            "RETRY",
+            "step.sleep()",
+            "QUEUE / K2",
+            "WORKFLOW"
+          ],
+          "captions": [
+            "Some jobs are not one task but a sequence that must survive interruption.",
+            "A workflow records the result of each durable step so completed work can be reused when execution resumes.",
+            "A failed step can retry with configured delays and backoff.",
+            "A workflow can sleep or wait for an external event without holding a process open.",
+            "For example, a queue message can start a workflow for a requested operation.",
+            "That workflow can perform the operation and publish an event to a log for other subscribers.",
+            "A retry can repeat side effects, so use stable identifiers and idempotent operations at the boundaries.",
+            "Queues distribute tasks, logs preserve replayable history, and workflows remember the progress of a process."
+          ]
+        }
+      ],
+      "order": 4
+    },
+    {
+      "slug": "beyond-the-isolate",
+      "title": "Beyond the Isolate",
+      "subtitle": "Containers, sandboxes, browsers, and platforms",
+      "animal": "peregrine falcon",
+      "accent": "#5b5092",
+      "chapters": [
+        {
+          "title": "When you need a Linux process",
+          "machine": "A Worker hands a request to a Durable Object that starts a Linux image with processes and an HTTP service.",
+          "source": [
+            "https://developers.cloudflare.com/containers/",
+            "https://developers.cloudflare.com/containers/api/durable-object-container/"
+          ],
+          "labels": [
+            "WORKER",
+            "DURABLE OBJECT",
+            "CONTAINER IMAGE",
+            "Linux VM",
+            "PROCESS",
+            "HTTP"
+          ],
+          "captions": [
+            "Some workloads need a Linux process or a native dependency rather than only a Worker isolate.",
+            "Cloudflare Containers run an image you provide inside a Linux virtual machine.",
+            "A Worker can reach a container through a Durable Object that controls its lifecycle.",
+            "Inside the image, processes see the filesystem and other resources made available to that container.",
+            "The Worker can forward requests to an application listening inside the container.",
+            "Instances can start on demand and stop when idle according to their configuration.",
+            "Choose this environment when the software really needs its operating system and packaged dependencies.",
+            "A container extends the Worker application with a different execution environment."
+          ]
+        },
+        {
+          "title": "A sandbox is a trust boundary",
+          "machine": "Untrusted code moves into one of two isolated chambers; allowed capabilities cross a gate while secrets stay outside.",
+          "source": [
+            "https://developers.cloudflare.com/sandbox/",
+            "https://developers.cloudflare.com/sandbox/concepts/security/",
+            "https://developers.cloudflare.com/dynamic-workers/getting-started/"
+          ],
+          "labels": [
+            "CONTAINER",
+            "DYNAMIC WORKER",
+            "LOADER.load()",
+            "CAPABILITIES",
+            "NETWORK",
+            "ONE TRUST BOUNDARY"
+          ],
+          "captions": [
+            "Untrusted code needs a boundary around the things it can reach.",
+            "Cloudflare offers sandbox environments based on containers and on dynamic Workers.",
+            "A container runs a Linux image; a dynamic Worker runs Java Script in an isolate loaded at runtime.",
+            "The host Worker chooses which bindings or methods to expose and whether network access is allowed.",
+            "Everything placed inside one sandbox is available to the code running there.",
+            "Use a separate sandbox for each trust boundary, such as a user or a job.",
+            "Keep credentials outside when possible, and mediate outbound requests or expose narrow methods.",
+            "Isolation protects the surrounding application; it does not make untrusted code safe inside its own sandbox."
+          ]
+        },
+        {
+          "title": "A browser as a service",
+          "machine": "A browser window renders a page, turns into a screenshot, then keeps a session open for multi-step control.",
+          "source": [
+            "https://developers.cloudflare.com/browser-run/",
+            "https://developers.cloudflare.com/browser-run/quick-actions/",
+            "https://developers.cloudflare.com/browser-run/cdp/session-management/"
+          ],
+          "labels": [
+            "Browser Run",
+            "quickAction(\"screenshot\", …)",
+            "SCREENSHOT",
+            "SESSION",
+            "Puppeteer / Playwright",
+            "BROWSER BINDING"
+          ],
+          "captions": [
+            "Some tasks need a real browser to load a page and execute its Java Script.",
+            "Browser Run hosts headless browser instances on Cloudflare’s network.",
+            "A quick action handles a common task such as a screenshot or a document capture.",
+            "A Worker with a browser binding can call supported quick actions directly.",
+            "For a multi step interaction, open a browser session and drive it with a browser automation tool.",
+            "Sessions can be managed and reused across requests when the workflow requires it.",
+            "Quick actions are a convenient interface to a hosted browser, not a replacement for every custom interaction.",
+            "Choose the smallest browser interface that matches the job."
+          ]
+        },
+        {
+          "title": "A platform routes tenant code",
+          "machine": "Tenant name tabs select deployed user Workers within a dispatch namespace, each with its own attached bindings.",
+          "source": [
+            "https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/get-started/",
+            "https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/"
+          ],
+          "labels": [
+            "DISPATCH WORKER",
+            "env.DISPATCHER.get(name)",
+            "DISPATCH NAMESPACE",
+            "TENANT A",
+            "TENANT B",
+            "USER BINDINGS"
+          ],
+          "captions": [
+            "A platform may need to run code deployed on behalf of many customers.",
+            "Workers for Platforms groups user Workers in a dispatch namespace.",
+            "A dispatch Worker receives a request and selects a user Worker by name.",
+            "The selected Worker receives the request through its own fetch handler.",
+            "Bindings attached to a user Worker grant access to resources the platform chooses to provide.",
+            "Request scoped capabilities can instead be passed through dynamic dispatch properties.",
+            "The platform is responsible for choosing tenant identity and the capabilities each tenant receives.",
+            "Together, dispatch and bindings let one platform route requests to many separate user programs."
+          ]
+        }
+      ],
+      "order": 5
+    }
+  ]
+}
